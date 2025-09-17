@@ -1,0 +1,69 @@
+# Dependencies
+node_modules/
+.pnp
+.pnp.js
+
+# Testing
+coverage/
+
+# Next.js
+.next/
+out/
+
+# Production
+build/
+dist/
+output.txt
+
+# Misc
+.DS_Store
+*.pem
+
+# Debug
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+.pnpm-debug.log*
+
+# Local env files
+.env
+.env*.local
+.env.development
+
+# Vercel
+.vercel
+
+# TypeScript
+*.tsbuildinfo
+next-env.d.ts
+
+# Logs
+logs/
+*.log
+
+# IDE
+.vscode/
+.idea/
+.codersinflow
+
+# Mastra
+.mastra
+
+# Database
+*.db
+*.db-*
+
+# Docker volumes
+qdrant_storage/
+redis_data/
+
+# Coders in Flow
+.vscode
+node_modules
+.venv
+.codex
+out
+dist
+*.vsix
+.claude
+CLAUDE.md
