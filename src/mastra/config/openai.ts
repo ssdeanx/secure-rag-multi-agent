@@ -23,7 +23,7 @@ export const openAIProvider = createOpenAI({
     // Add custom fetch with extended timeout for reasoning models
     const controller: AbortController = new AbortController();
     const timeoutId = setTimeout(() => controller.abort(), 600000); // 600 seconds (10 minutes)
-    
+
     return fetch(url, {
       ...options,
       signal: controller.signal,
@@ -35,6 +35,8 @@ export const openAIProvider = createOpenAI({
 export const openAIModel = openAIProvider(openAIConfig.model, {
   // Additional model-specific configurations for reasoning
   structuredOutputs: true,
+  reasoningEffort: 'medium', // Adjust based on your model's capabilities
+  // Other model-specific configurations...
 });
 
 // Separate OpenAI configuration for embeddings (uses real OpenAI API)

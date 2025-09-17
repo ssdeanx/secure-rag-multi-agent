@@ -15,11 +15,11 @@ export const mastra = new Mastra({
     url: 'file:../mastra.db',
   }),
   logger,
-  agents: { 
-    retrieve: retrieveAgent, 
-    rerank: rerankAgent, 
-    answerer: answererAgent, 
-    verifier: verifierAgent 
+  agents: {
+    retrieve: retrieveAgent,
+    rerank: rerankAgent,
+    answerer: answererAgent,
+    verifier: verifierAgent
   },
   workflows: { 'governed-rag-index': governedRagIndex, 'governed-rag-answer': governedRagAnswer },
   vectors: {
