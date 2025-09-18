@@ -19,16 +19,16 @@ export async function POST(request: NextRequest) {
     // Define default documents to index from the corpus folder
     const corpusPath: string = path.join(process.cwd(), 'corpus');
     const corpusFiles = fs.readdirSync(corpusPath);
-    
+
     const documents = corpusFiles
       .filter(file => file.endsWith('.md'))
       .map(file => {
         const fileName = file.replace('.md', '');
-        
+
         // Set classification and roles based on filename with hierarchical access
         let classification: "public" | "internal" | "confidential" = "public";
         let allowedRoles: string[] = ["employee"];
-        
+
         if (fileName.includes('confidential') || fileName.includes('hr')) {
           classification = "confidential";
           allowedRoles = ["hr.admin"];  // HR confidential: only hr.admin access
@@ -67,12 +67,10 @@ export async function POST(request: NextRequest) {
 
     // Get the indexing workflow
     const workflow = mastra.getWorkflows()['governed-rag-index'];
-    if (!workflow) {
+    if (workflow === undefined) {
       throw new Error('Indexing workflow not found');
     }
-    
     const run = await workflow.createRunAsync();
-    
     const result = await run.start({
       inputData: { documents }
     });
@@ -81,16 +79,16 @@ export async function POST(request: NextRequest) {
 
     if (result.status === 'success') {
       logger.info(`Indexing completed: ${result.result.indexed} indexed, ${result.result.failed} failed`);
-      
+
       // Log individual document results for debugging
       if (result.result.documents) {
         result.result.documents.forEach((doc: any) => {
-          if (doc.status === 'failed' && doc.error) {
+          if (doc.status === 'failed' && (Boolean(doc.error))) {
             logger.error(`Document ${doc.docId} failed`, { error: doc.error });
           }
         });
       }
-      
+
       return NextResponse.json({
         success: true,
         indexed: result.result.indexed,
@@ -98,7 +96,7 @@ export async function POST(request: NextRequest) {
         documents: result.result.documents
       });
     } else {
-      const errorMessage = result.status === 'failed' && 'error' in result 
+      const errorMessage = result.status === 'failed' && 'error' in result
         ? result.error?.message || 'Indexing workflow failed'
         : 'Indexing workflow failed';
       logger.error('Workflow failed', { error: errorMessage });

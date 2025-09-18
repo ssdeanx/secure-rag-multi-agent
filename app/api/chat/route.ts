@@ -12,7 +12,7 @@ export async function POST(request: NextRequest) {
   try {
     const { jwt, question } = await request.json();
 
-    if (!jwt || !question) {
+    if (!(jwt) || !question) {
       return NextResponse.json(
         { error: 'Missing required fields' },
         { status: STATUS_VALUE }
@@ -33,7 +33,7 @@ export async function POST(request: NextRequest) {
           // Get workflow from mastra and use createRunAsync
           const workflow = mastra.getWorkflows()['governed-rag-answer'];
           const run = await workflow.createRunAsync();
-          
+
           const result = await run.start({
             inputData: { jwt, question }
           });
@@ -43,9 +43,9 @@ export async function POST(request: NextRequest) {
 
           if (result.status === 'success') {
             const { answer, citations } = result.result;
-            
+
             // Stream the answer in chunks
-            const chunks = answer.match(/.{1,50}/g) || [answer];
+            const chunks = answer.match(/.{1,50}/g) ?? [answer];
             for (const chunk of chunks) {
               controller.enqueue(
                 encoder.encode(`data: ${JSON.stringify({ content: chunk })}\n\n`)
@@ -54,20 +54,20 @@ export async function POST(request: NextRequest) {
             }
 
             controller.enqueue(
-              encoder.encode(`data: ${JSON.stringify({ 
+              encoder.encode(`data: ${JSON.stringify({
                 done: true,
                 citations,
                 contexts: []
               })}\n\n`)
             );
           } else {
-            const errorMessage = result.status === 'failed' && 'error' in result 
+            const errorMessage = result.status === 'failed' && 'error' in result
               ? result.error?.message || 'Failed to process your request'
               : 'Failed to process your request';
             controller.enqueue(
-              encoder.encode(`data: ${JSON.stringify({ 
+              encoder.encode(`data: ${JSON.stringify({
                 content: `⚠️ ${errorMessage}`,
-                done: true 
+                done: true
               })}\n\n`)
             );
           }
@@ -75,9 +75,9 @@ export async function POST(request: NextRequest) {
           console.error('Stream error:', error);
           const errorMessage = error instanceof Error ? error.message : 'An error occurred';
           controller.enqueue(
-            encoder.encode(`data: ${JSON.stringify({ 
+            encoder.encode(`data: ${JSON.stringify({
               content: `❌ Error: ${errorMessage}`,
-              done: true 
+              done: true
             })}\n\n`)
           );
         } finally {
