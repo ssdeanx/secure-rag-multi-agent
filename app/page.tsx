@@ -52,7 +52,7 @@ export default function Home() {
                 <IndexingPanel jwt={jwt || 'anonymous'} />
               )}
               
-              {currentView === 'home' && !jwt ? (
+              {currentView === 'home' && !jwt && (
                 <div className="space-y-8">
                   <div className="text-center py-12">
                     <Lock className="h-16 w-16 text-muted-foreground mx-auto mb-4" />
