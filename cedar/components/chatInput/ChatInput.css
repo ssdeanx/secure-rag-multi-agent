@@ -1,0 +1,28 @@
+/* Tiptap placeholder styles */
+.ProseMirror p.is-editor-empty:first-child::before {
+	content: attr(data-placeholder);
+	float: left;
+	color: #9ca3af; /* text-gray-400 */
+	pointer-events: none;
+	height: 0;
+}
+
+.dark .ProseMirror p.is-editor-empty:first-child::before {
+	color: #6b7280; /* text-gray-500 */
+}
+
+/* Ensure proper line height for multi-line support and word wrapping */
+.ProseMirror {
+	min-height: 1.5em;
+	line-height: 1.5;
+	word-wrap: break-word;
+	overflow-wrap: anywhere;
+	word-break: break-word;
+	white-space: pre-wrap;
+}
+
+/* Style for hard breaks */
+.ProseMirror .hard-break {
+	display: block;
+	height: 0;
+}

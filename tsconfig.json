@@ -39,7 +39,8 @@
     "tests/**/*",
     "testsSetup.ts",
     "eslint.config.js",
-    "prettier.config.js"
+    "prettier.config.js",
+    "cedar/**/*",
   ],
   "exclude": [
     "node_modules"

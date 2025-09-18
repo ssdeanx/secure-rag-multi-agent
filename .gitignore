@@ -73,3 +73,7 @@ CLAUDE.md
 .codacy/
 *.codacy/
 *./codacy/**/*.md
+
+/src/cedar/**/**/**/*.tsx
+/src/cedar/**/**/**/*.ts
+/src/cedar/**/**/*.css
