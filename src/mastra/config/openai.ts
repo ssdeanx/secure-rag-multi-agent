@@ -6,9 +6,9 @@ dotenv.config();
 
 // OpenAI configuration from environment variables
 export const openAIConfig: { apiKey: string; baseURL: string; model: string; } = {
-  apiKey: process.env.OPENAI_API_KEY || '',
-  baseURL: process.env.OPENAI_BASE_URL || 'https://api.openai.com/v1',
-  model: process.env.OPENAI_MODEL || 'gpt-4o-mini',
+  apiKey: process.env.OPENAI_API_KEY ?? '',
+  baseURL: process.env.OPENAI_BASE_URL ?? 'https://api.openai.com/v1',
+  model: process.env.OPENAI_MODEL ?? 'gpt-4o-mini',
 };
 
 // Create the OpenAI provider with configuration
@@ -36,8 +36,8 @@ export const openAIModel = openAIProvider(openAIConfig.model);
 
 // Separate OpenAI configuration for embeddings (uses real OpenAI API)
 export const openAIEmbeddingConfig: { apiKey: string; baseURL: string; } = {
-  apiKey: process.env.OPENAI_EMBEDDING_API_KEY || process.env.OPENAI_API_KEY || '',
-  baseURL: process.env.OPENAI_EMBEDDING_BASE_URL || 'https://api.openai.com/v1',
+  apiKey: process.env.OPENAI_EMBEDDING_API_KEY ?? process.env.OPENAI_API_KEY ?? '',
+  baseURL: process.env.OPENAI_EMBEDDING_BASE_URL ?? 'https://api.openai.com/v1',
 };
 
 // Create a separate OpenAI provider specifically for embeddings

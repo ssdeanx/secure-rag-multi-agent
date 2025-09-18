@@ -1,3 +1,4 @@
+/* eslint-disable tsdoc/syntax */
 /**
  * Role Hierarchy Configuration
  *
@@ -59,6 +60,7 @@ export const ROLE_LEVELS: Record<string, number> = {
 /**
  * Get the privilege level of a role
  */
+
 export function getRoleLevel(role: string): number {
   return ROLE_LEVELS[role] || 0;
 }
@@ -66,6 +68,7 @@ export function getRoleLevel(role: string): number {
 /**
  * Check if a role exists in the hierarchy
  */
+
 export function isValidRole(role: string): boolean {
   return role in ROLE_HIERARCHY;
 }
@@ -77,12 +80,12 @@ export function isValidRole(role: string): boolean {
  */
 export function getInheritorRoles(targetRole: string): string[] {
   const inheritors: string[] = [];
-  
+
   for (const [role, inheritedRoles] of Object.entries(ROLE_HIERARCHY)) {
     if (inheritedRoles.includes(targetRole) || role === targetRole) {
       inheritors.push(role);
     }
   }
-  
+
   return inheritors.sort((a, b) => getRoleLevel(b) - getRoleLevel(a));
 }
