@@ -9,6 +9,7 @@ import { verifierAgent } from "./agents/verifier.agent";
 import { logger } from "./config/logger";
 import { governedRagAnswer } from "./workflows/governed-rag-answer.workflow";
 import { governedRagIndex } from "./workflows/governed-rag-index.workflow";
+import { MastraJwtAuth } from '@mastra/auth';
 
 export const mastra = new Mastra({
   storage: new LibSQLStore({
@@ -26,6 +27,11 @@ export const mastra = new Mastra({
     qdrant: new QdrantVector({
       url: process.env.QDRANT_URL!,
       apiKey: process.env.QDRANT_API_KEY,
+    }),
+  },
+  server: {
+    experimental_auth: new MastraJwtAuth({
+        secret: process.env.JWT_SECRET!
     }),
   },
 });

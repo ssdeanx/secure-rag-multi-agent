@@ -6,7 +6,7 @@ import { FileTransport } from "@mastra/loggers/file";
 //const __dirname: string = path.resolve(path.dirname(''));
 
 // Ensure logs directory exists
-const logsDir: string = path.join(__dirname, '../../../logs');
+const logsDir: string = path.join(process.cwd(), 'logs');
 if (!fs.existsSync(logsDir)) {
   fs.mkdirSync(logsDir, { recursive: true });
 }
@@ -15,7 +15,7 @@ export const logger: PinoLogger = new PinoLogger({
   name: 'workflow-logger',
   level: 'info',
 //  transports: {
-//      file: new FileTransport({ path: path.join(logsDir, '../../../logs/mastra.log') })
+//      file: new FileTransport({ path: path.join(logsDir, 'logs/mastra.log') })
 //    }
 });
 
