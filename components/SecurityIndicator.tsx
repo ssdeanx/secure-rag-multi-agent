@@ -41,12 +41,12 @@ export default function SecurityIndicator({ role }: SecurityIndicatorProps) {
         return {
           label: 'Confidential Access',
           description: 'Full system access with step-up authentication',
-          bgClass: 'from-red-500/15 to-red-600/10',
-          borderClass: 'border-red-500/40 hover:border-red-400/60',
-          textClass: 'text-red-400',
-          iconClass: 'text-red-400',
-          shadowClass: 'hover:shadow-red-500/20',
-          pulseClass: 'bg-red-500'
+          bgClass: 'from-[var(--color-security-confidential)]/15 to-[var(--color-security-confidential)]/10',
+          borderClass: 'border-[var(--color-security-confidential)]/40 hover:border-[var(--color-security-confidential)]/60',
+          textClass: 'text-[var(--color-security-confidential)]',
+          iconClass: 'text-[var(--color-security-confidential)]',
+          shadowClass: 'hover:shadow-[var(--color-security-confidential)]/20',
+          pulseClass: 'bg-[var(--color-security-confidential)]'
         };
       case 'internal-plus':
         return {
@@ -63,23 +63,23 @@ export default function SecurityIndicator({ role }: SecurityIndicatorProps) {
         return {
           label: 'Internal Access',
           description: 'Department-level document access',
-          bgClass: 'from-yellow-500/15 to-yellow-600/10',
-          borderClass: 'border-yellow-500/40 hover:border-yellow-400/60',
-          textClass: 'text-yellow-400',
-          iconClass: 'text-yellow-400',
-          shadowClass: 'hover:shadow-yellow-500/20',
-          pulseClass: 'bg-yellow-500'
+          bgClass: 'from-[var(--color-security-internal)]/15 to-[var(--color-security-internal)]/10',
+          borderClass: 'border-[var(--color-security-internal)]/40 hover:border-[var(--color-security-internal)]/60',
+          textClass: 'text-[var(--color-security-internal)]',
+          iconClass: 'text-[var(--color-security-internal)]',
+          shadowClass: 'hover:shadow-[var(--color-security-internal)]/20',
+          pulseClass: 'bg-[var(--color-security-internal)]'
         };
       default:
         return {
           label: 'Internal Access',
           description: 'Department-level document access',
-          bgClass: 'from-yellow-500/15 to-yellow-600/10',
-          borderClass: 'border-yellow-500/40 hover:border-yellow-400/60',
-          textClass: 'text-yellow-400',
-          iconClass: 'text-yellow-400',
-          shadowClass: 'hover:shadow-yellow-500/20',
-          pulseClass: 'bg-yellow-500'
+          bgClass: 'from-[var(--color-security-internal)]/15 to-[var(--color-security-internal)]/10',
+          borderClass: 'border-[var(--color-security-internal)]/40 hover:border-[var(--color-security-internal)]/60',
+          textClass: 'text-[var(--color-security-internal)]',
+          iconClass: 'text-[var(--color-security-internal)]',
+          shadowClass: 'hover:shadow-[var(--color-security-internal)]/20',
+          pulseClass: 'bg-[var(--color-security-internal)]'
         };
     }
   }, [level]);
@@ -96,10 +96,10 @@ export default function SecurityIndicator({ role }: SecurityIndicatorProps) {
           <div className="relative group/level">
             <div className={`h-3 w-10 rounded-full transition-all duration-500 ${
               level === 'confidential' || level === 'internal-plus' || level === 'internal'
-                ? 'bg-green-500 shadow-lg shadow-green-500/30' : 'bg-muted'
+                ? 'bg-[var(--color-security-public)] shadow-lg shadow-[var(--color-security-public)]/30' : 'bg-muted'
             }`} />
             {(level === 'confidential' || level === 'internal-plus' || level === 'internal') && (
-              <div className="absolute inset-0 bg-green-400 rounded-full animate-pulse opacity-30" />
+              <div className="absolute inset-0 bg-[var(--color-security-public)] rounded-full animate-pulse opacity-30" />
             )}
             <div className="absolute -bottom-6 left-1/2 transform -translate-x-1/2 opacity-0 group-hover/level:opacity-100
                           transition-opacity duration-300 text-xs text-muted-foreground whitespace-nowrap">
@@ -111,10 +111,10 @@ export default function SecurityIndicator({ role }: SecurityIndicatorProps) {
           <div className="relative group/level">
             <div className={`h-3 w-10 rounded-full transition-all duration-500 ${
               level === 'confidential' || level === 'internal-plus'
-                ? 'bg-yellow-500 shadow-lg shadow-yellow-500/30' : 'bg-muted'
+                ? 'bg-[var(--color-security-internal)] shadow-lg shadow-[var(--color-security-internal)]/30' : 'bg-muted'
             }`} />
             {(level === 'confidential' || level === 'internal-plus') && (
-              <div className="absolute inset-0 bg-yellow-400 rounded-full animate-pulse opacity-30" />
+              <div className="absolute inset-0 bg-[var(--color-security-internal)] rounded-full animate-pulse opacity-30" />
             )}
             <div className="absolute -bottom-6 left-1/2 transform -translate-x-1/2 opacity-0 group-hover/level:opacity-100
                           transition-opacity duration-300 text-xs text-muted-foreground whitespace-nowrap">
@@ -126,10 +126,10 @@ export default function SecurityIndicator({ role }: SecurityIndicatorProps) {
           <div className="relative group/level">
             <div className={`h-3 w-10 rounded-full transition-all duration-500 ${
               level === 'confidential'
-                ? 'bg-red-500 shadow-lg shadow-red-500/30' : 'bg-muted'
+                ? 'bg-[var(--color-security-confidential)] shadow-lg shadow-[var(--color-security-confidential)]/30' : 'bg-muted'
             }`} />
             {level === 'confidential' && (
-              <div className="absolute inset-0 bg-red-400 rounded-full animate-pulse opacity-30" />
+              <div className="absolute inset-0 bg-[var(--color-security-confidential)] rounded-full animate-pulse opacity-30" />
             )}
             <div className="absolute -bottom-6 left-1/2 transform -translate-x-1/2 opacity-0 group-hover/level:opacity-100
                           transition-opacity duration-300 text-xs text-muted-foreground whitespace-nowrap">

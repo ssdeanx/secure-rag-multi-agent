@@ -10,7 +10,11 @@ import { UserMenu } from '@/components/UserMenu';
 import { AppSidebar } from '@/components/AppSidebar';
 import { SidebarProvider, SidebarInset, SidebarTrigger } from '@/components/ui/sidebar';
 import { Footer } from '@/components/Footer';
-import { Shield, Lock, AlertCircle } from 'lucide-react';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Button } from '@/components/ui/button';
+import { Alert, AlertDescription } from '@/components/ui/alert';
+import { Badge } from '@/components/ui/badge';
+import { Shield, Lock, AlertCircle, CheckCircle } from 'lucide-react';
 import { useState } from 'react';
 
 export default function Home() {
@@ -29,106 +33,118 @@ export default function Home() {
 
   return (
     <SidebarProvider>
-      <div className="min-h-screen bg-background flex flex-col">
+      <div className="min-h-screen bg-background flex flex-col animated-gradient-subtle">
         <TopNavigation>
           <SidebarTrigger />
           <SecurityIndicator role={currentRole} />
           <ThemeToggle />
-          <UserMenu 
-            currentRole={currentRole} 
+          <UserMenu
+            currentRole={currentRole}
             onSignOut={handleSignOut}
           />
         </TopNavigation>
 
         <div className="flex flex-1 overflow-hidden">
-          <AppSidebar 
+          <AppSidebar
             currentRole={currentRole}
             onNavigate={handleNavigation}
           />
 
           <SidebarInset className="flex flex-col">
-            <div className="flex-1 p-6 space-y-8">
+            <div className="flex-1 p-4 sm:p-6 lg:p-8 overflow-auto fluid-container">
+              <div className="w-full max-w-screen-2xl mx-auto space-y-6 sm:space-y-8 fluid-content">
               {currentView === 'indexing' && (
                 <IndexingPanel jwt={jwt || 'anonymous'} />
               )}
-              
+
               {currentView === 'home' && !jwt && (
                 <div className="space-y-8">
-                  <div className="text-center py-12">
-                    <Lock className="h-16 w-16 text-muted-foreground mx-auto mb-4" />
-                    <h2 className="text-3xl font-bold mb-4">Secure Access Required</h2>
-                    <p className="text-muted-foreground max-w-2xl mx-auto mb-8">
+                  <div className="content-center py-8 sm:py-12 lg:py-16">
+                    <Lock className="h-12 w-12 sm:h-16 sm:w-16 text-muted-foreground mb-4 sm:mb-6 size-fit" />
+                    <h2 className="text-2xl sm:text-3xl lg:text-4xl font-bold mb-4 sm:mb-6">Secure Access Required</h2>
+                    <p className="text-muted-foreground max-w-2xl mb-6 sm:mb-8 text-sm sm:text-base">
                       This system demonstrates enterprise-grade security for RAG applications.
                       Select a role below to see how different users access different information.
                     </p>
                   </div>
 
-                  <AuthPanel onAuth={(token, role) => {
-                    setJwt(token);
-                    setCurrentRole(role);
-                  }} />
+                  <div className="flex items-center justify-center">
+                    <AuthPanel onAuth={(token, role) => {
+                      setJwt(token);
+                      setCurrentRole(role);
+                    }} />
+                  </div>
 
-                  <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mt-12">
-                    <div className="rounded-lg border bg-card text-card-foreground shadow-sm p-6 hover:shadow-md transition-shadow">
-                      <div className="flex items-center mb-4">
-                        <div className="p-2 bg-green-500/10 rounded-lg">
-                          <Shield className="h-6 w-6 text-green-500" />
+                  <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 mt-8 sm:mt-12 grid-center">
+                    <Card className="hover:shadow-md transition-shadow hover-lift hover-glow neon-glow-cyan">
+                      <CardContent className="p-6">
+                        <div className="flex items-center mb-4">
+                          <div className="p-2 bg-[var(--color-security-public)]/10 rounded-lg size-fit">
+                            <Shield className="h-6 w-6 text-[var(--color-security-public)]" />
+                          </div>
+                          <CardTitle className="ml-3 text-lg">Public Access</CardTitle>
+                          <Badge variant="secondary" className="ml-auto">Basic</Badge>
                         </div>
-                        <h3 className="ml-3 font-semibold">Public Access</h3>
-                      </div>
-                      <p className="text-sm text-muted-foreground">
-                        Basic information available to all authenticated users
-                      </p>
-                    </div>
+                        <p className="text-sm text-muted-foreground">
+                          Basic information available to all authenticated users
+                        </p>
+                      </CardContent>
+                    </Card>
 
-                    <div className="rounded-lg border bg-card text-card-foreground shadow-sm p-6 hover:shadow-md transition-shadow">
-                      <div className="flex items-center mb-4">
-                        <div className="p-2 bg-yellow-500/10 rounded-lg">
-                          <Shield className="h-6 w-6 text-yellow-500" />
-                        </div>
-                        <h3 className="ml-3 font-semibold">Internal Access</h3>
-                      </div>
-                      <p className="text-sm text-muted-foreground">
-                        Department-specific information for authorized roles
-                      </p>
-                    </div>
+                    <Card className="hover:shadow-md transition-shadow hover-lift hover-glow neon-glow-green">
+                       <CardContent className="p-6">
+                         <div className="flex items-center mb-4">
+                           <div className="p-2 bg-[var(--color-security-internal)]/10 rounded-lg size-fit">
+                             <Shield className="h-6 w-6 text-[var(--color-security-internal)]" />
+                           </div>
+                           <CardTitle className="ml-3 text-lg">Internal Access</CardTitle>
+                           <Badge variant="secondary" className="ml-auto">Department</Badge>
+                         </div>
+                         <p className="text-sm text-muted-foreground">
+                           Department-specific information for authorized roles
+                         </p>
+                       </CardContent>
+                     </Card>
 
-                    <div className="rounded-lg border bg-card text-card-foreground shadow-sm p-6 hover:shadow-md transition-shadow">
-                      <div className="flex items-center mb-4">
-                        <div className="p-2 bg-red-500/10 rounded-lg">
-                          <Shield className="h-6 w-6 text-red-500" />
-                        </div>
-                        <h3 className="ml-3 font-semibold">Confidential Access</h3>
-                      </div>
-                      <p className="text-sm text-muted-foreground">
-                        Sensitive data requiring admin privileges and step-up auth
-                      </p>
-                    </div>
+                    <Card className="hover:shadow-md transition-shadow hover-lift hover-glow neon-glow-purple">
+                       <CardContent className="p-6">
+                         <div className="flex items-center mb-4">
+                           <div className="p-2 bg-[var(--color-security-confidential)]/10 rounded-lg size-fit">
+                             <Shield className="h-6 w-6 text-[var(--color-security-confidential)]" />
+                           </div>
+                           <CardTitle className="ml-3 text-lg">Confidential Access</CardTitle>
+                           <Badge variant="destructive" className="ml-auto">Admin</Badge>
+                         </div>
+                         <p className="text-sm text-muted-foreground">
+                           Sensitive data requiring admin privileges and step-up auth
+                         </p>
+                       </CardContent>
+                     </Card>
                   </div>
                 </div>
               )}
 
               {(currentView === 'home' || currentView === 'chat') && jwt && (
                 <div className="space-y-6">
-                  <div className="rounded-lg border bg-card text-card-foreground shadow-sm p-4">
-                    <div className="flex items-center justify-between">
-                      <div className="flex items-center space-x-3">
-                        <AlertCircle className="h-5 w-5 text-primary" />
-                        <span className="text-sm">
-                          Logged in as <span className="font-semibold">{currentRole}</span>
-                        </span>
-                      </div>
-                      <button
+                  <Alert>
+                    <CheckCircle className="h-4 w-4" />
+                    <AlertDescription className="flex items-center justify-between">
+                      <span>
+                        Logged in as <span className="font-semibold">{currentRole}</span>
+                      </span>
+                      <Button
                         onClick={handleSignOut}
-                        className="text-sm text-muted-foreground hover:text-foreground transition-colors"
+                        variant="ghost"
+                        size="sm"
                       >
                         Sign Out
-                      </button>
-                    </div>
-                  </div>
+                      </Button>
+                    </AlertDescription>
+                  </Alert>
                   <ChatInterface jwt={jwt} role={currentRole} />
                 </div>
               )}
+              </div>
             </div>
           </SidebarInset>
         </div>

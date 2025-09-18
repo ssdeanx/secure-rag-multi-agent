@@ -1,15 +1,19 @@
 {
   "name": "mastra-governed-rag",
-  "version": "1.0.0",
+  "version": "1.0.",
   "description": "Secure, governed RAG template with role-based access control using Mastra",
   "main": "dist/index.js",
   "type": "module",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "dev": "concurrently \"next dev\" && \"npm run mastra-dev\"",
+    "dev": "dotenv -e .env -- concurrently -n \"NEXT,MASTRA\" -c \"blue.bold,green.bold\" \"npm run dev:next\" \"npm run dev:mastra\"",
+    "dev:next": "next dev --turbopack",
+    "dev:mastra": "mastra dev --dir src/mastra",
     "build": "next build",
     "start": "next start",
     "mastra-dev": "mastra dev --dir src/mastra",
+    "lint": "next lint",
+    "pretty": "npx prettier --write .",
     "build-cli": "tsc -p tsconfig.cli.json",
     "cli": "node dist/index.js",
     "generate-index": "node dist/cli/index.js"
@@ -21,7 +25,11 @@
     "governance",
     "ai"
   ],
-  "author": "Mastra Community",
+  "author": "ssdeanx",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ssdeanx/mastra-governed-rag.git"
+  },
   "license": "MIT",
   "engines": {
     "node": ">=20.9.0"
@@ -72,7 +80,7 @@
     "@tiptap/react": "^3.4.4",
     "@types/react": "^19.1.13",
     "@types/react-dom": "^19.1.9",
-    "ai": "^5.0.45",
+    "ai": "^5.0.46",
     "ai-sdk-provider-gemini-cli": "^1.1.1",
     "autoprefixer": "^10.4.21",
     "cedar-os": "^0.1.19",
@@ -109,17 +117,21 @@
     "remark-gfm": "^4.0.1",
     "sonner": "^2.0.7",
     "tailwind-merge": "^3.3.1",
-    "tailwindcss": "^4.1.13",
+    "reactflow": "^11.11.4",
     "uuid": "^13.0.0",
     "vaul": "^1.1.2",
     "zod": "^4.1.9"
   },
   "devDependencies": {
+    "@tailwindcss/postcss": "^4.1.13",
     "@types/jsdom": "^21.1.7",
     "@types/node": "^24.5.2",
     "@types/react": "^19.1.13",
     "@types/react-dom": "^19.1.9",
     "@types/react-router": "^5.1.20",
+    "@types/uuid": "^10.0.0",
+    "concurrently": "^8.2.2",
+    "dotenv-cli": "^7.4.4",
     "@typescript-eslint/eslint-plugin": "^8.44.0",
     "@typescript-eslint/parser": "^8.44.0",
     "eslint": "^9.35.0",
@@ -129,6 +141,7 @@
     "eslint-plugin-tsdoc": "^0.4.0",
     "mastra": "^0.13.1",
     "prettier": "^3.6.2",
+    "tailwindcss": "^4.1.13",
     "tw-animate-css": "^1.3.8",
     "typescript": "^5.9.2",
     "vitest": "^3.2.4"
@@ -136,6 +149,7 @@
   "overrides": {
     "jsondiffpatch": "0.7.3",
     "zod": "^4.1.9",
-    "axios": "^1.12.2"
+    "axios": "^1.12.2",
+    "lucide-react": "^0.544.0"
   }
 }

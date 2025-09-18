@@ -26,7 +26,7 @@ export default function DocsPage() {
             <BookOpen className="mr-3 h-8 w-8 text-primary" />
             Quick Start Guide
           </h2>
-          
+
           <Card className="mb-6">
             <CardHeader>
               <CardTitle>1. Installation & Setup</CardTitle>

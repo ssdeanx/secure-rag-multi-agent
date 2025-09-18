@@ -43,7 +43,7 @@ export default function IndexingPanel({ jwt }: IndexingPanelProps) {
       const data = await response.json();
 
       if (!response.ok) {
-        throw new Error(data.error || 'Failed to start indexing');
+        throw new Error(data.error ?? 'Failed to start indexing');
       }
 
       setResult(data);
@@ -90,7 +90,7 @@ export default function IndexingPanel({ jwt }: IndexingPanelProps) {
 
       <CardContent>
 
-      {error && (
+      {(error !== null) && (
         <div className="mb-4 p-3 bg-destructive/10 border border-destructive/20 rounded-lg">
           <div className="flex items-center space-x-2">
             <XCircle className="h-4 w-4 text-destructive" />
@@ -101,12 +101,12 @@ export default function IndexingPanel({ jwt }: IndexingPanelProps) {
 
       {result && (
         <div className="space-y-4">
-          <div className="flex items-center justify-between p-3 bg-green-500/10 border border-green-500/20 rounded-lg">
+          <div className="flex items-center justify-between p-3 bg-[var(--color-success)]/10 border border-[var(--color-success)]/20 rounded-lg">
             <div className="flex items-center space-x-2">
-              <CheckCircle className="h-4 w-4 text-green-500" />
-              <span className="text-sm text-green-600 dark:text-green-400">Indexing completed</span>
+              <CheckCircle className="h-4 w-4 text-[var(--color-success-foreground)]" />
+              <span className="text-sm text-[var(--color-success-foreground)]">Indexing completed</span>
             </div>
-            <div className="text-sm text-green-600 dark:text-green-400">
+            <div className="text-sm text-[var(--color-success-foreground)]">
               {result.indexed} indexed, {result.failed} failed
             </div>
           </div>
@@ -122,14 +122,14 @@ export default function IndexingPanel({ jwt }: IndexingPanelProps) {
                   >
                     <div className="flex items-center space-x-2">
                       {doc.status === 'success' ? (
-                        <CheckCircle className="h-3 w-3 text-green-500" />
+                        <CheckCircle className="h-3 w-3 text-[var(--color-success-foreground)]" />
                       ) : (
                         <XCircle className="h-3 w-3 text-destructive" />
                       )}
                       <span className="text-foreground">{doc.docId}</span>
                     </div>
                     <div className="text-muted-foreground">
-                      {doc.status === 'success' && doc.chunks ? (
+                      {doc.status === 'success' && doc.chunks !== null ? (
                         `${doc.chunks} chunks`
                       ) : (doc.error !== null) ? (
                         <span className="text-destructive" title={doc.error}>

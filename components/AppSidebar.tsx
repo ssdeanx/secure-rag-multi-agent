@@ -77,10 +77,10 @@ export function AppSidebar({
   };
 
   return (
-    <Sidebar collapsible="icon">
+    <Sidebar collapsible="icon" className="max-w-screen-2xl mx-auto">
       <SidebarHeader>
-        <div className="flex items-center space-x-2 px-2">
-          <Shield className="h-6 w-6 text-primary" />
+        <div className="flex-center space-x-2 px-2">
+          <Shield className="h-4 w-4 text-primary size-fit" />
           <div className="flex flex-col">
             <span className="text-sm font-bold bg-gradient-to-r from-primary to-primary/60 bg-clip-text text-transparent">
               Governed RAG
@@ -122,7 +122,7 @@ export function AppSidebar({
       </SidebarContent>
 
       <SidebarFooter>
-        {currentRole && currentRole.length > 0 && (
+        {currentRole && currentRole.trim().length > 0 && (
           <div className="mb-3 p-2 rounded-md bg-muted">
             <div className="flex items-center space-x-2">
               <User className="h-4 w-4 text-muted-foreground" />

@@ -79,9 +79,9 @@ export default function AuthPanel({ onAuth }: AuthPanelProps) {
   }, [onAuth]);
 
   return (
-    <Card>
+    <Card className="max-w-screen-2xl mx-auto">
       <CardHeader>
-        <CardTitle className="text-3xl bg-gradient-to-r from-primary to-primary/60 bg-clip-text text-transparent">
+        <CardTitle className="text-3xl animated-gradient bg-clip-text text-transparent">
           Select Demo Role
         </CardTitle>
         <CardDescription className="text-lg">
@@ -90,13 +90,13 @@ export default function AuthPanel({ onAuth }: AuthPanelProps) {
       </CardHeader>
       <CardContent>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div className="responsive-grid">
           {DEMO_ROLES.map((role) => (
             <Card
               key={role.id}
-              className={`cursor-pointer transition-all duration-300 hover:scale-[1.02] hover:shadow-xl ${
+              className={`cursor-pointer transition-all duration-300 hover:scale-[1.02] hover:shadow-xl hover-lift ${
                 selectedRole?.id === role.id
-                  ? 'border-primary bg-primary/5 shadow-lg'
+                  ? 'border-primary bg-primary/5 shadow-lg neon-glow-pink'
                   : 'hover:border-border/80 hover:bg-accent/50'
               }`}
               onClick={() => setSelectedRole(role)}
@@ -137,7 +137,7 @@ export default function AuthPanel({ onAuth }: AuthPanelProps) {
                     ${role.classification === 'confidential' ? 'security-badge-confidential' :
                       role.classification === 'internal' ? 'security-badge-internal' :
                       'security-badge-public'}`}>
-                    <Lock className="h-3 w-3 mr-1.5" />
+                    <Lock className="h-4 w-4 mr-1.5" />
                     Max: {role.classification}
                   </span>
                 </div>
@@ -147,12 +147,12 @@ export default function AuthPanel({ onAuth }: AuthPanelProps) {
         </div>
 
         {selectedRole && (
-          <div className="mt-8 flex justify-center">
+          <div className="mt-8 flex-center">
             <Button
               onClick={() => generateJWT(selectedRole)}
               disabled={loading}
               size="lg"
-              className="px-10 py-4 font-bold text-lg hover:scale-105 transition-all duration-300"
+              className=" font-bold text-lg hover:scale-105 transition-all duration-300 hover-lift hover-glow"
             >
               {loading ? (
                 <>

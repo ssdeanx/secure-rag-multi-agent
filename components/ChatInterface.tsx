@@ -102,7 +102,7 @@ export default function ChatInterface({ jwt, role }: ChatInterfaceProps) {
               try {
                 const data = JSON.parse(line.slice(6));
 
-                if (typeof data.content === 'string' && data.content) {
+                if (typeof data.content === 'string' && Boolean(data.content)) {
                   assistantMessage.content += data.content;
                   setMessages(prev => prev.map(msg =>
                     msg.id === assistantMessage.id
@@ -155,9 +155,9 @@ export default function ChatInterface({ jwt, role }: ChatInterfaceProps) {
   ], []);
 
   return (
-    <Card className="overflow-hidden flex flex-col h-[600px] lg:h-[700px]">
+    <Card className="overflow-hidden flex flex-col h-[600px] lg:h-[700px] max-w-screen-2xl mx-auto">
       {/* Messages Container with Container Query Support */}
-      <div className="flex-1 overflow-y-auto p-6 space-y-6 @container">
+      <div className="flex-1 overflow-y-auto p-6 spacing-fluid-md chat-container chat-messages">
         {messages.map((message: Message) => (
           <div
             key={message.id}
@@ -165,7 +165,7 @@ export default function ChatInterface({ jwt, role }: ChatInterfaceProps) {
               message.role === 'user' ? 'justify-end' : 'justify-start'
             }`}
           >
-            <div className={`group relative max-w-[85%] @lg:max-w-[75%] @xl:max-w-[70%] transition-all duration-300 ${
+            <div className={`group relative max-w-[85%] message-container message-bubble transition-all duration-300 ${
               message.role === 'user'
                 ? 'bg-primary/10 border border-primary/20 hover:border-primary/30'
                 : message.role === 'system'
@@ -186,7 +186,7 @@ export default function ChatInterface({ jwt, role }: ChatInterfaceProps) {
                         'security-badge-public hover:shadow-green-500/20'
                       }`}
                     >
-                      <FileText className="h-3 w-3 mr-1.5" />
+                      <FileText className="h-4 w-4 mr-1.5" />
                       <span className="break-all">{ctx.docId}</span>
                     </span>
                   ))}
@@ -194,7 +194,7 @@ export default function ChatInterface({ jwt, role }: ChatInterfaceProps) {
               )}
 
               {/* Enhanced Message Content with Better Typography */}
-              <div className="prose prose-sm max-w-none dark:prose-invert
+              <div className="prose prose-sm max-w-none dark:prose-invert message-content
                             prose-headings:text-foreground prose-p:text-foreground prose-p:leading-relaxed
                             prose-strong:text-foreground prose-code:text-primary prose-code:bg-muted
                             prose-code:px-1.5 prose-code:py-0.5 prose-code:rounded prose-code:text-sm
@@ -204,7 +204,7 @@ export default function ChatInterface({ jwt, role }: ChatInterfaceProps) {
                   components={{
                     p: ({ children }) => <p className="mb-3 last:mb-0 break-words">{children}</p>,
                     code: ({ children, className }) => {
-                      const isInline = !className || className.length === 0;
+                      const isInline = !className || (className?.length === 0);
                       return isInline ? (
                         <code className="break-all">{children}</code>
                       ) : (
@@ -221,7 +221,7 @@ export default function ChatInterface({ jwt, role }: ChatInterfaceProps) {
               {message.citations && message.citations.length > 0 && (
                 <div className="mt-4 pt-4 border-t border-border">
                   <p className="text-xs font-medium text-muted-foreground mb-3 flex items-center">
-                    <Shield className="h-3 w-3 mr-1.5" />
+                    <Shield className="h-4 w-4 mr-1.5" />
                     Verified Sources:
                   </p>
                   <div className="space-y-2">
@@ -250,7 +250,7 @@ export default function ChatInterface({ jwt, role }: ChatInterfaceProps) {
         {loading && (
           <div className="flex justify-start animate-in slide-in-from-bottom-4 duration-300">
             <div className="bg-muted border border-border rounded-xl p-5 flex items-center space-x-3">
-              <Loader2 className="h-5 w-5 animate-spin text-primary" />
+              <Loader2 className="h-4 w-4 animate-spin text-primary" />
               <span className="text-sm text-muted-foreground">Thinking...</span>
               <div className="flex space-x-1">
                 <div className="w-2 h-2 bg-primary rounded-full animate-bounce [animation-delay:0ms]"></div>
@@ -293,7 +293,7 @@ export default function ChatInterface({ jwt, role }: ChatInterfaceProps) {
 
       {/* Enhanced Input Section */}
       <div className="border-t border-border p-6 bg-muted/30">
-        <div className="flex space-x-4">
+        <div className="flex justify-space-around">
           <Input
             value={input}
             onChange={(e) => setInput(e.target.value)}
@@ -306,12 +306,12 @@ export default function ChatInterface({ jwt, role }: ChatInterfaceProps) {
             onClick={sendMessage}
             disabled={loading || !input.trim()}
             size="lg"
-            className="px-8 py-4 hover:scale-105 transition-all duration-300"
+            className=" hover:scale-105 transition-all duration-300"
           >
             {loading ? (
               <Loader2 className="h-6 w-6 animate-spin" />
             ) : (
-              <Send className="h-6 w-6 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform duration-300" />
+              <Send className="h-4 w-4 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform duration-300" />
             )}
           </Button>
         </div>
