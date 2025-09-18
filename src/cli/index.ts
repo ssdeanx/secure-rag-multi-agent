@@ -8,14 +8,14 @@ dotenv.config();
 
 async function indexDocuments() {
   logger.info('🚀 Starting document indexing for Governed RAG');
-  
+
   const sampleDocs: any[] = [
     {
       filePath: path.join(__dirname, '../../corpus/finance-policy.md'),
       docId: 'finance-policy-001',
       classification: 'internal' as const,
       allowedRoles: ['finance.viewer', 'finance.admin', 'admin'],
-      tenant: process.env.TENANT || 'acme',
+      tenant: process.env.TENANT ?? 'acme',
       source: 'Finance Department Policy Manual'
     },
     {
@@ -23,7 +23,7 @@ async function indexDocuments() {
       docId: 'eng-handbook-001',
       classification: 'public' as const,
       allowedRoles: ['engineering.viewer', 'engineering.admin', 'admin'],
-      tenant: process.env.TENANT || 'acme',
+      tenant: process.env.TENANT ?? 'acme',
       source: 'Engineering Team Handbook'
     },
     {
@@ -31,7 +31,7 @@ async function indexDocuments() {
       docId: 'hr-conf-001',
       classification: 'confidential' as const,
       allowedRoles: ['hr.admin', 'admin'],
-      tenant: process.env.TENANT || 'acme',
+      tenant: process.env.TENANT ?? 'acme',
       source: 'HR Confidential Documents'
     }
   ];
@@ -64,9 +64,8 @@ async function indexDocuments() {
 
     logger.info('📄 Document Details:');
     logWorkflowEnd('governed-rag-index', result as any, Date.now() - startTime);
-    
     // Log document results
-    const resultData = (result as any).result || result;
+    const resultData = (result as any).result ?? result;
     if (resultData.documents) {
       resultData.documents.forEach((doc: any) => {
         if (doc.status === 'success') {
@@ -84,7 +83,7 @@ async function indexDocuments() {
 
 async function queryRAG(jwt: string, question: string) {
   logger.info('🔍 Querying Governed RAG');
-  
+
   try {
     const startTime = Date.now();
     logWorkflowStart('governed-rag-answer', { jwt, question });
@@ -96,16 +95,16 @@ async function queryRAG(jwt: string, question: string) {
     });
 
     if (result.status === 'success') {
-      const resultData = (result as any).result || result;
+      const resultData = (result as any).result ?? result;
       logWorkflowEnd('governed-rag-answer', resultData, Date.now() - startTime);
-      
+
       logger.info('✅ Answer generated successfully!');
       logger.info(`📝 Answer: ${resultData.answer}`);
-      
+
       if (resultData.citations?.length > 0) {
         logger.info('📚 Citations:');
         resultData.citations.forEach((citation: any) => {
-          logger.info(`- ${citation.docId}${citation.source ? ` (${citation.source})` : ''}`);
+          logger.info(`- ${citation.docId}${(citation.source) ? ` (${citation.source})` : ''}`);
         });
       }
     } else {
@@ -128,23 +127,20 @@ async function main() {
     case 'index':
       await indexDocuments();
       break;
-      
+
     case 'query':
-      const jwt = args[1];
+      { const jwt = args[1];
       const question = args.slice(2).join(' ');
-      
+
       if (!jwt || !question) {
         logger.error('❌ Usage: npm run cli query <jwt> <question>');
         return;
       }
-      
       await queryRAG(jwt, question);
-      break;
-      
+      break; }
     case 'demo':
       logger.info('🎮 Interactive Demo Mode\nThis would launch an interactive demo (to be implemented)');
       break;
-      
     default:
       logger.error(`❌ Unknown command: ${command}\nRun "npm run cli help" for usage information`);
   }

@@ -14,7 +14,6 @@ export default function Home() {
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-950 via-gray-900 to-gray-950">
       <div className="absolute inset-0 bg-[url('/grid.svg')] bg-center [mask-image:linear-gradient(180deg,white,rgba(255,255,255,0))]"></div>
-      
       <div className="relative z-10">
         <header className="border-b border-gray-800 glass-effect">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
@@ -28,7 +27,6 @@ export default function Home() {
                   <p className="text-sm text-gray-400">Secure AI with Mastra</p>
                 </div>
               </div>
-              
               <SecurityIndicator role={currentRole} />
             </div>
           </div>
@@ -37,7 +35,6 @@ export default function Home() {
         <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
           <div className="space-y-8">
             <IndexingPanel jwt={jwt || 'anonymous'} />
-            
             {!jwt ? (
               <div className="space-y-8">
                 <div className="text-center py-12">
@@ -113,7 +110,6 @@ export default function Home() {
                     </button>
                   </div>
                 </div>
-                
                 <ChatInterface jwt={jwt} role={currentRole} />
               </div>
             )}

@@ -89,22 +89,41 @@
   transform: translateY(0);
 }
 
-.scroll-fade-in {
-  animation: scroll-fade-in linear both;
-  animation-timeline: view();
-  animation-range: entry 0% cover 30%;
+@supports (animation-timeline: view()) {
+  .scroll-fade-in {
+    animation: scroll-fade-in linear both;
+    animation-timeline: view();
+    animation-range: entry 0% cover 30%;
+  }
+
+  .scroll-slide-up {
+    animation: scroll-slide-up linear both;
+    animation-timeline: view();
+    animation-range: entry 0% cover 40%;
+  }
+
+  .scroll-scale-in {
+    animation: scroll-scale-in linear both;
+    animation-timeline: view();
+    animation-range: entry 0% cover 25%;
+  }
 }
 
-.scroll-slide-up {
-  animation: scroll-slide-up linear both;
-  animation-timeline: view();
-  animation-range: entry 0% cover 40%;
-}
+/* Fallback for browsers without animation-timeline:
+   Use the existing .in-view class (toggle via IntersectionObserver or other JS)
+   to trigger the same keyframe animations with a reasonable duration/easing. */
+@supports not (animation-timeline: view()) {
+  .scroll-fade-in.in-view {
+    animation: scroll-fade-in 600ms ease-out both;
+  }
 
-.scroll-scale-in {
-  animation: scroll-scale-in linear both;
-  animation-timeline: view();
-  animation-range: entry 0% cover 25%;
+  .scroll-slide-up.in-view {
+    animation: scroll-slide-up 600ms ease-out both;
+  }
+
+  .scroll-scale-in.in-view {
+    animation: scroll-scale-in 600ms ease-out both;
+  }
 }
 
 /* Smooth scrolling behavior */
@@ -158,6 +177,8 @@ html {
 
 .error-state {
   border-color: var(--color-destructive);
+  /* Fallback for browsers that do not support color-mix (e.g. Chrome < 111) */
+  background-color: rgba(239, 68, 68, 0.05);
   background-color: color-mix(in srgb, var(--color-destructive) 5%, transparent);
 }
 
@@ -358,8 +379,11 @@ html {
   }
 
   .security-badge-public {
+    /* Fallback for older browsers (e.g. Chrome < 111) */
+    background-color: rgba(16,185,129,0.1);
     background-color: color-mix(in srgb, #10b981 10%, transparent);
     color: #4ade80;
+    border: 1px solid rgba(16,185,129,0.2);
     border: 1px solid color-mix(in srgb, #10b981 20%, transparent);
     border-radius: var(--radius);
     padding: 0.25rem 0.5rem;
@@ -368,8 +392,11 @@ html {
   }
 
   .security-badge-internal {
+    /* Fallback for older browsers (e.g. Chrome < 111) */
+    background-color: rgba(234,179,8,0.1);
     background-color: color-mix(in srgb, #eab308 10%, transparent);
     color: #facc15;
+    border: 1px solid rgba(234,179,8,0.2);
     border: 1px solid color-mix(in srgb, #eab308 20%, transparent);
     border-radius: var(--radius);
     padding: 0.25rem 0.5rem;
@@ -378,8 +405,11 @@ html {
   }
 
   .security-badge-confidential {
+    /* Fallback for older browsers (e.g. Chrome < 111) */
+    background-color: rgba(239,68,68,0.1);
     background-color: color-mix(in srgb, #ef4444 10%, transparent);
     color: #f87171;
+    border: 1px solid rgba(239,68,68,0.2);
     border: 1px solid color-mix(in srgb, #ef4444 20%, transparent);
     border-radius: var(--radius);
     padding: 0.25rem 0.5rem;
