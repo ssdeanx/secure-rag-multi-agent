@@ -7,7 +7,7 @@ All expense reports must be submitted within 30 days of the expense being incurr
 
 ### Approval Thresholds
 - Expenses under $500: Direct manager approval required
-- Expenses $500-$1000: Department head approval required  
+- Expenses $500-$1000: Department head approval required
 - Expenses over $1000: CFO approval required
 - Expenses over $5000: CEO approval required
 

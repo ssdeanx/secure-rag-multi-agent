@@ -3,10 +3,10 @@ import * as fs from 'fs';
 import * as path from 'path';
 import { FileTransport } from "@mastra/loggers/file";
 // Use __dirname directly for CommonJS
-const __dirname: string = path.resolve(path.dirname(''));
+//const __dirname: string = path.resolve(path.dirname(''));
 
 // Ensure logs directory exists
-const logsDir: string = path.join(__dirname, '/logs');
+const logsDir: string = path.join(__dirname, '../../../logs');
 if (!fs.existsSync(logsDir)) {
   fs.mkdirSync(logsDir, { recursive: true });
 }
@@ -14,13 +14,13 @@ if (!fs.existsSync(logsDir)) {
 export const logger: PinoLogger = new PinoLogger({
   name: 'workflow-logger',
   level: 'info',
-  transports: {
-      file: new FileTransport({ path: path.join(logsDir, 'mastra.log') })
-    }
+//  transports: {
+//      file: new FileTransport({ path: path.join(logsDir, '../../../logs/mastra.log') })
+//    }
 });
 
 // Create a simple file logger wrapper
-const logFilePath: string = path.join(logsDir, 'workflow.log');
+//const logFilePath: string = path.join(logsDir, '../../../logs/workflow.log');
 const logToFile = (message: string, data?: Record<string, unknown>) => {
   const timestamp = new Date().toISOString();
   const logEntry = {
@@ -28,7 +28,7 @@ const logToFile = (message: string, data?: Record<string, unknown>) => {
     message,
     ...data
   };
-  fs.appendFileSync(logFilePath, JSON.stringify(logEntry) + '\n');
+ // fs.appendFileSync(logFilePath, JSON.stringify(logEntry) + '\n');
 };
 
 export const logWorkflowStart = (workflowId: string, input: Record<string, unknown>) => {

@@ -3,7 +3,7 @@ import { Agent } from "@mastra/core";
 
 import { openAIModel } from "../config/openai";
 import { ragAnswerSchema } from "../schemas/agent-schemas";
-
+import { google } from "@ai-sdk/google";
 export const answererAgent = new Agent({
   id: "answerer",
   name: "answerer",
