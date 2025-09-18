@@ -258,6 +258,19 @@ html {
   container-name: message;
 }
 
+/* Enhanced animation utilities */
+.animate-in {
+  animation-fill-mode: both;
+}
+
+.slide-in-from-bottom-4 {
+  animation: slide-in-from-bottom-4 0.5s ease-out;
+}
+
+.fade-in-50 {
+  animation: fade-in-50 0.7s ease-out;
+}
+
 /* Container query responsive layouts */
 @container chat (min-width: 768px) {
   .chat-messages {
@@ -424,6 +437,26 @@ html {
   }
   100% {
     left: 100%;
+  }
+}
+
+@keyframes slide-in-from-bottom-4 {
+  from {
+    opacity: 0;
+    transform: translateY(1rem);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fade-in-50 {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
   }
 }
 

@@ -1,8 +1,10 @@
 'use client';
 
 import { SignJWT } from 'jose';
-import { Shield, Key, Lock } from 'lucide-react';
-import { useState, useCallback, Dispatch, SetStateAction } from 'react';
+import { Key, Lock } from 'lucide-react';
+import { useState, useCallback } from 'react';
+import { Button } from '@/components/ui/button';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 
 interface AuthPanelProps {
   onAuth: (jwt: string, role: string) => void;
@@ -69,115 +71,104 @@ export default function AuthPanel({ onAuth }: AuthPanelProps) {
         .sign(secret);
 
       onAuth(jwt, role.name);
-    } catch (error) {
+    } catch {
       // Just handle the error silently - no need to log in UI component
     } finally {
       setLoading(false);
     }
-  }, []);
+  }, [onAuth]);
 
   return (
-    <div className="glass-effect rounded-xl p-8 shadow-2xl shadow-black/20">
-      <div className="mb-8">
-        <h2 className="text-3xl font-bold mb-3 bg-gradient-to-r from-blue-400 to-purple-400 bg-clip-text text-transparent">
+    <Card>
+      <CardHeader>
+        <CardTitle className="text-3xl bg-gradient-to-r from-primary to-primary/60 bg-clip-text text-transparent">
           Select Demo Role
-        </h2>
-        <p className="text-gray-400 text-lg leading-relaxed">
+        </CardTitle>
+        <CardDescription className="text-lg">
           Choose a role to see how access control works in the Governed RAG system
-        </p>
-      </div>
+        </CardDescription>
+      </CardHeader>
+      <CardContent>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-        {DEMO_ROLES.map((role) => (
-          <button
-            key={role.id}
-            type="button"
-            onClick={() => setSelectedRole(role)}
-            className={`group relative p-8 rounded-xl border-2 transition-all duration-300 text-left overflow-hidden
-              hover:scale-[1.02] hover:shadow-xl hover:shadow-black/10 focus:outline-none focus:ring-2 focus:ring-blue-500/50
-              ${selectedRole?.id === role.id
-                ? 'border-blue-500 bg-gradient-to-br from-blue-500/10 to-purple-500/5 shadow-lg shadow-blue-500/20'
-                : 'border-gray-700/50 hover:border-gray-600 hover:bg-gradient-to-br hover:from-gray-800/30 hover:to-gray-900/20'
-            }`}
-          >
-            {/* Animated background gradient */}
-            <div className="absolute inset-0 bg-gradient-to-br from-transparent via-transparent to-gray-900/10 opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
-            <div className="relative z-10">
-              <div className="flex items-start justify-between mb-4">
-                <span className="text-4xl transform group-hover:scale-110 transition-transform duration-300">
-                  {role.icon}
-                </span>
-                {role.stepUp && (
-                  <span className="px-3 py-1.5 text-xs font-medium rounded-full bg-red-500/20 text-red-400 border border-red-500/30 animate-pulse">
-                    Step-Up Auth
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          {DEMO_ROLES.map((role) => (
+            <Card
+              key={role.id}
+              className={`cursor-pointer transition-all duration-300 hover:scale-[1.02] hover:shadow-xl ${
+                selectedRole?.id === role.id
+                  ? 'border-primary bg-primary/5 shadow-lg'
+                  : 'hover:border-border/80 hover:bg-accent/50'
+              }`}
+              onClick={() => setSelectedRole(role)}
+            >
+              <CardContent>
+                <div className="flex items-start justify-between mb-4">
+                  <span className="text-4xl transform group-hover:scale-110 transition-transform duration-300">
+                    {role.icon}
                   </span>
-                )}
-              </div>
+                  {role.stepUp === true && (
+                    <span className="px-3 py-1.5 text-xs font-medium rounded-full bg-destructive/20 text-destructive border border-destructive/30 animate-pulse">
+                      Step-Up Auth
+                    </span>
+                  )}
+                </div>
 
-              <h3 className="font-bold text-xl mb-2 group-hover:text-blue-300 transition-colors duration-300">
-                {role.name}
-              </h3>
-              <p className="text-sm text-gray-400 mb-4 leading-relaxed">
-                {role.description}
-              </p>
+                <CardTitle className="text-xl mb-2 group-hover:text-primary transition-colors duration-300">
+                  {role.name}
+                </CardTitle>
+                <CardDescription className="mb-4">
+                  {role.description}
+                </CardDescription>
 
-              <div className="flex flex-wrap gap-2 mb-4">
-                {role.roles.map((r) => (
-                  <span
-                    key={r}
-                    className="px-3 py-1.5 text-xs font-medium rounded-full bg-gray-700/50 text-gray-300 border border-gray-600/50
-                            group-hover:bg-gray-600/50 group-hover:text-gray-200 transition-all duration-300"
-                  >
-                    {r}
+                <div className="flex flex-wrap gap-2 mb-4">
+                  {role.roles.map((r) => (
+                    <span
+                      key={r}
+                      className="px-3 py-1.5 text-xs font-medium rounded-full bg-secondary text-secondary-foreground border border-border
+                              group-hover:bg-accent group-hover:text-accent-foreground transition-all duration-300"
+                    >
+                      {r}
+                    </span>
+                  ))}
+                </div>
+
+                <div className="flex items-center">
+                  <span className={`inline-flex items-center text-xs font-medium px-3 py-1.5 rounded-full border transition-all duration-300
+                    ${role.classification === 'confidential' ? 'security-badge-confidential' :
+                      role.classification === 'internal' ? 'security-badge-internal' :
+                      'security-badge-public'}`}>
+                    <Lock className="h-3 w-3 mr-1.5" />
+                    Max: {role.classification}
                   </span>
-                ))}
-              </div>
+                </div>
+              </CardContent>
+            </Card>
+          ))}
+        </div>
 
-              <div className="flex items-center">
-                <span className={`inline-flex items-center text-xs font-medium px-3 py-1.5 rounded-full border transition-all duration-300
-                  ${role.classification === 'confidential' ? 'security-badge-confidential' :
-                    role.classification === 'internal' ? 'security-badge-internal' :
-                    'security-badge-public'}`}>
-                  <Lock className="h-3 w-3 mr-1.5" />
-                  Max: {role.classification}
-                </span>
-              </div>
-            </div>
-          </button>
-        ))}
-      </div>
-
-      {selectedRole && (
-        <div className="mt-8 flex justify-center">
-          <button
-            type="button"
-            onClick={() => generateJWT(selectedRole)}
-            disabled={loading}
-            className="group relative px-10 py-4 bg-gradient-to-r from-blue-500 to-purple-600 rounded-xl font-bold text-lg
-                     hover:from-blue-600 hover:to-purple-700 hover:scale-105 hover:shadow-xl hover:shadow-blue-500/25
-                     focus:outline-none focus:ring-2 focus:ring-blue-500/50 focus:ring-offset-2 focus:ring-offset-gray-900
-                     transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:scale-100
-                     flex items-center space-x-3 overflow-hidden"
-          >
-            {/* Animated background shimmer */}
-            <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-1000" />
-
-            <div className="relative z-10 flex items-center space-x-3">
+        {selectedRole && (
+          <div className="mt-8 flex justify-center">
+            <Button
+              onClick={() => generateJWT(selectedRole)}
+              disabled={loading}
+              size="lg"
+              className="px-10 py-4 font-bold text-lg hover:scale-105 transition-all duration-300"
+            >
               {loading ? (
                 <>
-                  <div className="animate-spin rounded-full h-6 w-6 border-2 border-white border-t-transparent"></div>
+                  <div className="animate-spin rounded-full h-6 w-6 border-2 border-white border-t-transparent mr-3"></div>
                   <span>Generating...</span>
                 </>
               ) : (
                 <>
-                  <Key className="h-6 w-6 group-hover:rotate-12 transition-transform duration-300" />
+                  <Key className="h-6 w-6 mr-3 group-hover:rotate-12 transition-transform duration-300" />
                   <span>Authenticate as {selectedRole.name}</span>
                 </>
               )}
-            </div>
-          </button>
-        </div>
-      )}
-    </div>
+            </Button>
+          </div>
+        )}
+      </CardContent>
+    </Card>
   );
 }

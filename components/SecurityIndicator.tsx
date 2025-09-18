@@ -8,15 +8,15 @@ interface SecurityIndicatorProps {
 }
 
 export default function SecurityIndicator({ role }: SecurityIndicatorProps) {
-  if (!role) {
+  if (role === null) {
     return (
-      <div className="group flex items-center space-x-3 px-5 py-3 rounded-xl bg-gradient-to-r from-gray-800/60 to-gray-900/40
-                    border border-gray-700/50 hover:border-gray-600/50 transition-all duration-300 hover:shadow-lg hover:shadow-black/10">
+      <div className="group flex items-center space-x-3 px-5 py-3 rounded-xl bg-muted
+                    border border-border hover:border-border/80 transition-all duration-300 hover:shadow-lg">
         <div className="relative">
-          <Lock className="h-5 w-5 text-gray-500 group-hover:text-gray-400 transition-colors duration-300" />
-          <div className="absolute -top-1 -right-1 w-2 h-2 bg-red-500 rounded-full animate-pulse" />
+          <Lock className="h-5 w-5 text-muted-foreground group-hover:text-foreground transition-colors duration-300" />
+          <div className="absolute -top-1 -right-1 w-2 h-2 bg-destructive rounded-full animate-pulse" />
         </div>
-        <span className="text-sm font-medium text-gray-500 group-hover:text-gray-400 transition-colors duration-300">
+        <span className="text-sm font-medium text-muted-foreground group-hover:text-foreground transition-colors duration-300">
           Not Authenticated
         </span>
       </div>
@@ -24,8 +24,12 @@ export default function SecurityIndicator({ role }: SecurityIndicatorProps) {
   }
 
   const getSecurityLevel = useCallback((): "internal" | "confidential" | "internal-plus" => {
-    if (role.includes('HR Admin')) {return 'confidential';}
-    if (role.includes('Admin') || role.includes('Executive')) {return 'internal-plus';}
+    if (role?.includes('HR Admin')) {
+      return 'confidential';
+    }
+    if (role && (role.includes('Admin') || role.includes('Executive'))) {
+      return 'internal-plus';
+    }
     return 'internal';
   }, [role]);
 
@@ -55,7 +59,17 @@ export default function SecurityIndicator({ role }: SecurityIndicatorProps) {
           shadowClass: 'hover:shadow-purple-500/20',
           pulseClass: 'bg-purple-500'
         };
-      case "internal": { throw new Error('Not implemented yet: "internal" case') }
+      case 'internal':
+        return {
+          label: 'Internal Access',
+          description: 'Department-level document access',
+          bgClass: 'from-yellow-500/15 to-yellow-600/10',
+          borderClass: 'border-yellow-500/40 hover:border-yellow-400/60',
+          textClass: 'text-yellow-400',
+          iconClass: 'text-yellow-400',
+          shadowClass: 'hover:shadow-yellow-500/20',
+          pulseClass: 'bg-yellow-500'
+        };
       default:
         return {
           label: 'Internal Access',
@@ -76,19 +90,19 @@ export default function SecurityIndicator({ role }: SecurityIndicatorProps) {
     <div className="flex flex-col sm:flex-row sm:items-center space-y-3 sm:space-y-0 sm:space-x-6">
       {/* Enhanced Access Level Indicator */}
       <div className="flex items-center space-x-3">
-        <span className="text-sm font-medium text-gray-400">Access Level:</span>
+        <span className="text-sm font-medium text-muted-foreground">Access Level:</span>
         <div className="flex space-x-2">
           {/* Public Level */}
           <div className="relative group/level">
             <div className={`h-3 w-10 rounded-full transition-all duration-500 ${
               level === 'confidential' || level === 'internal-plus' || level === 'internal'
-                ? 'bg-green-500 shadow-lg shadow-green-500/30' : 'bg-gray-700'
+                ? 'bg-green-500 shadow-lg shadow-green-500/30' : 'bg-muted'
             }`} />
             {(level === 'confidential' || level === 'internal-plus' || level === 'internal') && (
               <div className="absolute inset-0 bg-green-400 rounded-full animate-pulse opacity-30" />
             )}
             <div className="absolute -bottom-6 left-1/2 transform -translate-x-1/2 opacity-0 group-hover/level:opacity-100
-                          transition-opacity duration-300 text-xs text-gray-400 whitespace-nowrap">
+                          transition-opacity duration-300 text-xs text-muted-foreground whitespace-nowrap">
               Public
             </div>
           </div>
@@ -97,13 +111,13 @@ export default function SecurityIndicator({ role }: SecurityIndicatorProps) {
           <div className="relative group/level">
             <div className={`h-3 w-10 rounded-full transition-all duration-500 ${
               level === 'confidential' || level === 'internal-plus'
-                ? 'bg-yellow-500 shadow-lg shadow-yellow-500/30' : 'bg-gray-700'
+                ? 'bg-yellow-500 shadow-lg shadow-yellow-500/30' : 'bg-muted'
             }`} />
             {(level === 'confidential' || level === 'internal-plus') && (
               <div className="absolute inset-0 bg-yellow-400 rounded-full animate-pulse opacity-30" />
             )}
             <div className="absolute -bottom-6 left-1/2 transform -translate-x-1/2 opacity-0 group-hover/level:opacity-100
-                          transition-opacity duration-300 text-xs text-gray-400 whitespace-nowrap">
+                          transition-opacity duration-300 text-xs text-muted-foreground whitespace-nowrap">
               Internal
             </div>
           </div>
@@ -112,13 +126,13 @@ export default function SecurityIndicator({ role }: SecurityIndicatorProps) {
           <div className="relative group/level">
             <div className={`h-3 w-10 rounded-full transition-all duration-500 ${
               level === 'confidential'
-                ? 'bg-red-500 shadow-lg shadow-red-500/30' : 'bg-gray-700'
+                ? 'bg-red-500 shadow-lg shadow-red-500/30' : 'bg-muted'
             }`} />
             {level === 'confidential' && (
               <div className="absolute inset-0 bg-red-400 rounded-full animate-pulse opacity-30" />
             )}
             <div className="absolute -bottom-6 left-1/2 transform -translate-x-1/2 opacity-0 group-hover/level:opacity-100
-                          transition-opacity duration-300 text-xs text-gray-400 whitespace-nowrap">
+                          transition-opacity duration-300 text-xs text-muted-foreground whitespace-nowrap">
               Confidential
             </div>
           </div>
@@ -152,7 +166,7 @@ export default function SecurityIndicator({ role }: SecurityIndicatorProps) {
 
         {/* Role indicator */}
         <div className="ml-auto">
-          <span className="text-xs font-mono text-gray-500 bg-gray-800/50 px-2 py-1 rounded-md">
+          <span className="text-xs font-mono text-muted-foreground bg-muted px-2 py-1 rounded-md">
             {role}
           </span>
         </div>

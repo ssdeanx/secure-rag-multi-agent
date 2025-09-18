@@ -1,7 +1,8 @@
 import { mastra } from '@/src/mastra';
 import fs from 'fs';
 import path from 'path';
-import { NextRequest, NextResponse } from 'next/server';
+import type { NextRequest} from 'next/server';
+import { NextResponse } from 'next/server';
 import { logger } from '@/src/mastra/config/logger';
 
 const STATUS_VALUE = 500;

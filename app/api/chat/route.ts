@@ -1,6 +1,7 @@
 import { mastra } from '@/src/mastra';
 
-import { NextRequest, NextResponse } from 'next/server';
+import type { NextRequest} from 'next/server';
+import { NextResponse } from 'next/server';
 
 // Configure timeout config
 const STATUS_VALUE = 400;
