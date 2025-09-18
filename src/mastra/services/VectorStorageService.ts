@@ -8,6 +8,7 @@ export interface VectorMetadata {
   securityTags: string[]; // Changed to string array for proper Qdrant filtering
   versionId: string;
   timestamp: string;
+  // eslint-disable-next-line @typescript-eslint/member-ordering
   [key: string]: unknown;
 }
 

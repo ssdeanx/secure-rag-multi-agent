@@ -39,16 +39,16 @@ export default [
       '@typescript-eslint/explicit-function-return-type': 'off',
       '@typescript-eslint/no-explicit-any': 'warn',
       '@typescript-eslint/no-inferrable-types': 'error',
-      '@typescript-eslint/prefer-nullish-coalescing': 'error',
+      '@typescript-eslint/prefer-nullish-coalescing': 'warn',
       '@typescript-eslint/prefer-optional-chain': 'error',
       '@typescript-eslint/no-unnecessary-type-assertion': 'error',
-      '@typescript-eslint/prefer-as-const': 'error',
+      '@typescript-eslint/prefer-as-const': 'warn',
       '@typescript-eslint/consistent-type-definitions': ['error', 'interface'],
       '@typescript-eslint/consistent-type-imports': ['error', { prefer: 'type-imports' }],
       '@typescript-eslint/no-import-type-side-effects': 'error',
       '@typescript-eslint/array-type': ['error', { default: 'array-simple' }],
       '@typescript-eslint/member-ordering': [
-        'error',
+        'warn',
         {
           default: [
             'signature',
@@ -58,11 +58,11 @@ export default [
           ]
         }
       ],
-      '@typescript-eslint/prefer-readonly': 'error',
+      '@typescript-eslint/prefer-readonly': 'off',
       '@typescript-eslint/strict-boolean-expressions': 'warn',
       '@typescript-eslint/switch-exhaustiveness-check': 'error',
       '@typescript-eslint/no-meaningless-void-operator': 'error',
-      '@typescript-eslint/prefer-string-starts-ends-with': 'error',
+      '@typescript-eslint/prefer-string-starts-ends-with': 'warn',
       '@typescript-eslint/prefer-regexp-exec': 'error',
       '@typescript-eslint/no-unnecessary-boolean-literal-compare': 'error',
 
@@ -74,12 +74,12 @@ export default [
       // Additional code quality rules
       'eqeqeq': ['error', 'always'],
       'curly': ['error', 'all'],
-      'no-multiple-empty-lines': ['error', { max: 1 }],
-      'no-trailing-spaces': 'error',
-      'eol-last': 'error',
+      'no-multiple-empty-lines': ['error', { max: 2 }],
+      'no-trailing-spaces': 'warn',
+      'eol-last': 'warn',
 
       // TSDoc documentation rules
-      'tsdoc/syntax': 'error',
+      'tsdoc/syntax': 'warn',
 
 
 

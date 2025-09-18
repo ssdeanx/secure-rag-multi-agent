@@ -10,7 +10,7 @@ interface TokenClaims {
 
 export async function generateDemoToken(claims: TokenClaims): Promise<string> {
   const secret: Uint8Array = new TextEncoder().encode(
-    process.env.JWT_SECRET || process.env.NEXT_PUBLIC_JWT_SECRET || 'dev-secret'
+    (process.env.JWT_SECRET ?? process.env.NEXT_PUBLIC_JWT_SECRET) ?? 'dev-secret'
   );
 
   const jwt: string = await new SignJWT({
@@ -30,20 +30,17 @@ export const DEMO_TOKENS = {
     roles: ['finance.viewer'],
     tenant: 'acme',
   }),
-  
   engineering: async () => generateDemoToken({
     sub: 'eng.admin@acme.com',
     roles: ['engineering.admin'],
     tenant: 'acme',
   }),
-  
   hr: async () => generateDemoToken({
     sub: 'hr.admin@acme.com',
     roles: ['hr.admin'],
     tenant: 'acme',
     stepUp: true,
   }),
-  
   executive: async () => generateDemoToken({
     sub: 'executive@acme.com',
     roles: ['finance.admin', 'engineering.viewer', 'hr.viewer'],
