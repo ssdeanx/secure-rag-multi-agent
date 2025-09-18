@@ -68,7 +68,7 @@ export class VectorStorageService {
 
     // Create metadata for all vectors
     const metadata = this.createMetadata(chunks, docId, securityTags, versionId, timestamp);
-    
+
     // Create batches
     const batches = this.createStorageBatches(embeddings, metadata, batchSize);
 
@@ -81,7 +81,7 @@ export class VectorStorageService {
       try {
         await this.storeSingleBatch(batches[i], vectorStore, indexName, opts);
         successfulBatches++;
-        
+        logger.info(`Successfully stored batch ${i + 1} of ${batches.length}`);
         // Small delay between batches to prevent overwhelming the vector store
         if (i < batches.length - 1) {
           await new Promise((resolve) => setTimeout(resolve, 100));
@@ -122,18 +122,18 @@ export class VectorStorageService {
     try {
       const ids = chunks.map((_: unknown, i: number) => this.generateVectorId(docId, i));
       const metadata = this.createMetadata(chunks, docId, securityTags, versionId, timestamp);
-      
+
       logger.info(`Upserting ${embeddings.length} vectors for ${docId}`);
-      
+
       // Store vectors in vector database
       const result = await (vectorStore as any).upsert({
         indexName: process.env.QDRANT_COLLECTION || 'governed_rag',
         vectors: embeddings,
         metadata: metadata
       });
-      
+
       logger.info(`Successfully stored ${embeddings.length} chunks for document ${docId}`);
-      
+
       return {
         success: true,
         totalVectors: embeddings.length,
@@ -144,7 +144,7 @@ export class VectorStorageService {
     } catch (error) {
       const errorMsg: string = `Failed to store vectors: ${error instanceof Error ? error.message : String(error)}`;
       logger.error(errorMsg);
-      
+
       return {
         totalVectors: 0,
         batchesProcessed: 0,
@@ -199,10 +199,10 @@ export class VectorStorageService {
           metadata: batch.metadata
         });
         return; // Success
-        
+
       } catch (error) {
         lastError = error instanceof Error ? error : new Error(String(error));
-        
+
         if (attempt < maxRetries) {
           logger.warn(`Batch ${batch.batchIndex} attempt ${attempt} failed, retrying in ${retryDelay}ms: ${lastError.message}`);
           await new Promise((resolve) => setTimeout(resolve, retryDelay));
@@ -270,7 +270,7 @@ export class VectorStorageService {
     for (let i = 0; i < vectors.length; i += batchSize) {
       const batchVectors = vectors.slice(i, i + batchSize);
       const batchMetadata = metadata.slice(i, i + batchSize);
-      
+
       batches.push({
         vectors: batchVectors,
         metadata: batchMetadata,

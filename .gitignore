@@ -53,6 +53,9 @@ logs/
 *.db
 *.db-*
 
+*.specstory/
+*.specstory/**/*.md
+
 # Docker volumes
 qdrant_storage/
 redis_data/
@@ -67,3 +70,7 @@ dist
 *.vsix
 .claude
 CLAUDE.md
+.codacy/cli.sh
+.codacy/
+*.codacy/
+*./codacy/**/*.md

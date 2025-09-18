@@ -17,7 +17,7 @@ export interface ChunkingResult {
 }
 
 export class ChunkingService {
-  private memory: Memory;
+  private readonly memory: Memory;
 
   constructor() {
     // Initialize Memory instance for access to native chunking
@@ -32,11 +32,12 @@ const DEFAULT_4096 = 4096;
    * Chunk text using token-based chunking with word boundaries
    * Implements similar DEFAULT_4096c to Mastra's native chunking but simplified
    */
+
   async chunkTextTokenBased(text: string, options: ChunkingOptions = {}): Promise<ChunkingResult> {
     const { tokenSize = 4096 }: ChunkingOptions = options;
-    
+
     logger.info(`Chunking text using token-based strategy (${tokenSize} tokens per chunk)`);
-    
+
     // Use simplified word-boundary aware chunking
     // Approximate: 1 token ≈ 4 characters for English text
     const CHARS_PER_TOKEN = 4;
@@ -45,10 +46,10 @@ const DEFAULT_4096 = 4096;
     let currentChunk = '';
 
     const words = text.split(/\s+/);
-    
+
     for (const word of words) {
       const wordWithSpace = currentChunk ? ' ' + word : word;
-      
+
       if (currentChunk.length + wordWithSpace.length > charSize) {
         if (currentChunk) {
           chunks.push(currentChunk);
@@ -58,11 +59,11 @@ const DEFAULT_4096 = 4096;
         currentChunk += wordWithSpace;
       }
     }
-    
+
     if (currentChunk) {
       chunks.push(currentChunk);
     }
-    
+
     return {
       chunks,
       totalChunks: chunks.length,
@@ -74,38 +75,34 @@ const DEFAULT_4096 = 4096;
    * Legacy character-based chunking (without limits)
    * Kept for backward compatibility but without the 1000 chunk limit
    */
+
   chunkTextCharacterBased(text: string, options: ChunkingOptions = {}): ChunkingResult {
     const { maxChunkSize = 1000, overlap = 200 }: ChunkingOptions = options;
-    
+
     // Validate input parameters
     if (maxChunkSize <= 0 || overlap < 0 || overlap >= maxChunkSize) {
       throw new Error('Invalid chunking parameters');
     }
     logger.info(`Chunking text using character-based strategy (${maxChunkSize} chars per chunk, ${overlap} overlap)`);
-    
     const chunks: string[] = [];
     let start = 0;
-    
     // Remove the hardcoded limit - process entire document
     while (start < text.length) {
       const end = Math.min(start + maxChunkSize, text.length);
       const chunk = text.slice(start, end);
-      
       if (chunk.length > 0) {
         chunks.push(chunk);
       }
-      
       // Move start position forward
       start = end - overlap;
-      
       // Ensure progress is being made
       if (start <= 0 || (overlap === 0 && start <= end - maxChunkSize)) {
         start = end;
       }
-      
-      if (start >= text.length) break;
+      if (start >= text.length) {
+        break;
+      }
     }
-    
     return {
       chunks,
       totalChunks: chunks.length,
@@ -116,9 +113,9 @@ const DEFAULT_4096 = 4096;
   /**
    * Main chunking method - automatically selects best strategy
    */
+
   async chunkText(text: string, options: ChunkingOptions = {}): Promise<ChunkingResult> {
     const { strategy = 'token-based' }: ChunkingOptions = options;
-    
     if (strategy === 'token-based') {
       return this.chunkTextTokenBased(text, options);
     } else {
@@ -129,6 +126,7 @@ const DEFAULT_4096 = 4096;
   /**
    * Get optimal chunk sizTOTEXT_LENGTH_SIZESIZE_SIZEecommendations based on text length
    */
+
   getOptimalChunkSize(textLength: number): ChunkingOptions {
     if (textLength < 1000) {
       // Very small documents - tiny chunks to create multiple pieces
@@ -151,11 +149,12 @@ const DEFAULT_4096 = 4096;
   /**
    * Validate text before chunking
    */
+
   validateText(text: string): void {
     if (!text || text.trim().length === 0) {
       throw new Error('Text cannot be empty');
     }
-    
+
     if (text.length > 100000) {
       logger.info(`Processing large document: ${text.length} characters`);
     }

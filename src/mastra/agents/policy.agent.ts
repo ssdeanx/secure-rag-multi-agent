@@ -13,10 +13,10 @@ Rules:
 1. Extract roles from claims and create "role:<role>" tags for each
 2. If tenant is provided, add "tenant:<tenant>" tag
 3. Determine maximum classification based on roles and stepUp status:
-   - stepUp == true: Allow up to "confidential"
-   - HR roles (hr.admin, hr.viewer): Allow up to "confidential"
-   - Other sensitive roles without stepUp: Cap at "internal"
-   - No sensitive roles: Cap at "public"
+  - stepUp == true: Allow up to "confidential"
+  - HR roles (hr.admin, hr.viewer): Allow up to "confidential"
+  - Other sensitive roles without stepUp: Cap at "internal"
+  - No sensitive roles: Cap at "public"
 4. Never invent roles or tenants not present in the claims
 5. Always output valid JSON matching the schema
 

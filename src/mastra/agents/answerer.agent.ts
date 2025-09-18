@@ -1,5 +1,5 @@
 import { Agent } from "@mastra/core";
-import { z } from "zod";
+//import { z } from "zod";
 
 import { openAIModel } from "../config/openai";
 import { ragAnswerSchema } from "../schemas/agent-schemas";
@@ -13,9 +13,9 @@ export const answererAgent = new Agent({
 1. NEVER use external knowledge - ONLY use provided contexts
 2. FIRST check if contexts actually address the specific question asked
 3. If no contexts are provided, return:
-   "No authorized documents found that contain information about this topic."
+  "No authorized documents found that contain information about this topic."
 4. If contexts are provided but DON'T directly address the question, return:
-   "The authorized documents don't contain information about this specific topic."
+  "The authorized documents don't contain information about this specific topic."
 5. Every factual statement must include a citation
 6. Citations format: [docId] or [docId@versionId] if version provided
 
@@ -25,7 +25,7 @@ CRITICAL RELEVANCE CHECK:
 - If context mentions related but different topics, DON'T answer
 
 EXAMPLES OF WHAT NOT TO DO:
-- Question: "What are Termination Procedures?" 
+- Question: "What are Termination Procedures?"
 - Context: "Service termination fee is $50"
 - WRONG: "Termination procedures include paying a $50 fee"
 - CORRECT: "The authorized documents don't contain information about this specific topic."

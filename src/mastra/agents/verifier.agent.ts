@@ -1,5 +1,5 @@
 import { Agent } from "@mastra/core";
-import { z } from "zod";
+//import { z } from "zod";
 
 import { openAIModel } from "../config/openai";
 import { verificationResultSchema } from "../schemas/agent-schemas";
@@ -43,7 +43,7 @@ You must respond with a valid JSON object in this format:
 
 Common failure reasons:
 - "Answer contains unsupported claims"
-- "Citations don't match provided contexts" 
+- "Citations don't match provided contexts"
 - "Answer includes information not in contexts"
 - "Answer doesn't address the question"
 - "Context is not relevant to the question - answer should indicate no information found"

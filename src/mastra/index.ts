@@ -12,7 +12,7 @@ import { governedRagIndex } from "./workflows/governed-rag-index.workflow";
 
 export const mastra = new Mastra({
   storage: new LibSQLStore({
-    url: 'file:../mastra.db',
+    url: 'file:./mastra.db',
   }),
   logger,
   agents: {

@@ -32,12 +32,7 @@ export const openAIProvider = createOpenAI({
 });
 
 // Export the configured model with timeout settings
-export const openAIModel = openAIProvider(openAIConfig.model, {
-  // Additional model-specific configurations for reasoning
-  structuredOutputs: true,
-  reasoningEffort: 'medium', // Adjust based on your model's capabilities
-  // Other model-specific configurations...
-});
+export const openAIModel = openAIProvider(openAIConfig.model);
 
 // Separate OpenAI configuration for embeddings (uses real OpenAI API)
 export const openAIEmbeddingConfig: { apiKey: string; baseURL: string; } = {
