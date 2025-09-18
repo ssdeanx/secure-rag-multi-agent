@@ -41,7 +41,7 @@ export default function IndexingPanel({ jwt }: IndexingPanelProps) {
       const data = await response.json();
 
       if (!response.ok) {
-        throw new Error(data.error || 'Failed to start indexing');
+        throw new Error(data.error ?? 'Failed to start indexing');
       }
 
       setResult(data);
@@ -64,7 +64,7 @@ export default function IndexingPanel({ jwt }: IndexingPanelProps) {
             <p className="text-sm text-gray-400">Index corpus documents for RAG</p>
           </div>
         </div>
-        
+
         <button
           onClick={handleIndex}
           disabled={isIndexing}

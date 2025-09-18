@@ -1,79 +1,389 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import "tailwindcss";
 
-@layer base {
-  :root {
-    --background: 0 0% 100%;
-    --foreground: 222.2 84% 4.9%;
-    --card: 0 0% 100%;
-    --card-foreground: 222.2 84% 4.9%;
-    --popover: 0 0% 100%;
-    --popover-foreground: 222.2 84% 4.9%;
-    --primary: 222.2 47.4% 11.2%;
-    --primary-foreground: 210 40% 98%;
-    --secondary: 210 40% 96.1%;
-    --secondary-foreground: 222.2 47.4% 11.2%;
-    --muted: 210 40% 96.1%;
-    --muted-foreground: 215.4 16.3% 46.9%;
-    --accent: 210 40% 96.1%;
-    --accent-foreground: 222.2 47.4% 11.2%;
-    --destructive: 0 84.2% 60.2%;
-    --destructive-foreground: 210 40% 98%;
-    --border: 214.3 31.8% 91.4%;
-    --input: 214.3 31.8% 91.4%;
-    --ring: 222.2 84% 4.9%;
-    --radius: 0.5rem;
+:root {
+  /* Light mode colors (default) */
+  --color-background: hsl(0 0% 100%);
+  --color-foreground: hsl(222.2 84% 4.9%);
+  --color-card: hsl(0 0% 100%);
+  --color-card-foreground: hsl(222.2 84% 4.9%);
+  --color-popover: hsl(0 0% 100%);
+  --color-popover-foreground: hsl(222.2 84% 4.9%);
+  --color-primary: hsl(222.2 47.4% 11.2%);
+  --color-primary-foreground: hsl(210 40% 98%);
+  --color-secondary: hsl(210 40% 96.1%);
+  --color-secondary-foreground: hsl(222.2 47.4% 11.2%);
+  --color-muted: hsl(210 40% 96.1%);
+  --color-muted-foreground: hsl(215.4 16.3% 46.9%);
+  --color-accent: hsl(210 40% 96.1%);
+  --color-accent-foreground: hsl(222.2 47.4% 11.2%);
+  --color-destructive: hsl(0 84.2% 60.2%);
+  --color-destructive-foreground: hsl(210 40% 98%);
+  --color-border: hsl(214.3 31.8% 91.4%);
+  --color-input: hsl(214.3 31.8% 91.4%);
+  --color-ring: hsl(222.2 84% 4.9%);
+
+  /* Border radius */
+  --radius: 0.5rem;
+
+  /* Fluid spacing tokens using clamp() */
+  --spacing-xs: clamp(0.25rem, 0.5vw, 0.5rem);
+  --spacing-sm: clamp(0.5rem, 1vw, 1rem);
+  --spacing-md: clamp(1rem, 2vw, 2rem);
+  --spacing-lg: clamp(1.5rem, 3vw, 3rem);
+  --spacing-xl: clamp(2rem, 4vw, 4rem);
+
+  /* Fluid typography scale */
+  --font-size-xs: clamp(0.75rem, 0.8vw, 0.875rem);
+  --font-size-sm: clamp(0.875rem, 1vw, 1rem);
+  --font-size-base: clamp(1rem, 1.2vw, 1.125rem);
+  --font-size-lg: clamp(1.125rem, 1.5vw, 1.25rem);
+  --font-size-xl: clamp(1.25rem, 2vw, 1.5rem);
+  --font-size-2xl: clamp(1.5rem, 2.5vw, 2rem);
+
+  /* Animation duration tokens */
+  --duration-fast: 150ms;
+  --duration-normal: 300ms;
+  --duration-slow: 500ms;
+
+  /* Animation easing tokens */
+  --ease-in-out: cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.dark {
+  /* Dark mode colors */
+  --color-background: hsl(222.2 84% 4.9%);
+  --color-foreground: hsl(210 40% 98%);
+  --color-card: hsl(222.2 84% 4.9%);
+  --color-card-foreground: hsl(210 40% 98%);
+  --color-popover: hsl(222.2 84% 4.9%);
+  --color-popover-foreground: hsl(210 40% 98%);
+  --color-primary: hsl(210 40% 98%);
+  --color-primary-foreground: hsl(222.2 47.4% 11.2%);
+  --color-secondary: hsl(217.2 32.6% 17.5%);
+  --color-secondary-foreground: hsl(210 40% 98%);
+  --color-muted: hsl(217.2 32.6% 17.5%);
+  --color-muted-foreground: hsl(215 20.2% 65.1%);
+  --color-accent: hsl(217.2 32.6% 17.5%);
+  --color-accent-foreground: hsl(210 40% 98%);
+  --color-destructive: hsl(0 62.8% 30.6%);
+  --color-destructive-foreground: hsl(210 40% 98%);
+  --color-border: hsl(217.2 32.6% 17.5%);
+  --color-input: hsl(217.2 32.6% 17.5%);
+  --color-ring: hsl(212.7 26.8% 83.9%);
+}
+
+/* Simple custom utilities */
+.pulse-slow {
+  animation: pulse 3s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+}
+
+/* Scroll-driven animations */
+.scroll-reveal {
+  opacity: 0;
+  transform: translateY(2rem);
+  transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+}
+
+.scroll-reveal.in-view {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.scroll-fade-in {
+  animation: scroll-fade-in linear both;
+  animation-timeline: view();
+  animation-range: entry 0% cover 30%;
+}
+
+.scroll-slide-up {
+  animation: scroll-slide-up linear both;
+  animation-timeline: view();
+  animation-range: entry 0% cover 40%;
+}
+
+.scroll-scale-in {
+  animation: scroll-scale-in linear both;
+  animation-timeline: view();
+  animation-range: entry 0% cover 25%;
+}
+
+/* Smooth scrolling behavior */
+html {
+  scroll-behavior: smooth;
+}
+
+/* Focus and interaction enhancements */
+.focus-visible-ring {
+  outline: 2px solid transparent;
+  outline-offset: 2px;
+}
+
+.focus-visible-ring:focus-visible {
+  outline: 2px solid var(--color-ring);
+  outline-offset: 2px;
+}
+
+/* Advanced state management */
+.interactive-element:is(:hover, :focus-visible) {
+  transform: translateY(-1px);
+  transition: transform 0.2s ease-out;
+}
+
+.interactive-element:where(:not(:disabled)):hover {
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+/* Parent-child relationship styling */
+.card-container:has(.card:hover) .card:not(:hover) {
+  opacity: 0.7;
+  transition: opacity 0.3s ease;
+}
+
+/* Loading and error state variants */
+.loading-state {
+  position: relative;
+  overflow: hidden;
+}
+
+.loading-state::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+  animation: loading-shimmer 1.5s infinite;
+}
+
+.error-state {
+  border-color: var(--color-destructive);
+  background-color: color-mix(in srgb, var(--color-destructive) 5%, transparent);
+}
+
+/* Container queries for responsive components */
+.chat-container {
+  container-type: inline-size;
+  container-name: chat;
+}
+
+.message-container {
+  container-type: inline-size;
+  container-name: message;
+}
+
+/* Container query responsive layouts */
+@container chat (min-width: 768px) {
+  .chat-messages {
+    padding: 1.5rem;
+    gap: 1rem;
   }
-
-  .dark {
-    --background: 222.2 84% 4.9%;
-    --foreground: 210 40% 98%;
-    --card: 222.2 84% 4.9%;
-    --card-foreground: 210 40% 98%;
-    --popover: 222.2 84% 4.9%;
-    --popover-foreground: 210 40% 98%;
-    --primary: 210 40% 98%;
-    --primary-foreground: 222.2 47.4% 11.2%;
-    --secondary: 217.2 32.6% 17.5%;
-    --secondary-foreground: 210 40% 98%;
-    --muted: 217.2 32.6% 17.5%;
-    --muted-foreground: 215 20.2% 65.1%;
-    --accent: 217.2 32.6% 17.5%;
-    --accent-foreground: 210 40% 98%;
-    --destructive: 0 62.8% 30.6%;
-    --destructive-foreground: 210 40% 98%;
-    --border: 217.2 32.6% 17.5%;
-    --input: 217.2 32.6% 17.5%;
-    --ring: 212.7 26.8% 83.9%;
+  
+  .message-bubble {
+    max-width: 70%;
   }
 }
 
-@layer utilities {
-  .animate-pulse-slow {
-    animation: pulse 3s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+@container chat (min-width: 1024px) {
+  .chat-messages {
+    padding: 2rem;
+    gap: 1.5rem;
   }
   
+  .message-bubble {
+    max-width: 60%;
+  }
+}
+
+@container message (min-width: 400px) {
+  .message-content {
+    font-size: 1rem;
+    line-height: 1.6;
+  }
+}
+
+@container message (min-width: 600px) {
+  .message-content {
+    font-size: 1.125rem;
+    line-height: 1.7;
+  }
+}
+
+/* Responsive grid layouts with modern CSS */
+.responsive-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(300px, 100%), 1fr));
+  gap: clamp(1rem, 2vw, 2rem);
+}
+
+.fluid-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: clamp(0.75rem, 1.5vw, 1.5rem);
+  align-items: start;
+}
+
+/* Safe alignment utilities */
+.safe-center {
+  display: flex;
+  justify-content: safe center;
+  align-items: safe center;
+}
+
+.safe-start {
+  display: flex;
+  justify-content: safe flex-start;
+  align-items: safe flex-start;
+}
+
+/* Device-specific styling variants */
+@media (pointer: coarse) {
+  .touch-target {
+    min-height: 44px;
+    min-width: 44px;
+    padding: 0.75rem;
+  }
+  
+  .interactive-element:hover {
+    transform: none;
+  }
+}
+
+@media (pointer: fine) {
+  .touch-target {
+    min-height: 32px;
+    min-width: 32px;
+    padding: 0.5rem;
+  }
+}
+
+@media (any-pointer: coarse) {
+  .hover-effects {
+    transition: none;
+  }
+}
+
+@media (hover: hover) {
+  .hover-effects:hover {
+    background-color: var(--color-accent);
+    transform: translateY(-1px);
+  }
+}
+
+@media (hover: none) {
+  .hover-effects:active {
+    background-color: var(--color-accent);
+  }
+}
+
+/* Accessibility-focused interaction patterns */
+@media (prefers-reduced-motion: reduce) {
+  .scroll-reveal,
+  .scroll-fade-in,
+  .scroll-slide-up,
+  .scroll-scale-in,
+  .interactive-element,
+  .loading-state::after {
+    animation: none;
+    transition: none;
+  }
+  
+  html {
+    scroll-behavior: auto;
+  }
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not(.light) {
+    --color-background: hsl(222.2 84% 4.9%);
+    --color-foreground: hsl(210 40% 98%);
+  }
+}
+
+/* Keyframe animations */
+@keyframes scroll-fade-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes scroll-slide-up {
+  from {
+    opacity: 0;
+    transform: translateY(2rem);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes scroll-scale-in {
+  from {
+    opacity: 0;
+    transform: scale(0.8);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes loading-shimmer {
+  0% {
+    left: -100%;
+  }
+  100% {
+    left: 100%;
+  }
+}
+
+/* Custom component styles using @layer components */
+@layer components {
+  .glass-effect {
+    background: rgba(17, 24, 39, 0.7);
+    -webkit-backdrop-filter: blur(10px);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: var(--radius);
+  }
+
   .gradient-border {
     background: linear-gradient(to right, #3b82f6, #8b5cf6, #ec4899);
     padding: 1px;
-  }
-
-  .glass-effect {
-    background: rgba(17, 24, 39, 0.7);
-    backdrop-filter: blur(10px);
-    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: var(--radius);
   }
 
   .security-badge-public {
-    @apply bg-green-500/10 text-green-400 border-green-500/20;
+    background-color: color-mix(in srgb, #10b981 10%, transparent);
+    color: #4ade80;
+    border: 1px solid color-mix(in srgb, #10b981 20%, transparent);
+    border-radius: var(--radius);
+    padding: 0.25rem 0.5rem;
+    font-size: 0.75rem;
+    font-weight: 500;
   }
 
   .security-badge-internal {
-    @apply bg-yellow-500/10 text-yellow-400 border-yellow-500/20;
+    background-color: color-mix(in srgb, #eab308 10%, transparent);
+    color: #facc15;
+    border: 1px solid color-mix(in srgb, #eab308 20%, transparent);
+    border-radius: var(--radius);
+    padding: 0.25rem 0.5rem;
+    font-size: 0.75rem;
+    font-weight: 500;
   }
 
   .security-badge-confidential {
-    @apply bg-red-500/10 text-red-400 border-red-500/20;
+    background-color: color-mix(in srgb, #ef4444 10%, transparent);
+    color: #f87171;
+    border: 1px solid color-mix(in srgb, #ef4444 20%, transparent);
+    border-radius: var(--radius);
+    padding: 0.25rem 0.5rem;
+    font-size: 0.75rem;
+    font-weight: 500;
   }
 }
