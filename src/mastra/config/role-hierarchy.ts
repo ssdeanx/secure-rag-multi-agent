@@ -1,9 +1,10 @@
+/* eslint-disable tsdoc/syntax */
 /**
  * Role Hierarchy Configuration
- * 
+ *
  * Defines the hierarchical relationships between roles where higher-level roles
  * automatically inherit access permissions from lower-level roles.
- * 
+ *
  * Structure: { role: [inherited_roles...] }
  * - Each role inherits access from all roles listed in its array
  * - Higher privilege roles should include lower privilege roles
@@ -18,24 +19,24 @@ export const ROLE_HIERARCHY: RoleHierarchy = {
   // Super admin - access to everything
   'admin': [
     'hr.admin', 'hr.viewer',
-    'finance.admin', 'finance.viewer', 
+    'finance.admin', 'finance.viewer',
     'engineering.admin', 'engineering.viewer',
     'employee', 'public'
   ],
-  
+
   // Department admin roles - full access to their department + general access
   'hr.admin': ['hr.viewer', 'employee', 'public'],
   'finance.admin': ['finance.viewer', 'employee', 'public'],
   'engineering.admin': ['engineering.viewer', 'employee', 'public'],
-  
+
   // Department viewer roles - read access to their department + general access
   'hr.viewer': ['employee', 'public'],
   'finance.viewer': ['employee', 'public'],
   'engineering.viewer': ['employee', 'public'],
-  
+
   // Base employee role - access to general company documents
   'employee': ['public'],
-  
+
   // Public role - no additional inheritance (base level)
   'public': []
 };
@@ -59,6 +60,7 @@ export const ROLE_LEVELS: Record<string, number> = {
 /**
  * Get the privilege level of a role
  */
+
 export function getRoleLevel(role: string): number {
   return ROLE_LEVELS[role] || 0;
 }
@@ -66,6 +68,7 @@ export function getRoleLevel(role: string): number {
 /**
  * Check if a role exists in the hierarchy
  */
+
 export function isValidRole(role: string): boolean {
   return role in ROLE_HIERARCHY;
 }
@@ -77,12 +80,12 @@ export function isValidRole(role: string): boolean {
  */
 export function getInheritorRoles(targetRole: string): string[] {
   const inheritors: string[] = [];
-  
+
   for (const [role, inheritedRoles] of Object.entries(ROLE_HIERARCHY)) {
     if (inheritedRoles.includes(targetRole) || role === targetRole) {
       inheritors.push(role);
     }
   }
-  
+
   return inheritors.sort((a, b) => getRoleLevel(b) - getRoleLevel(a));
 }

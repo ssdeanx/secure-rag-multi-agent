@@ -3,8 +3,9 @@ import { z } from "zod";
 
 import { logError, logProgress, logStepEnd, logStepStart } from '../config/logger';
 import { mastra } from "../index";
-import { DocumentIndexingService, IndexingResult } from "../services/DocumentIndexingService";
-import { QdrantVector } from "@mastra/qdrant";
+import type { IndexingResult } from "../services/DocumentIndexingService";
+import { DocumentIndexingService } from "../services/DocumentIndexingService";
+import type { QdrantVector } from "@mastra/qdrant";
 
 
 // Single step that handles all document indexing
@@ -35,11 +36,11 @@ const indexDocumentsStep = createStep({
     const startTime = Date.now();
     const totalDocs = inputData.documents.length;
     logStepStart('index-documents', { totalDocuments: totalDocs });
-    
+
     try {
       const vectorStore: QdrantVector = mastra.getVector("qdrant");
-      const indexName: string = process.env.QDRANT_COLLECTION || "governed_rag";
-      
+      const indexName: string = process.env.QDRANT_COLLECTION ?? "governed_rag";
+
       // Ensure the index exists with proper dimension (don't delete, just recreate if needed)
       try {
         await vectorStore.createIndex({
@@ -52,7 +53,7 @@ const indexDocumentsStep = createStep({
         console.log(`Index creation info:`, createError);
         // Index might already exist, continue
       }
-      
+
       const results: {
         indexed: number;
         failed: number;
@@ -66,15 +67,15 @@ const indexDocumentsStep = createStep({
       for (let docIndex = 0; docIndex < inputData.documents.length; docIndex++) {
         const doc = inputData.documents[docIndex];
         logProgress(`Indexing document ${doc.docId}`, docIndex + 1, totalDocs);
-        
+
         const result: IndexingResult = await DocumentIndexingService.indexDocument(
           doc,
           vectorStore,
           indexName
         );
-        
+
         results.documents.push(result);
-        
+
         if (result.status === "success") {
           results.indexed++;
         } else {

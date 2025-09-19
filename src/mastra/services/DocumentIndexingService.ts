@@ -4,11 +4,15 @@ import * as crypto from "crypto";
 import * as fs from "fs/promises";
 
 import { openAIEmbeddingProvider } from "../config/openai";
-import { ChunkingResult, ChunkingService } from "./ChunkingService";
-import { DocumentProcessorService, ProcessingOptions } from "./DocumentProcessorService";
-import { EmbeddingResult, EmbeddingService } from "./EmbeddingService";
+import type { ChunkingResult} from "./ChunkingService";
+import { ChunkingService } from "./ChunkingService";
+import type { ProcessingOptions } from "./DocumentProcessorService";
+import { DocumentProcessorService } from "./DocumentProcessorService";
+import type { EmbeddingResult} from "./EmbeddingService";
+import { EmbeddingService } from "./EmbeddingService";
 import { ValidationService } from "./ValidationService";
-import { StorageResult, VectorStorageService } from "./VectorStorageService";
+import type { StorageResult} from "./VectorStorageService";
+import { VectorStorageService } from "./VectorStorageService";
 import { RoleService } from "./RoleService";
 
 export interface DocumentInput {
@@ -36,25 +40,24 @@ export interface IndexingResult {
 }
 
 export class DocumentIndexingService {
-  private static processor = new DocumentProcessorService();
-  private static chunkingService = new ChunkingService();
-  private static embeddingService = new EmbeddingService();
-  private static storageService = new VectorStorageService();
+  private static readonly processor = new DocumentProcessorService();
+  private static readonly chunkingService = new ChunkingService();
+  private static readonly embeddingService = new EmbeddingService();
+  private static readonly storageService = new VectorStorageService();
 
   /**
    * @deprecated Use ChunkingService directly for better performance and unlimited chunking
    * Legacy method maintained for backward compatibility - NO LONGER HAS 1000 CHUNK LIMIT
    */
-  static chunkText(text: string, maxChunkSize: number = 1000, overlap: number = 200): string[] {
+
+  static chunkText(text: string, maxChunkSize = 1000, overlap = 200): string[] {
     console.warn('DocumentIndexingService.chunkText is deprecated. Use ChunkingService for better performance.');
-    
     // Use the new chunking service with character-based strategy for backward compatibility
     const result: ChunkingResult = this.chunkingService.chunkTextCharacterBased(text, {
       maxChunkSize,
       overlap,
       strategy: 'character-based'
     });
-    
     return result.chunks;
   }
 
@@ -64,40 +67,32 @@ export class DocumentIndexingService {
     tenant: string
   ): string[] {
     const tags: string[] = [`classification:${classification}`];
-    
     // Add explicit role tags first
     allowedRoles.forEach(role => {
       tags.push(`role:${role}`);
     });
-    
     // Auto-add hierarchical base roles based on classification and content type
     const roleSet = new Set(allowedRoles);
-    
     // For internal and public documents, add employee access if not department-specific
     if (classification === 'internal' || classification === 'public') {
-      const isDepartmentSpecific = allowedRoles.some(role => 
+      const isDepartmentSpecific = allowedRoles.some(role =>
         role.includes('.') || ['admin', 'hr.admin', 'finance.admin', 'engineering.admin'].includes(role)
       );
-      
       if (!isDepartmentSpecific && !roleSet.has('employee')) {
         tags.push('role:employee');
         console.log(`INDEXING: Auto-added 'employee' role for ${classification} document`);
       }
     }
-    
     // For public documents, add public access
     if (classification === 'public' && !roleSet.has('public')) {
       tags.push('role:public');
       console.log(`INDEXING: Auto-added 'public' role for public document`);
     }
-    
     // Add tenant tag
     if (tenant) {
       tags.push(`tenant:${tenant}`);
     }
-    
     console.log(`INDEXING: Generated security tags for ${classification} document:`, tags);
-    
     return tags;
   }
 
@@ -125,9 +120,9 @@ export class DocumentIndexingService {
    * @deprecated Use EmbeddingService directly for better performance, caching, and batch processing
    * Legacy method maintained for backward compatibility
    */
+
   static async generateEmbeddings(chunks: string[]): Promise<number[][]> {
     console.warn('DocumentIndexingService.generateEmbeddings is deprecated. Use EmbeddingService for better performance.');
-    
     const result:EmbeddingResult = await this.embeddingService.generateEmbeddings(chunks);
     return result.embeddings;
   }
@@ -135,7 +130,9 @@ export class DocumentIndexingService {
   /**
    * @deprecated Use VectorStorageService directly for better batch processing and error handling
    * Legacy method maintained for backward compatibility
+   * Now supports unlimited chunks and improved error reporting
    */
+
   static async storeVectors(
     processedDoc: ProcessedDocument,
     embeddings: number[][],
@@ -154,11 +151,9 @@ export class DocumentIndexingService {
       vectorStore,
       indexName
     );
-    
     if (!result.success) {
       throw new Error(`Storage failed: ${result.errors.join(', ')}`);
     }
-    
     console.log('DOCUMENT_INDEXING_SERVICE', `Successfully stored ${result.totalVectors} chunks for document ${processedDoc.docId}`);
   }
 
@@ -166,6 +161,7 @@ export class DocumentIndexingService {
    * Enhanced document indexing with unlimited chunking and batch processing
    * Now uses the new DocumentProcessorService for better performance and reliability
    */
+
   static async indexDocument(
     doc: DocumentInput,
     vectorStore: unknown,
@@ -174,10 +170,11 @@ export class DocumentIndexingService {
   ): Promise<IndexingResult> {
     return this.processor.processDocument(doc, vectorStore, indexName, options);
   }
-  
+
   /**
    * Process multiple documents with progress tracking and batch optimization
    */
+
   static async indexDocuments(
     docs: DocumentInput[],
     vectorStore: unknown,
@@ -187,10 +184,11 @@ export class DocumentIndexingService {
   ): Promise<IndexingResult[]> {
     return this.processor.processDocuments(docs, vectorStore, indexName, progressCallback);
   }
-  
+
   /**
    * Get processing estimates for planning large batch operations
    */
+
   static async getProcessingEstimate(
     docs: DocumentInput[],
     options: ProcessingOptions = {}

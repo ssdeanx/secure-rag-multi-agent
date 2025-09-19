@@ -37,9 +37,8 @@ yarn-error.log*
 *.tsbuildinfo
 next-env.d.ts
 
-# Logs
-logs/
-*.log
+# Logslogs/
+.log
 
 # IDE
 .vscode/
@@ -52,6 +51,9 @@ logs/
 # Database
 *.db
 *.db-*
+
+*.specstory/
+*.specstory/**/*.md
 
 # Docker volumes
 qdrant_storage/
@@ -67,3 +69,13 @@ dist
 *.vsix
 .claude
 CLAUDE.md
+.codacy/cli.sh
+.codacy/
+*.codacy/
+*./codacy/**/*.md
+
+/src/cedar/**/**/**/*.tsx
+/src/cedar/**/**/**/*.ts
+/src/cedar/**/**/*.css
+.gemini/
+gha-creds-*.json

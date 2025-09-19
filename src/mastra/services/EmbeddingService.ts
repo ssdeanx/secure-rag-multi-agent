@@ -29,14 +29,14 @@ export interface EmbeddingResult {
 }
 
 export class EmbeddingService {
-  private memory: Memory;
-  private defaultOptions: Required<EmbeddingOptions>;
+  private readonly memory: Memory;
+  private readonly defaultOptions: Required<EmbeddingOptions>;
 
   constructor(options: Partial<EmbeddingOptions> = {}) {
     this.defaultOptions = {
       batchSize: 100,
       maxRetries: 3,
-      model: process.env.EMBEDDING_MODEL || "text-embedding-3-small",
+      model: process.env.EMBEDDING_MODEL ?? "text-embedding-3-small",
       useCache: true,
       ...options
     };
@@ -51,9 +51,10 @@ export class EmbeddingService {
    * Generate embeddings using Mastra's native implementation with caching
    * This method uses Mastra's built-in caching and retry logic
    */
+
   async generateEmbeddingsNative(chunks: string[]): Promise<EmbeddingResult> {
     console.log('EMBEDDING_SERVICE', `Generating embeddings using Mastra native implementation for ${chunks.length} chunks`);
-    
+
     // Use the standard AI SDK embedMany function since Memory might not be properly configured
     // The Memory instance requires more complex setup that we don't need for just chunking
     const { embeddings } = await embedMany({
@@ -78,12 +79,13 @@ export class EmbeddingService {
    * Generate embeddings with manual batching for very large documents
    * Useful when you need more control over memory usage
    */
+
   async generateEmbeddingsBatched(chunks: string[], options: EmbeddingOptions = {}): Promise<EmbeddingResult> {
     const opts = { ...this.defaultOptions, ...options };
     const { batchSize, maxRetries, model } = opts;
     console.log('EMBEDDING_SERVICE', `Generating embeddings in batches of ${batchSize} for ${chunks.length} chunks`)
     console.log(`Generating embeddings in batches of ${batchSize} for ${chunks.length} chunks`);
-    
+
     const allEmbeddings: number[][] = [];
     const batches = this.createBatches(chunks, batchSize);
     let dimension = 0;
@@ -102,7 +104,7 @@ export class EmbeddingService {
 
         const typedEmbeddings = embeddings as number[][];
         allEmbeddings.push(...typedEmbeddings);
-        
+
         if (!dimension && typedEmbeddings.length > 0) {
           dimension = typedEmbeddings[0].length;
         }
@@ -130,9 +132,10 @@ export class EmbeddingService {
   /**
    * Main embedding generation method - automatically selects best strategy
    */
+
   async generateEmbeddings(chunks: string[], options: EmbeddingOptions = {}): Promise<EmbeddingResult> {
     const opts = { ...this.defaultOptions, ...options };
-    
+
     // For smaller documents, use native implementation with caching
     // For larger documents, use manual batching for better memory control
     if (chunks.length <= 500 && opts.useCache) {
@@ -145,19 +148,21 @@ export class EmbeddingService {
   /**
    * Create batches from chunks array
    */
+
   private createBatches<T>(array: T[], batchSize: number): T[][] {
     const batches: T[][] = [];
-    
+
     for (let i = 0; i < array.length; i += batchSize) {
       batches.push(array.slice(i, i + batchSize));
     }
-    
+
     return batches;
   }
 
   /**
    * Estimate memory usage for embedding generation
    */
+
   estimateMemoryUsage(chunkCount: number, avgChunkSize: number): {
     estimatedMB: number;
     recommendation: string;
@@ -167,7 +172,7 @@ export class EmbeddingService {
     const bytesPerFloat = 4;
     const embeddingSize: number = embeddingDimension * bytesPerFloat;
     const textSize: number = avgChunkSize * 2; // UTF-16 encoding
-    
+
     const totalBytes: number = chunkCount * (embeddingSize + textSize);
     const estimatedMB: number = totalBytes / (1024 * 1024);
 
@@ -184,6 +189,7 @@ export class EmbeddingService {
   /**
    * Validate chunks before embedding
    */
+
   validateChunks(chunks: string[]): void {
     if (!chunks || chunks.length === 0) {
       throw new Error('Chunks array cannot be empty');

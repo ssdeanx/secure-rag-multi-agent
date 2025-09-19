@@ -42,14 +42,14 @@ export class ValidationService {
   }
 
   static validateTokenExpiry(exp?: number, now?: number): void {
-    const currentTime = now || Math.floor(Date.now() / 1000);
+    const currentTime = now ?? Math.floor(Date.now() / 1000);
     if (exp && exp < currentTime) {
       throw new Error("JWT token has expired");
     }
   }
 
   static validateTokenNotBefore(nbf?: number, now?: number): void {
-    const currentTime = now || Math.floor(Date.now() / 1000);
+    const currentTime = now ?? Math.floor(Date.now() / 1000);
     if (nbf && nbf > currentTime) {
       throw new Error("JWT token not yet valid");
     }

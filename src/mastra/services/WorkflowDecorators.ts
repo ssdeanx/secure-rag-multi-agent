@@ -14,7 +14,7 @@ export function withLoggingAndErrorHandling<T, R>(
     return async function wrappedExecutor(input: T): Promise<R> {
       const startTime = Date.now();
       logStepStart(stepId, { description });
-      
+
       try {
         const result = await target(input);
         logStepEnd(stepId, { success: true }, Date.now() - startTime);

@@ -1,13 +1,22 @@
 import { Agent } from "@mastra/core";
-import { z } from "zod";
+//import { z } from "zod";
 
 import { openAIModel } from "../config/openai";
 import { verificationResultSchema } from "../schemas/agent-schemas";
+import { createResearchMemory } from '../config/libsql-storage';
+import { google } from "@ai-sdk/google";
+import { logger } from "../config/logger";
+
+logger.info('Initializing Verifier Agent...');
+
+const memory = createResearchMemory();
 
 export const verifierAgent = new Agent({
   id: "verifier",
   name: "verifier",
-  model: openAIModel,
+  model: google('gemini-2.5-flash-lite'),
+  //model: openAIModel, --- IGNORE ---
+  description: "A strict answer verification agent that ensures the provided answer is fully supported by the given contexts and relevant to the question.",
   instructions: `You are a strict answer verification agent. Your task is to:
 
 1. Verify that every claim in the answer is supported by the provided contexts
@@ -43,12 +52,16 @@ You must respond with a valid JSON object in this format:
 
 Common failure reasons:
 - "Answer contains unsupported claims"
-- "Citations don't match provided contexts" 
+- "Citations don't match provided contexts"
 - "Answer includes information not in contexts"
 - "Answer doesn't address the question"
 - "Context is not relevant to the question - answer should indicate no information found"
 
-Always return valid JSON matching this exact structure.`
+Always return valid JSON matching this exact structure.`,
+  memory,
+  evals: {
+    // Add any evaluation metrics if needed
+  },
 });
 
 export const verifierOutputSchema = verificationResultSchema;

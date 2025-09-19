@@ -1,3 +1,4 @@
+/* eslint-disable tsdoc/syntax */
 import { ROLE_HIERARCHY, getRoleLevel, isValidRole, getInheritorRoles } from '../config/role-hierarchy';
 
 /**
@@ -11,12 +12,12 @@ export class RoleService {
    */
   static expandRoles(userRoles: string[]): string[] {
     const expandedRoles = new Set<string>();
-    
+
     // Add all user roles and their inherited roles
     for (const role of userRoles) {
       if (isValidRole(role)) {
         expandedRoles.add(role);
-        
+
         // Add all roles this role inherits from
         const inheritedRoles = ROLE_HIERARCHY[role] || [];
         for (const inheritedRole of inheritedRoles) {
@@ -27,7 +28,7 @@ export class RoleService {
         expandedRoles.add(role); // Keep unknown roles for backward compatibility
       }
     }
-    
+
     return Array.from(expandedRoles).sort((a, b) => getRoleLevel(b) - getRoleLevel(a));
   }
 
@@ -53,10 +54,10 @@ export class RoleService {
       // Document has no role restrictions - accessible to everyone
       return true;
     }
-    
+
     const expandedUserRoles = this.expandRoles(userRoles);
     const expandedUserRoleTags = expandedUserRoles.map(role => `role:${role}`);
-    
+
     // Check if user has any of the required roles
     return documentRoleTags.some(docRoleTag => expandedUserRoleTags.includes(docRoleTag));
   }
@@ -74,14 +75,14 @@ export class RoleService {
   } {
     const expandedRoles = this.expandRoles(userRoles);
     const roleTags = expandedRoles.map(role => `role:${role}`);
-    
+
     const allowTags: string[] = [...roleTags];
-    
+
     // Add tenant tag if provided
     if (tenant) {
       allowTags.push(`tenant:${tenant}`);
     }
-    
+
     return {
       allowTags,
       userRoles,
@@ -129,13 +130,13 @@ export class RoleService {
     warnings: string[];
   } {
     const warnings: string[] = [];
-    
+
     for (const role of documentRoles) {
       if (!isValidRole(role)) {
         warnings.push(`Unknown role: ${role}`);
       }
     }
-    
+
     return {
       valid: warnings.length === 0,
       warnings
@@ -149,18 +150,18 @@ export class RoleService {
    */
   static getDocumentAccessibleRoles(documentRoles: string[]): string[] {
     const accessibleRoles = new Set<string>();
-    
+
     for (const docRole of documentRoles) {
       // Add the role itself
       accessibleRoles.add(docRole);
-      
+
       // Add all roles that inherit this role
       const inheritors = getInheritorRoles(docRole);
       for (const inheritor of inheritors) {
         accessibleRoles.add(inheritor);
       }
     }
-    
+
     return Array.from(accessibleRoles).sort((a, b) => getRoleLevel(b) - getRoleLevel(a));
   }
 }

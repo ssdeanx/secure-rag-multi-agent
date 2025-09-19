@@ -1,719 +1,398 @@
-# 🔐 Mastra Governed RAG Template
+# 🔐 Mastra Governed RAG
 
-[![Node.js](https://img.shields.io/badge/Node.js-20%2B-green)](https://nodejs.org/)
-[![TypeScript](https://img.shields.io/badge/TypeScript-5.8-blue)](https://www.typescriptlang.org/)
-[![Next.js](https://img.shields.io/badge/Next.js-15.4-black)](https://nextjs.org/)
-[![Mastra](https://img.shields.io/badge/Mastra-latest-purple)](https://mastra.ai/)
-[![License](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
+![Next.js](https://img.shields.io/badge/Next.js-15.5.3-blue?style=flat&logo=next.js)
+![TypeScript](https://img.shields.io/badge/TypeScript-5.9.2-green?style=flat&logo=typescript)
+![Mastra](https://img.shields.io/badge/Mastra-0.17-orange?style=flat)
+![Vitest](https://img.shields.io/badge/Vitest-3-red?style=flat&logo=vitest)
+![Node](https://img.shields.io/badge/Node-%3E=20.9-blue?style=flat&logo=node.js)
+![OpenAI](https://img.shields.io/badge/OpenAI-API-blue)
+![Qdrant](https://img.shields.io/badge/Qdrant-Vector%20DB-orange)
+![Zod](https://img.shields.io/badge/Zod-Schema-red)
+![Tailwind CSS](https://img.shields.io/badge/Tailwind%20CSS-4.1-blue)
+![Lucide React](https://img.shields.io/badge/Lucide%20React-Icons-yellow)
+![shadcn/ui](https://img.shields.io/badge/shadcn%2Fui-Components-indigo)
+![Docker](https://img.shields.io/badge/Docker-Container-blue)
+![Mermaid](https://img.shields.io/badge/Mermaid-Diagrams-blue)
+![Zod](https://img.shields.io/badge/Zod-red)
 
-A production-ready template for building **secure, governed RAG (Retrieval-Augmented Generation) applications** using Mastra's multi-agent orchestration framework. This template demonstrates enterprise-grade access control, document classification, and policy enforcement in AI applications.
+Secure Retrieval-Augmented Generation (RAG) with role-based access control using Mastra AI orchestration.
 
-## 📋 Table of Contents
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 
-- [Why Governed RAG?](#-why-governed-rag)
-- [Architecture](#-architecture)
-- [Quick Start](#-quick-start)
-- [Demo Scenarios](#-demo-scenarios)
-- [CLI Usage](#-cli-usage)
-- [Project Structure](#-project-structure)
-- [Security Features](#-security-features)
-- [Configuration](#-configuration)
-- [How It Works](#-how-it-works)
-- [UI Features](#-ui-features)
-- [API Reference](#-api-reference)
-- [Development](#-development)
-- [Testing](#-testing)
-- [Deployment](#-deployment)
-- [Performance](#-performance)
-- [Troubleshooting](#-troubleshooting)
-- [Contributing](#-contributing)
-- [License](#-license)
+## Table of Contents
 
-## 🎯 Why Governed RAG?
+- [Why Mastra Governed RAG?](#why-mastra-governed-rag)
+- [Architecture](#architecture)
+- [Quick Start](#quick-start)
+- [Demo Scenarios](#demo-scenarios)
+- [CLI Usage](#cli-usage)
+- [Project Structure](#project-structure)
+- [Security Features](#security-features)
+- [Configuration](#configuration)
+- [How It Works](#how-it-works)
+- [UI Features](#ui-features)
+- [Advanced Features](#advanced-features)
+- [API Reference](#api-reference)
+- [Development](#development)
+- [Testing](#testing)
+- [Deployment](#deployment)
+- [Performance](#performance)
+- [Troubleshooting](#troubleshooting)
+- [Contributing](#contributing)
+- [License](#license)
+- [Acknowledgments](#acknowledgments)
+- [Use Cases](#use-cases)
+- [Roadmap](#roadmap)
+- [Support](#support)
 
-Traditional RAG systems retrieve and use any available document to answer questions. In enterprise settings, this is a **critical security risk**. Our Governed RAG solution ensures:
+## Why Mastra Governed RAG?
 
-- 🛡️ **Role-Based Access Control**: Users only see documents they're authorized to access
-- 🏷️ **Document Classification**: Automatic enforcement of public/internal/confidential classifications
-- 👤 **Identity Verification**: JWT-based authentication with claims validation
-- 🔍 **Security-First Retrieval**: Filters applied at the vector database level, not post-retrieval
-- ✅ **Answer Verification**: Multi-agent validation ensures no data leakage
+Traditional RAG systems risk exposing sensitive data. This template provides:
 
-## 🏗️ Architecture
+- **Hierarchical RBAC**: Roles inherit access (public → employee → dept viewer/admin → admin).
+- **Document Classification**: Public/internal/confidential with tag-based filtering.
+- **Multi-Agent Security**: Agents for retrieval, reranking, answering, and verification.
+- **Audit-Ready**: Citations and logs for compliance.
+
+Built for enterprise knowledge bases (HR, finance, engineering).
+
+## Architecture
+
+### Overall Architecture
 
 ```mermaid
 graph LR
-    A[User Query + JWT] --> B[Identity Agent]
-    B --> C[Policy Agent]
-    C --> D[Retrieve Agent]
-    D --> E[Rerank Agent]
-    E --> F[Answer Agent]
-    F --> G[Verifier Agent]
-    G --> H[Secure Answer]
+    User[User / JWT Authentication] --> UI[Next.js UI<br/>shadcn/ui, Tailwind CSS, Lucide React]
+    UI --> API[Next.js API Routes]
+    API --> Mastra[Mastra Workflow<br/>Agents, Services, Tools]
+    Mastra --> Qdrant[Qdrant Vector DB]
+    Mastra --> OpenAI[OpenAI Embeddings / LLM]
+    Qdrant -.-> Mastra
+    OpenAI -.-> Mastra
 ```
 
-### Multi-Agent Pipeline
+### RAG Flow
 
-1. **Identity Agent**: Validates JWT and extracts user claims (roles, tenant, clearance)
-2. **Policy Agent**: Converts claims into access filters based on security policies
-3. **Retrieve Agent**: Queries vector database with security filters applied
-4. **Rerank Agent**: Orders retrieved contexts by relevance
-5. **Answer Agent**: Generates response using ONLY authorized contexts
-6. **Verifier Agent**: Validates answer hasn't leaked unauthorized information
-
-## 🚀 Quick Start
-
-### Prerequisites
-
-- Node.js 20+
-- Docker & Docker Compose
-- OpenAI API key
-
-### Setup
-
-1. **Clone the repository**
-```bash
-git clone <repo-url>
-cd mastra-governed-rag-template
-npm install
+```mermaid
+flowchart TD
+    A[User Query + JWT] --> B[Identity Agent<br/>Validate User]
+    B --> C[Policy Agent<br/>Access Filtering]
+    C --> D[Retrieve Agent<br/>Qdrant Vector Search]
+    D --> E[Rerank Agent<br/>Relevance Scoring]
+    E --> F[Answerer Agent<br/>Generate Answer]
+    F --> G[Verifier Agent<br/>Compliance Check]
+    G --> H[Secure Response<br/>With Citations]
 ```
 
-2. **Configure environment**
-```bash
-cp .env.example .env
+In addition to the pipeline overview, here is the overall architecture:
+
+```mermaid
+graph LR
+    User[User with JWT] --> API[Next.js API /api/chat]
+    API --> Mastra[Mastra Workflow & Agents]
+    Mastra --> Qdrant[Qdrant Vector DB]
+    Mastra --> OpenAI[OpenAI Embeddings & LLM]
+    UI[UI Components ChatInterface AuthPanel] --> User
+    Corpus[Corpus Documents] --> Qdrant
+    style User fill:#f9f,stroke:#333
+    style API fill:#bbf,stroke:#f66
 ```
 
-Edit `.env` with your configuration:
-```env
-# Required
-OPENAI_API_KEY=your_openai_api_key_here
-JWT_SECRET=your_jwt_secret_here
+Detailed RAG flow:
 
-# Optional - customize as needed
-OPENAI_MODEL=gpt-4o-mini
-EMBEDDING_MODEL=text-embedding-3-small
-QDRANT_URL=http://localhost:6333
-QDRANT_COLLECTION=governed_rag
-TENANT=acme
+```mermaid
+flowchart td
+    UserQuery[User Query + JWT] --> Identity[Identity Agent: Validate JWT Claims]
+    Identity --> Policy[Policy Agent: Generate Access Filters]
+    Policy --> Retrieve[Retrieve Agent: Filtered Qdrant Search]
+    Retrieve --> Rerank[Rerank Agent: Relevance Scoring]
+    Rerank --> Answerer[Answerer Agent: Generate Response]
+    Answerer --> Verifier[Verifier Agent: Security Check]
+    Verifier --> Response[Secure Streaming Response]
+    style UserQuery fill:#e1f5fe
+    style Response fill:#c8e6c9
 ```
 
-3. **Start Qdrant vector database**
+The architecture leverages Mastra's agentic paradigm for granular access control in RAG pipelines. Workflows like [`governed-rag-answer.workflow.ts`](src/mastra/workflows/governed-rag-answer.workflow.ts) orchestrate agents with Zod schemas for structured I/O, ensuring type-safe tool calls. For instance, the retrieve agent invokes [`vector-query.tool.ts`](src/mastra/tools/vector-query.tool.ts) with access filters derived from JWT claims, while the policy agent generates tag-based filters using role inheritance.
+
+Agent instructions emphasize zero external knowledge: e.g., the answerer agent strictly uses provided contexts, as in its instruction: "NEVER use external knowledge - ONLY use provided contexts". Tool integrations follow ReAct prompting patterns, with decorators in [`WorkflowDecorators.ts`](src/mastra/services/WorkflowDecorators.ts) for logging each step.
+
+For advanced orchestration details, see [Architecture](./docs/architecture.md).
+
+## Quick Start
+
+1. Clone and install:
+
+   ```bash
+   git clone https://github.com/your-org/mastra-governed-rag mastra-governed-rag
+   cd mastra-governed-rag
+   npm install
+   ```
+
+2. Configure `.env` (copy from `.env.example`):
+   - `OPENAI_API_KEY=your-key`
+   - `QDRANT_URL=http://localhost:6333`
+   - `JWT_SECRET=strong-secret`
+
+3. Start services:
+
+   ```bash
+   docker-compose up -d  # Qdrant, LibSQL
+   ```
+
+4. Index corpus:
+
+   ```bash
+   npm run cli index
+   ```
+
+5. Run dev server:
+
+   ```bash
+   npm run dev  # http://localhost:3000
+   ```
+
+For more details, see [Documentation](./docs/).
+
+## Qdrant 🐳 Vector Database
+
+This template uses Qdrant for vector storage and similarity search.
+Ensure Qdrant is running via Docker Compose. The collection is configured in [`QdrantService.ts`](src/mastra/services/QdrantService.ts) with HNSW indexing for fast retrieval.
+
+Additional Qdrant settings can be adjusted in `docker-compose.yml`.
+
 ```bash
 docker-compose up -d
 ```
 
-4. **Verify services are running**
-```bash
-# Check Qdrant health
-curl http://localhost:6333/health
-
-# Check Docker containers
-docker ps
-```
-
-5. **Index sample documents**
-```bash
-npm run build-cli
-npm run cli index
-```
-
-6. **Start the development server**
-```bash
-npm run dev
-# Visit http://localhost:3000
-```
-
-## 🎮 Demo Scenarios
-
-### Scenario 1: Finance Employee
-```javascript
-// JWT Claims: { roles: ["finance.viewer"], tenant: "acme" }
-// Can access: Finance policies, public documents
-// Cannot access: HR confidential data, engineering details
-```
-
-### Scenario 2: Engineering Manager
-```javascript
-// JWT Claims: { roles: ["engineering.admin"], tenant: "acme" }
-// Can access: Engineering handbook, public documents
-// Cannot access: Finance policies, HR confidential data
-```
-
-### Scenario 3: HR Admin with Step-Up Auth
-```javascript
-// JWT Claims: { roles: ["hr.admin"], tenant: "acme", stepUp: true }
-// Can access: ALL documents including confidential
-// Step-up authentication enables confidential access
-```
-
-## 🔧 CLI Usage
-
-The template includes a powerful CLI for managing your governed RAG system:
+This starts Qdrant at `http://localhost:6333`. Verify with:
 
 ```bash
-# Index documents with security tags
-npm run cli index
-
-# Query with JWT authentication
-npm run cli query "<jwt-token>" "What is the expense policy?"
-
-# Run interactive demo
-npm run cli demo
-
-# Show help
-npm run cli help
+curl http://localhost:6333/collections
 ```
 
-## 📁 Project Structure
+## Demo Scenarios
+
+TBD for demos/videos. See [Demo Roles](./docs/demo-roles.md) for role-based testing examples.
+
+## CLI Usage
+
+- `npm run cli index`: Index corpus docs.
+- `npm run cli query "<jwt>" "<question>"`: Test query.
+- `npm run cli demo`: Interactive mode.
+
+## Project Structure
 
 ```
+mastra-governed-rag/
+├── app/                 # Next.js routes/UI
+├── components/          # React components (ChatInterface, AuthPanel)
+├── corpus/              # Sample MD docs (finance-policy.md, etc.)
+├── docs/                # Full documentation
 ├── src/
-│   ├── mastra/
-│   │   ├── agents/         # AI agents with specific responsibilities
-│   │   ├── tools/          # JWT auth and vector query tools
-│   │   ├── workflows/      # Orchestrated pipelines
-│   │   ├── schemas/        # Zod validation schemas
-│   │   └── config/         # OpenAI and logger configuration
-│   ├── app/               # Next.js application
-│   └── cli/               # Command-line interface
-├── corpus/                # Sample documents with classifications
-├── docker-compose.yml     # Qdrant vector database setup
-└── .env.example          # Environment configuration template
+│   ├── cli/             # CLI entry (index.ts)
+│   └── mastra/          # Mastra config
+│       ├── agents/      # 6 agents (retrieve, rerank, etc.)
+│       ├── workflows/   # 2 workflows (answer, index)
+│       ├── tools/       # 2 tools (vector-query, jwt-auth)
+│       ├── services/    # 10 services (AuthenticationService, etc.)
+│       └── config/      # Roles, OpenAI, logger
+├── docker-compose.yml   # Services
+└── package.json         # Scripts/dependencies
 ```
 
-## 🔐 Security Features
+## Security Features
 
-### Document Classification
-- **Public**: Accessible to all authenticated users
-- **Internal**: Requires specific department roles
-- **Confidential**: Requires admin role + step-up authentication
+Hierarchical roles with classification enforcement. See [Security](./docs/security.md).
 
-### Access Control Tags
-- `role:*` - Role-based access (e.g., `role:finance.viewer`)
-- `tenant:*` - Multi-tenant isolation (e.g., `tenant:acme`)
-- `classification:*` - Document sensitivity level
+The system implements a zero-trust model where access is verified at every layer: JWT validation, policy filtering, and answer verification. ABAC policies are defined in [`acl.yaml`](src/mastra/policy/acl.yaml), e.g.:
 
-### JWT Token Structure
-```json
-{
-  "sub": "user@example.com",
-  "roles": ["finance.viewer", "engineering.admin"],
-  "tenant": "acme",
-  "stepUp": false,
-  "exp": 1234567890
-}
+```yaml
+docs:
+  - path: "./corpus/finance-policy.md"
+    allow:
+      roles: ["finance.viewer", "finance.admin"]
+    tenant: "acme"
+    classification: "internal"
 ```
 
-## 🛠️ Configuration
+Audit trails are enabled via [`logger.ts`](src/mastra/config/logger.ts), logging workflow steps with `logStepStart`/`logStepEnd` for compliance (e.g., NIST SP 800-53 AU-2). Role inheritance is handled in [`RoleService.ts`](src/mastra/services/RoleService.ts):
 
-### Environment Variables
-
-| Variable | Description | Default |
-|----------|-------------|---------|
-| `OPENAI_API_KEY` | OpenAI API key | Required |
-| `OPENAI_MODEL` | LLM model to use | `gpt-4o-mini` |
-| `EMBEDDING_MODEL` | Embedding model | `text-embedding-3-small` |
-| `QDRANT_URL` | Qdrant database URL | `http://localhost:6333` |
-| `QDRANT_COLLECTION` | Collection name | `governed_rag` |
-| `JWT_SECRET` | JWT signing secret | Required |
-| `TENANT` | Default tenant ID | `acme` |
-
-## 📊 How It Works
-
-### 1. Document Indexing
-Documents are chunked and embedded with security metadata:
 ```typescript
-{
-  text: "Expense reports must be submitted within 30 days",
-  docId: "finance-policy-001",
-  securityTags: ["role:finance.viewer", "tenant:acme", "classification:internal"],
-  classification: "internal"
-}
-```
-
-### 2. Query Processing
-When a user queries the system:
-1. JWT is verified and claims extracted
-2. Claims are converted to security filters
-3. Vector search applies filters at database level
-4. Only authorized documents are retrieved
-5. Answer is generated from filtered contexts
-6. Final verification ensures no data leakage
-
-### 3. Security Enforcement
-Security is enforced at multiple levels:
-- **Database Level**: Qdrant filters prevent unauthorized retrieval
-- **Agent Level**: Each agent validates and enforces policies
-- **Answer Level**: Verifier ensures response compliance
-
-## 🎨 UI Features
-
-- **Modern Dark Theme**: Clean, professional interface
-- **Real-time Streaming**: See answers generated in real-time
-- **Security Badges**: Visual indicators for document classification
-- **Role Selector**: Demo different access levels easily
-- **Citation Display**: Transparent source attribution
-- **JWT Authentication**: Built-in token management and role switching
-- **Responsive Design**: Works on desktop and mobile devices
-
-## 📚 API Reference
-
-### Chat API
-
-**POST** `/api/chat`
-
-Processes a user query through the governed RAG pipeline.
-
-#### Request Body
-```json
-{
-  "message": "What is the expense policy?",
-  "jwt": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
-}
-```
-
-#### Response
-```json
-{
-  "message": "The expense policy requires...",
-  "citations": [
-    {
-      "docId": "finance-policy-001",
-      "source": "finance-policy.md"
-    }
-  ]
-}
-```
-
-#### Status Codes
-- `200` - Successful response
-- `401` - Invalid or missing JWT
-- `403` - Insufficient permissions
-- `500` - Internal server error
-
-### Indexing API
-
-**POST** `/api/index`
-
-Indexes documents into the vector database with security metadata.
-
-#### Request Body
-```json
-{
-  "documents": [
-    {
-      "content": "Document content here...",
-      "metadata": {
-        "docId": "doc-001",
-        "source": "example.md",
-        "classification": "internal",
-        "securityTags": ["role:finance.viewer", "tenant:acme"]
+static expandRoles(userRoles: string[]): string[] {
+  const expandedRoles = new Set<string>();
+  for (const role of userRoles) {
+    if (isValidRole(role)) {
+      expandedRoles.add(role);
+      const inheritedRoles = ROLE_HIERARCHY[role] || [];
+      for (const inheritedRole of inheritedRoles) {
+        expandedRoles.add(inheritedRole);
       }
     }
-  ]
-}
-```
-
-#### Response
-```json
-{
-  "indexed": 1,
-  "skipped": 0,
-  "errors": []
-}
-```
-
-## 🛠️ Development
-
-### Code Style
-
-The project uses TypeScript with strict mode enabled. Follow these guidelines:
-
-- Use explicit types, avoid `any`
-- Prefer interfaces over types for object shapes
-- Use Zod schemas for runtime validation
-- Follow existing naming conventions
-
-### Adding New Agents
-
-1. Create agent file in `src/mastra/agents/`
-2. Define input/output schemas
-3. Implement agent logic with tools
-4. Add to workflow in `src/mastra/workflows/`
-5. Update tests
-
-Example agent structure:
-```typescript
-import { createAgent } from "@mastra/core";
-import { z } from "zod";
-
-export const myAgentSchema = z.object({
-  input: z.string(),
-  output: z.string()
-});
-
-export const myAgent = createAgent({
-  name: "myAgent",
-  instructions: "Your agent instructions here",
-  model: {
-    provider: "openai",
-    name: "gpt-4o-mini"
   }
-});
-```
-
-### Environment Variables
-
-| Variable | Required | Default | Description |
-|----------|----------|---------|-------------|
-| `OPENAI_API_KEY` | ✅ | - | OpenAI API key |
-| `OPENAI_BASE_URL` | ❌ | `https://api.openai.com/v1` | Custom API endpoint |
-| `OPENAI_MODEL` | ❌ | `gpt-4o-mini` | LLM model name |
-| `EMBEDDING_MODEL` | ❌ | `text-embedding-3-small` | Embedding model |
-| `QDRANT_URL` | ❌ | `http://localhost:6333` | Qdrant database URL |
-| `QDRANT_COLLECTION` | ❌ | `governed_rag` | Vector collection name |
-| `JWT_SECRET` | ✅ | - | JWT signing secret |
-| `TENANT` | ❌ | `acme` | Default tenant ID |
-| `LOG_LEVEL` | ❌ | `info` | Logging level |
-
-## 🧪 Testing
-
-### Running Tests
-
-Currently, the project doesn't include automated tests. To add testing:
-
-1. **Install testing dependencies**
-```bash
-npm install --save-dev jest @types/jest ts-jest
-```
-
-2. **Create test configuration**
-```bash
-# jest.config.js
-module.exports = {
-  preset: 'ts-jest',
-  testEnvironment: 'node',
-  roots: ['<rootDir>/src', '<rootDir>/tests'],
-  testMatch: ['**/__tests__/**/*.ts', '**/?(*.)+(spec|test).ts'],
-  collectCoverageFrom: [
-    'src/**/*.ts',
-    '!src/**/*.d.ts',
-  ],
-};
-```
-
-3. **Add test scripts**
-```json
-{
-  "scripts": {
-    "test": "jest",
-    "test:watch": "jest --watch",
-    "test:coverage": "jest --coverage"
-  }
+  return Array.from(expandedRoles).sort((a, b) => getRoleLevel(b) - getRoleLevel(a));
 }
 ```
 
-### Manual Testing
+This ensures `finance.viewer` inherits `employee` access without redundant checks.
 
-Use the CLI to test different scenarios:
+## Configuration
 
-```bash
-# Test authentication
-npm run cli auth --role finance.viewer
+- Roles: Edit `src/mastra/config/role-hierarchy.ts`.
+- Embeddings: `src/mastra/config/openai.ts`.
+- Policies: `src/mastra/policy/acl.yaml`.
+- Env: `.env` for APIs, secrets.
 
-# Test document indexing
-npm run cli index --file corpus/finance-policy.md
+## How It Works
 
-# Test querying with different roles
-npm run cli query --role engineering.admin "What is our git workflow?"
-```
+Queries flow through Mastra workflow: Auth → Filtered retrieval → Secure answer. See [Architecture](./docs/architecture.md).
 
-### Integration Testing
+## UI Features
 
-Test the full pipeline:
+Next.js app with:
 
-1. Start services: `docker-compose up -d`
-2. Index documents: `npm run cli index`
-3. Test web interface: `npm run dev`
-4. Test API endpoints with curl or Postman
+- Chat interface for queries.
+- Auth panel for JWT generation by role.
+- Security indicator (current role/classification).
 
-## 🚢 Deployment
+## Advanced Features
 
-### Docker Deployment
-```bash
-docker-compose up --build
-```
+This project incorporates cutting-edge capabilities for enterprise RAG deployment:
 
-### Production Considerations
-- Use managed Qdrant Cloud or self-host with persistent storage
-- Implement proper JWT issuer with your identity provider
-- Set up monitoring and audit logging
-- Configure rate limiting and DDoS protection
-- Use environment-specific secrets management
+- **Multi-Tenant Support**: Configured via `TENANT` env var (default: "acme"). All queries and indexing scope to tenant tags in Qdrant payloads, enabling isolation without schema changes. Extend via `RoleService.generateAccessTags` to include dynamic tenants.
 
-### Cloud Deployment Options
+- **Step-Up Authentication**: For confidential access, JWTs include a `stepUp` claim (boolean). The policy agent elevates `maxClassification` to "confidential" only if `stepUp: true`, as in agent instructions: "stepUp == true: Allow up to 'confidential'". Generate with `lib/jwt-utils.ts`:
 
-#### Vercel (Recommended for Next.js)
-```bash
-# Install Vercel CLI
-npm i -g vercel
+  ```typescript
+  export async function generateDemoToken(claims: TokenClaims): Promise<string> {
+    // ...
+    const jwt: string = await new SignJWT({
+      ...claims,
+      stepUp: true,  // For elevated access
+    // ...
+  }
+  ```
 
-# Deploy
-vercel --prod
-```
+- **Agent Tool Integrations**: Agents leverage Mastra tools for secure operations. The `jwt-auth.tool.ts` validates tokens and extracts claims using Zod schemas from [`agent-schemas.ts`](src/mastra/schemas/agent-schemas.ts):
 
-Set environment variables in Vercel dashboard:
-- `OPENAI_API_KEY`
-- `JWT_SECRET`
-- `QDRANT_URL` (use Qdrant Cloud)
+  ```typescript
+  export const jwtClaimsSchema = z.object({
+    sub: z.string(),
+    roles: z.array(z.string()),
+    tenant: z.string().optional(),
+    stepUp: z.boolean().optional(),
+  });
+  ```
 
-#### AWS/GCP/Azure
-Use the provided `docker-compose.yml` with your cloud provider's container services.
+  Similarly, `vector-query.tool.ts` performs filtered searches with HNSW indexing, applying role-based payloads to prevent data leakage.
 
-#### Self-Hosted
-```bash
-# Production build
-npm run build
-npm start
+These features draw from best practices in agentic AI, ensuring scalable, secure RAG without external knowledge injection.
 
-# With PM2 process manager
-npm install -g pm2
-pm2 start npm --name "governed-rag" -- start
-```
+## API Reference
 
-## ⚡ Performance
+- `POST /api/chat`: Stream query response. Body: `{ "jwt": "user-jwt", "question": "user question" }`.
+- `POST /api/index`: Index documents.
 
-### Optimization Tips
+See [API Reference](./docs/api-reference.md).
 
-1. **Vector Search Performance**
-   - Use HNSW index in Qdrant for faster similarity search
-   - Optimize embedding dimensions (1536 for `text-embedding-3-small`)
-   - Consider quantization for large datasets
+For advanced client-side streaming, use EventSource for SSE:
 
-2. **Caching Strategy**
-   - Enable Redis for JWT token caching
-   - Cache frequently accessed document embeddings
-   - Implement query result caching for common questions
-
-3. **Scaling Considerations**
-   - Horizontal scaling: Multiple Next.js instances behind load balancer
-   - Database: Use Qdrant cluster for high availability
-   - Queue: Add message queue for async document indexing
-
-### Performance Metrics
-
-| Operation | Typical Latency | Optimization |
-|-----------|----------------|--------------|
-| JWT Validation | < 10ms | In-memory cache |
-| Vector Search | 50-200ms | HNSW index |
-| LLM Generation | 1-3s | Streaming response |
-| Document Indexing | 100-500ms per doc | Batch processing |
-
-## 🐛 Troubleshooting
-
-### Common Issues
-
-#### 1. Qdrant Connection Failed
-```bash
-# Check if Qdrant is running
-docker ps | grep qdrant
-
-# Check Qdrant logs
-docker logs governed-rag-qdrant
-
-# Restart if needed
-docker-compose restart qdrant
-```
-
-#### 2. JWT Authentication Errors
 ```javascript
-// Verify JWT secret matches
-console.log('JWT_SECRET length:', process.env.JWT_SECRET?.length);
+const eventSource = new EventSource(`/api/chat?jwt=${encodeURIComponent(jwt)}&question=${encodeURIComponent(question)}`);
 
-// Check token structure
-const decoded = jose.decodeJwt(token);
-console.log('JWT claims:', decoded);
-```
-
-#### 3. No Documents Retrieved
-```bash
-# Check if documents are indexed
-curl http://localhost:6333/collections/governed_rag/points/count
-
-# Verify security tags
-curl http://localhost:6333/collections/governed_rag/points/scroll \
-  -H "Content-Type: application/json" \
-  -d '{"limit": 5, "with_payload": true}'
-```
-
-#### 4. OpenAI API Errors
-- Verify API key is valid
-- Check rate limits and quotas
-- Ensure model name is correct (`gpt-4o-mini`)
-
-### Debug Mode
-
-Enable detailed logging:
-```bash
-# Set environment variable
-export LOG_LEVEL=debug
-
-# Or in .env file
-LOG_LEVEL=debug
-```
-
-### Performance Issues
-
-1. **Slow Vector Search**
-   - Check Qdrant index status
-   - Monitor memory usage
-   - Consider index optimization
-
-2. **High Memory Usage**
-   - Implement batch processing for large document sets
-   - Use streaming for large responses
-   - Monitor vector storage efficiency
-
-3. **API Timeouts**
-   - Increase timeout limits in Next.js config
-   - Implement request queuing
-   - Add circuit breaker pattern
-
-### Monitoring
-
-Add observability to your deployment:
-
-```typescript
-// Example: Custom metrics
-const metrics = {
-  queries_total: 0,
-  auth_failures: 0,
-  avg_response_time: 0
+eventSource.onmessage = (event) => {
+  const data = JSON.parse(event.data);
+  if (data.content) {
+    appendToChat(data.content);
+  } else if (data.done) {
+    displayCitations(data.citations);
+    eventSource.close();
+  }
 };
 
-// Log important events
-console.log(JSON.stringify({
-  timestamp: new Date().toISOString(),
-  event: 'query_processed',
-  user_role: claims.roles,
-  response_time_ms: Date.now() - startTime,
-  documents_retrieved: contexts.length
-}));
+// Error handling for 403 (unauthorized)
+eventSource.onerror = (err) => {
+  if (err.status === 403) {
+    alert('Access denied. Please check your role and step-up authentication.');
+  }
+  eventSource.close();
+};
 ```
 
-## 🤝 Contributing
+Handle 403 errors by re-authenticating or elevating privileges via step-up.
 
-We welcome contributions! Here's how you can help:
+## Development
 
-### Getting Started
+- `npm run dev`: Concurrent Next.js + Mastra dev.
+- Hot reload for Mastra agents/workflows.
+- Linting: ESLint + Prettier.
 
-1. Fork the repository
-2. Create a feature branch: `git checkout -b feature/amazing-feature`
-3. Make your changes
-4. Add tests if applicable
-5. Commit your changes: `git commit -m 'Add amazing feature'`
-6. Push to the branch: `git push origin feature/amazing-feature`
-7. Open a Pull Request
+Mastra best practices include defining custom agents with Zod schemas for input/output validation, as in `agent-schemas.ts`. Enable TypeScript strict mode in `tsconfig.json` for compile-time safety: `"strict": true` catches schema mismatches early. For agent development, use instructions inspired by ReAct: e.g., retrieve agent mandates single tool call to `vectorQueryTool` with exact filters.
 
-### Contribution Guidelines
+## Testing
 
-- Follow the existing code style and conventions
-- Add documentation for new features
-- Include tests for bug fixes and new functionality
-- Update the README if needed
-- Ensure all CI checks pass
+Vitest is configured but no tests implemented yet:
 
-### Areas for Contribution
+- `npm test`: Run tests (add more in `/tests/`).
+- Coverage: Unit for services, integration for workflows.
 
-- **Security Enhancements**: Additional authentication methods, policy engines
-- **Performance Optimizations**: Caching, indexing, query optimization
-- **New Agents**: Specialized agents for different domains
-- **Documentation**: Tutorials, examples, API docs
-- **Testing**: Unit tests, integration tests, e2e tests
-- **UI/UX**: Interface improvements, accessibility features
+## Deployment
 
-### Reporting Issues
+- Build: `npm run build`
+- Start: `npm start`
+- Docker: Extend docker-compose for prod (Qdrant cloud, Vercel for Next.js).
+- Env: Set prod secrets.
 
-Please use GitHub Issues to report bugs or request features. Include:
-- Clear description of the issue
-- Steps to reproduce
-- Expected vs actual behavior
-- Environment details (Node.js version, OS, etc.)
+## Performance
 
-### Code of Conduct
+TBD. Monitor with logs and evals.
 
-This project follows the [Contributor Covenant Code of Conduct](https://www.contributor-covenant.org/version/2/1/code_of_conduct/).
+For RAG-specific optimizations: Qdrant uses HNSW indexing for sub-millisecond vector searches, configurable via collection params (M=16, ef_construct=100). Batch embedding in `EmbeddingService` processes chunks in parallel via OpenAI API limits (up to 2048 dims). Consider Redis for query caching: integrate `ioredis` to store frequent access filters, reducing latency by 50-70% in high-traffic scenarios. Quantize embeddings (e.g., binary quantization in Qdrant) to cut storage 32x while maintaining recall >95%.
 
-## 📄 License
+## Troubleshooting
 
-MIT License - See [LICENSE](LICENSE) for details.
+- **Indexing fails**: Check Qdrant connection/logs/mastra.log.
+- **No results**: Verify role access [Demo Roles](./docs/demo-roles.md).
+- **Auth errors**: Regenerate JWT.
+- **Docker issues**: `docker-compose logs`.
 
-## 🙏 Acknowledgments
+## Contributing
 
-Built with:
-- [Mastra](https://mastra.ai) - Multi-agent orchestration framework
-- [Qdrant](https://qdrant.tech) - Vector database
-- [OpenAI](https://openai.com) - Language models
-- [Next.js](https://nextjs.org) - React framework
-- [Tailwind CSS](https://tailwindcss.com) - Styling
+1. Fork and PR to main.
+2. Follow TypeScript/ESLint.
+3. Add tests for new features.
+4. Update docs in `./docs/`.
 
----
+See CONTRIBUTING.md for details.
 
-## 🌟 Use Cases
+## License
 
-This template is perfect for organizations that need secure AI applications:
+MIT License. See [LICENSE](LICENSE).
 
-### Healthcare
-- Patient record access control
-- HIPAA compliance for medical queries
-- Role-based access to sensitive health data
+## Acknowledgments
 
-### Financial Services
-- Regulatory compliance (SOX, PCI-DSS)
-- Customer data protection
-- Risk assessment document access
+Built with ❤️ by Mastra Community.
 
-### Legal
-- Confidential case file management
-- Attorney-client privilege enforcement
-- Document privilege classification
+## Use Cases
 
-### Government
-- Classified information handling
-- Clearance-level access control
-- Multi-agency data sharing
+- Secure internal AI assistants.
+- Departmental knowledge retrieval (finance policies, engineering handbooks).
+- Compliant document Q&A.
 
-### Enterprise
-- HR policy and confidential data
-- Intellectual property protection
-- Competitive intelligence security
+## Roadmap
 
-## 🔮 Roadmap
+- Multi-tenant support.
+- Advanced reranking (cross-encoder).
+- Evals integration (@mastra/evals).
+- UI enhancements (search history).
 
-- [ ] **Multi-tenancy improvements**: Better tenant isolation
-- [ ] **Advanced policies**: Time-based access, geo-restrictions
-- [ ] **Audit trails**: Comprehensive logging and compliance reports
-- [ ] **Performance optimizations**: Advanced caching, query optimization
-- [ ] **Additional LLM providers**: Anthropic Claude, Azure OpenAI
-- [ ] **Fine-grained permissions**: Document-level and field-level access
-- [ ] **Real-time updates**: Live document synchronization
-- [ ] **Analytics dashboard**: Usage metrics and security insights
+Cutting-edge additions: Multi-LLM support via OpenAI alternatives (e.g., Anthropic Claude); federated RAG for privacy-preserving cross-tenant queries using secure multi-party computation; integration with LangChain/Haystack for hybrid retrieval (BM25 + semantic).
 
-## 📞 Support
+## Support
 
-- **Documentation**: Check this README and CLAUDE.md
-- **Issues**: [GitHub Issues](https://github.com/your-org/mastra-governed-rag-template/issues)
-- **Discussions**: [GitHub Discussions](https://github.com/your-org/mastra-governed-rag-template/discussions)
-- **Discord**: [Mastra Community](https://discord.gg/mastra)
+- [Full Documentation](./docs/index.md)
+- Issues: GitHub repo.
+- Community: Mastra Discord.
 
 ---
-
-**Built for the Mastra Template Hackathon** 🏆
-
-This template showcases how to build secure, enterprise-ready AI applications with proper governance and access control. Perfect for industries requiring strict data security: healthcare, finance, legal, and government.
-
-### Quick Links
-- [🚀 Live Demo](https://your-demo-url.com)
-- [📖 Documentation](./docs)
-- [🎬 Video Tutorial](https://your-video-url.com)
-- [🐳 Docker Hub](https://hub.docker.com/r/your-org/governed-rag)
+Built with ❤️ by Mastra Community. Questions? Open an issue.

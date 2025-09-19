@@ -4,122 +4,153 @@ import AuthPanel from '@/components/AuthPanel';
 import ChatInterface from '@/components/ChatInterface';
 import IndexingPanel from '@/components/IndexingPanel';
 import SecurityIndicator from '@/components/SecurityIndicator';
-import { Shield, Lock, AlertCircle } from 'lucide-react';
-import { useState, Dispatch, SetStateAction } from 'react';
+import { ThemeToggle } from '@/components/ThemeToggle';
+import { TopNavigation } from '@/components/TopNavigation';
+import { UserMenu } from '@/components/UserMenu';
+import { AppSidebar } from '@/components/AppSidebar';
+import { SidebarProvider, SidebarInset, SidebarTrigger } from '@/components/ui/sidebar';
+import { Footer } from '@/components/Footer';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Button } from '@/components/ui/button';
+import { Alert, AlertDescription } from '@/components/ui/alert';
+import { Badge } from '@/components/ui/badge';
+import { Shield, Lock, AlertCircle, CheckCircle } from 'lucide-react';
+import { useState } from 'react';
 
 export default function Home() {
   const [jwt, setJwt] = useState<string>('');
   const [currentRole, setCurrentRole] = useState<string>('');
+  const [currentView, setCurrentView] = useState('home');
+
+  const handleSignOut = () => {
+    setJwt('');
+    setCurrentRole('');
+  };
+
+  const handleNavigation = (itemId: string) => {
+    setCurrentView(itemId);
+  };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-950 via-gray-900 to-gray-950">
-      <div className="absolute inset-0 bg-[url('/grid.svg')] bg-center [mask-image:linear-gradient(180deg,white,rgba(255,255,255,0))]"></div>
-      
-      <div className="relative z-10">
-        <header className="border-b border-gray-800 glass-effect">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
-            <div className="flex items-center justify-between">
-              <div className="flex items-center space-x-4">
-                <Shield className="h-8 w-8 text-blue-500" />
-                <div>
-                  <h1 className="text-2xl font-bold bg-gradient-to-r from-blue-400 to-purple-600 bg-clip-text text-transparent">
-                    Governed RAG
-                  </h1>
-                  <p className="text-sm text-gray-400">Secure AI with Mastra</p>
-                </div>
-              </div>
-              
-              <SecurityIndicator role={currentRole} />
-            </div>
-          </div>
-        </header>
+    <SidebarProvider>
+      <div className="min-h-screen bg-background flex flex-col animated-gradient-subtle">
+        <TopNavigation>
+          <SidebarTrigger />
+          <SecurityIndicator role={currentRole} />
+          <ThemeToggle />
+          <UserMenu
+            currentRole={currentRole}
+            onSignOut={handleSignOut}
+          />
+        </TopNavigation>
 
-        <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-          <div className="space-y-8">
-            <IndexingPanel jwt={jwt || 'anonymous'} />
-            
-            {!jwt ? (
-              <div className="space-y-8">
-                <div className="text-center py-12">
-                  <Lock className="h-16 w-16 text-gray-600 mx-auto mb-4" />
-                  <h2 className="text-3xl font-bold mb-4">Secure Access Required</h2>
-                  <p className="text-gray-400 max-w-2xl mx-auto mb-8">
-                    This system demonstrates enterprise-grade security for RAG applications.
-                    Select a role below to see how different users access different information.
-                  </p>
-                </div>
+        <div className="flex flex-1 overflow-hidden">
+          <AppSidebar
+            currentRole={currentRole}
+            onNavigate={handleNavigation}
+          />
 
-                <AuthPanel onAuth={(token, role) => {
-                  setJwt(token);
-                  setCurrentRole(role);
-                }} />
+          <SidebarInset className="flex flex-col">
+            <div className="flex-1 p-4 sm:p-6 lg:p-8 overflow-auto fluid-container">
+              <div className="w-full max-w-screen-2xl mx-auto space-y-6 sm:space-y-8 fluid-content">
+              {currentView === 'indexing' && (
+                <IndexingPanel jwt={jwt || 'anonymous'} />
+              )}
 
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mt-12">
-                  <div className="glass-effect rounded-lg p-6">
-                    <div className="flex items-center mb-4">
-                      <div className="p-2 bg-green-500/10 rounded-lg">
-                        <Shield className="h-6 w-6 text-green-400" />
-                      </div>
-                      <h3 className="ml-3 font-semibold">Public Access</h3>
-                    </div>
-                    <p className="text-sm text-gray-400">
-                      Basic information available to all authenticated users
+              {currentView === 'home' && !jwt && (
+                <div className="space-y-8">
+                  <div className="content-center py-8 sm:py-12 lg:py-16">
+                    <Lock className="h-12 w-12 sm:h-16 sm:w-16 text-muted-foreground mb-4 sm:mb-6 size-fit" />
+                    <h2 className="text-2xl sm:text-3xl lg:text-4xl font-bold mb-4 sm:mb-6">Secure Access Required</h2>
+                    <p className="text-muted-foreground max-w-2xl mb-6 sm:mb-8 text-sm sm:text-base">
+                      This system demonstrates enterprise-grade security for RAG applications.
+                      Select a role below to see how different users access different information.
                     </p>
                   </div>
 
-                  <div className="glass-effect rounded-lg p-6">
-                    <div className="flex items-center mb-4">
-                      <div className="p-2 bg-yellow-500/10 rounded-lg">
-                        <Shield className="h-6 w-6 text-yellow-400" />
-                      </div>
-                      <h3 className="ml-3 font-semibold">Internal Access</h3>
-                    </div>
-                    <p className="text-sm text-gray-400">
-                      Department-specific information for authorized roles
-                    </p>
+                  <div className="flex items-center justify-center">
+                    <AuthPanel onAuth={(token, role) => {
+                      setJwt(token);
+                      setCurrentRole(role);
+                    }} />
                   </div>
 
-                  <div className="glass-effect rounded-lg p-6">
-                    <div className="flex items-center mb-4">
-                      <div className="p-2 bg-red-500/10 rounded-lg">
-                        <Shield className="h-6 w-6 text-red-400" />
-                      </div>
-                      <h3 className="ml-3 font-semibold">Confidential Access</h3>
-                    </div>
-                    <p className="text-sm text-gray-400">
-                      Sensitive data requiring admin privileges and step-up auth
-                    </p>
+                  <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 mt-8 sm:mt-12 grid-center">
+                    <Card className="hover:shadow-md transition-shadow hover-lift hover-glow neon-glow-cyan">
+                      <CardContent className="p-6">
+                        <div className="flex items-center mb-4">
+                          <div className="p-2 bg-[var(--color-security-public)]/10 rounded-lg size-fit">
+                            <Shield className="h-6 w-6 text-[var(--color-security-public)]" />
+                          </div>
+                          <CardTitle className="ml-3 text-lg">Public Access</CardTitle>
+                          <Badge variant="secondary" className="ml-auto">Basic</Badge>
+                        </div>
+                        <p className="text-sm text-muted-foreground">
+                          Basic information available to all authenticated users
+                        </p>
+                      </CardContent>
+                    </Card>
+
+                    <Card className="hover:shadow-md transition-shadow hover-lift hover-glow neon-glow-green">
+                       <CardContent className="p-6">
+                         <div className="flex items-center mb-4">
+                           <div className="p-2 bg-[var(--color-security-internal)]/10 rounded-lg size-fit">
+                             <Shield className="h-6 w-6 text-[var(--color-security-internal)]" />
+                           </div>
+                           <CardTitle className="ml-3 text-lg">Internal Access</CardTitle>
+                           <Badge variant="secondary" className="ml-auto">Department</Badge>
+                         </div>
+                         <p className="text-sm text-muted-foreground">
+                           Department-specific information for authorized roles
+                         </p>
+                       </CardContent>
+                     </Card>
+
+                    <Card className="hover:shadow-md transition-shadow hover-lift hover-glow neon-glow-purple">
+                       <CardContent className="p-6">
+                         <div className="flex items-center mb-4">
+                           <div className="p-2 bg-[var(--color-security-confidential)]/10 rounded-lg size-fit">
+                             <Shield className="h-6 w-6 text-[var(--color-security-confidential)]" />
+                           </div>
+                           <CardTitle className="ml-3 text-lg">Confidential Access</CardTitle>
+                           <Badge variant="destructive" className="ml-auto">Admin</Badge>
+                         </div>
+                         <p className="text-sm text-muted-foreground">
+                           Sensitive data requiring admin privileges and step-up auth
+                         </p>
+                       </CardContent>
+                     </Card>
                   </div>
                 </div>
-              </div>
-            ) : (
-              <div className="space-y-6">
-                <div className="glass-effect rounded-lg p-4">
-                  <div className="flex items-center justify-between">
-                    <div className="flex items-center space-x-3">
-                      <AlertCircle className="h-5 w-5 text-blue-400" />
-                      <span className="text-sm">
+              )}
+
+              {(currentView === 'home' || currentView === 'chat') && jwt && (
+                <div className="space-y-6">
+                  <Alert>
+                    <CheckCircle className="h-4 w-4" />
+                    <AlertDescription className="flex items-center justify-between">
+                      <span>
                         Logged in as <span className="font-semibold">{currentRole}</span>
                       </span>
-                    </div>
-                    <button
-                      onClick={() => {
-                        setJwt('');
-                        setCurrentRole('');
-                      }}
-                      className="text-sm text-gray-400 hover:text-gray-300 transition-colors"
-                    >
-                      Sign Out
-                    </button>
-                  </div>
+                      <Button
+                        onClick={handleSignOut}
+                        variant="ghost"
+                        size="sm"
+                      >
+                        Sign Out
+                      </Button>
+                    </AlertDescription>
+                  </Alert>
+                  <ChatInterface jwt={jwt} role={currentRole} />
                 </div>
-                
-                <ChatInterface jwt={jwt} role={currentRole} />
+              )}
               </div>
-            )}
-          </div>
-        </main>
+            </div>
+          </SidebarInset>
+        </div>
+
+        <Footer />
       </div>
-    </div>
+    </SidebarProvider>
   );
 }

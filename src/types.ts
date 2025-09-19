@@ -1,16 +1,16 @@
-export type Principal = {
+export interface Principal {
   sub: string;
   roles: string[];
   tenant?: string;
   attrs?: Record<string, unknown>;   // e.g., { stepUp: true }
-};
+}
 
-export type AccessFilter = {
+export interface AccessFilter {
   allowTags: string[];           // ["role:finance.viewer", "tenant:acme"]
   maxClassification: "public" | "internal" | "confidential";
-};
+}
 
-export type Document = {
+export interface Document {
   docId: string;
   versionId: string;
   uri: string;
@@ -19,9 +19,9 @@ export type Document = {
   securityTags: string[];        // denormalized ACL tags
   hash: string;
   createdAt: string;
-};
+}
 
-export type Chunk = {
+export interface Chunk {
   chunkId: string;
   docId: string;
   versionId: string;
@@ -29,4 +29,4 @@ export type Chunk = {
   span: { start: number; end: number };
   meta?: { page?: number; section?: string };
   securityTags: string[];
-};
+}

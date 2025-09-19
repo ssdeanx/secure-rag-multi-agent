@@ -3,11 +3,19 @@ import { z } from "zod";
 
 import { openAIModel } from "../config/openai";
 import { documentContextSchema } from "../schemas/agent-schemas";
+import { createResearchMemory } from '../config/libsql-storage';
+import { google } from "@ai-sdk/google";
+import { logger } from "../config/logger";
+
+logger.info('Initializing Rerank Agent...');
+
+const memory = createResearchMemory();
 
 export const rerankAgent = new Agent({
   id: "rerank",
   name: "rerank",
-  model: openAIModel,
+  model: google('gemini-2.5-flash-lite'),
+  description: "A context reranking agent that reorders provided contexts based on their relevance to the question.",
   instructions: `You are a context reranking agent. Your task is to:
 
 1. Analyze the relevance of each context to the question
@@ -28,7 +36,11 @@ You must respond with a valid JSON object in the following format:
   "contexts": [/* array of reordered context objects */]
 }
 
-Always return valid JSON matching this exact structure.`
+Always return valid JSON matching this exact structure.`,
+  memory,
+  evals: {
+    // Add any evaluation metrics if needed
+  },
 });
 
 export const rerankOutputSchema = z.object({

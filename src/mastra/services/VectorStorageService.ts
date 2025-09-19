@@ -8,6 +8,7 @@ export interface VectorMetadata {
   securityTags: string[]; // Changed to string array for proper Qdrant filtering
   versionId: string;
   timestamp: string;
+  // eslint-disable-next-line @typescript-eslint/member-ordering
   [key: string]: unknown;
 }
 
@@ -32,7 +33,7 @@ export interface StorageResult {
 }
 
 export class VectorStorageService {
-  private defaultOptions: Required<StorageOptions>;
+  private readonly defaultOptions: Required<StorageOptions>;
 
   constructor(options: Partial<StorageOptions> = {}) {
     this.defaultOptions = {
@@ -46,6 +47,7 @@ export class VectorStorageService {
   /**
    * Store vectors in batches to prevent memory issues and handle failures gracefully
    */
+
   async storeVectorsBatched(
     chunks: string[],
     embeddings: number[][],
@@ -68,7 +70,7 @@ export class VectorStorageService {
 
     // Create metadata for all vectors
     const metadata = this.createMetadata(chunks, docId, securityTags, versionId, timestamp);
-    
+
     // Create batches
     const batches = this.createStorageBatches(embeddings, metadata, batchSize);
 
@@ -81,20 +83,20 @@ export class VectorStorageService {
       try {
         await this.storeSingleBatch(batches[i], vectorStore, indexName, opts);
         successfulBatches++;
-        
+        logger.info(`Successfully stored batch ${i + 1} of ${batches.length}`);
         // Small delay between batches to prevent overwhelming the vector store
         if (i < batches.length - 1) {
           await new Promise((resolve) => setTimeout(resolve, 100));
         }
 
       } catch (error) {
-        const errorMsg: string = `Failed to store batch ${i + 1}: ${error instanceof Error ? error.message : String(error)}`;
+        const errorMsg = `Failed to store batch ${i + 1}: ${error instanceof Error ? error.message : String(error)}`;
         logger.error(errorMsg);
         errors.push(errorMsg);
       }
     }
 
-    const totalVectors = successfulBatches * batchSize + 
+    const totalVectors = successfulBatches * batchSize +
       (batches.length > successfulBatches ? batches[batches.length - 1].vectors.length : 0);
 
     return {
@@ -108,6 +110,7 @@ export class VectorStorageService {
   /**
    * Store all vectors at once (for smaller documents)
    */
+
   async storeVectorsAll(
     chunks: string[],
     embeddings: number[][],
@@ -122,18 +125,18 @@ export class VectorStorageService {
     try {
       const ids = chunks.map((_: unknown, i: number) => this.generateVectorId(docId, i));
       const metadata = this.createMetadata(chunks, docId, securityTags, versionId, timestamp);
-      
+
       logger.info(`Upserting ${embeddings.length} vectors for ${docId}`);
-      
+
       // Store vectors in vector database
       const result = await (vectorStore as any).upsert({
-        indexName: process.env.QDRANT_COLLECTION || 'governed_rag',
+        indexName: process.env.QDRANT_COLLECTION ?? 'governed_rag',
         vectors: embeddings,
-        metadata: metadata
+        metadata
       });
-      
+
       logger.info(`Successfully stored ${embeddings.length} chunks for document ${docId}`);
-      
+
       return {
         success: true,
         totalVectors: embeddings.length,
@@ -142,9 +145,9 @@ export class VectorStorageService {
       };
 
     } catch (error) {
-      const errorMsg: string = `Failed to store vectors: ${error instanceof Error ? error.message : String(error)}`;
+      const errorMsg = `Failed to store vectors: ${error instanceof Error ? error.message : String(error)}`;
       logger.error(errorMsg);
-      
+
       return {
         totalVectors: 0,
         batchesProcessed: 0,
@@ -157,6 +160,7 @@ export class VectorStorageService {
   /**
    * Main storage method - automatically selects best strategy based on size
    */
+
   async storeVectors(
     chunks: string[],
     embeddings: number[][],
@@ -180,6 +184,7 @@ export class VectorStorageService {
   /**
    * Store a single batch with retry logic
    */
+
   private async storeSingleBatch(
     batch: StorageBatch,
     vectorStore: unknown,
@@ -199,10 +204,10 @@ export class VectorStorageService {
           metadata: batch.metadata
         });
         return; // Success
-        
+
       } catch (error) {
         lastError = error instanceof Error ? error : new Error(String(error));
-        
+
         if (attempt < maxRetries) {
           logger.warn(`Batch ${batch.batchIndex} attempt ${attempt} failed, retrying in ${retryDelay}ms: ${lastError.message}`);
           await new Promise((resolve) => setTimeout(resolve, retryDelay));
@@ -210,12 +215,13 @@ export class VectorStorageService {
       }
     }
 
-    throw lastError || new Error('Unknown error during batch storage');
+    throw lastError ?? new Error('Unknown error during batch storage');
   }
 
   /**
    * Generate deterministic ID for a vector based on docId and chunk index
    */
+
   private generateVectorId(docId: string, chunkIndex: number): string {
     return `${docId}_chunk_${chunkIndex}`;
   }
@@ -225,6 +231,7 @@ export class VectorStorageService {
    * Note: Mastra QdrantVector doesn't support individual vector deletion,
    * so we skip this step. Upsert will naturally overwrite existing vectors.
    */
+
   async deleteVectorsByDocId(
     docId: string,
     vectorStore: unknown,
@@ -239,6 +246,7 @@ export class VectorStorageService {
   /**
    * Create metadata objects for all chunks
    */
+
   private createMetadata(
     chunks: string[],
     docId: string,
@@ -250,7 +258,7 @@ export class VectorStorageService {
       text: chunk,
       docId,
       chunkIndex: i,
-      securityTags: securityTags, // Store as array for proper Qdrant filtering
+      securityTags, // Store as array for proper Qdrant filtering
       versionId,
       timestamp
     }));
@@ -259,6 +267,7 @@ export class VectorStorageService {
   /**
    * Create storage batches from vectors and metadata
    */
+
   private createStorageBatches(
     vectors: number[][],
     metadata: VectorMetadata[],
@@ -270,7 +279,7 @@ export class VectorStorageService {
     for (let i = 0; i < vectors.length; i += batchSize) {
       const batchVectors = vectors.slice(i, i + batchSize);
       const batchMetadata = metadata.slice(i, i + batchSize);
-      
+
       batches.push({
         vectors: batchVectors,
         metadata: batchMetadata,
@@ -285,6 +294,7 @@ export class VectorStorageService {
   /**
    * Validate storage inputs
    */
+
   validateStorageInputs(
     chunks: string[],
     embeddings: number[][],
@@ -325,16 +335,17 @@ export class VectorStorageService {
   /**
    * Estimate storage operation complexity
    */
+
   estimateStorageComplexity(vectorCount: number, batchSize: number = this.defaultOptions.batchSize): {
     batches: number;
     estimatedTimeMinutes: number;
     recommendation: string;
   } {
     const batches = Math.ceil(vectorCount / batchSize);
-    
+
     // Rough estimate: ~1-2 seconds per batch including delays
     const estimatedTimeMinutes: number = (batches * 1.5) / 60;
-    
+
     let recommendation = "Use default settings";
     if (batches > 50) {
       recommendation = "Consider increasing batch size to 200-500 for better performance";

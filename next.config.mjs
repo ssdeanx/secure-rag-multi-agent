@@ -1,7 +1,7 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   reactStrictMode: true,
-  serverExternalPackages: ['@mastra/core', 'jose'],
+  serverExternalPackages: ['@mastra/core', 'jose', '@mastra/*', 'cheerio', 'vitest', 'zod', 'ai', '@ai-sdk/*'],
   webpack: (config) => {
     config.externals.push({
       'utf-8-validate': 'commonjs utf-8-validate',
@@ -11,4 +11,4 @@ const nextConfig = {
   },
 }
 
-module.exports = nextConfig
+export default nextConfig

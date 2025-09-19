@@ -2,10 +2,13 @@ import * as crypto from "crypto";
 
 import * as fs from "fs/promises";
 
-import { ChunkingService, ChunkingOptions } from "./ChunkingService";
-import { EmbeddingService, EmbeddingOptions } from "./EmbeddingService";
+import type { ChunkingOptions } from "./ChunkingService";
+import { ChunkingService } from "./ChunkingService";
+import type { EmbeddingOptions } from "./EmbeddingService";
+import { EmbeddingService } from "./EmbeddingService";
 import { ValidationService } from "./ValidationService";
-import { VectorStorageService, StorageOptions } from "./VectorStorageService";
+import type { StorageOptions } from "./VectorStorageService";
+import { VectorStorageService } from "./VectorStorageService";
 
 export interface DocumentInput {
   filePath: string;
@@ -48,9 +51,9 @@ export interface ProcessingProgress {
 }
 
 export class DocumentProcessorService {
-  private chunkingService: ChunkingService;
-  private embeddingService: EmbeddingService;
-  private storageService: VectorStorageService;
+  private readonly chunkingService: ChunkingService;
+  private readonly embeddingService: EmbeddingService;
+  private readonly storageService: VectorStorageService;
 
   constructor(options: ProcessingOptions = {}) {
     this.chunkingService = new ChunkingService();
@@ -61,6 +64,7 @@ export class DocumentProcessorService {
   /**
    * Process a single document through the complete pipeline
    */
+
   async processDocument(
     doc: DocumentInput,
     vectorStore: unknown,
@@ -69,22 +73,22 @@ export class DocumentProcessorService {
   ): Promise<IndexingResult> {
     const startTime = Date.now();
     const warnings: string[] = [];
-    
+
     try {
       console.log('DOCUMENT_PROCESSOR_SERVICE', `Starting document processing pipeline for: ${doc.docId}`);
 
       // Stage 1: Read and validate document
       const content = await this.readDocument(doc);
-      
+
       // Stage 2: Chunk the document with optimal sizing
-      const finalChunkingOptions: ChunkingOptions = options.chunking || this.chunkingService.getOptimalChunkSize(content.length);
+      const finalChunkingOptions: ChunkingOptions = options.chunking ?? this.chunkingService.getOptimalChunkSize(content.length);
       const chunkingResult = await this.chunkingService.chunkText(content, finalChunkingOptions);
       console.log('DOCUMENT_PROCESSOR_SERVICE', `Document chunked: ${chunkingResult.totalChunks} chunks using ${chunkingResult.method} (doc length: ${content.length} chars)`)
       console.log(`Document chunked: ${chunkingResult.totalChunks} chunks using ${chunkingResult.method} (doc length: ${content.length} chars)`);
-      
+
       // Add warning for very large documents
       if (chunkingResult.totalChunks > 5000) {
-        const warning: string = `Large document with ${chunkingResult.totalChunks} chunks - processing may take significant time`;
+        const warning = `Large document with ${chunkingResult.totalChunks} chunks - processing may take significant time`;
         warnings.push(warning);
         console.warn(warning);
       }
@@ -131,7 +135,7 @@ export class DocumentProcessorService {
       );
 
       if (!storageResult.success) {
-        const errorMsg: string = `Partial storage failure: ${storageResult.errors.join(', ')}`;
+        const errorMsg = `Partial storage failure: ${storageResult.errors.join(', ')}`;
         if (storageResult.totalVectors === 0) {
           throw new Error(errorMsg);
         }
@@ -153,7 +157,7 @@ export class DocumentProcessorService {
     } catch (error) {
       const processingTime: number = Date.now() - startTime;
       console.error(`Error processing document ${doc.docId}:`, error);
-      
+
       return {
         docId: doc.docId,
         status: "failed",
@@ -167,6 +171,7 @@ export class DocumentProcessorService {
   /**
    * Process multiple documents with progress tracking
    */
+
   async processDocuments(
     docs: DocumentInput[],
     vectorStore: unknown,
@@ -174,13 +179,13 @@ export class DocumentProcessorService {
     progressCallback?: (progress: ProcessingProgress) => void
   ): Promise<IndexingResult[]> {
     const results: IndexingResult[] = [];
-    
+
     console.log(`Starting batch processing of ${docs.length} documents`);
 
     for (let i = 0; i < docs.length; i++) {
       const doc = docs[i];
       const progress = Math.round(((i) / docs.length) * 100);
-      
+
       if (progressCallback) {
         progressCallback({
           stage: 'reading',
@@ -216,21 +221,22 @@ export class DocumentProcessorService {
   /**
    * Read and validate document content
    */
+
   private async readDocument(doc: DocumentInput): Promise<string> {
     try {
       const content: string = await fs.readFile(doc.filePath, "utf-8");
-      
+
       if (!content || content.trim().length === 0) {
         throw new Error(`Document is empty: ${doc.filePath}`);
       }
-      
+
       // Validate content isn't too small to be meaningful
       if (content.length < 50) {
         console.warn(`Very small document (${content.length} chars): ${doc.docId}`);
       }
-      
+
       return content;
-      
+
     } catch (error) {
       if (error instanceof Error && (error as NodeJS.ErrnoException).code === 'ENOENT') {
         throw new Error(`Document file not found: ${doc.filePath}`);
@@ -242,27 +248,29 @@ export class DocumentProcessorService {
   /**
    * Extract security tags for document classification
    */
+
   private extractSecurityTags(
     classification: string,
     allowedRoles: string[],
     tenant: string
   ): string[] {
     const tags: string[] = [`classification:${classification}`];
-    
+
     allowedRoles.forEach((role: string) => {
       tags.push(`role:${role}`);
     });
-    
+
     if (tenant) {
       tags.push(`tenant:${tenant}`);
     }
-    
+
     return tags;
   }
 
   /**
    * Get processing estimates for a set of documents
    */
+
   async getProcessingEstimate(
     docs: DocumentInput[],
     options: ProcessingOptions = {}
@@ -275,14 +283,14 @@ export class DocumentProcessorService {
   }> {
     console.log('DOCUMENT_PROCESSOR_SERVICE', `Analyzing ${docs.length} documents for processing estimates`);
     console.log(`Analyzing ${docs.length} documents for processing estimates`);
-    
+
     let totalSize = 0;
     const recommendations: string[] = [];
-    
+
     // Sample some documents to estimate average size
     const sampleSize = Math.min(5, docs.length);
     const sampledDocs = docs.slice(0, sampleSize);
-    
+
     for (const doc of sampledDocs) {
       try {
         const content: string = await this.readDocument(doc);
@@ -291,47 +299,47 @@ export class DocumentProcessorService {
         recommendations.push(`Document ${doc.docId} may have issues: ${error instanceof Error ? error.message : String(error)}`);
       }
     }
-    
+
     const avgDocSize: number = totalSize / sampledDocs.length;
     const totalEstimatedSize: number = avgDocSize * docs.length;
     const EMBEDDING_DIMENSION = 1536; // text-embedding-3-small
     // Get optimal chunking settings
     const optimalChunking = this.chunkingService.getOptimalChunkSize(avgDocSize);
-    const tokenSize: number = optimalChunking.tokenSize || 4096;
+    const tokenSize: number = optimalChunking.tokenSize ?? 8196;
 
     // Estimate chunks (rough approximation)
     const estimatedChunks = Math.ceil(totalEstimatedSize / (tokenSize * 4)); // 4 chars per token approx
     // Estimate embedding batches
-    const embeddingBatchSize: number = options.embedding?.batchSize || 100;
+    const embeddingBatchSize: number = options.embedding?.batchSize ?? 100;
     const estimatedEmbeddingBatches = Math.ceil(estimatedChunks / embeddingBatchSize);
 
     // Estimate storage batches
-    const storageBatchSize: number = options.storage?.batchSize || 100;
+    const storageBatchSize: number = options.storage?.batchSize ?? 100;
     const estimatedStorageBatches = Math.ceil(estimatedChunks / storageBatchSize);
-    
+
     const totalBatches = estimatedEmbeddingBatches + estimatedStorageBatches;
     // Estimate time (very rough - ~2 seconds per batch)
     const estimatedTimeMinutes = Math.ceil((totalBatches * 2) / 60);
-    
+
     // Estimate memory usage
-    const embeddingDimension = 1536; // text-embedding-3-small
+    const embeddingDimension = EMBEDDING_DIMENSION;
     const memoryEstimateMB = Math.ceil(
       (estimatedChunks * embeddingDimension * 4) / (1024 * 1024)
     );
-    
+
     // Generate recommendations
     if (estimatedChunks > 10000) {
       recommendations.push("Very large batch - consider processing in smaller groups");
     }
-    
+
     if (memoryEstimateMB > 1000) {
       recommendations.push("High memory usage expected - use smaller batch sizes");
     }
-    
+
     if (estimatedTimeMinutes > 60) {
       recommendations.push("Long processing time expected - consider parallel processing");
     }
-    
+
     return {
       estimatedChunks,
       estimatedBatches: totalBatches,

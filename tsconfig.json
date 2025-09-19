@@ -33,7 +33,14 @@
     "app/**/*",
     "components/**/*",
     "lib/**/*",
-    ".next/types/**/*.ts"
+    ".next/types/**/*.ts",
+    "next-env.d.ts",
+    "vitest.config.ts",
+    "tests/**/*",
+    "testsSetup.ts",
+    "eslint.config.js",
+    "prettier.config.js",
+    "cedar/**/*",
   ],
   "exclude": [
     "node_modules"

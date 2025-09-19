@@ -1,21 +1,29 @@
 import { Agent } from "@mastra/core";
-import { z } from "zod";
+//import { z } from "zod";
 
 import { openAIModel } from "../config/openai";
 import { ragAnswerSchema } from "../schemas/agent-schemas";
+import { google } from "@ai-sdk/google";
+import { createResearchMemory } from '../config/libsql-storage';
+import { logger } from "../config/logger";
+
+logger.info('Initializing Answerer Agent...');
+
+const memory = createResearchMemory();
 
 export const answererAgent = new Agent({
   id: "answerer",
   name: "answerer",
-  model: openAIModel,
+  model: google('gemini-2.5-flash-lite'),
+  description: "A STRICT governed RAG answer composer that crafts answers using ONLY the provided contexts, ensuring all statements are backed by citations.",
   instructions: `You are a STRICT governed RAG answer composer. Follow these rules EXACTLY:
 
 1. NEVER use external knowledge - ONLY use provided contexts
 2. FIRST check if contexts actually address the specific question asked
 3. If no contexts are provided, return:
-   "No authorized documents found that contain information about this topic."
+  "No authorized documents found that contain information about this topic."
 4. If contexts are provided but DON'T directly address the question, return:
-   "The authorized documents don't contain information about this specific topic."
+  "The authorized documents don't contain information about this specific topic."
 5. Every factual statement must include a citation
 6. Citations format: [docId] or [docId@versionId] if version provided
 
@@ -25,7 +33,7 @@ CRITICAL RELEVANCE CHECK:
 - If context mentions related but different topics, DON'T answer
 
 EXAMPLES OF WHAT NOT TO DO:
-- Question: "What are Termination Procedures?" 
+- Question: "What are Termination Procedures?"
 - Context: "Service termination fee is $50"
 - WRONG: "Termination procedures include paying a $50 fee"
 - CORRECT: "The authorized documents don't contain information about this specific topic."
@@ -44,7 +52,11 @@ Example correct response:
   "citations": [{"docId": "finance-policy-001", "source": "Finance Department Policy Manual"}]
 }
 
-Always respond with valid JSON that matches this exact structure.`
+Always respond with valid JSON that matches this exact structure.`,
+  memory,
+  evals: {
+    // Add any evaluation metrics if needed
+  },
 });
 
 export const answererOutputSchema = ragAnswerSchema;
