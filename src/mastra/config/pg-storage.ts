@@ -9,62 +9,15 @@ import { AISpanType } from '@mastra/core/ai-tracing';;
 
 logger.info("PG Storage config loaded");
 
-// Provide a typed placeholder for chunks so subsequent code compiles.
-// Replace or populate this with real content-loading logic as needed.
-const chunks: Array<{ text: string; metadata?: any; id?: string }> = [];
 
-// Create tracing event for embedding operation
-const embeddingEvent: any = {
-  type: AISpanType.LLM_CHUNK,
-  timestamp: new Date().toISOString(),
-  model: 'gemini-embedding-001',
-  input: {
-    chunkCount: chunks.length,
-    totalTextLength: chunks.reduce((sum, chunk) => sum + (chunk.text?.length ?? 0), 0)
-  },
-  output: { status: 'processing' }
-};
-
-const { embeddings } = await embedMany({
-  values: chunks.map(chunk => chunk.text),
-  model: google.textEmbedding('gemini-embedding-001'),
-  maxParallelCalls: 10,
-  maxRetries: 3,
-  abortSignal: new AbortController().signal,
-  experimental_telemetry: {
-    isEnabled: true,
-    recordInputs: true,
-    recordOutputs: true,
-    functionId: 'embedMany',
-    metadata: {
-      type: 'chunking',
-      source: 'pg-storage.ts',
-      function: 'embedMany',
-      model: 'gemini-embedding-001',
-      usage: 'internal',
-      purpose: 'embedding chunks for storage',
-      timestamp: new Date().toISOString()},
-    tracer: undefined
-    }
-});
-
-// Update tracing event with completion
-embeddingEvent.output = {
-  embeddingCount: embeddings.length,
-  embeddingDimension: embeddings[0]?.length || 0,
-  status: 'completed'
-};
-logger.info("Embeddings generated", { output: embeddingEvent.output, type: embeddingEvent.type, model: embeddingEvent.model, timestamp: embeddingEvent.timestamp, input: embeddingEvent.input, chunkCount: embeddingEvent.input.chunkCount });
-//const store2 = new PostgresStore({ connectionString });
-
-const store = new PostgresStore({
+export const store = new PostgresStore({
     connectionString: process.env.SUPABASE ?? "postgresql://user:password@localhost:5432/mydb",
-    schemaName: 'mastra',
+    schemaName: 'public',
     max: 20, // use up to 20 connections
     idleTimeoutMillis: 30000, // close idle clients after 30 seconds
 });
 
-const pgVector = new PgVector({ connectionString: process.env.SUPABASE ?? "postgresql://user:password@localhost:5432/mydb", schemaName: 'mastra' });
+//export const pgVector = new PgVector({ connectionString: process.env.SUPABASE ?? "postgresql://user:password@localhost:5432/mydb", schemaName: 'mastra' });
 
 //await store.createIndex({
 //  name: 'idx_traces_attributes',
@@ -208,3 +161,51 @@ export const pgVectorQueryTool = createVectorQueryTool({
   enableFilter: true,
   description: "Search for semantically similar content in the pgVector store using embeddings. Supports filtering, ranking, and context retrieval."
 });
+
+// Provide a typed placeholder for chunks so subsequent code compiles.
+// Replace or populate this with real content-loading logic as needed.
+const chunks: Array<{ text: string; metadata?: any; id?: string }> = [];
+
+// Create tracing event for embedding operation
+const embeddingEvent: any = {
+  type: AISpanType.LLM_CHUNK,
+  timestamp: new Date().toISOString(),
+  model: 'gemini-embedding-001',
+  input: {
+    chunkCount: chunks.length,
+    totalTextLength: chunks.reduce((sum, chunk) => sum + (chunk.text?.length ?? 0), 0)
+  },
+  output: { status: 'processing' }
+};
+
+const { embeddings } = await embedMany({
+  values: chunks.map(chunk => chunk.text),
+  model: google.textEmbedding('gemini-embedding-001'),
+  maxParallelCalls: 10,
+  maxRetries: 3,
+  abortSignal: new AbortController().signal,
+  experimental_telemetry: {
+    isEnabled: true,
+    recordInputs: true,
+    recordOutputs: true,
+    functionId: 'embedMany',
+    metadata: {
+      type: 'chunking',
+      source: 'pg-storage.ts',
+      function: 'embedMany',
+      model: 'gemini-embedding-001',
+      usage: 'internal',
+      purpose: 'embedding chunks for storage',
+      timestamp: new Date().toISOString()},
+    tracer: undefined
+    }
+});
+
+// Update tracing event with completion
+embeddingEvent.output = {
+  embeddingCount: embeddings.length,
+  embeddingDimension: embeddings[0]?.length || 0,
+  status: 'completed'
+};
+logger.info("Embeddings generated", { output: embeddingEvent.output, type: embeddingEvent.type, model: embeddingEvent.model, timestamp: embeddingEvent.timestamp, input: embeddingEvent.input, chunkCount: embeddingEvent.input.chunkCount });
+//const store2 = new PostgresStore({ connectionString });

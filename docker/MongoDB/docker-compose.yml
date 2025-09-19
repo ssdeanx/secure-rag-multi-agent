@@ -1,0 +1,30 @@
+version: '3.8'
+
+services:
+  mongo-vector-db:
+    image: mongo:7.0.0 # Use a version that supports vector search
+    container_name: governed-rag-mongo
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongo_data:/data/db
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "mongosh", "--eval", "db.runCommand({ ping: 1 }).ok"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+    environment:
+      - MONGO_INITDB_ROOT_USERNAME=admin
+      - MONGO_INITDB_ROOT_PASSWORD=password
+      - MONGO_INITDB_DATABASE=devdb
+
+volumes:
+  mongo_data:
+    driver: local
+
+networks:
+  default:
+    name: governed-rag-network
+    driver: bridge

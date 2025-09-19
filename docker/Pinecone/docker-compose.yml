@@ -1,0 +1,27 @@
+version: '3.8'
+
+services:
+  pinecone:
+    image: pinecone/pinecone-local:latest
+    container_name: governed-rag-pinecone-local
+    ports:
+      - "8000:8000"
+    environment:
+      # These values are for demonstration purposes and are not used by the local image, but can be helpful for consistency
+      - PINECONE_API_KEY=my-api-key
+      - PINECONE_ENVIRONMENT=us-east-1
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8000/ping"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+    restart: unless-stopped
+
+networks:
+  default:
+    name: governed-rag-network
+    driver: bridge
+
+volumes:
+  pinecone_data:
+    driver: local

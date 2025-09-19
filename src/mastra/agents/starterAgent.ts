@@ -13,7 +13,9 @@ logger.info('Initializing Starter Agent...');
  * define your agent's behavior and capabilities.
  */
 export const starterAgent = new Agent({
+  id: 'starter',
   name: 'Starter Agent',
+  description: 'A basic starter agent that assists users with general questions and tasks.',
   instructions: `
 <role>
 You are a helpful AI assistant. Your primary function is to assist users with their questions and tasks.

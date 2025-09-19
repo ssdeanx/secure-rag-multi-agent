@@ -1,7 +1,9 @@
 import { registerApiRoute } from '@mastra/core/server';
-import { ChatInputSchema, ChatOutput, chatWorkflow } from './workflows/chatWorkflow';
+import type { ChatOutput} from './workflows/chatWorkflow';
+import { ChatInputSchema, chatWorkflow } from './workflows/chatWorkflow';
 import { zodToJsonSchema } from 'zod-to-json-schema';
 import { createSSEStream } from '../utils/streamUtils';
+import { logger } from "./config/logger";
 
 // Helper function to convert Zod schema to OpenAPI schema
 function toOpenApiSchema(schema: Parameters<typeof zodToJsonSchema>[0]) {
@@ -41,14 +43,14 @@ export const apiRoutes = [
 
         if (result.status === 'success') {
           // TODO: Add any response transformation or logging here
-          console.log('Sending response', JSON.stringify(result.result, null, 2));
-          return c.json<ChatOutput>(result.result as ChatOutput);
+          logger.info('Sending response', { response: result.result });
+          return c.json<ChatOutput>(result.result);
         }
 
         // TODO: Handle other workflow statuses if needed
         throw new Error('Workflow did not complete successfully');
       } catch (error) {
-        console.error(error);
+        logger.error('Chat API error', { error: error instanceof Error ? error.message : String(error) });
         return c.json({ error: error instanceof Error ? error.message : 'Internal error' }, 500);
       }
     },
@@ -83,11 +85,11 @@ export const apiRoutes = [
 
           if (result.status !== 'success') {
             // TODO: Handle workflow errors appropriately
-            throw new Error(`Workflow failed: ${result.status}`);
+            logger.error(`Workflow failed: ${result.status}`);
           }
         });
       } catch (error) {
-        console.error(error);
+        logger.error('Chat stream API error', { error: error instanceof Error ? error.message : String(error) });
         return c.json({ error: error instanceof Error ? error.message : 'Internal error' }, 500);
       }
     },

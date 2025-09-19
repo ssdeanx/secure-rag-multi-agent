@@ -40,7 +40,8 @@ export const vectorQueryTool = createTool({
           requestId = requestIdMatch[0];
         }
       } catch (e) {
-        // Fallback to generating our own request ID
+        // Log the parsing error and fallback to generating our own request ID
+        logger.warn('Failed to extract requestId from context, generating fallback requestId', { error: e });
         requestId = `TOOL-${Date.now()}`;
       }
 

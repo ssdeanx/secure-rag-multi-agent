@@ -21,7 +21,7 @@ export const evaluateResultTool = createTool({
   }),
   execute: async ({ context, mastra, tracingContext }) => {
     const evalSpan = tracingContext?.currentSpan?.createChildSpan({
-      type: AISpanType.GENERIC,
+      type: AISpanType.TOOL_CALL,
       name: 'evaluate_result',
       input: { query: context.query, url: context.result.url, existingUrlsCount: context.existingUrls?.length ?? 0 }
     });

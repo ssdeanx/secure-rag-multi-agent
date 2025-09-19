@@ -167,6 +167,12 @@ docker-compose up -d
 
 This starts Qdrant at `http://localhost:6333`. Verify with:
 
+### QdrantUI
+
+[http://localhost:6333/dashboard](http://localhost:6333/dashboard)
+
+Or verify with:
+
 ```bash
 curl http://localhost:6333/collections
 ```

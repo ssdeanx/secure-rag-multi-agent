@@ -1,0 +1,21 @@
+version: '3.8'
+
+services:
+  lancedb:
+    image: lancedb/lancedb:latest
+    container_name: governed-rag-lancedb
+    ports:
+      - "8000:8000" # LanceDB server port
+    volumes:
+      - lancedb_data:/data/lancedb
+    command: ["lancedb", "server", "--port", "8000", "--host", "0.0.0.0"]
+    restart: unless-stopped
+
+volumes:
+  lancedb_data:
+    driver: local
+
+networks:
+  default:
+    name: governed-rag-network
+    driver: bridge

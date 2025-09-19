@@ -34,7 +34,7 @@ export const readDataFileTool = createTool({
     outputSchema: z.string().describe("The content of the file as a string."),
     execute: async ({ context, tracingContext }) => {
         const readSpan = tracingContext?.currentSpan?.createChildSpan({
-            type: AISpanType.GENERIC,
+            type: AISpanType.TOOL_CALL,
             name: 'read_data_file',
             input: { fileName: context.fileName }
         });
@@ -69,7 +69,7 @@ export const writeDataFileTool = createTool({
     outputSchema: z.string().describe("A confirmation string indicating success."),
     execute: async ({ context, tracingContext }) => {
         const writeSpan = tracingContext?.currentSpan?.createChildSpan({
-            type: AISpanType.GENERIC,
+            type: AISpanType.TOOL_CALL,
             name: 'write_data_file',
             input: { fileName: context.fileName, contentLength: context.content.length }
         });
@@ -109,7 +109,7 @@ export const deleteDataFileTool = createTool({
     outputSchema: z.string().describe("A confirmation string indicating success."),
     execute: async ({ context, tracingContext }) => {
         const deleteSpan = tracingContext?.currentSpan?.createChildSpan({
-            type: AISpanType.GENERIC,
+            type: AISpanType.TOOL_CALL,
             name: 'delete_data_file',
             input: { fileName: context.fileName }
         });
@@ -142,7 +142,7 @@ export const listDataDirTool = createTool({
     outputSchema: z.array(z.string()).describe("An array of file and directory names."),
     execute: async ({ context, tracingContext }) => {
         const listSpan = tracingContext?.currentSpan?.createChildSpan({
-            type: AISpanType.GENERIC,
+            type: AISpanType.TOOL_CALL,
             name: 'list_data_directory',
             input: { dirPath: context.dirPath ?? 'docs/data' }
         });
@@ -175,7 +175,7 @@ export const copyDataFileTool = createTool({
     outputSchema: z.string().describe("A confirmation string indicating success."),
     execute: async ({ context, tracingContext }) => {
         const copySpan = tracingContext?.currentSpan?.createChildSpan({
-            type: AISpanType.GENERIC,
+            type: AISpanType.TOOL_CALL,
             name: 'copy_data_file',
             input: { sourceFile: context.sourceFile, destFile: context.destFile }
         });
@@ -212,7 +212,7 @@ export const moveDataFileTool = createTool({
     outputSchema: z.string().describe("A confirmation string indicating success."),
     execute: async ({ context, tracingContext }) => {
         const moveSpan = tracingContext?.currentSpan?.createChildSpan({
-            type: AISpanType.GENERIC,
+            type: AISpanType.TOOL_CALL,
             name: 'move_data_file',
             input: { sourceFile: context.sourceFile, destFile: context.destFile }
         });
@@ -250,7 +250,7 @@ export const searchDataFilesTool = createTool({
     outputSchema: z.array(z.string()).describe("An array of matching file paths."),
     execute: async ({ context, tracingContext }) => {
         const searchSpan = tracingContext?.currentSpan?.createChildSpan({
-            type: AISpanType.GENERIC,
+            type: AISpanType.TOOL_CALL,
             name: 'search_data_files',
             input: { pattern: context.pattern, searchContent: context.searchContent, dirPath: context.dirPath }
         });
@@ -320,7 +320,7 @@ export const getDataFileInfoTool = createTool({
     }).describe("File metadata information."),
     execute: async ({ context, tracingContext }) => {
         const infoSpan = tracingContext?.currentSpan?.createChildSpan({
-            type: AISpanType.GENERIC,
+            type: AISpanType.TOOL_CALL,
             name: 'get_data_file_info',
             input: { fileName: context.fileName }
         });
@@ -361,7 +361,7 @@ export const createDataDirTool = createTool({
     outputSchema: z.string().describe("A confirmation string indicating success."),
     execute: async ({ context, tracingContext }) => {
         const createDirSpan = tracingContext?.currentSpan?.createChildSpan({
-            type: AISpanType.GENERIC,
+            type: AISpanType.TOOL_CALL,
             name: 'create_data_directory',
             input: { dirPath: context.dirPath }
         });
@@ -393,7 +393,7 @@ export const removeDataDirTool = createTool({
     outputSchema: z.string().describe("A confirmation string indicating success."),
     execute: async ({ context, tracingContext }) => {
         const removeDirSpan = tracingContext?.currentSpan?.createChildSpan({
-            type: AISpanType.GENERIC,
+            type: AISpanType.TOOL_CALL,
             name: 'remove_data_directory',
             input: { dirPath: context.dirPath }
         });
@@ -431,7 +431,7 @@ export const archiveDataTool = createTool({
     outputSchema: z.string().describe("A confirmation string indicating success."),
     execute: async ({ context, tracingContext }) => {
         const archiveSpan = tracingContext?.currentSpan?.createChildSpan({
-            type: AISpanType.GENERIC,
+            type: AISpanType.TOOL_CALL,
             name: 'archive_data',
             input: { sourcePath: context.sourcePath, archiveName: context.archiveName }
         });
@@ -473,7 +473,7 @@ export const backupDataTool = createTool({
     outputSchema: z.string().describe("A confirmation string indicating success with backup path."),
     execute: async ({ context, tracingContext }) => {
         const backupSpan = tracingContext?.currentSpan?.createChildSpan({
-            type: AISpanType.GENERIC,
+            type: AISpanType.TOOL_CALL,
             name: 'backup_data',
             input: { sourcePath: context.sourcePath, backupDir: context.backupDir ?? 'backups' }
         });

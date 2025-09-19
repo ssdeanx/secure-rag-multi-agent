@@ -274,7 +274,7 @@ export const webScraperTool = createTool({
   outputSchema: webScraperOutputSchema,
   execute: async ({ context, tracingContext }) => {
     const scrapeSpan = tracingContext?.currentSpan?.createChildSpan({
-      type: AISpanType.GENERIC,
+      type: AISpanType.TOOL_CALL,
       name: 'web_scrape',
       input: { url: context.url, selector: context.selector, saveMarkdown: context.saveMarkdown, extractAttributesCount: context.extractAttributes?.length ?? 0 }
     });
@@ -483,7 +483,7 @@ export const batchWebScraperTool = createTool({
   outputSchema: batchWebScraperOutputSchema,
   execute: async ({ context, tracingContext }) => {
     const batchSpan = tracingContext?.currentSpan?.createChildSpan({
-      type: AISpanType.GENERIC,
+      type: AISpanType.TOOL_CALL,
       name: 'batch_web_scrape',
       input: {
         urlCount: context.urls.length,
@@ -660,7 +660,7 @@ export const siteMapExtractorTool = createTool({
   outputSchema: siteMapExtractorOutputSchema,
   execute: async ({ context, tracingContext }) => {
     const mapSpan = tracingContext?.currentSpan?.createChildSpan({
-      type: AISpanType.GENERIC,
+      type: AISpanType.TOOL_CALL,
       name: 'site_map_extraction',
       input: {
         url: context.url,
@@ -845,7 +845,7 @@ export const linkExtractorTool = createTool({
   outputSchema: linkExtractorOutputSchema,
   execute: async ({ context, tracingContext }) => {
     const linkSpan = tracingContext?.currentSpan?.createChildSpan({
-      type: AISpanType.GENERIC,
+      type: AISpanType.TOOL_CALL,
       name: 'link_extraction',
       input: {
         url: context.url,
@@ -1019,7 +1019,7 @@ export const htmlToMarkdownTool = createTool({
   outputSchema: htmlToMarkdownOutputSchema,
   execute: async ({ context, tracingContext }) => {
     const convertSpan = tracingContext?.currentSpan?.createChildSpan({
-      type: AISpanType.GENERIC,
+      type: AISpanType.TOOL_CALL,
       name: 'html_to_markdown',
       input: {
         htmlLength: context.html.length,
@@ -1117,7 +1117,7 @@ export const listScrapedContentTool = createTool({
   outputSchema: listScrapedContentOutputSchema,
   execute: async ({ context, tracingContext }) => {
     const listSpan = tracingContext?.currentSpan?.createChildSpan({
-      type: AISpanType.GENERIC,
+      type: AISpanType.TOOL_CALL,
       name: 'list_scraped_content',
       input: { pattern: context.pattern, includeMetadata: context.includeMetadata ?? true }
     });
@@ -1272,7 +1272,7 @@ export const contentCleanerTool = createTool({
   outputSchema: contentCleanerOutputSchema,
   execute: async ({ context, tracingContext }) => {
     const cleanSpan = tracingContext?.currentSpan?.createChildSpan({
-      type: AISpanType.GENERIC,
+      type: AISpanType.TOOL_CALL,
       name: 'content_cleaning',
       input: {
         htmlLength: context.html.length,

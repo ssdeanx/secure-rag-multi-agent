@@ -63,6 +63,10 @@ export const STORAGE_CONFIG = {
   }
 } as const;
 
+export const sqlstore = new LibSQLStore({
+      url: process.env.DATABASE_URL ?? STORAGE_CONFIG.DEFAULT_DATABASE_URL,
+      authToken: process.env.DATABASE_AUTH_TOKEN ?? ''
+});
 /**
  * LibSQL Storage Configuration
  */
@@ -80,20 +84,6 @@ export const createLibSQLStore = (tracingContext?: { context?: any; runtimeConte
       hasAuthToken: !!process.env.DATABASE_AUTH_TOKEN
     }
   });
-
-  // Use unused tracing imports for enhanced tracing
-  const initEvent: AITracingEvent = {
-    type: AITracingEventType.SPAN_ENDED,
-    exportedSpan: {} as AnyExportedAISpan
-  };
-
-  // Use LLMGenerationAttributes for enhanced tracing
-  const generationAttrs: LLMGenerationAttributes = {
-    model: 'gemini-embedding-001'
-  };
-
-  // Use AITracingExporter for enhanced tracing
-  const exporter: AITracingExporter = {} as AITracingExporter;
 
   try {
     const store = new LibSQLStore({
@@ -378,7 +368,7 @@ export const searchSimilarContent = async (
  */
 export const createResearchMemory = () => {
   return new Memory({
-    storage: createLibSQLStore(),
+    storage: sqlstore,
     vector: createLibSQLVectorStore(), // TODO: Pass tracingContext
     embedder: google.textEmbedding("gemini-embedding-001"),
     options: {
@@ -488,7 +478,7 @@ export async function upsertVectors(
 
   // Create child span for upsert operation
   const upsertSpan = tracingContext?.currentSpan?.createChildSpan({
-    type: AISpanType.GENERIC,
+    type: AISpanType.TOOL_CALL,
     name: 'vector_upsert_operation',
     input: {
       indexName,
@@ -578,16 +568,16 @@ export async function createVectorIndex(
 ): Promise<{ success: boolean; error?: string }> {
   const startTime = Date.now();
 
-  // Create child span for index creation
-  const indexSpan = tracingContext?.currentSpan?.createChildSpan({
-    type: AISpanType.GENERIC,
-    name: 'vector_index_creation',
-    input: {
-      indexName,
-      dimension,
-      metric
-    }
-  } as TracingSpanInput);
+// Create child span for index creation
+const indexSpan = tracingContext?.currentSpan?.createChildSpan({
+  type: AISpanType.TOOL_CALL,
+  name: 'vector_index_creation',
+  input: {
+    indexName,
+    dimension,
+    metric,
+  }
+} as TracingSpanInput);
 
   try {
     const vectorStore = createLibSQLVectorStore(tracingContext);
@@ -596,9 +586,7 @@ export async function createVectorIndex(
       dimension,
       metric,
     });
-
     const processingTime = Date.now() - startTime;
-
     // Update span with success
     indexSpan?.end({
       output: {
@@ -665,7 +653,7 @@ export async function queryVectors(
 
   // Create child span for query operation
   const querySpan = tracingContext?.currentSpan?.createChildSpan({
-    type: AISpanType.GENERIC,
+    type: AISpanType.TOOL_CALL,
     name: 'vector_query_operation',
     input: {
       indexName,

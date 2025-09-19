@@ -26,7 +26,7 @@ const openrouter = createOpenRouter({
     apiKey: process.env.OPENROUTER_API_KEY,
 })
 
-export const assistant = new Agent({
+export const assistantAgent = new Agent({
     id: "assistant",
     name: "assistant",
     description: 'A helpful assistant.',

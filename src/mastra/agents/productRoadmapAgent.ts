@@ -20,6 +20,7 @@ const queryTool = createVectorQueryTool({
 });
 
 export const productRoadmapAgent = new Agent({
+  id: 'roadmap',
   name: 'Product Roadmap Agent',
   instructions: `
 <role>

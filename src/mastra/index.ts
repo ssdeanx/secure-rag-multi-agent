@@ -12,19 +12,46 @@ import { governedRagIndex } from "./workflows/governed-rag-index.workflow";
 import { MastraJwtAuth } from '@mastra/auth';
 import { LangfuseExporter } from "./ai-tracing";
 import { SamplingStrategyType } from "@mastra/core/ai-tracing";
+import { store } from './config/pg-storage'
+import { sqlstore } from "./config/libsql-storage";
+import { researchAgent } from "./agents/researchAgent";
+import { starterAgent } from "./agents/starterAgent";
+import { assistantAgent } from "./agents/assistant";
+import { researchWorkflow } from "./workflows/researchWorkflow";
+import { reportAgent } from "./agents/reportAgent";
+import { copywriterAgent } from "./agents/copywriterAgent";
+import { evaluationAgent } from "./agents/evaluationAgent";
+import { learningExtractionAgent } from "./agents/learningExtractionAgent";
+import { productRoadmapAgent } from "./agents/productRoadmapAgent";
+import { editorAgent } from "./agents/editorAgent";
+import { generateReportWorkflow } from "./workflows/generateReportWorkflow";
 
 export const mastra = new Mastra({
-  storage: new LibSQLStore({
-    url: 'file: mastra.db',
-  }),
+  storage: sqlstore,
   logger,
   agents: {
     retrieve: retrieveAgent,
     rerank: rerankAgent,
     answerer: answererAgent,
-    verifier: verifierAgent
+    verifier: verifierAgent,
+    research: researchAgent,
+    starter: starterAgent,
+    assistant: assistantAgent,
+    researchwork: researchAgent,
+    report: reportAgent,
+    copywriter: copywriterAgent,
+    evaluation: evaluationAgent,
+    learning: learningExtractionAgent,
+    roadmap: productRoadmapAgent,
+    editor: editorAgent,
+    // Add more agents here
   },
-  workflows: { 'governed-rag-index': governedRagIndex, 'governed-rag-answer': governedRagAnswer },
+  workflows: {
+    'governed-rag-index': governedRagIndex,
+    'governed-rag-answer': governedRagAnswer,
+    'research-workflow': researchWorkflow,
+    'generate-report-workflow': generateReportWorkflow
+  },
   vectors: {
     qdrant: new QdrantVector({
       url: process.env.QDRANT_URL!,
