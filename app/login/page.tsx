@@ -8,7 +8,7 @@ type AuthResponse = Record<string, any>;
 function extractToken(data: AuthResponse) {
   // try common locations for a token
   return (
-    data?.token || data?.accessToken || data?.jwt || data?.data?.token || data?.data?.accessToken || null
+    (data?.token ?? data?.accessToken ?? data?.jwt ?? (data?.data?.token) ?? data?.data?.accessToken) ?? null
   );
 }
 
@@ -39,7 +39,7 @@ export default function LoginPage() {
       const data = await res.json();
 
       if (!res.ok) {
-        setError(data?.message || data?.error || 'Authentication failed');
+        setError((data?.message ?? data?.error) ?? 'Authentication failed');
         setLoading(false);
         return;
       }
@@ -61,7 +61,7 @@ export default function LoginPage() {
 
       setLoading(false);
     } catch (err: any) {
-      setError(err?.message || String(err));
+      setError(err?.message ?? String(err));
       setLoading(false);
     }
   }
@@ -117,7 +117,7 @@ export default function LoginPage() {
               </select>
             </div>
 
-            {error && <div role="alert" className="text-sm text-destructive">{error}</div>}
+            {(error !== null) && <div role="alert" className="text-sm text-destructive">{error}</div>}
 
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-2">

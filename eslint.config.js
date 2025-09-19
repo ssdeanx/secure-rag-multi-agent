@@ -4,13 +4,13 @@ import tsparser from '@typescript-eslint/parser'
 import tsdoc from 'eslint-plugin-tsdoc'
 import jsdoc from 'eslint-plugin-jsdoc'
 import prettierConfig from 'eslint-config-prettier'
-import nextPlugin from 'eslint-config-next'
 import reactPlugin from 'eslint-plugin-react'
+
+
 
 export default [
   js.configs.recommended,
   prettierConfig,
-  nextPlugin,
   {
     files: ['**/*.ts', '**/*.tsx', '**/*.js', '**/*.jsx'],
     plugins: {
@@ -23,7 +23,7 @@ export default [
       parser: tsparser,
       parserOptions: {
         ecmaVersion: 2022,
-        sourceType: 'bundler',
+        sourceType: 'module',
         project: './tsconfig.json'
       }
     },
@@ -86,25 +86,20 @@ export default [
       // TSDoc documentation rules
       'tsdoc/syntax': 'warn',
 
-
-
       // JSDoc documentation rules
       'jsdoc/check-alignment': 'warn',
       'jsdoc/check-indentation': 'warn',
       'jsdoc/check-param-names': 'warn',
       'jsdoc/check-property-names': 'warn',
       'jsdoc/check-syntax': 'warn',
-
-
-      'jsdoc/require-param': 'warn', // Changed from 'warb' to 'warn'
-      'jsdoc/require-param-description': 'warn', // Changed from 'error' to 'warn'
+      'jsdoc/require-param': 'warn',  // Fixed comment typo (was 'warb')
+      'jsdoc/require-param-description': 'warn'
     }
   },
   {
     ignores: [
       'dist/**',
       'node_modules/**',
-      '*.js',
       '.mastra/**',
       'eslint.config.js',
       'vitest.config.ts',

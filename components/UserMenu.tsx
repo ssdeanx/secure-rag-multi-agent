@@ -1,5 +1,6 @@
 'use client';
 
+import React from 'react';
 import { User, LogOut, Settings, Shield } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import {

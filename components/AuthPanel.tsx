@@ -1,5 +1,6 @@
 'use client';
 
+import React from 'react';
 import { SignJWT } from 'jose';
 import { Key, Lock } from 'lucide-react';
 import { useState, useCallback } from 'react';

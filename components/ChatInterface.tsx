@@ -1,7 +1,7 @@
 'use client';
 
+import React, { useState, useEffect, useRef, useCallback, useMemo } from 'react';
 import { Send, Loader2, Shield, FileText, AlertTriangle } from 'lucide-react';
-import { useState, useEffect, useRef, useCallback, useMemo } from 'react';
 import ReactMarkdown from 'react-markdown';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';

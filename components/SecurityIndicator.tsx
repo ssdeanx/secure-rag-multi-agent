@@ -1,7 +1,7 @@
 'use client';
 
 import { Shield, Lock } from 'lucide-react';
-import { useCallback } from 'react';
+import React, { useCallback } from 'react';
 
 interface SecurityIndicatorProps {
   role?: string;

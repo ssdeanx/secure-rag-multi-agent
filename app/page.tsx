@@ -1,5 +1,6 @@
 'use client';
 
+import React from 'react';
 import AuthPanel from '@/components/AuthPanel';
 import ChatInterface from '@/components/ChatInterface';
 import IndexingPanel from '@/components/IndexingPanel';

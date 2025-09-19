@@ -1,5 +1,6 @@
 'use client';
 
+import React from 'react';
 import { Database, Loader, CheckCircle, XCircle, AlertTriangle } from 'lucide-react';
 import { useState, useCallback } from 'react';
 import { Button } from '@/components/ui/button';

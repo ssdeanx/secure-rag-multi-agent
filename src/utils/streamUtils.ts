@@ -1,4 +1,4 @@
-import { StreamTextResult } from 'ai';
+import type { StreamTextResult } from 'ai';
 
 // ------------------- Functions for Data-Only SSE Format -------------------
 
@@ -7,6 +7,7 @@ import { StreamTextResult } from 'ai';
  * Only uses 'event: done' with empty data for completion.
  * All other content goes through 'data:' field only.
  */
+
 export function createSSEStream(
   cb: (controller: ReadableStreamDefaultController<Uint8Array>) => Promise<void>,
 ): Response {
@@ -58,6 +59,7 @@ export function streamProgressUpdate(
  * Emit any JSON object as a data event.
  * Used for actions, tool responses, custom events, etc.
  */
+
 export function streamJSONEvent<T>(
   controller: ReadableStreamDefaultController<Uint8Array>,
   eventData: T,
@@ -71,6 +73,7 @@ export function streamJSONEvent<T>(
  * Handles streaming of text chunks using data-only format.
  * Compatible with new frontend parser that expects plain text chunks.
  */
+
 export async function handleTextStream(
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   streamResult: StreamTextResult<any, any>,

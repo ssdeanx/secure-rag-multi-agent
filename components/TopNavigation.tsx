@@ -1,5 +1,6 @@
 'use client';
 
+import React from 'react';
 import { Shield, Menu, X } from 'lucide-react';
 import { useState } from 'react';
 import { Button } from '@/components/ui/button';
@@ -18,7 +19,7 @@ export function TopNavigation({ children }: TopNavigationProps) {
   const navigationLinks = [
     { href: '#chat', label: 'Chat', active: true },
     { href: '#indexing', label: 'Indexing', active: false },
-    { href: '/docs', label: 'Documentation', active: false },
+    { href: '/docs', label: 'Documentation', active: true },
   ];
 
   return (

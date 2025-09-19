@@ -2,7 +2,7 @@
 
 import React from 'react';
 
-import { ChatModeSelector } from '@components/ChatModeSelector';
+import { ChatModeSelector } from '@/cedar/components/ChatModeSelector';
 import { CedarCaptionChat } from '@/cedar/components/chatComponents/CedarCaptionChat';
 import { FloatingCedarChat } from '@/cedar/components/chatComponents/FloatingCedarChat';
 import { SidePanelCedarChat } from '@/cedar/components/chatComponents/SidePanelCedarChat';

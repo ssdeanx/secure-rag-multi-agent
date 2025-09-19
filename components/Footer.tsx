@@ -1,5 +1,6 @@
 'use client';
 
+import React from 'react';
 import { Shield, ExternalLink, Github, BookOpen } from 'lucide-react';
 import { cn } from '@/lib/utils';
 
@@ -49,7 +50,7 @@ export function Footer() {
               </span>
             </div>
             <p className="text-sm text-muted-foreground max-w-xs">
-              Enterprise-grade secure RAG with role-based access control, powered by Mastra's multi-agent framework.
+              Enterprise-grade secure RAG with role-based access control, powered by Mastra multi-agent framework.
             </p>
             <div className="flex items-center space-x-2 text-xs text-muted-foreground">
               <span>Version 1.0.0</span>

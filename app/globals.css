@@ -902,19 +902,59 @@ body {
 
 /* Global button utilities to style shadnui Button with shared classes */
 .btn {
-  @apply inline-flex items-center justify-center rounded-md px-3 py-1.5 text-sm font-medium border;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: var(--radius);
+  padding: 0.375rem 0.75rem; /* matches px-3 py-1.5 */
+  font-size: var(--font-size-sm);
+  font-weight: 500;
+  line-height: 1;
+  border: 1px solid;
+  border-color: hsl(var(--border));
+  background: transparent;
+  color: inherit;
 }
-.btn:where(:not(:disabled)) {
-  @apply focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2;
+.btn:where(:not(:disabled)):focus-visible {
+  /* approximate Tailwind focus ring behavior */
+  outline: 2px solid hsl(var(--ring));
+  outline-offset: 2px;
+  box-shadow: 0 0 0 2px hsl(var(--ring) / 0.15);
 }
 .btn-ghost {
-  @apply bg-transparent border-border hover:bg-accent/5;
+  background: transparent;
+  border-color: hsl(var(--border));
+}
+.btn-ghost:hover {
+  /* Fallback for browsers without color-mix: use a subtle neutral overlay.
+     This keeps hover tactile in older browsers (Chrome < 111). */
+  background-color: rgba(0, 0, 0, 0.04);
+}
+
+/* Use color-mix when available for more accurate accent blending */
+@supports (color: color-mix(in srgb, var(--accent) 5%, transparent)) {
+  .btn-ghost:hover {
+    background-color: color-mix(in srgb, var(--accent) 5%, transparent);
+  }
 }
 .btn-primary {
-  @apply bg-[var(--color-primary)] text-[var(--color-primary-foreground)] border-transparent hover:brightness-95;
+  /* Fallback for browsers without color-mix: use the defined color token directly */
+  background: var(--color-primary);
+  color: var(--color-primary-foreground);
+  border-color: transparent;
+}
+
+/* Prefer color-mix when supported for accurate rendering */
+@supports (color: color-mix(in srgb, var(--color-primary) 100%, transparent)) {
+  .btn-primary {
+    background: color-mix(in srgb, var(--color-primary) 100%, transparent);
+    color: color-mix(in srgb, var(--color-primary-foreground) 100%, transparent);
+  }
 }
 .btn-sm {
-  @apply text-sm px-2.5 py-1 rounded-md;
+  font-size: var(--font-size-sm);
+  padding: 0.25rem 0.625rem; /* matches px-2.5 py-1 */
+  border-radius: var(--radius-sm);
 }
 
 /* Small helper for sign-in form */
