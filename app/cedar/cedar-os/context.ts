@@ -19,7 +19,7 @@ export function useRoadmapContext() {
         status: node.data.status,
         type: node.data.nodeType,
         upvotes: node.data.upvotes,
-        commentCount: node.data.comments?.length || 0,
+        commentCount: node.data.comments?.length ?? 0,
       })),
     }),
     {
@@ -36,7 +36,7 @@ export function useRoadmapContext() {
       status: node.data.status,
       type: node.data.nodeType,
       upvotes: node.data.upvotes,
-      commentCount: node.data.comments?.length || 0,
+      commentCount: node.data.comments?.length ?? 0,
     })),
   }));
 }
