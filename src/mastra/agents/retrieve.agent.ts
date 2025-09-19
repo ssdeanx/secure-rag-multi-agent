@@ -4,11 +4,18 @@ import { z } from "zod";
 import { openAIModel } from "../config/openai";
 import { documentContextSchema } from "../schemas/agent-schemas";
 import { vectorQueryTool } from "../tools/vector-query.tool";
+import { createResearchMemory } from '../config/libsql-storage';
+import { google } from "@ai-sdk/google";
+import { logger } from "../config/logger";
 
+logger.info('Initializing Retrieve Agent...');
+
+const memory = createResearchMemory();
 export const retrieveAgent = new Agent({
   id: "retrieve",
   name: "retrieve",
-  model: openAIModel,
+  model: google('gemini-2.5-flash-lite'),
+  description: "A document retrieval agent that retrieves relevant documents based on a user's question and access level.",
   instructions: `You are a document retrieval agent. You MUST call vectorQueryTool EXACTLY ONCE and ONLY return its results.
 
 **MANDATORY STEPS:**
@@ -35,6 +42,7 @@ export const retrieveAgent = new Agent({
 - Creating fake documents or citations
 - Answering questions without using the tool
 - Adding explanatory text about what you found`,
+  memory,
   tools: { vectorQueryTool }
 });
 

@@ -10,10 +10,12 @@ import { logger } from "./config/logger";
 import { governedRagAnswer } from "./workflows/governed-rag-answer.workflow";
 import { governedRagIndex } from "./workflows/governed-rag-index.workflow";
 import { MastraJwtAuth } from '@mastra/auth';
+import { LangfuseExporter } from "./ai-tracing";
+import { SamplingStrategyType } from "@mastra/core/ai-tracing";
 
 export const mastra = new Mastra({
   storage: new LibSQLStore({
-    url: 'file:./mastra.db',
+    url: 'file: mastra.db',
   }),
   logger,
   agents: {
@@ -33,5 +35,26 @@ export const mastra = new Mastra({
     experimental_auth: new MastraJwtAuth({
         secret: process.env.JWT_SECRET!
     }),
+  },
+  observability: {
+      configs: {
+        langfuse: {
+          serviceName: process.env.SERVICE_NAME ?? 'mastra',
+          sampling: { type: SamplingStrategyType.ALWAYS },
+          exporters: [
+            new LangfuseExporter({
+              publicKey: process.env.LANGFUSE_PUBLIC_KEY,
+              secretKey: process.env.LANGFUSE_SECRET_KEY,
+              baseUrl: process.env.LANGFUSE_BASE_URL, // Optional
+              realtime: process.env.NODE_ENV === 'development',
+              logLevel: 'info',
+              options: {
+                batchSize: 100,
+                flushInterval: 5000,
+              }
+            }),
+          ],
+        },
+      },
   },
 });

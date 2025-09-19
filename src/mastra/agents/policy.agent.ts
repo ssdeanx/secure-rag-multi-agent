@@ -2,11 +2,20 @@ import { Agent } from "@mastra/core";
 
 import { openAIModel } from "../config/openai";
 import { accessFilterSchema } from "../schemas/agent-schemas";
+import { createResearchMemory } from '../config/libsql-storage';
+import z from "zod";
+import { google } from "@ai-sdk/google";
+import { logger } from "../config/logger";
+
+logger.info('Initializing Policy Agent...');
+
+const memory = createResearchMemory();
 
 export const policyAgent = new Agent({
   id: "policy",
   name: "policy",
-  model: openAIModel,
+  model: google('gemini-2.5-flash-lite'),
+  description: "A policy enforcement agent that generates access filters based on user claims.",
   instructions: `You are a policy enforcement agent. Given user claims, generate access filters.
 
 Rules:
@@ -22,5 +31,13 @@ Rules:
 
 Examples:
 - Finance user: {"roles": ["finance.viewer"], "tenant": "acme", "stepUp": false} → {"allowTags": ["role:finance.viewer", "tenant:acme"], "maxClassification": "internal"}
-- HR user: {"roles": ["hr.viewer"], "tenant": "acme", "stepUp": false} → {"allowTags": ["role:hr.viewer", "tenant:acme"], "maxClassification": "confidential"}`
+- HR user: {"roles": ["hr.viewer"], "tenant": "acme", "stepUp": false} → {"allowTags": ["role:hr.viewer", "tenant:acme"], "maxClassification": "confidential"}`,
+  memory,
+  evals: {
+    // Add any evaluation metrics if needed
+  },
+});
+
+export const policyOutputSchema = accessFilterSchema.extend({
+  maxClassification: z.enum(["public", "internal", "confidential"])
 });

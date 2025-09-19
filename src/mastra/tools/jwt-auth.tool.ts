@@ -2,7 +2,9 @@ import { createTool } from "@mastra/core/tools";
 import { z } from "zod";
 
 import { AuthenticationService } from "../services/AuthenticationService";
+import { logger } from "../config/logger";
 
+logger.info
 export const jwtAuthTool = createTool({
   id: "jwt-auth",
   description: "Verify JWT and return claims (roles, tenant, stepUp)",

@@ -71,7 +71,7 @@ const retrievalStep = createStep({
       const retrieveResult = await agent.generate(JSON.stringify({
         question: inputData.question,
         access: inputData.accessFilter,
-        requestId: requestId  // Pass request ID to agent for tracking
+        requestId  // Pass request ID to agent for tracking
       }), {
         toolChoice: 'required'  // Force tool usage to ensure results are captured
       });
@@ -92,11 +92,11 @@ const retrievalStep = createStep({
       // Method 1: Extract from tool results (preferred)
       if (retrieveResult.toolResults && retrieveResult.toolResults.length > 0) {
         console.log(`[${requestId}] 🔧 Found tool results, checking for vector query tool...`);
-        
+
         // Try multiple possible tool names
         const possibleToolNames = ['vectorQueryTool', 'vector-query', 'vectorQuery'];
         let toolResult = null;
-        
+
         for (const toolName of possibleToolNames) {
           toolResult = retrieveResult.toolResults.find(tr => tr.toolName === toolName);
           if (toolResult) {
@@ -104,14 +104,14 @@ const retrievalStep = createStep({
             break;
           }
         }
-        
+
         if (!toolResult) {
           // If no match found, take the first available tool result
           toolResult = retrieveResult.toolResults[0];
           console.log(`[${requestId}] 🔄 No matching tool name found, using first tool result: ${toolResult.toolName}`);
         }
-        
-        if (toolResult && toolResult.result && toolResult.result.contexts) {
+
+        if (toolResult?.result?.contexts) {
           contexts = toolResult.result.contexts;
           console.log(`[${requestId}] 📄 Extracted ${contexts.length} contexts from tool results`);
         } else {
@@ -177,12 +177,12 @@ const retrievalStep = createStep({
       try {
         const rerankResult = await rerankAgent.generate(JSON.stringify({
           question: inputData.question,
-          contexts: contexts
+          contexts
         }), {
           experimental_output: rerankOutputSchema
         });
 
-        const rerankResponse = rerankResult.object || { contexts: [] };
+        const rerankResponse = rerankResult.object ?? { contexts: [] };
         const output: { contexts: any; question: string; } = {
           contexts: rerankResponse.contexts || contexts,
           question: inputData.question
@@ -235,7 +235,7 @@ const answerStep = createStep({
         experimental_output: answererOutputSchema
       });
 
-      const answer = result.object || { answer: "Unable to generate answer", citations: [] };
+      const answer = result.object ?? { answer: "Unable to generate answer", citations: [] };
 
       // Ensure we always have a proper response for no contexts
       if (inputData.contexts.length === 0 && (!answer.answer || answer.answer.trim() === "")) {
@@ -288,7 +288,7 @@ const verifyStep = createStep({
         experimental_output: verifierOutputSchema
       });
 
-      const verification = result.object || { ok: false, reason: "Verification failed" };
+      const verification = result.object ?? { ok: false, reason: "Verification failed" };
 
       if (!verification.ok) {
         // Handle specific case where answer indicates insufficient evidence

@@ -12,7 +12,7 @@ if (!fs.existsSync(logsDir)) {
 }
 
 export const logger: PinoLogger = new PinoLogger({
-  name: 'workflow-logger',
+  name: 'logger',
   level: 'info',
 //  transports: {
 //      file: new FileTransport({ path: path.join(logsDir, 'logs/mastra.log') })
@@ -21,7 +21,7 @@ export const logger: PinoLogger = new PinoLogger({
 
 // Create a simple file logger wrapper
 //
-const logFilePath: string = path.join(logsDir, 'logs/workflow.log');
+const logFilePath: string = path.join(logsDir, process.cwd(), 'workflow.log');
 const logToFile = (message: string, data?: Record<string, unknown>) => {
   const timestamp = new Date().toISOString();
   const logEntry = {

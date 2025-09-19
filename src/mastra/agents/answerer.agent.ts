@@ -4,10 +4,18 @@ import { Agent } from "@mastra/core";
 import { openAIModel } from "../config/openai";
 import { ragAnswerSchema } from "../schemas/agent-schemas";
 import { google } from "@ai-sdk/google";
+import { createResearchMemory } from '../config/libsql-storage';
+import { logger } from "../config/logger";
+
+logger.info('Initializing Answerer Agent...');
+
+const memory = createResearchMemory();
+
 export const answererAgent = new Agent({
   id: "answerer",
   name: "answerer",
-  model: openAIModel,
+  model: google('gemini-2.5-flash-lite'),
+  description: "A STRICT governed RAG answer composer that crafts answers using ONLY the provided contexts, ensuring all statements are backed by citations.",
   instructions: `You are a STRICT governed RAG answer composer. Follow these rules EXACTLY:
 
 1. NEVER use external knowledge - ONLY use provided contexts
@@ -44,7 +52,11 @@ Example correct response:
   "citations": [{"docId": "finance-policy-001", "source": "Finance Department Policy Manual"}]
 }
 
-Always respond with valid JSON that matches this exact structure.`
+Always respond with valid JSON that matches this exact structure.`,
+  memory,
+  evals: {
+    // Add any evaluation metrics if needed
+  },
 });
 
 export const answererOutputSchema = ragAnswerSchema;
