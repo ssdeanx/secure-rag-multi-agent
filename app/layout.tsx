@@ -9,6 +9,7 @@ import type { Metadata } from 'next';
 const inter = Inter({ subsets: ['latin'] });
 
 export const metadata: Metadata = {
+  metadataBase: new URL('https://mastra-governed-rag.vercel.app'),
   title: 'Governed RAG - Secure AI with Mastra',
   description: 'Enterprise-grade secure RAG with role-based access control',
   applicationName: 'Governed RAG',
