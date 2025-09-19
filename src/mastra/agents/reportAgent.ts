@@ -3,10 +3,10 @@ import { Agent } from '@mastra/core/agent';
 import { createResearchMemory } from '../config/libsql-storage';
 import { ContentSimilarityMetric, CompletenessMetric, TextualDifferenceMetric, KeywordCoverageMetric, ToneConsistencyMetric } from "@mastra/evals/nlp";
 
-import { logger } from "../config/logger";
+import { log } from "../config/logger";
 import { google } from '@ai-sdk/google';
 
-logger.info("Initializing Report Agent...");
+log.info("Initializing Report Agent...");
 
 const memory = createResearchMemory();
 export const reportAgent = new Agent({

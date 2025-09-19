@@ -15,7 +15,7 @@ import type { UIMessage } from 'ai';
 import z from "zod";
 import { google } from "@ai-sdk/google";
 //import { FileTransport } from "@mastra/loggers/file";
-import { logger } from "./logger";
+import { log } from "./logger";
 
 export interface TracingSpanInput {
   type: AISpanType;
@@ -53,8 +53,8 @@ export interface Message {
 
 export const STORAGE_CONFIG = {
   DEFAULT_DIMENSION: 1536, // Gemini embedding-001 dimension
-  DEFAULT_DATABASE_URL: "file:./deep-research.db",
-  VECTOR_DATABASE_URL: "file:./vector-store.db", // Separate database for vector operations
+  DEFAULT_DATABASE_URL: "file: deep-research.db",
+  VECTOR_DATABASE_URL: "file: vector-store.db", // Separate database for vector operations
   VECTOR_INDEXES: {
     RESEARCH_DOCUMENTS: "research_documents",
     WEB_CONTENT: "web_content",
@@ -105,7 +105,7 @@ export const createLibSQLStore = (tracingContext?: { context?: any; runtimeConte
       }
     });
 
-    logger.info('LibSQL storage initialized successfully', {
+    log.info('LibSQL storage initialized successfully', {
       databaseUrl: databaseUrl.replace(/authToken=[^&]*/, 'authToken=***'),
       processingTime
     });
@@ -126,7 +126,7 @@ export const createLibSQLStore = (tracingContext?: { context?: any; runtimeConte
       }
     });
 
-    logger.error('Failed to initialize LibSQL storage', {
+    log.error('Failed to initialize LibSQL storage', {
       databaseUrl: databaseUrl.replace(/authToken=[^&]*/, 'authToken=***'),
       error: errorMessage,
       processingTime
@@ -173,7 +173,7 @@ export const createLibSQLVectorStore = (tracingContext?: { context?: unknown; ru
       }
     });
 
-    logger.info('LibSQL vector store initialized successfully', {
+    log.info('LibSQL vector store initialized successfully', {
       databaseUrl: databaseUrl.replace(/authToken=[^&]*/, 'authToken=***'),
       processingTime
     });
@@ -194,7 +194,7 @@ export const createLibSQLVectorStore = (tracingContext?: { context?: unknown; ru
       }
     });
 
-    logger.error('Failed to initialize LibSQL vector store', {
+    log.error('Failed to initialize LibSQL vector store', {
       databaseUrl: databaseUrl.replace(/authToken=[^&]*/, 'authToken=***'),
       error: errorMessage,
       processingTime
@@ -210,7 +210,7 @@ export const initializeVectorIndexes = async () => {
   const vectorStore = createLibSQLVectorStore();
 
   try {
-    logger.info('Initializing vector indexes...');
+    log.info('Initializing vector indexes...');
 
     await vectorStore.createIndex({
       indexName: STORAGE_CONFIG.VECTOR_INDEXES.RESEARCH_DOCUMENTS,
@@ -232,9 +232,9 @@ export const initializeVectorIndexes = async () => {
       dimension: STORAGE_CONFIG.DEFAULT_DIMENSION,
     });
 
-    logger.info('All vector indexes initialized successfully');
+    log.info('All vector indexes initialized successfully');
   } catch (error) {
-    logger.error('Failed to initialize vector indexes', {
+    log.error('Failed to initialize vector indexes', {
       error: error instanceof Error ? error.message : 'Unknown error'
     });
     throw error;
@@ -255,7 +255,7 @@ export const searchSimilarContent = async (
 
   // Create child span for vector search
   const searchSpan = tracingContext?.currentSpan?.createChildSpan({
-    type: AISpanType.GENERIC,
+    type: AISpanType.LLM_CHUNK,
     name: 'vector_similarity_search',
     input: {
       query: query.substring(0, 100) + (query.length > 100 ? '...' : ''), // Truncate for span
@@ -328,7 +328,7 @@ export const searchSimilarContent = async (
           }
         });
 
-    logger.info('Vector search completed', {
+    log.info('Vector search completed', {
       query: query.substring(0, 50) + (query.length > 50 ? '...' : ''),
       indexName,
       topK,
@@ -353,7 +353,7 @@ export const searchSimilarContent = async (
       }
     });
 
-    logger.error('Failed to search similar content', {
+    log.error('Failed to search similar content', {
       query: query.substring(0, 50) + (query.length > 50 ? '...' : ''),
       indexName,
       error: errorMessage,
@@ -478,7 +478,7 @@ export async function upsertVectors(
 
   // Create child span for upsert operation
   const upsertSpan = tracingContext?.currentSpan?.createChildSpan({
-    type: AISpanType.TOOL_CALL,
+    type: AISpanType.LLM_CHUNK,
     name: 'vector_upsert_operation',
     input: {
       indexName,
@@ -517,7 +517,7 @@ export async function upsertVectors(
       }
     });
 
-    logger.info('Vectors upserted successfully', {
+    log.info('Vectors upserted successfully', {
       indexName,
       count: vectors.length,
       processingTime
@@ -542,7 +542,7 @@ export async function upsertVectors(
       }
     });
 
-    logger.error('Failed to upsert vectors', {
+    log.error('Failed to upsert vectors', {
       indexName,
       count: vectors.length,
       error: errorMessage,
@@ -570,7 +570,7 @@ export async function createVectorIndex(
 
 // Create child span for index creation
 const indexSpan = tracingContext?.currentSpan?.createChildSpan({
-  type: AISpanType.TOOL_CALL,
+  type: AISpanType.LLM_GENERATION,
   name: 'vector_index_creation',
   input: {
     indexName,
@@ -601,7 +601,7 @@ const indexSpan = tracingContext?.currentSpan?.createChildSpan({
       }
     });
 
-    logger.info('Vector index created successfully', { indexName, dimension, metric, processingTime });
+    log.info('Vector index created successfully', { indexName, dimension, metric, processingTime });
     return { success: true };
   } catch (error) {
     const processingTime = Date.now() - startTime;
@@ -622,7 +622,7 @@ const indexSpan = tracingContext?.currentSpan?.createChildSpan({
       }
     });
 
-    logger.error('Failed to create vector index', {
+    log.error('Failed to create vector index', {
       indexName,
       dimension,
       error: errorMessage,
@@ -689,7 +689,7 @@ export async function queryVectors(
       }
     });
 
-    logger.info('Vector query completed successfully', {
+    log.info('Vector query completed successfully', {
       indexName,
       topK,
       resultsCount: results.length,
@@ -719,7 +719,7 @@ export async function queryVectors(
       }
     });
 
-    logger.error('Failed to query vectors', {
+    log.error('Failed to query vectors', {
       indexName,
       topK,
       error: errorMessage,
@@ -811,7 +811,7 @@ export async function searchMemoryMessages(
       } as Message;
     });
 
-    logger.info('Memory search completed', {
+    log.info('Memory search completed', {
       threadId,
       query,
       topK,
@@ -833,7 +833,7 @@ export async function searchMemoryMessages(
       uiMessages
     };
   } catch (error) {
-    logger.error('Failed to search memory messages', {
+    log.error('Failed to search memory messages', {
       threadId,
       query,
       error: error instanceof Error ? error.message : 'Unknown error'
@@ -923,13 +923,13 @@ export const getOrCreateUserResource = async (memory: Memory, userId: string) =>
       }
     });
 
-    logger.info('Created new user resource', { userId });
+    log.info('Created new user resource', { userId });
 
     // Re-fetch the resource after creation to ensure it's fully populated and consistent
     userResource = await storage.getResourceById({ resourceId: userId });
     return userResource;
   } catch (error) {
-    logger.error('Failed to get or create user resource', {
+    log.error('Failed to get or create user resource', {
       userId,
       error: error instanceof Error ? error.message : 'Unknown error'
     });
@@ -953,9 +953,9 @@ export const updateUserWorkingMemory = async (memory: Memory, userId: string, up
       }
     });
 
-    logger.info('Updated user working memory', { userId });
+    log.info('Updated user working memory', { userId });
   } catch (error) {
-    logger.error('Failed to update user working memory', {
+    log.error('Failed to update user working memory', {
       userId,
       error: error instanceof Error ? error.message : 'Unknown error'
     });
@@ -1045,7 +1045,7 @@ export function extractChunkMetadata(
     };
   });
 
-  logger.info('Metadata extraction completed', {
+  log.info('Metadata extraction completed', {
     chunksProcessed: chunks.length,
     extractParams: Object.keys(extractParams)
   });
@@ -1073,7 +1073,7 @@ export const performStorageHealthCheck = async (context: 'research' | 'report' =
   try {
     createLibSQLStore();
     results.storage = true;
-    logger.info('Storage connectivity check passed');
+    log.info('Storage connectivity check passed');
   } catch (error) {
     results.errors.push(`Storage check failed: ${error instanceof Error ? error.message : 'Unknown error'}`);
   }
@@ -1081,7 +1081,7 @@ export const performStorageHealthCheck = async (context: 'research' | 'report' =
   try {
     createLibSQLVectorStore();
     results.vectorStore = true;
-    logger.info('Vector store connectivity check passed');
+    log.info('Vector store connectivity check passed');
   } catch (error) {
     results.errors.push(`Vector store check failed: ${error instanceof Error ? error.message : 'Unknown error'}`);
   }
@@ -1103,7 +1103,7 @@ export const performStorageHealthCheck = async (context: 'research' | 'report' =
 
   const overallHealth = results.storage && results.vectorStore && Object.values(results.indexes).every(Boolean);
 
-  logger.info('Storage health check completed', {
+  log.info('Storage health check completed', {
     overallHealth,
     context,
     relevantIndexes,
@@ -1112,7 +1112,7 @@ export const performStorageHealthCheck = async (context: 'research' | 'report' =
   });
 
   // MCP integration: Log for mastraDocs reference
-  logger.info('For storage documentation, refer to mastraDocs path: reference/storage/', {
+  log.info('For storage documentation, refer to mastraDocs path: reference/storage/', {
     context
   });
 
@@ -1128,21 +1128,21 @@ export const performStorageHealthCheck = async (context: 'research' | 'report' =
 
 export const initializeStorageSystem = async (context: 'research' | 'report' = 'research') => {
   try {
-    logger.info('Initializing complete storage system...', { context });
+    log.info('Initializing complete storage system...', { context });
 
     await initializeVectorIndexes();
 
     const healthCheck = await performStorageHealthCheck(context);
 
     if (healthCheck.healthy) {
-      logger.info('Storage system initialized successfully', { context });
+      log.info('Storage system initialized successfully', { context });
       return { success: true, healthCheck };
     } else {
-      logger.warn('Storage system initialized with issues', { healthCheck, context });
+      log.warn('Storage system initialized with issues', { healthCheck, context });
       return { success: false, healthCheck };
     }
   } catch (error) {
-    logger.error('Failed to initialize storage system', {
+    log.error('Failed to initialize storage system', {
       error: error instanceof Error ? error.message : 'Unknown error',
       context
     });

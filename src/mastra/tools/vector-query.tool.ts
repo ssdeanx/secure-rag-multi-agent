@@ -3,7 +3,7 @@ import { z } from "zod";
 
 import { ValidationService } from "../services/ValidationService";
 import { VectorQueryService } from "../services/VectorQueryService";
-import { logger } from "../config/logger";
+import { log } from "../config/logger";
 
 // In-memory counter to track tool calls per request
 const toolCallCounters = new Map<string, number>();
@@ -41,7 +41,7 @@ export const vectorQueryTool = createTool({
         }
       } catch (e) {
         // Log the parsing error and fallback to generating our own request ID
-        logger.warn('Failed to extract requestId from context, generating fallback requestId', { error: e });
+        log.warn('Failed to extract requestId from context, generating fallback requestId', { error: e });
         requestId = `TOOL-${Date.now()}`;
       }
 
@@ -49,7 +49,7 @@ export const vectorQueryTool = createTool({
       const currentCount = (toolCallCounters.get(requestId) ?? 0) + 1;
       toolCallCounters.set(requestId, currentCount);
 
-      logger.info(`[${requestId}] 🔧 VECTOR QUERY TOOL CALL #${currentCount}`, { context });
+      log.info(`[${requestId}] 🔧 VECTOR QUERY TOOL CALL #${currentCount}`, { context });
 
       ValidationService.validateEnvironmentVariable("QDRANT_URL", process.env.QDRANT_URL);
       ValidationService.validateMastraInstance(mastra);
@@ -61,7 +61,7 @@ export const vectorQueryTool = createTool({
       const { question, allowTags, maxClassification, topK = 8 } = context;
       // Use environment variable or default for similarity threshold
       const minSimilarity = parseFloat(process.env.VECTOR_SIMILARITY_THRESHOLD ?? '0.4');
-      logger.info('🔧 Extracted parameters', { question, allowTags, maxClassification, topK, minSimilarity });
+      log.info('🔧 Extracted parameters', { question, allowTags, maxClassification, topK, minSimilarity });
 
       const results = await VectorQueryService.query(
         { question, allowTags, maxClassification, topK, minSimilarity },
@@ -69,12 +69,12 @@ export const vectorQueryTool = createTool({
         indexName
       );
 
-      logger.info(`[${requestId}] ✅ VECTOR QUERY TOOL CALL #${currentCount} COMPLETED - Found ${results.length} results`);
+      log.info(`[${requestId}] ✅ VECTOR QUERY TOOL CALL #${currentCount} COMPLETED - Found ${results.length} results`);
 
       // Clean up counter if this seems to be the final call (after a short delay to account for any immediate retries)
       setTimeout(() => {
         const finalCount = toolCallCounters.get(requestId) ?? 0;
-        logger.info(`[${requestId}] 📊 FINAL TOOL CALL COUNT: ${finalCount}`);
+        log.info(`[${requestId}] 📊 FINAL TOOL CALL COUNT: ${finalCount}`);
         toolCallCounters.delete(requestId);
       }, 5000);
 

@@ -2,9 +2,9 @@ import { Agent } from '@mastra/core/agent';
 import { google } from '@ai-sdk/google';
 import { createResearchMemory } from '../config/libsql-storage';
 import { ContentSimilarityMetric, CompletenessMetric, TextualDifferenceMetric, KeywordCoverageMetric, ToneConsistencyMetric } from "@mastra/evals/nlp";
-import { logger } from "../config/logger";
+import { log } from "../config/logger";
 
-logger.info("Initializing Learning Extraction Agent...");
+log.info("Initializing Learning Extraction Agent...");
 
 const memory = createResearchMemory();
 export const learningExtractionAgent = new Agent({

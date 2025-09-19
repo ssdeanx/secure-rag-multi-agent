@@ -16,9 +16,9 @@ import { webScraperTool,
   htmlToMarkdownTool,
   contentCleanerTool
 } from "../tools/web-scraper-tool";
-import { logger } from "../config/logger";
+import { log } from "../config/logger";
 
-logger.info('Initializing OpenRouter Assistant Agent...');
+log.info('Initializing OpenRouter Assistant Agent...');
 
 const memory = createResearchMemory();
 
@@ -87,4 +87,4 @@ export const assistantAgent = new Agent({
     }),
   ],
 })
-logger.info('OpenRouter Assistant Agent Working...');
+log.info('OpenRouter Assistant Agent Working...');

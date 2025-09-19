@@ -6,7 +6,7 @@ import { createTool } from '@mastra/core/tools';
 import { AISpanType } from '@mastra/core/ai-tracing';
 import * as zlib from 'zlib';
 import { pipeline } from 'stream/promises';
-import { logger } from "../config/logger";
+import { log } from "../config/logger";
 
 const DATA_DIR = path.join(process.cwd(), 'docs/data');
 
@@ -48,7 +48,7 @@ export const readDataFileTool = createTool({
                 throw new Error(`Access denied: File path "${fileName}" is outside the allowed data directory.`);
             }
             const content = await fs.readFile(realFullPath, 'utf-8');
-            logger.info(`Read file: ${fileName}`);
+            log.info(`Read file: ${fileName}`);
             readSpan?.end({ output: { fileSize: content.length } });
             return content;
         } catch (error) {
@@ -89,7 +89,7 @@ export const writeDataFileTool = createTool({
             }
             await fs.mkdir(realDirPath, { recursive: true });
             await fs.writeFile(realFullPath, content, 'utf-8');
-            logger.info(`Written to file: ${fileName}`);
+            log.info(`Written to file: ${fileName}`);
             writeSpan?.end({ output: { success: true } });
             return `File ${fileName} written successfully.`;
         } catch (error) {
@@ -122,7 +122,7 @@ export const deleteDataFileTool = createTool({
                 throw new Error(`Access denied: File path "${fileName}" is outside the allowed data directory.`);
             }
             await fs.unlink(fullPath);
-            logger.info(`Deleted file: ${fileName}`);
+            log.info(`Deleted file: ${fileName}`);
             deleteSpan?.end({ output: { success: true } });
             return `File ${fileName} deleted successfully.`
         } catch (error) {
@@ -155,7 +155,7 @@ export const listDataDirTool = createTool({
                 throw new Error(`Access denied: Directory path "${dirPath}" is outside the allowed data directory.`);
             }
             const contents = await fs.readdir(fullPath);
-            logger.info(`Listed directory: ${dirPath}`);
+            log.info(`Listed directory: ${dirPath}`);
             listSpan?.end({ output: { count: contents.length } });
             return contents;
         } catch (error) {
@@ -191,7 +191,7 @@ export const copyDataFileTool = createTool({
             const destDir = path.dirname(destPath);
             await fs.mkdir(destDir, { recursive: true });
             await fs.copyFile(sourcePath, destPath);
-            logger.info(`Copied file: ${sourceFile} to ${destFile}`);
+            log.info(`Copied file: ${sourceFile} to ${destFile}`);
             copySpan?.end({ output: { success: true } });
             return `File ${sourceFile} copied to ${destFile} successfully.`;
         } catch (error) {
@@ -228,7 +228,7 @@ export const moveDataFileTool = createTool({
             const destDir = path.dirname(destPath);
             await fs.mkdir(destDir, { recursive: true });
             await fs.rename(sourcePath, destPath);
-            logger.info(`Moved file: ${sourceFile} to ${destFile}`);
+            log.info(`Moved file: ${sourceFile} to ${destFile}`);
             moveSpan?.end({ output: { success: true } });
             return `File ${sourceFile} moved to ${destFile} successfully.`;
         } catch (error) {
@@ -294,7 +294,7 @@ export const searchDataFilesTool = createTool({
             };
 
             await searchDir(searchPath);
-            logger.info(`Searched for pattern: ${pattern} in ${dirPath}`);
+            log.info(`Searched for pattern: ${pattern} in ${dirPath}`);
             searchSpan?.end({ output: { resultCount: results.length } });
             return results;
         } catch (error) {
@@ -334,7 +334,7 @@ export const getDataFileInfoTool = createTool({
                 throw new Error(`Access denied: File path is outside the allowed data directory.`);
             }
             const stats = await fs.stat(realFullPath);
-            logger.info(`Got info for file: ${fileName}`);
+            log.info(`Got info for file: ${fileName}`);
             const result = {
                 size: stats.size,
                 modified: stats.mtime.toISOString(),
@@ -373,7 +373,7 @@ export const createDataDirTool = createTool({
                 throw new Error(`Access denied: Directory path is outside the allowed data directory.`);
             }
             await fs.mkdir(fullPath, { recursive: true });
-            logger.info(`Created directory: ${dirPath}`);
+            log.info(`Created directory: ${dirPath}`);
             createDirSpan?.end({ output: { success: true } });
             return `Directory ${dirPath} created successfully.`;
         } catch (error) {
@@ -410,7 +410,7 @@ export const removeDataDirTool = createTool({
                 throw new Error(`Directory ${dirPath} is not empty.`);
             }
             await fs.rmdir(fullPath);
-            logger.info(`Removed directory: ${dirPath}`);
+            log.info(`Removed directory: ${dirPath}`);
             removeDirSpan?.end({ output: { success: true } });
             return `Directory ${dirPath} removed successfully.`;
         } catch (error) {
@@ -452,7 +452,7 @@ export const archiveDataTool = createTool({
             const archiveStream = createWriteStream(archiveFullPath);
 
             await pipeline(sourceStream, gzip, archiveStream);
-            logger.info(`Archived: ${sourcePath} to ${archiveName}.gz`);
+            log.info(`Archived: ${sourcePath} to ${archiveName}.gz`);
             archiveSpan?.end({ output: { success: true } });
             return `File ${sourcePath} archived to ${archiveName}.gz successfully.`;
         } catch (error) {
@@ -495,7 +495,7 @@ export const backupDataTool = createTool({
             await fs.mkdir(backupParentDir, { recursive: true });
             await fs.cp(sourceFullPath, backupFullPath, { recursive: true });
             const relativeBackupPath = path.relative(DATA_DIR, backupFullPath);
-            logger.info(`Backed up: ${sourcePath} to ${relativeBackupPath}`);
+            log.info(`Backed up: ${sourcePath} to ${relativeBackupPath}`);
             backupSpan?.end({ output: { backupPath: relativeBackupPath } });
             return `Backup created: ${sourcePath} → ${relativeBackupPath}`;
         } catch (error) {

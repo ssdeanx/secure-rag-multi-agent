@@ -13,9 +13,9 @@ import { webScraperTool,
 import { google } from '@ai-sdk/google';
 import { LIBSQL_PROMPT } from "@mastra/libsql";
 import { createVectorQueryTool } from "@mastra/rag";
-import { logger } from "../config/logger";
+import { log } from "../config/logger";
 
-logger.info('Initializing Copywriter Agent...');
+log.info('Initializing Copywriter Agent...');
 
 const memory = createResearchMemory();
 

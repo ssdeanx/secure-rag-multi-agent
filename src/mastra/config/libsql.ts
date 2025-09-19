@@ -1,8 +1,8 @@
 import { Memory } from "@mastra/memory";
 import { LibSQLStore, LibSQLVector } from "@mastra/libsql";
-import { logger } from "./logger";
+import { log } from "./logger";
 
-logger.info("Setting up LibSQLStore and LibSQLVector...");
+log.info("Setting up LibSQLStore and LibSQLVector...");
 
 export const libsqlStore = new LibSQLStore({
   url: process.env.LIBSQL_URL ?? 'file:./mastra.db',

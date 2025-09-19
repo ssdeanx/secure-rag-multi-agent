@@ -5,9 +5,9 @@ import { accessFilterSchema } from "../schemas/agent-schemas";
 import { createResearchMemory } from '../config/libsql-storage';
 import z from "zod";
 import { google } from "@ai-sdk/google";
-import { logger } from "../config/logger";
+import { log } from "../config/logger";
 
-logger.info('Initializing Policy Agent...');
+log.info('Initializing Policy Agent...');
 
 const memory = createResearchMemory();
 

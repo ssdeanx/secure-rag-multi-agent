@@ -3,7 +3,7 @@ import type { ChatOutput} from './workflows/chatWorkflow';
 import { ChatInputSchema, chatWorkflow } from './workflows/chatWorkflow';
 import { zodToJsonSchema } from 'zod-to-json-schema';
 import { createSSEStream } from '../utils/streamUtils';
-import { logger } from "./config/logger";
+import { log } from "./config/logger";
 
 // Helper function to convert Zod schema to OpenAPI schema
 function toOpenApiSchema(schema: Parameters<typeof zodToJsonSchema>[0]) {
@@ -43,14 +43,14 @@ export const apiRoutes = [
 
         if (result.status === 'success') {
           // TODO: Add any response transformation or logging here
-          logger.info('Sending response', { response: result.result });
+          log.info('Sending response', { response: result.result });
           return c.json<ChatOutput>(result.result);
         }
 
         // TODO: Handle other workflow statuses if needed
         throw new Error('Workflow did not complete successfully');
       } catch (error) {
-        logger.error('Chat API error', { error: error instanceof Error ? error.message : String(error) });
+        log.error('Chat API error', { error: error instanceof Error ? error.message : String(error) });
         return c.json({ error: error instanceof Error ? error.message : 'Internal error' }, 500);
       }
     },
@@ -85,11 +85,11 @@ export const apiRoutes = [
 
           if (result.status !== 'success') {
             // TODO: Handle workflow errors appropriately
-            logger.error(`Workflow failed: ${result.status}`);
+            log.error(`Workflow failed: ${result.status}`);
           }
         });
       } catch (error) {
-        logger.error('Chat stream API error', { error: error instanceof Error ? error.message : String(error) });
+        log.error('Chat stream API error', { error: error instanceof Error ? error.message : String(error) });
         return c.json({ error: error instanceof Error ? error.message : 'Internal error' }, 500);
       }
     },

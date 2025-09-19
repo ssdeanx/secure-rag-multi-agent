@@ -7,7 +7,7 @@ import { marked } from "marked";
 import * as fs from "node:fs/promises";
 import * as path from "node:path";
 import { JSDOM } from "jsdom";
-import { logger } from "../config/logger";
+import { log } from "../config/logger";
 
 // Enhanced HTML processing with JSDOM
 const DANGEROUS_TAGS = new Set([
@@ -43,7 +43,7 @@ function sanitizeHtml(html: string): string {
 
     return document.body.innerHTML;
   } catch (error) {
-    logger.warn('JSDOM sanitization failed, falling back to cheerio', { error });
+    log.warn('JSDOM sanitization failed, falling back to cheerio', { error });
     // Pre-sanitize the raw HTML to avoid passing dangerous content directly into cheerio.
     // Remove dangerous elements and inline event handlers, and neutralize javascript: hrefs.
     const preSanitizedHtml = String(html)
@@ -78,7 +78,7 @@ function extractTextContent(html: string): string {
     const dom = new JSDOM(html, { includeNodeLocations: false });
     return dom.window.document.body.textContent?.trim() ?? '';
   } catch (error) {
-    logger.warn('JSDOM text extraction failed, falling back to cheerio', { error });
+    log.warn('JSDOM text extraction failed, falling back to cheerio', { error });
     const $ = cheerio.load(html);
     return $.text().trim();
   }
@@ -178,7 +178,7 @@ function htmlToMarkdown(html: string): string {
 
     return convertNode(document.body).trim();
   } catch (error) {
-    logger.warn('JSDOM conversion failed, using marked fallback', { error });
+    log.warn('JSDOM conversion failed, using marked fallback', { error });
     return extractTextContent(html);
   }
 }
@@ -279,7 +279,7 @@ export const webScraperTool = createTool({
       input: { url: context.url, selector: context.selector, saveMarkdown: context.saveMarkdown, extractAttributesCount: context.extractAttributes?.length ?? 0 }
     });
 
-    logger.info('Starting enhanced web scraping with JSDOM', { url: context.url, selector: context.selector, saveMarkdown: context.saveMarkdown });
+    log.info('Starting enhanced web scraping with JSDOM', { url: context.url, selector: context.selector, saveMarkdown: context.saveMarkdown });
 
     let rawContent: string | undefined;
     let markdownContent: string | undefined;
@@ -361,7 +361,7 @@ export const webScraperTool = createTool({
             request.url
           );
           errorMessage = scrapingError.message;
-          logger.error(scrapingError.message);
+          log.error(scrapingError.message);
         },
       });
 
@@ -372,13 +372,13 @@ export const webScraperTool = createTool({
         try {
           markdownContent = HtmlProcessor.htmlToMarkdown(rawContent);
         } catch (error) {
-          logger.warn('Enhanced HTML to markdown conversion failed, using fallback', { error: error instanceof Error ? error.message : String(error) });
+          log.warn('Enhanced HTML to markdown conversion failed, using fallback', { error: error instanceof Error ? error.message : String(error) });
           try {
             // Sanitize raw HTML before passing to marked to prevent XSS via raw HTML content.
             const sanitizedForMarked = HtmlProcessor.sanitizeHtml(rawContent);
             markdownContent = await marked.parse(sanitizedForMarked);
           } catch (fallbackError) {
-            logger.warn('Fallback conversion also failed', { error: fallbackError instanceof Error ? fallbackError.message : String(fallbackError) });
+            log.warn('Fallback conversion also failed', { error: fallbackError instanceof Error ? fallbackError.message : String(fallbackError) });
             markdownContent = HtmlProcessor.extractTextContent(rawContent);
           }
         }
@@ -406,12 +406,12 @@ export const webScraperTool = createTool({
               await fileHandle.close();
             }
             savedFilePath = fileName;
-            logger.info('Markdown content saved securely', { fileName });
+            log.info('Markdown content saved securely', { fileName });
           } catch (error) {
             if (error instanceof ScrapingError) {
               throw error;
             }
-            logger.error('Failed to save markdown file', { error: error instanceof Error ? error.message : String(error) });
+            log.error('Failed to save markdown file', { error: error instanceof Error ? error.message : String(error) });
           }
         }
       }
@@ -432,7 +432,7 @@ export const webScraperTool = createTool({
         );
 
       errorMessage = scrapingError.message;
-      logger.error(scrapingError.message);
+      log.error(scrapingError.message);
 
       const errorMsg = scrapingError.message;
       scrapeSpan?.end({ metadata: { error: errorMsg, code: scrapingError.code } });
@@ -493,7 +493,7 @@ export const batchWebScraperTool = createTool({
       }
     });
 
-    logger.info('Starting enhanced batch web scraping with JSDOM', {
+    log.info('Starting enhanced batch web scraping with JSDOM', {
       urlCount: context.urls.length,
       maxConcurrent: context.maxConcurrent ?? 3,
       saveResults: context.saveResults
@@ -596,9 +596,9 @@ export const batchWebScraperTool = createTool({
             await fileHandle.close();
           }
           savedFilePath = path.relative(path.join(process.cwd(), './data'), fullPath);
-          logger.info('Batch results saved securely', { fileName: savedFilePath });
+          log.info('Batch results saved securely', { fileName: savedFilePath });
         } catch (error) {
-          logger.error('Failed to save batch results', { error: error instanceof Error ? error.message : String(error) });
+          log.error('Failed to save batch results', { error: error instanceof Error ? error.message : String(error) });
         }
       }
 
@@ -623,7 +623,7 @@ export const batchWebScraperTool = createTool({
       });
     } catch (error) {
       const errorMessage = `Batch scraping failed: ${error instanceof Error ? error.message : String(error)}`;
-      logger.error(errorMessage);
+      log.error(errorMessage);
       batchSpan?.end({ metadata: { error: errorMessage } });
       throw error;
     }
@@ -633,7 +633,7 @@ export const batchWebScraperTool = createTool({
 // ===== SITE MAP EXTRACTOR TOOL =====
 
 const siteMapExtractorInputSchema = z.object({
-  url: z.string().url().describe("The base URL of the website to extract sitemap from.").refine((v) => ValidationUtils.validateUrl(v), "Invalid URL format"),
+  url: z.url().describe("The base URL of the website to extract sitemap from.").refine((v) => ValidationUtils.validateUrl(v), "Invalid URL format"),
   maxDepth: z.number().min(1).max(5).optional().describe("Maximum depth to crawl (default: 2, max: 5)."),
   maxPages: z.number().min(1).max(200).optional().describe("Maximum number of pages to crawl (default: 50, max: 200)."),
   includeExternal: z.boolean().optional().describe("Whether to include external links (default: false)."),
@@ -670,7 +670,7 @@ export const siteMapExtractorTool = createTool({
       }
     });
 
-    logger.info('Starting enhanced site map extraction with JSDOM', {
+    log.info('Starting enhanced site map extraction with JSDOM', {
       url: context.url,
       maxDepth: context.maxDepth ?? 2,
       maxPages: context.maxPages ?? 50
@@ -753,13 +753,13 @@ export const siteMapExtractorTool = createTool({
             }
           },
           failedRequestHandler({ error }) {
-            logger.warn(`Failed to crawl ${url}`, { error: error instanceof Error ? error.message : String(error) });
+            log.warn(`Failed to crawl ${url}`, { error: error instanceof Error ? error.message : String(error) });
           },
         });
 
         await crawler.run([new Request({ url })]);
       } catch (error) {
-        logger.warn(`Error crawling ${url}`, { error: error instanceof Error ? error.message : String(error) });
+        log.warn(`Error crawling ${url}`, { error: error instanceof Error ? error.message : String(error) });
       }
     };
 
@@ -785,9 +785,9 @@ export const siteMapExtractorTool = createTool({
           }, null, 2), 'utf-8');
 
           savedFilePath = path.relative(path.join(process.cwd(), './data'), fullPath); // Consistent with other tools
-          logger.info('Site map saved securely', { fileName: savedFilePath });
+          log.info('Site map saved securely', { fileName: savedFilePath });
         } catch (error) {
-          logger.error('Failed to save site map', { error: error instanceof Error ? error.message : String(error) });
+          log.error('Failed to save site map', { error: error instanceof Error ? error.message : String(error) });
         }
       }
 
@@ -806,7 +806,7 @@ export const siteMapExtractorTool = createTool({
       });
     } catch (error) {
       const errorMessage = `Site map extraction failed: ${error instanceof Error ? error.message : String(error)}`;
-      logger.error(errorMessage);
+      log.error(errorMessage);
       mapSpan?.end({ metadata: { error: errorMessage } });
       throw error;
     }
@@ -816,7 +816,7 @@ export const siteMapExtractorTool = createTool({
 // ===== LINK EXTRACTOR TOOL =====
 
 const linkExtractorInputSchema = z.object({
-  url: z.string().url().describe("The URL of the web page to extract links from.").refine((v) => ValidationUtils.validateUrl(v), "Invalid URL format"),
+  url: z.url().describe("The URL of the web page to extract links from.").refine((v) => ValidationUtils.validateUrl(v), "Invalid URL format"),
   linkTypes: z.array(z.enum(['internal', 'external', 'all'])).optional().describe("Types of links to extract (default: ['all'])."),
   includeAnchors: z.boolean().optional().describe("Whether to include anchor text with links (default: true)."),
   filterPatterns: z.array(z.string()).optional().describe("Regex patterns to filter links by href."),
@@ -855,7 +855,7 @@ export const linkExtractorTool = createTool({
       }
     });
 
-    logger.info('Starting enhanced link extraction with JSDOM', {
+    log.info('Starting enhanced link extraction with JSDOM', {
       url: context.url,
       linkTypes: context.linkTypes ?? ['all']
     });
@@ -990,7 +990,7 @@ export const linkExtractorTool = createTool({
       });
     } catch (error) {
       const errorMessage = `Link extraction failed: ${error instanceof Error ? error.message : String(error)}`;
-      logger.error(errorMessage);
+      log.error(errorMessage);
       linkSpan?.end({ metadata: { error: errorMessage } });
       throw error;
     }
@@ -1028,7 +1028,7 @@ export const htmlToMarkdownTool = createTool({
       }
     });
 
-    logger.info('Converting HTML to markdown with enhanced JSDOM processing', {
+    log.info('Converting HTML to markdown with enhanced JSDOM processing', {
       htmlLength: context.html.length,
       saveToFile: context.saveToFile
     });
@@ -1062,12 +1062,12 @@ export const htmlToMarkdownTool = createTool({
             await fileHandle.close();
           }
           savedFilePath = path.relative(path.join(process.cwd(), './data'), fullPath);
-          logger.info('Markdown saved securely', { fileName: savedFilePath });
+          log.info('Markdown saved securely', { fileName: savedFilePath });
         } catch (error) {
           if (error instanceof ScrapingError) {
             throw error;
           }
-          logger.error('Failed to save markdown file', { error: error instanceof Error ? error.message : String(error) });
+          log.error('Failed to save markdown file', { error: error instanceof Error ? error.message : String(error) });
         }
       }
 
@@ -1084,7 +1084,7 @@ export const htmlToMarkdownTool = createTool({
       });
     } catch (error) {
       const errorMessage = `HTML to markdown conversion failed: ${error instanceof Error ? error.message : String(error)}`;
-      logger.error(errorMessage);
+      log.error(errorMessage);
       convertSpan?.end({ metadata: { error: errorMessage } });
       throw error;
     }
@@ -1122,7 +1122,7 @@ export const listScrapedContentTool = createTool({
       input: { pattern: context.pattern, includeMetadata: context.includeMetadata ?? true }
     });
 
-    logger.info('Listing scraped content with security validation', { pattern: context.pattern });
+    log.info('Listing scraped content with security validation', { pattern: context.pattern });
 
     try {
       const dataDir = path.join(process.cwd(), './data');
@@ -1241,7 +1241,7 @@ export const listScrapedContentTool = createTool({
       });
     } catch (error) {
       const errorMessage = `Failed to list scraped content: ${error instanceof Error ? error.message : String(error)}`;
-      logger.error(errorMessage);
+      log.error(errorMessage);
       listSpan?.end({ metadata: { error: errorMessage } });
       throw error;
     }
@@ -1282,7 +1282,7 @@ export const contentCleanerTool = createTool({
       }
     });
 
-    logger.info('Cleaning HTML content with enhanced JSDOM security', {
+    log.info('Cleaning HTML content with enhanced JSDOM security', {
       originalLength: context.html.length,
       removeScripts: context.removeScripts ?? true,
       removeStyles: context.removeStyles ?? true
@@ -1345,7 +1345,7 @@ export const contentCleanerTool = createTool({
       });
     } catch (error) {
       const errorMessage = `Content cleaning failed: ${error instanceof Error ? error.message : String(error)}`;
-      logger.error(errorMessage);
+      log.error(errorMessage);
       cleanSpan?.end({ metadata: { error: errorMessage } });
       throw error;
     }

@@ -1,6 +1,6 @@
 import { createTool } from '@mastra/core/tools';
 import { z } from 'zod';
-import { logger } from "../config/logger";
+import { log } from "../config/logger";
 import { AISpanType } from '@mastra/core/ai-tracing';
 
 interface GeocodingResponse {
@@ -38,7 +38,7 @@ export const weatherTool = createTool({
     location: z.string(),
   }),
   execute: async ({ context, tracingContext }) => {
-    logger.info(`Fetching weather for location: ${context.location}`);
+    log.info(`Fetching weather for location: ${context.location}`);
 
     const weatherSpan = tracingContext?.currentSpan?.createChildSpan({
       type: AISpanType.GENERIC,
@@ -49,12 +49,12 @@ export const weatherTool = createTool({
     try {
       const result = await getWeather(context.location);
       weatherSpan?.end({ output: result });
-      logger.info(`Weather fetched successfully for ${context.location}`);
+      log.info(`Weather fetched successfully for ${context.location}`);
       return result;
     } catch (error) {
       const errorMessage = error instanceof Error ? error.message : String(error);
       weatherSpan?.end({ metadata: { error: errorMessage } });
-      logger.error(`Failed to fetch weather for ${context.location}: ${errorMessage}`);
+      log.error(`Failed to fetch weather for ${context.location}: ${errorMessage}`);
       throw error;
     }
   },

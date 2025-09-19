@@ -1,10 +1,10 @@
 import { Agent } from '@mastra/core/agent';
 import { createResearchMemory } from '../config/libsql-storage';
 import { ContentSimilarityMetric, CompletenessMetric, TextualDifferenceMetric, KeywordCoverageMetric, ToneConsistencyMetric } from "@mastra/evals/nlp"; // Non-LLM evals
-import { logger } from "../config/logger";
+import { log } from "../config/logger";
 import { google } from '@ai-sdk/google';
 
-logger.info("Initializing Evaluation Agent...");
+log.info("Initializing Evaluation Agent...");
 
 const memory = createResearchMemory();
 

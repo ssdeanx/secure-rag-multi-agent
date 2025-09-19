@@ -5,9 +5,9 @@ import { openAIModel } from "../config/openai";
 import { verificationResultSchema } from "../schemas/agent-schemas";
 import { createResearchMemory } from '../config/libsql-storage';
 import { google } from "@ai-sdk/google";
-import { logger } from "../config/logger";
+import { log } from "../config/logger";
 
-logger.info('Initializing Verifier Agent...');
+log.info('Initializing Verifier Agent...');
 
 const memory = createResearchMemory();
 

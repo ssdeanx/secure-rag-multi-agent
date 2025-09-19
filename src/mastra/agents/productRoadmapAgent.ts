@@ -5,9 +5,9 @@ import { createResearchMemory, STORAGE_CONFIG } from '../config/libsql-storage';
 import { LIBSQL_PROMPT } from "@mastra/libsql";
 import { createVectorQueryTool } from "@mastra/rag";
 import { google } from '@ai-sdk/google';
-import { logger } from "../config/logger";
+import { log } from "../config/logger";
 
-logger.info('Initializing Copywriter Agent...');
+log.info('Initializing Copywriter Agent...');
 
 const memory = createResearchMemory();
 

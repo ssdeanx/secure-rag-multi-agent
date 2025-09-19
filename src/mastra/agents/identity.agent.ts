@@ -6,9 +6,9 @@ import { jwtAuthTool } from "../tools/jwt-auth.tool";
 import { createResearchMemory } from '../config/libsql-storage';
 import z from "zod";
 import { google } from "@ai-sdk/google";
-import { logger } from "../config/logger";
+import { log } from "../config/logger";
 
-logger.info('Initializing Identity Agent...');
+log.info('Initializing Identity Agent...');
 
 const memory = createResearchMemory();
 

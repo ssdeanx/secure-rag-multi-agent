@@ -11,7 +11,7 @@ if (!fs.existsSync(logsDir)) {
   fs.mkdirSync(logsDir, { recursive: true });
 }
 
-export const logger: PinoLogger = new PinoLogger({
+export const log: PinoLogger = new PinoLogger({
   name: 'logger',
   level: 'info',
 //  transports: {
@@ -39,7 +39,7 @@ export const logWorkflowStart = (workflowId: string, input: Record<string, unkno
     input,
     timestamp: new Date().toISOString(),
   };
-  logger.info(message, data);
+  log.info(message, data);
   logToFile(message, data);
 };
 
@@ -51,7 +51,7 @@ export const logWorkflowEnd = (workflowId: string, output: Record<string, unknow
     duration: `${duration}ms`,
     timestamp: new Date().toISOString(),
   };
-  logger.info(message, data);
+  log.info(message, data);
   logToFile(message, data);
 };
 
@@ -62,7 +62,7 @@ export const logStepStart = (stepId: string, input: Record<string, unknown>) => 
     input,
     timestamp: new Date().toISOString(),
   };
-  logger.info(message, data);
+  log.info(message, data);
   logToFile(message, data);
 };
 
@@ -74,7 +74,7 @@ export const logStepEnd = (stepId: string, output: Record<string, unknown>, dura
     duration: `${duration}ms`,
     timestamp: new Date().toISOString(),
   };
-  logger.info(message, data);
+  log.info(message, data);
   logToFile(message, data);
 };
 
@@ -86,7 +86,7 @@ export const logToolExecution = (toolId: string, input: Record<string, unknown>,
     output,
     timestamp: new Date().toISOString(),
   };
-  logger.info(message, data);
+  log.info(message, data);
   logToFile(message, data);
 };
 
@@ -98,7 +98,7 @@ export const logAgentActivity = (agentId: string, action: string, details: Recor
     details,
     timestamp: new Date().toISOString(),
   };
-  logger.info(message, data);
+  log.info(message, data);
   logToFile(message, data);
 };
 
@@ -111,7 +111,7 @@ export const logError = (component: string, error: Error | unknown, context?: Re
     context,
     timestamp: new Date().toISOString(),
   };
-  logger.error(message, data);
+  log.error(message, data);
   logToFile(message, data);
 };
 
@@ -124,6 +124,6 @@ export const logProgress = (message: string, progress: number, total: number) =>
     percentage: Math.round((progress / total) * 100),
     timestamp: new Date().toISOString(),
   };
-  logger.info(logMessage, data);
+  log.info(logMessage, data);
   logToFile(logMessage, data);
 };

@@ -5,9 +5,9 @@ import { openAIModel } from "../config/openai";
 import { ragAnswerSchema } from "../schemas/agent-schemas";
 import { google } from "@ai-sdk/google";
 import { createResearchMemory } from '../config/libsql-storage';
-import { logger } from "../config/logger";
+import { log } from "../config/logger";
 
-logger.info('Initializing Answerer Agent...');
+log.info('Initializing Answerer Agent...');
 
 const memory = createResearchMemory();
 

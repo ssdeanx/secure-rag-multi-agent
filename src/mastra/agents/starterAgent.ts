@@ -1,9 +1,9 @@
 import { google } from '@ai-sdk/google';
 import { openai } from '@ai-sdk/openai';
 import { Agent } from '@mastra/core/agent';
-import { logger } from "../config/logger";
+import { log } from "../config/logger";
 
-logger.info('Initializing Starter Agent...');
+log.info('Initializing Starter Agent...');
 
 /**
  * Example starter agent for Cedar-OS + Mastra applications

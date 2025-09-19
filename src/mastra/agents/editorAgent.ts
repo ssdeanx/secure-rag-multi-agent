@@ -1,9 +1,9 @@
 import { Agent } from "@mastra/core/agent";
 import { createResearchMemory } from '../config/libsql-storage';
 import { google } from '@ai-sdk/google';
-import { logger } from "../config/logger";
+import { log } from "../config/logger";
 
-logger.info('Initializing Editor Agent...');
+log.info('Initializing Editor Agent...');
 
 const memory = createResearchMemory();
 export const editorAgent = new Agent({

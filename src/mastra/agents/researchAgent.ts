@@ -11,10 +11,10 @@ import { webScraperTool,
 //import { createGemini25Provider } from '../config/googleProvider';
 import { createResearchMemory } from '../config/libsql-storage';
 import { ContentSimilarityMetric, CompletenessMetric, TextualDifferenceMetric, KeywordCoverageMetric, ToneConsistencyMetric } from "@mastra/evals/nlp";
-import { logger } from "../config/logger";
+import { log } from "../config/logger";
 import { google } from '@ai-sdk/google';
 
-logger.info("Initializing Research Agent...");
+log.info("Initializing Research Agent...");
 
 const memory = createResearchMemory();
 

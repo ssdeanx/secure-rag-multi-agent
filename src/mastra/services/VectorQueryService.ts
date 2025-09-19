@@ -3,7 +3,7 @@ import { embedMany } from "ai";
 import { openAIEmbeddingProvider } from "../config/openai";
 import { ValidationService } from "./ValidationService";
 import { RoleService } from "./RoleService";
-import { logger } from "../config/logger";
+import { log } from "../config/logger";
 
 export interface QueryInput {
   question: string;
@@ -68,9 +68,9 @@ export class VectorQueryService {
     topK: number,
     minSimilarity = 0.4
   ): Promise<QueryResult[]> {
-    logger.info('🔍 Applying query filters', { filters });
-    logger.info('🔍 Classification filters', { allowedClasses: filters.allowedClasses });
-    logger.info('🔍 Role filters', { allowTags: filters.allowTags });
+    log.info('🔍 Applying query filters', { filters });
+    log.info('🔍 Classification filters', { allowedClasses: filters.allowedClasses });
+    log.info('🔍 Role filters', { allowTags: filters.allowTags });
 
     // Separate role tags from tenant tags for proper filtering
     const userRoleTags = filters.allowTags.filter(tag => tag.startsWith('role:'));
@@ -79,7 +79,7 @@ export class VectorQueryService {
     // Extract role names from role tags (remove 'role:' prefix)
     const userRoles = userRoleTags.map(tag => tag.replace('role:', ''));
 
-    logger.info('🔍 HIERARCHICAL ACCESS CONTROL', {
+    log.info('🔍 HIERARCHICAL ACCESS CONTROL', {
       originalRoles: userRoles,
       roleAccessInfo: RoleService.formatRolesForLogging(userRoles),
       classificationAccess: filters.allowedClasses,
@@ -105,7 +105,7 @@ export class VectorQueryService {
       const accessInfo = RoleService.generateAccessTags(userRoles);
       const effectiveRoleTags = accessInfo.expandedRoles.map(role => `role:${role}`);
 
-      logger.info('🔍 EXPANDED ROLE ACCESS', {
+      log.info('🔍 EXPANDED ROLE ACCESS', {
         originalRoles: userRoles,
         effectiveRoles: accessInfo.expandedRoles,
         queryTags: effectiveRoleTags
@@ -120,7 +120,7 @@ export class VectorQueryService {
       });
     } else {
       // If user has no roles, they can only access documents marked as public
-      logger.info('🔍 User has no roles - restricting to public-only access');
+      log.info('🔍 User has no roles - restricting to public-only access');
       qdrantFilter.must.push({
         key: "securityTags",
         match: {
@@ -139,7 +139,7 @@ export class VectorQueryService {
       });
     }
 
-    logger.info('🔍 Query configuration', {
+    log.info('🔍 Query configuration', {
       qdrantFilter,
       minSimilarity
     });
@@ -152,10 +152,10 @@ export class VectorQueryService {
       includeVector: false
     });
 
-    logger.info(`🔍 Query returned ${results?.length ?? 0} results before similarity filtering`);
+    log.info(`🔍 Query returned ${results?.length ?? 0} results before similarity filtering`);
 
     if (!results || results.length === 0) {
-      logger.info('🔍 Access Control Summary - No accessible documents found (properly restricted)', {
+      log.info('🔍 Access Control Summary - No accessible documents found (properly restricted)', {
         userRoles: userRoleTags,
         userTenant: userTenantTags,
         maxClassification: filters.allowedClasses
@@ -166,14 +166,14 @@ export class VectorQueryService {
     // Apply similarity threshold filtering
     const similarityFilteredResults = results.filter((r: any) => {
       const score = r.score ?? 0;
-      logger.debug(`🔍 Document ${r.metadata?.docId}: score=${score.toFixed(3)}, threshold=${minSimilarity}, ${score >= minSimilarity ? 'KEEP' : 'FILTER_OUT'}`);
+      log.debug(`🔍 Document ${r.metadata?.docId}: score=${score.toFixed(3)}, threshold=${minSimilarity}, ${score >= minSimilarity ? 'KEEP' : 'FILTER_OUT'}`);
       return score >= minSimilarity;
     });
 
-    logger.info(`🔍 After similarity filtering (>=${minSimilarity}): ${similarityFilteredResults.length}/${results.length} documents kept`);
+    log.info(`🔍 After similarity filtering (>=${minSimilarity}): ${similarityFilteredResults.length}/${results.length} documents kept`);
 
     if (similarityFilteredResults.length === 0) {
-      logger.info('🔍 Relevance Control Summary - No relevant documents found', {
+      log.info('🔍 Relevance Control Summary - No relevant documents found', {
         securityPassed: results.length,
         similarityThreshold: minSimilarity,
         highestScore: Math.max(...results.map((r: any) => r.score ?? 0)).toFixed(3)
@@ -185,7 +185,7 @@ export class VectorQueryService {
     const accessInfo = userRoles.length > 0 ? RoleService.generateAccessTags(userRoles) : { expandedRoles: [] };
 
     // Log successful access control summary
-    logger.info('🔍 ACCESS CONTROL VALIDATION (with hierarchy)', {
+    log.info('🔍 ACCESS CONTROL VALIDATION (with hierarchy)', {
       documentsRetrieved: similarityFilteredResults.length,
       userEffectiveRoles: accessInfo.expandedRoles,
       userTenant: userTenantTags
@@ -205,7 +205,7 @@ export class VectorQueryService {
       const docClassification = securityTags.find(tag => tag.startsWith('classification:'));
       const hasValidRoleAccess = RoleService.canAccessDocument(userRoles, securityTags.filter(tag => tag.startsWith('role:')));
 
-      logger.debug(`🔍 HIERARCHICAL ACCESS CHECK - Doc ${index + 1} (${r.metadata?.docId})`, {
+      log.debug(`🔍 HIERARCHICAL ACCESS CHECK - Doc ${index + 1} (${r.metadata?.docId})`, {
         documentRoles: docRoles,
         classification: docClassification,
         userAccess: hasValidRoleAccess ? 'GRANTED' : 'DENIED',
@@ -214,14 +214,14 @@ export class VectorQueryService {
 
       // Enhanced security validation using role hierarchy
       if (!hasValidRoleAccess && docRoles.length > 0) {
-        logger.warn(`⚠️ SECURITY WARNING: Document ${r.metadata?.docId} was retrieved but user lacks access!`, {
+        log.warn(`⚠️ SECURITY WARNING: Document ${r.metadata?.docId} was retrieved but user lacks access!`, {
           documentRequiredRoles: docRoles,
           userEffectiveRoles: accessInfo.expandedRoles
         });
 
         // Additional debugging - show what roles could access this document
         const accessibleRoles = RoleService.getDocumentAccessibleRoles(docRoles);
-        logger.warn(`Roles that CAN access this doc: [${accessibleRoles.join(', ')}]`);
+        log.warn(`Roles that CAN access this doc: [${accessibleRoles.join(', ')}]`);
       }
 
       return {

@@ -3,11 +3,13 @@ import { PgVector, PostgresStore } from '@mastra/pg';
 import { google } from "@ai-sdk/google";
 import { createVectorQueryTool, MDocument, createGraphRAGTool } from "@mastra/rag";
 import { embedMany } from "ai";
-import { logger } from "./logger";
+import { log } from "./logger";
 import type { AITracingEvent } from '@mastra/core/ai-tracing';
-import { AISpanType } from '@mastra/core/ai-tracing';;
+import { AISpanType } from '@mastra/core/ai-tracing';
+import { qdrant } from "./vector-store";
+;
 
-logger.info("PG Storage config loaded");
+log.info("PG Storage config loaded");
 
 
 export const store = new PostgresStore({
@@ -19,80 +21,10 @@ export const store = new PostgresStore({
 
 //export const pgVector = new PgVector({ connectionString: process.env.SUPABASE ?? "postgresql://user:password@localhost:5432/mydb", schemaName: 'mastra' });
 
-//await store.createIndex({
-//  name: 'idx_traces_attributes',
-//  table: 'mastra_traces',
-//  columns: ['attributes'],
-//  method: 'gin',
-//  unique: true,
-//  where: 'condition',
-//  storage: { fillfactor: 90 },
-//  concurrent: true,
-//  opclass: 'jsonb_path_ops'
-//});
-
-// Basic index for common queries
-//await store.createIndex({
-//  name: 'idx_threads_resource',
-//  table: 'mastra_threads',
-//  columns: ['resourceId'],
-//  method: 'btree', // '"gin" | "btree" | "hash" | "gist" | "spgist" | "brin" | undefined'
-//  unique: true,
-//  where: 'resourceId IS NOT NULL',
-//  storage: { fillfactor: 90 },
-//  concurrent: true,
-//  opclass: 'resource_id_ops'
-//});
-
-// Composite index with sort order for filtering + sorting
-//await store.createIndex({
-//  name: 'idx_messages_composite',
-//  table: 'mastra_messages',
-//  columns: ['thread_id', 'createdAt DESC'],
-//  unique: true,
-//  method: 'gist',
-//  where: 'thread_id IS NOT NULL',
-//  storage: { fillfactor: 90 },
-//  concurrent: true,
-//  opclass: 'timestamp_ops'
-//});
-
-//await pgVector.createIndex({
-//  indexName: "agentMemoryIndex",
-//  dimension: 1536,
-//  metric: 'cosine', // or 'euclidean', 'dotproduct'
-//  buildIndex: true,
-//});
-
-// Store embeddings with rich metadata for better organization and filtering
-//await pgVector.upsert({
-//  indexName: "agentMemoryIndex",
-//  vectors: embeddings,
-//  metadata: chunks.map((chunk, i) => ({
-//    // Basic content
-//    text: chunk.text,
-//    id: chunk.id ?? `chunk-${i}`, // generate fallback id when chunk has no id
-
-//    // Document organization
-//    source: chunk.metadata?.source,
-//    category: chunk.metadata?.category,
-
-    // Temporal metadata
-//    createdAt: new Date().toISOString(),
-//    version: "1.0",
-
-    // Custom fields
-//    language: chunk.metadata?.language,
-//    author: chunk.metadata?.author,
-//    confidenceScore: chunk.metadata?.score,
-//    sparseVector: chunk.metadata?.sparseVector,
-//  })),
-//  sparseVectors:  // Optional sparse vectors
-//});
 
 export const agentMemory = new Memory({
   storage: store,
-  vector: pgVector,
+  vector: qdrant,
   embedder:  google.textEmbedding("gemini-embedding-001"),
   options: {
     lastMessages: 500,
@@ -146,13 +78,13 @@ export const graphQueryTool = createGraphRAGTool({
   enableFilter: true,
 });
 
-// pgVector with performance tuning
-export const pgVectorQueryTool = createVectorQueryTool({
-  vectorStoreName: "pgVector",
-  indexName: "agentMemoryIndex",
+// qdrant with performance tuning
+export const qdrantQueryTool = createVectorQueryTool({
+  vectorStoreName: "qdrant",
+  indexName: "governed_rag",
   model: google.textEmbedding("gemini-embedding-001"),
   databaseConfig: {
-    pgvector: {
+    qdrant: {
       minScore: 0.7,    // Filter low-quality results
       ef: 200,          // HNSW search parameter
       probes: 10        // IVFFlat probe parameter
@@ -207,5 +139,5 @@ embeddingEvent.output = {
   embeddingDimension: embeddings[0]?.length || 0,
   status: 'completed'
 };
-logger.info("Embeddings generated", { output: embeddingEvent.output, type: embeddingEvent.type, model: embeddingEvent.model, timestamp: embeddingEvent.timestamp, input: embeddingEvent.input, chunkCount: embeddingEvent.input.chunkCount });
+log.info("Embeddings generated", { output: embeddingEvent.output, type: embeddingEvent.type, model: embeddingEvent.model, timestamp: embeddingEvent.timestamp, input: embeddingEvent.input, chunkCount: embeddingEvent.input.chunkCount });
 //const store2 = new PostgresStore({ connectionString });

@@ -1,7 +1,7 @@
 import { Memory } from "@mastra/memory";
 
 import { openAIEmbeddingProvider } from "../config/openai";
-import { logger } from "../config/logger";
+import { log } from "../config/logger";
 
 export interface ChunkingOptions {
   tokenSize?: number;
@@ -36,7 +36,7 @@ const DEFAULT_4096 = 4096;
   async chunkTextTokenBased(text: string, options: ChunkingOptions = {}): Promise<ChunkingResult> {
     const { tokenSize = 4096 }: ChunkingOptions = options;
 
-    logger.info(`Chunking text using token-based strategy (${tokenSize} tokens per chunk)`);
+    log.info(`Chunking text using token-based strategy (${tokenSize} tokens per chunk)`);
 
     // Use simplified word-boundary aware chunking
     // Approximate: 1 token ≈ 4 characters for English text
@@ -83,7 +83,7 @@ const DEFAULT_4096 = 4096;
     if (maxChunkSize <= 0 || overlap < 0 || overlap >= maxChunkSize) {
       throw new Error('Invalid chunking parameters');
     }
-    logger.info(`Chunking text using character-based strategy (${maxChunkSize} chars per chunk, ${overlap} overlap)`);
+    log.info(`Chunking text using character-based strategy (${maxChunkSize} chars per chunk, ${overlap} overlap)`);
     const chunks: string[] = [];
     let start = 0;
     // Remove the hardcoded limit - process entire document
@@ -156,7 +156,7 @@ const DEFAULT_4096 = 4096;
     }
 
     if (text.length > 100000) {
-      logger.info(`Processing large document: ${text.length} characters`);
+      log.info(`Processing large document: ${text.length} characters`);
     }
   }
 }
