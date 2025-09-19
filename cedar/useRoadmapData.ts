@@ -1,5 +1,5 @@
-import { Node, Edge } from 'reactflow';
-import { FeatureNodeData } from '@/components/FeatureNode';
+import type { Node, Edge } from 'reactflow';
+import type { FeatureNodeData } from './FeatureNode';
 import { useMemo } from 'react';
 
 export const useRoadmapData = () => {
@@ -14,7 +14,7 @@ export const useRoadmapData = () => {
   return { nodes, edges };
 };
 
-const initialNodes: Node<FeatureNodeData>[] = [
+const initialNodes: Array<Node<FeatureNodeData>> = [
   {
     id: '1',
     type: 'featureNode',
