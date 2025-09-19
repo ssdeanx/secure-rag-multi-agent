@@ -77,7 +77,7 @@ export function AppSidebar({
   };
 
   return (
-    <Sidebar collapsible="icon" className="max-w-screen-2xl mx-auto">
+    <Sidebar collapsible="icon">
       <SidebarHeader>
         <div className="flex-center space-x-2 px-2">
           <Shield className="h-4 w-4 text-primary size-fit" />

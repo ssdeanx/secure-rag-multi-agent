@@ -95,6 +95,32 @@
   --color-security-public: oklch(0.646 0.222 41.116);
 }
 
+/* Sidebar defaults moved from inline styles in components to global CSS variables.
+   These provide sane defaults and can be overridden by utility classes if needed. */
+.sidebar-wrapper {
+  --sidebar-width: 16rem;
+  --sidebar-width-icon: 3rem;
+}
+
+/* Mobile sheet instances set data-mobile="true" on the element; give them a
+   slightly larger default width for touch targets. */
+[data-mobile="true"] {
+  --sidebar-width: 18rem;
+}
+
+/* Default skeleton width when a dynamic width isn't provided from JS. */
+.sidebar-menu-skeleton .skeleton-text {
+  --skeleton-width: 65%;
+  max-width: var(--skeleton-width);
+}
+
+/* Toaster theme CSS variables (moved from inline style in components/ui/sonner.tsx) */
+.toaster {
+  --normal-bg: var(--popover);
+  --normal-text: var(--popover-foreground);
+  --normal-border: var(--border);
+}
+
 .dark {
   /* Dark mode colors (Oklch) */
   --color-background: oklch(0.141 0.005 285.823);
@@ -197,35 +223,6 @@
 }
 
 /* Improved responsive breakpoints */
-@media (min-width: 480px) {
-  .sm\\:content-center {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    text-align: center;
-  }
-}
-
-@media (min-width: 768px) {
-  .md\\:content-center {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    text-align: center;
-  }
-}
-
-@media (min-width: 1024px) {
-  .lg\\:content-center {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    text-align: center;
-  }
-}
 
 /* Scroll-driven animations */
 .scroll-reveal {
@@ -450,6 +447,84 @@ html {
 
 .aspect-auto {
   aspect-ratio: auto;
+}
+
+/* App level layout utilities */
+html, body {
+  height: 100%;
+}
+
+body {
+  /* Use utility tokens and ensure the app stacks vertically */
+  background: var(--background);
+  color: var(--foreground);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+/* Central container used across pages/components */
+.app-container {
+  /* center content and provide safe paddings (explicit CSS so it works even if @apply isn't processed) */
+  width: 100%;
+  margin-left: auto;
+  margin-right: auto;
+  padding-left: 1rem; /* px-4 */
+  padding-right: 1rem; /* px-4 */
+  max-width: 1536px; /* approximate Tailwind max-w-screen-2xl */
+}
+
+@media (min-width: 640px) {
+  .app-container {
+    padding-left: 1.5rem; /* sm:px-6 */
+    padding-right: 1.5rem;
+  }
+}
+
+@media (min-width: 1024px) {
+  .app-container {
+    padding-left: 2rem; /* lg:px-8 */
+    padding-right: 2rem;
+  }
+}
+
+/* Header and footer layout helpers to keep them full width but content centered */
+.site-header, .site-footer {
+  width: 100%;
+}
+
+/* Make immediate child of site-header/footer use the app container */
+.site-header > *, .site-footer > * {
+  /* mirror .app-container explicit rules so header/footer children are centered */
+  width: 100%;
+  margin-left: auto;
+  margin-right: auto;
+  padding-left: 1rem;
+  padding-right: 1rem;
+  max-width: 1536px;
+}
+
+@media (min-width: 640px) {
+  .site-header > *, .site-footer > * {
+    padding-left: 1.5rem;
+    padding-right: 1.5rem;
+  }
+}
+
+@media (min-width: 1024px) {
+  .site-header > *, .site-footer > * {
+    padding-left: 2rem;
+    padding-right: 2rem;
+  }
+}
+
+/* Top navigation grid helper: left auto, center flexible, right auto */
+.nav-grid {
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  align-items: center;
 }
 
 .aspect-square {
@@ -687,9 +762,9 @@ html {
 }
 
 .animated-gradient {
-  background: linear-gradient(-45deg, oklch(0.7 0.3 240), oklch(0.7 0.3 330), oklch(0.8 0.2 180), oklch(0.7 0.2 140));
+  background: linear-gradient(-45deg, oklch(0.7 0.3 240), oklch(44.123% 0.09908 238.796), oklch(42.265% 0.2848 264.162), oklch(14.138% 0.08336 264.082));
   background-size: 400% 400%;
-  animation: gradient-shift 4s ease infinite;
+  animation: gradient-shift 7s ease infinite;
 }
 
 .animated-gradient-subtle {
@@ -718,8 +793,9 @@ html {
 
 /* Enhanced Backdrop Blur */
 .backdrop-blur-enhanced {
-  backdrop-filter: blur(20px) saturate(180%);
+  /* vendor-prefixed first for broader support */
   -webkit-backdrop-filter: blur(20px) saturate(180%);
+  backdrop-filter: blur(20px) saturate(180%);
 }
 
 /* Custom component styles */
@@ -756,7 +832,7 @@ html {
 }
 
 .gradient-border {
-  background: linear-gradient(to right, #3b82f6, #8b5cf6, #ec4899);
+  background: linear-gradient(to right, #3b82f6, #1d19fc, #010b3b);
   padding: 1px;
   border-radius: var(--radius);
 }
@@ -764,10 +840,15 @@ html {
 .security-badge-public {
   /* Fallback for older browsers (e.g. Chrome < 111) */
   background-color: rgba(16,185,129,0.1);
-  background-color: color-mix(in srgb, #10b981 10%, transparent);
+  /* Prefer modern color-mix when available, otherwise fall back to rgba above */
+  @supports (color: color-mix(in srgb, #10b981 10%, transparent)) {
+    background-color: color-mix(in srgb, #10b981 10%, transparent);
+  }
   color: #4ade80;
   border: 1px solid rgba(16,185,129,0.2);
-  border: 1px solid color-mix(in srgb, #10b981 20%, transparent);
+  @supports (color: color-mix(in srgb, #10b981 20%, transparent)) {
+    border: 1px solid color-mix(in srgb, #10b981 20%, transparent);
+  }
   border-radius: var(--radius);
   padding: 0.25rem 0.5rem;
   font-size: 0.75rem;
@@ -777,10 +858,14 @@ html {
 .security-badge-internal {
   /* Fallback for older browsers (e.g. Chrome < 111) */
   background-color: rgba(234,179,8,0.1);
-  background-color: color-mix(in srgb, #eab308 10%, transparent);
+  @supports (color: color-mix(in srgb, #eab308 10%, transparent)) {
+    background-color: color-mix(in srgb, #eab308 10%, transparent);
+  }
   color: #facc15;
   border: 1px solid rgba(234,179,8,0.2);
-  border: 1px solid color-mix(in srgb, #eab308 20%, transparent);
+  @supports (color: color-mix(in srgb, #eab308 20%, transparent)) {
+    border: 1px solid color-mix(in srgb, #eab308 20%, transparent);
+  }
   border-radius: var(--radius);
   padding: 0.25rem 0.5rem;
   font-size: 0.75rem;
@@ -790,53 +875,21 @@ html {
 .security-badge-confidential {
   /* Fallback for older browsers (e.g. Chrome < 111) */
   background-color: rgba(239,68,68,0.1);
-  background-color: color-mix(in srgb, #ef4444 10%, transparent);
+  @supports (color: color-mix(in srgb, #ef4444 10%, transparent)) {
+    background-color: color-mix(in srgb, #ef4444 10%, transparent);
+  }
   color: #f87171;
   border: 1px solid rgba(239,68,68,0.2);
-  border: 1px solid color-mix(in srgb, #ef4444 20%, transparent);
+  @supports (color: color-mix(in srgb, #ef4444 20%, transparent)) {
+    border: 1px solid color-mix(in srgb, #ef4444 20%, transparent);
+  }
   border-radius: var(--radius);
   padding: 0.25rem 0.5rem;
   font-size: 0.75rem;
   font-weight: 500;
 }
 
-@theme inline {
-  --radius-sm: calc(var(--radius) - 4px);
-  --radius-md: calc(var(--radius) - 2px);
-  --radius-lg: var(--radius);
-  --radius-xl: calc(var(--radius) + 4px);
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --color-card: var(--card);
-  --color-card-foreground: var(--card-foreground);
-  --color-popover: var(--popover);
-  --color-popover-foreground: var(--popover-foreground);
-  --color-primary: var(--primary);
-  --color-primary-foreground: var(--primary-foreground);
-  --color-secondary: var(--secondary);
-  --color-secondary-foreground: var(--secondary-foreground);
-  --color-muted: var(--muted);
-  --color-muted-foreground: var(--muted-foreground);
-  --color-accent: var(--accent);
-  --color-accent-foreground: var(--accent-foreground);
-  --color-destructive: var(--destructive);
-  --color-border: var(--border);
-  --color-input: var(--input);
-  --color-ring: var(--ring);
-  --color-chart-1: var(--chart-1);
-  --color-chart-2: var(--chart-2);
-  --color-chart-3: var(--chart-3);
-  --color-chart-4: var(--chart-4);
-  --color-chart-5: var(--chart-5);
-  --color-sidebar: var(--sidebar);
-  --color-sidebar-foreground: var(--sidebar-foreground);
-  --color-sidebar-primary: var(--sidebar-primary);
-  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
-  --color-sidebar-accent: var(--sidebar-accent);
-  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
-  --color-sidebar-border: var(--sidebar-border);
-  --color-sidebar-ring: var(--sidebar-ring);
-}
+/* Removed non-standard @theme inline block — variables are already defined in :root and .dark above */
 
 * {
   border-color: hsl(var(--border));
@@ -845,4 +898,28 @@ html {
 body {
   background-color: hsl(var(--background));
   color: hsl(var(--foreground));
+}
+
+/* Global button utilities to style shadnui Button with shared classes */
+.btn {
+  @apply inline-flex items-center justify-center rounded-md px-3 py-1.5 text-sm font-medium border;
+}
+.btn:where(:not(:disabled)) {
+  @apply focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2;
+}
+.btn-ghost {
+  @apply bg-transparent border-border hover:bg-accent/5;
+}
+.btn-primary {
+  @apply bg-[var(--color-primary)] text-[var(--color-primary-foreground)] border-transparent hover:brightness-95;
+}
+.btn-sm {
+  @apply text-sm px-2.5 py-1 rounded-md;
+}
+
+/* Small helper for sign-in form */
+.login-container {
+  max-width: 420px;
+  margin-left: auto;
+  margin-right: auto;
 }

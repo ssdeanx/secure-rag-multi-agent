@@ -79,7 +79,8 @@ export default function AuthPanel({ onAuth }: AuthPanelProps) {
   }, [onAuth]);
 
   return (
-    <Card className="max-w-screen-2xl mx-auto">
+    <div className="app-container">
+      <Card>
       <CardHeader>
         <CardTitle className="text-3xl animated-gradient bg-clip-text text-transparent">
           Select Demo Role
@@ -169,6 +170,7 @@ export default function AuthPanel({ onAuth }: AuthPanelProps) {
           </div>
         )}
       </CardContent>
-    </Card>
+      </Card>
+    </div>
   );
 }

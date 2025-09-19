@@ -155,7 +155,7 @@ export default function ChatInterface({ jwt, role }: ChatInterfaceProps) {
   ], []);
 
   return (
-    <Card className="overflow-hidden flex flex-col h-[600px] lg:h-[700px] max-w-screen-2xl mx-auto">
+    <Card className="overflow-hidden flex flex-col h-[600px] lg:h-[700px]">
       {/* Messages Container with Container Query Support */}
       <div className="flex-1 overflow-y-auto p-6 spacing-fluid-md chat-container chat-messages">
         {messages.map((message: Message) => (

@@ -3,17 +3,18 @@ import { Inter } from 'next/font/google';
 import './globals.css';
 import { ThemeProvider } from '../components/ThemeProvider';
 import { Toaster } from '../components/ui/toaster';
+import { TopNavigation } from '../components/TopNavigation';
+import { Footer } from '../components/Footer';
 
 import type { Metadata } from 'next';
 
 const inter = Inter({ subsets: ['latin'] });
 
 export const metadata: Metadata = {
-  metadataBase: new URL('https://mastra-governed-rag.vercel.app'),
   title: 'Governed RAG - Secure AI with Mastra',
   description: 'Enterprise-grade secure RAG with role-based access control',
   applicationName: 'Governed RAG',
-  authors: [{ name: 'ssdeanx', url: 'https://github.com/ssdeanx/mastra-governed-rag' }],
+  authors: [{ name: 'ssdeanx', url: 'https://github.com/ssdeanx/governed-rag-ai' }],
   keywords: [
     'AI',
     'RAG',
@@ -31,35 +32,6 @@ export const metadata: Metadata = {
     { media: '(prefers-color-scheme: dark)', color: 'black' },
   ],
   generator: 'Next.js',
-  viewport: {
-    width: 'device-width',
-    initialScale: 1,
-  },
-  icons: {
-    icon: '/public/favicon.ico',
-    shortcut: '/public/favicon-16x16.png',
-    apple: '/public/apple-touch-icon.png',
-    other: [
-      {
-        rel: 'apple-touch-icon-precomposed',
-        url: '/apple-touch-icon-precomposed.png',
-      },
-    ],
-  },
-  openGraph: {
-    title: 'Governed RAG - Secure AI with Mastra',
-    description: 'Enterprise-grade secure RAG with role-based access control',
-    url: 'https://mastra-governed-rag.vercel.app',
-    siteName: 'Governed RAG',
-    images: [
-      {
-        url: 'https://mastra-governed-rag.vercel.app/og-image.png',
-        width: 1200,
-        height: 630,
-        alt: 'Governed RAG - Secure AI with Mastra',
-      },
-    ],
-  },
 };
 
 export default function RootLayout({
@@ -76,7 +48,16 @@ export default function RootLayout({
           enableSystem
           disableTransitionOnChange
         >
-          {children}
+          <div className="site-wrapper">
+            <TopNavigation />
+
+            <main className="main-content app-container">
+              {children}
+            </main>
+
+            <Footer />
+          </div>
+
           <Toaster />
         </ThemeProvider>
       </body>

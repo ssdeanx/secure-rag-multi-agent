@@ -23,7 +23,7 @@ export default [
       parser: tsparser,
       parserOptions: {
         ecmaVersion: 2022,
-        sourceType: 'module',
+        sourceType: 'bundler',
         project: './tsconfig.json'
       }
     },
