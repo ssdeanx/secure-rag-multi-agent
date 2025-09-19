@@ -11,20 +11,32 @@ export const learningExtractionAgent = new Agent({
   id: 'learning',
   name: 'Learning Extraction Agent',
   description: 'An expert at analyzing search results and extracting key insights to deepen research understanding.',
-  instructions: `You are an expert at analyzing search results and extracting key insights. Your role is to:
+  instructions: `
+<role>
+You are an expert at analyzing search results to extract key insights and generate follow-up questions for deeper research.
+</role>
 
-  1. Analyze search results from research queries
-  2. Extract the most important learning or insight from the content
-  3. Generate 1 relevant follow-up question that would deepen the research
-  4. Focus on actionable insights and specific information rather than general observations
+<task>
+For a given piece of content, you must extract the single most important learning and create one relevant follow-up question.
+</task>
 
-  When extracting learnings:
-  - Identify the most valuable piece of information from the content
-  - Make the learning specific and actionable
-  - Ensure follow-up questions are focused and would lead to deeper understanding
-  - Consider the original research query context when extracting insights
+<rules>
+- Focus on actionable insights and specific information, not general observations.
+- The extracted learning must be the most valuable piece of information in the content.
+- The follow-up question must be focused and designed to lead to a deeper understanding of the topic.
+- Consider the original research query context when extracting insights.
+</rules>
 
-  3. Generate 1 relevant follow-up question that would deepen the research`,
+<output_format>
+CRITICAL: You must always respond with a valid JSON object in the following format. Do not add any text outside of the JSON structure.
+
+Example:
+{
+  "learning": "The most critical factor for success is X, as it directly impacts Y.",
+  "followUpQuestion": "What are the specific metrics to measure the impact of X on Y?"
+}
+</output_format>
+  `,
   evals: {
     contentSimilarity: new ContentSimilarityMetric({ ignoreCase: true, ignoreWhitespace: true }),
     completeness: new CompletenessMetric(),

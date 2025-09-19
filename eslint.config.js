@@ -4,12 +4,21 @@ import tsparser from '@typescript-eslint/parser'
 import tsdoc from 'eslint-plugin-tsdoc'
 import jsdoc from 'eslint-plugin-jsdoc'
 import prettierConfig from 'eslint-config-prettier'
+import nextPlugin from 'eslint-config-next'
+import reactPlugin from 'eslint-plugin-react'
 
 export default [
   js.configs.recommended,
   prettierConfig,
+  nextPlugin,
   {
     files: ['**/*.ts', '**/*.tsx', '**/*.js', '**/*.jsx'],
+    plugins: {
+      react: reactPlugin,
+      '@typescript-eslint': tseslint,
+      'tsdoc': tsdoc,
+      'jsdoc': jsdoc
+    },
     languageOptions: {
       parser: tsparser,
       parserOptions: {
@@ -18,12 +27,8 @@ export default [
         project: './tsconfig.json'
       }
     },
-    plugins: {
-      '@typescript-eslint': tseslint,
-      tsdoc,
-      jsdoc
-    },
     rules: {
+      ...reactPlugin.configs.recommended.rules,
       // Standard style guide rules
       'no-unused-vars': 'warn', // Turn off base rule
       '@typescript-eslint/no-unused-vars': 'warn',
