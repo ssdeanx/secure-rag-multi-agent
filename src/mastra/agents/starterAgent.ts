@@ -1,6 +1,7 @@
 import { google } from '@ai-sdk/google';
 import { Agent } from '@mastra/core/agent';
 import { log } from "../config/logger";
+import { starterAgentTool } from '../tools/starter-agent-tool';
 
 log.info('Initializing Starter Agent...');
 
@@ -40,5 +41,5 @@ You will respond in a JSON format with the following fields:
   `,
   model: google('gemini-2.5-flash'),
   // TODO: Add any tools your agent needs by passing them in the tools array
-  // tools: [tool1, tool2, ...],
+// tools: starterAgentTool,
 });

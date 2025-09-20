@@ -23,7 +23,7 @@ import { productRoadmapAgent } from "./agents/productRoadmapAgent";
 import { editorAgent } from "./agents/editorAgent";
 import { generateReportWorkflow } from "./workflows/generateReportWorkflow";
 import { randomUUID } from "crypto";
-import { qVector } from "./config/vector-store";
+import { qdrantVector } from "./config/vector-store";
 import { SensitiveDataFilter } from '@mastra/core/ai-tracing';
 
 log.info("Mastra instance created");
@@ -54,7 +54,7 @@ export const mastra = new Mastra({
     'generate-report-workflow': generateReportWorkflow
   },
   vectors: {
-    qdrant: qVector,
+    qdrant: qdrantVector,
   },
   server: {
     experimental_auth: new MastraJwtAuth({

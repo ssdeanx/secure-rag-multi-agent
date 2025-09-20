@@ -1,5 +1,5 @@
 import { log, logProgress } from '../config/logger';
-import { qVector } from '../config/vector-store';
+import { qdrantVector } from '../config/vector-store';
 
 const MAX_MAX_RETRIES = 3;
 export interface VectorMetadata {
@@ -133,7 +133,7 @@ export class VectorStorageService {
 
       // Store vectors in vector database
       // FIXME
-      const result = await qVector.upsert({
+      const result = await qdrantVector.upsert({
         indexName: process.env.QDRANT_COLLECTION ?? 'governed_rag',
         vectors: embeddings,
         metadata

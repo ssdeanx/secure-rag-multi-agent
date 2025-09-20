@@ -1,6 +1,6 @@
 import { createTool } from "@mastra/core/tools";
 import { z } from "zod";
-
+import { AISpanType } from '@mastra/core/ai-tracing';
 import { ValidationService } from "../services/ValidationService";
 import { VectorQueryService } from "../services/VectorQueryService";
 import { log } from "../config/logger";
@@ -28,22 +28,24 @@ export const vectorQueryTool = createTool({
       classification: z.enum(["public","internal","confidential"])
     }))
   }),
-  execute: async ({ context, mastra }) => {
+  execute: async ({ context, mastra, tracingContext }) => {
+    // Create a span for tracing
+    const span = tracingContext?.currentSpan?.createChildSpan({
+      type: AISpanType.TOOL_CALL,
+      name: 'vector-query-tool',
+      input: {
+        questionLength: context.question.length,
+        allowTagsCount: context.allowTags.length,
+        maxClassification: context.maxClassification,
+        topK: context.topK
+      }
+    });
+
     try {
       // Extract request ID from context (may come from agent input)
-      let requestId = 'UNKNOWN';
-      try {
-        // Try to extract requestId if it was passed through the agent
-        const contextStr = JSON.stringify(context);
-        const requestIdMatch = /REQ-\d+-\w+/.exec(contextStr);
-        if (requestIdMatch) {
-          requestId = requestIdMatch[0];
-        }
-      } catch (e) {
-        // Log the parsing error and fallback to generating our own request ID
-        log.warn('Failed to extract requestId from context, generating fallback requestId', { error: e });
-        requestId = `TOOL-${Date.now()}`;
-      }
+      const contextStr = JSON.stringify(context);
+      const requestIdMatch = /REQ-\d+-\w+/.exec(contextStr);
+      const requestId = requestIdMatch ? requestIdMatch[0] : `TOOL-${Date.now()}`;
 
       // Track and log tool call count
       const currentCount = (toolCallCounters.get(requestId) ?? 0) + 1;
@@ -71,6 +73,15 @@ export const vectorQueryTool = createTool({
 
       log.info(`[${requestId}] ✅ VECTOR QUERY TOOL CALL #${currentCount} COMPLETED - Found ${results.length} results`);
 
+      // End tracing span with success
+      span?.end({
+        output: {
+          success: true,
+          resultCount: results.length,
+          topK: context.topK
+        }
+      });
+
       // Clean up counter if this seems to be the final call (after a short delay to account for any immediate retries)
       setTimeout(() => {
         const finalCount = toolCallCounters.get(requestId) ?? 0;
@@ -80,6 +91,14 @@ export const vectorQueryTool = createTool({
 
       return { contexts: results };
     } catch (error) {
+      const errorMessage = error instanceof Error ? error.message : "Unknown error";
+
+      // Record error in tracing span
+      span?.error({
+        error: error instanceof Error ? error : new Error(errorMessage),
+        metadata: { operation: 'vector-query', topK: context.topK }
+      });
+
       if (error instanceof Error) {
         throw new Error(`Vector query failed: ${error.message}`);
       }

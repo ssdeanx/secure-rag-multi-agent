@@ -1,19 +1,16 @@
 import createMDX from '@next/mdx'
-import mdxPlugins from './lib/mdx-plugins.js'
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   reactStrictMode: true,
-  serverExternalPackages: ['@mastra/core', 'jose', '@mastra/*', 'vitest', 'zod', 'ai', '@ai-sdk/*', 'playwright', 'node-web-audio-api', 'node-pty'],
+  serverExternalPackages: ['@mastra/core', 'jose', '@mastra/*', 'vitest', 'zod', 'ai', '@ai-sdk/*'],
   pageExtensions: ['js', 'jsx', 'ts', 'tsx', 'md', 'mdx'],
   experimental: {
-    turbopackPersistentCaching: true,
     useCache: true,
     useLightningcss: true,
     cssChunking: true,
     browserDebugInfoInTerminal: true,
     optimizeCss: true,
-    ppr: 'incremental',
   },
   webpack: (config) => {
     config.externals.push({
@@ -25,11 +22,10 @@ const nextConfig = {
 }
 
 const withMDX = createMDX({
+  // Start with minimal MDX configuration
   options: {
-    // Use the shared plugin lists. For ESM import compatibility we expect
-    // lib/mdx-plugins to export default with remarkPlugins/rehypePlugins.
-    remarkPlugins: mdxPlugins.remarkPlugins || [],
-    rehypePlugins: mdxPlugins.rehypePlugins || [],
+    remarkPlugins: ['remark-gfm', 'remark-mdx-frontmatter', 'remark-toc', 'remark-rehype', 'remark-html', 'remark-mdx', 'remark-parse', 'remark-stringify', 'remark-frontmatter', 'remark-smartypants'],
+    rehypePlugins: ['rehype-mermaid'],
   },
 })
 

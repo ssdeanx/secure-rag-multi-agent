@@ -41,8 +41,8 @@ export const weatherTool = createTool({
     log.info(`Fetching weather for location: ${context.location}`);
 
     const weatherSpan = tracingContext?.currentSpan?.createChildSpan({
-      type: AISpanType.GENERIC,
-      name: 'weather_fetch',
+      type: AISpanType.TOOL_CALL,
+      name: 'weather-tool',
       input: { location: context.location }
     });
 

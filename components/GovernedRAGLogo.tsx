@@ -9,18 +9,25 @@ interface GovernedRAGLogoProps {
 
 export function GovernedRAGLogo({ className = '', size = 'md' }: GovernedRAGLogoProps) {
   const sizeClasses = {
-    sm: 'h-5 w-5',
-    md: 'h-6 w-6',
-    lg: 'h-8 w-8'
+    sm: { class: 'h-5 w-5', px: 20 },
+    md: { class: 'h-6 w-6', px: 24 },
+    lg: { class: 'h-8 w-8', px: 32 }
   };
+
+  const { class: sizeClass, px } = sizeClasses[size] || sizeClasses.md;
 
   return (
     <svg
-      className={`${sizeClasses[size]} ${className}`}
+      className={`${sizeClass} ${className} flex-shrink-0 logo-fixed-size`}
+      width={px}
+      height={px}
       viewBox="0 0 24 24"
       fill="none"
+      preserveAspectRatio="xMidYMid meet"
       xmlns="http://www.w3.org/2000/svg"
-      aria-label="Governed RAG Logo"
+      role="img"
+      aria-label="Deanmachines Logo"
+      focusable="false"
     >
       {/* Shield base */}
       <path
@@ -43,67 +50,20 @@ export function GovernedRAGLogo({ className = '', size = 'md' }: GovernedRAGLogo
         opacity="0.6"
       />
 
-      {/* AI/RAG circuit pattern */}
-      <circle
-        cx="12"
-        cy="12"
-        r="2"
-        fill="currentColor"
-        opacity="0.8"
-      />
-
-      {/* Circuit connections */}
-      <path
-        d="M8 10L10 12L8 14"
-        stroke="currentColor"
-        strokeWidth="1"
-        strokeLinecap="round"
-        opacity="0.7"
-      />
-
-      <path
-        d="M16 10L14 12L16 14"
-        stroke="currentColor"
-        strokeWidth="1"
-        strokeLinecap="round"
-        opacity="0.7"
-      />
-
-      {/* Data flow arrows */}
-      <path
-        d="M6 8L4 6M4 6L6 4"
-        stroke="currentColor"
-        strokeWidth="1"
-        strokeLinecap="round"
-        opacity="0.5"
-      />
-
-      <path
-        d="M18 8L20 6M20 6L18 4"
-        stroke="currentColor"
-        strokeWidth="1"
-        strokeLinecap="round"
-        opacity="0.5"
-      />
-
-      {/* Security lock symbol */}
-      <rect
-        x="10.5"
-        y="15"
-        width="3"
-        height="2"
-        rx="0.5"
-        fill="currentColor"
-        opacity="0.8"
-      />
-
-      <path
-        d="M11.5 15V13.5C11.5 12.67 12.17 12 13 12C13.83 12 14.5 12.67 14.5 13.5V15"
-        stroke="currentColor"
-        strokeWidth="1"
-        strokeLinecap="round"
-        opacity="0.8"
-      />
+      {/* Stylized scorpion silhouette in the shield center */}
+      <g transform="translate(0,0)" fill="currentColor" opacity="0.95">
+        {/* body */}
+        <ellipse cx="12" cy="13" rx="2.3" ry="2.8" />
+        {/* claws */}
+        <path d="M8.2 11.5c-.9-.6-1.6-1.6-1.6-2.7 0-1 .6-1.8 1.5-2.1" stroke="currentColor" strokeWidth="0.8" strokeLinecap="round" strokeLinejoin="round" fill="none" />
+        <path d="M15.8 11.5c.9-.6 1.6-1.6 1.6-2.7 0-1-.6-1.8-1.5-2.1" stroke="currentColor" strokeWidth="0.8" strokeLinecap="round" strokeLinejoin="round" fill="none" />
+        {/* tail */}
+        <path d="M14.5 9.5c1.2-1.2 2.2-1.6 3.3-1.3 0 .8-.4 1.8-1.4 2.7-.9.9-2.2 1.8-3.6 2.6" stroke="currentColor" strokeWidth="0.9" strokeLinecap="round" strokeLinejoin="round" fill="none" />
+        <path d="M16.8 6.2c.6-.6 1.6-.8 2.5-.4" stroke="currentColor" strokeWidth="0.9" strokeLinecap="round" strokeLinejoin="round" fill="none" />
+        {/* legs */}
+        <path d="M10 14.2L7.6 16" stroke="currentColor" strokeWidth="0.9" strokeLinecap="round" strokeLinejoin="round" fill="none" />
+        <path d="M14 14.2L16.4 16" stroke="currentColor" strokeWidth="0.9" strokeLinecap="round" strokeLinejoin="round" fill="none" />
+      </g>
     </svg>
   );
 }

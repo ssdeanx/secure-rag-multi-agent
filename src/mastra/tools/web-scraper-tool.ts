@@ -9,6 +9,8 @@ import * as path from "node:path";
 import { JSDOM } from "jsdom";
 import { log } from "../config/logger";
 
+// eslint-disable sourcery
+
 // Enhanced HTML processing with JSDOM
 const DANGEROUS_TAGS = new Set([
   'script', 'style', 'iframe', 'embed', 'object', 'noscript', 'meta', 'link', 'form', 'input', 'button', 'select', 'textarea', 'frame', 'frameset'
@@ -206,9 +208,9 @@ export const HtmlProcessor = {
 
 // Enhanced error handling utilities
 class ScrapingError extends Error {
-  public readonly code: string;
-  public readonly statusCode?: number;
-  public readonly url?: string;
+  code: string;
+  statusCode?: number;
+  url?: string;
 
   constructor(
     message: string,
@@ -296,7 +298,9 @@ export const webScraperTool = createTool({
         requestHandlerTimeoutSecs: 30,
         async requestHandler({ request, body, response }) {
           try {
-            scrapedUrl = request.url;
+            // Update scraped URL with the actual URL from the request
+            const currentUrl = request.url;
+            scrapedUrl = currentUrl;
 
             if (typeof (response?.statusCode) === 'number' && Number.isFinite(response.statusCode) && response.statusCode >= 400) {
               throw new ScrapingError(
@@ -307,7 +311,8 @@ export const webScraperTool = createTool({
               );
             }
 
-            rawContent = body.toString();
+            const contentValue = String(body);
+            rawContent = contentValue;
 
             // Sanitize HTML using JSDOM
             rawContent = HtmlProcessor.sanitizeHtml(rawContent);

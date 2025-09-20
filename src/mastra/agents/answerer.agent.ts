@@ -5,6 +5,7 @@ import { google } from "@ai-sdk/google";
 import { createResearchMemory } from '../config/libsql-storage';
 import { log } from "../config/logger";
 
+
 log.info('Initializing Answerer Agent...');
 
 const store = createResearchMemory();

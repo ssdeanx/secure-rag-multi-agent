@@ -5,8 +5,7 @@ import { logError, logProgress, logStepEnd, logStepStart } from '../config/logge
 
 import type { IndexingResult } from "../services/DocumentIndexingService";
 import { DocumentIndexingService } from "../services/DocumentIndexingService";
-import type { QdrantVector } from "@mastra/qdrant";
-import { qVector } from "../config/vector-store";
+import { qdrantVector } from "../config/vector-store";
 
 
 // Single step that handles all document indexing
@@ -39,7 +38,7 @@ const indexDocumentsStep = createStep({
     logStepStart('index-documents', { totalDocuments: totalDocs });
 
     try {
-      const vectorStore: QdrantVector = qVector
+      const vectorStore = qdrantVector
       const indexName: string = process.env.QDRANT_COLLECTION ?? "governed_rag";
 
       // Ensure the index exists with proper dimension (don't delete, just recreate if needed)

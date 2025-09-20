@@ -1,9 +1,7 @@
 import { createTool } from '@mastra/core/tools';
 import { z } from 'zod';
-import { PinoLogger } from "@mastra/loggers";
+import { log } from "../config/logger";
 import { AISpanType } from '@mastra/core/ai-tracing';
-
-const logger = new PinoLogger({ level: 'info' });
 
 export const evaluateResultTool = createTool({
   id: 'evaluate-result',
@@ -29,7 +27,7 @@ export const evaluateResultTool = createTool({
 
     try {
       const { query, result, existingUrls = [] } = context;
-      logger.info('Evaluating result', { context });
+      log.info('Evaluating result', { context });
 
       // Check if URL already exists (only if existingUrls was provided)
       if (existingUrls?.includes(result.url)) {
@@ -43,7 +41,7 @@ export const evaluateResultTool = createTool({
       // Ensure mastra is available at runtime instead of using a non-null assertion
       if (!mastra) {
         const msg = 'Mastra instance is not available';
-        logger.error(msg);
+        log.error(msg);
         evalSpan?.end({ metadata: { error: msg } });
         return {
           isRelevant: false,
@@ -80,7 +78,7 @@ export const evaluateResultTool = createTool({
       evalSpan?.end({ output: { isRelevant: response.object?.isRelevant, reason: response.object?.reason } });
       return response.object;
     } catch (error) {
-      logger.error('Error evaluating result:', {
+      log.error('Error evaluating result:', {
         error: error instanceof Error ? error.message : String(error),
         stack: error instanceof Error ? error.stack : undefined,
       });

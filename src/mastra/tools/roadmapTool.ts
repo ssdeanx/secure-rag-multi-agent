@@ -1,6 +1,7 @@
 import { createTool } from '@mastra/core/tools';
 import { z } from 'zod';
-
+import { AISpanType } from '@mastra/core/ai-tracing';
+import { log } from "../config/logger";
 // Schema definitions for roadmap tools
 const CommentSchema = z.object({
   id: z.string(),
@@ -61,7 +62,14 @@ export const addFeatureTool = createTool({
   description: 'Add a new feature to the product roadmap',
   inputSchema: AddFeatureInputSchema,
   outputSchema: FeatureResponseSchema,
-  execute: async ({ context }) => {
+  execute: async ({ context, tracingContext }) => {
+    // Create a span for tracing
+    const span = tracingContext?.currentSpan?.createChildSpan({
+      type: AISpanType.TOOL_CALL,
+      name: 'add-feature-tool',
+      input: { title: context.title, hasDescription: !!context.description }
+    });
+
     const feature = {
       id: context.id ?? '',
       title: context.title,
@@ -71,6 +79,8 @@ export const addFeatureTool = createTool({
       upvotes: context.upvotes,
       comments: context.comments,
     };
+
+    span?.end({ output: { success: true, featureId: feature.id } });
 
     return {
       success: true,
@@ -85,8 +95,15 @@ export const updateFeatureTool = createTool({
   description: 'Update an existing feature in the product roadmap',
   inputSchema: UpdateFeatureInputSchema,
   outputSchema: FeatureResponseSchema,
-  execute: async ({ context }) => {
-    return {
+  execute: async ({ context, tracingContext }) => {
+    // Create a span for tracing
+    const span = tracingContext?.currentSpan?.createChildSpan({
+      type: AISpanType.TOOL_CALL,
+      name: 'update-feature-tool',
+      input: { featureId: context.id, hasTitle: !!context.title, hasDescription: !!context.description }
+    });
+
+    const result = {
       success: true,
       feature: {
         id: context.id,
@@ -98,6 +115,10 @@ export const updateFeatureTool = createTool({
         comments: context.comments ?? [],
       },
     };
+
+    span?.end({ output: { success: true, featureId: context.id } });
+
+    return result;
   },
 });
 
@@ -107,11 +128,22 @@ export const deleteFeatureTool = createTool({
   description: 'Delete a feature from the product roadmap',
   inputSchema: DeleteFeatureInputSchema,
   outputSchema: DeleteResponseSchema,
-  execute: async ({ context }) => {
-    return {
+  execute: async ({ context, tracingContext }) => {
+    // Create a span for tracing
+    const span = tracingContext?.currentSpan?.createChildSpan({
+      type: AISpanType.TOOL_CALL,
+      name: 'delete-feature-tool',
+      input: { featureId: context.id }
+    });
+
+    const result = {
       success: true,
       message: `Feature ${context.id} deleted successfully`,
     };
+
+    span?.end({ output: { success: true, featureId: context.id } });
+
+    return result;
   },
 });
 

@@ -18,6 +18,7 @@ import { webScraperTool,
 import { log } from "../config/logger";
 import { editorTool } from "../tools/editor-agent-tool";
 
+
 log.info('Initializing OpenRouter Assistant Agent...');
 
 const store = createResearchMemory();

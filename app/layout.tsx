@@ -12,21 +12,19 @@ import type { Metadata } from 'next';
 const inter = Inter({ subsets: ['latin'] });
 
 export const metadata: Metadata = {
-  title: 'Governed RAG - Secure AI with Mastra',
-  description: 'Enterprise-grade secure RAG with role-based access control',
-  applicationName: 'Governed RAG',
+  title: 'Deanmachines - AI Solutions',
+  description: 'Advanced AI solutions and machine learning tools',
+  applicationName: 'Deanmachines',
   authors: [{ name: 'ssdeanx', url: 'https://github.com/ssdeanx/governed-rag-ai' }],
   keywords: [
     'AI',
-    'RAG',
-    'Retrieval-Augmented Generation',
+    'Machine Learning',
+    'AI Solutions',
     'Next.js',
     'TypeScript',
     'Mastra',
     'Enterprise AI',
-    'Secure AI',
-    'Role-Based Access Control',
-    'RBAC'
+    'AI Tools'
   ],
   themeColor: [
     { media: '(prefers-color-scheme: light)', color: 'white' },

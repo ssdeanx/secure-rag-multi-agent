@@ -2,50 +2,54 @@
 @import "tw-animate-css";
 
 :root {
-  /* 2025 Modern Color Palette - Mocha Mousse & Multi-tonal Scheme */
-  --color-background: oklch(0.98 0.005 45);
+  /* Zinc-Based Professional Theme - Eye-Friendly */
+  --color-background: oklch(0.97 0.005 45);
   --color-foreground: oklch(0.15 0.02 25);
-  --color-card: oklch(0.99 0.002 45);
+  --color-card: oklch(0.97 0.005 45); /* MATCH background exactly */
   --color-card-foreground: oklch(0.15 0.02 25);
-  --color-popover: oklch(0.99 0.002 45);
+  --color-popover: oklch(0.97 0.005 45); /* MATCH background exactly */
   --color-popover-foreground: oklch(0.15 0.02 25);
 
-  /* Primary - Deep Mocha */
-  --color-primary: oklch(0.25 0.08 35);
-  --color-primary-foreground: oklch(0.98 0.005 45);
+  /* Primary - Zinc-Based (Main Theme Color) - MATCH background exactly */
+  --color-primary: oklch(0.97 0.005 45); /* Same as background */
+  --color-primary-foreground: oklch(0.15 0.02 25);
 
-  /* Secondary - Warm Taupe */
-  --color-secondary: oklch(0.75 0.03 45);
+  /* Secondary - Light Silver/White */
+  --color-secondary: oklch(0.92 0.01 45);
   --color-secondary-foreground: oklch(0.15 0.02 25);
 
-  /* Muted - Soft Beige */
-  --color-muted: oklch(0.92 0.01 50);
-  --color-muted-foreground: oklch(0.45 0.02 35);
+  /* Muted - Zinc Gray */
+  --color-muted: oklch(0.88 0.005 50);
+  --color-muted-foreground: oklch(0.45 0.01 35);
 
-  /* Accent - Vibrant Coral */
-  --color-accent: oklch(0.65 0.18 15);
-  --color-accent-foreground: oklch(0.98 0.005 45);
+  /* Accent - Distinct from Primary (Yellow/Green/Red) */
+  --color-accent: oklch(94.871% 0.17023 105.273); /* Yellow accent - clearly different from zinc primary */
+  --color-accent-foreground: oklch(0.15 0.02 25);
 
-  /* Destructive - Deep Red */
+  /* Destructive - Red */
   --color-destructive: oklch(0.55 0.22 15);
   --color-destructive-foreground: oklch(0.98 0.005 45);
 
-  /* Border - Subtle */
-  --color-border: oklch(0.88 0.005 45);
-  --color-input: oklch(0.88 0.005 45);
-  --color-ring: oklch(0.25 0.08 35);
+  /* Border - Subtle Zinc */
+  --color-border: oklch(0.85 0.005 45);
+  --color-input: oklch(0.85 0.005 45);
+  --color-ring: oklch(0.75 0.18 85); /* Yellow ring to match accent */
 
-  /* Advanced 2025 Color Variants */
-  --color-mocha-light: oklch(0.85 0.04 40);
-  --color-mocha-dark: oklch(0.15 0.06 30);
-  --color-coral-bright: oklch(0.75 0.20 12);
-  --color-taupe-warm: oklch(0.70 0.02 48);
-  --color-beige-soft: oklch(0.95 0.008 55);
+  /* Zinc-Based Color Variants - No Blue/Pink/Purple */
+  --color-green-light: oklch(0.85 0.08 142);
+  --color-green-dark: oklch(0.25 0.12 142);
+  --color-yellow-light: oklch(0.92 0.15 85);
+  --color-yellow-dark: oklch(0.45 0.18 85);
+  --color-red-light: oklch(0.85 0.12 15);
+  --color-red-dark: oklch(0.35 0.22 15);
+  --color-zinc-light: oklch(0.95 0.005 45);
+  --color-zinc-medium: oklch(41.265% 0.00559 33.899);
+  --color-zinc-dark: oklch(0.15 0.02 25);
 
-  /* Brutalist Design Colors */
+  /* Brutalist Design Colors - Zinc Based */
   --color-brutalist-bg: oklch(0.05 0.01 25);
   --color-brutalist-text: oklch(0.98 0.005 45);
-  --color-brutalist-accent: oklch(0.85 0.15 330);
+  --color-brutalist-accent: oklch(0.85 0.02 45);
 
   /* Border radius - Modern 2025 */
   --radius: 0.75rem;
@@ -103,13 +107,13 @@
   --shadow-2xl: 0 25px 50px -12px rgb(0 0 0 / 0.25);
   --shadow-inner: inset 0 2px 4px 0 rgb(0 0 0 / 0.05);
 
-  /* Gradient System - 2025 */
-  --gradient-mocha: linear-gradient(135deg, var(--color-mocha-light) 0%, var(--color-mocha-dark) 100%);
-  --gradient-accent: linear-gradient(135deg, var(--color-accent) 0%, var(--color-coral-bright) 100%);
-  --gradient-subtle: linear-gradient(135deg, var(--color-background) 0%, var(--color-beige-soft) 100%);
+  /* Zinc-Based Gradients - Eye-Friendly */
+  --gradient-mocha: linear-gradient(135deg, var(--color-zinc-light) 0%, var(--color-zinc-medium) 100%);
+  --gradient-accent: linear-gradient(135deg, var(--color-accent) 0%, var(--color-zinc-medium) 100%);
+  --gradient-subtle: linear-gradient(135deg, var(--color-background) 0%, var(--color-muted) 100%);
 
-  /* Duplicated for Tailwind compatibility */
-  --background: oklch(0.98 0.005 45);
+  /* Duplicated for Tailwind compatibility - MATCH main background */
+  --background: oklch(0.97 0.005 45);
   --foreground: oklch(0.15 0.02 25);
   --card: oklch(0.99 0.002 45);
   --card-foreground: oklch(0.15 0.02 25);
@@ -121,7 +125,7 @@
   --secondary-foreground: oklch(0.15 0.02 25);
   --muted: oklch(0.92 0.01 50);
   --muted-foreground: oklch(0.45 0.02 35);
-  --accent: oklch(0.65 0.18 15);
+  --accent: oklch(91.325% 0.1486 96.547);
   --accent-foreground: oklch(0.98 0.005 45);
   --destructive: oklch(0.55 0.22 15);
   --border: oklch(0.88 0.005 45);
@@ -129,17 +133,17 @@
   --ring: oklch(0.25 0.08 35);
   --chart-1: oklch(0.646 0.222 41.116);
   --chart-2: oklch(0.6 0.118 184.704);
-  --chart-3: oklch(0.398 0.07 227.392);
+  --chart-3: oklch(0.398 0.07 85); /* Changed from purple to yellow */
   --chart-4: oklch(0.828 0.189 84.429);
   --chart-5: oklch(0.769 0.188 70.08);
   --sidebar: oklch(0.985 0 0);
-  --sidebar-foreground: oklch(0.141 0.005 285.823);
-  --sidebar-primary: oklch(0.21 0.006 285.885);
+  --sidebar-foreground: oklch(0.141 0.005 25); /* Changed from purple to zinc */
+  --sidebar-primary: oklch(0.21 0.006 35); /* Changed from purple to zinc */
   --sidebar-primary-foreground: oklch(0.985 0 0);
-  --sidebar-accent: oklch(0.967 0.001 286.375);
-  --sidebar-accent-foreground: oklch(0.21 0.006 285.885);
-  --sidebar-border: oklch(0.92 0.004 286.32);
-  --sidebar-ring: oklch(0.705 0.015 286.067);
+  --sidebar-accent: oklch(0.967 0.001 45); /* Changed from purple to zinc */
+  --sidebar-accent-foreground: oklch(0.21 0.006 35);
+  --sidebar-border: oklch(0.92 0.004 45); /* Changed from purple to zinc */
+  --sidebar-ring: oklch(0.705 0.015 35); /* Changed from purple to zinc */
 
   /* Success and security colors */
   --color-success: oklch(0.7 0.15 142);
@@ -216,17 +220,16 @@
   --color-taupe-warm: oklch(0.30 0.02 40);
   --color-beige-soft: oklch(0.20 0.008 45);
 
-  /* Brutalist Dark Colors */
+  /* Brutalist Dark Colors - Zinc Based */
   --color-brutalist-bg: oklch(0.02 0.005 25);
   --color-brutalist-text: oklch(0.98 0.005 45);
-  --color-brutalist-accent: oklch(0.90 0.18 330);
+  --color-brutalist-accent: oklch(0.90 0.02 45);
 
-  /* Dark Mode Gradients */
-  --gradient-mocha: linear-gradient(135deg, var(--color-mocha-dark) 0%, var(--color-mocha-light) 100%);
-  --gradient-accent: linear-gradient(135deg, var(--color-accent) 0%, var(--color-coral-bright) 100%);
-  --gradient-subtle: linear-gradient(135deg, var(--color-background) 0%, var(--color-beige-soft) 100%);
+  /* Dark Mode Gradients - Zinc Based */
+  --gradient-accent: linear-gradient(135deg, var(--color-accent) 0%, var(--color-zinc-medium) 100%);
+  --gradient-subtle: linear-gradient(135deg, var(--color-background) 0%, var(--color-muted) 100%);
 
-  /* Duplicated for Tailwind compatibility */
+  /* Duplicated for Tailwind compatibility - MATCH dark background */
   --background: oklch(0.08 0.02 25);
   --foreground: oklch(0.95 0.005 45);
   --card: oklch(0.12 0.015 25);
@@ -873,8 +876,8 @@ body {
 
 @media (prefers-color-scheme: dark) {
   :root:not(.light) {
-    --color-background: hsl(222.2 84% 4.9%);
-    --color-foreground: hsl(210 40% 98%);
+    --color-background: oklch(0.08 0.02 25);
+    --color-foreground: oklch(0.95 0.005 45);
   }
 }
 
@@ -939,42 +942,42 @@ body {
   }
 }
 
-/* Neon Glow Effects */
+/* Neon Glow Effects - Zinc Based */
 .neon-glow-blue {
   box-shadow:
-    0 0 5px oklch(0.7 0.3 240),
-    0 0 10px oklch(0.7 0.3 240),
-    0 0 15px oklch(0.7 0.3 240),
-    0 0 20px oklch(0.7 0.3 240);
+    0 0 5px oklch(0.7 0.02 45),
+    0 0 10px oklch(0.7 0.02 45),
+    0 0 15px oklch(0.7 0.02 45),
+    0 0 20px oklch(0.7 0.02 45);
 }
 
 .neon-glow-pink {
   box-shadow:
-    0 0 5px oklch(0.7 0.3 330),
-    0 0 10px oklch(0.7 0.3 330),
-    0 0 15px oklch(0.7 0.3 330),
-    0 0 20px oklch(0.7 0.3 330);
+    0 0 5px oklch(0.75 0.18 85),
+    0 0 10px oklch(0.75 0.18 85),
+    0 0 15px oklch(0.75 0.18 85),
+    0 0 20px oklch(0.75 0.18 85);
 }
 
 .neon-glow-cyan {
   box-shadow:
-    0 0 5px oklch(0.8 0.2 180),
-    0 0 10px oklch(0.8 0.2 180),
-    0 0 15px oklch(0.8 0.2 180),
-    0 0 20px oklch(0.8 0.2 180);
+    0 0 5px oklch(0.8 0.02 45),
+    0 0 10px oklch(0.8 0.02 45),
+    0 0 15px oklch(0.8 0.02 45),
+    0 0 20px oklch(0.8 0.02 45);
 }
 
 .neon-glow-purple {
   box-shadow:
-    0 0 5px oklch(0.6 0.3 280),
-    0 0 10px oklch(0.6 0.3 280),
-    0 0 15px oklch(0.6 0.3 280),
-    0 0 20px oklch(0.6 0.3 280);
+    0 0 5px oklch(0.6 0.02 45),
+    0 0 10px oklch(0.6 0.02 45),
+    0 0 15px oklch(0.6 0.02 45),
+    0 0 20px oklch(0.6 0.02 45);
 }
 
 .neon-glow-green {
   box-shadow:
-    0 0 5px oklch(0.7 0.2 140),
+    0 0 5px oklch(0.7 0.02 45),
     0 0 10px oklch(0.7 0.2 140),
     0 0 15px oklch(0.7 0.2 140),
     0 0 20px oklch(0.7 0.2 140);
@@ -988,13 +991,13 @@ body {
 }
 
 .animated-gradient {
-  background: linear-gradient(-45deg, oklch(0.7 0.3 240), oklch(44.123% 0.09908 238.796), oklch(42.265% 0.2848 264.162), oklch(14.138% 0.08336 264.082));
+  background: linear-gradient(-45deg, oklch(0.75 0.02 45), oklch(0.85 0.01 45), oklch(0.65 0.02 45), oklch(0.55 0.02 45));
   background-size: 400% 400%;
   animation: gradient-shift 7s ease infinite;
 }
 
 .animated-gradient-subtle {
-  background: linear-gradient(-45deg, oklch(0.95 0.01 240), oklch(0.95 0.01 330), oklch(0.95 0.01 180));
+  background: linear-gradient(-45deg, oklch(0.95 0.005 45), oklch(0.92 0.01 45), oklch(0.88 0.005 45));
   background-size: 400% 400%;
   animation: gradient-shift 6s ease infinite;
 }
@@ -1014,7 +1017,7 @@ body {
 }
 
 .hover-glow:hover {
-  box-shadow: 0 0 20px oklch(0.7 0.3 240 / 0.5);
+  box-shadow: 0 0 20px oklch(0.7 0.02 45 / 0.5);
 }
 
 /* Enhanced Backdrop Blur */
@@ -1058,7 +1061,7 @@ body {
 }
 
 .gradient-border {
-  background: linear-gradient(to right, #3b82f6, #1d19fc, #010b3b);
+  background: linear-gradient(to right, oklch(0.75 0.18 85), oklch(0.65 0.22 15), oklch(0.15 0.02 25));
   padding: 1px;
   border-radius: var(--radius);
 }
@@ -1238,4 +1241,58 @@ body {
   max-width: 420px;
   margin-left: auto;
   margin-right: auto;
+}
+
+/* Prevent SVG logos from growing beyond their intended icon size
+   Fixes cases where compound utility classes or global rules caused
+   SVGs to scale to viewport dimensions (observed as huge buttons/logos). */
+.logo-fixed-size {
+  max-width: 100%;
+  max-height: 100%;
+  width: auto !important;
+  height: auto !important;
+  display: inline-block;
+}
+
+/* Fallback button rules: if Tailwind/utility classes aren't being applied
+   (e.g. during dev or if build isn't running), enforce sane defaults so
+   buttons look rounded and tappable instead of square and tiny. These are
+   intentionally specific and use !important to beat global resets. */
+button, input[type="button"], input[type="submit"], .btn, [class*="btn-"] {
+  border-radius: var(--radius) !important;
+  padding: 0.375rem 0.75rem !important; /* px-3 py-1.5 */
+  min-height: 2.25rem !important; /* 36px */
+  min-width: 2.25rem !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  line-height: 1 !important;
+  font-size: var(--font-size-sm) !important;
+  box-sizing: border-box !important;
+}
+
+/* Make icon-only buttons circular by default (when using icon size variant)
+   but keep generic fallback for other buttons. */
+[class*="btn-icon"], .icon-button, .btn-icon {
+  border-radius: 9999px !important;
+  padding: 0.5rem !important;
+  height: 2.5rem !important;
+  width: 2.5rem !important;
+}
+
+/* Header/title safety: cap the hero title so it doesn't become full-viewport-large
+   when fluid font sizes scale up unexpectedly. This keeps layout stable while
+   preserving the bold typographic style. */
+.site-header .text-maximalist {
+  max-width: 75% !important;
+  display: block;
+  white-space: normal;
+  overflow-wrap: break-word;
+  font-size: clamp(1.5rem, 4vw, 3rem) !important; /* softer cap */
+}
+
+/* Navigation helpers: keep top navigation elements aligned and not stretching
+   across the entire header when layout utilities are missing */
+.site-header .flex, .site-header .items-center {
+  align-items: center !important;
 }
