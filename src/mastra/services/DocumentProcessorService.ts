@@ -302,10 +302,11 @@ export class DocumentProcessorService {
 
     const avgDocSize: number = totalSize / sampledDocs.length;
     const totalEstimatedSize: number = avgDocSize * docs.length;
-    const EMBEDDING_DIMENSION = 1536; // text-embedding-3-small
+    const EMBEDDING_DIMENSION = 3072; // gemini-embedding-001
+
     // Get optimal chunking settings
     const optimalChunking = this.chunkingService.getOptimalChunkSize(avgDocSize);
-    const tokenSize: number = optimalChunking.tokenSize ?? 8196;
+    const tokenSize: number = optimalChunking.tokenSize ?? 65000; // Default to 8196 if not specified
 
     // Estimate chunks (rough approximation)
     const estimatedChunks = Math.ceil(totalEstimatedSize / (tokenSize * 4)); // 4 chars per token approx

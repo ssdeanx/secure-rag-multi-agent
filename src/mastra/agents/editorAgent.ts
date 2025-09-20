@@ -5,7 +5,7 @@ import { log } from "../config/logger";
 
 log.info('Initializing Editor Agent...');
 
-const memory = createResearchMemory();
+const store = createResearchMemory();
 export const editorAgent = new Agent({
   id: "editor",
   name: "Editor",
@@ -43,5 +43,5 @@ You must respond with a JSON object in the following format:
 </output_format>
   `,
   model: google('gemini-2.5-flash-lite'),
-  memory
+  memory: store,
 });

@@ -1,7 +1,5 @@
 import { Agent } from "@mastra/core";
 //import { z } from "zod";
-
-import { openAIModel } from "../config/openai";
 import { verificationResultSchema } from "../schemas/agent-schemas";
 import { createResearchMemory } from '../config/libsql-storage';
 import { google } from "@ai-sdk/google";

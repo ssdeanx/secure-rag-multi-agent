@@ -1,6 +1,4 @@
 import { Agent } from "@mastra/core";
-
-import { openAIModel } from "../config/openai";
 import { jwtClaimsSchema } from "../schemas/agent-schemas";
 import { jwtAuthTool } from "../tools/jwt-auth.tool";
 import { createResearchMemory } from '../config/libsql-storage';
@@ -10,7 +8,7 @@ import { log } from "../config/logger";
 
 log.info('Initializing Identity Agent...');
 
-const memory = createResearchMemory();
+const store = createResearchMemory();
 
 export const identityAgent = new Agent({
   id: "identity",
@@ -24,7 +22,7 @@ export const identityAgent = new Agent({
 
 Always use the jwt-auth tool - never attempt to decode JWTs manually.`,
   tools: { jwtAuth: jwtAuthTool },
-  memory,
+  memory: store,
   evals: {
     // Add any evaluation metrics if needed
   },

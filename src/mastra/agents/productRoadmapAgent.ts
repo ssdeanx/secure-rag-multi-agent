@@ -1,6 +1,4 @@
-import { openai } from '@ai-sdk/openai';
 import { Agent } from '@mastra/core/agent';
-import { Memory } from '@mastra/memory';
 import { createResearchMemory, STORAGE_CONFIG } from '../config/libsql-storage';
 import { LIBSQL_PROMPT } from "@mastra/libsql";
 import { createVectorQueryTool } from "@mastra/rag";
@@ -9,7 +7,7 @@ import { log } from "../config/logger";
 
 log.info('Initializing Copywriter Agent...');
 
-const memory = createResearchMemory();
+const store = createResearchMemory();
 
 const queryTool = createVectorQueryTool({
   vectorStoreName: "libsql",
@@ -110,6 +108,6 @@ You should always return a JSON object with the following structure:
 </decision_logic>
   `,
   model: google('gemini-2.5-flash'),
-  memory,
+  memory: store,
 
 });

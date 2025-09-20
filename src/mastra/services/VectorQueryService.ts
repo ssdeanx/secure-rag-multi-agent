@@ -1,5 +1,5 @@
 import { embedMany } from "ai";
-
+import { google } from "@ai-sdk/google";
 import { openAIEmbeddingProvider } from "../config/openai";
 import { ValidationService } from "./ValidationService";
 import { RoleService } from "./RoleService";
@@ -52,9 +52,9 @@ export class VectorQueryService {
   }
 
   static async generateQueryEmbedding(question: string): Promise<number[]> {
-    const embeddingModel: string = process.env.EMBEDDING_MODEL ?? "text-embedding-3-small";
+    const embeddingModel: string = process.env.EMBEDDING_MODEL ?? "gemini-embedding-001";
     const { embeddings } = await embedMany({
-      model: openAIEmbeddingProvider.embedding(embeddingModel),
+      model: google.textEmbedding(embeddingModel),
       values: [question]
     });
     return embeddings[0] as number[];

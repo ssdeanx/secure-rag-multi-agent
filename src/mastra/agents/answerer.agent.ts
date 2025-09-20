@@ -1,7 +1,5 @@
 import { Agent } from "@mastra/core";
 //import { z } from "zod";
-
-import { openAIModel } from "../config/openai";
 import { ragAnswerSchema } from "../schemas/agent-schemas";
 import { google } from "@ai-sdk/google";
 import { createResearchMemory } from '../config/libsql-storage';
@@ -9,7 +7,7 @@ import { log } from "../config/logger";
 
 log.info('Initializing Answerer Agent...');
 
-const memory = createResearchMemory();
+const store = createResearchMemory();
 
 export const answererAgent = new Agent({
   id: "answerer",
@@ -53,7 +51,7 @@ Example correct response:
 }
 
 Always respond with valid JSON that matches this exact structure.`,
-  memory,
+  memory: store,
   evals: {
     // Add any evaluation metrics if needed
   },

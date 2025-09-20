@@ -10,7 +10,6 @@ import { readDataFileTool, writeDataFileTool, deleteDataFileTool, listDataDirToo
 //import { extractLearningsTool } from '../tools/extractLearningsTool';
 ;
 import { webScraperTool,
-  batchWebScraperTool,
   siteMapExtractorTool,
   linkExtractorTool,
   htmlToMarkdownTool,
@@ -21,7 +20,7 @@ import { editorTool } from "../tools/editor-agent-tool";
 
 log.info('Initializing OpenRouter Assistant Agent...');
 
-const memory = createResearchMemory();
+const store = createResearchMemory();
 
 const openrouter = createOpenRouter({
     apiKey: process.env.OPENROUTER_API_KEY,
@@ -77,7 +76,7 @@ For complex research tasks that generate data, you MUST respond with a valid JSO
             },
         }
     }),
-    memory,
+    memory: store,
     evals: {
     contentSimilarity: new ContentSimilarityMetric({ ignoreCase: true, ignoreWhitespace: true }),
     completeness: new CompletenessMetric(),
@@ -92,7 +91,7 @@ For complex research tasks that generate data, you MUST respond with a valid JSO
     listDataDirTool,
 //    evaluateResultTool,
 //    extractLearningsTool,
-    batchWebScraperTool,
+//    batchWebScraperTool,
     siteMapExtractorTool,
     linkExtractorTool,
     htmlToMarkdownTool,

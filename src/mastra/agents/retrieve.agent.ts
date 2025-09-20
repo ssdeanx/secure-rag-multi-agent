@@ -1,7 +1,5 @@
 import { Agent } from "@mastra/core";
 import { z } from "zod";
-
-import { openAIModel } from "../config/openai";
 import { documentContextSchema } from "../schemas/agent-schemas";
 import { vectorQueryTool } from "../tools/vector-query.tool";
 import { createResearchMemory } from '../config/libsql-storage';
@@ -21,10 +19,10 @@ export const retrieveAgent = new Agent({
 **MANDATORY STEPS:**
 1. Parse input JSON for 'question' and 'access' fields
 2. Call vectorQueryTool EXACTLY ONCE with these exact parameters:
-   - question: the question from input
-   - allowTags: from access.allowTags array
-   - maxClassification: from access.maxClassification (NEVER change this value)
-   - topK: 8
+  - question: the question from input
+  - allowTags: from access.allowTags array
+  - maxClassification: from access.maxClassification (NEVER change this value)
+  - topK: 8
 3. Return ONLY what the tool returns - never add your own content
 
 **CRITICAL RULES:**

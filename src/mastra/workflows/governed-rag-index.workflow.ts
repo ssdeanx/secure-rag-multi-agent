@@ -2,10 +2,11 @@ import { createWorkflow, createStep } from "@mastra/core";
 import { z } from "zod";
 
 import { logError, logProgress, logStepEnd, logStepStart } from '../config/logger';
-import { mastra } from "../index";
+
 import type { IndexingResult } from "../services/DocumentIndexingService";
 import { DocumentIndexingService } from "../services/DocumentIndexingService";
 import type { QdrantVector } from "@mastra/qdrant";
+import { qVector } from "../config/vector-store";
 
 
 // Single step that handles all document indexing
@@ -38,14 +39,14 @@ const indexDocumentsStep = createStep({
     logStepStart('index-documents', { totalDocuments: totalDocs });
 
     try {
-      const vectorStore: QdrantVector = mastra.getVector("qdrant");
+      const vectorStore: QdrantVector = qVector
       const indexName: string = process.env.QDRANT_COLLECTION ?? "governed_rag";
 
       // Ensure the index exists with proper dimension (don't delete, just recreate if needed)
       try {
         await vectorStore.createIndex({
           indexName,
-          dimension: 1536, // text-embedding-3-small dimension
+          dimension: 3072, // text-embedding-3-small dimension
         });
         console.log('GOVERNED-RAG-INDEX.WORKFLOW', `Index ${indexName} created or already exists`);
       } catch (createError) {

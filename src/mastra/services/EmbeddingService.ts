@@ -1,8 +1,9 @@
 import { Memory } from "@mastra/memory";
 import { embedMany } from "ai";
+import { google } from "@ai-sdk/google";
 
-import { openAIEmbeddingProvider } from "../config/openai";
 import { EmbedManyResult } from "@mastra/core";
+import { log } from "../config/logger";
 
 const MAX_RETRIES = 3;
 
@@ -34,16 +35,16 @@ export class EmbeddingService {
 
   constructor(options: Partial<EmbeddingOptions> = {}) {
     this.defaultOptions = {
-      batchSize: 100,
+      batchSize: 200,
       maxRetries: 3,
-      model: process.env.EMBEDDING_MODEL ?? "text-embedding-3-small",
+      model: process.env.EMBEDDING_MODEL ?? "gemini-embedding-001",
       useCache: true,
       ...options
     };
 
     // Initialize Memory instance for native embedding with caching
     this.memory = new Memory({
-      embedder: openAIEmbeddingProvider.embedding(this.defaultOptions.model)
+      embedder: google.textEmbedding(this.defaultOptions.model)
     });
   }
 
@@ -58,7 +59,7 @@ export class EmbeddingService {
     // Use the standard AI SDK embedMany function since Memory might not be properly configured
     // The Memory instance requires more complex setup that we don't need for just chunking
     const { embeddings } = await embedMany({
-      model: openAIEmbeddingProvider.embedding(this.defaultOptions.model),
+      model: google.textEmbedding(this.defaultOptions.model),
       values: chunks,
       maxRetries: this.defaultOptions.maxRetries
     });
@@ -97,7 +98,7 @@ export class EmbeddingService {
 
       try {
         const { embeddings } = await embedMany({
-          model: openAIEmbeddingProvider.embedding(model),
+          model: google.textEmbedding(model),
           values: batch,
           maxRetries
         });
@@ -168,7 +169,7 @@ export class EmbeddingService {
     recommendation: string;
   } {
     // Rough estimates based on typical embedding dimensions and chunk sizes
-    const embeddingDimension = 1536; // text-embedding-3-small
+    const embeddingDimension = 3072; // text-embedding-3-small
     const bytesPerFloat = 4;
     const embeddingSize: number = embeddingDimension * bytesPerFloat;
     const textSize: number = avgChunkSize * 2; // UTF-16 encoding

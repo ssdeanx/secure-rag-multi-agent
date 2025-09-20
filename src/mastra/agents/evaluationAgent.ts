@@ -6,7 +6,7 @@ import { google } from '@ai-sdk/google';
 
 log.info("Initializing Evaluation Agent...");
 
-const memory = createResearchMemory();
+const store = createResearchMemory();
 
 export const evaluationAgent = new Agent({
   id: 'evaluation',
@@ -46,7 +46,7 @@ CRITICAL: You must always respond with a valid JSON object in the following form
 </output_format>
   `,
   model: google('gemini-2.5-flash-lite'),
-  memory,
+  memory: store,
   evals: {
     contentSimilarity: new ContentSimilarityMetric({ ignoreCase: true, ignoreWhitespace: true }),
     completeness: new CompletenessMetric(),

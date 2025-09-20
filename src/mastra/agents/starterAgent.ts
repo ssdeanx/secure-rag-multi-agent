@@ -1,5 +1,4 @@
 import { google } from '@ai-sdk/google';
-import { openai } from '@ai-sdk/openai';
 import { Agent } from '@mastra/core/agent';
 import { log } from "../config/logger";
 

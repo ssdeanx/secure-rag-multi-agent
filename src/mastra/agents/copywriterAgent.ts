@@ -17,7 +17,7 @@ import { log } from "../config/logger";
 
 log.info('Initializing Copywriter Agent...');
 
-const memory = createResearchMemory();
+const store = createResearchMemory();
 
 const queryTool = createVectorQueryTool({
   vectorStoreName:  "vectorStore",
@@ -59,7 +59,7 @@ Produce the final blog post in well-formatted Markdown.
 </output_format>
   `,
   model: google('gemini-2.5-flash'),
-  memory,
+  memory: store,
   tools: {
     webScraperTool,
     queryTool,

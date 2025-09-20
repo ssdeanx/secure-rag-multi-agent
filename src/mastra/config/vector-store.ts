@@ -3,12 +3,12 @@ import { embedMany } from "ai";
 import { google } from "@ai-sdk/google";
 import { log } from "./logger";
 
-export const qdrant = new QdrantVector({
+export const qVector = new QdrantVector({
   url: process.env.QDRANT_URL ?? 'http://localhost:6333',
   apiKey: process.env.QDRANT_API_KEY! ?? ''
 })
 
-await qdrant.createIndex({
+await qVector.createIndex({
   indexName: 'governed_rag',
   dimension: 3072,
   metric: 'cosine',
@@ -48,7 +48,7 @@ await qdrant.createIndex({
 //});
 
 // Store embeddings with rich metadata for better organization and filtering
-await qdrant.upsert({
+await qVector.upsert({
   indexName: "governed_rag",
   vectors: embeddings,
   metadata: chunks.map((chunk, i) => ({

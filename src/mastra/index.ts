@@ -1,5 +1,4 @@
 import { Mastra } from "@mastra/core";
-import { QdrantVector } from "@mastra/qdrant";
 import { answererAgent } from "./agents/answerer.agent";
 import { rerankAgent } from "./agents/rerank.agent";
 import { retrieveAgent } from "./agents/retrieve.agent";
@@ -24,6 +23,7 @@ import { productRoadmapAgent } from "./agents/productRoadmapAgent";
 import { editorAgent } from "./agents/editorAgent";
 import { generateReportWorkflow } from "./workflows/generateReportWorkflow";
 import { randomUUID } from "crypto";
+import { qVector } from "./config/vector-store";
 
 export const mastra = new Mastra({
   storage: sqlstore,
@@ -52,10 +52,7 @@ export const mastra = new Mastra({
     'generate-report-workflow': generateReportWorkflow
   },
   vectors: {
-    qdrant: new QdrantVector({
-      url: process.env.QDRANT_URL!,
-      apiKey: process.env.QDRANT_API_KEY,
-    }),
+    qdrant: qVector,
   },
   server: {
     experimental_auth: new MastraJwtAuth({

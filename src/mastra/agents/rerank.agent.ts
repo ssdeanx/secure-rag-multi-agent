@@ -1,7 +1,5 @@
 import { Agent } from "@mastra/core";
 import { z } from "zod";
-
-import { openAIModel } from "../config/openai";
 import { documentContextSchema } from "../schemas/agent-schemas";
 import { createResearchMemory } from '../config/libsql-storage';
 import { google } from "@ai-sdk/google";
@@ -9,7 +7,7 @@ import { log } from "../config/logger";
 
 log.info('Initializing Rerank Agent...');
 
-const memory = createResearchMemory();
+const store = createResearchMemory();
 
 export const rerankAgent = new Agent({
   id: "rerank",
@@ -37,7 +35,7 @@ You must respond with a valid JSON object in the following format:
 }
 
 Always return valid JSON matching this exact structure.`,
-  memory,
+  memory: store,
   evals: {
     // Add any evaluation metrics if needed
   },
