@@ -27,7 +27,7 @@ const openrouter = createOpenRouter({
 })
 
 export const assistantAgent = new Agent({
-    id: "assistant",
+    id: "assist",
     name: "assistant",
     description: 'A helpful assistant.',
     instructions: `

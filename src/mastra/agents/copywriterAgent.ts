@@ -2,7 +2,6 @@
 import { Agent } from "@mastra/core/agent";
 //import { createGemini25Provider } from "../config/googleProvider";
 import { createResearchMemory, STORAGE_CONFIG } from '../config/libsql-storage';
-import { PinoLogger } from "@mastra/loggers";
 import { webScraperTool,
 //  batchWebScraperTool,
 //  siteMapExtractorTool,
@@ -12,7 +11,7 @@ import { webScraperTool,
 } from "../tools/web-scraper-tool";
 import { google } from '@ai-sdk/google';
 import { LIBSQL_PROMPT } from "@mastra/libsql";
-import { createVectorQueryTool } from "@mastra/rag";
+import { createGraphRAGTool, createVectorQueryTool } from "@mastra/rag";
 import { log } from "../config/logger";
 
 log.info('Initializing Copywriter Agent...');
@@ -25,6 +24,20 @@ const queryTool = createVectorQueryTool({
   model: google.textEmbedding("gemini-embedding-001"),
   enableFilter: true,
   description: "Search for semantically similar content in the LibSQL vector store using embeddings. Supports filtering, ranking, and context retrieval."
+});
+
+const graphQueryTool = createGraphRAGTool({
+  vectorStoreName:  "vectorStore",
+  indexName: STORAGE_CONFIG.VECTOR_INDEXES.RESEARCH_DOCUMENTS, // Use research documents index
+  model: google.textEmbedding("gemini-embedding-001"),
+  graphOptions: {
+    threshold: 0.7,
+    dimension: 3072, // Default for gemini-embedding-001
+    randomWalkSteps: 15,
+    restartProb: 0.3
+  },
+  enableFilter: true,
+  description: "Graph-based search for semantically similar content in the LibSQL vector store using embeddings. Supports filtering, ranking, and context retrieval."
 });
 
 export const copywriterAgent = new Agent({
@@ -63,6 +76,7 @@ Produce the final blog post in well-formatted Markdown.
   tools: {
     webScraperTool,
     queryTool,
+    graphQueryTool,
 //    batchWebScraperTool,
  //   siteMapExtractorTool,
 //    linkExtractorTool,
