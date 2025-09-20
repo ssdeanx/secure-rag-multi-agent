@@ -2,10 +2,12 @@
 
 import React from 'react';
 
-import { ChatModeSelector } from '@/cedar/components/ChatModeSelector';
+import { ChatModeSelector } from '../../cedar/ChatModeSelector';
 import { CedarCaptionChat } from '@/cedar/components/chatComponents/CedarCaptionChat';
 import { FloatingCedarChat } from '@/cedar/components/chatComponents/FloatingCedarChat';
 import { SidePanelCedarChat } from '@/cedar/components/chatComponents/SidePanelCedarChat';
+
+export const experimental_ppr = true
 
 type ChatMode = 'floating' | 'sidepanel' | 'caption';
 

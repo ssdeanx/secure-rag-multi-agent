@@ -87,3 +87,6 @@ gha-creds-*.json
 .specify/**/*.md
 *.specify
 *.specify/**/*.sh
+.codeviz/Visuals/Unnamed-CodeViz-Diagram.md
+*.codeviz/
+*.codeviz/**/*.md

@@ -1,78 +1,132 @@
 @import "tailwindcss";
 @import "tw-animate-css";
 
-@custom-variant dark (&:is(.dark *));
-
 :root {
-  /* Light mode colors (Oklch) */
-  --color-background: oklch(1 0 0);
-  --color-foreground: oklch(0.141 0.005 285.823);
-  --color-card: oklch(1 0 0);
-  --color-card-foreground: oklch(0.141 0.005 285.823);
-  --color-popover: oklch(1 0 0);
-  --color-popover-foreground: oklch(0.141 0.005 285.823);
-  --color-primary: oklch(0.21 0.006 285.885);
-  --color-primary-foreground: oklch(0.985 0 0);
-  --color-secondary: oklch(0.967 0.001 286.375);
-  --color-secondary-foreground: oklch(0.21 0.006 285.885);
-  --color-muted: oklch(0.967 0.001 286.375);
-  --color-muted-foreground: oklch(0.552 0.016 285.938);
-  --color-accent: oklch(0.967 0.001 286.375);
-  --color-accent-foreground: oklch(0.21 0.006 285.885);
-  --color-destructive: oklch(0.577 0.245 27.325);
-  --color-destructive-foreground: oklch(0.985 0 0);
-  --color-border: oklch(0.92 0.004 286.32);
-  --color-input: oklch(0.92 0.004 286.32);
-  --color-ring: oklch(0.141 0.005 285.823);
+  /* 2025 Modern Color Palette - Mocha Mousse & Multi-tonal Scheme */
+  --color-background: oklch(0.98 0.005 45);
+  --color-foreground: oklch(0.15 0.02 25);
+  --color-card: oklch(0.99 0.002 45);
+  --color-card-foreground: oklch(0.15 0.02 25);
+  --color-popover: oklch(0.99 0.002 45);
+  --color-popover-foreground: oklch(0.15 0.02 25);
 
-  /* Border radius variations */
-  --radius: 0.625rem;
-  --radius-sm: calc(var(--radius) - 4px);
-  --radius-md: calc(var(--radius) - 2px);
-  --radius-lg: var(--radius);
-  --radius-xl: calc(var(--radius) + 4px);
-  --radius-2xl: calc(var(--radius) + 8px);
+  /* Primary - Deep Mocha */
+  --color-primary: oklch(0.25 0.08 35);
+  --color-primary-foreground: oklch(0.98 0.005 45);
 
-  /* Fluid spacing tokens using clamp() */
-  --spacing-xs: clamp(0.25rem, 0.5vw, 0.5rem);
-  --spacing-sm: clamp(0.5rem, 1vw, 1rem);
-  --spacing-md: clamp(1rem, 2vw, 2rem);
-  --spacing-lg: clamp(1.5rem, 3vw, 3rem);
-  --spacing-xl: clamp(2rem, 4vw, 4rem);
+  /* Secondary - Warm Taupe */
+  --color-secondary: oklch(0.75 0.03 45);
+  --color-secondary-foreground: oklch(0.15 0.02 25);
 
-  /* Fluid typography scale */
-  --font-size-xs: clamp(0.75rem, 0.8vw, 0.875rem);
-  --font-size-sm: clamp(0.875rem, 1vw, 1rem);
-  --font-size-base: clamp(1rem, 1.2vw, 1.125rem);
-  --font-size-lg: clamp(1.125rem, 1.5vw, 1.25rem);
-  --font-size-xl: clamp(1.25rem, 2vw, 1.5rem);
-  --font-size-2xl: clamp(1.5rem, 2.5vw, 2rem);
+  /* Muted - Soft Beige */
+  --color-muted: oklch(0.92 0.01 50);
+  --color-muted-foreground: oklch(0.45 0.02 35);
 
-  /* Animation duration tokens */
-  --duration-fast: 150ms;
-  --duration-normal: 300ms;
-  --duration-slow: 500ms;
+  /* Accent - Vibrant Coral */
+  --color-accent: oklch(0.65 0.18 15);
+  --color-accent-foreground: oklch(0.98 0.005 45);
 
-  /* Animation easing tokens */
-  --ease-in-out: cubic-bezier(0.4, 0, 0.2, 1);
-  --background: oklch(1 0 0);
-  --foreground: oklch(0.141 0.005 285.823);
-  --card: oklch(1 0 0);
-  --card-foreground: oklch(0.141 0.005 285.823);
-  --popover: oklch(1 0 0);
-  --popover-foreground: oklch(0.141 0.005 285.823);
-  --primary: oklch(0.21 0.006 285.885);
-  --primary-foreground: oklch(0.985 0 0);
-  --secondary: oklch(0.967 0.001 286.375);
-  --secondary-foreground: oklch(0.21 0.006 285.885);
-  --muted: oklch(0.967 0.001 286.375);
-  --muted-foreground: oklch(0.552 0.016 285.938);
-  --accent: oklch(0.967 0.001 286.375);
-  --accent-foreground: oklch(0.21 0.006 285.885);
-  --destructive: oklch(0.577 0.245 27.325);
-  --border: oklch(0.92 0.004 286.32);
-  --input: oklch(0.92 0.004 286.32);
-  --ring: oklch(0.705 0.015 286.067);
+  /* Destructive - Deep Red */
+  --color-destructive: oklch(0.55 0.22 15);
+  --color-destructive-foreground: oklch(0.98 0.005 45);
+
+  /* Border - Subtle */
+  --color-border: oklch(0.88 0.005 45);
+  --color-input: oklch(0.88 0.005 45);
+  --color-ring: oklch(0.25 0.08 35);
+
+  /* Advanced 2025 Color Variants */
+  --color-mocha-light: oklch(0.85 0.04 40);
+  --color-mocha-dark: oklch(0.15 0.06 30);
+  --color-coral-bright: oklch(0.75 0.20 12);
+  --color-taupe-warm: oklch(0.70 0.02 48);
+  --color-beige-soft: oklch(0.95 0.008 55);
+
+  /* Brutalist Design Colors */
+  --color-brutalist-bg: oklch(0.05 0.01 25);
+  --color-brutalist-text: oklch(0.98 0.005 45);
+  --color-brutalist-accent: oklch(0.85 0.15 330);
+
+  /* Border radius - Modern 2025 */
+  --radius: 0.75rem;
+  --radius-sm: 0.5rem;
+  --radius-md: 0.625rem;
+  --radius-lg: 0.75rem;
+  --radius-xl: 1rem;
+  --radius-2xl: 1.5rem;
+  --radius-brutalist: 0.25rem;
+
+  /* Advanced Fluid Spacing - 2025 */
+  --spacing-xs: clamp(0.5rem, 1vw, 0.75rem);
+  --spacing-sm: clamp(0.75rem, 1.5vw, 1rem);
+  --spacing-md: clamp(1rem, 2vw, 1.5rem);
+  --spacing-lg: clamp(1.5rem, 3vw, 2rem);
+  --spacing-xl: clamp(2rem, 4vw, 3rem);
+  --spacing-2xl: clamp(3rem, 6vw, 4rem);
+
+  /* Bold Typography Scale - 2025 */
+  --font-size-xs: clamp(0.875rem, 1.2vw, 1rem);
+  --font-size-sm: clamp(1rem, 1.5vw, 1.125rem);
+  --font-size-base: clamp(1.125rem, 1.8vw, 1.25rem);
+  --font-size-lg: clamp(1.25rem, 2vw, 1.5rem);
+  --font-size-xl: clamp(1.5rem, 2.5vw, 2rem);
+  --font-size-2xl: clamp(2rem, 3vw, 2.5rem);
+  --font-size-3xl: clamp(2.5rem, 4vw, 3rem);
+  --font-size-4xl: clamp(3rem, 5vw, 4rem);
+
+  /* Advanced Animation System - 2025 */
+  --duration-fast: 120ms;
+  --duration-normal: 250ms;
+  --duration-slow: 400ms;
+  --duration-smooth: 600ms;
+
+  /* Modern Easing Functions */
+  --ease-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
+  --ease-bounce: cubic-bezier(0.68, -0.55, 0.265, 1.55);
+  --ease-smooth: cubic-bezier(0.4, 0, 0.2, 1);
+  --ease-sharp: cubic-bezier(0.4, 0, 0.6, 1);
+
+  /* Text Shadow System - Tailwind v4.1 */
+  --text-shadow-sm: 0 1px 2px rgb(0 0 0 / 0.05);
+  --text-shadow: 0 1px 3px rgb(0 0 0 / 0.1), 0 1px 2px rgb(0 0 0 / 0.06);
+  --text-shadow-lg: 0 10px 15px rgb(0 0 0 / 0.1), 0 4px 6px rgb(0 0 0 / 0.05);
+  --text-shadow-xl: 0 20px 25px rgb(0 0 0 / 0.1), 0 10px 10px rgb(0 0 0 / 0.04);
+  --text-shadow-2xl: 0 25px 50px rgb(0 0 0 / 0.25);
+  --text-shadow-inner: inset 0 2px 4px 0 rgb(0 0 0 / 0.05);
+
+  /* Box Shadow System - Advanced */
+  --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+  --shadow: 0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px 0 rgb(0 0 0 / 0.06);
+  --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -1px rgb(0 0 0 / 0.06);
+  --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -2px rgb(0 0 0 / 0.05);
+  --shadow-xl: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 10px 10px -5px rgb(0 0 0 / 0.04);
+  --shadow-2xl: 0 25px 50px -12px rgb(0 0 0 / 0.25);
+  --shadow-inner: inset 0 2px 4px 0 rgb(0 0 0 / 0.05);
+
+  /* Gradient System - 2025 */
+  --gradient-mocha: linear-gradient(135deg, var(--color-mocha-light) 0%, var(--color-mocha-dark) 100%);
+  --gradient-accent: linear-gradient(135deg, var(--color-accent) 0%, var(--color-coral-bright) 100%);
+  --gradient-subtle: linear-gradient(135deg, var(--color-background) 0%, var(--color-beige-soft) 100%);
+
+  /* Duplicated for Tailwind compatibility */
+  --background: oklch(0.98 0.005 45);
+  --foreground: oklch(0.15 0.02 25);
+  --card: oklch(0.99 0.002 45);
+  --card-foreground: oklch(0.15 0.02 25);
+  --popover: oklch(0.99 0.002 45);
+  --popover-foreground: oklch(0.15 0.02 25);
+  --primary: oklch(0.25 0.08 35);
+  --primary-foreground: oklch(0.98 0.005 45);
+  --secondary: oklch(0.75 0.03 45);
+  --secondary-foreground: oklch(0.15 0.02 25);
+  --muted: oklch(0.92 0.01 50);
+  --muted-foreground: oklch(0.45 0.02 35);
+  --accent: oklch(0.65 0.18 15);
+  --accent-foreground: oklch(0.98 0.005 45);
+  --destructive: oklch(0.55 0.22 15);
+  --border: oklch(0.88 0.005 45);
+  --input: oklch(0.88 0.005 45);
+  --ring: oklch(0.25 0.08 35);
   --chart-1: oklch(0.646 0.222 41.116);
   --chart-2: oklch(0.6 0.118 184.704);
   --chart-3: oklch(0.398 0.07 227.392);
@@ -122,57 +176,75 @@
 }
 
 .dark {
-  /* Dark mode colors (Oklch) */
-  --color-background: oklch(0.141 0.005 285.823);
-  --color-foreground: oklch(0.985 0 0);
-  --color-card: oklch(0.21 0.006 285.885);
-  --color-card-foreground: oklch(0.985 0 0);
-  --color-popover: oklch(0.21 0.006 285.885);
-  --color-popover-foreground: oklch(0.985 0 0);
-  --color-primary: oklch(0.92 0.004 286.32);
-  --color-primary-foreground: oklch(0.21 0.006 285.885);
-  --color-secondary: oklch(0.274 0.006 286.033);
-  --color-secondary-foreground: oklch(0.985 0 0);
-  --color-muted: oklch(0.274 0.006 286.033);
-  --color-muted-foreground: oklch(0.705 0.015 286.067);
-  --color-accent: oklch(0.274 0.006 286.033);
-  --color-accent-foreground: oklch(0.985 0 0);
-  --color-destructive: oklch(0.704 0.191 22.216);
-  --color-destructive-foreground: oklch(0.985 0 0);
-  --color-border: oklch(1 0 0 / 10%);
-  --color-input: oklch(1 0 0 / 15%);
-  --color-ring: oklch(0.552 0.016 285.938);
-  --background: oklch(0.141 0.005 285.823);
-  --foreground: oklch(0.985 0 0);
-  --card: oklch(0.21 0.006 285.885);
-  --card-foreground: oklch(0.985 0 0);
-  --popover: oklch(0.21 0.006 285.885);
-  --popover-foreground: oklch(0.985 0 0);
-  --primary: oklch(0.92 0.004 286.32);
-  --primary-foreground: oklch(0.21 0.006 285.885);
-  --secondary: oklch(0.274 0.006 286.033);
-  --secondary-foreground: oklch(0.985 0 0);
-  --muted: oklch(0.274 0.006 286.033);
-  --muted-foreground: oklch(0.705 0.015 286.067);
-  --accent: oklch(0.274 0.006 286.033);
-  --accent-foreground: oklch(0.985 0 0);
-  --destructive: oklch(0.704 0.191 22.216);
-  --border: oklch(1 0 0 / 10%);
-  --input: oklch(1 0 0 / 15%);
-  --ring: oklch(0.552 0.016 285.938);
-  --chart-1: oklch(0.488 0.243 264.376);
-  --chart-2: oklch(0.696 0.17 162.48);
-  --chart-3: oklch(0.769 0.188 70.08);
-  --chart-4: oklch(0.627 0.265 303.9);
-  --chart-5: oklch(0.645 0.246 16.439);
-  --sidebar: oklch(0.21 0.006 285.885);
-  --sidebar-foreground: oklch(0.985 0 0);
-  --sidebar-primary: oklch(0.488 0.243 264.376);
-  --sidebar-primary-foreground: oklch(0.985 0 0);
-  --sidebar-accent: oklch(0.274 0.006 286.033);
-  --sidebar-accent-foreground: oklch(0.985 0 0);
-  --sidebar-border: oklch(1 0 0 / 10%);
-  --sidebar-ring: oklch(0.552 0.016 285.938);
+  /* 2025 Dark Mode - Modern Mocha Palette */
+  --color-background: oklch(0.08 0.02 25);
+  --color-foreground: oklch(0.95 0.005 45);
+  --color-card: oklch(0.12 0.015 25);
+  --color-card-foreground: oklch(0.95 0.005 45);
+  --color-popover: oklch(0.12 0.015 25);
+  --color-popover-foreground: oklch(0.95 0.005 45);
+
+  /* Primary - Light Mocha */
+  --color-primary: oklch(0.75 0.06 40);
+  --color-primary-foreground: oklch(0.08 0.02 25);
+
+  /* Secondary - Warm Beige */
+  --color-secondary: oklch(0.25 0.02 45);
+  --color-secondary-foreground: oklch(0.95 0.005 45);
+
+  /* Muted - Dark Taupe */
+  --color-muted: oklch(0.18 0.01 35);
+  --color-muted-foreground: oklch(0.65 0.02 40);
+
+  /* Accent - Bright Coral */
+  --color-accent: oklch(0.75 0.20 12);
+  --color-accent-foreground: oklch(0.08 0.02 25);
+
+  /* Destructive - Bright Red */
+  --color-destructive: oklch(0.65 0.25 15);
+  --color-destructive-foreground: oklch(0.95 0.005 45);
+
+  /* Border - Subtle */
+  --color-border: oklch(0.22 0.01 30);
+  --color-input: oklch(0.22 0.01 30);
+  --color-ring: oklch(0.75 0.06 40);
+
+  /* Advanced Dark Variants */
+  --color-mocha-light: oklch(0.65 0.04 35);
+  --color-mocha-dark: oklch(0.05 0.015 20);
+  --color-coral-bright: oklch(0.85 0.22 10);
+  --color-taupe-warm: oklch(0.30 0.02 40);
+  --color-beige-soft: oklch(0.20 0.008 45);
+
+  /* Brutalist Dark Colors */
+  --color-brutalist-bg: oklch(0.02 0.005 25);
+  --color-brutalist-text: oklch(0.98 0.005 45);
+  --color-brutalist-accent: oklch(0.90 0.18 330);
+
+  /* Dark Mode Gradients */
+  --gradient-mocha: linear-gradient(135deg, var(--color-mocha-dark) 0%, var(--color-mocha-light) 100%);
+  --gradient-accent: linear-gradient(135deg, var(--color-accent) 0%, var(--color-coral-bright) 100%);
+  --gradient-subtle: linear-gradient(135deg, var(--color-background) 0%, var(--color-beige-soft) 100%);
+
+  /* Duplicated for Tailwind compatibility */
+  --background: oklch(0.08 0.02 25);
+  --foreground: oklch(0.95 0.005 45);
+  --card: oklch(0.12 0.015 25);
+  --card-foreground: oklch(0.95 0.005 45);
+  --popover: oklch(0.12 0.015 25);
+  --popover-foreground: oklch(0.95 0.005 45);
+  --primary: oklch(0.75 0.06 40);
+  --primary-foreground: oklch(0.08 0.02 25);
+  --secondary: oklch(0.25 0.02 45);
+  --secondary-foreground: oklch(0.95 0.005 45);
+  --muted: oklch(0.18 0.01 35);
+  --muted-foreground: oklch(0.65 0.02 40);
+  --accent: oklch(0.75 0.20 12);
+  --accent-foreground: oklch(0.08 0.02 25);
+  --destructive: oklch(0.65 0.25 15);
+  --border: oklch(0.22 0.01 30);
+  --input: oklch(0.22 0.01 30);
+  --ring: oklch(0.75 0.06 40);
 }
 
 /* Simple custom utilities */
@@ -222,7 +294,163 @@
   height: 100vh;
 }
 
-/* Improved responsive breakpoints */
+/* 2025 Advanced Utility Classes */
+
+/* Text Shadow System - Tailwind v4.1 */
+.text-shadow-sm { text-shadow: var(--text-shadow-sm); }
+.text-shadow { text-shadow: var(--text-shadow); }
+.text-shadow-lg { text-shadow: var(--text-shadow-lg); }
+.text-shadow-xl { text-shadow: var(--text-shadow-xl); }
+.text-shadow-2xl { text-shadow: var(--text-shadow-2xl); }
+.text-shadow-inner { text-shadow: var(--text-shadow-inner); }
+
+/* Brutalist Design Elements */
+.brutalist-card {
+  background: var(--color-brutalist-bg);
+  border: 3px solid var(--color-brutalist-text);
+  border-radius: var(--radius-brutalist);
+  box-shadow: var(--shadow-xl);
+}
+
+.brutalist-text {
+  font-weight: 900;
+  letter-spacing: -0.02em;
+  text-transform: uppercase;
+  color: var(--color-brutalist-text);
+  text-shadow: var(--text-shadow);
+}
+
+.brutalist-accent {
+  background: var(--color-brutalist-accent);
+  color: var(--color-brutalist-bg);
+  border: 2px solid var(--color-brutalist-text);
+}
+
+/* Modern Gradient Backgrounds */
+.bg-gradient-mocha { background: var(--gradient-mocha); }
+.bg-gradient-accent { background: var(--gradient-accent); }
+.bg-gradient-subtle { background: var(--gradient-subtle); }
+
+/* Advanced Micro-interactions */
+.hover-lift {
+  transition: transform var(--duration-normal) var(--ease-spring);
+}
+
+.hover-lift:hover {
+  transform: translateY(-0.25rem);
+}
+
+.hover-glow {
+  transition: box-shadow var(--duration-normal) var(--ease-smooth);
+}
+
+.hover-glow:hover {
+  box-shadow: var(--shadow-2xl);
+}
+
+.hover-scale {
+  transition: transform var(--duration-fast) var(--ease-spring);
+}
+
+.hover-scale:hover {
+  transform: scale(1.02);
+}
+
+.hover-rotate {
+  transition: transform var(--duration-slow) var(--ease-bounce);
+}
+
+.hover-rotate:hover {
+  transform: rotate(2deg);
+}
+
+/* 2025 Typography Enhancements */
+.text-maximalist {
+  font-size: var(--font-size-4xl);
+  font-weight: 900;
+  letter-spacing: -0.05em;
+  line-height: 0.9;
+  text-shadow: var(--text-shadow-xl);
+}
+
+.text-bold-serif {
+  font-family: 'Times New Roman', serif;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+}
+
+.text-high-contrast {
+  background: var(--color-accent);
+  color: var(--color-accent-foreground);
+  padding: 0.25rem 0.5rem;
+  border-radius: var(--radius-sm);
+  font-weight: 600;
+}
+
+/* Anti-design Elements */
+.asymmetrical-layout {
+  transform: rotate(-0.5deg);
+  border-radius: var(--radius-xl);
+}
+
+.overlapping-element {
+  position: relative;
+  z-index: 10;
+  transform: translateX(1rem) translateY(-0.5rem);
+}
+
+.clashing-colors {
+  background: linear-gradient(45deg, var(--color-accent), var(--color-destructive));
+  color: var(--color-background);
+}
+
+/* Big Blocks & Vivid Contrast */
+.block-section {
+  background: var(--color-accent);
+  color: var(--color-accent-foreground);
+  padding: var(--spacing-2xl);
+  border-radius: var(--radius-xl);
+  margin: var(--spacing-lg) 0;
+  box-shadow: var(--shadow-xl);
+}
+
+.contrast-block {
+  background: var(--color-primary);
+  color: var(--color-primary-foreground);
+  border: 4px solid var(--color-accent);
+}
+
+/* Modern Button Variants */
+.btn-brutalist {
+  background: var(--color-brutalist-bg);
+  color: var(--color-brutalist-text);
+  border: 3px solid var(--color-brutalist-text);
+  border-radius: var(--radius-brutalist);
+  font-weight: 900;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  transition: all var(--duration-fast) var(--ease-spring);
+}
+
+.btn-brutalist:hover {
+  background: var(--color-brutalist-text);
+  color: var(--color-brutalist-bg);
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-xl);
+}
+
+.btn-gradient {
+  background: var(--gradient-accent);
+  color: var(--color-accent-foreground);
+  border: none;
+  font-weight: 600;
+  transition: all var(--duration-normal) var(--ease-smooth);
+}
+
+.btn-gradient:hover {
+  transform: translateY(-1px);
+  box-shadow: var(--shadow-xl);
+}
 
 /* Scroll-driven animations */
 .scroll-reveal {
@@ -333,9 +561,7 @@ html {
 
 .error-state {
   border-color: var(--color-destructive);
-  /* Fallback for browsers that do not support color-mix (e.g. Chrome < 111) */
   background-color: rgba(239, 68, 68, 0.05);
-  background-color: color-mix(in srgb, var(--color-destructive) 5%, transparent);
 }
 
 /* Container queries for responsive components */
@@ -910,33 +1136,82 @@ body {
   font-size: var(--font-size-sm);
   font-weight: 500;
   line-height: 1;
-  border: 1px solid;
-  border-color: hsl(var(--border));
-  background: transparent;
-  color: inherit;
+  border: 2px solid;
+  transition: all 0.2s ease-in-out;
 }
+
+/* Light mode button styles */
+.light .btn {
+  background: hsl(var(--background));
+  color: hsl(var(--foreground));
+  border-color: hsl(var(--foreground));
+}
+
+.light .btn:hover {
+  background: hsl(var(--foreground));
+  color: hsl(var(--background));
+  border-color: hsl(var(--foreground));
+}
+
+/* Dark mode button styles */
+.dark .btn {
+  background: hsl(var(--foreground));
+  color: hsl(var(--background));
+  border-color: hsl(var(--background));
+}
+
+.dark .btn:hover {
+  background: hsl(var(--background));
+  color: hsl(var(--foreground));
+  border-color: hsl(var(--foreground));
+}
+
 .btn:where(:not(:disabled)):focus-visible {
   /* approximate Tailwind focus ring behavior */
   outline: 2px solid hsl(var(--ring));
   outline-offset: 2px;
   box-shadow: 0 0 0 2px hsl(var(--ring) / 0.15);
 }
+
 .btn-ghost {
   background: transparent;
-  border-color: hsl(var(--border));
 }
-.btn-ghost:hover {
-  /* Fallback for browsers without color-mix: use a subtle neutral overlay.
-     This keeps hover tactile in older browsers (Chrome < 111). */
-  background-color: rgba(0, 0, 0, 0.04);
+
+/* Light mode ghost button */
+.light .btn-ghost {
+  border-color: hsl(var(--border));
+  color: hsl(var(--foreground));
+}
+
+.light .btn-ghost:hover {
+  background-color: hsl(var(--accent));
+  color: hsl(var(--accent-foreground));
+  border-color: hsl(var(--accent));
+}
+
+/* Dark mode ghost button */
+.dark .btn-ghost {
+  border-color: hsl(var(--border));
+  color: hsl(var(--foreground));
+}
+
+.dark .btn-ghost:hover {
+  background-color: hsl(var(--accent));
+  color: hsl(var(--accent-foreground));
+  border-color: hsl(var(--accent));
 }
 
 /* Use color-mix when available for more accurate accent blending */
 @supports (color: color-mix(in srgb, var(--accent) 5%, transparent)) {
-  .btn-ghost:hover {
-    background-color: color-mix(in srgb, var(--accent) 5%, transparent);
+  .light .btn-ghost:hover {
+    background-color: color-mix(in srgb, var(--accent) 8%, transparent);
+  }
+
+  .dark .btn-ghost:hover {
+    background-color: color-mix(in srgb, var(--accent) 8%, transparent);
   }
 }
+
 .btn-primary {
   /* Fallback for browsers without color-mix: use the defined color token directly */
   background: var(--color-primary);
@@ -951,6 +1226,7 @@ body {
     color: color-mix(in srgb, var(--color-primary-foreground) 100%, transparent);
   }
 }
+
 .btn-sm {
   font-size: var(--font-size-sm);
   padding: 0.25rem 0.625rem; /* matches px-2.5 py-1 */

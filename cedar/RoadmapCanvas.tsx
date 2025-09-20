@@ -16,7 +16,7 @@ import ReactFlow, {
 import 'reactflow/dist/style.css';
 
 import { roadmapNodeTypes } from './RoadmapNode';
-import { useCedarRoadmap } from '@/app/cedar-os/hooks';
+import { useCedarRoadmap } from '../app/cedar-os/hooks';
 import { useRoadmapData } from './useRoadmapData';
 import { useCedarState } from 'cedar-os';
 import type { FeatureNodeData } from './FeatureNode';

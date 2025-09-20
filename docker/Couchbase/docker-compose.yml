@@ -22,18 +22,6 @@ services:
     networks:
       - default
 
-  couchbase-ui:
-    image: couchbase/ui:latest
-    container_name: governed-rag-couchbase-ui
-    ports:
-      - "8080:8080"
-    environment:
-      - COUCHBASE_SERVER=couchbase-server:8091
-      - COUCHBASE_USERNAME=admin
-      - COUCHBASE_PASSWORD=password
-    networks:
-      - default
-
 # The Redis Caching Layer
   redis-cache:
     image: redis:7-alpine

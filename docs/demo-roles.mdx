@@ -1,0 +1,566 @@
+import { Badge } from '@/components/ui/badge'
+import { Button } from '@/components/ui/button'
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
+import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
+import { Mermaid } from '@/components/Mermaid'
+import {
+  Users,
+  Shield,
+  Eye,
+  EyeOff,
+  Lock,
+  CheckCircle,
+  XCircle,
+  Terminal,
+  Play,
+  FileText,
+  ArrowRight
+} from 'lucide-react'
+
+# Demo Roles & Access Control
+
+This page demonstrates role-based access control in the Mastra Governed RAG system using sample queries against the corpus documents. Use the UI's AuthPanel or `scripts/make-jwt.js` to generate JWTs for testing different access scenarios.
+
+<Alert className="mb-6">
+  <Users className="h-4 w-4" />
+  <AlertTitle>Interactive Role Testing</AlertTitle>
+  <AlertDescription>
+    Try different roles to see how the system enforces access control and provides appropriate responses based on user permissions.
+  </AlertDescription>
+</Alert>
+
+<!-- toc -->
+
+## Role Hierarchy Overview
+
+<div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mb-8">
+  <Card>
+    <CardHeader className="pb-3">
+      <CardTitle className="text-lg flex items-center">
+        <Eye className="h-5 w-5 mr-2 text-green-500" />
+        Public (Level 10)
+      </CardTitle>
+      <CardDescription>Unauthenticated users</CardDescription>
+    </CardHeader>
+    <CardContent>
+      <div className="space-y-2 text-sm">
+        <div><strong>Max Classification:</strong> public</div>
+        <div><strong>Allowed Tags:</strong> None</div>
+        <div><strong>Access:</strong> No sensitive content</div>
+      </div>
+    </CardContent>
+  </Card>
+
+  <Card>
+    <CardHeader className="pb-3">
+      <CardTitle className="text-lg flex items-center">
+        <Users className="h-5 w-5 mr-2 text-blue-500" />
+        Employee (Level 40)
+      </CardTitle>
+      <CardDescription>General staff access</CardDescription>
+    </CardHeader>
+    <CardContent>
+      <div className="space-y-2 text-sm">
+        <div><strong>Max Classification:</strong> internal</div>
+        <div><strong>Allowed Tags:</strong> General</div>
+        <div><strong>Access:</strong> Internal policies</div>
+      </div>
+    </CardContent>
+  </Card>
+
+  <Card>
+    <CardHeader className="pb-3">
+      <CardTitle className="text-lg flex items-center">
+        <Shield className="h-5 w-5 mr-2 text-orange-500" />
+        Department Viewer (Level 60)
+      </CardTitle>
+      <CardDescription>Department-specific read access</CardDescription>
+    </CardHeader>
+    <CardContent>
+      <div className="space-y-2 text-sm">
+        <div><strong>Max Classification:</strong> internal</div>
+        <div><strong>Allowed Tags:</strong> Department-specific</div>
+        <div><strong>Access:</strong> Dept docs + general</div>
+      </div>
+    </CardContent>
+  </Card>
+
+  <Card>
+    <CardHeader className="pb-3">
+      <CardTitle className="text-lg flex items-center">
+        <Lock className="h-5 w-5 mr-2 text-purple-500" />
+        Department Admin (Level 80)
+      </CardTitle>
+      <CardDescription>Full department control</CardDescription>
+    </CardHeader>
+    <CardContent>
+      <div className="space-y-2 text-sm">
+        <div><strong>Max Classification:</strong> confidential</div>
+        <div><strong>Allowed Tags:</strong> Department + confidential</div>
+        <div><strong>Access:</strong> All dept content</div>
+      </div>
+    </CardContent>
+  </Card>
+
+  <Card className="md:col-span-2 lg:col-span-1">
+    <CardHeader className="pb-3">
+      <CardTitle className="text-lg flex items-center">
+        <CheckCircle className="h-5 w-5 mr-2 text-red-500" />
+        Super Admin (Level 100)
+      </CardTitle>
+      <CardDescription>Complete system access</CardDescription>
+    </CardHeader>
+    <CardContent>
+      <div className="space-y-2 text-sm">
+        <div><strong>Max Classification:</strong> confidential</div>
+        <div><strong>Allowed Tags:</strong> All departments</div>
+        <div><strong>Access:</strong> Complete system access</div>
+      </div>
+    </CardContent>
+  </Card>
+</div>
+
+## Interactive Role Testing
+
+<div className="bg-slate-50 dark:bg-slate-900 p-6 rounded-lg border mb-8">
+  <Mermaid chart={`flowchart TD
+    A[User Query] --> B{JWT Authentication}
+    B -->|Valid| C[Extract Role & Permissions]
+    B -->|Invalid| D[Access Denied]
+    C --> E{Classification Check}
+    E -->|Public| F[Allow Public Docs]
+    E -->|Internal| G{Role Level Check}
+    E -->|Confidential| H{Admin Check}
+    G -->|Employee+| I[Allow Internal Docs]
+    G -->|Insufficient| J[Filter Results]
+    H -->|Admin| K[Allow Confidential Docs]
+    H -->|Not Admin| L[Block Access]
+    F --> M[Return Filtered Results]
+    I --> M
+    K --> M
+    J --> M
+    L --> M
+    D --> N[Error Response]
+    style A fill:#e3f2fd
+    style C fill:#f3e5f5
+    style M fill:#e8f5e8
+    style N fill:#ffebee`} />
+  
+  <div className="mt-4 text-sm text-muted-foreground">
+    <strong>Access Control Flow:</strong> Each query goes through multi-stage security checks before returning results.
+  </div>
+</div>
+
+<Tabs defaultValue="public" className="mb-8">
+  <TabsList className="grid w-full grid-cols-5">
+    <TabsTrigger value="public">Public</TabsTrigger>
+    <TabsTrigger value="employee">Employee</TabsTrigger>
+    <TabsTrigger value="finance">Finance Viewer</TabsTrigger>
+    <TabsTrigger value="hr">HR Admin</TabsTrigger>
+    <TabsTrigger value="admin">Super Admin</TabsTrigger>
+  </TabsList>
+
+  <TabsContent value="public">
+    <Card>
+      <CardHeader>
+        <CardTitle className="text-lg">Public User Access</CardTitle>
+        <CardDescription>Minimal access - no sensitive information</CardDescription>
+      </CardHeader>
+      <CardContent>
+        <div className="space-y-4">
+          <div className="bg-muted p-4 rounded-lg">
+            <h4 className="font-semibold mb-2">Sample Query: "What is the expense reimbursement policy?"</h4>
+            <div className="flex items-center space-x-2 text-red-600">
+              <XCircle className="h-4 w-4" />
+              <span className="text-sm font-medium">Expected Response:</span>
+            </div>
+            <div className="bg-red-50 dark:bg-red-950 p-3 rounded mt-2 text-sm">
+              "No authorized documents found that contain information about this topic."
+            </div>
+            <p className="text-sm text-muted-foreground mt-2">
+              <strong>Reason:</strong> All corpus documents are classified as internal or confidential, which public users cannot access.
+            </p>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
+            <div className="text-center">
+              <div className="bg-red-100 dark:bg-red-900 text-red-800 dark:text-red-200 rounded-full w-12 h-12 flex items-center justify-center mx-auto mb-2">
+                <XCircle className="h-6 w-6" />
+              </div>
+              <div className="text-sm font-medium">Finance Policy</div>
+              <Badge variant="secondary" className="text-xs">Internal</Badge>
+            </div>
+            <div className="text-center">
+              <div className="bg-red-100 dark:bg-red-900 text-red-800 dark:text-red-200 rounded-full w-12 h-12 flex items-center justify-center mx-auto mb-2">
+                <XCircle className="h-6 w-6" />
+              </div>
+              <div className="text-sm font-medium">Engineering Handbook</div>
+              <Badge variant="secondary" className="text-xs">Internal</Badge>
+            </div>
+            <div className="text-center">
+              <div className="bg-red-100 dark:bg-red-900 text-red-800 dark:text-red-200 rounded-full w-12 h-12 flex items-center justify-center mx-auto mb-2">
+                <XCircle className="h-6 w-6" />
+              </div>
+              <div className="text-sm font-medium">HR Confidential</div>
+              <Badge variant="destructive" className="text-xs">Confidential</Badge>
+            </div>
+          </div>
+        </div>
+      </CardContent>
+    </Card>
+  </TabsContent>
+
+  <TabsContent value="employee">
+    <Card>
+      <CardHeader>
+        <CardTitle className="text-lg">Employee Access</CardTitle>
+        <CardDescription>General internal access with department restrictions</CardDescription>
+      </CardHeader>
+      <CardContent>
+        <div className="space-y-4">
+          <div className="bg-muted p-4 rounded-lg">
+            <h4 className="font-semibold mb-2">Sample Query: "What is the engineering code review process?"</h4>
+            <div className="flex items-center space-x-2 text-green-600">
+              <CheckCircle className="h-4 w-4" />
+              <span className="text-sm font-medium">Expected Response:</span>
+            </div>
+            <div className="bg-green-50 dark:bg-green-950 p-3 rounded mt-2 text-sm">
+              "All code must be peer-reviewed... Minimum 2 approvals for production code."
+            </div>
+            <div className="text-sm text-muted-foreground mt-2">
+              <strong>Citations:</strong> <code>[{"docId": "engineering-handbook-001", "source": "Engineering Team Handbook"}]</code>
+            </div>
+          </div>
+
+          <div className="bg-muted p-4 rounded-lg">
+            <h4 className="font-semibold mb-2">Sample Query: "What is executive compensation?"</h4>
+            <div className="flex items-center space-x-2 text-red-600">
+              <XCircle className="h-4 w-4" />
+              <span className="text-sm font-medium">Expected Response:</span>
+            </div>
+            <div className="bg-red-50 dark:bg-red-950 p-3 rounded mt-2 text-sm">
+              "No authorized documents found..."
+            </div>
+            <p className="text-sm text-muted-foreground mt-2">
+              <strong>Reason:</strong> HR confidential documents require specific department admin access.
+            </p>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
+            <div className="text-center">
+              <div className="bg-yellow-100 dark:bg-yellow-900 text-yellow-800 dark:text-yellow-200 rounded-full w-12 h-12 flex items-center justify-center mx-auto mb-2">
+                <Eye className="h-6 w-6" />
+              </div>
+              <div className="text-sm font-medium">Finance Policy</div>
+              <Badge variant="secondary" className="text-xs">Internal</Badge>
+            </div>
+            <div className="text-center">
+              <div className="bg-green-100 dark:bg-green-900 text-green-800 dark:text-green-200 rounded-full w-12 h-12 flex items-center justify-center mx-auto mb-2">
+                <CheckCircle className="h-6 w-6" />
+              </div>
+              <div className="text-sm font-medium">Engineering Handbook</div>
+              <Badge variant="secondary" className="text-xs">Internal</Badge>
+            </div>
+            <div className="text-center">
+              <div className="bg-red-100 dark:bg-red-900 text-red-800 dark:text-red-200 rounded-full w-12 h-12 flex items-center justify-center mx-auto mb-2">
+                <XCircle className="h-6 w-6" />
+              </div>
+              <div className="text-sm font-medium">HR Confidential</div>
+              <Badge variant="destructive" className="text-xs">Confidential</Badge>
+            </div>
+          </div>
+        </div>
+      </CardContent>
+    </Card>
+  </TabsContent>
+
+  <TabsContent value="finance">
+    <Card>
+      <CardHeader>
+        <CardTitle className="text-lg">Finance Viewer Access</CardTitle>
+        <CardDescription>Finance-specific access with inheritance</CardDescription>
+      </CardHeader>
+      <CardContent>
+        <div className="space-y-4">
+          <div className="bg-muted p-4 rounded-lg">
+            <h4 className="font-semibold mb-2">Sample Query: "What are the approval thresholds for expenses?"</h4>
+            <div className="flex items-center space-x-2 text-green-600">
+              <CheckCircle className="h-4 w-4" />
+              <span className="text-sm font-medium">Expected Response:</span>
+            </div>
+            <div className="bg-green-50 dark:bg-green-950 p-3 rounded mt-2 text-sm">
+              "Expenses under $500: Direct manager... over $1000: CFO approval..."
+            </div>
+            <div className="text-sm text-muted-foreground mt-2">
+              <strong>Citations:</strong> <code>[{"docId": "finance-policy-001", "source": "Finance Department Policy Manual"}]</code>
+            </div>
+          </div>
+
+          <div className="bg-muted p-4 rounded-lg">
+            <h4 className="font-semibold mb-2">Sample Query: "What is the engineering on-call schedule?"</h4>
+            <div className="flex items-center space-x-2 text-green-600">
+              <CheckCircle className="h-4 w-4" />
+              <span className="text-sm font-medium">Expected Response:</span>
+            </div>
+            <div className="bg-green-50 dark:bg-green-950 p-3 rounded mt-2 text-sm">
+              "Weekly rotations starting Monday 9 AM... Compensation: $500/week..."
+            </div>
+            <p className="text-sm text-muted-foreground mt-2">
+              <strong>Access via inheritance:</strong> Employee-level access to engineering documents.
+            </p>
+          </div>
+
+          <div className="bg-muted p-4 rounded-lg">
+            <h4 className="font-semibold mb-2">Sample Query: "Executive severance packages?"</h4>
+            <div className="flex items-center space-x-2 text-red-600">
+              <XCircle className="h-4 w-4" />
+              <span className="text-sm font-medium">Expected Response:</span>
+            </div>
+            <div className="bg-red-50 dark:bg-red-950 p-3 rounded mt-2 text-sm">
+              "No authorized documents found..."
+            </div>
+            <p className="text-sm text-muted-foreground mt-2">
+              <strong>Reason:</strong> Confidential HR documents require HR admin access, not finance viewer.
+            </p>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
+            <div className="text-center">
+              <div className="bg-green-100 dark:bg-green-900 text-green-800 dark:text-green-200 rounded-full w-12 h-12 flex items-center justify-center mx-auto mb-2">
+                <CheckCircle className="h-6 w-6" />
+              </div>
+              <div className="text-sm font-medium">Finance Policy</div>
+              <Badge variant="secondary" className="text-xs">Internal</Badge>
+            </div>
+            <div className="text-center">
+              <div className="bg-green-100 dark:bg-green-900 text-green-800 dark:text-green-200 rounded-full w-12 h-12 flex items-center justify-center mx-auto mb-2">
+                <CheckCircle className="h-6 w-6" />
+              </div>
+              <div className="text-sm font-medium">Engineering Handbook</div>
+              <Badge variant="secondary" className="text-xs">Internal</Badge>
+            </div>
+            <div className="text-center">
+              <div className="bg-red-100 dark:bg-red-900 text-red-800 dark:text-red-200 rounded-full w-12 h-12 flex items-center justify-center mx-auto mb-2">
+                <XCircle className="h-6 w-6" />
+              </div>
+              <div className="text-sm font-medium">HR Confidential</div>
+              <Badge variant="destructive" className="text-xs">Confidential</Badge>
+            </div>
+          </div>
+        </div>
+      </CardContent>
+    </Card>
+  </TabsContent>
+
+  <TabsContent value="hr">
+    <Card>
+      <CardHeader>
+        <CardTitle className="text-lg">HR Admin Access</CardTitle>
+        <CardDescription>Full HR access including confidential documents</CardDescription>
+      </CardHeader>
+      <CardContent>
+        <div className="space-y-4">
+          <div className="bg-muted p-4 rounded-lg">
+            <h4 className="font-semibold mb-2">Sample Query: "What are the executive compensation bands?"</h4>
+            <div className="flex items-center space-x-2 text-green-600">
+              <CheckCircle className="h-4 w-4" />
+              <span className="text-sm font-medium">Expected Response:</span>
+            </div>
+            <div className="bg-green-50 dark:bg-green-950 p-3 rounded mt-2 text-sm">
+              "CEO: Base $850,000... C-Suite: $450k-$550k base..."
+            </div>
+            <div className="text-sm text-muted-foreground mt-2">
+              <strong>Citations:</strong> <code>[{"docId": "hr-conf-001", "source": "HR Confidential Documents"}]</code>
+            </div>
+          </div>
+
+          <div className="bg-muted p-4 rounded-lg">
+            <h4 className="font-semibold mb-2">Sample Query: "Finance budget overrun policy?"</h4>
+            <div className="flex items-center space-x-2 text-green-600">
+              <CheckCircle className="h-4 w-4" />
+              <span className="text-sm font-medium">Expected Response:</span>
+            </div>
+            <div className="bg-green-50 dark:bg-green-950 p-3 rounded mt-2 text-sm">
+              "Any projected overrun exceeding 10% must be reported..."
+            </div>
+            <p className="text-sm text-muted-foreground mt-2">
+              <strong>Access via inheritance:</strong> Employee-level access to finance documents.
+            </p>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
+            <div className="text-center">
+              <div className="bg-green-100 dark:bg-green-900 text-green-800 dark:text-green-200 rounded-full w-12 h-12 flex items-center justify-center mx-auto mb-2">
+                <CheckCircle className="h-6 w-6" />
+              </div>
+              <div className="text-sm font-medium">Finance Policy</div>
+              <Badge variant="secondary" className="text-xs">Internal</Badge>
+            </div>
+            <div className="text-center">
+              <div className="bg-green-100 dark:bg-green-900 text-green-800 dark:text-green-200 rounded-full w-12 h-12 flex items-center justify-center mx-auto mb-2">
+                <CheckCircle className="h-6 w-6" />
+              </div>
+              <div className="text-sm font-medium">Engineering Handbook</div>
+              <Badge variant="secondary" className="text-xs">Internal</Badge>
+            </div>
+            <div className="text-center">
+              <div className="bg-green-100 dark:bg-green-900 text-green-800 dark:text-green-200 rounded-full w-12 h-12 flex items-center justify-center mx-auto mb-2">
+                <CheckCircle className="h-6 w-6" />
+              </div>
+              <div className="text-sm font-medium">HR Confidential</div>
+              <Badge variant="destructive" className="text-xs">Confidential</Badge>
+            </div>
+          </div>
+        </div>
+      </CardContent>
+    </Card>
+  </TabsContent>
+
+  <TabsContent value="admin">
+    <Card>
+      <CardHeader>
+        <CardTitle className="text-lg">Super Admin Access</CardTitle>
+        <CardDescription>Complete system access to all documents</CardDescription>
+      </CardHeader>
+      <CardContent>
+        <div className="space-y-4">
+          <div className="bg-muted p-4 rounded-lg">
+            <h4 className="font-semibold mb-2">Sample Query: Any question about any document</h4>
+            <div className="flex items-center space-x-2 text-green-600">
+              <CheckCircle className="h-4 w-4" />
+              <span className="text-sm font-medium">Expected Response:</span>
+            </div>
+            <div className="bg-green-50 dark:bg-green-950 p-3 rounded mt-2 text-sm">
+              Full access to all documents with complete, accurate answers and comprehensive citations from all relevant sources.
+            </div>
+            <p className="text-sm text-muted-foreground mt-2">
+              <strong>Admin privileges:</strong> Access to all classifications and security tags across all departments.
+            </p>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
+            <div className="text-center">
+              <div className="bg-green-100 dark:bg-green-900 text-green-800 dark:text-green-200 rounded-full w-12 h-12 flex items-center justify-center mx-auto mb-2">
+                <CheckCircle className="h-6 w-6" />
+              </div>
+              <div className="text-sm font-medium">Finance Policy</div>
+              <Badge variant="secondary" className="text-xs">Internal</Badge>
+            </div>
+            <div className="text-center">
+              <div className="bg-green-100 dark:bg-green-900 text-green-800 dark:text-green-200 rounded-full w-12 h-12 flex items-center justify-center mx-auto mb-2">
+                <CheckCircle className="h-6 w-6" />
+              </div>
+              <div className="text-sm font-medium">Engineering Handbook</div>
+              <Badge variant="secondary" className="text-xs">Internal</Badge>
+            </div>
+            <div className="text-center">
+              <div className="bg-green-100 dark:bg-green-900 text-green-800 dark:text-green-200 rounded-full w-12 h-12 flex items-center justify-center mx-auto mb-2">
+                <CheckCircle className="h-6 w-6" />
+              </div>
+              <div className="text-sm font-medium">HR Confidential</div>
+              <Badge variant="destructive" className="text-xs">Confidential</Badge>
+            </div>
+          </div>
+        </div>
+      </CardContent>
+    </Card>
+  </TabsContent>
+</Tabs>
+
+## Testing Methods
+
+<div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+  <Card>
+    <CardHeader>
+      <CardTitle className="flex items-center">
+        <Play className="h-5 w-5 mr-2" />
+        UI Testing
+      </CardTitle>
+      <CardDescription>Interactive testing through the web interface</CardDescription>
+    </CardHeader>
+    <CardContent>
+      <div className="space-y-3">
+        <div className="text-sm">
+          <strong>1. Open Application:</strong> Navigate to <a href="http://localhost:3000" className="text-primary hover:underline">http://localhost:3000</a>
+        </div>
+        <div className="text-sm">
+          <strong>2. Authenticate:</strong> Use the AuthPanel to select a role and generate a JWT
+        </div>
+        <div className="text-sm">
+          <strong>3. Test Queries:</strong> Ask questions in the chat interface
+        </div>
+        <div className="text-sm">
+          <strong>4. Observe Results:</strong> Watch streaming responses and citations
+        </div>
+      </div>
+    </CardContent>
+  </Card>
+
+  <Card>
+    <CardHeader>
+      <CardTitle className="flex items-center">
+        <Terminal className="h-5 w-5 mr-2" />
+        CLI Testing
+      </CardTitle>
+      <CardDescription>Command-line testing for automation</CardDescription>
+    </CardHeader>
+    <CardContent>
+      <div className="space-y-3">
+        <div className="bg-muted p-3 rounded text-sm font-mono">
+          npm run cli query "JWT_TOKEN" "Your question here"
+        </div>
+        <div className="text-sm text-muted-foreground">
+          Replace JWT_TOKEN with a token generated for the desired role
+        </div>
+        <div className="text-sm">
+          <strong>Output:</strong> Answer with citations logged to console
+        </div>
+      </div>
+    </CardContent>
+  </Card>
+</div>
+
+## Expected Behaviors
+
+<div className="space-y-4 mb-8">
+  <Alert>
+    <CheckCircle className="h-4 w-4" />
+    <AlertTitle>Authorized Access</AlertTitle>
+    <AlertDescription>
+      When users have appropriate permissions, they receive accurate answers with proper source citations from accessible documents.
+    </AlertDescription>
+  </Alert>
+
+  <Alert>
+    <XCircle className="h-4 w-4" />
+    <AlertTitle>Unauthorized Access</AlertTitle>
+    <AlertDescription>
+      When users lack permissions, they receive polite denials with "No authorized documents found" messages, preventing information leakage.
+    </AlertDescription>
+  </Alert>
+
+  <Alert>
+    <Shield className="h-4 w-4" />
+    <AlertTitle>Security Verification</AlertTitle>
+    <AlertDescription>
+      All responses go through verification to ensure compliance with security policies and prevent unauthorized information disclosure.
+    </AlertDescription>
+  </Alert>
+</div>
+
+<div className="flex gap-4">
+  <Button asChild>
+    <a href="/docs/security">
+      <Shield className="h-4 w-4 mr-2" />
+      Security Guide
+      <ArrowRight className="h-4 w-4 ml-2" />
+    </a>
+  </Button>
+  <Button variant="outline" asChild>
+    <a href="/docs/api-reference">
+      <FileText className="h-4 w-4 mr-2" />
+      API Reference
+    </a>
+  </Button>
+</div>

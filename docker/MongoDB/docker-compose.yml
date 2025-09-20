@@ -20,8 +20,29 @@ services:
       - MONGO_INITDB_ROOT_PASSWORD=password
       - MONGO_INITDB_DATABASE=devdb
 
+  # The Redis Caching Layer
+  redis-cache:
+    image: redis:7-alpine
+    container_name: governed-rag-redis-cache
+    ports:
+      - "6380:6379" # Use a different port to avoid conflicts
+    volumes:
+      - redis_cache_data:/data
+    command: redis-server --appendonly yes
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+    networks:
+      - default
+
+
 volumes:
   mongo_data:
+    driver: local
+  redis_cache_data:
     driver: local
 
 networks:

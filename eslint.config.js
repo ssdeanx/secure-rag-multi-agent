@@ -1,8 +1,6 @@
 import js from '@eslint/js'
 import tseslint from '@typescript-eslint/eslint-plugin'
 import tsparser from '@typescript-eslint/parser'
-import tsdoc from 'eslint-plugin-tsdoc'
-import jsdoc from 'eslint-plugin-jsdoc'
 import prettierConfig from 'eslint-config-prettier'
 import reactPlugin from 'eslint-plugin-react'
 
@@ -16,8 +14,6 @@ export default [
     plugins: {
       react: reactPlugin,
       '@typescript-eslint': tseslint,
-      'tsdoc': tsdoc,
-      'jsdoc': jsdoc
     },
     languageOptions: {
       parser: tsparser,
@@ -25,7 +21,17 @@ export default [
         ecmaVersion: 2022,
         sourceType: 'module',
         project: './tsconfig.json'
-      }
+      },
+      env: {
+        browser: true,
+        node: true,
+        es2022: true,
+      },
+    },
+    settings: {
+    react: {
+      version: 'detect',
+      },
     },
     rules: {
       ...reactPlugin.configs.recommended.rules,
@@ -82,18 +88,6 @@ export default [
       'no-multiple-empty-lines': ['error', { max: 2 }],
       'no-trailing-spaces': 'warn',
       'eol-last': 'warn',
-
-      // TSDoc documentation rules
-      'tsdoc/syntax': 'warn',
-
-      // JSDoc documentation rules
-      'jsdoc/check-alignment': 'warn',
-      'jsdoc/check-indentation': 'warn',
-      'jsdoc/check-param-names': 'warn',
-      'jsdoc/check-property-names': 'warn',
-      'jsdoc/check-syntax': 'warn',
-      'jsdoc/require-param': 'warn',  // Fixed comment typo (was 'warb')
-      'jsdoc/require-param-description': 'warn'
     }
   },
   {

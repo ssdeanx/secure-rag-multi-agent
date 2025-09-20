@@ -2,7 +2,7 @@ import React from 'react';
 import type { Node } from 'reactflow';
 import { useSubscribeStateToAgentContext } from 'cedar-os';
 import { Box } from 'lucide-react';
-import type { FeatureNodeData } from '../../../components/FeatureNode';
+import type { FeatureNodeData } from '../../cedar/FeatureNode';
 
 // [STEP 6]: To automatically make any part of your application state available to AI agents as context,
 // We use the subscribeInputContext function. In this example, we subscribe to the selected nodes and specify how we want them to appear in the chat as "selected context".
@@ -24,7 +24,7 @@ export function useRoadmapContext() {
     }),
     {
       icon: React.createElement(Box, { size: 16 }),
-      color: '#8B5CF6', // Purple color for selected nodes
+      color: '#C06520', // Blue color for selected nodes
     },
   );
 
