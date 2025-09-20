@@ -5,9 +5,9 @@ import { openAIModel } from "../config/openai";
 import { documentContextSchema } from "../schemas/agent-schemas";
 import { createResearchMemory } from '../config/libsql-storage';
 import { google } from "@ai-sdk/google";
-import { logger } from "../config/logger";
+import { log } from "../config/logger";
 
-logger.info('Initializing Rerank Agent...');
+log.info('Initializing Rerank Agent...');
 
 const memory = createResearchMemory();
 

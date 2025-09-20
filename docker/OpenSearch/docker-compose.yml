@@ -1,0 +1,73 @@
+version: '3.8'
+
+services:
+  opensearch-node1:
+    image: opensearchproject/opensearch:2.11.0 # Use a version that supports vector search
+    container_name: governed-rag-opensearch
+    ports:
+      - "9200:9200"
+      - "9600:9600"
+    volumes:
+      - opensearch_data:/usr/share/opensearch/data
+    environment:
+      - discovery.type=single-node
+      - OPENSEARCH_INITIAL_ADMIN_PASSWORD=my-strong-password # IMPORTANT: Change this password
+      - node.name=opensearch-node1
+      - cluster.name=opensearch-cluster
+      - bootstrap.memory_lock=true
+      - OPENSEARCH_JAVA_OPTS=-Xms512m -Xmx512m
+    ulimits:
+      memlock:
+        soft: -1
+        hard: -1
+    healthcheck:
+      test: ["CMD", "curl", "-k", "-f", "-s", "https://localhost:9200/_cluster/health?pretty"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+    restart: unless-stopped
+
+  opensearch-dashboards:
+    image: opensearchproject/opensearch-dashboards:2.11.0
+    container_name: governed-rag-opensearch-dashboards
+    ports:
+      - "5601:5601"
+    environment:
+      OPENSEARCH_HOSTS: '["https://opensearch-node1:9200"]'
+      OPENSEARCH_USERNAME: 'admin'
+      OPENSEARCH_PASSWORD: 'my-strong-password' # Must match the OpenSearch node password
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:5601/api/status"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+  # The Redis Caching Layer
+  redis-cache:
+    image: redis:7-alpine
+    container_name: governed-rag-redis-cache
+    ports:
+      - "6380:6379" # Use a different port to avoid conflicts
+    volumes:
+      - redis_cache_data:/data
+    command: redis-server --appendonly yes
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+    networks:
+      - default
+
+volumes:
+  opensearch_data:
+    driver: local
+  redis_cache_data:
+    driver: local
+
+networks:
+  default:
+    name: governed-rag-network
+    driver: bridge

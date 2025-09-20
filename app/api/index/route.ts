@@ -3,7 +3,7 @@ import fs from 'fs';
 import path from 'path';
 import type { NextRequest} from 'next/server';
 import { NextResponse } from 'next/server';
-import { logger } from '@/src/mastra/config/logger';
+import { log } from '@/src/mastra/config/logger';
 
 const STATUS_VALUE = 500;
 export const maxDuration = 300; // 5 minutes for indexing
@@ -14,7 +14,7 @@ export async function POST(request: NextRequest) {
     const { jwt } = await request.json();
 
     // JWT is optional for indexing - we can index documents without authentication
-    logger.info('Starting document indexing...');
+    log.info('Starting document indexing...');
 
     // Define default documents to index from the corpus folder
     const corpusPath: string = path.join(process.cwd(), 'corpus');
@@ -57,7 +57,7 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    logger.info(`Starting indexing of ${documents.length} documents`, {
+    log.info(`Starting indexing of ${documents.length} documents`, {
       documents: documents.map(d => ({
         docId: d.docId,
         classification: d.classification,
@@ -75,16 +75,16 @@ export async function POST(request: NextRequest) {
       inputData: { documents }
     });
 
-    logger.info('Workflow result', { result });
+    log.info('Workflow result', { result });
 
     if (result.status === 'success') {
-      logger.info(`Indexing completed: ${result.result.indexed} indexed, ${result.result.failed} failed`);
+      log.info(`Indexing completed: ${result.result.indexed} indexed, ${result.result.failed} failed`);
 
       // Log individual document results for debugging
       if (result.result.documents) {
         result.result.documents.forEach((doc: any) => {
           if (doc.status === 'failed' && (Boolean(doc.error))) {
-            logger.error(`Document ${doc.docId} failed`, { error: doc.error });
+            log.error(`Document ${doc.docId} failed`, { error: doc.error });
           }
         });
       }
@@ -99,14 +99,14 @@ export async function POST(request: NextRequest) {
       const errorMessage = result.status === 'failed' && 'error' in result
         ? result.error?.message || 'Indexing workflow failed'
         : 'Indexing workflow failed';
-      logger.error('Workflow failed', { error: errorMessage });
+      log.error('Workflow failed', { error: errorMessage });
       return NextResponse.json(
         { error: errorMessage },
         { status: 500 }
       );
     }
   } catch (error) {
-    logger.error('Indexing API error', { error });
+    log.error('Indexing API error', { error });
     return NextResponse.json(
       { error: 'Internal server error', message: error instanceof Error ? error.message : 'Unknown error' },
       { status: 500 }

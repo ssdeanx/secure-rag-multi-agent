@@ -1,0 +1,747 @@
+import { Badge } from '@/components/ui/badge'
+import { Button } from '@/components/ui/button'
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
+import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
+import { Mermaid } from '@/components/Mermaid'
+import {
+  Layers,
+  Workflow,
+  Database,
+  Brain,
+  Shield,
+  Settings,
+  ArrowRight,
+  GitBranch,
+  Zap,
+  Server,
+  FileText,
+  Users,
+  CheckCircle
+} from 'lucide-react'
+
+# System Architecture
+
+The Mastra Governed RAG is built around Mastra's multi-agent orchestration framework, integrating Next.js for the frontend/API, Qdrant for vector storage, and OpenAI for embeddings/LLM. The core logic resides in `src/mastra/`, with workflows coordinating agents, tools, and services for secure RAG operations.
+
+<Alert className="mb-6">
+  <Layers className="h-4 w-4" />
+  <AlertTitle>Multi-Agent Architecture</AlertTitle>
+  <AlertDescription>
+    Specialized AI agents work together in orchestrated workflows to ensure security, accuracy, and compliance at every step of the RAG pipeline.
+  </AlertDescription>
+</Alert>
+
+<!-- toc -->
+
+## High-Level Components
+
+<div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
+  <Card>
+    <CardHeader className="pb-3">
+      <CardTitle className="text-lg flex items-center">
+        <Server className="h-5 w-5 mr-2 text-blue-500" />
+        Frontend (Next.js)
+      </CardTitle>
+    </CardHeader>
+    <CardContent>
+      <ul className="space-y-1 text-sm">
+        <li>• Chat interface</li>
+        <li>• Authentication panel</li>
+        <li>• Document indexing UI</li>
+        <li>• API routes (/api/chat, /api/index)</li>
+      </ul>
+    </CardContent>
+  </Card>
+
+  <Card>
+    <CardHeader className="pb-3">
+      <CardTitle className="text-lg flex items-center">
+        <Brain className="h-5 w-5 mr-2 text-purple-500" />
+        Backend (Mastra)
+      </CardTitle>
+    </CardHeader>
+    <CardContent>
+      <ul className="space-y-1 text-sm">
+        <li>• Agent orchestration</li>
+        <li>• Workflow management</li>
+        <li>• Security enforcement</li>
+        <li>• Business logic services</li>
+      </ul>
+    </CardContent>
+  </Card>
+
+  <Card>
+    <CardHeader className="pb-3">
+      <CardTitle className="text-lg flex items-center">
+        <Database className="h-5 w-5 mr-2 text-green-500" />
+        Storage Layer
+      </CardTitle>
+    </CardHeader>
+    <CardContent>
+      <ul className="space-y-1 text-sm">
+        <li>• Qdrant vector database</li>
+        <li>• LibSQL metadata store</li>
+        <li>• Security payloads</li>
+        <li>• Audit logging</li>
+      </ul>
+    </CardContent>
+  </Card>
+
+  <Card>
+    <CardHeader className="pb-3">
+      <CardTitle className="text-lg flex items-center">
+        <Settings className="h-5 w-5 mr-2 text-orange-500" />
+        CLI Tools
+      </CardTitle>
+    </CardHeader>
+    <CardContent>
+      <ul className="space-y-1 text-sm">
+        <li>• Document indexing</li>
+        <li>• Query testing</li>
+        <li>• Demo scenarios</li>
+        <li>• System management</li>
+      </ul>
+    </CardContent>
+  </Card>
+</div>
+
+## System Architecture Overview
+
+<div className="bg-slate-50 dark:bg-slate-900 p-6 rounded-lg border mb-8">
+  <Mermaid chart={`graph TB
+    subgraph "Frontend Layer"
+        A[Next.js App]
+        B[Chat Interface]
+        C[Auth Panel]
+        D[Admin UI]
+    end
+    
+    subgraph "API Layer"
+        E[Next.js API Routes]
+        F[/api/chat]
+        G[/api/index]
+        H[/api/auth]
+    end
+    
+    subgraph "Mastra Orchestration"
+        I[Mastra Server]
+        J[Agent Manager]
+        K[Workflow Engine]
+        L[Security Enforcer]
+    end
+    
+    subgraph "Agent Layer"
+        M[Retriever Agent]
+        N[Validator Agent]
+        O[Summarizer Agent]
+        P[Response Agent]
+    end
+    
+    subgraph "Storage Layer"
+        Q[(Qdrant Vectors)]
+        R[(LibSQL Metadata)]
+        S[(Security Store)]
+    end
+    
+    subgraph "External Services"
+        T[OpenAI API]
+        U[Auth Provider]
+        V[Audit Logger]
+    end
+    
+    A --> E
+    B --> F
+    C --> H
+    D --> G
+    E --> I
+    I --> J
+    J --> K
+    K --> L
+    L --> M
+    L --> N
+    L --> O
+    L --> P
+    M --> Q
+    N --> R
+    O --> S
+    P --> T
+    I --> U
+    L --> V
+    
+    style A fill:#e3f2fd
+    style I fill:#fff3e0
+    style M fill:#f3e5f5
+    style Q fill:#e8f5e8`} />
+</div>
+
+## Core Directory Structure
+
+<div className="space-y-4 mb-8">
+  <Card>
+    <CardHeader>
+      <CardTitle className="flex items-center">
+        <GitBranch className="h-5 w-5 mr-2" />
+        Mastra Core (src/mastra/)
+      </CardTitle>
+    </CardHeader>
+    <CardContent>
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div>
+          <h4 className="font-semibold mb-3">Agents (6 specialized)</h4>
+          <ul className="space-y-1 text-sm">
+            <li>• <code>retrieve.agent.ts</code> - Vector search with security</li>
+            <li>• <code>rerank.agent.ts</code> - Relevance scoring</li>
+            <li>• <code>answerer.agent.ts</code> - Response generation</li>
+            <li>• <code>verifier.agent.ts</code> - Security compliance</li>
+            <li>• <code>identity.agent.ts</code> - User identity</li>
+            <li>• <code>policy.agent.ts</code> - Policy enforcement</li>
+          </ul>
+        </div>
+        <div>
+          <h4 className="font-semibold mb-3">Workflows (2 main)</h4>
+          <ul className="space-y-1 text-sm">
+            <li>• <code>governed-rag-answer.workflow.ts</code></li>
+            <li>• <code>governed-rag-index.workflow.ts</code></li>
+          </ul>
+
+          <h4 className="font-semibold mb-3 mt-4">Tools (2 core)</h4>
+          <ul className="space-y-1 text-sm">
+            <li>• <code>vector-query.tool.ts</code></li>
+            <li>• <code>jwt-auth.tool.ts</code></li>
+          </ul>
+        </div>
+      </div>
+
+      <div className="mt-6">
+        <h4 className="font-semibold mb-3">Services (10 utility classes)</h4>
+        <div className="grid grid-cols-2 md:grid-cols-3 gap-2 text-sm">
+          <div>• AuthenticationService</div>
+          <div>• RoleService</div>
+          <div>• ValidationService</div>
+          <div>• EmbeddingService</div>
+          <div>• ChunkingService</div>
+          <div>• DocumentProcessorService</div>
+          <div>• DocumentIndexingService</div>
+          <div>• VectorQueryService</div>
+          <div>• VectorStorageService</div>
+          <div>• WorkflowDecorators</div>
+        </div>
+      </div>
+    </CardContent>
+  </Card>
+</div>
+
+## Workflows
+
+Mastra workflows define sequential steps combining agents, tools, and services. Two main workflows handle the complete RAG lifecycle.
+
+<Tabs defaultValue="answer" className="mb-8">
+  <TabsList>
+    <TabsTrigger value="answer">Query Workflow</TabsTrigger>
+    <TabsTrigger value="index">Indexing Workflow</TabsTrigger>
+  </TabsList>
+
+  <TabsContent value="answer">
+    <Card>
+      <CardHeader>
+        <CardTitle className="text-lg">Governed RAG Answer Workflow</CardTitle>
+        <CardDescription>Secure query processing: Auth → Retrieve → Rerank → Answer → Verify</CardDescription>
+      </CardHeader>
+      <CardContent>
+        <div className="space-y-6">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div>
+              <h4 className="font-semibold mb-3 flex items-center">
+                <Shield className="h-4 w-4 mr-2" />
+                1. Authentication Step
+              </h4>
+              <div className="bg-muted p-3 rounded text-sm mb-3">
+                <strong>Input:</strong> <code>{`{jwt, question}`}</code><br/>
+                <strong>Process:</strong> Validate JWT, compute accessFilter<br/>
+                <strong>Output:</strong> <code>{`{accessFilter, question}`}</code>
+              </div>
+              <ul className="space-y-1 text-sm text-muted-foreground">
+                <li>• Uses AuthenticationService + RoleService</li>
+                <li>• Generates accessFilter with maxClassification and allowTags</li>
+                <li>• Example: finance.viewer → maxClassification: 'internal'</li>
+              </ul>
+            </div>
+
+            <div>
+              <h4 className="font-semibold mb-3 flex items-center">
+                <Database className="h-4 w-4 mr-2" />
+                2. Retrieval & Rerank Step
+              </h4>
+              <div className="bg-muted p-3 rounded text-sm mb-3">
+                <strong>Input:</strong> <code>{`{accessFilter, question}`}</code><br/>
+                <strong>Process:</strong> Vector search + relevance scoring<br/>
+                <strong>Output:</strong> <code>{`{contexts, question}`}</code>
+              </div>
+              <ul className="space-y-1 text-sm text-muted-foreground">
+                <li>• retrieveAgent generates query</li>
+                <li>• vector-query.tool searches Qdrant with filters</li>
+                <li>• rerankAgent reorders by relevance</li>
+              </ul>
+            </div>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div>
+              <h4 className="font-semibold mb-3 flex items-center">
+                <Brain className="h-4 w-4 mr-2" />
+                3. Answer Generation Step
+              </h4>
+              <div className="bg-muted p-3 rounded text-sm mb-3">
+                <strong>Input:</strong> <code>{`{contexts, question}`}</code><br/>
+                <strong>Process:</strong> Synthesize response with citations<br/>
+                <strong>Output:</strong> <code>{`{answer, citations}`}</code>
+              </div>
+              <ul className="space-y-1 text-sm text-muted-foreground">
+                <li>• answererAgent generates response</li>
+                <li>• Creates citations with docId and source</li>
+                <li>• Handles "no authorized documents" case</li>
+              </ul>
+            </div>
+
+            <div>
+              <h4 className="font-semibold mb-3 flex items-center">
+                <CheckCircle className="h-4 w-4 mr-2" />
+                4. Verification Step
+              </h4>
+              <div className="bg-muted p-3 rounded text-sm mb-3">
+                <strong>Input:</strong> <code>{`{answer, contexts, question}`}</code><br/>
+                <strong>Process:</strong> Security compliance audit<br/>
+                <strong>Output:</strong> Verified response or error
+              </div>
+              <ul className="space-y-1 text-sm text-muted-foreground">
+                <li>• verifierAgent checks for policy violations</li>
+                <li>• Validates no unauthorized information leakage</li>
+                <li>• Ensures citations match accessible documents</li>
+              </ul>
+            </div>
+          </div>
+
+          <div className="bg-slate-50 dark:bg-slate-900 p-4 rounded-lg border">
+            <h4 className="font-semibold mb-3">Query Workflow Diagram</h4>
+            <Mermaid chart={`flowchart TD
+    A[User Query + JWT] --> B[Auth Service]
+    B --> C{Access Check}
+    C -->|Authorized| D[Retrieve Agent]
+    C -->|Denied| E[Access Error]
+    
+    D --> F[Vector Search Tool]
+    F --> G[Qdrant DB]
+    G --> H[Filtered Contexts]
+    
+    H --> I[Rerank Agent]
+    I --> J[Relevance Scored]
+    
+    J --> K[Answerer Agent]
+    K --> L[Generated Answer + Citations]
+    
+    L --> M[Verifier Agent]
+    M --> N[Security Verified]
+    
+    N --> O[Stream Response]
+    O --> P[Answer Chunks]
+    O --> Q[Citations]
+    
+    style A fill:#e3f2fd
+    style D fill:#f3e5f5
+    style K fill:#fff3e0
+    style O fill:#e8f5e8`} />
+          </div>
+        </div>
+      </CardContent>
+    </Card>
+  </TabsContent>
+
+  <TabsContent value="index">
+    <Card>
+      <CardHeader>
+        <CardTitle className="text-lg">Governed RAG Index Workflow</CardTitle>
+        <CardDescription>Document ingestion: Process → Chunk → Embed → Store</CardDescription>
+      </CardHeader>
+      <CardContent>
+        <div className="space-y-6">
+          <div>
+            <h4 className="font-semibold mb-3 flex items-center">
+              <FileText className="h-4 w-4 mr-2" />
+              Document Processing Pipeline
+            </h4>
+            <div className="bg-muted p-3 rounded text-sm mb-3">
+              <strong>Input:</strong> <code>{`{documents: [{filePath, docId, classification, allowedRoles, tenant}]}`}</code><br/>
+              <strong>Output:</strong> <code>{`{indexed, failed, documents}`}</code>
+            </div>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+            <Card>
+              <CardHeader className="pb-3">
+                <CardTitle className="text-sm">1. Document Processing</CardTitle>
+              </CardHeader>
+              <CardContent>
+                <ul className="space-y-1 text-xs">
+                  <li>• Read and parse markdown files</li>
+                  <li>• Extract text content</li>
+                  <li>• Handle various document formats</li>
+                </ul>
+              </CardContent>
+            </Card>
+
+            <Card>
+              <CardHeader className="pb-3">
+                <CardTitle className="text-sm">2. Text Chunking</CardTitle>
+              </CardHeader>
+              <CardContent>
+                <ul className="space-y-1 text-xs">
+                  <li>• Split into ~500 token chunks</li>
+                  <li>• Maintain context boundaries</li>
+                  <li>• Preserve semantic meaning</li>
+                </ul>
+              </CardContent>
+            </Card>
+
+            <Card>
+              <CardHeader className="pb-3">
+                <CardTitle className="text-sm">3. Vector Embedding</CardTitle>
+              </CardHeader>
+              <CardContent>
+                <ul className="space-y-1 text-xs">
+                  <li>• OpenAI text-embedding-3-small</li>
+                  <li>• 1536-dimensional vectors</li>
+                  <li>• Semantic representation</li>
+                </ul>
+              </CardContent>
+            </Card>
+          </div>
+
+          <div className="bg-muted p-4 rounded-lg">
+            <h4 className="font-semibold mb-3">Storage with Security Payload</h4>
+            <div className="text-sm space-y-2">
+              <div><strong>Qdrant Payload:</strong></div>
+              <code className="block bg-background p-2 rounded text-xs">
+{`{
+  docId: string,
+  versionId: string,
+  classification: 'public' | 'internal' | 'confidential',
+  allowedRoles: string[],
+  securityTags: string[],
+  tenant: string,
+  source: string
+}`}
+              </code>
+            </div>
+          </div>
+
+          <div className="bg-slate-50 dark:bg-slate-900 p-4 rounded-lg border">
+            <h4 className="font-semibold mb-3">Indexing Workflow Diagram</h4>
+            <Mermaid chart={`flowchart TD
+    A[Documents<br/>corpus/*.md] --> B[Processor Service]
+    B --> C[Parsed Text]
+    
+    C --> D[Chunking Service]
+    D --> E[Text Chunks<br/>~500 tokens]
+    
+    E --> F[Embedding Service]
+    F --> G[Vectors<br/>OpenAI text-embedding-3-small]
+    
+    G --> H[Indexing Service]
+    H --> I[Vector Storage]
+    I --> J[(Qdrant DB<br/>with Security Payload)]
+    
+    J --> K[Index Summary]
+    K --> L[{indexed, failed, details}]
+    
+    style A fill:#e3f2fd
+    style D fill:#f3e5f5
+    style H fill:#fff3e0
+    style J fill:#e8f5e8`} />
+          </div>
+          </div>
+        </div>
+      </CardContent>
+    </Card>
+  </TabsContent>
+</Tabs>
+
+## Agents & Tools
+
+<div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+  <Card>
+    <CardHeader>
+      <CardTitle className="flex items-center">
+        <Brain className="h-5 w-5 mr-2" />
+        Specialized Agents
+      </CardTitle>
+      <CardDescription>LLM-powered specialists (GPT-4o-mini)</CardDescription>
+    </CardHeader>
+    <CardContent>
+      <div className="space-y-3">
+        <div className="flex items-start space-x-3">
+          <Badge variant="secondary" className="mt-1">Retrieve</Badge>
+          <div className="text-sm">
+            <strong>retrieveAgent:</strong> Generates queries, searches vector store with security filters
+          </div>
+        </div>
+        <div className="flex items-start space-x-3">
+          <Badge variant="secondary" className="mt-1">Rerank</Badge>
+          <div className="text-sm">
+            <strong>rerankAgent:</strong> Scores and reorders contexts by question relevance
+          </div>
+        </div>
+        <div className="flex items-start space-x-3">
+          <Badge variant="secondary" className="mt-1">Answer</Badge>
+          <div className="text-sm">
+            <strong>answererAgent:</strong> Synthesizes answers from contexts with citations
+          </div>
+        </div>
+        <div className="flex items-start space-x-3">
+          <Badge variant="secondary" className="mt-1">Verify</Badge>
+          <div className="text-sm">
+            <strong>verifierAgent:</strong> Audits answers for security and compliance
+          </div>
+        </div>
+        <div className="flex items-start space-x-3">
+          <Badge variant="secondary" className="mt-1">Identity</Badge>
+          <div className="text-sm">
+            <strong>identityAgent:</strong> Handles user identity resolution
+          </div>
+        </div>
+        <div className="flex items-start space-x-3">
+          <Badge variant="secondary" className="mt-1">Policy</Badge>
+          <div className="text-sm">
+            <strong>policyAgent:</strong> Enforces organizational policies
+          </div>
+        </div>
+      </div>
+    </CardContent>
+  </Card>
+
+  <Card>
+    <CardHeader>
+      <CardTitle className="flex items-center">
+        <Settings className="h-5 w-5 mr-2" />
+        Core Tools
+      </CardTitle>
+      <CardDescription>Reusable functions for agents</CardDescription>
+    </CardHeader>
+    <CardContent>
+      <div className="space-y-4">
+        <div>
+          <h4 className="font-semibold text-sm mb-2">Vector Query Tool</h4>
+          <p className="text-sm text-muted-foreground">
+            Queries Qdrant with embedding similarity + security filters (classification, roles, tags)
+          </p>
+          <div className="bg-muted p-2 rounded text-xs mt-2">
+            <code>vector-query.tool.ts</code>
+          </div>
+        </div>
+
+        <div>
+          <h4 className="font-semibold text-sm mb-2">JWT Auth Tool</h4>
+          <p className="text-sm text-muted-foreground">
+            Validates and decodes JWT tokens, extracts user claims and roles
+          </p>
+          <div className="bg-muted p-2 rounded text-xs mt-2">
+            <code>jwt-auth.tool.ts</code>
+          </div>
+        </div>
+      </div>
+    </CardContent>
+  </Card>
+</div>
+
+## Data Flow Architecture
+
+<div className="space-y-6 mb-8">
+  <Card>
+    <CardHeader>
+      <CardTitle className="text-lg">Indexing Pipeline</CardTitle>
+      <CardDescription>Document ingestion and vectorization</CardDescription>
+    </CardHeader>
+    <CardContent>
+      <div className="flex items-center space-x-8 text-sm">
+        <div className="text-center">
+          <div className="bg-primary text-primary-foreground rounded-full w-12 h-12 flex items-center justify-center font-bold mb-2">API</div>
+          <div>API/CLI</div>
+        </div>
+        <ArrowRight className="h-4 w-4" />
+        <div className="text-center">
+          <div className="bg-blue-500 text-white rounded-full w-12 h-12 flex items-center justify-center font-bold mb-2">W</div>
+          <div>Workflow</div>
+        </div>
+        <ArrowRight className="h-4 w-4" />
+        <div className="text-center">
+          <div className="bg-green-500 text-white rounded-full w-12 h-12 flex items-center justify-center font-bold mb-2">S</div>
+          <div>Services</div>
+        </div>
+        <ArrowRight className="h-4 w-4" />
+        <div className="text-center">
+          <div className="bg-purple-500 text-white rounded-full w-12 h-12 flex items-center justify-center font-bold mb-2">Q</div>
+          <div>Qdrant</div>
+        </div>
+      </div>
+      <p className="text-sm text-muted-foreground mt-4">
+        Documents flow from API/CLI through workflows and services, ultimately stored as vectors with security metadata in Qdrant.
+      </p>
+    </CardContent>
+  </Card>
+
+  <Card>
+    <CardHeader>
+      <CardTitle className="text-lg">Query Pipeline</CardTitle>
+      <CardDescription>Secure retrieval and response generation</CardDescription>
+    </CardHeader>
+    <CardContent>
+      <div className="flex items-center space-x-8 text-sm">
+        <div className="text-center">
+          <div className="bg-primary text-primary-foreground rounded-full w-12 h-12 flex items-center justify-center font-bold mb-2">UI</div>
+          <div>UI/API</div>
+        </div>
+        <ArrowRight className="h-4 w-4" />
+        <div className="text-center">
+          <div className="bg-blue-500 text-white rounded-full w-12 h-12 flex items-center justify-center font-bold mb-2">W</div>
+          <div>Workflow</div>
+        </div>
+        <ArrowRight className="h-4 w-4" />
+        <div className="text-center">
+          <div className="bg-purple-500 text-white rounded-full w-12 h-12 flex items-center justify-center font-bold mb-2">A</div>
+          <div>Agents</div>
+        </div>
+        <ArrowRight className="h-4 w-4" />
+        <div className="text-center">
+          <div className="bg-green-500 text-white rounded-full w-12 h-12 flex items-center justify-center font-bold mb-2">R</div>
+          <div>Response</div>
+        </div>
+      </div>
+      <p className="text-sm text-muted-foreground mt-4">
+        Queries are authenticated, processed through agents with security filters, and return verified responses with citations.
+      </p>
+    </CardContent>
+  </Card>
+</div>
+
+## Security Integration
+
+<div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+  <Card>
+    <CardHeader>
+      <CardTitle className="flex items-center">
+        <Shield className="h-5 w-5 mr-2" />
+        Security at Retrieval
+      </CardTitle>
+    </CardHeader>
+    <CardContent>
+      <ul className="space-y-2 text-sm">
+        <li>• <strong>Access Filters:</strong> Applied during vector search</li>
+        <li>• <strong>Classification Limits:</strong> User role determines max classification</li>
+        <li>• <strong>Tag Matching:</strong> Security tags must match user permissions</li>
+        <li>• <strong>Zero Results:</strong> "No authorized documents found" when filtered out</li>
+      </ul>
+    </CardContent>
+  </Card>
+
+  <Card>
+    <CardHeader>
+      <CardTitle className="flex items-center">
+        <CheckCircle className="h-5 w-5 mr-2" />
+        Security at Verification
+      </CardTitle>
+    </CardHeader>
+    <CardContent>
+      <ul className="space-y-2 text-sm">
+        <li>• <strong>Policy Audit:</strong> AI agent checks for violations</li>
+        <li>• <strong>Information Leakage:</strong> Prevents unauthorized data exposure</li>
+        <li>• <strong>Citation Validation:</strong> Ensures citations match accessible docs</li>
+        <li>• <strong>Compliance Check:</strong> Verifies adherence to security policies</li>
+      </ul>
+    </CardContent>
+  </Card>
+</div>
+
+## Logging & Monitoring
+
+<div className="space-y-4 mb-8">
+  <Card>
+    <CardHeader>
+      <CardTitle className="text-lg">Comprehensive Logging</CardTitle>
+      <CardDescription>All workflow steps logged for audit and debugging</CardDescription>
+    </CardHeader>
+    <CardContent>
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div>
+          <h4 className="font-semibold mb-2">Application Logs</h4>
+          <div className="bg-muted p-3 rounded text-sm">
+            <code>logs/mastra.log</code><br/>
+            General application logging
+          </div>
+        </div>
+        <div>
+          <h4 className="font-semibold mb-2">Workflow Logs</h4>
+          <div className="bg-muted p-3 rounded text-sm">
+            <code>logs/workflow.log</code><br/>
+            Detailed workflow execution logs
+          </div>
+        </div>
+      </div>
+      <p className="text-sm text-muted-foreground mt-4">
+        All steps are logged using @mastra/loggers for complete audit trails, debugging, and compliance monitoring.
+      </p>
+    </CardContent>
+  </Card>
+</div>
+
+## Extensibility
+
+<div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
+  <Card>
+    <CardHeader>
+      <CardTitle className="text-sm">Add Agents/Tools</CardTitle>
+    </CardHeader>
+    <CardContent>
+      <p className="text-sm text-muted-foreground">
+        Extend Mastra config in <code>src/mastra/index.ts</code> to add new specialized agents or reusable tools.
+      </p>
+    </CardContent>
+  </Card>
+
+  <Card>
+    <CardHeader>
+      <CardTitle className="text-sm">Custom Workflows</CardTitle>
+    </CardHeader>
+    <CardContent>
+      <p className="text-sm text-muted-foreground">
+        Create new <code>.workflow.ts</code> files to define custom processing pipelines and business logic.
+      </p>
+    </CardContent>
+  </Card>
+
+  <Card>
+    <CardHeader>
+      <CardTitle className="text-sm">Modular Services</CardTitle>
+    </CardHeader>
+    <CardContent>
+      <p className="text-sm text-muted-foreground">
+        Services are modular and injectable via Mastra context, making them easy to extend or replace.
+      </p>
+    </CardContent>
+  </Card>
+</div>
+
+<div className="flex gap-4">
+  <Button asChild>
+    <a href="/docs/demo-roles">
+      <Users className="h-4 w-4 mr-2" />
+      Demo Roles
+      <ArrowRight className="h-4 w-4 ml-2" />
+    </a>
+  </Button>
+  <Button variant="outline" asChild>
+    <a href="/docs/api-reference">
+      <FileText className="h-4 w-4 mr-2" />
+      API Reference
+    </a>
+  </Button>
+</div>

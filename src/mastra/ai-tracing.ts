@@ -29,7 +29,7 @@ export interface LangfuseExporterConfig {
   /** Logger level for diagnostic messages (default: 'warn') */
   logLevel?: 'debug' | 'info' | 'warn' | 'error';
   /** Additional options to pass to the Langfuse client */
-  options?: any;
+  options?: Record<string, unknown>;
 }
 
 interface TraceData {
@@ -42,7 +42,7 @@ type LangfuseParent = LangfuseTraceClient | LangfuseSpanClient | LangfuseGenerat
 
 export class LangfuseExporter implements AITracingExporter {
   name = 'langfuse';
-  private readonly client: Langfuse;
+  private readonly client: Langfuse | null;
   private readonly realtime: boolean;
   private readonly traceMap = new Map<string, TraceData>();
   private readonly logger: ConsoleLogger;
@@ -60,7 +60,7 @@ export class LangfuseExporter implements AITracingExporter {
         hasSecretKey,
       });
       // Create a no-op client to prevent runtime errors
-      this.client = null as any;
+      this.client = null;
       return;
     }
 
@@ -69,6 +69,7 @@ export class LangfuseExporter implements AITracingExporter {
       secretKey: config.secretKey,
       baseUrl: config.baseUrl,
       ...config.options,
+      persistence: 'localStorage'
     });
   }
 
@@ -190,6 +191,13 @@ export class LangfuseExporter implements AITracingExporter {
   }
 
   private initTrace(span: AnyExportedAISpan): void {
+    if (!this.client) {
+      this.logger.error('Langfuse exporter: initTrace called without a Langfuse client - exporter is disabled', {
+        traceId: span.traceId,
+        spanId: span.id,
+      });
+      return;
+    }
     const trace = this.client.trace(this.buildTracePayload(span));
     this.traceMap.set(span.traceId, { trace, spans: new Map(), events: new Map() });
   }
@@ -239,8 +247,8 @@ export class LangfuseExporter implements AITracingExporter {
     });
   }
 
-  private buildTracePayload(span: AnyExportedAISpan): Record<string, any> {
-    const payload: Record<string, any> = {
+  private buildTracePayload(span: AnyExportedAISpan): Record<string, unknown> {
+    const payload: Record<string, unknown> = {
       id: span.traceId,
       name: span.name,
     };
@@ -266,8 +274,8 @@ export class LangfuseExporter implements AITracingExporter {
     return payload;
   }
 
-  private buildSpanPayload(span: AnyExportedAISpan, isCreate: boolean): Record<string, any> {
-    const payload: Record<string, any> = {};
+  private buildSpanPayload(span: AnyExportedAISpan, isCreate: boolean): Record<string, unknown> {
+    const payload: Record<string, unknown> = {};
 
     if (isCreate) {
       payload.id = span.id;
@@ -285,13 +293,13 @@ export class LangfuseExporter implements AITracingExporter {
       payload.endTime = span.endTime;
     }
 
-    const attributes = (span.attributes ?? {}) as Record<string, any>;
+    const attributes = (span.attributes ?? {}) as Record<string, unknown>;
 
     // Strip special fields from metadata if used in top-level keys
     const attributesToOmit: string[] = [];
 
     if (span.type === AISpanType.LLM_GENERATION) {
-      const llmAttr = attributes as LLMGenerationAttributes;
+      const llmAttr = attributes as unknown as Partial<LLMGenerationAttributes>;
 
       if (llmAttr.model !== undefined) {
         payload.model = llmAttr.model;

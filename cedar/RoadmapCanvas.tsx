@@ -1,24 +1,25 @@
 import React from 'react';
+import type {
+  Connection,
+  NodeChange,
+  Node} from 'reactflow';
 import ReactFlow, {
   addEdge,
   Background,
-  Connection,
   ConnectionLineType,
   Controls,
   MarkerType,
-  NodeChange,
   useEdgesState,
   useNodesState,
-  useOnSelectionChange,
-  Node,
+  useOnSelectionChange
 } from 'reactflow';
 import 'reactflow/dist/style.css';
 
 import { roadmapNodeTypes } from './RoadmapNode';
-import { useCedarRoadmap } from '@/app/cedar-os/hooks';
+import { useCedarRoadmap } from '../app/cedar-os/hooks';
 import { useRoadmapData } from './useRoadmapData';
 import { useCedarState } from 'cedar-os';
-import { FeatureNodeData } from '@/components/FeatureNode';
+import type { FeatureNodeData } from './FeatureNode';
 
 export function RoadmapCanvas() {
   const { nodes: initialNodes, edges: initialEdges } = useRoadmapData();

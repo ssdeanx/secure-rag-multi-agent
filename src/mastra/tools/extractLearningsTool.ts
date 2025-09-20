@@ -20,7 +20,7 @@ export const extractLearningsTool = createTool({
   }),
   execute: async ({ context, mastra, tracingContext }) => {
     const extractSpan = tracingContext?.currentSpan?.createChildSpan({
-      type: AISpanType.GENERIC,
+      type: AISpanType.TOOL_CALL,
       name: 'extract_learnings',
       input: { query: context.query, url: context.result.url, contentLength: context.result.content.length }
     });
@@ -62,7 +62,7 @@ export const extractLearningsTool = createTool({
 
       logger.info('Learning extraction response', { result: response.object });
 
-      extractSpan?.end({ output: { learningLength: response.object?.learning?.length ?? 0, questionsCount: response.object?.followUpQuestions?.length ?? 0 } });
+      extractSpan?.end({ output: { learningLength: response.object?.learning?.length ?? 0, followUpQuestionsCount: response.object?.followUpQuestions?.length ?? 0 } });
       return response.object;
     } catch (error) {
       logger.error('Error extracting learnings', {
@@ -72,7 +72,7 @@ export const extractLearningsTool = createTool({
       const errorMessage = error instanceof Error ? error.message : String(error);
       extractSpan?.end({ metadata: { error: errorMessage } });
       return {
-        learning: 'Error extracting information',
+        learning: `Error extracting information: ${errorMessage}`,
         followUpQuestions: [],
       };
     }

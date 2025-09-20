@@ -1,7 +1,14 @@
 'use client';
 
-import { Shield, Lock } from 'lucide-react';
-import { useCallback } from 'react';
+import React, { useCallback } from 'react';
+import { Lock, Shield, Eye, Crown } from 'lucide-react';
+import { Alert, AlertDescription } from '@/components/ui/alert';
+import { Badge } from '@/components/ui/badge';
+import { Progress } from '@/components/ui/progress';
+import { Avatar, AvatarFallback } from '@/components/ui/avatar';
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
+import { Separator } from '@/components/ui/separator';
+import { cn } from '@/lib/utils';
 
 interface SecurityIndicatorProps {
   role?: string;
@@ -10,16 +17,40 @@ interface SecurityIndicatorProps {
 export default function SecurityIndicator({ role }: SecurityIndicatorProps) {
   if (role === null) {
     return (
-      <div className="group flex items-center space-x-3 px-5 py-3 rounded-xl bg-muted
-                    border border-border hover:border-border/80 transition-all duration-300 hover:shadow-lg">
-        <div className="relative">
-          <Lock className="h-5 w-5 text-muted-foreground group-hover:text-foreground transition-colors duration-300" />
-          <div className="absolute -top-1 -right-1 w-2 h-2 bg-destructive rounded-full animate-pulse" />
-        </div>
-        <span className="text-sm font-medium text-muted-foreground group-hover:text-foreground transition-colors duration-300">
-          Not Authenticated
-        </span>
-      </div>
+      <TooltipProvider>
+        <Alert className={cn(
+          "group relative border-2 border-destructive/30",
+          "bg-gradient-mocha backdrop-blur-sm",
+          "hover-lift hover-glow hover-scale",
+          "transition-all duration-300 ease-spring",
+          "shadow-xl overflow-hidden"
+        )}>
+          <Lock className="h-5 w-5 text-destructive" />
+          <AlertDescription>
+            {/* Background decorative elements */}
+            <div className="absolute top-0 right-0 w-16 h-16 bg-destructive/10 rounded-full blur-xl animate-pulse" />
+            <div className="absolute bottom-0 left-0 w-12 h-12 bg-destructive/5 rounded-full blur-lg animate-pulse" />
+
+            <div className="relative flex items-center space-x-3">
+              <Avatar className="h-10 w-10 border-2 border-destructive/30">
+                <AvatarFallback className="bg-destructive/10 text-destructive font-bold">
+                  <Lock className="h-5 w-5" />
+                </AvatarFallback>
+              </Avatar>
+              <div className="flex flex-col">
+                <div className="flex items-center space-x-2">
+                  <span className="text-sm font-bold text-destructive brutalist-text">Not Authenticated</span>
+                  <Badge variant="destructive" className="text-xs">Access Required</Badge>
+                </div>
+                <span className="text-xs text-muted-foreground font-medium">Please sign in to continue</span>
+              </div>
+            </div>
+
+            {/* Bottom accent line */}
+            <div className="absolute bottom-0 left-0 h-1 bg-destructive w-0 group-hover:w-full transition-all duration-500 ease-spring" />
+          </AlertDescription>
+        </Alert>
+      </TooltipProvider>
     );
   }
 
@@ -41,136 +72,184 @@ export default function SecurityIndicator({ role }: SecurityIndicatorProps) {
         return {
           label: 'Confidential Access',
           description: 'Full system access with step-up authentication',
-          bgClass: 'from-[var(--color-security-confidential)]/15 to-[var(--color-security-confidential)]/10',
-          borderClass: 'border-[var(--color-security-confidential)]/40 hover:border-[var(--color-security-confidential)]/60',
-          textClass: 'text-[var(--color-security-confidential)]',
-          iconClass: 'text-[var(--color-security-confidential)]',
-          shadowClass: 'hover:shadow-[var(--color-security-confidential)]/20',
-          pulseClass: 'bg-[var(--color-security-confidential)]'
+          bgClass: 'bg-destructive/10 border-destructive/30',
+          textClass: 'text-destructive',
+          icon: Crown,
+          pulseClass: 'bg-destructive',
+          shadowClass: 'hover:shadow-destructive/20'
         };
       case 'internal-plus':
         return {
           label: 'Enhanced Access',
           description: 'Cross-department administrative privileges',
-          bgClass: 'from-purple-500/15 to-purple-600/10',
-          borderClass: 'border-purple-500/40 hover:border-purple-400/60',
-          textClass: 'text-purple-400',
-          iconClass: 'text-purple-400',
-          shadowClass: 'hover:shadow-purple-500/20',
-          pulseClass: 'bg-purple-500'
+          bgClass: 'bg-primary/10 border-primary/30',
+          textClass: 'text-primary',
+          icon: Shield,
+          pulseClass: 'bg-primary',
+          shadowClass: 'hover:shadow-primary/20'
         };
       case 'internal':
         return {
           label: 'Internal Access',
           description: 'Department-level document access',
-          bgClass: 'from-[var(--color-security-internal)]/15 to-[var(--color-security-internal)]/10',
-          borderClass: 'border-[var(--color-security-internal)]/40 hover:border-[var(--color-security-internal)]/60',
-          textClass: 'text-[var(--color-security-internal)]',
-          iconClass: 'text-[var(--color-security-internal)]',
-          shadowClass: 'hover:shadow-[var(--color-security-internal)]/20',
-          pulseClass: 'bg-[var(--color-security-internal)]'
+          bgClass: 'bg-accent/10 border-accent/30',
+          textClass: 'text-accent',
+          icon: Eye,
+          pulseClass: 'bg-accent',
+          shadowClass: 'hover:shadow-accent/20'
         };
       default:
         return {
           label: 'Internal Access',
           description: 'Department-level document access',
-          bgClass: 'from-[var(--color-security-internal)]/15 to-[var(--color-security-internal)]/10',
-          borderClass: 'border-[var(--color-security-internal)]/40 hover:border-[var(--color-security-internal)]/60',
-          textClass: 'text-[var(--color-security-internal)]',
-          iconClass: 'text-[var(--color-security-internal)]',
-          shadowClass: 'hover:shadow-[var(--color-security-internal)]/20',
-          pulseClass: 'bg-[var(--color-security-internal)]'
+          bgClass: 'bg-accent/10 border-accent/30',
+          textClass: 'text-accent',
+          icon: Eye,
+          pulseClass: 'bg-accent',
+          shadowClass: 'hover:shadow-accent/20'
         };
     }
   }, [level]);
 
   const config = getLevelConfig();
+  const IconComponent = config.icon;
 
   return (
-    <div className="flex flex-col sm:flex-row sm:items-center space-y-3 sm:space-y-0 sm:space-x-6">
-      {/* Enhanced Access Level Indicator */}
-      <div className="flex items-center space-x-3">
-        <span className="text-sm font-medium text-muted-foreground">Access Level:</span>
-        <div className="flex space-x-2">
-          {/* Public Level */}
-          <div className="relative group/level">
-            <div className={`h-3 w-10 rounded-full transition-all duration-500 ${
-              level === 'confidential' || level === 'internal-plus' || level === 'internal'
-                ? 'bg-[var(--color-security-public)] shadow-lg shadow-[var(--color-security-public)]/30' : 'bg-muted'
-            }`} />
-            {(level === 'confidential' || level === 'internal-plus' || level === 'internal') && (
-              <div className="absolute inset-0 bg-[var(--color-security-public)] rounded-full animate-pulse opacity-30" />
-            )}
-            <div className="absolute -bottom-6 left-1/2 transform -translate-x-1/2 opacity-0 group-hover/level:opacity-100
-                          transition-opacity duration-300 text-xs text-muted-foreground whitespace-nowrap">
-              Public
-            </div>
-          </div>
+    <TooltipProvider>
+      <div className="flex flex-col sm:flex-row sm:items-center space-y-4 sm:space-y-0 sm:space-x-6">
+        {/* Access Level Indicator */}
+        <div className="flex items-center space-x-4">
+          <span className="text-sm font-bold text-foreground brutalist-text">Access Level:</span>
+          <div className="flex space-x-2">
+            {/* Public Level */}
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <div className="relative group/level cursor-pointer">
+                  <div className={cn(
+                    "h-4 w-12 rounded-lg border-2 transition-all duration-500",
+                    level === 'confidential' || level === 'internal-plus' || level === 'internal'
+                      ? 'bg-accent border-accent/50 shadow-lg shadow-accent/30'
+                      : 'bg-muted border-muted-foreground/30'
+                  )} />
+                  {(level === 'confidential' || level === 'internal-plus' || level === 'internal') && (
+                    <div className="absolute inset-0 bg-accent rounded-lg animate-pulse opacity-30" />
+                  )}
+                  <Badge variant="outline" className="absolute -bottom-6 left-1/2 transform -translate-x-1/2 text-xs font-bold opacity-0 group-hover/level:opacity-100 transition-opacity duration-300 whitespace-nowrap">
+                    Public
+                  </Badge>
+                </div>
+              </TooltipTrigger>
+              <TooltipContent>
+                <p>Basic document access level</p>
+              </TooltipContent>
+            </Tooltip>
 
-          {/* Internal Level */}
-          <div className="relative group/level">
-            <div className={`h-3 w-10 rounded-full transition-all duration-500 ${
-              level === 'confidential' || level === 'internal-plus'
-                ? 'bg-[var(--color-security-internal)] shadow-lg shadow-[var(--color-security-internal)]/30' : 'bg-muted'
-            }`} />
-            {(level === 'confidential' || level === 'internal-plus') && (
-              <div className="absolute inset-0 bg-[var(--color-security-internal)] rounded-full animate-pulse opacity-30" />
-            )}
-            <div className="absolute -bottom-6 left-1/2 transform -translate-x-1/2 opacity-0 group-hover/level:opacity-100
-                          transition-opacity duration-300 text-xs text-muted-foreground whitespace-nowrap">
-              Internal
-            </div>
-          </div>
+            {/* Internal Level */}
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <div className="relative group/level cursor-pointer">
+                  <div className={cn(
+                    "h-4 w-12 rounded-lg border-2 transition-all duration-500",
+                    level === 'confidential' || level === 'internal-plus'
+                      ? 'bg-primary border-primary/50 shadow-lg shadow-primary/30'
+                      : 'bg-muted border-muted-foreground/30'
+                  )} />
+                  {(level === 'confidential' || level === 'internal-plus') && (
+                    <div className="absolute inset-0 bg-primary rounded-lg animate-pulse opacity-30" />
+                  )}
+                  <Badge variant="outline" className="absolute -bottom-6 left-1/2 transform -translate-x-1/2 text-xs font-bold opacity-0 group-hover/level:opacity-100 transition-opacity duration-300 whitespace-nowrap">
+                    Internal
+                  </Badge>
+                </div>
+              </TooltipTrigger>
+              <TooltipContent>
+                <p>Department-level access</p>
+              </TooltipContent>
+            </Tooltip>
 
-          {/* Confidential Level */}
-          <div className="relative group/level">
-            <div className={`h-3 w-10 rounded-full transition-all duration-500 ${
-              level === 'confidential'
-                ? 'bg-[var(--color-security-confidential)] shadow-lg shadow-[var(--color-security-confidential)]/30' : 'bg-muted'
-            }`} />
-            {level === 'confidential' && (
-              <div className="absolute inset-0 bg-[var(--color-security-confidential)] rounded-full animate-pulse opacity-30" />
-            )}
-            <div className="absolute -bottom-6 left-1/2 transform -translate-x-1/2 opacity-0 group-hover/level:opacity-100
-                          transition-opacity duration-300 text-xs text-muted-foreground whitespace-nowrap">
-              Confidential
-            </div>
+            {/* Confidential Level */}
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <div className="relative group/level cursor-pointer">
+                  <div className={cn(
+                    "h-4 w-12 rounded-lg border-2 transition-all duration-500",
+                    level === 'confidential'
+                      ? 'bg-destructive border-destructive/50 shadow-lg shadow-destructive/30'
+                      : 'bg-muted border-muted-foreground/30'
+                  )} />
+                  {level === 'confidential' && (
+                    <div className="absolute inset-0 bg-destructive rounded-lg animate-pulse opacity-30" />
+                  )}
+                  <Badge variant="outline" className="absolute -bottom-6 left-1/2 transform -translate-x-1/2 text-xs font-bold opacity-0 group-hover/level:opacity-100 transition-opacity duration-300 whitespace-nowrap">
+                    Confidential
+                  </Badge>
+                </div>
+              </TooltipTrigger>
+              <TooltipContent>
+                <p>Full system access with step-up authentication</p>
+              </TooltipContent>
+            </Tooltip>
           </div>
         </div>
+
+        <Separator orientation="vertical" className="hidden sm:block h-12" />
+
+        {/* Security Badge */}
+        <Alert className={cn(
+          "group relative border-2",
+          "bg-gradient-mocha backdrop-blur-sm",
+          config.bgClass,
+          "hover-lift hover-glow hover-scale",
+          "transition-all duration-300 ease-spring",
+          "shadow-xl overflow-hidden",
+          config.shadowClass
+        )}>
+          <IconComponent className={cn("h-5 w-5", config.textClass)} />
+          <AlertDescription>
+            {/* Animated background shimmer */}
+            <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/5 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-1000" />
+
+            <div className="relative z-10 flex items-center space-x-4">
+              <Avatar className="h-10 w-10 border-2 border-accent/30">
+                <AvatarFallback className={cn("bg-accent/10 font-bold", config.textClass)}>
+                  <IconComponent className="h-5 w-5" />
+                </AvatarFallback>
+              </Avatar>
+
+              <div className="flex flex-col">
+                <div className="flex items-center space-x-2">
+                  <span className={cn(
+                    "text-sm font-black brutalist-text text-shadow-lg",
+                    config.textClass
+                  )}>
+                    {config.label}
+                  </span>
+                  <Badge variant="secondary" className="text-xs">
+                    Active
+                  </Badge>
+                </div>
+                <span className="text-xs text-muted-foreground font-medium">
+                  {config.description}
+                </span>
+              </div>
+            </div>
+
+            {/* Role indicator */}
+            <div className="ml-auto">
+              <Badge variant="outline" className="text-xs font-mono">
+                {role}
+              </Badge>
+            </div>
+
+            {/* Bottom accent line */}
+            <div className={cn(
+              "absolute bottom-0 left-0 h-1 w-0 group-hover:w-full transition-all duration-500 ease-spring",
+              level === 'confidential' ? 'bg-destructive' :
+              level === 'internal-plus' ? 'bg-primary' : 'bg-accent'
+            )} />
+          </AlertDescription>
+        </Alert>
       </div>
-
-      {/* Enhanced Security Badge */}
-      <div className={`group relative flex items-center space-x-3 px-5 py-3 rounded-xl border transition-all duration-300
-                     bg-gradient-to-r ${config.bgClass} ${config.borderClass} ${config.shadowClass}
-                     hover:scale-105 hover:shadow-xl overflow-hidden`}>
-
-        {/* Animated background shimmer */}
-        <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/5 to-transparent -translate-x-full
-                      group-hover:translate-x-full transition-transform duration-1000" />
-
-        <div className="relative z-10 flex items-center space-x-3">
-          <div className="relative">
-            <Shield className={`h-5 w-5 ${config.iconClass} group-hover:rotate-12 transition-transform duration-300`} />
-            <div className={`absolute -top-1 -right-1 w-2 h-2 ${config.pulseClass} rounded-full animate-pulse`} />
-          </div>
-
-          <div className="flex flex-col">
-            <span className={`text-sm font-bold ${config.textClass} group-hover:text-white transition-colors duration-300`}>
-              {config.label}
-            </span>
-            <span className="text-xs text-gray-500 group-hover:text-gray-400 transition-colors duration-300">
-              {config.description}
-            </span>
-          </div>
-        </div>
-
-        {/* Role indicator */}
-        <div className="ml-auto">
-          <span className="text-xs font-mono text-muted-foreground bg-muted px-2 py-1 rounded-md">
-            {role}
-          </span>
-        </div>
-      </div>
-    </div>
+    </TooltipProvider>
   );
 }

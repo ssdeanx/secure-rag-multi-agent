@@ -6,7 +6,7 @@ import { createTool } from '@mastra/core/tools';
 import { AISpanType } from '@mastra/core/ai-tracing';
 import * as zlib from 'zlib';
 import { pipeline } from 'stream/promises';
-import { logger } from "../config/logger";
+import { log } from "../config/logger";
 
 const DATA_DIR = path.join(process.cwd(), 'docs/data');
 
@@ -34,7 +34,7 @@ export const readDataFileTool = createTool({
     outputSchema: z.string().describe("The content of the file as a string."),
     execute: async ({ context, tracingContext }) => {
         const readSpan = tracingContext?.currentSpan?.createChildSpan({
-            type: AISpanType.GENERIC,
+            type: AISpanType.TOOL_CALL,
             name: 'read_data_file',
             input: { fileName: context.fileName }
         });
@@ -48,7 +48,7 @@ export const readDataFileTool = createTool({
                 throw new Error(`Access denied: File path "${fileName}" is outside the allowed data directory.`);
             }
             const content = await fs.readFile(realFullPath, 'utf-8');
-            logger.info(`Read file: ${fileName}`);
+            log.info(`Read file: ${fileName}`);
             readSpan?.end({ output: { fileSize: content.length } });
             return content;
         } catch (error) {
@@ -69,7 +69,7 @@ export const writeDataFileTool = createTool({
     outputSchema: z.string().describe("A confirmation string indicating success."),
     execute: async ({ context, tracingContext }) => {
         const writeSpan = tracingContext?.currentSpan?.createChildSpan({
-            type: AISpanType.GENERIC,
+            type: AISpanType.TOOL_CALL,
             name: 'write_data_file',
             input: { fileName: context.fileName, contentLength: context.content.length }
         });
@@ -89,7 +89,7 @@ export const writeDataFileTool = createTool({
             }
             await fs.mkdir(realDirPath, { recursive: true });
             await fs.writeFile(realFullPath, content, 'utf-8');
-            logger.info(`Written to file: ${fileName}`);
+            log.info(`Written to file: ${fileName}`);
             writeSpan?.end({ output: { success: true } });
             return `File ${fileName} written successfully.`;
         } catch (error) {
@@ -109,7 +109,7 @@ export const deleteDataFileTool = createTool({
     outputSchema: z.string().describe("A confirmation string indicating success."),
     execute: async ({ context, tracingContext }) => {
         const deleteSpan = tracingContext?.currentSpan?.createChildSpan({
-            type: AISpanType.GENERIC,
+            type: AISpanType.TOOL_CALL,
             name: 'delete_data_file',
             input: { fileName: context.fileName }
         });
@@ -122,7 +122,7 @@ export const deleteDataFileTool = createTool({
                 throw new Error(`Access denied: File path "${fileName}" is outside the allowed data directory.`);
             }
             await fs.unlink(fullPath);
-            logger.info(`Deleted file: ${fileName}`);
+            log.info(`Deleted file: ${fileName}`);
             deleteSpan?.end({ output: { success: true } });
             return `File ${fileName} deleted successfully.`
         } catch (error) {
@@ -142,7 +142,7 @@ export const listDataDirTool = createTool({
     outputSchema: z.array(z.string()).describe("An array of file and directory names."),
     execute: async ({ context, tracingContext }) => {
         const listSpan = tracingContext?.currentSpan?.createChildSpan({
-            type: AISpanType.GENERIC,
+            type: AISpanType.TOOL_CALL,
             name: 'list_data_directory',
             input: { dirPath: context.dirPath ?? 'docs/data' }
         });
@@ -155,7 +155,7 @@ export const listDataDirTool = createTool({
                 throw new Error(`Access denied: Directory path "${dirPath}" is outside the allowed data directory.`);
             }
             const contents = await fs.readdir(fullPath);
-            logger.info(`Listed directory: ${dirPath}`);
+            log.info(`Listed directory: ${dirPath}`);
             listSpan?.end({ output: { count: contents.length } });
             return contents;
         } catch (error) {
@@ -175,7 +175,7 @@ export const copyDataFileTool = createTool({
     outputSchema: z.string().describe("A confirmation string indicating success."),
     execute: async ({ context, tracingContext }) => {
         const copySpan = tracingContext?.currentSpan?.createChildSpan({
-            type: AISpanType.GENERIC,
+            type: AISpanType.TOOL_CALL,
             name: 'copy_data_file',
             input: { sourceFile: context.sourceFile, destFile: context.destFile }
         });
@@ -191,7 +191,7 @@ export const copyDataFileTool = createTool({
             const destDir = path.dirname(destPath);
             await fs.mkdir(destDir, { recursive: true });
             await fs.copyFile(sourcePath, destPath);
-            logger.info(`Copied file: ${sourceFile} to ${destFile}`);
+            log.info(`Copied file: ${sourceFile} to ${destFile}`);
             copySpan?.end({ output: { success: true } });
             return `File ${sourceFile} copied to ${destFile} successfully.`;
         } catch (error) {
@@ -212,7 +212,7 @@ export const moveDataFileTool = createTool({
     outputSchema: z.string().describe("A confirmation string indicating success."),
     execute: async ({ context, tracingContext }) => {
         const moveSpan = tracingContext?.currentSpan?.createChildSpan({
-            type: AISpanType.GENERIC,
+            type: AISpanType.TOOL_CALL,
             name: 'move_data_file',
             input: { sourceFile: context.sourceFile, destFile: context.destFile }
         });
@@ -228,7 +228,7 @@ export const moveDataFileTool = createTool({
             const destDir = path.dirname(destPath);
             await fs.mkdir(destDir, { recursive: true });
             await fs.rename(sourcePath, destPath);
-            logger.info(`Moved file: ${sourceFile} to ${destFile}`);
+            log.info(`Moved file: ${sourceFile} to ${destFile}`);
             moveSpan?.end({ output: { success: true } });
             return `File ${sourceFile} moved to ${destFile} successfully.`;
         } catch (error) {
@@ -250,7 +250,7 @@ export const searchDataFilesTool = createTool({
     outputSchema: z.array(z.string()).describe("An array of matching file paths."),
     execute: async ({ context, tracingContext }) => {
         const searchSpan = tracingContext?.currentSpan?.createChildSpan({
-            type: AISpanType.GENERIC,
+            type: AISpanType.TOOL_CALL,
             name: 'search_data_files',
             input: { pattern: context.pattern, searchContent: context.searchContent, dirPath: context.dirPath }
         });
@@ -294,7 +294,7 @@ export const searchDataFilesTool = createTool({
             };
 
             await searchDir(searchPath);
-            logger.info(`Searched for pattern: ${pattern} in ${dirPath}`);
+            log.info(`Searched for pattern: ${pattern} in ${dirPath}`);
             searchSpan?.end({ output: { resultCount: results.length } });
             return results;
         } catch (error) {
@@ -320,7 +320,7 @@ export const getDataFileInfoTool = createTool({
     }).describe("File metadata information."),
     execute: async ({ context, tracingContext }) => {
         const infoSpan = tracingContext?.currentSpan?.createChildSpan({
-            type: AISpanType.GENERIC,
+            type: AISpanType.TOOL_CALL,
             name: 'get_data_file_info',
             input: { fileName: context.fileName }
         });
@@ -334,7 +334,7 @@ export const getDataFileInfoTool = createTool({
                 throw new Error(`Access denied: File path is outside the allowed data directory.`);
             }
             const stats = await fs.stat(realFullPath);
-            logger.info(`Got info for file: ${fileName}`);
+            log.info(`Got info for file: ${fileName}`);
             const result = {
                 size: stats.size,
                 modified: stats.mtime.toISOString(),
@@ -361,7 +361,7 @@ export const createDataDirTool = createTool({
     outputSchema: z.string().describe("A confirmation string indicating success."),
     execute: async ({ context, tracingContext }) => {
         const createDirSpan = tracingContext?.currentSpan?.createChildSpan({
-            type: AISpanType.GENERIC,
+            type: AISpanType.TOOL_CALL,
             name: 'create_data_directory',
             input: { dirPath: context.dirPath }
         });
@@ -373,7 +373,7 @@ export const createDataDirTool = createTool({
                 throw new Error(`Access denied: Directory path is outside the allowed data directory.`);
             }
             await fs.mkdir(fullPath, { recursive: true });
-            logger.info(`Created directory: ${dirPath}`);
+            log.info(`Created directory: ${dirPath}`);
             createDirSpan?.end({ output: { success: true } });
             return `Directory ${dirPath} created successfully.`;
         } catch (error) {
@@ -393,7 +393,7 @@ export const removeDataDirTool = createTool({
     outputSchema: z.string().describe("A confirmation string indicating success."),
     execute: async ({ context, tracingContext }) => {
         const removeDirSpan = tracingContext?.currentSpan?.createChildSpan({
-            type: AISpanType.GENERIC,
+            type: AISpanType.TOOL_CALL,
             name: 'remove_data_directory',
             input: { dirPath: context.dirPath }
         });
@@ -410,7 +410,7 @@ export const removeDataDirTool = createTool({
                 throw new Error(`Directory ${dirPath} is not empty.`);
             }
             await fs.rmdir(fullPath);
-            logger.info(`Removed directory: ${dirPath}`);
+            log.info(`Removed directory: ${dirPath}`);
             removeDirSpan?.end({ output: { success: true } });
             return `Directory ${dirPath} removed successfully.`;
         } catch (error) {
@@ -431,7 +431,7 @@ export const archiveDataTool = createTool({
     outputSchema: z.string().describe("A confirmation string indicating success."),
     execute: async ({ context, tracingContext }) => {
         const archiveSpan = tracingContext?.currentSpan?.createChildSpan({
-            type: AISpanType.GENERIC,
+            type: AISpanType.TOOL_CALL,
             name: 'archive_data',
             input: { sourcePath: context.sourcePath, archiveName: context.archiveName }
         });
@@ -452,7 +452,7 @@ export const archiveDataTool = createTool({
             const archiveStream = createWriteStream(archiveFullPath);
 
             await pipeline(sourceStream, gzip, archiveStream);
-            logger.info(`Archived: ${sourcePath} to ${archiveName}.gz`);
+            log.info(`Archived: ${sourcePath} to ${archiveName}.gz`);
             archiveSpan?.end({ output: { success: true } });
             return `File ${sourcePath} archived to ${archiveName}.gz successfully.`;
         } catch (error) {
@@ -473,7 +473,7 @@ export const backupDataTool = createTool({
     outputSchema: z.string().describe("A confirmation string indicating success with backup path."),
     execute: async ({ context, tracingContext }) => {
         const backupSpan = tracingContext?.currentSpan?.createChildSpan({
-            type: AISpanType.GENERIC,
+            type: AISpanType.TOOL_CALL,
             name: 'backup_data',
             input: { sourcePath: context.sourcePath, backupDir: context.backupDir ?? 'backups' }
         });
@@ -495,7 +495,7 @@ export const backupDataTool = createTool({
             await fs.mkdir(backupParentDir, { recursive: true });
             await fs.cp(sourceFullPath, backupFullPath, { recursive: true });
             const relativeBackupPath = path.relative(DATA_DIR, backupFullPath);
-            logger.info(`Backed up: ${sourcePath} to ${relativeBackupPath}`);
+            log.info(`Backed up: ${sourcePath} to ${relativeBackupPath}`);
             backupSpan?.end({ output: { backupPath: relativeBackupPath } });
             return `Backup created: ${sourcePath} → ${relativeBackupPath}`;
         } catch (error) {

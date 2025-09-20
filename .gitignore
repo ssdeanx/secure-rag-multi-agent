@@ -39,6 +39,7 @@ next-env.d.ts
 
 # Logslogs/
 .log
+*.logs
 
 # IDE
 .vscode/
@@ -79,3 +80,13 @@ CLAUDE.md
 /src/cedar/**/**/*.css
 .gemini/
 gha-creds-*.json
+
+*.specstory/
+.specstory/**/*.md
+*.specify/
+.specify/**/*.md
+*.specify
+*.specify/**/*.sh
+.codeviz/Visuals/Unnamed-CodeViz-Diagram.md
+*.codeviz/
+*.codeviz/**/*.md

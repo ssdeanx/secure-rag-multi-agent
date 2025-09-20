@@ -3,8 +3,8 @@
 import { memo, useState, useEffect, useRef } from 'react';
 import type { NodeProps } from 'reactflow';
 import { Handle, Position, useReactFlow } from 'reactflow';
-import { Badge } from '@/components/badge';
-import { Button } from '@/components/button';
+import { Badge } from './badge';
+import { Button } from './button';
 import {
   ChevronDown,
   ChevronUp,
@@ -25,18 +25,18 @@ import {
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
-} from '@/components/dropdown-menu';
+} from './dropdown-menu';
 
 // -----------------------------------------------------------------------------
 // Types
 // -----------------------------------------------------------------------------
 
-export type Comment = {
+export interface Comment {
   id: string;
   author: string;
   text: string;
   timestamp?: number;
-};
+}
 
 export type FeatureStatus = 'done' | 'planned' | 'backlog' | 'in progress';
 export type NodeType = 'feature' | 'bug' | 'improvement' | 'component' | 'utils' | 'agent helper';
@@ -338,7 +338,7 @@ function FeatureNodeComponent({ id, data, selected }: NodeProps<FeatureNodeData>
   const handleAcceptDiff = async () => {
     const nodes = getNodes();
     const node = nodes.find((n) => n.id === id);
-    if (!node || !node.data.diff) {
+    if (!node?.data.diff) {
       return;
     }
     if (node.data.diff === 'removed') {
@@ -355,7 +355,7 @@ function FeatureNodeComponent({ id, data, selected }: NodeProps<FeatureNodeData>
   const handleRejectDiff = () => {
     setNodes((nds) => {
       const node = nds.find((n) => n.id === id);
-      if (!node || !node.data.diff) {
+      if (!node?.data.diff) {
         return nds;
       }
       if (node.data.diff === 'added') {
@@ -470,7 +470,7 @@ function FeatureNodeComponent({ id, data, selected }: NodeProps<FeatureNodeData>
                   onDoubleClick={() => setEditingTitle(true)}
                   tabIndex={0}
                   onKeyDown={(e) => {
-                    if (e.key === 'Enter') setEditingTitle(true);
+                    if (e.key === 'Enter') {setEditingTitle(true);}
                   }}
                   aria-label="Edit title"
                 >
@@ -587,7 +587,7 @@ function FeatureNodeComponent({ id, data, selected }: NodeProps<FeatureNodeData>
               onDoubleClick={() => setEditingDescription(true)}
               tabIndex={0}
               onKeyDown={(e) => {
-                if (e.key === 'Enter') setEditingDescription(true);
+                if (e.key === 'Enter') {setEditingDescription(true);}
               }}
               aria-label="Edit description"
             >

@@ -571,7 +571,10 @@ export const CommandBar: React.FC<CommandBarProps> = ({
 					}}>
 					<div className='flex w-full flex-col gap-2 px-3 py-2'>
 						<div className='flex w-full items-center justify-between'>
-							<ContextBadgeRow editor={editor} />
+							{/* Context badges (passes editor) */}
+							{/* TODO: casting to `any` due to duplicate @tiptap types in the dependency tree.
+							   Long-term fix: hoist/deduplicate @tiptap packages so types are consistent. */}
+							<ContextBadgeRow editor={editor as any} />
 							{/* Caret button to show/hide latest message */}
 							{latestMessage && (
 								<motion.button
@@ -613,8 +616,10 @@ export const CommandBar: React.FC<CommandBarProps> = ({
 								layoutId='chatInput'
 								className='flex-1 justify-center'
 								aria-label='Message input'>
+								{/* Casting to any to bypass type mismatch between @tiptap instances.
+									See TODO above for proper dependency fix. */}
 								<EditorContent
-									editor={editor}
+									editor={editor as any}
 									className='prose prose-sm max-w-none focus:outline-none outline-none focus:ring-0 ring-0 [&_*]:focus:outline-none [&_*]:outline-none [&_*]:focus:ring-0 [&_*]:ring-0 placeholder-gray-500 dark:placeholder-gray-400 [&_.ProseMirror]:p-0 [&_.ProseMirror]:outline-none'
 								/>
 							</motion.div>

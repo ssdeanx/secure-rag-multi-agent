@@ -1,0 +1,584 @@
+import { Badge } from '@/components/ui/badge'
+import { Button } from '@/components/ui/button'
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
+import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
+import { Mermaid } from '@/components/Mermaid'
+import {
+  CheckCircle,
+  AlertTriangle,
+  Play,
+  Download,
+  Settings,
+  Database,
+  Terminal,
+  FileText,
+  Shield,
+  ArrowRight,
+  Copy,
+  ExternalLink
+} from 'lucide-react'
+
+# Quick Start Guide
+
+This guide provides step-by-step instructions to set up and run the Mastra Governed RAG application locally.
+
+<Alert className="mb-6">
+  <Play className="h-4 w-4" />
+  <AlertTitle>Get Started in 5 Minutes</AlertTitle>
+  <AlertDescription>
+    Follow this guide to have a fully functional governed RAG system running locally with sample documents and role-based access control.
+  </AlertDescription>
+</Alert>
+
+<!-- toc -->
+
+## Prerequisites
+
+<div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
+  <Card>
+    <CardHeader className="pb-3">
+      <CardTitle className="text-lg flex items-center">
+        <CheckCircle className="h-5 w-5 mr-2 text-green-500" />
+        Required
+      </CardTitle>
+    </CardHeader>
+    <CardContent className="space-y-3">
+      <div className="flex items-center">
+        <Badge variant="secondary" className="mr-2">Node.js</Badge>
+        <span className="text-sm">≥20.9.0</span>
+      </div>
+      <div className="flex items-center">
+        <Badge variant="secondary" className="mr-2">Docker</Badge>
+        <span className="text-sm">Docker Compose</span>
+      </div>
+      <div className="flex items-center">
+        <Badge variant="secondary" className="mr-2">Git</Badge>
+        <span className="text-sm">Version control</span>
+      </div>
+      <div className="flex items-center">
+        <Badge variant="secondary" className="mr-2">OpenAI</Badge>
+        <span className="text-sm">API key required</span>
+      </div>
+    </CardContent>
+  </Card>
+
+  <Card>
+    <CardHeader className="pb-3">
+      <CardTitle className="text-lg flex items-center">
+        <Database className="h-5 w-5 mr-2 text-blue-500" />
+        Optional
+      </CardTitle>
+    </CardHeader>
+    <CardContent className="space-y-3">
+      <div className="flex items-center">
+        <Badge variant="outline" className="mr-2">Qdrant</Badge>
+        <span className="text-sm">Cloud or local</span>
+      </div>
+      <div className="flex items-center">
+        <Badge variant="outline" className="mr-2">LibSQL</Badge>
+        <span className="text-sm">Database service</span>
+      </div>
+    </CardContent>
+  </Card>
+</div>
+
+## Setup Flow Overview
+
+<Mermaid chart={`graph TD
+    A[Clone Repository] --> B[Install Dependencies]
+    B --> C[Configure Environment]
+    C --> D[Start Services]
+    D --> E[Index Documents]
+    E --> F[Launch Application]
+
+    A --> A1[git clone]
+    B --> B1[npm install]
+    C --> C1[cp .env.example .env]
+    C --> C2[Add OpenAI API key]
+    D --> D1[docker-compose up]
+    D --> D2[npm run dev]
+    E --> E1[npm run cli index]
+    F --> F1[Open localhost:3000]
+
+    classDef step fill:#e3f2fd,stroke:#1976d2,stroke-width:2px
+    classDef action fill:#f3e5f5,stroke:#7b1fa2,stroke-width:2px
+
+    class A,B,C,D,E,F step
+    class A1,B1,C1,C2,D1,D2,E1,F1 action
+`} />
+
+<div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
+  <Card>
+    <CardHeader>
+      <CardTitle className="flex items-center gap-2">
+        <Terminal className="h-5 w-5 text-green-600" />
+        Command Line
+      </CardTitle>
+    </CardHeader>
+    <CardContent>
+      <CardDescription>
+        All setup steps are executed via terminal commands with clear, copy-paste instructions.
+      </CardDescription>
+    </CardContent>
+  </Card>
+
+  <Card>
+    <CardHeader>
+      <CardTitle className="flex items-center gap-2">
+        <Settings className="h-5 w-5 text-blue-600" />
+        Configuration
+      </CardTitle>
+    </CardHeader>
+    <CardContent>
+      <CardDescription>
+        Minimal configuration required - just copy the example environment file and add your API key.
+      </CardDescription>
+    </CardContent>
+  </Card>
+
+  <Card>
+    <CardHeader>
+      <CardTitle className="flex items-center gap-2">
+        <Shield className="h-5 w-5 text-purple-600" />
+        Ready to Use
+      </CardTitle>
+    </CardHeader>
+    <CardContent>
+      <CardDescription>
+        Includes sample documents and pre-configured roles for immediate testing and exploration.
+      </CardDescription>
+    </CardContent>
+  </Card>
+</div>
+
+## Installation Steps
+
+<Tabs defaultValue="clone" className="mb-8">
+  <TabsList className="grid w-full grid-cols-6">
+    <TabsTrigger value="clone">1. Clone</TabsTrigger>
+    <TabsTrigger value="install">2. Install</TabsTrigger>
+    <TabsTrigger value="env">3. Configure</TabsTrigger>
+    <TabsTrigger value="services">4. Services</TabsTrigger>
+    <TabsTrigger value="index">5. Index</TabsTrigger>
+    <TabsTrigger value="run">6. Run</TabsTrigger>
+  </TabsList>
+
+  <TabsContent value="clone">
+    <Card>
+      <CardHeader>
+        <CardTitle>Clone the Repository</CardTitle>
+        <CardDescription>Get the source code from GitHub</CardDescription>
+      </CardHeader>
+      <CardContent>
+        <div className="bg-muted p-4 rounded-lg mb-4">
+          <pre className="text-sm overflow-x-auto">
+            <code>{`git clone https://github.com/ssdeanx/governed-rag-ai.git
+cd mastra-governed-rag`}</code>
+          </pre>
+        </div>
+        <div className="flex items-center text-sm text-muted-foreground">
+          <CheckCircle className="h-4 w-4 mr-2 text-green-500" />
+          Repository cloned successfully
+        </div>
+      </CardContent>
+    </Card>
+  </TabsContent>
+
+  <TabsContent value="install">
+    <Card>
+      <CardHeader>
+        <CardTitle>Install Dependencies</CardTitle>
+        <CardDescription>Install all required Node.js packages</CardDescription>
+      </CardHeader>
+      <CardContent>
+        <div className="bg-muted p-4 rounded-lg mb-4">
+          <pre className="text-sm overflow-x-auto">
+            <code>npm install</code>
+          </pre>
+        </div>
+        <Alert>
+          <AlertTriangle className="h-4 w-4" />
+          <AlertDescription>
+            This may take a few minutes to download and install all dependencies including Mastra, Next.js, and vector database clients.
+          </AlertDescription>
+        </Alert>
+      </CardContent>
+    </Card>
+  </TabsContent>
+
+  <TabsContent value="env">
+    <Card>
+      <CardHeader>
+        <CardTitle>Configure Environment</CardTitle>
+        <CardDescription>Set up your environment variables</CardDescription>
+      </CardHeader>
+      <CardContent>
+        <div className="space-y-4">
+          <div className="bg-muted p-4 rounded-lg">
+            <pre className="text-sm overflow-x-auto">
+              <code>{`cp .env.example .env
+# Edit .env with your values`}</code>
+            </pre>
+          </div>
+
+          <div className="space-y-3">
+            <h4 className="font-semibold">Required Variables:</h4>
+            <div className="space-y-2 text-sm">
+              <div className="flex justify-between">
+                <code className="bg-muted px-2 py-1 rounded">OPENAI_API_KEY</code>
+                <span className="text-muted-foreground">Your OpenAI API key</span>
+              </div>
+              <div className="flex justify-between">
+                <code className="bg-muted px-2 py-1 rounded">QDRANT_URL</code>
+                <span className="text-muted-foreground">http://localhost:6333</span>
+              </div>
+              <div className="flex justify-between">
+                <code className="bg-muted px-2 py-1 rounded">TENANT</code>
+                <span className="text-muted-foreground">acme (default tenant)</span>
+              </div>
+              <div className="flex justify-between">
+                <code className="bg-muted px-2 py-1 rounded">JWT_SECRET</code>
+                <span className="text-muted-foreground">Strong random string</span>
+              </div>
+            </div>
+          </div>
+
+          <Alert>
+            <Shield className="h-4 w-4" />
+            <AlertDescription>
+              The JWT_SECRET should be a cryptographically secure random string. You can generate one using: <code>openssl rand -base64 32</code>
+            </AlertDescription>
+          </Alert>
+        </div>
+      </CardContent>
+    </Card>
+  </TabsContent>
+
+  <TabsContent value="services">
+    <Card>
+      <CardHeader>
+        <CardTitle>Start Backend Services</CardTitle>
+        <CardDescription>Launch Qdrant and database services</CardDescription>
+      </CardHeader>
+      <CardContent>
+        <div className="space-y-4">
+          <div className="bg-muted p-4 rounded-lg">
+            <pre className="text-sm overflow-x-auto">
+              <code>docker-compose up -d</code>
+            </pre>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <Card>
+              <CardHeader className="pb-3">
+                <CardTitle className="text-sm">Qdrant Vector Store</CardTitle>
+              </CardHeader>
+              <CardContent>
+                <div className="text-sm space-y-1">
+                  <div>Port: <code className="bg-muted px-1 rounded">6333</code></div>
+                  <div>Health: <code className="bg-muted px-1 rounded">curl http://localhost:6333</code></div>
+                </div>
+              </CardContent>
+            </Card>
+
+            <Card>
+              <CardHeader className="pb-3">
+                <CardTitle className="text-sm">LibSQL Database</CardTitle>
+              </CardHeader>
+              <CardContent>
+                <div className="text-sm space-y-1">
+                  <div>Port: <code className="bg-muted px-1 rounded">8000</code></div>
+                  <div>Type: SQLite-compatible</div>
+                </div>
+              </CardContent>
+            </Card>
+          </div>
+
+          <Alert>
+            <AlertTriangle className="h-4 w-4" />
+            <AlertDescription>
+              Wait 30 seconds after starting services for full initialization before proceeding.
+            </AlertDescription>
+          </Alert>
+        </div>
+      </CardContent>
+    </Card>
+  </TabsContent>
+
+  <TabsContent value="index">
+    <Card>
+      <CardHeader>
+        <CardTitle>Index Sample Documents</CardTitle>
+        <CardDescription>Load and index the sample corpus</CardDescription>
+      </CardHeader>
+      <CardContent>
+        <div className="space-y-4">
+          <div className="bg-muted p-4 rounded-lg">
+            <pre className="text-sm overflow-x-auto">
+              <code>{`npm run build-cli
+npm run cli index`}</code>
+            </pre>
+          </div>
+
+          <div className="space-y-3">
+            <h4 className="font-semibold">Expected Output:</h4>
+            <div className="bg-muted p-3 rounded text-sm font-mono">
+              <div className="text-green-600">✅ finance-policy-001: 15 chunks indexed</div>
+              <div className="text-green-600">✅ engineering-handbook-001: 23 chunks indexed</div>
+              <div className="text-green-600">✅ hr-conf-001: 8 chunks indexed</div>
+            </div>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
+            <Card>
+              <CardHeader className="pb-2">
+                <CardTitle className="text-sm">Finance Policy</CardTitle>
+              </CardHeader>
+              <CardContent className="pt-0">
+                <Badge variant="secondary" className="text-xs">Internal</Badge>
+                <p className="text-xs text-muted-foreground mt-1">Finance roles only</p>
+              </CardContent>
+            </Card>
+
+            <Card>
+              <CardHeader className="pb-2">
+                <CardTitle className="text-sm">Engineering Handbook</CardTitle>
+              </CardHeader>
+              <CardContent className="pt-0">
+                <Badge variant="secondary" className="text-xs">Internal</Badge>
+                <p className="text-xs text-muted-foreground mt-1">Engineering roles</p>
+              </CardContent>
+            </Card>
+
+            <Card>
+              <CardHeader className="pb-2">
+                <CardTitle className="text-sm">HR Confidential</CardTitle>
+              </CardHeader>
+              <CardContent className="pt-0">
+                <Badge variant="destructive" className="text-xs">Confidential</Badge>
+                <p className="text-xs text-muted-foreground mt-1">HR Admin only</p>
+              </CardContent>
+            </Card>
+          </div>
+        </div>
+      </CardContent>
+    </Card>
+  </TabsContent>
+
+  <TabsContent value="run">
+    <Card>
+      <CardHeader>
+        <CardTitle>Run Development Server</CardTitle>
+        <CardDescription>Start the application and Mastra services</CardDescription>
+      </CardHeader>
+      <CardContent>
+        <div className="space-y-4">
+          <div className="bg-muted p-4 rounded-lg">
+            <pre className="text-sm overflow-x-auto">
+              <code>npm run dev</code>
+            </pre>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <Card>
+              <CardHeader className="pb-3">
+                <CardTitle className="text-sm flex items-center">
+                  <Settings className="h-4 w-4 mr-2" />
+                  Next.js App
+                </CardTitle>
+              </CardHeader>
+              <CardContent>
+                <div className="text-sm">
+                  <div>URL: <a href="http://localhost:3000" className="text-primary hover:underline">http://localhost:3000</a></div>
+                  <div>Port: <code className="bg-muted px-1 rounded">3000</code></div>
+                </div>
+              </CardContent>
+            </Card>
+
+            <Card>
+              <CardHeader className="pb-3">
+                <CardTitle className="text-sm flex items-center">
+                  <Shield className="h-4 w-4 mr-2" />
+                  Mastra Dev Server
+                </CardTitle>
+              </CardHeader>
+              <CardContent>
+                <div className="text-sm">
+                  <div>Watches: <code className="bg-muted px-1 rounded">src/mastra/</code></div>
+                  <div>Auto-reloads on changes</div>
+                </div>
+              </CardContent>
+            </Card>
+          </div>
+
+          <Alert>
+            <CheckCircle className="h-4 w-4" />
+            <AlertDescription>
+              The application will open with a chat interface. Use the authentication panel to generate JWT tokens for different roles.
+            </AlertDescription>
+          </Alert>
+        </div>
+      </CardContent>
+    </Card>
+  </TabsContent>
+</Tabs>
+
+## Testing Your Setup
+
+<div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+  <Card>
+    <CardHeader>
+      <CardTitle className="flex items-center">
+        <Shield className="h-5 w-5 mr-2" />
+        Authentication Test
+      </CardTitle>
+      <CardDescription>Generate and test JWT tokens</CardDescription>
+    </CardHeader>
+    <CardContent>
+      <div className="space-y-3">
+        <div className="text-sm">
+          <strong>1. Generate JWT:</strong> Use the auth panel or scripts/make-jwt.js
+        </div>
+        <div className="text-sm">
+          <strong>2. Select Role:</strong> Try <code className="bg-muted px-1 rounded">finance.viewer</code>
+        </div>
+        <div className="text-sm">
+          <strong>3. Test Query:</strong> "What is the expense reimbursement policy?"
+        </div>
+      </div>
+    </CardContent>
+  </Card>
+
+  <Card>
+    <CardHeader>
+      <CardTitle className="flex items-center">
+        <FileText className="h-5 w-5 mr-2" />
+        Access Control Test
+      </CardTitle>
+      <CardDescription>Verify role-based document access</CardDescription>
+    </CardHeader>
+    <CardContent>
+      <div className="space-y-3">
+        <div className="text-sm">
+          <strong>As Employee:</strong> HR queries should return "No authorized documents"
+        </div>
+        <div className="text-sm">
+          <strong>As HR Admin:</strong> Full access to confidential HR documents
+        </div>
+        <div className="text-sm">
+          <strong>As Finance:</strong> Access to finance policies and general documents
+        </div>
+      </div>
+    </CardContent>
+  </Card>
+</div>
+
+## Troubleshooting
+
+<div className="space-y-4 mb-8">
+  <Card>
+    <CardHeader>
+      <CardTitle className="text-lg">Common Issues</CardTitle>
+    </CardHeader>
+    <CardContent>
+      <div className="space-y-4">
+        <div className="flex items-start space-x-3">
+          <AlertTriangle className="h-5 w-5 text-yellow-500 mt-0.5" />
+          <div>
+            <h4 className="font-semibold">Docker Services Fail</h4>
+            <p className="text-sm text-muted-foreground">Check <code>docker-compose logs</code>. Ensure ports 6333 (Qdrant) and 8000 (LibSQL) are free.</p>
+          </div>
+        </div>
+
+        <div className="flex items-start space-x-3">
+          <AlertTriangle className="h-5 w-5 text-yellow-500 mt-0.5" />
+          <div>
+            <h4 className="font-semibold">Indexing Errors</h4>
+            <p className="text-sm text-muted-foreground">Verify QDRANT_URL in .env. Check logs/mastra.log for detailed errors.</p>
+          </div>
+        </div>
+
+        <div className="flex items-start space-x-3">
+          <AlertTriangle className="h-5 w-5 text-yellow-500 mt-0.5" />
+          <div>
+            <h4 className="font-semibold">No Results in Queries</h4>
+            <p className="text-sm text-muted-foreground">Ensure indexing completed successfully. Re-run <code>npm run cli index</code> if needed.</p>
+          </div>
+        </div>
+
+        <div className="flex items-start space-x-3">
+          <AlertTriangle className="h-5 w-5 text-yellow-500 mt-0.5" />
+          <div>
+            <h4 className="font-semibold">Authentication Fails</h4>
+            <p className="text-sm text-muted-foreground">Validate JWT contains correct role from src/mastra/config/role-hierarchy.ts.</p>
+          </div>
+        </div>
+
+        <div className="flex items-start space-x-3">
+          <AlertTriangle className="h-5 w-5 text-yellow-500 mt-0.5" />
+          <div>
+            <h4 className="font-semibold">Dev Server Issues</h4>
+            <p className="text-sm text-muted-foreground">Run <code>npm run mastra-dev</code> separately if concurrently fails.</p>
+          </div>
+        </div>
+      </div>
+    </CardContent>
+  </Card>
+</div>
+
+## Next Steps
+
+<div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
+  <Card>
+    <CardHeader>
+      <CardTitle className="text-lg">Customize Content</CardTitle>
+      <CardDescription>Add your own documents</CardDescription>
+    </CardHeader>
+    <CardContent>
+      <p className="text-sm text-muted-foreground">
+        Replace sample documents in <code>./corpus/</code> with your organization's knowledge base.
+      </p>
+    </CardContent>
+  </Card>
+
+  <Card>
+    <CardHeader>
+      <CardTitle className="text-lg">Extend Roles</CardTitle>
+      <CardDescription>Configure access control</CardDescription>
+    </CardHeader>
+    <CardContent>
+      <p className="text-sm text-muted-foreground">
+        Modify <code>src/mastra/config/role-hierarchy.ts</code> to match your organization's structure.
+      </p>
+    </CardContent>
+  </Card>
+
+  <Card>
+    <CardHeader>
+      <CardTitle className="text-lg">Deploy to Production</CardTitle>
+      <CardDescription>Scale your application</CardDescription>
+    </CardHeader>
+    <CardContent>
+      <p className="text-sm text-muted-foreground">
+        See deployment guides in the README for production deployment options.
+      </p>
+    </CardContent>
+  </Card>
+</div>
+
+<div className="flex gap-4">
+  <Button asChild>
+    <a href="/docs/security">
+      <Shield className="h-4 w-4 mr-2" />
+      Security Guide
+      <ArrowRight className="h-4 w-4 ml-2" />
+    </a>
+  </Button>
+  <Button variant="outline" asChild>
+    <a href="/docs/api-reference">
+      <FileText className="h-4 w-4 mr-2" />
+      API Reference
+    </a>
+  </Button>
+</div>

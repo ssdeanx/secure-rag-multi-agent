@@ -1,4 +1,4 @@
-import { logger, logProgress } from '../config/logger';
+import { log, logProgress } from '../config/logger';
 
 const MAX_MAX_RETRIES = 3;
 export interface VectorMetadata {
@@ -66,7 +66,7 @@ export class VectorStorageService {
       throw new Error(`Chunks and embeddings length mismatch: ${chunks.length} vs ${embeddings.length}`);
     }
 
-    logger.info(`Storing ${embeddings.length} vectors in batches of ${batchSize}`);
+    log.info(`Storing ${embeddings.length} vectors in batches of ${batchSize}`);
 
     // Create metadata for all vectors
     const metadata = this.createMetadata(chunks, docId, securityTags, versionId, timestamp);
@@ -83,7 +83,7 @@ export class VectorStorageService {
       try {
         await this.storeSingleBatch(batches[i], vectorStore, indexName, opts);
         successfulBatches++;
-        logger.info(`Successfully stored batch ${i + 1} of ${batches.length}`);
+        log.info(`Successfully stored batch ${i + 1} of ${batches.length}`);
         // Small delay between batches to prevent overwhelming the vector store
         if (i < batches.length - 1) {
           await new Promise((resolve) => setTimeout(resolve, 100));
@@ -91,7 +91,7 @@ export class VectorStorageService {
 
       } catch (error) {
         const errorMsg = `Failed to store batch ${i + 1}: ${error instanceof Error ? error.message : String(error)}`;
-        logger.error(errorMsg);
+        log.error(errorMsg);
         errors.push(errorMsg);
       }
     }
@@ -120,13 +120,13 @@ export class VectorStorageService {
     timestamp: string,
     vectorStore: unknown
   ): Promise<StorageResult> {
-    logger.info(`Storing ${embeddings.length} vectors as single batch`);
+    log.info(`Storing ${embeddings.length} vectors as single batch`);
 
     try {
       const ids = chunks.map((_: unknown, i: number) => this.generateVectorId(docId, i));
       const metadata = this.createMetadata(chunks, docId, securityTags, versionId, timestamp);
 
-      logger.info(`Upserting ${embeddings.length} vectors for ${docId}`);
+      log.info(`Upserting ${embeddings.length} vectors for ${docId}`);
 
       // Store vectors in vector database
       const result = await (vectorStore as any).upsert({
@@ -135,7 +135,7 @@ export class VectorStorageService {
         metadata
       });
 
-      logger.info(`Successfully stored ${embeddings.length} chunks for document ${docId}`);
+      log.info(`Successfully stored ${embeddings.length} chunks for document ${docId}`);
 
       return {
         success: true,
@@ -146,7 +146,7 @@ export class VectorStorageService {
 
     } catch (error) {
       const errorMsg = `Failed to store vectors: ${error instanceof Error ? error.message : String(error)}`;
-      logger.error(errorMsg);
+      log.error(errorMsg);
 
       return {
         totalVectors: 0,
@@ -191,7 +191,7 @@ export class VectorStorageService {
     indexName: string,
     options: StorageOptions = {}
   ): Promise<void> {
-    logger.info(`Processing batch ${batch.batchIndex}: ${batch.vectors.length} vectors`);
+    log.info(`Processing batch ${batch.batchIndex}: ${batch.vectors.length} vectors`);
     const { maxRetries, retryDelay } = { ...this.defaultOptions, ...options };
     let lastError: Error | null = null;
 
@@ -209,7 +209,7 @@ export class VectorStorageService {
         lastError = error instanceof Error ? error : new Error(String(error));
 
         if (attempt < maxRetries) {
-          logger.warn(`Batch ${batch.batchIndex} attempt ${attempt} failed, retrying in ${retryDelay}ms: ${lastError.message}`);
+          log.warn(`Batch ${batch.batchIndex} attempt ${attempt} failed, retrying in ${retryDelay}ms: ${lastError.message}`);
           await new Promise((resolve) => setTimeout(resolve, retryDelay));
         }
       }
@@ -239,7 +239,7 @@ export class VectorStorageService {
   ): Promise<{ deleted: number; success: boolean; error?: string }> {
     // Mastra QdrantVector doesn't support vector deletion by ID
     // Upsert will handle overwriting existing vectors with same metadata
-    logger.info(`🗑️ Skipping vector deletion for ${docId} (not supported by Mastra QdrantVector)`);
+    log.info(`🗑️ Skipping vector deletion for ${docId} (not supported by Mastra QdrantVector)`);
     return { deleted: 0, success: true };
   }
 

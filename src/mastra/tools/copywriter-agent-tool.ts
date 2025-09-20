@@ -1,8 +1,8 @@
 import { createTool } from "@mastra/core/tools";
 import { z } from "zod";
-import { logger } from "../config/logger";
+import { log } from "../config/logger";
 
-logger.info('Initializing Copywriter Agent Tool...');
+log.info('Initializing Copywriter Agent Tool...');
 
 export const copywriterTool = createTool({
   id: "copywriter-agent",

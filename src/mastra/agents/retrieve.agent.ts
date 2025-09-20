@@ -6,9 +6,9 @@ import { documentContextSchema } from "../schemas/agent-schemas";
 import { vectorQueryTool } from "../tools/vector-query.tool";
 import { createResearchMemory } from '../config/libsql-storage';
 import { google } from "@ai-sdk/google";
-import { logger } from "../config/logger";
+import { log } from "../config/logger";
 
-logger.info('Initializing Retrieve Agent...');
+log.info('Initializing Retrieve Agent...');
 
 const memory = createResearchMemory();
 export const retrieveAgent = new Agent({

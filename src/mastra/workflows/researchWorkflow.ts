@@ -1,6 +1,6 @@
 import { createWorkflow, createStep } from '@mastra/core/workflows';
 import { z } from 'zod';
-import { logger } from "../config/logger";
+import { log } from "../config/logger";
 
 // Step 1: Get user query
 const getUserQueryStep = createStep({
@@ -99,7 +99,7 @@ const researchStep = createStep({
       };
     } catch (error: unknown) {
       const err = error instanceof Error ? error : new Error(String(error));
-      logger.error('Error in researchStep', { error: err.message, stack: err.stack });
+      log.error('Error in researchStep', { error: err.message, stack: err.stack });
       return {
         researchData: { error: err.message },
         summary: `Error: ${err.message}`,

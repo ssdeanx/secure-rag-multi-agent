@@ -2,9 +2,9 @@ import { createTool } from "@mastra/core/tools";
 import { z } from "zod";
 
 import { AuthenticationService } from "../services/AuthenticationService";
-import { logger } from "../config/logger";
+import { log } from "../config/logger";
 
-logger.info
+log.info('jwtAuthTool initialized');
 export const jwtAuthTool = createTool({
   id: "jwt-auth",
   description: "Verify JWT and return claims (roles, tenant, stepUp)",
@@ -21,9 +21,8 @@ export const jwtAuthTool = createTool({
     try {
       return await AuthenticationService.verifyJWT(context.jwt);
     } catch (error) {
-      if (error instanceof Error) {
-        throw new Error(`JWT verification failed: ${error.message}`);
-      }
+      const errorMessage = error instanceof Error ? error.message : String(error);
+      log.error(`JWT verification failed: ${errorMessage}`);
       throw new Error("JWT verification failed: Unknown error");
     }
   },

@@ -1,6 +1,7 @@
 'use client';
 
-import { User, LogOut, Settings, Shield } from 'lucide-react';
+import React from 'react';
+import { User, LogOut, Settings, Shield, Crown, Eye, Activity } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import {
   DropdownMenu,
@@ -9,6 +10,14 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
+import { Alert, AlertDescription } from '@/components/ui/alert';
+import { Badge } from '@/components/ui/badge';
+import { Avatar, AvatarFallback } from '@/components/ui/avatar';
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
+import { Separator } from '@/components/ui/separator';
+import { Progress } from '@/components/ui/progress';
+import { GovernedRAGLogo } from './GovernedRAGLogo';
+import { cn } from '@/lib/utils';
 
 interface UserMenuProps {
   currentRole?: string;
@@ -22,12 +31,12 @@ export function UserMenu({ currentRole, onSignOut }: UserMenuProps) {
 
   const getRoleIcon = (role: string) => {
     if (role.includes('admin')) {
-      return <Shield className="h-4 w-4 text-[var(--color-security-confidential)]" />;
+      return <Crown className="h-5 w-5 text-accent animate-pulse" />;
     }
     if (role.includes('viewer')) {
-      return <Shield className="h-4 w-4 text-[var(--color-security-internal)]" />;
+      return <Eye className="h-5 w-5 text-primary" />;
     }
-    return <User className="h-4 w-4 text-[var(--color-security-public)]" />;
+    return <Shield className="h-5 w-5 text-accent" />;
   };
 
   const getRoleLabel = (role: string) => {
@@ -36,50 +45,192 @@ export function UserMenu({ currentRole, onSignOut }: UserMenuProps) {
     ).join(' ');
   };
 
+  const getRoleColor = (role: string) => {
+    if (role.includes('admin')) {
+      return 'text-accent';
+    }
+    if (role.includes('viewer')) {
+      return 'text-primary';
+    }
+    return 'text-accent';
+  };
+
+  const getRoleProgress = (role: string) => {
+    if (role.includes('admin')) {
+      return 100;
+    }
+    if (role.includes('viewer')) {
+      return 25;
+    }
+    return 75; // standard user
+  };
+
+  const getRoleStatus = (role: string) => {
+    if (role.includes('admin')) {
+      return 'Full Access';
+    }
+    if (role.includes('viewer')) {
+      return 'Read Only';
+    }
+    return 'Standard Access';
+  };
+
   return (
-    <DropdownMenu>
+    <TooltipProvider>
+      <div className="space-y-3">
+        {/* User Status Alert */}
+        <Alert className="border-2 border-primary/20 bg-gradient-mocha/50 backdrop-blur-sm">
+          <Activity className="h-4 w-4" />
+          <AlertDescription className="flex items-center justify-between">
+            <div className="flex items-center space-x-2">
+              <Avatar className="h-6 w-6">
+                <AvatarFallback className="bg-accent text-accent-foreground text-xs">
+                  {currentRole.charAt(0).toUpperCase()}
+                </AvatarFallback>
+              </Avatar>
+              <span className="font-medium">Access Level:</span>
+            </div>
+            <Badge variant="secondary" className="bg-accent/20 text-accent">
+              {getRoleStatus(currentRole)}
+            </Badge>
+          </AlertDescription>
+        </Alert>
+
+        <Separator className="bg-primary/20" />
+
+        <DropdownMenu>
       <DropdownMenuTrigger asChild>
         <Button
           variant="outline"
           size="sm"
-          className="interactive-element h-10 px-3 gap-2"
+          className={cn(
+            "group relative h-12 px-4 gap-3",
+            "border-2 border-primary/30 hover:border-accent/50",
+            "bg-gradient-mocha backdrop-blur-sm",
+            "hover-lift hover-glow hover-scale",
+            "transition-all duration-300 ease-spring",
+            "btn-brutalist shadow-lg",
+            "focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2"
+          )}
           aria-label="User menu"
         >
-          {getRoleIcon(currentRole)}
-          <span className="hidden sm:inline-block text-xs font-medium">
-            {getRoleLabel(currentRole)}
-          </span>
+          <div className="flex items-center space-x-2">
+            <div className="p-1 rounded-md bg-accent/10 group-hover:bg-accent/20 transition-colors duration-300">
+              {getRoleIcon(currentRole)}
+            </div>
+            <span className={cn(
+              "hidden sm:inline-block text-sm font-bold uppercase tracking-wider",
+              getRoleColor(currentRole),
+              "text-shadow-sm"
+            )}>
+              {getRoleLabel(currentRole)}
+            </span>
+          </div>
+          <div className="absolute -bottom-1 left-1/2 transform -translate-x-1/2 w-2 h-2 bg-accent rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
         </Button>
       </DropdownMenuTrigger>
 
-      <DropdownMenuContent sideOffset={4} align="end" className="min-w-[12rem]">
-        <div className="px-2 py-1.5 text-sm font-semibold">
-          <div className="flex-center space-x-2">
-            {getRoleIcon(currentRole)}
-            <span>{getRoleLabel(currentRole)}</span>
-          </div>
-          <div className="text-xs text-muted-foreground mt-1">
-            Authenticated User
+      <DropdownMenuContent
+        sideOffset={8}
+        align="end"
+        className={cn(
+          "min-w-[16rem] p-0",
+          "border-4 border-primary/20",
+          "bg-gradient-mocha backdrop-blur-xl",
+          "shadow-2xl"
+        )}
+      >
+        {/* Header Section */}
+        <div className="px-6 py-4 border-b-2 border-primary/20 bg-accent/5">
+          <div className="flex items-center space-x-3">
+            <div className="p-2 rounded-lg bg-accent/10 border border-accent/20">
+              {getRoleIcon(currentRole)}
+            </div>
+            <div className="flex flex-col flex-1">
+              <span className={cn(
+                "text-sm font-black brutalist-text",
+                getRoleColor(currentRole),
+                "text-shadow-lg"
+              )}>
+                {getRoleLabel(currentRole)}
+              </span>
+              <span className="text-xs text-muted-foreground font-medium">
+                Authenticated User
+              </span>
+              <div className="mt-2 space-y-1">
+                <div className="flex justify-between text-xs">
+                  <span>Access Level</span>
+                  <span>{getRoleProgress(currentRole)}%</span>
+                </div>
+                <Progress value={getRoleProgress(currentRole)} className="h-2" />
+              </div>
+            </div>
           </div>
         </div>
 
-        <DropdownMenuSeparator />
+        <DropdownMenuSeparator className="bg-primary/20" />
 
-        <DropdownMenuItem>
-          <Settings className="mr-2 h-4 w-4 transition-transform duration-200 hover:rotate-90" />
-          <span>Settings</span>
-        </DropdownMenuItem>
+        {/* Menu Items */}
+        <div className="p-2">
+          <Tooltip>
+            <TooltipTrigger asChild>
+              <DropdownMenuItem className={cn(
+                "group/item cursor-pointer px-4 py-3 rounded-lg",
+                "hover-lift hover-glow hover-scale",
+                "transition-all duration-300 ease-spring",
+                "hover:bg-accent/20 border border-transparent hover:border-accent/30",
+                "focus:bg-accent/20 focus:border-accent/30"
+              )}>
+                <Settings className="mr-3 h-5 w-5 transition-all duration-300 group-hover/item:rotate-90 group-hover/item:scale-110 text-foreground" />
+                <span className="font-bold text-foreground group-hover/item:text-accent transition-colors duration-300">
+                  Settings
+                </span>
+                <Badge variant="outline" className="ml-auto text-xs">
+                  <Shield className="h-3 w-3 mr-1" />
+                  Config
+                </Badge>
+              </DropdownMenuItem>
+            </TooltipTrigger>
+            <TooltipContent>
+              <p>Access user settings and preferences</p>
+            </TooltipContent>
+          </Tooltip>
 
-        <DropdownMenuSeparator />
+          <DropdownMenuSeparator className="bg-primary/20 my-2" />
 
-        <DropdownMenuItem
-          onClick={onSignOut}
-          className="text-destructive focus:text-destructive-foreground focus:bg-destructive"
-        >
-          <LogOut className="mr-2 h-4 w-4 transition-transform duration-200 hover:scale-110" />
-          <span>Sign Out</span>
-        </DropdownMenuItem>
+          <Tooltip>
+            <TooltipTrigger asChild>
+              <DropdownMenuItem
+                onClick={onSignOut}
+                className={cn(
+                  "group/item cursor-pointer px-4 py-3 rounded-lg",
+                  "text-destructive hover:text-destructive-foreground",
+                  "hover-lift hover-glow hover-scale",
+                  "transition-all duration-300 ease-spring",
+                  "hover:bg-destructive/20 border border-transparent hover:border-destructive/30",
+                  "focus:bg-destructive/20 focus:border-destructive/30"
+                )}
+              >
+                <LogOut className="mr-3 h-5 w-5 transition-all duration-300 group-hover/item:scale-110 group-hover/item:-rotate-12 text-destructive" />
+                <span className="font-bold">
+                  Sign Out
+                </span>
+                <Badge variant="destructive" className="ml-auto text-xs">
+                  Exit
+                </Badge>
+              </DropdownMenuItem>
+            </TooltipTrigger>
+            <TooltipContent>
+              <p>Sign out of your account securely</p>
+            </TooltipContent>
+          </Tooltip>
+        </div>
+
+        {/* Decorative bottom element */}
+        <div className="absolute bottom-2 right-2 w-4 h-4 bg-accent/20 rounded-full blur-sm animate-pulse" />
       </DropdownMenuContent>
     </DropdownMenu>
+    </div>
+    </TooltipProvider>
   );
 }

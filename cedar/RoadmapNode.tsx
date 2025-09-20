@@ -1,8 +1,9 @@
 import React from 'react';
-import { Handle, Position, NodeProps } from 'reactflow';
-import { Badge } from '@/components/badge';
+import type { NodeProps } from 'reactflow';
+import { Handle, Position } from 'reactflow';
+import { Badge } from './badge';
 import { Heart, MessageCircle, Bug, Lightbulb } from 'lucide-react';
-import { FeatureNodeData } from '@/components/FeatureNode';
+import type { FeatureNodeData } from './FeatureNode';
 
 export function RoadmapNode({ data, selected }: NodeProps<FeatureNodeData>) {
   const [isEditing, setIsEditing] = React.useState(false);

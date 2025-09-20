@@ -87,31 +87,65 @@ flowchart TD
 In addition to the pipeline overview, here is the overall architecture:
 
 ```mermaid
-graph LR
-    User[User with JWT] --> API[Next.js API /api/chat]
-    API --> Mastra[Mastra Workflow & Agents]
-    Mastra --> Qdrant[Qdrant Vector DB]
-    Mastra --> OpenAI[OpenAI Embeddings & LLM]
-    UI[UI Components ChatInterface AuthPanel] --> User
-    Corpus[Corpus Documents] --> Qdrant
-    style User fill:#f9f,stroke:#333
-    style API fill:#bbf,stroke:#f66
+graph TD
+
+    user["User<br>/app/page.tsx"]
+    llm["Large Language Model<br>/app/api/chat"]
+    authService["External Authentication Service<br>/app/api/auth"]
+    subgraph mastraRAG["Mastra Governed RAG<br>[External]"]
+        subgraph webApp["Web Application<br>/app/"]
+            chatUI["Chat Interface<br>/components/ChatInterface.tsx"]
+            authUI["Authentication UI<br>/components/AuthPanel.tsx"]
+            indexingUI["Indexing UI<br>/components/IndexingPanel.tsx"]
+            roadmapUI["Roadmap Canvas<br>/cedar/RoadmapCanvas.tsx"]
+        end
+        subgraph apiServer["API Server<br>/app/api/"]
+            authAPI["Authentication API<br>/app/api/auth/"]
+            chatAPI["Chat API<br>/app/api/chat/"]
+            indexingAPI["Indexing API<br>/app/api/index/"]
+            mastraLogic["Mastra Governance Logic<br>/lib/mastra/"]
+            jwtUtils["JWT Utilities<br>/lib/jwt-utils.ts"]
+            %% Edges at this level (grouped by source)
+            chatAPI["Chat API<br>/app/api/chat/"] -->|"Applies governance via"| mastraLogic["Mastra Governance Logic<br>/lib/mastra/"]
+            authAPI["Authentication API<br>/app/api/auth/"] -->|"Uses"| jwtUtils["JWT Utilities<br>/lib/jwt-utils.ts"]
+        end
+        subgraph vectorDB["Vector Database<br>/docker/ChromaDB"]
+            vectorDbInstance["Vector Database Instance<br>/docker/ChromaDB"]
+        end
+        subgraph documentStore["Document Store<br>/corpus/"]
+            documentStoreInstance["Document Store Instance<br>/corpus/"]
+        end
+        %% Edges at this level (grouped by source)
+        chatUI["Chat Interface<br>/components/ChatInterface.tsx"] -->|"Sends chat messages to | API Call"| apiServer["API Server<br>/app/api/"]
+        authUI["Authentication UI<br>/components/AuthPanel.tsx"] -->|"Authenticates via | API Call"| apiServer["API Server<br>/app/api/"]
+        indexingUI["Indexing UI<br>/components/IndexingPanel.tsx"] -->|"Triggers indexing via | API Call"| apiServer["API Server<br>/app/api/"]
+        roadmapUI["Roadmap Canvas<br>/cedar/RoadmapCanvas.tsx"] -->|"Fetches roadmap data from | API Call"| apiServer["API Server<br>/app/api/"]
+        chatAPI["Chat API<br>/app/api/chat/"] -->|"Queries | Client Library"| vectorDB["Vector Database<br>/docker/ChromaDB"]
+        chatAPI["Chat API<br>/app/api/chat/"] -->|"Retrieves from | Client Library"| documentStore["Document Store<br>/corpus/"]
+        indexingAPI["Indexing API<br>/app/api/index/"] -->|"Writes to | Client Library"| vectorDB["Vector Database<br>/docker/ChromaDB"]
+        indexingAPI["Indexing API<br>/app/api/index/"] -->|"Reads from | Client Library"| documentStore["Document Store<br>/corpus/"]
+        webApp["Web Application<br>/app/"] -->|"Makes API calls to | HTTPS/JSON"| apiServer["API Server<br>/app/api/"]
+        apiServer["API Server<br>/app/api/"] -->|"Queries | API/Client Library"| vectorDB["Vector Database<br>/docker/ChromaDB"]
+        apiServer["API Server<br>/app/api/"] -->|"Retrieves from | API/Client Library"| documentStore["Document Store<br>/corpus/"]
+    end
+    %% Edges at this level (grouped by source)
+    user["User<br>/app/page.tsx"] -->|"Interacts with"| chatUI["Chat Interface<br>/components/ChatInterface.tsx"]
+    user["User<br>/app/page.tsx"] -->|"Interacts with"| authUI["Authentication UI<br>/components/AuthPanel.tsx"]
+    user["User<br>/app/page.tsx"] -->|"Interacts with"| indexingUI["Indexing UI<br>/components/IndexingPanel.tsx"]
+    user["User<br>/app/page.tsx"] -->|"Interacts with"| roadmapUI["Roadmap Canvas<br>/cedar/RoadmapCanvas.tsx"]
+    authAPI["Authentication API<br>/app/api/auth/"] -->|"Delegates authentication to | HTTPS/API"| authService["External Authentication Service<br>/app/api/auth"]
+    chatAPI["Chat API<br>/app/api/chat/"] -->|"Sends prompt to | HTTPS/API"| llm["Large Language Model<br>/app/api/chat"]
+    apiServer["API Server<br>/app/api/"] -->|"Sends prompts to | HTTPS/API"| llm["Large Language Model<br>/app/api/chat"]
+    apiServer["API Server<br>/app/api/"] -->|"Authenticates with | HTTPS/API"| authService["External Authentication Service<br>/app/api/auth"]
+    llm["Large Language Model<br>/app/api/chat"] -->|"Returns generated text to | HTTPS/API"| apiServer["API Server<br>/app/api/"]
+
 ```
 
-Detailed RAG flow:
+*Diagram created at Sept, 20 2025, 5:45:41 AM
 
-```mermaid
-flowchart td
-    UserQuery[User Query + JWT] --> Identity[Identity Agent: Validate JWT Claims]
-    Identity --> Policy[Policy Agent: Generate Access Filters]
-    Policy --> Retrieve[Retrieve Agent: Filtered Qdrant Search]
-    Retrieve --> Rerank[Rerank Agent: Relevance Scoring]
-    Rerank --> Answerer[Answerer Agent: Generate Response]
-    Answerer --> Verifier[Verifier Agent: Security Check]
-    Verifier --> Response[Secure Streaming Response]
-    style UserQuery fill:#e1f5fe
-    style Response fill:#c8e6c9
-```
+## The Mastra Governed RAG Approach
+
+This template demonstrates secure RAG using Mastra's agentic architecture.
 
 The architecture leverages Mastra's agentic paradigm for granular access control in RAG pipelines. Workflows like [`governed-rag-answer.workflow.ts`](src/mastra/workflows/governed-rag-answer.workflow.ts) orchestrate agents with Zod schemas for structured I/O, ensuring type-safe tool calls. For instance, the retrieve agent invokes [`vector-query.tool.ts`](src/mastra/tools/vector-query.tool.ts) with access filters derived from JWT claims, while the policy agent generates tag-based filters using role inheritance.
 
@@ -166,6 +200,12 @@ docker-compose up -d
 ```
 
 This starts Qdrant at `http://localhost:6333`. Verify with:
+
+### QdrantUI
+
+[http://localhost:6333/dashboard](http://localhost:6333/dashboard)
+
+Or verify with:
 
 ```bash
 curl http://localhost:6333/collections

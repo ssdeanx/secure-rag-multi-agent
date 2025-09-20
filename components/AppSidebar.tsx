@@ -1,13 +1,16 @@
 'use client';
 
-import { 
-  Shield, 
-  MessageSquare, 
-  Database, 
-  FileText, 
-  Settings, 
+import React from 'react';
+import {
+  Shield,
+  MessageSquare,
+  Database,
+  FileText,
+  Settings,
   Home,
-  User
+  User,
+  Activity,
+  Zap
 } from 'lucide-react';
 import {
   Sidebar,
@@ -20,6 +23,12 @@ import {
   SidebarMenuButton,
   SidebarMenuItem,
 } from '@/components/ui/sidebar';
+import { Alert, AlertDescription } from '@/components/ui/alert';
+import { Badge } from '@/components/ui/badge';
+import { Avatar, AvatarFallback } from '@/components/ui/avatar';
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
+import { Separator } from '@/components/ui/separator';
+import { Progress } from '@/components/ui/progress';
 
 interface NavigationItem {
   id: string;
@@ -76,21 +85,52 @@ export function AppSidebar({
     }
   };
 
+  const getNavigationProgress = () => {
+    const activeCount = navigationItems.filter(item => item.active).length;
+    return (activeCount / navigationItems.length) * 100;
+  };
+
+  const getRoleProgress = (role?: string) => {
+    if (!role) {
+      return 0;
+    }
+    if (role.includes('admin')) {
+      return 100;
+    }
+    if (role.includes('viewer')) {
+      return 25;
+    }
+    return 75;
+  };
+
   return (
-    <Sidebar collapsible="icon" className="max-w-screen-2xl mx-auto">
-      <SidebarHeader>
-        <div className="flex-center space-x-2 px-2">
-          <Shield className="h-4 w-4 text-primary size-fit" />
-          <div className="flex flex-col">
-            <span className="text-sm font-bold bg-gradient-to-r from-primary to-primary/60 bg-clip-text text-transparent">
-              Governed RAG
-            </span>
-            <span className="text-xs text-muted-foreground">
-              Secure AI Platform
-            </span>
+    <TooltipProvider>
+      <Sidebar collapsible="icon">
+        <SidebarHeader>
+          <div className="flex-center space-x-2 px-2">
+            <Shield className="h-4 w-4 text-primary size-fit" />
+            <div className="flex flex-col">
+              <span className="text-sm font-bold bg-gradient-to-r from-primary to-primary/60 bg-clip-text text-transparent">
+                Governed RAG
+              </span>
+              <span className="text-xs text-muted-foreground">
+                Secure AI Platform
+              </span>
+            </div>
           </div>
-        </div>
-      </SidebarHeader>
+
+          {/* Navigation Progress Alert */}
+          <Alert className="mt-3 border border-primary/20 bg-gradient-mocha/30 backdrop-blur-sm">
+            <Activity className="h-3 w-3" />
+            <AlertDescription className="text-xs">
+              <div className="flex justify-between mb-1">
+                <span>Navigation</span>
+                <span>{Math.round(getNavigationProgress())}%</span>
+              </div>
+              <Progress value={getNavigationProgress()} className="h-1" />
+            </AlertDescription>
+          </Alert>
+        </SidebarHeader>
 
       <SidebarContent>
         <SidebarGroup>
@@ -99,21 +139,33 @@ export function AppSidebar({
               {navigationItems.map((item) => {
                 const Icon = item.icon;
                 return (
-                  <SidebarMenuItem key={item.id}>
-                    <SidebarMenuButton
-                      onClick={() => handleItemClick(item)}
-                      isActive={item.active}
-                      tooltip={item.label}
-                    >
-                      <Icon />
-                      <span>{item.label}</span>
-                      {item.badge && item.badge.length > 0 && (
-                        <span className="ml-auto inline-flex items-center justify-center px-2 py-1 text-xs font-bold leading-none text-primary-foreground bg-primary rounded-full">
-                          {item.badge}
-                        </span>
-                      )}
-                    </SidebarMenuButton>
-                  </SidebarMenuItem>
+                  <Tooltip key={item.id}>
+                    <TooltipTrigger asChild>
+                      <SidebarMenuItem>
+                        <SidebarMenuButton
+                          onClick={() => handleItemClick(item)}
+                          isActive={item.active}
+                          tooltip={item.label}
+                        >
+                          <Icon />
+                          <span>{item.label}</span>
+                          {item.active && (
+                            <Badge variant="secondary" className="ml-auto bg-accent/20 text-accent text-xs">
+                              Active
+                            </Badge>
+                          )}
+                          {item.badge && item.badge.length > 0 && (
+                            <Badge variant="outline" className="ml-auto text-xs">
+                              {item.badge}
+                            </Badge>
+                          )}
+                        </SidebarMenuButton>
+                      </SidebarMenuItem>
+                    </TooltipTrigger>
+                    <TooltipContent side="right">
+                      <p>{item.active ? `Currently on ${item.label}` : `Navigate to ${item.label}`}</p>
+                    </TooltipContent>
+                  </Tooltip>
                 );
               })}
             </SidebarMenu>
@@ -125,26 +177,50 @@ export function AppSidebar({
         {currentRole && currentRole.trim().length > 0 && (
           <div className="mb-3 p-2 rounded-md bg-muted">
             <div className="flex items-center space-x-2">
-              <User className="h-4 w-4 text-muted-foreground" />
-              <div className="flex flex-col">
+              <Avatar className="h-6 w-6">
+                <AvatarFallback className="bg-accent text-accent-foreground text-xs">
+                  {currentRole.charAt(0).toUpperCase()}
+                </AvatarFallback>
+              </Avatar>
+              <div className="flex flex-col flex-1">
                 <span className="text-xs font-medium">Current Role</span>
                 <span className="text-xs text-muted-foreground capitalize">
                   {currentRole.replace('.', ' ')}
                 </span>
+                <div className="mt-1">
+                  <div className="flex justify-between text-xs mb-1">
+                    <span>Access</span>
+                    <span>{getRoleProgress(currentRole)}%</span>
+                  </div>
+                  <Progress value={getRoleProgress(currentRole)} className="h-1" />
+                </div>
               </div>
             </div>
           </div>
         )}
 
+        <Separator className="bg-primary/20 mb-2" />
+
         <SidebarMenu>
           <SidebarMenuItem>
-            <SidebarMenuButton tooltip="Settings">
-              <Settings />
-              <span>Settings</span>
-            </SidebarMenuButton>
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <SidebarMenuButton tooltip="Settings">
+                  <Settings />
+                  <span>Settings</span>
+                  <Badge variant="outline" className="ml-auto text-xs">
+                    <Zap className="h-3 w-3" />
+                  </Badge>
+                </SidebarMenuButton>
+              </TooltipTrigger>
+              <TooltipContent side="right">
+                <p>Access application settings</p>
+              </TooltipContent>
+            </Tooltip>
           </SidebarMenuItem>
         </SidebarMenu>
       </SidebarFooter>
     </Sidebar>
+    </TooltipProvider>
   );
 }

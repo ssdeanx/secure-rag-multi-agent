@@ -1,0 +1,52 @@
+version: '3.8'
+
+services:
+  couchbase-server:
+    image: couchbase/server:latest
+    container_name: governed-rag-couchbase
+    ports:
+      - "8091-8097:8091-8097"
+      - "11210:11210"
+    volumes:
+      - couchbase_data:/opt/couchbase/var
+    environment:
+      - COUCHBASE_USERNAME=admin
+      - COUCHBASE_PASSWORD=password
+    healthcheck:
+      test: ["CMD", "curl", "-s", "http://localhost:8091/pools/default"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+    restart: unless-stopped
+    networks:
+      - default
+
+# The Redis Caching Layer
+  redis-cache:
+    image: redis:7-alpine
+    container_name: governed-rag-redis-cache
+    ports:
+      - "6380:6379" # Use a different port to avoid conflicts
+    volumes:
+      - redis_cache_data:/data
+    command: redis-server --appendonly yes
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+    networks:
+      - default
+
+volumes:
+  couchbase_data:
+    driver: local
+  redis_cache_data:
+    driver: local
+
+networks:
+  default:
+    name: governed-rag-network
+    driver: bridge

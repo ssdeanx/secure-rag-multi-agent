@@ -1,0 +1,588 @@
+import { Badge } from '@/components/ui/badge'
+import { Button } from '@/components/ui/button'
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
+import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'
+import { Mermaid } from '@/components/Mermaid'
+import {
+  Shield,
+  Database,
+  MessageSquare,
+  Upload,
+  CheckCircle,
+  XCircle,
+  Clock,
+  ArrowRight,
+  Code,
+  Zap,
+  Lock,
+  FileText
+} from 'lucide-react'
+
+# API Reference
+
+The Mastra Governed RAG provides two main API endpoints for document indexing and secure querying. Both use Mastra workflows under the hood and enforce security policies.
+
+<div className="flex flex-wrap justify-center gap-2 mb-8">
+  <Badge variant="secondary" className="px-3 py-1">
+    <Shield className="h-3 w-3 mr-1" />
+    Security First
+  </Badge>
+  <Badge variant="secondary" className="px-3 py-1">
+    <MessageSquare className="h-3 w-3 mr-1" />
+    Streaming Responses
+  </Badge>
+  <Badge variant="secondary" className="px-3 py-1">
+    <Database className="h-3 w-3 mr-1" />
+    Qdrant Vector DB
+  </Badge>
+  <Badge variant="secondary" className="px-3 py-1">
+    <Lock className="h-3 w-3 mr-1" />
+    JWT Authentication
+  </Badge>
+</div>
+
+<!-- toc -->
+
+## API Overview
+
+<Mermaid chart={`graph TD
+    subgraph "Client"
+        UI[Frontend App]
+    end
+
+    subgraph "API Layer"
+        ChatAPI[POST /api/chat]
+        IndexAPI[POST /api/index]
+    end
+
+    subgraph "Mastra Workflows"
+        ChatWF[Chat Workflow<br/>Auth → Retrieve → Rerank → Generate → Verify]
+        IndexWF[Index Workflow<br/>Process → Chunk → Embed → Store]
+    end
+
+    subgraph "Security"
+        Auth[JWT Authentication]
+        RBAC[Role-Based Access Control]
+        Policy[Security Policies]
+    end
+
+    subgraph "Data"
+        VectorDB[(Qdrant<br/>Vectors)]
+        DocStore[(Document Store<br/>Metadata)]
+    end
+
+    UI --> ChatAPI
+    UI --> IndexAPI
+    ChatAPI --> ChatWF
+    IndexAPI --> IndexWF
+    ChatWF --> Auth
+    IndexWF --> Auth
+    Auth --> RBAC
+    RBAC --> Policy
+    ChatWF --> VectorDB
+    IndexWF --> VectorDB
+    ChatWF --> DocStore
+    IndexWF --> DocStore
+
+    classDef client fill:#e1f5fe,stroke:#01579b,stroke-width:2px
+    classDef api fill:#fff3e0,stroke:#e65100,stroke-width:2px
+    classDef workflow fill:#f3e5f5,stroke:#7b1fa2,stroke-width:2px
+    classDef security fill:#ffebee,stroke:#c62828,stroke-width:2px
+    classDef data fill:#e8f5e8,stroke:#2e7d32,stroke-width:2px
+
+    class UI client
+    class ChatAPI,IndexAPI api
+    class ChatWF,IndexWF workflow
+    class Auth,RBAC,Policy security
+    class VectorDB,DocStore data
+`} />
+
+<div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+  <Card>
+    <CardHeader>
+      <CardTitle className="flex items-center gap-2">
+        <MessageSquare className="h-5 w-5 text-blue-600" />
+        Chat Endpoint
+      </CardTitle>
+      <CardDescription>
+        Secure conversational queries with streaming responses and role-based document access
+      </CardDescription>
+    </CardHeader>
+    <CardContent>
+      <div className="space-y-2">
+        <div className="flex items-center gap-2 text-sm">
+          <CheckCircle className="h-4 w-4 text-green-500" />
+          <span>JWT Authentication Required</span>
+        </div>
+        <div className="flex items-center gap-2 text-sm">
+          <CheckCircle className="h-4 w-4 text-green-500" />
+          <span>Server-Sent Events Streaming</span>
+        </div>
+        <div className="flex items-center gap-2 text-sm">
+          <CheckCircle className="h-4 w-4 text-green-500" />
+          <span>Role-Based Document Filtering</span>
+        </div>
+      </div>
+    </CardContent>
+  </Card>
+
+  <Card>
+    <CardHeader>
+      <CardTitle className="flex items-center gap-2">
+        <Upload className="h-5 w-5 text-purple-600" />
+        Index Endpoint
+      </CardTitle>
+      <CardDescription>
+        Automated document processing and vector embedding with security classification
+      </CardDescription>
+    </CardHeader>
+    <CardContent>
+      <div className="space-y-2">
+        <div className="flex items-center gap-2 text-sm">
+          <CheckCircle className="h-4 w-4 text-green-500" />
+          <span>Automatic Document Classification</span>
+        </div>
+        <div className="flex items-center gap-2 text-sm">
+          <CheckCircle className="h-4 w-4 text-green-500" />
+          <span>Chunking & Embedding Pipeline</span>
+        </div>
+        <div className="flex items-center gap-2 text-sm">
+          <CheckCircle className="h-4 w-4 text-green-500" />
+          <span>JWT Optional (Admin Context)</span>
+        </div>
+      </div>
+    </CardContent>
+  </Card>
+</div>
+
+## Endpoints
+
+### POST /api/chat
+
+**Description**: Processes a user question through the governed RAG workflow: authenticate → retrieve filtered docs → rerank → generate answer → verify. Streams the response as Server-Sent Events (SSE).
+
+<Mermaid chart={`graph LR
+    A[User Query] --> B[JWT Validation]
+    B --> C[Role-Based Filtering]
+    C --> D[Document Retrieval]
+    D --> E[Re-ranking]
+    E --> F[Answer Generation]
+    F --> G[Security Verification]
+    G --> H[Streaming Response]
+
+    B --> B1[400: Invalid JWT]
+    C --> C1[403: Access Denied]
+    D --> D1[404: No Documents]
+    G --> G1[500: Verification Failed]
+
+    classDef process fill:#e3f2fd,stroke:#1976d2,stroke-width:2px
+    classDef error fill:#ffebee,stroke:#c62828,stroke-width:2px
+
+    class A,C,D,E,F,G,H process
+    class B1,C1,D1,G1 error
+`} />
+
+**Path**: `POST /api/chat`
+
+**Request Body** (JSON, required):
+
+```json
+{
+  "jwt": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...",
+  "question": "What is the expense reimbursement policy?"
+}
+```
+
+<div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
+  <div>
+    <h4 className="font-medium mb-2">Required Fields</h4>
+    <ul className="space-y-1 text-sm">
+      <li className="flex items-center gap-2">
+        <Badge variant="destructive" className="text-xs">Required</Badge>
+        <code>jwt</code> - JWT token with role claims
+      </li>
+      <li className="flex items-center gap-2">
+        <Badge variant="destructive" className="text-xs">Required</Badge>
+        <code>question</code> - Natural language query
+      </li>
+    </ul>
+  </div>
+  <div>
+    <h4 className="font-medium mb-2">Response Format</h4>
+    <ul className="space-y-1 text-sm">
+      <li className="flex items-center gap-2">
+        <Zap className="h-3 w-3 text-blue-500" />
+        <span>Server-Sent Events (SSE)</span>
+      </li>
+      <li className="flex items-center gap-2">
+        <Clock className="h-3 w-3 text-green-500" />
+        <span>~50ms chunk streaming</span>
+      </li>
+      <li className="flex items-center gap-2">
+        <FileText className="h-3 w-3 text-purple-500" />
+        <span>Final metadata with citations</span>
+      </li>
+    </ul>
+  </div>
+</div>
+
+**Stream Format**:
+
+<Tabs defaultValue="chunks">
+  <TabsList>
+    <TabsTrigger value="chunks">Data Chunks</TabsTrigger>
+    <TabsTrigger value="final">Final Message</TabsTrigger>
+    <TabsTrigger value="errors">Error Handling</TabsTrigger>
+  </TabsList>
+
+  <TabsContent value="chunks">
+    ```javascript
+// Streaming data chunks
+data: {"content": "The expense reimbursement policy requires..."}\n\n
+data: {"content": "submission within 30 days."}\n\n
+    ```
+  </TabsContent>
+
+  <TabsContent value="final">
+    ```javascript
+// Final message with metadata
+data: {"done": true, "citations": [
+  {"docId": "finance-policy-001", "source": "Finance Department Policy Manual"}
+], "contexts": []}\n\n
+    ```
+  </TabsContent>
+
+  <TabsContent value="errors">
+    ```javascript
+// Error in stream
+data: {"content": "⚠️ Error message", "done": true}\n\n
+    ```
+  </TabsContent>
+</Tabs>
+
+**Example Request**:
+
+```bash
+curl -X POST http://localhost:3000/api/chat \
+  -H "Content-Type: application/json" \
+  -d '{
+    "jwt": "YOUR_JWT_TOKEN",
+    "question": "What is our finance policy?"
+  }'
+```
+
+**Error Responses**:
+
+<div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
+  <Alert>
+    <XCircle className="h-4 w-4" />
+    <AlertTitle>400 Bad Request</AlertTitle>
+    <AlertDescription>Missing required fields (jwt or question)</AlertDescription>
+  </Alert>
+
+  <Alert>
+    <XCircle className="h-4 w-4" />
+    <AlertTitle>500 Internal Server Error</AlertTitle>
+    <AlertDescription>Workflow failure or authentication error</AlertDescription>
+  </Alert>
+</div>
+
+### POST /api/index
+
+**Description**: Indexes documents from `./corpus/` with security metadata. Runs the indexing workflow: process → chunk → embed → store in Qdrant.
+
+<Mermaid chart={`graph LR
+    A[Document Files] --> B[Security Classification]
+    B --> C[Text Processing]
+    C --> D[Chunking]
+    D --> E[Embedding Generation]
+    E --> F[Vector Storage]
+    F --> G[Metadata Indexing]
+
+    B --> B1[Role Assignment]
+    C --> C1[Content Extraction]
+    E --> E1[OpenAI Embeddings]
+    F --> F1[Qdrant Storage]
+
+    classDef process fill:#e3f2fd,stroke:#1976d2,stroke-width:2px
+    classDef storage fill:#e8f5e8,stroke:#2e7d32,stroke-width:2px
+
+    class A,B,C,D,E,G process
+    class F storage
+    class B1,C1,E1,F1 process
+`} />
+
+**Path**: `POST /api/index`
+
+**Request Body** (JSON, optional):
+
+```json
+{
+  "jwt": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
+}
+```
+
+**Response** (JSON):
+
+```json
+{
+  "success": true,
+  "indexed": 3,
+  "failed": 0,
+  "documents": [
+    {
+      "docId": "finance-policy-001",
+      "status": "success",
+      "chunks": 12
+    },
+    {
+      "docId": "hr-conf-001",
+      "status": "failed",
+      "error": "Indexing error message"
+    }
+  ]
+}
+```
+
+**Default Classification Rules**:
+
+<div className="overflow-x-auto">
+  <table className="w-full border-collapse border border-gray-300 dark:border-gray-600">
+    <thead>
+      <tr className="bg-gray-100 dark:bg-gray-800">
+        <th className="border border-gray-300 dark:border-gray-600 px-4 py-2 text-left">Document</th>
+        <th className="border border-gray-300 dark:border-gray-600 px-4 py-2 text-left">Classification</th>
+        <th className="border border-gray-300 dark:border-gray-600 px-4 py-2 text-left">Allowed Roles</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td className="border border-gray-300 dark:border-gray-600 px-4 py-2">finance-policy.md</td>
+        <td className="border border-gray-300 dark:border-gray-600 px-4 py-2">
+          <Badge variant="secondary">Internal</Badge>
+        </td>
+        <td className="border border-gray-300 dark:border-gray-600 px-4 py-2">
+          <div className="flex flex-wrap gap-1">
+            <Badge variant="outline" className="text-xs">finance.viewer</Badge>
+            <Badge variant="outline" className="text-xs">finance.admin</Badge>
+            <Badge variant="outline" className="text-xs">employee</Badge>
+          </div>
+        </td>
+      </tr>
+      <tr>
+        <td className="border border-gray-300 dark:border-gray-600 px-4 py-2">engineering-handbook.md</td>
+        <td className="border border-gray-300 dark:border-gray-600 px-4 py-2">
+          <Badge variant="secondary">Internal</Badge>
+        </td>
+        <td className="border border-gray-300 dark:border-gray-600 px-4 py-2">
+          <div className="flex flex-wrap gap-1">
+            <Badge variant="outline" className="text-xs">engineering.admin</Badge>
+            <Badge variant="outline" className="text-xs">engineering.viewer</Badge>
+            <Badge variant="outline" className="text-xs">employee</Badge>
+          </div>
+        </td>
+      </tr>
+      <tr>
+        <td className="border border-gray-300 dark:border-gray-600 px-4 py-2">hr-confidential.md</td>
+        <td className="border border-gray-300 dark:border-gray-600 px-4 py-2">
+          <Badge variant="destructive">Confidential</Badge>
+        </td>
+        <td className="border border-gray-300 dark:border-gray-600 px-4 py-2">
+          <Badge variant="outline" className="text-xs">hr.admin</Badge>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+**Example Request**:
+
+```bash
+curl -X POST http://localhost:3000/api/index \
+  -H "Content-Type: application/json" \
+  -d '{}'
+```
+
+## Authentication & Security
+
+<Mermaid chart={`graph TD
+    A[JWT Token] --> B[Header Extraction]
+    B --> C[Signature Verification]
+    C --> D[Claims Validation]
+    D --> E[Role Hierarchy Check]
+    E --> F[Document Access Filter]
+
+    D --> D1[Invalid Token]
+    E --> E1[Insufficient Permissions]
+
+    classDef process fill:#e3f2fd,stroke:#1976d2,stroke-width:2px
+    classDef error fill:#ffebee,stroke:#c62828,stroke-width:2px
+
+    class A,B,C,F process
+    class D1,E1 error
+`} />
+
+### JWT Authentication
+
+- **Generation**: Via UI (AuthPanel) or `scripts/make-jwt.js`
+- **Claims Structure**:
+
+```json
+{
+  "role": "finance.viewer",
+  "tenant": "acme",
+  "exp": 1634567890,
+  "iat": 1634567890
+}
+```
+
+- **Validation**: Against role hierarchy in `src/mastra/config/role-hierarchy.ts`
+
+### Security Features
+
+<div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
+  <Card>
+    <CardHeader>
+      <CardTitle className="text-sm">Role-Based Access</CardTitle>
+    </CardHeader>
+    <CardContent>
+      <p className="text-sm text-muted-foreground">
+        Documents filtered by user roles and security classifications
+      </p>
+    </CardContent>
+  </Card>
+
+  <Card>
+    <CardHeader>
+      <CardTitle className="text-sm">Audit Logging</CardTitle>
+    </CardHeader>
+    <CardContent>
+      <p className="text-sm text-muted-foreground">
+        All queries and responses logged with provenance metadata
+      </p>
+    </CardContent>
+  </Card>
+
+  <Card>
+    <CardHeader>
+      <CardTitle className="text-sm">Content Filtering</CardTitle>
+    </CardHeader>
+    <CardContent>
+      <p className="text-sm text-muted-foreground">
+        Sensitive information redacted based on security policies
+      </p>
+    </CardContent>
+  </Card>
+</div>
+
+## Rate Limits & Headers
+
+- **Rate Limiting**: Handled by Mastra (no explicit limits)
+- **Concurrency**: Managed by Mastra workflow engine
+- **Headers**: `Content-Type: application/json`
+- **CORS**: Enabled for localhost development
+
+## Quick Start Examples
+
+<Tabs defaultValue="chat">
+  <TabsList>
+    <TabsTrigger value="chat">Chat Query</TabsTrigger>
+    <TabsTrigger value="index">Document Indexing</TabsTrigger>
+    <TabsTrigger value="auth">Authentication</TabsTrigger>
+  </TabsList>
+
+  <TabsContent value="chat">
+    ```javascript
+// Frontend chat integration
+const response = await fetch('/api/chat', {
+  method: 'POST',
+  headers: { 'Content-Type': 'application/json' },
+  body: JSON.stringify({
+    jwt: userToken,
+    question: "What is the expense policy?"
+  })
+})
+
+const reader = response.body.getReader()
+while (true) {
+  const { done, value } = await reader.read()
+  if (done) break
+
+  const chunk = new TextDecoder().decode(value)
+  const lines = chunk.split('\n')
+
+  for (const line of lines) {
+    if (line.startsWith('data: ')) {
+      const data = JSON.parse(line.slice(6))
+      if (data.content) {
+        // Append to UI
+        appendToChat(data.content)
+      }
+      if (data.done) {
+        // Show citations
+        showCitations(data.citations)
+      }
+    }
+  }
+}
+    ```
+  </TabsContent>
+
+  <TabsContent value="index">
+    ```javascript
+// Index documents programmatically
+const indexResponse = await fetch('/api/index', {
+  method: 'POST',
+  headers: { 'Content-Type': 'application/json' },
+  body: JSON.stringify({
+    jwt: adminToken // Optional
+  })
+})
+
+const result = await indexResponse.json()
+console.log(`Indexed ${result.indexed} documents`)
+
+// Check logs for details
+// cat logs/mastra.log
+    ```
+  </TabsContent>
+
+  <TabsContent value="auth">
+    ```javascript
+// Generate JWT token
+import jwt from 'jsonwebtoken'
+
+const payload = {
+  role: 'finance.viewer',
+  tenant: 'acme',
+  exp: Math.floor(Date.now() / 1000) + (24 * 60 * 60) // 24 hours
+}
+
+const token = jwt.sign(payload, process.env.JWT_SECRET)
+    ```
+  </TabsContent>
+</Tabs>
+
+<div className="mt-8 p-6 bg-blue-50 dark:bg-blue-900/20 rounded-lg border border-blue-200 dark:border-blue-800">
+  <div className="flex items-center gap-3 mb-4">
+    <Code className="h-6 w-6 text-blue-600" />
+    <h3 className="text-lg font-semibold text-blue-900 dark:text-blue-100">Ready to Integrate?</h3>
+  </div>
+  <p className="text-blue-800 dark:text-blue-200 mb-4">
+    These APIs provide the foundation for secure, governed RAG interactions. For UI integration examples, see the Quick Start guide.
+  </p>
+  <div className="flex gap-3">
+    <Button asChild>
+      <a href="/docs/quick-start">
+        <ArrowRight className="h-4 w-4 mr-2" />
+        Quick Start Guide
+      </a>
+    </Button>
+    <Button variant="outline" asChild>
+      <a href="/docs/security">
+        Security Details
+      </a>
+    </Button>
+  </div>
+</div>

@@ -3,7 +3,7 @@ import { useEffect } from 'react';
 import type { Node, Edge } from 'reactflow';
 import { v4 as uuidv4 } from 'uuid';
 import { useCedarState, useRegisterState } from 'cedar-os';
-import type { FeatureNodeData } from '@/cedar/components/FeatureNode';
+import type { FeatureNodeData } from '../../cedar/FeatureNode';
 
 // [STEP 4]: There are a few ways to make your application states visible to your agent.
 // This allows your agent to understand and manipulate roadmap features using the state functions
@@ -34,9 +34,14 @@ export function useRoadmapState(
       addNode: {
         name: 'addNode',
         description: 'Add a new feature or bug to the product roadmap',
-        execute: (currentNodes, setValue, args: { node: Node<FeatureNodeData> }) => {
+        execute: (currentNodes, setValue, args: unknown) => {
+          const nodeArg = (args as { node?: Node<FeatureNodeData> } | undefined)?.node;
+          if (!nodeArg) {
+            return;
+          }
+
           const nodes = currentNodes as Node<FeatureNodeData>[];
-          const nodeData = args.node;
+          const nodeData = nodeArg;
 
           const newNode: Node<FeatureNodeData> = {
             ...nodeData,
@@ -62,8 +67,12 @@ export function useRoadmapState(
       removeNode: {
         name: 'removeNode',
         description: 'Remove a feature or bug from the product roadmap',
-        execute: (currentNodes, setValue, args: { id: string }) => {
-          const nodeId = args.id;
+        execute: (currentNodes, setValue, args: unknown) => {
+          const nodeId = (args as { id?: string } | undefined)?.id;
+          if (!nodeId) {
+            return;
+          }
+
           const nodes = currentNodes as Node<FeatureNodeData>[];
 
           // Remove the node
@@ -79,9 +88,13 @@ export function useRoadmapState(
       changeNode: {
         name: 'changeNode',
         description: 'Update an existing feature or bug in the roadmap',
-        execute: (currentNodes, setValue, args: { newNode: Node<FeatureNodeData> }) => {
+        execute: (currentNodes, setValue, args: unknown) => {
+          const updatedNode = (args as { newNode?: Node<FeatureNodeData> } | undefined)?.newNode;
+          if (!updatedNode) {
+            return;
+          }
+
           const nodes = currentNodes as Node<FeatureNodeData>[];
-          const updatedNode = args.newNode;
 
           setValue(
             nodes.map((node) =>
