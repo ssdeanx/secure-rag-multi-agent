@@ -24,7 +24,9 @@ import { editorAgent } from "./agents/editorAgent";
 import { generateReportWorkflow } from "./workflows/generateReportWorkflow";
 import { randomUUID } from "crypto";
 import { qVector } from "./config/vector-store";
+import { SensitiveDataFilter } from '@mastra/core/ai-tracing';
 
+log.info("Mastra instance created");
 export const mastra = new Mastra({
   storage: sqlstore,
   logger: log,
@@ -35,8 +37,8 @@ export const mastra = new Mastra({
     verifier: verifierAgent,
     research: researchAgent,
     starter: starterAgent,
-    assistant: assistantAgent,
-    researchwork: researchAgent,
+    assist: assistantAgent,
+    researcher: researchAgent,
     report: reportAgent,
     copywriter: copywriterAgent,
     evaluation: evaluationAgent,
@@ -72,7 +74,7 @@ export const mastra = new Mastra({
               realtime: process.env.NODE_ENV === 'development',
               logLevel: 'info',
               options: {
-                batchSize: 100,
+                batchSize: 200,
                 flushInterval: 5000,
               }
             }),
