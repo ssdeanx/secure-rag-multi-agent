@@ -34,7 +34,7 @@ export const starterAgentTool = createTool({
       assistant: "assistant",
       roadmap: 'productRoadmapAgent',
       evaluation: 'evaluationAgent',
-      learning:  learningExtractionAgent.id,
+      learning:  'learningExtractionAgent',
     };
 
     // Create a span for tracing

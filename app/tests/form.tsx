@@ -1,16 +1,16 @@
 "use client";
- 
+
 import { useState } from "react";
-import { getWeatherInfo } from "./action";
- 
+import { getWeatherInfo } from "./actions";
+
 export function Form() {
   const [result, setResult] = useState<string | null>(null);
- 
+
   async function handleSubmit(formData: FormData) {
     const res = await getWeatherInfo(formData);
     setResult(res);
   }
- 
+
   return (
     <>
       <form action={handleSubmit}>

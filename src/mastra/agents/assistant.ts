@@ -17,6 +17,7 @@ import { webScraperTool,
 } from "../tools/web-scraper-tool";
 import { log } from "../config/logger";
 import { editorTool } from "../tools/editor-agent-tool";
+import { weatherTool } from "../tools/weather-tool";
 
 
 log.info('Initializing OpenRouter Assistant Agent...');
@@ -106,7 +107,8 @@ For complex research tasks that generate data, you MUST respond with a valid JSO
     //weatherTool,
     webScraperTool,
     //webSearchTool,
-    editorTool
+    editorTool,
+    weatherTool
     },
     inputProcessors: [
     new UnicodeNormalizer({

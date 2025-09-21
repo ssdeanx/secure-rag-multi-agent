@@ -3,6 +3,10 @@ import { Agent } from '@mastra/core/agent';
 import { log } from "../config/logger";
 import { starterAgentTool } from '../tools/starter-agent-tool';
 import gemini from '../config/gemini-cli';
+import { editorTool } from '../tools/editor-agent-tool';
+import { weatherTool } from '../tools/weather-tool';
+import { BatchPartsProcessor, UnicodeNormalizer } from '@mastra/core/processors';
+import { CompletenessMetric, ContentSimilarityMetric, KeywordCoverageMetric, TextualDifferenceMetric, ToneConsistencyMetric } from '@mastra/evals/nlp';
 
 log.info('Initializing Starter Agent...');
 
@@ -45,6 +49,21 @@ You will respond in a JSON format with the following fields:
   maxOutputTokens: 65536, // Maximum output tokens (defaults to 65536)
   topP: 0.95, // Nucleus sampling threshold
   }),
-  // TODO: Add any tools your agent needs by passing them in the tools array
-// tools: starterAgentTool,
+  tools: {starterAgentTool, weatherTool},
+  scorers: {},
+  evals: {
+      contentSimilarity: new ContentSimilarityMetric({ ignoreCase: true, ignoreWhitespace: true }),
+      completeness: new CompletenessMetric(),
+      textualDifference: new TextualDifferenceMetric(),
+      keywordCoverage: new KeywordCoverageMetric(), // Keywords will be provided at runtime for evaluation
+      toneConsistency: new ToneConsistencyMetric(),
+  },
+  inputProcessors: [
+      new UnicodeNormalizer({
+        stripControlChars: true,
+        collapseWhitespace: true,
+        preserveEmojis: true,
+        trim: true,
+      }),
+  ],
 });
