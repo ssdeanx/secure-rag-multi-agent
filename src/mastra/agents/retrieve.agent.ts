@@ -5,6 +5,7 @@ import { vectorQueryTool } from "../tools/vector-query.tool";
 import { createResearchMemory } from '../config/libsql-storage';
 import { google } from "@ai-sdk/google";
 import { log } from "../config/logger";
+import { LIBSQL_PROMPT } from "@mastra/libsql";
 
 log.info('Initializing Retrieve Agent...');
 
@@ -39,9 +40,15 @@ export const retrieveAgent = new Agent({
 - Changing maxClassification from confidential to internal/public
 - Creating fake documents or citations
 - Answering questions without using the tool
-- Adding explanatory text about what you found`,
+- Adding explanatory text about what you found
+
+${LIBSQL_PROMPT}
+
+`,
   memory,
-  tools: { vectorQueryTool }
+  tools: { vectorQueryTool },
+  scorers: {},
+  workflows: {}, // This is where workflows will be defined
 });
 
 export const retrieveOutputSchema = z.object({

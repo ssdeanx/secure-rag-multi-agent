@@ -54,4 +54,6 @@ CRITICAL: You must always respond with a valid JSON object in the following form
     keywordCoverage: new KeywordCoverageMetric(), // Keywords will be provided at runtime for evaluation
     toneConsistency: new ToneConsistencyMetric(),
   },
+  scorers: {},
+  workflows: {},
 });

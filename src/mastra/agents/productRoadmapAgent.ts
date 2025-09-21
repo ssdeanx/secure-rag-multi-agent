@@ -36,7 +36,7 @@ const graphQueryTool = createGraphRAGTool({
 });
 
 export const productRoadmapAgent = new Agent({
-  id: 'roadmap',
+  id: 'productRoadmap',
   name: 'Product Roadmap Agent',
   description: 'Manages the product roadmap for the Cedar project, including features, priorities, and requests with enhanced content generation capabilities.',
   instructions: `
@@ -176,5 +176,6 @@ When generating content, include the generated content in your response and indi
     // Add any evaluation metrics if needed
   },
   scorers: {
-  }
+  },
+  workflows: {},
 });

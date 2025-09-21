@@ -29,8 +29,8 @@ const openrouter = createOpenRouter({
 })
 
 export const assistantAgent = new Agent({
-    id: "assist",
-    name: "assistant",
+    id: "assistant",
+    name: "assistantAgent",
     description: 'A helpful assistant.',
     instructions: `
 <role>
@@ -72,11 +72,12 @@ For complex research tasks that generate data, you MUST respond with a valid JSO
     `,
     model: openrouter("x-ai/grok-4-fast:free",
     {
-        extraBody: {
-            reasoning: {
-                max_tokens: 6144,
-            },
-        }
+      includeReasoning: true,
+      extraBody: {
+          reasoning: { max_tokens: 20000 },
+          stream: true
+        },
+      usage: { include: true }
     }),
     memory: store,
     evals: {
@@ -98,15 +99,7 @@ For complex research tasks that generate data, you MUST respond with a valid JSO
     linkExtractorTool,
     htmlToMarkdownTool,
     contentCleanerTool,
-    //vectorQueryTool,
-    //chunkerTool,
-    //graphRAGUpsertTool,
-    //graphRAGTool,
-    //graphRAGQueryTool,
-    //rerankTool,
-    //weatherTool,
     webScraperTool,
-    //webSearchTool,
     editorTool,
     weatherTool
     },
@@ -117,13 +110,14 @@ For complex research tasks that generate data, you MUST respond with a valid JSO
       preserveEmojis: true,
       trim: true,
     }),
-  ],
-  outputProcessors: [
+    ],
+    outputProcessors: [
     new BatchPartsProcessor({
       batchSize: 10, // Maximum parts to batch together
       maxWaitTime: 50, // Maximum time to wait before emitting (ms)
       emitOnNonText: true, // Emit immediately on non-text parts
     }),
-  ],
+    ],
+    workflows: {}, // This is where workflows will be defined
 })
 log.info('OpenRouter Assistant Agent Working...');

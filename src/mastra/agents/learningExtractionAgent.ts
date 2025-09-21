@@ -44,6 +44,8 @@ Example:
     keywordCoverage: new KeywordCoverageMetric(), // Keywords will be provided at runtime for evaluation
     toneConsistency: new ToneConsistencyMetric(),
   },
-  model: google('gemini-2.5-flash-lite'),
+  model: google('gemini-2.5-flash'),
   memory: store,
+  scorers: {},
+  workflows: {},
 });

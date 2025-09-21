@@ -13,7 +13,7 @@ const store = createResearchMemory();
 export const answererAgent = new Agent({
   id: "answerer",
   name: "answerer",
-  model: google('gemini-2.5-flash-lite'),
+  model: google('gemini-2.5-flash'),
   description: "A STRICT governed RAG answer composer that crafts answers using ONLY the provided contexts, ensuring all statements are backed by citations.",
   instructions: `You are a STRICT governed RAG answer composer. Follow these rules EXACTLY:
 
@@ -56,6 +56,8 @@ Always respond with valid JSON that matches this exact structure.`,
   evals: {
     // Add any evaluation metrics if needed
   },
+  scorers: {},
+  workflows: {},
 });
 
 export const answererOutputSchema = ragAnswerSchema;

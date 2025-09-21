@@ -133,6 +133,8 @@ Include relevant metadata such as title, summary, and key points when applicable
  //   siteMapExtractorTool,
 //    linkExtractorTool,
     htmlToMarkdownTool,
-    contentCleanerTool
-  }
+    contentCleanerTool,
+  },
+  scorers: {},
+  workflows: {},
 });

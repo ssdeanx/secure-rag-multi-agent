@@ -51,6 +51,7 @@ You will respond in a JSON format with the following fields:
   }),
   tools: {starterAgentTool, weatherTool},
   scorers: {},
+  workflows: {},
   evals: {
       contentSimilarity: new ContentSimilarityMetric({ ignoreCase: true, ignoreWhitespace: true }),
       completeness: new CompletenessMetric(),

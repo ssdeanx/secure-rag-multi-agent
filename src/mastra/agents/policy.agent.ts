@@ -36,6 +36,8 @@ Examples:
   evals: {
     // Add any evaluation metrics if needed
   },
+  scorers: {},
+  workflows: {},
 });
 
 export const policyOutputSchema = accessFilterSchema.extend({

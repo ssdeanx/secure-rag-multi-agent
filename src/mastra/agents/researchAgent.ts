@@ -18,7 +18,7 @@ log.info("Initializing Research Agent...");
 const memory = createResearchMemory();
 
 export const researchAgent = new Agent({
-  id: 'researcher',
+  id: 'research',
   name: 'Research Agent',
   description: 'An expert research agent that conducts thorough research using web search and analysis tools.',
   instructions: `

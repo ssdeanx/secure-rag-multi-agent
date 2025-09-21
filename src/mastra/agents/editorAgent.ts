@@ -88,6 +88,8 @@ You must respond with a JSON object in the following format:
 }
 </output_format>
   `,
-  model: google('gemini-2.5-flash-lite'),
+  model: google('gemini-2.5-flash'),
   memory: store,
+  scorers: {},
+  workflows: {},
 });

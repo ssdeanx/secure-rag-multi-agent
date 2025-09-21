@@ -5,9 +5,8 @@ import './globals.css';
 import { ThemeProvider } from '../components/ThemeProvider';
 import { Toaster } from '../components/ui/toaster';
 import { TopNavigation } from '../components/TopNavigation';
-import { Footer } from '../components/Footer';
 
-import type { Metadata } from 'next';
+import type { Metadata, Viewport } from 'next';
 
 const inter = Inter({ subsets: ['latin'] });
 
@@ -26,11 +25,14 @@ export const metadata: Metadata = {
     'Enterprise AI',
     'AI Tools'
   ],
+  generator: 'Next.js',
+};
+
+export const viewport: Viewport = {
   themeColor: [
     { media: '(prefers-color-scheme: light)', color: 'white' },
     { media: '(prefers-color-scheme: dark)', color: 'black' },
   ],
-  generator: 'Next.js',
 };
 
 export default function RootLayout({
@@ -53,8 +55,6 @@ export default function RootLayout({
             <main className="main-content app-container">
               {children}
             </main>
-
-            <Footer />
           </div>
 
           <Toaster />

@@ -2,28 +2,28 @@
 @import "tw-animate-css";
 
 :root {
-  /* Zinc-Based Professional Theme - Eye-Friendly */
-  --color-background: oklch(0.97 0.005 45);
+  /* Zinc-Based Professional Theme - Pure Cool Neutrals (No Mocha/Warmth) */
+  --color-background: oklch(100% 0 0); /* Pure white */
   --color-foreground: oklch(0.15 0.02 25);
-  --color-card: oklch(0.97 0.005 45); /* MATCH background exactly */
+  --color-card: oklch(100% 0 0); /* MATCH background exactly */
   --color-card-foreground: oklch(0.15 0.02 25);
-  --color-popover: oklch(0.97 0.005 45); /* MATCH background exactly */
+  --color-popover: oklch(100% 0 0); /* MATCH background exactly */
   --color-popover-foreground: oklch(0.15 0.02 25);
 
-  /* Primary - Zinc 700-800 (Main Theme Color) */
-  --color-primary: oklch(0.25 0.02 25); /* Zinc 700-800 equivalent */
+  /* Primary - Pure Zinc */
+  --color-primary: oklch(0.25 0.02 25); /* Zinc 700-800 */
   --color-primary-foreground: oklch(0.98 0.005 45);
 
-  /* Secondary - Light Silver/White */
-  --color-secondary: oklch(0.92 0.01 45);
+  /* Secondary - Cool Zinc Gray (No Warmth) */
+  --color-secondary: oklch(0.92 0.005 45); /* Pure cool silver */
   --color-secondary-foreground: oklch(0.15 0.02 25);
 
-  /* Muted - Zinc Gray */
+  /* Muted - Cool Zinc */
   --color-muted: oklch(0.88 0.005 50);
   --color-muted-foreground: oklch(0.45 0.01 35);
 
-  /* Accent - Distinct from Primary (Yellow/Green/Red) */
-  --color-accent: oklch(94.871% 0.17023 105.273); /* Yellow accent - clearly different from zinc primary */
+  /* Accent - Strict Yellow (No Pink/Coral) */
+  --color-accent: oklch(94.871% 0.17023 105.273); /* Pure yellow */
   --color-accent-foreground: oklch(0.15 0.02 25);
 
   /* Destructive - Red */
@@ -35,7 +35,7 @@
   --color-input: oklch(0.85 0.005 45);
   --color-ring: oklch(0.75 0.18 85); /* Yellow ring to match accent */
 
-  /* Zinc-Based Color Variants - No Blue/Pink/Purple */
+  /* Zinc-Based Color Variants - No Pink/Purple */
   --color-green-light: oklch(0.85 0.08 142);
   --color-green-dark: oklch(0.25 0.12 142);
   --color-yellow-light: oklch(0.92 0.15 85);
@@ -46,78 +46,22 @@
   --color-zinc-medium: oklch(41.265% 0.00559 33.899);
   --color-zinc-dark: oklch(0.15 0.02 25);
 
-  /* Brutalist Design Colors - Zinc Based */
+  /* Brutalist - Pure Zinc (No Warmth) */
   --color-brutalist-bg: oklch(0.05 0.01 25);
   --color-brutalist-text: oklch(0.98 0.005 45);
-  --color-brutalist-accent: oklch(0.85 0.02 45);
+  --color-brutalist-accent: oklch(0.85 0.005 45); /* Cool zinc */
 
-  /* Border radius - Modern 2025 */
-  --radius: 0.75rem;
-  --radius-sm: 0.5rem;
-  --radius-md: 0.625rem;
-  --radius-lg: 0.75rem;
-  --radius-xl: 1rem;
-  --radius-2xl: 1.5rem;
-  --radius-brutalist: 0.25rem;
-
-  /* Advanced Fluid Spacing - 2025 */
-  --spacing-xs: clamp(0.5rem, 1vw, 0.75rem);
-  --spacing-sm: clamp(0.75rem, 1.5vw, 1rem);
-  --spacing-md: clamp(1rem, 2vw, 1.5rem);
-  --spacing-lg: clamp(1.5rem, 3vw, 2rem);
-  --spacing-xl: clamp(2rem, 4vw, 3rem);
-  --spacing-2xl: clamp(3rem, 6vw, 4rem);
-
-  /* Bold Typography Scale - 2025 */
-  --font-size-xs: clamp(0.875rem, 1.2vw, 1rem);
-  --font-size-sm: clamp(1rem, 1.5vw, 1.125rem);
-  --font-size-base: clamp(1.125rem, 1.8vw, 1.25rem);
-  --font-size-lg: clamp(1.25rem, 2vw, 1.5rem);
-  --font-size-xl: clamp(1.5rem, 2.5vw, 2rem);
-  --font-size-2xl: clamp(2rem, 3vw, 2.5rem);
-  --font-size-3xl: clamp(2.5rem, 4vw, 3rem);
-  --font-size-4xl: clamp(3rem, 5vw, 4rem);
-
-  /* Advanced Animation System - 2025 */
-  --duration-fast: 120ms;
-  --duration-normal: 250ms;
-  --duration-slow: 400ms;
-  --duration-smooth: 600ms;
-
-  /* Modern Easing Functions */
-  --ease-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
-  --ease-bounce: cubic-bezier(0.68, -0.55, 0.265, 1.55);
-  --ease-smooth: cubic-bezier(0.4, 0, 0.2, 1);
-  --ease-sharp: cubic-bezier(0.4, 0, 0.6, 1);
-
-  /* Text Shadow System - Tailwind v4.1 */
-  --text-shadow-sm: 0 1px 2px rgb(0 0 0 / 0.05);
-  --text-shadow: 0 1px 3px rgb(0 0 0 / 0.1), 0 1px 2px rgb(0 0 0 / 0.06);
-  --text-shadow-lg: 0 10px 15px rgb(0 0 0 / 0.1), 0 4px 6px rgb(0 0 0 / 0.05);
-  --text-shadow-xl: 0 20px 25px rgb(0 0 0 / 0.1), 0 10px 10px rgb(0 0 0 / 0.04);
-  --text-shadow-2xl: 0 25px 50px rgb(0 0 0 / 0.25);
-  --text-shadow-inner: inset 0 2px 4px 0 rgb(0 0 0 / 0.05);
-
-  /* Box Shadow System - Advanced */
-  --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
-  --shadow: 0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px 0 rgb(0 0 0 / 0.06);
-  --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -1px rgb(0 0 0 / 0.06);
-  --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -2px rgb(0 0 0 / 0.05);
-  --shadow-xl: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 10px 10px -5px rgb(0 0 0 / 0.04);
-  --shadow-2xl: 0 25px 50px -12px rgb(0 0 0 / 0.25);
-  --shadow-inner: inset 0 2px 4px 0 rgb(0 0 0 / 0.05);
-
-  /* Zinc-Based Gradients - Eye-Friendly */
-  --gradient-mocha: linear-gradient(135deg, var(--color-zinc-light) 0%, var(--color-zinc-medium) 100%);
+  /* Zinc-Only Gradients (No Mocha) */
+  --gradient-mocha: linear-gradient(135deg, var(--color-zinc-light) 0%, var(--color-zinc-medium) 100%); /* Renamed but zinc-only */
   --gradient-accent: linear-gradient(135deg, var(--color-accent) 0%, var(--color-zinc-medium) 100%);
   --gradient-subtle: linear-gradient(135deg, var(--color-background) 0%, var(--color-muted) 100%);
 
-  /* Duplicated for Tailwind compatibility - MATCH main background */
-  --background: oklch(0.97 0.005 45);
+  /* Duplicated for Tailwind compatibility - Updated to match */
+  --background: oklch(100% 0 0);
   --foreground: oklch(0.15 0.02 25);
-  --card: oklch(0.99 0.002 45);
+  --card: oklch(100% 0 0);
   --card-foreground: oklch(0.15 0.02 25);
-  --popover: oklch(0.99 0.002 45);
+  --popover: oklch(100% 0 0);
   --popover-foreground: oklch(0.15 0.02 25);
   --primary: oklch(0.25 0.02 25); /* Zinc 700-800 equivalent */
   --primary-foreground: oklch(0.98 0.005 45);
@@ -180,28 +124,28 @@
 }
 
 .dark {
-  /* 2025 Dark Mode - Modern Mocha Palette */
-  --color-background: oklch(0.08 0.02 25);
+  /* Dark Mode - Pure Zinc (No Mocha Warmth) */
+  --color-background: oklch(0% 0 0); /* Pure black */
   --color-foreground: oklch(0.95 0.005 45);
-  --color-card: oklch(0.12 0.015 25);
+  --color-card: oklch(0.12 0.005 25); /* Cool zinc card */
   --color-card-foreground: oklch(0.95 0.005 45);
-  --color-popover: oklch(0.12 0.015 25);
+  --color-popover: oklch(0.12 0.005 25);
   --color-popover-foreground: oklch(0.95 0.005 45);
 
-  /* Primary - Zinc 700-800 (Dark Mode) */
-  --color-primary: oklch(0.20 0.02 25); /* Darker zinc for dark mode */
+  /* Primary - Pure Zinc */
+  --color-primary: oklch(0.20 0.02 25);
   --color-primary-foreground: oklch(0.95 0.005 45);
 
-  /* Secondary - Warm Beige */
-  --color-secondary: oklch(0.25 0.02 45);
+  /* Secondary - Cool Zinc (No Beige/Taupe) */
+  --color-secondary: oklch(0.25 0.005 45); /* Pure cool gray */
   --color-secondary-foreground: oklch(0.95 0.005 45);
 
-  /* Muted - Dark Taupe */
-  --color-muted: oklch(0.18 0.01 35);
-  --color-muted-foreground: oklch(0.65 0.02 40);
+  /* Muted - Cool Zinc */
+  --color-muted: oklch(0.18 0.005 35);
+  --color-muted-foreground: oklch(0.65 0.01 40);
 
-  /* Accent - Bright Coral */
-  --color-accent: oklch(0.75 0.20 12);
+  /* Accent - Strict Yellow (No Coral/Pink) */
+  --color-accent: oklch(0.92 0.15 85); /* Cool yellow, no warmth */
   --color-accent-foreground: oklch(0.08 0.02 25);
 
   /* Destructive - Bright Red */
@@ -214,27 +158,27 @@
   --color-ring: oklch(0.75 0.06 40);
 
   /* Advanced Dark Variants */
-  --color-mocha-light: oklch(0.65 0.04 35);
-  --color-mocha-dark: oklch(0.05 0.015 20);
-  --color-coral-bright: oklch(0.85 0.22 10);
-  --color-taupe-warm: oklch(0.30 0.02 40);
-  --color-beige-soft: oklch(0.20 0.008 45);
+  --color-mocha-light: oklch(0.65 0.005 35); /* Renamed to zinc */
+  --color-mocha-dark: oklch(0.05 0.005 25);
+  --color-coral-bright: oklch(0.85 0.12 15); /* Changed to red, no coral */
+  --color-taupe-warm: oklch(0.30 0.005 40); /* Cool gray */
+  --color-beige-soft: oklch(0.20 0.005 45); /* Cool gray */
 
-  /* Brutalist Dark Colors - Zinc Based */
+  /* Brutalist Dark - Pure Zinc */
   --color-brutalist-bg: oklch(0.02 0.005 25);
   --color-brutalist-text: oklch(0.98 0.005 45);
-  --color-brutalist-accent: oklch(0.90 0.02 45);
+  --color-brutalist-accent: oklch(0.90 0.005 45);
 
-  /* Dark Mode Gradients - Zinc Based */
+  /* Zinc-Only Gradients (No Mocha) */
   --gradient-accent: linear-gradient(135deg, var(--color-accent) 0%, var(--color-zinc-medium) 100%);
   --gradient-subtle: linear-gradient(135deg, var(--color-background) 0%, var(--color-muted) 100%);
 
   /* Duplicated for Tailwind compatibility - MATCH dark background */
-  --background: oklch(0.08 0.02 25);
+  --background: oklch(0% 0 0);
   --foreground: oklch(0.95 0.005 45);
-  --card: oklch(0.12 0.015 25);
+  --card: oklch(0.12 0.005 25);
   --card-foreground: oklch(0.95 0.005 45);
-  --popover: oklch(0.12 0.015 25);
+  --popover: oklch(0.12 0.005 25);
   --popover-foreground: oklch(0.95 0.005 45);
   --primary: oklch(0.20 0.02 25); /* Darker zinc for dark mode */
   --primary-foreground: oklch(0.95 0.005 45);
@@ -242,7 +186,7 @@
   --secondary-foreground: oklch(0.95 0.005 45);
   --muted: oklch(0.18 0.01 35);
   --muted-foreground: oklch(0.65 0.02 40);
-  --accent: oklch(0.75 0.20 12);
+  --accent: oklch(0.92 0.15 85); /* Cool yellow, no warmth */
   --accent-foreground: oklch(0.08 0.02 25);
   --destructive: oklch(0.65 0.25 15);
   --border: oklch(0.22 0.01 30);
@@ -876,7 +820,7 @@ body {
 
 @media (prefers-color-scheme: dark) {
   :root:not(.light) {
-    --color-background: oklch(0.08 0.02 25);
+    --color-background: oklch(0% 0 0);
     --color-foreground: oklch(0.95 0.005 45);
   }
 }
@@ -942,7 +886,7 @@ body {
   }
 }
 
-/* Neon Glow Effects - Zinc Based */
+/* Neon Glow Effects - Zinc/Yellow/Red/Green Only (No Pink/Purple) */
 .neon-glow-blue {
   box-shadow:
     0 0 5px oklch(0.7 0.02 45),
@@ -951,7 +895,7 @@ body {
     0 0 20px oklch(0.7 0.02 45);
 }
 
-.neon-glow-pink {
+.neon-glow-yellow { /* Renamed from pink */
   box-shadow:
     0 0 5px oklch(0.75 0.18 85),
     0 0 10px oklch(0.75 0.18 85),
@@ -967,12 +911,12 @@ body {
     0 0 20px oklch(0.8 0.02 45);
 }
 
-.neon-glow-purple {
+.neon-glow-zinc { /* Renamed from purple */
   box-shadow:
-    0 0 5px oklch(0.6 0.02 45),
-    0 0 10px oklch(0.6 0.02 45),
-    0 0 15px oklch(0.6 0.02 45),
-    0 0 20px oklch(0.6 0.02 45);
+    0 0 5px oklch(0.6 0.02 25),
+    0 0 10px oklch(0.6 0.02 25),
+    0 0 15px oklch(0.6 0.02 25),
+    0 0 20px oklch(0.6 0.02 25);
 }
 
 .neon-glow-green {
@@ -1295,4 +1239,30 @@ button, input[type="button"], input[type="submit"], .btn, [class*="btn-"] {
    across the entire header when layout utilities are missing */
 .site-header .flex, .site-header .items-center {
   align-items: center !important;
+}
+
+/* Enhanced Accessibility - Reduced Motion */
+@media (prefers-reduced-motion: reduce) {
+  .hover-lift,
+  .hover-glow,
+  .hover-scale,
+  .hover-rotate,
+  .animated-gradient,
+  .pulse-slow,
+  .scroll-reveal,
+  .scroll-fade-in,
+  .scroll-slide-up,
+  .scroll-scale-in,
+  .interactive-element,
+  .loading-state::after,
+  /* Add particles pause if CSS controllable */
+  #tsparticles {
+    animation: none !important;
+    transition: none !important;
+    transform: none !important;
+  }
+
+  html {
+    scroll-behavior: auto;
+  }
 }

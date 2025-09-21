@@ -26,6 +26,8 @@ Always use the jwt-auth tool - never attempt to decode JWTs manually.`,
   evals: {
     // Add any evaluation metrics if needed
   },
+  scorers: {},
+  workflows: {},
 });
 
 export const identityOutputSchema = jwtClaimsSchema.extend({

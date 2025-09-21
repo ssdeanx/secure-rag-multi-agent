@@ -31,10 +31,8 @@ export const starterAgentTool = createTool({
       research: "researchAgent",
       copywriter: "copywriterAgent",
       editor: "editorAgent",
-      assistant: "assistant",
-      roadmap: 'productRoadmapAgent',
-      evaluation: 'evaluationAgent',
-      learning:  'learningExtractionAgent',
+      assistant: "assistantAgent",
+      productRoadmap: 'productRoadmapAgent',
     };
 
     // Create a span for tracing

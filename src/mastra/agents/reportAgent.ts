@@ -69,4 +69,6 @@ Include a summary of the research process.
   },
   model: google('gemini-2.5-flash'),
   memory: store,
+  scorers: {},
+  workflows: {},
 });
