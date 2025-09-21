@@ -59,7 +59,7 @@ export function DocsLayout({ children }: DocsLayoutProps) {
         {/* Header */}
         <div className="mb-8">
           <div className="flex items-center justify-center mb-6">
-            <Link href="/docs" className="flex items-center space-x-4 group">
+            <Link href="/docs" className="flex items-center space-x-4 group" legacyBehavior>
               <div className="relative">
                 <Shield className="h-12 w-12 text-primary animate-pulse" />
                 <div className="absolute -top-1 -right-1 w-4 h-4 bg-accent rounded-full animate-ping" />
@@ -108,7 +108,7 @@ export function DocsLayout({ children }: DocsLayoutProps) {
                         const Icon = item.icon
                         const isActive = pathname === item.href
                         return (
-                          <Link key={item.href} href={item.href}>
+                          <Link key={item.href} href={item.href} legacyBehavior>
                             <Button
                               variant={isActive ? "secondary" : "ghost"}
                               className={cn(
@@ -121,7 +121,7 @@ export function DocsLayout({ children }: DocsLayoutProps) {
                               {isActive && <ChevronRight className="h-4 w-4 ml-auto" />}
                             </Button>
                           </Link>
-                        )
+                        );
                       })}
                     </div>
                     <Separator className="mt-4" />
@@ -135,14 +135,22 @@ export function DocsLayout({ children }: DocsLayoutProps) {
                   </h3>
                   <div className="space-y-1">
                     <Button variant="ghost" className="w-full justify-start h-9 px-3 text-sm" asChild>
-                      <Link href="https://github.com/ssdeanx/governed-rag-ai" target="_blank" rel="noopener noreferrer">
+                      <Link
+                        href="https://github.com/ssdeanx/governed-rag-ai"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        legacyBehavior>
                         <Github className="h-4 w-4 mr-2" />
                         GitHub
                         <ExternalLink className="h-3 w-3 ml-auto" />
                       </Link>
                     </Button>
                     <Button variant="ghost" className="w-full justify-start h-9 px-3 text-sm" asChild>
-                      <Link href="https://mastra.ai" target="_blank" rel="noopener noreferrer">
+                      <Link
+                        href="https://mastra.ai"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        legacyBehavior>
                         <Shield className="h-4 w-4 mr-2" />
                         Mastra.ai
                         <ExternalLink className="h-3 w-3 ml-auto" />
@@ -167,5 +175,5 @@ export function DocsLayout({ children }: DocsLayoutProps) {
         </div>
       </div>
     </div>
-  )
+  );
 }

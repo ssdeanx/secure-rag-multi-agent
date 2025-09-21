@@ -221,12 +221,12 @@ const RadialMenuSpell: React.FC<RadialMenuSpellProps> = ({
 
 	// Render ---------------------------------------------------------
 	return (
-		<div
+        <div
 			ref={containerRef}
 			className='fixed top-0 left-0 z-[10000] pointer-events-none'
 			style={{ width: 0, height: 0 }}>
-			{/* outer container with translations */}
-			<div
+            {/* outer container with translations */}
+            <div
 				className='absolute pointer-events-auto'
 				style={{
 					left: menuPosition.x,
@@ -372,7 +372,7 @@ const RadialMenuSpell: React.FC<RadialMenuSpellProps> = ({
 					const isActive = hoverIndex === idx;
 
 					return (
-						<div
+                        <div
 							key={idx}
 							className={cn(
 								'absolute flex flex-col items-center justify-center w-12 h-12 select-none drop-shadow font-semibold'
@@ -384,18 +384,18 @@ const RadialMenuSpell: React.FC<RadialMenuSpellProps> = ({
 								color: textColor,
 								opacity: isActive ? 1 : 0.8,
 							}}>
-							{typeof item.icon === 'string' ? (
+                            {typeof item.icon === 'string' ? (
 								<span className='text-lg leading-none'>{item.icon}</span>
 							) : (
 								// Render Lucide icon component
-								React.createElement(item.icon, {
+								(React.createElement(item.icon, {
 									size: 18,
 									strokeWidth: 1.5,
 									className: 'w-5 h-5',
-								})
+								}))
 							)}
-						</div>
-					);
+                        </div>
+                    );
 				})}
 
 				{/* Cancel / center */}
@@ -446,8 +446,8 @@ const RadialMenuSpell: React.FC<RadialMenuSpellProps> = ({
 					);
 				})()}
 			</div>
-		</div>
-	);
+        </div>
+    );
 };
 
 export default RadialMenuSpell;

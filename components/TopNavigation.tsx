@@ -35,13 +35,12 @@ export function TopNavigation({ children, currentRole, onSignOut }: TopNavigatio
         <span className="text-base font-semibold text-foreground">Deamachines</span>
         <span className="text-xs text-muted-foreground">• AI Solutions</span>
       </div>
-
       {/* Navigation Menu */}
       <NavigationMenu className="flex">
         <NavigationMenuList>
           {navigationLinks.map((link) => (
             <NavigationMenuItem key={link.href}>
-              <Link href={link.href}>
+              <Link href={link.href} legacyBehavior>
                 <Button
                   variant={link.active ? "default" : "ghost"}
                   size="sm"
@@ -77,13 +76,12 @@ export function TopNavigation({ children, currentRole, onSignOut }: TopNavigatio
           ))}
         </NavigationMenuList>
       </NavigationMenu>
-
       {/* Right side content */}
       <div className="flex items-center space-x-2">
         {currentRole ? (
           <UserMenu currentRole={currentRole} onSignOut={onSignOut} />
         ) : (
-          <Link href="/login">
+          <Link href="/login" legacyBehavior>
             <Button
               variant="outline"
               size="sm"

@@ -63,7 +63,7 @@ export const TooltipMenu: React.FC<TooltipMenuProps> = ({
 	};
 
 	return (
-		<div
+        <div
 			ref={ref}
 			style={{
 				position: 'fixed',
@@ -78,7 +78,7 @@ export const TooltipMenu: React.FC<TooltipMenuProps> = ({
 				'text-black dark:text-white',
 				'border-gray-300 dark:border-gray-600'
 			)}>
-			{items.map((item, index) => (
+            {items.map((item, index) => (
 				<button
 					key={index}
 					onClick={() => handleItemClick(item)}
@@ -92,14 +92,14 @@ export const TooltipMenu: React.FC<TooltipMenuProps> = ({
 						<span className='text-lg leading-none'>{item.icon}</span>
 					) : (
 						// Render Lucide icon component
-						React.createElement(item.icon, {
+						(React.createElement(item.icon, {
 							size: 16,
 							strokeWidth: 1.5,
 							className: 'w-4 h-4',
-						})
+						}))
 					)}
 				</button>
 			))}
-		</div>
-	);
+        </div>
+    );
 };
