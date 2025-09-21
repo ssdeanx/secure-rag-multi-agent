@@ -30,16 +30,17 @@ function FAQ() {
   );
 }
 
-export default function HomePage() {
+export default function Home() {
   return (
     <>
       <AnimatedHero />
       <InteractiveFeatures />
       <Stats />
       <Testimonials />
-      <FAQ />
       <NewsletterForm />
       <CTA />
+      <FAQ />
     </>
   );
 }
+

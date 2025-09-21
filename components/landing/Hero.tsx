@@ -4,10 +4,10 @@ import { GovernedRAGLogo } from '../GovernedRAGLogo'; // Adjust path if needed
 
 export function Hero() {
   return (
-    <section className="min-h-screen flex flex-col items-center justify-center text-center px-4 py-20 bg-background">
-      <div className="max-w-4xl mx-auto">
+    <section className="min-h-screen flex items-center justify-center">
+      <div className="text-center">
         <GovernedRAGLogo className="h-16 w-16 mx-auto mb-6 text-primary" />
-        <h1 className="text-5xl md:text-6xl font-bold text-foreground mb-6">
+        <h1 className="text-4xl md:text-6xl font-bold text-foreground mb-6">
           Deanmachines
         </h1>
         <p className="text-xl md:text-2xl text-muted-foreground mb-8 max-w-2xl mx-auto leading-relaxed">

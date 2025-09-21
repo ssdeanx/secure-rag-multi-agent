@@ -86,7 +86,7 @@ export function InteractiveFeatures() {
 						<motion.div
 							key={index}
 							variants={itemVariants}
-							whileHover={shouldReduceMotion ? undefined : hoverVariants}
+							whileHover={shouldReduceMotion ? undefined : 'hover'}
 							layout
 						>
 							<Card className="border-0 shadow-sm h-full">

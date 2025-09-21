@@ -1,5 +1,6 @@
 @import "tailwindcss";
 @import "tw-animate-css";
+@import "@tailwindcss/postcss";
 
 :root {
   /* Zinc-Based Professional Theme - Pure Cool Neutrals (No Mocha/Warmth) */
@@ -22,12 +23,12 @@
   --color-muted: oklch(0.88 0.005 50);
   --color-muted-foreground: oklch(0.45 0.01 35);
 
-  /* Accent - Strict Yellow (No Pink/Coral) */
-  --color-accent: oklch(94.871% 0.17023 105.273); /* Pure yellow */
+  /* Accent -  */
+  --color-accent: oklch(60.227% 0.20069 141.929); 
   --color-accent-foreground: oklch(0.15 0.02 25);
 
   /* Destructive - Red */
-  --color-destructive: oklch(0.55 0.22 15);
+  --color-destructive: oklch(56.53% 0.22137 28.229 / 0.795);
   --color-destructive-foreground: oklch(0.98 0.005 45);
 
   /* Border - Subtle Zinc */
@@ -40,21 +41,11 @@
   --color-green-dark: oklch(0.25 0.12 142);
   --color-yellow-light: oklch(0.92 0.15 85);
   --color-yellow-dark: oklch(0.45 0.18 85);
-  --color-red-light: oklch(0.85 0.12 15);
-  --color-red-dark: oklch(0.35 0.22 15);
+  --color-red-light: oklch(62.793% 0.25768 29.223);
+  --color-red-dark: oklch(36.294% 0.14723 28.966);
   --color-zinc-light: oklch(0.95 0.005 45);
   --color-zinc-medium: oklch(41.265% 0.00559 33.899);
   --color-zinc-dark: oklch(0.15 0.02 25);
-
-  /* Brutalist - Pure Zinc (No Warmth) */
-  --color-brutalist-bg: oklch(0.05 0.01 25);
-  --color-brutalist-text: oklch(0.98 0.005 45);
-  --color-brutalist-accent: oklch(0.85 0.005 45); /* Cool zinc */
-
-  /* Zinc-Only Gradients (No Mocha) */
-  --gradient-mocha: linear-gradient(135deg, var(--color-zinc-light) 0%, var(--color-zinc-medium) 100%); /* Renamed but zinc-only */
-  --gradient-accent: linear-gradient(135deg, var(--color-accent) 0%, var(--color-zinc-medium) 100%);
-  --gradient-subtle: linear-gradient(135deg, var(--color-background) 0%, var(--color-muted) 100%);
 
   /* Duplicated for Tailwind compatibility - Updated to match */
   --background: oklch(100% 0 0);
@@ -71,7 +62,7 @@
   --muted-foreground: oklch(0.45 0.02 35);
   --accent: oklch(91.325% 0.1486 96.547);
   --accent-foreground: oklch(0.98 0.005 45);
-  --destructive: oklch(0.55 0.22 15);
+  --destructive: oklch(54.433% 0.22338 29.223);
   --border: oklch(0.88 0.005 45);
   --input: oklch(0.88 0.005 45);
   --ring: oklch(0.25 0.08 35);
@@ -97,38 +88,12 @@
   --color-security-public: oklch(0.646 0.222 41.116);
 }
 
-/* Sidebar defaults moved from inline styles in components to global CSS variables.
-   These provide sane defaults and can be overridden by utility classes if needed. */
-.sidebar-wrapper {
-  --sidebar-width: 16rem;
-  --sidebar-width-icon: 3rem;
-}
-
-/* Mobile sheet instances set data-mobile="true" on the element; give them a
-   slightly larger default width for touch targets. */
-[data-mobile="true"] {
-  --sidebar-width: 18rem;
-}
-
-/* Default skeleton width when a dynamic width isn't provided from JS. */
-.sidebar-menu-skeleton .skeleton-text {
-  --skeleton-width: 65%;
-  max-width: var(--skeleton-width);
-}
-
-/* Toaster theme CSS variables (moved from inline style in components/ui/sonner.tsx) */
-.toaster {
-  --normal-bg: var(--popover);
-  --normal-text: var(--popover-foreground);
-  --normal-border: var(--border);
-}
-
 .dark {
   /* Dark Mode - Pure Zinc (No Mocha Warmth) */
   --color-background: oklch(0% 0 0); /* Pure black */
   --color-foreground: oklch(0.95 0.005 45);
   --color-card: oklch(0.12 0.005 25); /* Cool zinc card */
-  --color-card-foreground: oklch(0.95 0.005 45);
+  --color-card-foreground: oklch(85.452% 0.0001 271.152);
   --color-popover: oklch(0.12 0.005 25);
   --color-popover-foreground: oklch(0.95 0.005 45);
 
@@ -137,7 +102,7 @@
   --color-primary-foreground: oklch(0.95 0.005 45);
 
   /* Secondary - Cool Zinc (No Beige/Taupe) */
-  --color-secondary: oklch(0.25 0.005 45); /* Pure cool gray */
+  --color-secondary: oklch(27.274% 0.00003 271.152); /* Pure cool gray */
   --color-secondary-foreground: oklch(0.95 0.005 45);
 
   /* Muted - Cool Zinc */
@@ -149,30 +114,15 @@
   --color-accent-foreground: oklch(0.08 0.02 25);
 
   /* Destructive - Bright Red */
-  --color-destructive: oklch(0.65 0.25 15);
+  --color-destructive: oklch(56% 0.19459 26.178);
   --color-destructive-foreground: oklch(0.95 0.005 45);
 
   /* Border - Subtle */
   --color-border: oklch(0.22 0.01 30);
   --color-input: oklch(0.22 0.01 30);
-  --color-ring: oklch(0.75 0.06 40);
+  --color-ring: oklch(79.697% 0.03364 39.189);
 
-  /* Advanced Dark Variants */
-  --color-mocha-light: oklch(0.65 0.005 35); /* Renamed to zinc */
-  --color-mocha-dark: oklch(0.05 0.005 25);
-  --color-coral-bright: oklch(0.85 0.12 15); /* Changed to red, no coral */
-  --color-taupe-warm: oklch(0.30 0.005 40); /* Cool gray */
-  --color-beige-soft: oklch(0.20 0.005 45); /* Cool gray */
-
-  /* Brutalist Dark - Pure Zinc */
-  --color-brutalist-bg: oklch(0.02 0.005 25);
-  --color-brutalist-text: oklch(0.98 0.005 45);
-  --color-brutalist-accent: oklch(0.90 0.005 45);
-
-  /* Zinc-Only Gradients (No Mocha) */
-  --gradient-accent: linear-gradient(135deg, var(--color-accent) 0%, var(--color-zinc-medium) 100%);
-  --gradient-subtle: linear-gradient(135deg, var(--color-background) 0%, var(--color-muted) 100%);
-
+  
   /* Duplicated for Tailwind compatibility - MATCH dark background */
   --background: oklch(0% 0 0);
   --foreground: oklch(0.95 0.005 45);
@@ -194,437 +144,34 @@
   --ring: oklch(0.75 0.06 40);
 }
 
-/* Simple custom utilities */
-.pulse-slow {
-  animation: pulse 3s cubic-bezier(0.4, 0, 0.2, 1) infinite;
-}
-
-/* Enhanced spacing utilities with fluid scaling */
-.spacing-fluid-xs {
-  margin: var(--spacing-xs);
-}
-
-.spacing-fluid-sm {
-  margin: var(--spacing-sm);
-}
-
-.spacing-fluid-md {
-  margin: var(--spacing-md);
-}
-
-.spacing-fluid-lg {
-  margin: var(--spacing-lg);
-}
-
-.spacing-fluid-xl {
-  margin: var(--spacing-xl);
-}
-
-/* Advanced sizing utilities */
-.size-content {
-  width: fit-content;
-  height: fit-content;
-}
-
-.size-min-content {
-  width: min-content;
-  height: min-content;
-}
-
-.size-max-content {
-  width: max-content;
-  height: max-content;
-}
-
-.size-viewport {
-  width: 100vw;
-  height: 100vh;
-}
-
-/* 2025 Advanced Utility Classes */
-
-/* Text Shadow System - Tailwind v4.1 */
-.text-shadow-sm { text-shadow: var(--text-shadow-sm); }
-.text-shadow { text-shadow: var(--text-shadow); }
-.text-shadow-lg { text-shadow: var(--text-shadow-lg); }
-.text-shadow-xl { text-shadow: var(--text-shadow-xl); }
-.text-shadow-2xl { text-shadow: var(--text-shadow-2xl); }
-.text-shadow-inner { text-shadow: var(--text-shadow-inner); }
-
-/* Brutalist Design Elements */
-.brutalist-card {
-  background: var(--color-brutalist-bg);
-  border: 3px solid var(--color-brutalist-text);
-  border-radius: var(--radius-brutalist);
-  box-shadow: var(--shadow-xl);
-}
-
-.brutalist-text {
-  font-weight: 900;
-  letter-spacing: -0.02em;
-  text-transform: uppercase;
-  color: var(--color-brutalist-text);
-  text-shadow: var(--text-shadow);
-}
-
-.brutalist-accent {
-  background: var(--color-brutalist-accent);
-  color: var(--color-brutalist-bg);
-  border: 2px solid var(--color-brutalist-text);
-}
-
-/* Modern Gradient Backgrounds */
-.bg-gradient-mocha { background: var(--gradient-mocha); }
-.bg-gradient-accent { background: var(--gradient-accent); }
-.bg-gradient-subtle { background: var(--gradient-subtle); }
-
-/* Advanced Micro-interactions */
-.hover-lift {
-  transition: transform var(--duration-normal) var(--ease-spring);
-}
-
-.hover-lift:hover {
-  transform: translateY(-0.25rem);
-}
-
-.hover-glow {
-  transition: box-shadow var(--duration-normal) var(--ease-smooth);
-}
-
-.hover-glow:hover {
-  box-shadow: var(--shadow-2xl);
-}
-
-.hover-scale {
-  transition: transform var(--duration-fast) var(--ease-spring);
-}
-
-.hover-scale:hover {
-  transform: scale(1.02);
-}
-
-.hover-rotate {
-  transition: transform var(--duration-slow) var(--ease-bounce);
-}
-
-.hover-rotate:hover {
-  transform: rotate(2deg);
-}
-
-/* 2025 Typography Enhancements */
-.text-maximalist {
-  font-size: var(--font-size-4xl);
-  font-weight: 900;
-  letter-spacing: -0.05em;
-  line-height: 0.9;
-  text-shadow: var(--text-shadow-xl);
-}
-
-.text-bold-serif {
-  font-family: 'Times New Roman', serif;
-  font-weight: 700;
-  letter-spacing: -0.01em;
-}
-
-.text-high-contrast {
-  background: var(--color-accent);
-  color: var(--color-accent-foreground);
-  padding: 0.25rem 0.5rem;
-  border-radius: var(--radius-sm);
-  font-weight: 600;
-}
-
-/* Anti-design Elements */
-.asymmetrical-layout {
-  transform: rotate(-0.5deg);
-  border-radius: var(--radius-xl);
-}
-
-.overlapping-element {
-  position: relative;
-  z-index: 10;
-  transform: translateX(1rem) translateY(-0.5rem);
-}
-
-.clashing-colors {
-  background: linear-gradient(45deg, var(--color-accent), var(--color-destructive));
-  color: var(--color-background);
-}
-
-/* Big Blocks & Vivid Contrast */
-.block-section {
-  background: var(--color-accent);
-  color: var(--color-accent-foreground);
-  padding: var(--spacing-2xl);
-  border-radius: var(--radius-xl);
-  margin: var(--spacing-lg) 0;
-  box-shadow: var(--shadow-xl);
-}
-
-.contrast-block {
-  background: var(--color-primary);
-  color: var(--color-primary-foreground);
-  border: 4px solid var(--color-accent);
-}
-
-/* Modern Button Variants */
-.btn-brutalist {
-  background: var(--color-brutalist-bg);
-  color: var(--color-brutalist-text);
-  border: 3px solid var(--color-brutalist-text);
-  border-radius: var(--radius-brutalist);
-  font-weight: 900;
-  text-transform: uppercase;
-  letter-spacing: 0.1em;
-  transition: all var(--duration-fast) var(--ease-spring);
-}
-
-.btn-brutalist:hover {
-  background: var(--color-brutalist-text);
-  color: var(--color-brutalist-bg);
-  transform: translateY(-2px);
-  box-shadow: var(--shadow-xl);
-}
-
-.btn-gradient {
-  background: var(--gradient-accent);
-  color: var(--color-accent-foreground);
-  border: none;
-  font-weight: 600;
-  transition: all var(--duration-normal) var(--ease-smooth);
-}
-
-.btn-gradient:hover {
-  transform: translateY(-1px);
-  box-shadow: var(--shadow-xl);
-}
-
-/* Scroll-driven animations */
-.scroll-reveal {
-  opacity: 0;
-  transform: translateY(2rem);
-  transition: opacity 0.6s ease-out, transform 0.6s ease-out;
-}
-
-.scroll-reveal.in-view {
-  opacity: 1;
-  transform: translateY(0);
-}
-
-@supports (animation-timeline: view()) {
-  .scroll-fade-in {
-    animation: scroll-fade-in linear both;
-    animation-timeline: view();
-    animation-range: entry 0% cover 30%;
-  }
-
-  .scroll-slide-up {
-    animation: scroll-slide-up linear both;
-    animation-timeline: view();
-    animation-range: entry 0% cover 40%;
-  }
-
-  .scroll-scale-in {
-    animation: scroll-scale-in linear both;
-    animation-timeline: view();
-    animation-range: entry 0% cover 25%;
-  }
-}
-
-/* Fallback for browsers without animation-timeline:
-   Use the existing .in-view class (toggle via IntersectionObserver or other JS)
-   to trigger the same keyframe animations with a reasonable duration/easing. */
-@supports not (animation-timeline: view()) {
-  .scroll-fade-in.in-view {
-    animation: scroll-fade-in 600ms ease-out both;
-  }
-
-  .scroll-slide-up.in-view {
-    animation: scroll-slide-up 600ms ease-out both;
-  }
-
-  .scroll-scale-in.in-view {
-    animation: scroll-scale-in 600ms ease-out both;
-  }
-}
-
 /* Smooth scrolling behavior */
 html {
   scroll-behavior: smooth;
 }
 
-/* Focus and interaction enhancements */
-.focus-visible-ring {
-  outline: 2px solid transparent;
-  outline-offset: 2px;
-}
-
-.focus-visible-ring:focus-visible {
-  outline: 2px solid var(--color-ring);
-  outline-offset: 2px;
-}
-
-/* Advanced state management */
-.interactive-element:is(:hover, :focus-visible) {
-  transform: translateY(-1px);
-  transition: transform 0.2s ease-out;
-}
-
-.interactive-element:where(:not(:disabled)):hover {
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-}
-
-/* Parent-child relationship styling */
-.card-container:has(.card:hover) .card:not(:hover) {
-  opacity: 0.7;
-  transition: opacity 0.3s ease;
-}
-
-.card-group:has(.card:hover) .card:not(:hover) {
-  transform: scale(0.98);
-  transition: transform 0.2s ease-out;
-}
-
-.interactive-group:has(.interactive-element:focus-visible) .interactive-element:not(:focus-visible) {
-  opacity: 0.8;
-}
-
-/* Loading and error state variants */
-.loading-state {
-  position: relative;
-  overflow: hidden;
-}
-
-.loading-state::after {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: -100%;
-  width: 100%;
-  height: 100%;
-  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
-  animation: loading-shimmer 1.5s infinite;
-}
-
-.error-state {
-  border-color: var(--color-destructive);
-  background-color: rgba(239, 68, 68, 0.05);
-}
-
-/* Container queries for responsive components */
-.chat-container {
-  container-type: inline-size;
-  container-name: chat;
-}
-
-.message-container {
-  container-type: inline-size;
-  container-name: message;
-}
-
-/* Enhanced animation utilities */
-.animate-in {
-  animation-fill-mode: both;
-}
-
-.slide-in-from-bottom-4 {
-  animation: slide-in-from-bottom-4 0.5s ease-out;
-}
-
-.fade-in-50 {
-  animation: fade-in-50 0.7s ease-out;
-}
-
-/* Container query responsive layouts */
-@container chat (min-width: 768px) {
-  .chat-messages {
-    padding: 1.5rem;
-    gap: 1rem;
-  }
-
-  .message-bubble {
-    max-width: 70%;
-  }
-}
-
-@container chat (min-width: 1024px) {
-  .chat-messages {
-    padding: 2rem;
-    gap: 1.5rem;
-  }
-
-  .message-bubble {
-    max-width: 60%;
-  }
-}
-
-@container message (min-width: 400px) {
-  .message-content {
-    font-size: 1rem;
-    line-height: 1.6;
-  }
-}
-
-@container message (min-width: 600px) {
-  .message-content {
-    font-size: 1.125rem;
-    line-height: 1.7;
-  }
-}
-
-.fluid-container {
-  container-type: inline-size;
-  container-name: fluid;
-}
-
-@container fluid (min-width: 640px) {
-  .fluid-content {
-    padding: var(--spacing-md);
-  }
-}
-
-@container fluid (min-width: 1024px) {
-  .fluid-content {
-    padding: var(--spacing-lg);
-  }
-}
-
-/* Responsive grid layouts with modern CSS */
-.responsive-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(min(300px, 100%), 1fr));
-  gap: clamp(1rem, 2vw, 2rem);
-}
-
-.fluid-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-  gap: clamp(0.75rem, 1.5vw, 1.5rem);
-  align-items: start;
-}
-
-.size-fit {
-  width: fit-content;
-  height: fit-content;
-}
-
-.size-min {
-  width: min-content;
-  height: min-content;
-}
-
-.size-max {
-  width: max-content;
-  height: max-content;
-}
-
-.aspect-auto {
-  aspect-ratio: auto;
-}
-
 /* App level layout utilities */
 html, body {
-  height: 100%;
+  height: 90%;
+  max-height: 100%;
+  width: 90%;
+  max-width: 100%;
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  font-size: 16px;
+  line-height: 1.5;
+  font-weight: 400;
+  background-color: var(--background);
+  color: var(--foreground);
+  /* Define standard transition for interactive elements */
+  --duration-normal: 0.2s;
+  --ease-in-out: cubic-bezier(0.4, 0, 0
+.2, 1);
+  /* Define standard border radius */
+  --radius: 0.5rem;
+  --radius-sm: 0.375rem;
+  --font-size-sm: 0.875rem; /* 14px */
 }
 
 body {
@@ -638,185 +185,6 @@ body {
   min-height: 100vh;
 }
 
-/* Central container used across pages/components */
-.app-container {
-  /* center content and provide safe paddings (explicit CSS so it works even if @apply isn't processed) */
-  width: 100%;
-  margin-left: auto;
-  margin-right: auto;
-  padding-left: 1rem; /* px-4 */
-  padding-right: 1rem; /* px-4 */
-  max-width: 1536px; /* approximate Tailwind max-w-screen-2xl */
-}
-
-@media (min-width: 640px) {
-  .app-container {
-    padding-left: 1.5rem; /* sm:px-6 */
-    padding-right: 1.5rem;
-  }
-}
-
-@media (min-width: 1024px) {
-  .app-container {
-    padding-left: 2rem; /* lg:px-8 */
-    padding-right: 2rem;
-  }
-}
-
-/* Header and footer layout helpers to keep them full width but content centered */
-.site-header, .site-footer {
-  width: 100%;
-}
-
-/* Make immediate child of site-header/footer use the app container */
-.site-header > *, .site-footer > * {
-  /* mirror .app-container explicit rules so header/footer children are centered */
-  width: 100%;
-  margin-left: auto;
-  margin-right: auto;
-  padding-left: 1rem;
-  padding-right: 1rem;
-  max-width: 1536px;
-}
-
-@media (min-width: 640px) {
-  .site-header > *, .site-footer > * {
-    padding-left: 1.5rem;
-    padding-right: 1.5rem;
-  }
-}
-
-@media (min-width: 1024px) {
-  .site-header > *, .site-footer > * {
-    padding-left: 2rem;
-    padding-right: 2rem;
-  }
-}
-
-/* Top navigation grid helper: left auto, center flexible, right auto */
-.nav-grid {
-  display: grid;
-  grid-template-columns: auto 1fr auto;
-  align-items: center;
-}
-
-.aspect-square {
-  aspect-ratio: 1 / 1;
-}
-
-.aspect-video {
-  aspect-ratio: 16 / 9;
-}
-
-/* Safe alignment utilities */
-.safe-center {
-  display: flex;
-  justify-content: safe center;
-  align-items: safe center;
-}
-
-.safe-start {
-  display: flex;
-  justify-content: safe flex-start;
-  align-items: safe flex-start;
-}
-
-.grid-center {
-  place-items: center;
-}
-
-.grid-center-x {
-  justify-items: center;
-}
-
-.grid-center-y {
-  align-items: center;
-}
-
-.grid-start {
-  place-items: start;
-}
-
-.grid-end {
-  place-items: end;
-}
-
-.align-baseline {
-  align-items: baseline;
-}
-
-.align-text-bottom {
-  align-items: text-bottom;
-}
-
-.justify-space-around {
-  justify-content: space-around;
-}
-
-.justify-space-evenly {
-  justify-content: space-evenly;
-}
-
-.place-self-stretch {
-  place-self: stretch;
-}
-
-/* Device-specific styling variants */
-@media (pointer: coarse) {
-  .touch-target {
-    min-height: 44px;
-    min-width: 44px;
-    padding: 0.75rem;
-  }
-
-  .interactive-element:hover {
-    transform: none;
-  }
-}
-
-@media (pointer: fine) {
-  .touch-target {
-    min-height: 32px;
-    min-width: 32px;
-    padding: 0.5rem;
-  }
-}
-
-@media (any-pointer: coarse) {
-  .hover-effects {
-    transition: none;
-  }
-}
-
-@media (hover: hover) {
-  .hover-effects:hover {
-    background-color: var(--color-accent);
-    transform: translateY(-1px);
-  }
-}
-
-@media (hover: none) {
-  .hover-effects:active {
-    background-color: var(--color-accent);
-  }
-}
-
-/* Accessibility-focused interaction patterns */
-@media (prefers-reduced-motion: reduce) {
-  .scroll-reveal,
-  .scroll-fade-in,
-  .scroll-slide-up,
-  .scroll-scale-in,
-  .interactive-element,
-  .loading-state::after {
-    animation: none;
-    transition: none;
-  }
-
-  html {
-    scroll-behavior: auto;
-  }
-}
 
 @media (prefers-color-scheme: dark) {
   :root:not(.light) {
@@ -889,39 +257,39 @@ body {
 /* Neon Glow Effects - Zinc/Yellow/Red/Green Only (No Pink/Purple) */
 .neon-glow-blue {
   box-shadow:
-    0 0 5px oklch(0.7 0.02 45),
-    0 0 10px oklch(0.7 0.02 45),
-    0 0 15px oklch(0.7 0.02 45),
-    0 0 20px oklch(0.7 0.02 45);
+    0 0 5px oklch(60.232% 0.19838 255.011),
+    0 0 10px oklch(60.232% 0.19838 255.011),
+    0 0 15px oklch(60.232% 0.19838 255.011),
+    0 0 20px oklch(60.232% 0.19838 255.011);
 }
 
 .neon-glow-yellow { /* Renamed from pink */
   box-shadow:
-    0 0 5px oklch(0.75 0.18 85),
-    0 0 10px oklch(0.75 0.18 85),
-    0 0 15px oklch(0.75 0.18 85),
-    0 0 20px oklch(0.75 0.18 85);
+    0 0 5px oklch(93.366% 0.17141 102.758), /* Lightest yellow */
+    0 0 10px oklch(93.366% 0.17141 102.758),
+    0 0 15px oklch(93.366% 0.17141 102.758),
+    0 0 20px oklch(93.366% 0.17141 102.758);
 }
 
-.neon-glow-cyan {
+.neon-glow-teal {
   box-shadow:
-    0 0 5px oklch(0.8 0.02 45),
-    0 0 10px oklch(0.8 0.02 45),
-    0 0 15px oklch(0.8 0.02 45),
-    0 0 20px oklch(0.8 0.02 45);
+    0 0 5px oklch(82.547% 0.15258 146.089),
+    0 0 10px oklch(82.547% 0.15258 146.089),
+    0 0 15px oklch(82.547% 0.15258 146.089),
+    0 0 20px oklch(82.547% 0.15258 146.089);
 }
 
-.neon-glow-zinc { /* Renamed from purple */
+.neon-glow-red {
   box-shadow:
-    0 0 5px oklch(0.6 0.02 25),
-    0 0 10px oklch(0.6 0.02 25),
-    0 0 15px oklch(0.6 0.02 25),
-    0 0 20px oklch(0.6 0.02 25);
+    0 0 5px oklch(62.352% 0.22529 26.783),
+    0 0 10px oklch(62.352% 0.22529 26.783),
+    0 0 15px oklch(62.352% 0.22529 26.783),
+    0 0 20px oklch(62.352% 0.22529 26.783);
 }
 
 .neon-glow-green {
   box-shadow:
-    0 0 5px oklch(0.7 0.02 45),
+    0 0 5px oklch(0.7 0.02 140),
     0 0 10px oklch(0.7 0.2 140),
     0 0 15px oklch(0.7 0.2 140),
     0 0 20px oklch(0.7 0.2 140);
@@ -973,10 +341,10 @@ body {
 
 /* Custom component styles */
 .glass-effect {
-  background: rgba(17, 24, 39, 0.7);
+  background: rgba(15, 21, 34, 0.7);
   -webkit-backdrop-filter: blur(10px);
   backdrop-filter: blur(10px);
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.836);
   border-radius: var(--radius);
 }
 
@@ -984,7 +352,7 @@ body {
   background: rgba(255, 255, 255, 0.1);
   -webkit-backdrop-filter: blur(12px);
   backdrop-filter: blur(12px);
-  border: 1px solid rgba(255, 255, 255, 0.2);
+  border: 1px solid rgba(255, 255, 255, 0.836);
   border-radius: var(--radius);
 }
 
@@ -1005,7 +373,7 @@ body {
 }
 
 .gradient-border {
-  background: linear-gradient(to right, oklch(0.75 0.18 85), oklch(0.65 0.22 15), oklch(0.15 0.02 25));
+  background: linear-gradient(to right, oklch(64.413% 0.20219 138.807), oklch(33.052% 0.10297 138.995), oklch(0.15 0.02 25));
   padding: 1px;
   border-radius: var(--radius);
 }

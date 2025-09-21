@@ -1,7 +1,7 @@
 import React from 'react';
 import { Inter } from 'next/font/google';
 
-import './globals.css';
+import './global.css';
 import { ThemeProvider } from '../components/ThemeProvider';
 import { Toaster } from '../components/ui/toaster';
 import { TopNavigation } from '../components/TopNavigation';
@@ -42,22 +42,20 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en" suppressHydrationWarning>
-      <body className={inter.className}>
+      <body className={`${inter.className} antialiased bg-background text-foreground min-h-screen flex flex-col`}>
         <ThemeProvider
           attribute="class"
           defaultTheme="system"
           enableSystem
           disableTransitionOnChange
         >
-          <div className="site-wrapper">
+          <div className="flex flex-col min-h-screen w-full">
             <TopNavigation />
-
-            <main className="main-content app-container">
+            <main className="flex-1">
               {children}
             </main>
+            <Toaster />
           </div>
-
-          <Toaster />
         </ThemeProvider>
       </body>
     </html>

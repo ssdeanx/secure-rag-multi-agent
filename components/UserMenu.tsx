@@ -13,7 +13,6 @@ import {
 import { Alert, AlertDescription } from '@/components/ui/alert';
 import { Badge } from '@/components/ui/badge';
 import { Avatar, AvatarFallback } from '@/components/ui/avatar';
-import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
 import { Separator } from '@/components/ui/separator';
 import { Progress } from '@/components/ui/progress';
 import { GovernedRAGLogo } from './GovernedRAGLogo';
@@ -25,7 +24,8 @@ interface UserMenuProps {
 }
 
 export function UserMenu({ currentRole, onSignOut }: UserMenuProps) {
-  if (!currentRole) {
+  // Explicitly handle null/undefined/empty string so conditional narrowing is clear to TS/linter
+  if (typeof currentRole !== 'string' || currentRole.trim() === '') {
     return null;
   }
 
@@ -76,7 +76,6 @@ export function UserMenu({ currentRole, onSignOut }: UserMenuProps) {
   };
 
   return (
-    <TooltipProvider>
       <div className="space-y-3">
         {/* User Status Alert */}
         <Alert className="border-2 border-primary/20 bg-gradient-mocha/50 backdrop-blur-sm">
@@ -172,8 +171,6 @@ export function UserMenu({ currentRole, onSignOut }: UserMenuProps) {
 
         {/* Menu Items */}
         <div className="p-2">
-          <Tooltip>
-            <TooltipTrigger asChild>
               <DropdownMenuItem className={cn(
                 "group/item cursor-pointer px-4 py-3 rounded-lg",
                 "hover-lift hover-glow hover-scale",
@@ -190,16 +187,9 @@ export function UserMenu({ currentRole, onSignOut }: UserMenuProps) {
                   Config
                 </Badge>
               </DropdownMenuItem>
-            </TooltipTrigger>
-            <TooltipContent>
-              <p>Access user settings and preferences</p>
-            </TooltipContent>
-          </Tooltip>
 
           <DropdownMenuSeparator className="bg-primary/20 my-2" />
 
-          <Tooltip>
-            <TooltipTrigger asChild>
               <DropdownMenuItem
                 onClick={onSignOut}
                 className={cn(
@@ -219,11 +209,8 @@ export function UserMenu({ currentRole, onSignOut }: UserMenuProps) {
                   Exit
                 </Badge>
               </DropdownMenuItem>
-            </TooltipTrigger>
-            <TooltipContent>
+
               <p>Sign out of your account securely</p>
-            </TooltipContent>
-          </Tooltip>
         </div>
 
         {/* Decorative bottom element */}
@@ -231,6 +218,5 @@ export function UserMenu({ currentRole, onSignOut }: UserMenuProps) {
       </DropdownMenuContent>
     </DropdownMenu>
     </div>
-    </TooltipProvider>
   );
 }
