@@ -2,6 +2,7 @@ import { google } from '@ai-sdk/google';
 import { Agent } from '@mastra/core/agent';
 import { log } from "../config/logger";
 import { starterAgentTool } from '../tools/starter-agent-tool';
+import gemini from '../config/gemini-cli';
 
 log.info('Initializing Starter Agent...');
 
@@ -39,7 +40,11 @@ You will respond in a JSON format with the following fields:
 }
 </response_format>
   `,
-  model: google('gemini-2.5-flash'),
+  model: gemini('gemini-2.5-pro', {
+  temperature: 0.7, // Controls randomness (0-2)
+  maxOutputTokens: 65536, // Maximum output tokens (defaults to 65536)
+  topP: 0.95, // Nucleus sampling threshold
+  }),
   // TODO: Add any tools your agent needs by passing them in the tools array
 // tools: starterAgentTool,
 });

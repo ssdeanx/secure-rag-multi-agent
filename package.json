@@ -36,7 +36,9 @@
   },
   "dependencies": {
     "@ai-sdk/google": "^2.0.14",
+    "@ai-sdk/google-vertex": "^3.0.27",
     "@ai-sdk/openai": "^2.0.32",
+    "@dotenvx/dotenvx": "^1.50.1",
     "@hookform/resolvers": "^5.2.2",
     "@mastra/auth": "^0.1.3",
     "@mastra/auth-supabase": "^0.10.6",

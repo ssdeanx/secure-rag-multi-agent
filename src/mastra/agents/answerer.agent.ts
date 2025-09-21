@@ -4,7 +4,7 @@ import { ragAnswerSchema } from "../schemas/agent-schemas";
 import { google } from "@ai-sdk/google";
 import { createResearchMemory } from '../config/libsql-storage';
 import { log } from "../config/logger";
-
+import { GoogleGenerativeAIProviderOptions } from '@ai-sdk/google';
 
 log.info('Initializing Answerer Agent...');
 
