@@ -8,7 +8,7 @@ import { Separator } from '@/components/ui/separator';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
 import { Avatar, AvatarFallback } from '@/components/ui/avatar';
 import { cn } from '@/lib/utils';
-import { GovernedRAGLogo } from './GovernedRAGLogo';
+import { DeanMachinesLogo } from './DeanMachinesLogo';
 
 export function Footer() {
   const currentYear = new Date().getFullYear();
@@ -58,7 +58,7 @@ export function Footer() {
               <div className="flex items-center space-x-4 group hover-lift">
                 <Avatar className="h-14 w-14 border-2 border-accent/30">
                   <AvatarFallback className="bg-accent/10 text-accent font-bold">
-                    <GovernedRAGLogo className="h-7 w-7" />
+                    <DeanMachinesLogo className="h-7 w-7" />
                   </AvatarFallback>
                 </Avatar>
                 <div className="flex flex-col">

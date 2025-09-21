@@ -1237,34 +1237,31 @@ Content-Type: application/json
 
             <div className="flex flex-wrap gap-4 justify-center mb-6">
               <Button variant="outline" asChild>
-                <Link
+                <a
                   href="https://github.com/ssdeanx/governed-rag-ai"
                   target="_blank"
-                  rel="noopener noreferrer"
-                  legacyBehavior>
+                  rel="noopener noreferrer">
                   <Github className="mr-2 h-4 w-4" />
                   GitHub
-                </Link>
+                </a>
               </Button>
               <Button variant="outline" asChild>
-                <Link
+                <a
                   href="https://mastra.ai"
                   target="_blank"
-                  rel="noopener noreferrer"
-                  legacyBehavior>
+                  rel="noopener noreferrer">
                   <Globe className="mr-2 h-4 w-4" />
                   Mastra.ai
-                </Link>
+                </a>
               </Button>
               <Button variant="outline" asChild>
-                <Link
+                <a
                   href="https://qdrant.tech"
                   target="_blank"
-                  rel="noopener noreferrer"
-                  legacyBehavior>
+                  rel="noopener noreferrer">
                   <Database className="mr-2 h-4 w-4" />
                   Qdrant
-                </Link>
+                </a>
               </Button>
             </div>
 
@@ -1277,3 +1274,4 @@ Content-Type: application/json
     </div>
   );
 }
+

@@ -2,73 +2,70 @@
 
 import React from 'react';
 import { motion } from 'framer-motion';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from '@/components/ui/carousel';
+import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 
 const testimonials = [
-	{
-		quote: 'Deanmachines transformed our AI workflow—secure, scalable, and innovative.',
-		author: 'Jane Doe, CTO at TechCorp',
-		role: 'Enterprise Client',
-	},
-	{
-		quote: 'The RAG governance features are game-changing for compliance-heavy industries.',
-		author: 'John Smith, AI Lead at FinBank',
-		role: 'Financial Services',
-	},
-	{
-		quote: 'Seamless integration with our stack; performance exceeded expectations.',
-		author: 'Alex Lee, DevOps at InnovateLabs',
-		role: 'Tech Startup',
-	},
+  {
+    quote: 'Deanmachines transformed our data strategy. The governed RAG is a game-changer.',
+    name: 'Jane Doe',
+    title: 'CTO, Innovate Inc.',
+    avatar: '/avatars/01.png',
+  },
+  {
+    quote: 'The security and audit features are top-notch. We finally have a compliant AI solution.',
+    name: 'John Smith',
+    title: 'Head of Security, SecureBank',
+    avatar: '/avatars/02.png',
+  },
+  {
+    quote: 'Onboarding was seamless, and the performance is incredible. Highly recommended.',
+    name: 'Emily White',
+    title: 'Lead Developer, TechCorp',
+    avatar: '/avatars/03.png',
+  },
 ];
 
 export function Testimonials() {
-	return (
-		<section className="py-20 bg-muted/50">
-			<div className="container mx-auto px-4">
-				<motion.h2
-					initial={{ opacity: 0, y: 30 }}
-					whileInView={{ opacity: 1, y: 0 }}
-					transition={{ duration: 0.6 }}
-					viewport={{ once: true }}
-					className="text-3xl font-bold text-center text-foreground mb-12"
-				>
-					What Our Clients Say
-				</motion.h2>
-				<Carousel className="w-full max-w-2xl mx-auto">
-					<CarouselContent>
-						{testimonials.map((testimonial, index) => (
-							<CarouselItem key={index}>
-								<motion.div
-									initial={{ opacity: 0, scale: 0.9 }}
-									whileInView={{ opacity: 1, scale: 1 }}
-									transition={{ duration: 0.5 }}
-									viewport={{ once: true }}
-								>
-									<Card className="border-0 shadow-lg">
-										<CardContent className="p-6">
-											<CardDescription className="text-lg italic mb-4">
-												"{testimonial.quote}"
-											</CardDescription>
-											<CardHeader className="pb-0">
-												<CardTitle className="text-foreground">
-													{testimonial.author}
-												</CardTitle>
-												<p className="text-sm text-muted-foreground">
-													{testimonial.role}
-												</p>
-											</CardHeader>
-										</CardContent>
-									</Card>
-								</motion.div>
-							</CarouselItem>
-						))}
-					</CarouselContent>
-					<CarouselPrevious />
-					<CarouselNext />
-				</Carousel>
-			</div>
-		</section>
-	);
+  return (
+    <section className="py-20 bg-background">
+      <div className="container mx-auto px-4">
+        <motion.div
+          initial={{ opacity: 0, y: 50 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.8, ease: 'easeOut' }}
+        >
+          <h2 className="text-3xl font-bold text-center mb-12">What Our Clients Say</h2>
+        </motion.div>
+        <div className="grid md:grid-cols-3 gap-8">
+          {testimonials.map((testimonial, i) => (
+            <motion.div
+              key={i}
+              initial={{ opacity: 0, y: 50 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.5, delay: i * 0.2, ease: 'easeOut' }}
+            >
+              <Card className="h-full flex flex-col justify-between hover-lift">
+                <CardContent className="pt-6">
+                  <p className="text-lg italic text-foreground">"{testimonial.quote}"</p>
+                </CardContent>
+                <CardHeader className="flex-row items-center gap-4">
+                  <Avatar>
+                    <AvatarImage src={testimonial.avatar} alt={testimonial.name} />
+                    <AvatarFallback>{testimonial.name.charAt(0)}</AvatarFallback>
+                  </Avatar>
+                  <div>
+                    <CardTitle className="text-base font-bold">{testimonial.name}</CardTitle>
+                    <p className="text-sm text-muted-foreground">{testimonial.title}</p>
+                  </div>
+                </CardHeader>
+              </Card>
+            </motion.div>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
 }

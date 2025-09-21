@@ -15,7 +15,7 @@ import { Badge } from '@/components/ui/badge';
 import { Avatar, AvatarFallback } from '@/components/ui/avatar';
 import { Separator } from '@/components/ui/separator';
 import { Progress } from '@/components/ui/progress';
-import { GovernedRAGLogo } from './GovernedRAGLogo';
+import { DeanMachinesLogo } from './DeanMachinesLogo';
 import { cn } from '@/lib/utils';
 
 interface UserMenuProps {

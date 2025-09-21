@@ -1,12 +1,12 @@
 import React from 'react';
 import { Button } from '@/components/ui/button';
-import { GovernedRAGLogo } from '../GovernedRAGLogo'; // Adjust path if needed
+import { DeanMachinesLogo } from '../DeanMachinesLogo'; // Adjust path if needed
 
 export function Hero() {
   return (
     <section className="min-h-screen flex items-center justify-center">
       <div className="text-center">
-        <GovernedRAGLogo className="h-16 w-16 mx-auto mb-6 text-primary" />
+        <DeanMachinesLogo className="h-16 w-16 mx-auto mb-6 text-primary" />
         <h1 className="text-4xl md:text-6xl font-bold text-foreground mb-6">
           Deanmachines
         </h1>
