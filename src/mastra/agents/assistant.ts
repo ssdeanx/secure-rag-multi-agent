@@ -69,7 +69,7 @@ For complex research tasks that generate data, you MUST respond with a valid JSO
 }
 </output_format>
     `,
-    model: openrouter("openrouter/sonoma-sky-alpha",
+    model: openrouter("x-ai/grok-4-fast:free",
     {
         extraBody: {
             reasoning: {

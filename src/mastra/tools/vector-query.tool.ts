@@ -40,12 +40,23 @@ export const vectorQueryTool = createTool({
         topK: context.topK
       }
     });
-
     try {
       // Extract request ID from context (may come from agent input)
-      const contextStr = JSON.stringify(context);
-      const requestIdMatch = /REQ-\d+-\w+/.exec(contextStr);
-      const requestId = requestIdMatch ? requestIdMatch[0] : `TOOL-${Date.now()}`;
+      let requestId: string;
+      try {
+        // Try to extract requestId if it was passed through the agent
+        const contextStr = JSON.stringify(context);
+        const requestIdMatch = /REQ-\d+-\w+/.exec(contextStr);
+        if (requestIdMatch) {
+          requestId = requestIdMatch[0];
+        } else {
+          requestId = `TOOL-${Date.now()}-${Math.random().toString(36).substring(2, 8)}`;
+        }
+      } catch (e) {
+        // Log the parsing error and fallback to generating our own request ID
+        log.warn('Failed to extract requestId from context, generating fallback requestId', { error: e });
+        requestId = `TOOL-${Date.now()}-${Math.random().toString(36).substring(2, 8)}`;
+      }
 
       // Track and log tool call count
       const currentCount = (toolCallCounters.get(requestId) ?? 0) + 1;
@@ -85,7 +96,7 @@ export const vectorQueryTool = createTool({
       // Clean up counter if this seems to be the final call (after a short delay to account for any immediate retries)
       setTimeout(() => {
         const finalCount = toolCallCounters.get(requestId) ?? 0;
-        log.info(`[${requestId}] 📊 FINAL TOOL CALL COUNT: ${finalCount}`);
+        log.debug(`[${requestId}] 📊 FINAL TOOL CALL COUNT: ${finalCount}`);
         toolCallCounters.delete(requestId);
       }, 5000);
 
