@@ -151,9 +151,9 @@ html {
 
 /* App level layout utilities */
 html, body {
-  height: 90%;
+  height: 100%;
   max-height: 100%;
-  width: 90%;
+  width: 100%;
   max-width: 100%;
   margin: 0;
   padding: 0;
@@ -561,52 +561,52 @@ body {
 .logo-fixed-size {
   max-width: 100%;
   max-height: 100%;
-  width: auto !important;
-  height: auto !important;
+  width: auto;
+  height: auto;
   display: inline-block;
 }
 
 /* Fallback button rules: if Tailwind/utility classes aren't being applied
    (e.g. during dev or if build isn't running), enforce sane defaults so
    buttons look rounded and tappable instead of square and tiny. These are
-   intentionally specific and use !important to beat global resets. */
+   intentionally specific to beat global resets. */
 button, input[type="button"], input[type="submit"], .btn, [class*="btn-"] {
-  border-radius: var(--radius) !important;
-  padding: 0.375rem 0.75rem !important; /* px-3 py-1.5 */
-  min-height: 2.25rem !important; /* 36px */
-  min-width: 2.25rem !important;
-  display: inline-flex !important;
-  align-items: center !important;
-  justify-content: center !important;
-  line-height: 1 !important;
-  font-size: var(--font-size-sm) !important;
-  box-sizing: border-box !important;
+  border-radius: var(--radius);
+  padding: 0.375rem 0.75rem; /* px-3 py-1.5 */
+  min-height: 2.25rem; /* 36px */
+  min-width: 2.25rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  line-height: 1;
+  font-size: var(--font-size-sm);
+  box-sizing: border-box;
 }
 
 /* Make icon-only buttons circular by default (when using icon size variant)
    but keep generic fallback for other buttons. */
 [class*="btn-icon"], .icon-button, .btn-icon {
-  border-radius: 9999px !important;
-  padding: 0.5rem !important;
-  height: 2.5rem !important;
-  width: 2.5rem !important;
+  border-radius: 9999px;
+  padding: 0.5rem;
+  height: 2.5rem;
+  width: 2.5rem;
 }
 
 /* Header/title safety: cap the hero title so it doesn't become full-viewport-large
    when fluid font sizes scale up unexpectedly. This keeps layout stable while
    preserving the bold typographic style. */
 .site-header .text-maximalist {
-  max-width: 75% !important;
+  max-width: 75%;
   display: block;
   white-space: normal;
   overflow-wrap: break-word;
-  font-size: clamp(1.5rem, 4vw, 3rem) !important; /* softer cap */
+  font-size: clamp(1.5rem, 4vw, 3rem); /* softer cap */
 }
 
 /* Navigation helpers: keep top navigation elements aligned and not stretching
    across the entire header when layout utilities are missing */
 .site-header .flex, .site-header .items-center {
-  align-items: center !important;
+  align-items: center;
 }
 
 /* Enhanced Accessibility - Reduced Motion */

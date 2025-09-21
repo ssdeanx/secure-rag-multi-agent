@@ -8,9 +8,10 @@ import { motion } from 'framer-motion';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { log } from '@/src/mastra/config/logger';
 
 const schema = z.object({
-  email: z.string().email('Invalid email address'),
+  email: z.email('Invalid email address'),
 });
 
 type FormData = z.infer<typeof schema>;
@@ -23,7 +24,7 @@ export function NewsletterForm() {
   const onSubmit = async (data: FormData) => {
     // Simulate API call
     await new Promise(resolve => setTimeout(resolve, 1000));
-    console.log('Submitted:', data);
+    log.info('Newsletter subscription submitted:', data);
     reset();
   };
 

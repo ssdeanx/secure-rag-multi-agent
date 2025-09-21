@@ -57,6 +57,7 @@ export function ThemeToggle() {
         return <Avatar className="h-8 w-8 bg-yellow-100 border-2 border-primary"><AvatarFallback className="bg-yellow-100 text-primary"><Sun className="h-4 w-4" /></AvatarFallback></Avatar>;
       case 'system':
         return <Avatar className="h-8 w-8 bg-gradient-to-br from-slate-900 to-yellow-100 border-2 border-accent"><AvatarFallback className="bg-gradient-to-br from-slate-900 to-yellow-100 text-accent"><Monitor className="h-4 w-4" /></AvatarFallback></Avatar>;
+      case undefined: { throw new Error('Not implemented yet: undefined case') }
       default:
         return <Avatar className="h-8 w-8 bg-gradient-to-br from-slate-900 to-yellow-100 border-2 border-accent"><AvatarFallback className="bg-gradient-to-br from-slate-900 to-yellow-100 text-accent"><Monitor className="h-4 w-4" /></AvatarFallback></Avatar>;
     }
@@ -70,6 +71,7 @@ export function ThemeToggle() {
         return <Badge variant="secondary" className="bg-yellow-100 text-primary border-primary">Light Mode</Badge>;
       case 'system':
         return <Badge variant="secondary" className="bg-gradient-to-r from-slate-900 to-yellow-100 text-accent border-accent">System</Badge>;
+      case undefined: { throw new Error('Not implemented yet: undefined case') }
       default:
         return <Badge variant="secondary" className="bg-gradient-to-r from-slate-900 to-yellow-100 text-accent border-accent">Auto</Badge>;
     }

@@ -9,7 +9,7 @@ import { Badge } from '@/components/ui/badge';
 import { NavigationMenu, NavigationMenuItem, NavigationMenuList } from '@/components/ui/navigation-menu';
 import { Separator } from '@/components/ui/separator';
 import { cn } from '@/lib/utils';
-import { GovernedRAGLogo } from './GovernedRAGLogo';
+import { DeanMachinesLogo } from './DeanMachinesLogo';
 import { UserMenu } from './UserMenu';
 import { LogIn } from 'lucide-react';
 
@@ -40,9 +40,8 @@ export function TopNavigation({ children, currentRole, onSignOut }: TopNavigatio
     <header className="sticky top-0 z-50 w-full h-10 border-b border-primary/20 bg-background flex items-center justify-between px-4 shadow-sm flex-nowrap">
       {/* Logo and Title - clickable to home, with hover */}
       <Link href="/" className="flex items-center space-x-2 flex-nowrap cursor-pointer hover:scale-105 transition-transform duration-200 flex-shrink-0">
-        <GovernedRAGLogo className="h-6 w-6 text-primary flex-shrink-0" />
-        <span className="text-base font-semibold text-foreground truncate flex-shrink-0">Deamachines</span>
-        <span className="text-xs text-muted-foreground truncate flex-shrink-0">• AI Solutions</span>
+        <DeanMachinesLogo className="h-6 w-6 text-primary flex-shrink-0" />
+        <span className="text-base font-semibold text-foreground truncate flex-shrink-0">Deanmachines</span>
       </Link>
 
       {/* Navigation Menu - centered, no wrap */}

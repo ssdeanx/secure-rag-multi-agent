@@ -71,7 +71,7 @@ export function InteractiveFeatures() {
 						visible: { opacity: 1, y: 0, transition: { duration: 0.6 } },
 					}}
 					className="text-3xl font-bold text-center text-foreground mb-12"
-					transition={shouldReduceMotion ? { duration: 0 } : {}}
+					transition={shouldReduceMotion === true ? { duration: 0 } : {}}
 				>
 					Why Deanmachines?
 				</motion.h2>
@@ -86,7 +86,7 @@ export function InteractiveFeatures() {
 						<motion.div
 							key={index}
 							variants={itemVariants}
-							whileHover={shouldReduceMotion ? undefined : 'hover'}
+							whileHover={shouldReduceMotion === true ? undefined : 'hover'}
 							layout
 						>
 							<Card className="border-0 shadow-sm h-full">

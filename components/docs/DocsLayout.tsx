@@ -59,7 +59,7 @@ export function DocsLayout({ children }: DocsLayoutProps) {
         {/* Header */}
         <div className="mb-8">
           <div className="flex items-center justify-center mb-6">
-            <Link href="/docs" className="flex items-center space-x-4 group" legacyBehavior>
+            <Link href="/docs" className="flex items-center space-x-4 group" >
               <div className="relative">
                 <Shield className="h-12 w-12 text-primary animate-pulse" />
                 <div className="absolute -top-1 -right-1 w-4 h-4 bg-accent rounded-full animate-ping" />
@@ -139,7 +139,7 @@ export function DocsLayout({ children }: DocsLayoutProps) {
                         href="https://github.com/ssdeanx/governed-rag-ai"
                         target="_blank"
                         rel="noopener noreferrer"
-                        legacyBehavior>
+                        >
                         <Github className="h-4 w-4 mr-2" />
                         GitHub
                         <ExternalLink className="h-3 w-3 ml-auto" />
@@ -150,7 +150,7 @@ export function DocsLayout({ children }: DocsLayoutProps) {
                         href="https://mastra.ai"
                         target="_blank"
                         rel="noopener noreferrer"
-                        legacyBehavior>
+                        >
                         <Shield className="h-4 w-4 mr-2" />
                         Mastra.ai
                         <ExternalLink className="h-3 w-3 ml-auto" />
