@@ -43,12 +43,21 @@ export async function generateStaticParams() {
   const docsDirectory = path.join(process.cwd(), 'docs')
   const files = await fs.readdir(docsDirectory, { recursive: true })
 
-  return files
+  const slugSet = new Set<string>()
+  files
     .filter((file: string) => file.endsWith('.md') || file.endsWith('.mdx'))
-    .map((file: string) => {
-      const slug = file.replace(/\.(md|mdx)$/, '').split('/')
-      return { slug }
-    });
+    .forEach((file: string) => {
+      let slugPath = file.replace(/\.(md|mdx)$/, '').split('/')
+      // Shorten if last segment is 'index'
+      if (slugPath.length > 0 && slugPath[slugPath.length - 1] === 'index') {
+        slugPath = slugPath.slice(0, -1)
+      }
+      slugSet.add(JSON.stringify(slugPath))
+    })
+
+  return Array.from(slugSet).map((slugJson: string) => ({
+    slug: JSON.parse(slugJson)
+  }))
 }
 
 const components = {
@@ -97,37 +106,63 @@ const components = {
 
 export default async function DocsPage({ params }: { params: { slug: string[] } }) {
   const slug = params.slug?.join('/') || 'index'
-  const mdPath = path.join(process.cwd(), 'docs', `${slug}.md`)
-  const mdxPath = path.join(process.cwd(), 'docs', `${slug}.mdx`)
-  
-  let filePath = mdPath
+  let mdPath: string
+  let mdxPath: string
   let source = ''
-  
-  try {
-    // Try MDX first
-    source = await fs.readFile(mdxPath, 'utf8')
-    filePath = mdxPath
-  } catch {
-    // Fall back to MD
+
+  if (params.slug?.length === 0) {
+    // Root: load index
+    mdxPath = path.join(process.cwd(), 'docs', 'index.mdx')
+    mdPath = path.join(process.cwd(), 'docs', 'index.md')
+
+    // Try MDX first, fallback to MD
     try {
-      source = await fs.readFile(mdPath, 'utf8')
-      filePath = mdPath
+      source = await fs.readFile(mdxPath, 'utf8')
     } catch {
-      notFound()
+      try {
+        source = await fs.readFile(mdPath, 'utf8')
+      } catch {
+        notFound()
+      }
+    }
+  } else {
+    // Non-root: prefer index path, fallback to direct path
+    const indexSlug = [...params.slug, 'index'].join('/')
+    mdxPath = path.join(process.cwd(), 'docs', `${indexSlug}.mdx`)
+    const indexMdPath = path.join(process.cwd(), 'docs', `${indexSlug}.md`)
+    const directMdxPath = path.join(process.cwd(), 'docs', `${slug}.mdx`)
+    const directMdPath = path.join(process.cwd(), 'docs', `${slug}.md`)
+
+    try {
+      source = await fs.readFile(mdxPath, 'utf8')
+    } catch {
+      try {
+        source = await fs.readFile(indexMdPath, 'utf8')
+      } catch {
+        try {
+          source = await fs.readFile(directMdxPath, 'utf8')
+        } catch {
+          try {
+            source = await fs.readFile(directMdPath, 'utf8')
+          } catch {
+            notFound()
+          }
+        }
+      }
     }
   }
 
-    try {
+  try {
     const { content } = await compileMDX({
       source,
       components,
-      // compileMDX types don't include arbitrary mdx plugin props here so
-      // cast the options to any to pass through remark/rehype plugins.
-      options: ({
+      options: {
         parseFrontmatter: true,
-        remarkPlugins: mdxPlugins.remarkPlugins,
-        rehypePlugins: mdxPlugins.rehypePlugins,
-      } as any),
+        mdxOptions: {
+          remarkPlugins: mdxPlugins.remarkPlugins,
+          rehypePlugins: mdxPlugins.rehypePlugins,
+        },
+      },
     })
 
     return (
@@ -135,8 +170,9 @@ export default async function DocsPage({ params }: { params: { slug: string[] } 
         {content}
       </DocsLayout>
     )
-  } catch (error) {
-    console.error('MDX compilation error:', error)
+  } catch {
     notFound()
   }
 }
+
+

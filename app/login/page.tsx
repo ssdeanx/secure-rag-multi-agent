@@ -3,13 +3,29 @@
 import React, { useState } from 'react';
 import { Button } from '@/components/ui/button';
 
-type AuthResponse = Record<string, any>;
+type AuthResponse = Record<string, unknown>;
 
-function extractToken(data: AuthResponse) {
-  // try common locations for a token
-  return (
-    (data?.token ?? data?.accessToken ?? data?.jwt ?? (data?.data?.token) ?? data?.data?.accessToken) ?? null
-  );
+function extractToken(data: AuthResponse): string | null {
+  const candidates = [
+    data?.token,
+    data?.accessToken,
+    data?.jwt,
+    (data?.data as Record<string, unknown>)?.token,
+    (data?.data as Record<string, unknown>)?.accessToken
+  ];
+
+  for (const candidate of candidates) {
+    if (typeof candidate === 'string' && candidate.length > 0) {
+      return candidate;
+    }
+  }
+  return null;
+}
+
+interface AuthBody {
+  email: string;
+  password: string;
+  role?: string;
 }
 
 export default function LoginPage() {
@@ -27,8 +43,8 @@ export default function LoginPage() {
 
     try {
       const endpoint = mode === 'login' ? '/api/auth/login' : '/api/auth/signup';
-      const body: Record<string, any> = { email, password };
-  if (role) { body.role = role; }
+      const body: AuthBody = { email, password };
+      if (role) { body.role = role; }
 
       const res = await fetch(endpoint, {
         method: 'POST',
@@ -45,7 +61,7 @@ export default function LoginPage() {
       }
 
       const token = extractToken(data);
-      if (!token) {
+      if (token === null) {
         // still allow storing a role/email for flows that don't immediately return a token
         localStorage.setItem('userEmail', email);
         localStorage.setItem('userRole', role || '');
@@ -56,19 +72,25 @@ export default function LoginPage() {
       }
 
       // emit an auth event so other parts of the app (header etc.) can react
-      const ev = new CustomEvent('auth:login', { detail: { email, role, token } });
+      const ev = new CustomEvent('auth:login', {
+        detail: {
+          email,
+          role,
+          ...(token !== null && { token })
+        }
+      });
       window.dispatchEvent(ev);
 
       setLoading(false);
-    } catch (err: any) {
-      setError(err?.message ?? String(err));
+    } catch (err: unknown) {
+      setError(err instanceof Error ? err.message : String(err));
       setLoading(false);
     }
   }
 
   return (
     <div className="min-h-screen bg-background flex items-center">
-      <div className="app-container login-container p-6">
+      <div className="max-w-7xl mx-auto px-4 login-container p-6">
         <div className="bg-card border border-border rounded-lg p-6 max-w-md mx-auto">
           <h1 className="text-2xl font-bold mb-4">{mode === 'login' ? 'Sign in' : 'Sign up'}</h1>
 

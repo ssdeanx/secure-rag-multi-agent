@@ -2,7 +2,6 @@
 
 import React from 'react';
 import { ExternalLink, Github, BookOpen, Shield, Zap } from 'lucide-react';
-import { Alert, AlertDescription } from '@/components/ui/alert';
 import { Badge } from '@/components/ui/badge';
 import { Separator } from '@/components/ui/separator';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
@@ -51,7 +50,7 @@ export function Footer() {
         <div className="absolute top-0 left-1/4 w-32 h-32 bg-accent/10 rounded-full blur-3xl animate-pulse" />
         <div className="absolute bottom-0 right-1/4 w-24 h-24 bg-primary/10 rounded-full blur-2xl animate-pulse" />
 
-        <div className="relative app-container py-8">
+        <div className="relative max-w-7xl mx-auto px-4 py-8">
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 lg:gap-8">
             {/* Brand Section */}
             <div className="space-y-6 group hover-lift">
@@ -121,7 +120,7 @@ export function Footer() {
                         </a>
                       </TooltipTrigger>
                       <TooltipContent>
-                        <p>{link.external ? 'Opens in new tab' : 'Navigate to section'}</p>
+                        <p>{link.external === true ? 'Opens in new tab' : 'Navigate to section'}</p>
                       </TooltipContent>
                     </Tooltip>
                   </li>

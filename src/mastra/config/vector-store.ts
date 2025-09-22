@@ -11,12 +11,24 @@ const qVector = new QdrantVector({
   https: process.env.QDRANT_HTTPS === 'true', // Enable TLS when explicitly set
 })
 
-// Enhanced index creation with production settings
-await qVector.createIndex({
-  indexName: 'governed_rag',
-  dimension: 3072,
-  metric: 'cosine',
-});
+/**
+ * Initialize the Qdrant vector store index with production settings.
+ * Call this during application bootstrap.
+ */
+export async function initVectorStore() {
+  try {
+    await qVector.createIndex({
+      indexName: 'governed_rag',
+      dimension: 3072,
+      metric: 'cosine',
+    });
+  } catch (error) {
+    log.error('Failed to initialize Qdrant vector store index', {
+      error: error instanceof Error ? error.message : String(error),
+    });
+    throw error;
+  }
+}
 
 // Production utility functions
 export class VectorStoreUtils {
@@ -68,10 +80,10 @@ export class VectorStoreUtils {
    */
   private static validateUpsertInput(
     vectors: number[][],
-    metadata: Record<string, any>[],
+    metadata: Array<Record<string, any>>,
     ids?: string[]
   ): void {
-    if (!vectors || vectors.length === 0) {
+    if (vectors.length === 0) {
       throw new Error('Vectors array cannot be empty');
     }
 
@@ -112,7 +124,7 @@ export class VectorStoreUtils {
       scoreThreshold?: number;
     }
   ): void {
-    if (!queryVector || queryVector.length === 0) {
+    if (queryVector === null || queryVector.length === 0) {
       throw new Error('Query vector cannot be empty');
     }
 
@@ -123,7 +135,7 @@ export class VectorStoreUtils {
       });
     }
 
-    const topK = options.topK || 10;
+    const topK = options.topK ?? 10;
     if (topK <= 0 || topK > 1000) {
       throw new Error('topK must be between 1 and 1000');
     }
@@ -140,11 +152,8 @@ export class VectorStoreUtils {
     code: string,
     message: string,
     context: Record<string, any> = {}
-  ): Error {
-    const error = new Error(`[${code}] ${message}`);
-    (error as any).code = code;
-    (error as any).context = context;
-    return error;
+  ): VectorStoreError {
+    return new VectorStoreError(code, message, context);
   }
 
   /**
@@ -153,7 +162,7 @@ export class VectorStoreUtils {
   static async upsertWithTracing(
     indexName: string,
     vectors: number[][],
-    metadata: Record<string, any>[],
+    metadata: Array<Record<string, any>>,
     ids?: string[]
   ) {
     return this.withRetry(async () => {
@@ -183,7 +192,7 @@ export class VectorStoreUtils {
         log.info('Vector upsert completed successfully', {
           indexName,
           vectorCount: vectors.length,
-          result: result ? 'success' : 'no-result'
+          result: 'success'
         });
 
         if (span) {
@@ -235,7 +244,7 @@ export class VectorStoreUtils {
     return this.withRetry(async () => {
       const span = this.tracingEnabled ? this.createTracingSpan(AISpanType.GENERIC, {
         indexName,
-        topK: options.topK || 10,
+        topK: options.topK ?? 10,
         hasFilter: !!options.filter,
         operation: 'query'
       }) : null;
@@ -247,9 +256,9 @@ export class VectorStoreUtils {
 
         log.info('Starting vector query operation', {
           indexName,
-          topK: options.topK || 10,
+          topK: options.topK ?? 10,
           hasFilter: !!options.filter,
-          includeVector: options.includeVector || false,
+          includeVector: options.includeVector ?? false,
           tracingEnabled: this.tracingEnabled
         });
 
@@ -262,7 +271,7 @@ export class VectorStoreUtils {
         });
 
         const duration = Date.now() - startTime;
-        const filteredResults = options.scoreThreshold
+        const filteredResults = (options.scoreThreshold !== null)
           ? result.filter(r => r.score >= options.scoreThreshold!)
           : result;
 
@@ -285,9 +294,9 @@ export class VectorStoreUtils {
             metadata: {
               indexName,
               operation: 'query',
-              topK: options.topK || 10,
+              topK: options.topK ?? 10,
               hasFilter: !!options.filter,
-              includeVector: options.includeVector || false,
+              includeVector: options.includeVector ?? false,
               scoreThreshold: options.scoreThreshold
             }
           });
@@ -300,7 +309,7 @@ export class VectorStoreUtils {
 
         log.error('Vector query failed', {
           indexName,
-          topK: options.topK || 10,
+          topK: options.topK ?? 10,
           duration,
           error: errorMessage
         });
@@ -311,7 +320,7 @@ export class VectorStoreUtils {
             metadata: {
               indexName,
               operation: 'query',
-              topK: options.topK || 10,
+              topK: options.topK ?? 10,
               duration
             }
           });
@@ -319,7 +328,7 @@ export class VectorStoreUtils {
 
         throw this.createVectorStoreError('QUERY_FAILED', errorMessage, {
           indexName,
-          topK: options.topK || 10,
+          topK: options.topK ?? 10,
           duration
         });
       }
@@ -348,14 +357,16 @@ export class VectorStoreUtils {
   static async batchUpsert(
     indexName: string,
     vectors: number[][],
-    metadata: Record<string, any>[],
-    batchSize: number = 100
+    metadata: Array<Record<string, any>>,
+    batchSize = 100,
+    ids?: string[]
   ) {
     const batches = [];
     for (let i = 0; i < vectors.length; i += batchSize) {
       batches.push({
         vectors: vectors.slice(i, i + batchSize),
-        metadata: metadata.slice(i, i + batchSize)
+        metadata: metadata.slice(i, i + batchSize),
+        ids: ids?.slice(i, i + batchSize),
       });
     }
 
@@ -377,7 +388,8 @@ export class VectorStoreUtils {
       const result = await this.upsertWithTracing(
         indexName,
         batch.vectors,
-        batch.metadata
+        batch.metadata,
+        batch.ids
       );
       results.push(result);
     }
@@ -422,6 +434,21 @@ export class VectorStoreUtils {
       });
       throw error;
     }
+  }
+}
+
+/**
+ * Custom error class for vector store operations
+ */
+class VectorStoreError extends Error {
+  code: string;
+  context: Record<string, any>;
+
+  constructor(code: string, message: string, context: Record<string, any> = {}) {
+    super(message);
+    this.code = code;
+    this.context = context;
+    this.name = 'VectorStoreError';
   }
 }
 
@@ -485,19 +512,22 @@ export async function upsertWithEmbeddings(
   const metadata = chunks.map((chunk, i) => ({
     ...chunk.metadata,
     text: chunk.text,
-    id: chunk.id ?? (options.generateIds ? `chunk-${Date.now()}-${i}` : undefined),
+    id: chunk.id ?? ((options.generateIds ?? false) ? `chunk-${Date.now()}-${i}` : undefined),
     createdAt: new Date().toISOString(),
     version: "1.0",
   }));
 
-  const ids = options.generateIds ? metadata.map(m => m.id!) : undefined;
+  const ids = (options.generateIds ?? false)
+    ? metadata.map(m => m.id!)
+    : chunks.map(c => c.id ?? undefined);
 
   // Use batch upsert for better performance
   return VectorStoreUtils.batchUpsert(
     indexName,
     embeddings,
     metadata,
-    options.batchSize ?? 100
+    options.batchSize ?? 100,
+    ids
   );
 }
 

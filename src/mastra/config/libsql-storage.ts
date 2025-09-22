@@ -299,7 +299,7 @@ export const searchSimilarContent = async (
 
     embedSpan?.end({
       output: {
-        embeddingDimension: Array.isArray(embeddings) && embeddings[0] ? embeddings[0].length : 0
+        embeddingDimension: Array.isArray(embeddings) && embeddings.length > 0 ? embeddings[0].length : 0
       },
       metadata: {
         model: 'gemini-embedding-001',
@@ -375,17 +375,6 @@ export const createResearchMemory = () => {
       lastMessages: 500,
       workingMemory: {
         enabled: true,
-        template: `# Agent Memory Context
-- **User Task**: Research summary, analysis, recommendations, etc.
-- **Target Audience**: Who will read this report
-- **Key Findings**: Important discoveries from research
-- **User Goals**: User long term goals
-- **Process**: How to achieve goals, & actions nessary
-- **Client Requirements**: Specific requirements or constraints
-
-
-Always Respond to user as well as update this!  Its critical, to not get stuck just updating your working memory.
-`,
       },
       semanticRecall: {
         topK: 5,
@@ -949,7 +938,9 @@ export const updateUserWorkingMemory = async (memory: Memory, userId: string, up
       metadata: {
         ... (updates.metadata!),
         updatedAt: new Date(), // Moved updatedAt back into metadata
-        // resourceId: userId // This property is not needed here, as it's already resourceId
+        resourceId: userId,
+        preferences: {},
+          tags: ['working-memory', 'user', 'resource', 'thread', 'update']
       }
     });
 
@@ -985,17 +976,17 @@ export function extractChunkMetadata(
   chunks.forEach((chunk, index) => {
     const enhancedMetadata: Record<string, unknown> = { ...chunk.metadata };
 
-    if (extractParams.title) {
+    if (extractParams.title !== undefined && extractParams.title !== false) {
       if (typeof extractParams.title === 'boolean') {
         const firstLine = chunk.content.split('\n')[0]?.trim();
         const firstSentence = chunk.content.split(/[.!?]/)[0]?.trim();
         enhancedMetadata.extractedTitle = firstLine || firstSentence || `Chunk ${index + 1}`;
       } else {
-        enhancedMetadata.extractedTitle = `Advanced Title ${index + 1}`;
+        enhancedMetadata.extractedTitle = `Title ${index + 1}`;
       }
     }
 
-    if (extractParams.summary) {
+    if (extractParams.summary !== undefined && extractParams.summary !== false) {
       if (typeof extractParams.summary === 'boolean') {
         enhancedMetadata.extractedSummary = `${chunk.content.substring(0, 100)}...`;
       } else {
@@ -1007,7 +998,7 @@ export function extractChunkMetadata(
       }
     }
 
-    if (extractParams.keywords) {
+    if (extractParams.keywords!== undefined && extractParams.keywords !== false) {
       if (typeof extractParams.keywords === 'boolean') {
         const words = chunk.content.toLowerCase().match(/\b\w{4,}\b/g) ?? [];
         const wordCount: Record<string, number> = {};
@@ -1019,12 +1010,12 @@ export function extractChunkMetadata(
           .slice(0, 5)
           .map(([word]) => word);
         enhancedMetadata.extractedKeywords = topKeywords;
-      } else {
-        enhancedMetadata.extractedKeywords = [`keyword1`, `keyword2`, `keyword3`];
+      } else if (extractParams.keywords.keywords !== undefined && extractParams.keywords.keywords > 0 && extractParams.keywords.keywords <= 100) { // Limit to 100 keywords for performance and relevance
+        enhancedMetadata.extractedKeywords = [`great`, `task`, `hello`,'help', 'search', 'query', 'test', 'wrong','right', 'correct', 'return', 'retry', 'complete', 'begin', 'request', 'data', 'information', 'document', 'file', 'report', 'summary', 'analysis', 'recommendation', 'conclusion', 'introduction', 'abstract', 'methodology', 'results', 'discussion', 'future', 'work', 'limitation', 'appendix', 'reference', 'citation', 'source', 'link', 'url', 'website', 'page', 'section', 'chapter', 'paragraph', 'sentence', 'word', 'character', 'number', 'date', 'time', 'location', 'person', 'organization', 'product', 'service', 'event', 'concept', 'theory', 'model', 'framework', 'approach', 'strategy', 'tactic', 'plan', 'goal', 'objective', 'aim', 'purpose', 'reason', 'cause', 'effect', 'impact', 'influence', 'factor', 'variable', 'parameter', 'metric', 'indicator', 'measure', 'evaluation', 'assessment', 'feedback', 'review', 'comment', 'question', 'answer', 'solution', 'problem', 'challenge', 'opportunity', 'threat', 'strength', 'weakness', 'risk', 'benefit', 'advantage', 'disadvantage', 'pro', 'con', 'positive', 'negative', 'neutral', 'important', 'key', 'main', 'primary', 'secondary', 'tertiary', 'first', 'second', 'third'].slice(0, extractParams.keywords.keywords);
       }
     }
 
-    if (extractParams.questions) {
+    if (extractParams.questions!== undefined && extractParams.questions !== false) {
       if (typeof extractParams.questions === 'boolean') {
         const questions = chunk.content.split(/[.!?]/)
           .map(s => s.trim())

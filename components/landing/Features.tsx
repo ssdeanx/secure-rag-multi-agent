@@ -28,21 +28,19 @@ const features = [
 export function Features() {
 	return (
 		<section className="py-20 bg-background text-foreground">
-			<div className="container mx-auto px-4">
-				<h2 className="text-3xl font-bold text-center text-foreground mb-12">Why Deanmachines?</h2>
-				<div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
-					{features.map((feature, index) => (
-						<Card key={index} className="border-0 shadow-sm hover:shadow-md transition-shadow">
-							<CardHeader>
-								<Badge className="mb-2">{feature.badge}</Badge>
-								<CardTitle>{feature.title}</CardTitle>
-							</CardHeader>
-							<CardContent>
-								<CardDescription>{feature.description}</CardDescription>
-							</CardContent>
-						</Card>
-					))}
-				</div>
+			<h2 className="text-3xl font-bold text-center text-foreground mb-12">Why Deanmachines?</h2>
+			<div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
+				{features.map((feature, index) => (
+					<Card key={index} className="border-0 shadow-sm hover:shadow-md transition-shadow">
+						<CardHeader>
+							<Badge className="mb-2">{feature.badge}</Badge>
+							<CardTitle>{feature.title}</CardTitle>
+						</CardHeader>
+						<CardContent>
+							<CardDescription>{feature.description}</CardDescription>
+						</CardContent>
+					</Card>
+				))}
 			</div>
 		</section>
 	);

@@ -28,7 +28,7 @@ export function TopNavigation({ children, currentRole }: TopNavigationProps): JS
 
   return (
     <header className="sticky top-0 z-50 w-full border-b border-border/40 bg-background/95 backdrop-blur-sm">
-      <div className="mx-auto max-w-7xl px-4 h-14 flex items-center">
+      <div className="max-w-7xl mx-auto px-4 h-14 flex items-center">
         <nav className="flex-1 flex items-center space-x-4">
           <Menubar className="w-full flex items-center justify-between space-x-6">
             {/* Logo as first trigger */}
