@@ -6,12 +6,6 @@ import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
-import {
-  DropdownMenu,
-  DropdownMenuTrigger,
-  DropdownMenuContent,
-  DropdownMenuItem,
-} from '@/components/ui/dropdown-menu';
 import { cn } from '@/lib/utils';
 import { DeanMachinesLogo } from './DeanMachinesLogo';
 import { UserMenu } from './UserMenu';
@@ -35,24 +29,24 @@ export function TopNavigation({ children, currentRole, onSignOut }: TopNavigatio
   ];
 
   return (
-    <header className="sticky top-0 z-50 w-full h-14 border-b border-border/40 bg-background/95 backdrop-blur-sm flex items-center justify-between px-4 shadow-sm">
-      {/* left: logo + optional search */}
-      <div className="flex items-center gap-3 flex-none">
-        <Link href="/" className="flex items-center space-x-2 hover:scale-105 transition-transform duration-200">
-          <DeanMachinesLogo className="h-8 w-8" />
-          <span className="text-lg font-semibold text-foreground">Deanmachines</span>
+    <header className="sticky top-0 z-50 w-full h-14 border-b border-border/40 bg-background/95 backdrop-blur-sm flex items-center justify-between px-2 sm:px-4 shadow-sm flex-nowrap overflow-x-auto">  {/* flex-nowrap + overflow-x-auto: horizontal scroll on small, no stack */}
+      {/* left: logo + optional search - fixed width, horizontal */}
+      <div className="flex items-center gap-2 sm:gap-3 flex-none">  {/* Reduced gap mobile */}
+        <Link href="/" className="flex items-center space-x-1 sm:space-x-2 hover:scale-105 transition-transform duration-200 flex-nowrap flex-shrink-0">
+          <DeanMachinesLogo className="h-6 w-6 sm:h-8 sm:w-8 flex-shrink-0" />  {/* Smaller on mobile */}
+          <span className="text-base sm:text-lg font-semibold text-foreground whitespace-nowrap flex-shrink-0">Deanmachines</span>
         </Link>
 
-        <Input className="hidden sm:block w-64" placeholder="Search..." />
+        <Input className="hidden md:block w-40 sm:w-48 flex-shrink-0" placeholder="Search..." />  {/* Slightly shrunk; hidden <md */}
       </div>
 
-      {/* center: inline nav on md+, hidden on small screens */}
-      <nav className="hidden md:flex flex-1 justify-center">
-        <ul className="inline-flex items-center gap-4">
+      {/* center: nav always visible, horizontal only */}
+      <nav className="flex flex-1 justify-center flex-nowrap px-1">  {/* Always shown; px-1 mobile squeeze */}
+        <ul className="inline-flex items-center gap-1 sm:gap-4 flex-nowrap">  {/* Reduced gap mobile */}
           {navigationLinks.map((link) => (
-            <li key={link.href}>
+            <li key={link.href} className="flex-shrink-0">
               <Button asChild variant="ghost" size="sm">
-                <Link href={link.href} className={cn(pathname?.startsWith(link.href) ? 'text-primary' : 'text-foreground')}>
+                <Link href={link.href} className={cn(pathname?.startsWith(link.href) ? 'text-primary' : 'text-foreground', 'whitespace-nowrap text-xs sm:text-sm px-1 sm:px-3')}>
                   {link.label}
                 </Link>
               </Button>
@@ -61,36 +55,24 @@ export function TopNavigation({ children, currentRole, onSignOut }: TopNavigatio
         </ul>
       </nav>
 
-      {/* mobile menu: visible on small screens */}
-      <div className="md:hidden">
-        <DropdownMenu>
-          <DropdownMenuTrigger asChild>
-            <Button variant="ghost" size="sm">Menu</Button>
-          </DropdownMenuTrigger>
-          <DropdownMenuContent align="end">
-            {navigationLinks.map((link) => (
-              <DropdownMenuItem key={link.href} asChild>
-                <Link href={link.href} className="block w-full">{link.label}</Link>
-              </DropdownMenuItem>
-            ))}
-          </DropdownMenuContent>
-        </DropdownMenu>
-      </div>
-
-      {/* right: user area */}
-      <div className="flex items-center space-x-3 flex-none">
+      {/* right: user area - fixed, horizontal */}
+      <div className="flex items-center space-x-1 sm:space-x-3 flex-none">  {/* Reduced space mobile */}
         {typeof currentRole === 'string' && currentRole.trim() !== '' ? (
-          <UserMenu currentRole={currentRole} onSignOut={onSignOut} />
+          <div className="flex-shrink-0">  {/* Wrap to apply className without prop error */}
+            <UserMenu currentRole={currentRole} onSignOut={onSignOut} />
+          </div>
         ) : (
-          <Button asChild variant="ghost" size="sm">
-            <Link href="/login" className="flex items-center">
-              <LogIn className="h-4 w-4 mr-2" />
-              Login
+          <Button asChild variant="ghost" size="sm" className="flex-shrink-0 h-8 px-1 sm:px-3">
+            <Link href="/login" className="flex items-center whitespace-nowrap text-xs sm:text-sm">
+              <LogIn className="h-3 w-3 sm:h-4 sm:w-4 mr-1 sm:mr-2 flex-shrink-0" />
+              <span className="hidden xs:inline">Login</span>  {/* Hide text on ultra-small; show on xs+ */}
             </Link>
           </Button>
         )}
 
-        <ThemeToggle />
+        <div className="flex-shrink-0">
+          <ThemeToggle />
+        </div>
         {children}
       </div>
     </header>

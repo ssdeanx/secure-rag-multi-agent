@@ -41,6 +41,7 @@
     "eslint.config.js",
     "prettier.config.js",
     "cedar/**/*",
+    "next-sitemap.config.js"
   ],
   "exclude": [
     "node_modules"

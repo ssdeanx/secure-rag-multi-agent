@@ -1,9 +1,15 @@
 "use client";
 
 import React from 'react';
-import CountUp from 'react-countup';
 import { motion } from 'framer-motion';
 import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
+import dynamic from 'next/dynamic';  // Add dynamic import
+
+// Dynamic import CountUp: client-only, no SSR
+const CountUp = dynamic(
+  () => import('react-countup'),
+  { ssr: false }
+);
 
 const stats = [
 	{ value: 99.9, label: 'Uptime', suffix: '%' },
@@ -32,11 +38,12 @@ export function Stats() {
 											start={0}
 											end={stat.value}
 											duration={3}
+											delay={0}  // Add delay to sync with motion
 											separator=","
 											decimals={stat.value % 1 !== 0 ? 1 : 0}
 											prefix={stat.prefix}
 											suffix={stat.suffix}
-											enableScrollSpy
+											enableScrollSpy={false}  // Disable to avoid target issues; use motion for reveal
 											scrollSpyDelay={300}
 										/>
 									</CardTitle>

@@ -1,6 +1,6 @@
-/* eslint-disable tsdoc/syntax */
+
 import * as fs from 'fs/promises';
-import * as path from 'node:path';
+import * as path from 'path';
 import { z } from 'zod';
 import { createTool } from '@mastra/core/tools';
 import { AISpanType } from '@mastra/core/ai-tracing';

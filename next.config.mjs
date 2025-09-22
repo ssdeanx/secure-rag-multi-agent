@@ -1,16 +1,16 @@
 import createMDX from '@next/mdx'
 
+
+
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   reactStrictMode: true,
   serverExternalPackages: ['@mastra/core', 'jose', '@mastra/*', 'vitest', 'zod', 'ai', '@ai-sdk/*', 'crawlee'],
   pageExtensions: ['js', 'jsx', 'ts', 'tsx', 'md', 'mdx'],
   experimental: {
-    useCache: true,
-    useLightningcss: true,
-    cssChunking: true,
+//    useCache: true,
     browserDebugInfoInTerminal: true,
-    optimizeCss: true,
+//    optimizeCss: true,
     // ppr: 'incremental', // Disabled: Canary-only feature
   },
   images: {
