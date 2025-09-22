@@ -136,7 +136,7 @@ const retrievalStep = createStep({
               const validContexts = parsed.contexts.filter((ctx: { docId: any; text: string | string[]; score: number; versionId: any; source: any; securityTags: any; classification: any; }) => {
                 return (
                   // Must have core database fields
-                  ctx.docId &&
+                  (ctx.docId &&
                   ctx.text &&
                   typeof ctx.score === 'number' &&
                   ctx.versionId &&
@@ -147,7 +147,7 @@ const retrievalStep = createStep({
                   !ctx.text.includes('The Termination Procedures are as follows') &&
                   !ctx.text.includes('# Git Workflow at ACME') &&
                   // Score must be realistic (0-1 range)
-                  ctx.score >= 0 && ctx.score <= 1
+                  ctx.score >= 0 && ctx.score <= 1)
                 );
               });
 

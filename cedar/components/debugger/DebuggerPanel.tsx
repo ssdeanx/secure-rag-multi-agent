@@ -221,18 +221,17 @@ export const DebuggerPanel: React.FC<DebuggerPanelProps> = ({
 	const expandedPosition = getExpandedPanelPosition();
 
 	return (
-		<>
-			{/* Constraints container */}
-			<motion.div
+        <>
+            {/* Constraints container */}
+            <motion.div
 				ref={constraintsRef}
 				className='fixed inset-0 pointer-events-none'
 				style={{ zIndex: 9998 }}
 			/>
-
-			<AnimatePresence mode='wait'>
+            <AnimatePresence mode='wait'>
 				{!isExpanded ? (
 					// Collapsed state - Container3D button
-					<motion.div
+					(<motion.div
 						key='collapsed'
 						drag
 						dragControls={dragControls}
@@ -252,7 +251,7 @@ export const DebuggerPanel: React.FC<DebuggerPanelProps> = ({
 							height: 48,
 						}}
 						className={cn('cursor-move select-none', className)}>
-						<div
+                        <div
 							className='relative cursor-pointer hover:scale-105 active:scale-95 transition-transform'
 							onClick={() => setIsExpanded(true)}>
 							<Container3D className='w-12 h-12 flex items-center justify-center'>
@@ -267,10 +266,10 @@ export const DebuggerPanel: React.FC<DebuggerPanelProps> = ({
 								</div>
 							)}
 						</div>
-					</motion.div>
+                    </motion.div>)
 				) : (
 					// Expanded state - full panel
-					<motion.div
+					(<motion.div
 						key='expanded'
 						drag
 						dragControls={dragControls}
@@ -295,8 +294,8 @@ export const DebuggerPanel: React.FC<DebuggerPanelProps> = ({
 							'flex flex-col',
 							className
 						)}>
-						{/* Draggable Header */}
-						<div
+                        {/* Draggable Header */}
+                        <div
 							className='flex items-center justify-between px-2 py-1 border-b border-gray-200 dark:border-gray-700 cursor-move select-none'
 							onPointerDown={(e) => dragControls.start(e)}
 							style={{ touchAction: 'none' }}>
@@ -341,9 +340,8 @@ export const DebuggerPanel: React.FC<DebuggerPanelProps> = ({
 								</button>
 							</div>
 						</div>
-
-						{/* Tabs Content */}
-						<Tabs
+                        {/* Tabs Content */}
+                        <Tabs
 							value={activeTab}
 							onValueChange={setActiveTab}
 							className='flex-1 flex flex-col overflow-hidden'>
@@ -407,9 +405,8 @@ export const DebuggerPanel: React.FC<DebuggerPanelProps> = ({
 								</TabsContent>
 							</div>
 						</Tabs>
-
-						{/* Resize handles for bottom corners */}
-						<>
+                        {/* Resize handles for bottom corners */}
+                        <>
 							{/* Bottom-left corner handle */}
 							<div
 								className='absolute bottom-0 left-0 w-4 h-4 cursor-nwse-resize hover:bg-blue-400/30 group'
@@ -432,9 +429,9 @@ export const DebuggerPanel: React.FC<DebuggerPanelProps> = ({
 								onMouseDown={(e) => startResize('width', e)}
 							/>
 						</>
-					</motion.div>
+                    </motion.div>)
 				)}
 			</AnimatePresence>
-		</>
-	);
+        </>
+    );
 };

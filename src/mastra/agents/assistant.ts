@@ -10,7 +10,6 @@ import { readDataFileTool, writeDataFileTool, deleteDataFileTool, listDataDirToo
 //import { extractLearningsTool } from '../tools/extractLearningsTool';
 ;
 import { webScraperTool,
-  batchWebScraperTool,
   siteMapExtractorTool,
   linkExtractorTool,
   htmlToMarkdownTool,
@@ -18,10 +17,12 @@ import { webScraperTool,
 } from "../tools/web-scraper-tool";
 import { log } from "../config/logger";
 import { editorTool } from "../tools/editor-agent-tool";
+import { weatherTool } from "../tools/weather-tool";
+
 
 log.info('Initializing OpenRouter Assistant Agent...');
 
-const memory = createResearchMemory();
+const store = createResearchMemory();
 
 const openrouter = createOpenRouter({
     apiKey: process.env.OPENROUTER_API_KEY,
@@ -29,7 +30,7 @@ const openrouter = createOpenRouter({
 
 export const assistantAgent = new Agent({
     id: "assistant",
-    name: "assistant",
+    name: "assistantAgent",
     description: 'A helpful assistant.',
     instructions: `
 <role>
@@ -69,15 +70,16 @@ For complex research tasks that generate data, you MUST respond with a valid JSO
 }
 </output_format>
     `,
-    model: openrouter("openrouter/sonoma-sky-alpha",
+    model: openrouter("x-ai/grok-4-fast:free",
     {
-        extraBody: {
-            reasoning: {
-                max_tokens: 6144,
-            },
-        }
+      includeReasoning: true,
+      extraBody: {
+          reasoning: { max_tokens: 20000 },
+          stream: true
+        },
+      usage: { include: true }
     }),
-    memory,
+    memory: store,
     evals: {
     contentSimilarity: new ContentSimilarityMetric({ ignoreCase: true, ignoreWhitespace: true }),
     completeness: new CompletenessMetric(),
@@ -92,21 +94,14 @@ For complex research tasks that generate data, you MUST respond with a valid JSO
     listDataDirTool,
 //    evaluateResultTool,
 //    extractLearningsTool,
-    batchWebScraperTool,
+//    batchWebScraperTool,
     siteMapExtractorTool,
     linkExtractorTool,
     htmlToMarkdownTool,
     contentCleanerTool,
-    //vectorQueryTool,
-    //chunkerTool,
-    //graphRAGUpsertTool,
-    //graphRAGTool,
-    //graphRAGQueryTool,
-    //rerankTool,
-    //weatherTool,
     webScraperTool,
-    //webSearchTool,
-    editorTool
+    editorTool,
+    weatherTool
     },
     inputProcessors: [
     new UnicodeNormalizer({
@@ -115,13 +110,14 @@ For complex research tasks that generate data, you MUST respond with a valid JSO
       preserveEmojis: true,
       trim: true,
     }),
-  ],
-  outputProcessors: [
+    ],
+    outputProcessors: [
     new BatchPartsProcessor({
       batchSize: 10, // Maximum parts to batch together
       maxWaitTime: 50, // Maximum time to wait before emitting (ms)
       emitOnNonText: true, // Emit immediately on non-text parts
     }),
-  ],
+    ],
+    workflows: {}, // This is where workflows will be defined
 })
 log.info('OpenRouter Assistant Agent Working...');

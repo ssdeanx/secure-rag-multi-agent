@@ -1,7 +1,5 @@
 import { Agent } from "@mastra/core";
 import { z } from "zod";
-
-import { openAIModel } from "../config/openai";
 import { documentContextSchema } from "../schemas/agent-schemas";
 import { createResearchMemory } from '../config/libsql-storage';
 import { google } from "@ai-sdk/google";
@@ -9,12 +7,12 @@ import { log } from "../config/logger";
 
 log.info('Initializing Rerank Agent...');
 
-const memory = createResearchMemory();
+const store = createResearchMemory();
 
 export const rerankAgent = new Agent({
   id: "rerank",
   name: "rerank",
-  model: google('gemini-2.5-flash-lite'),
+  model: google('gemini-2.5-flash'),
   description: "A context reranking agent that reorders provided contexts based on their relevance to the question.",
   instructions: `You are a context reranking agent. Your task is to:
 
@@ -37,10 +35,12 @@ You must respond with a valid JSON object in the following format:
 }
 
 Always return valid JSON matching this exact structure.`,
-  memory,
+  memory: store,
   evals: {
     // Add any evaluation metrics if needed
   },
+  scorers: {},
+  workflows: {},
 });
 
 export const rerankOutputSchema = z.object({

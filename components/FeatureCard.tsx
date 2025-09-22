@@ -63,10 +63,10 @@ export function FeatureCard({
             <CardContent className="relative p-8">
               <div className="flex items-start justify-between mb-6">
                 <div className="flex items-center space-x-4 group/icon">
-                  {showAvatar && (
+                  {showAvatar === true && (
                     <Avatar className="h-12 w-12 border-2 border-accent/30">
                       <AvatarFallback className="bg-accent/10 text-accent font-bold">
-                        {avatarFallback || title.charAt(0)}
+                        {avatarFallback ?? title.charAt(0)}
                       </AvatarFallback>
                     </Avatar>
                   )}
@@ -77,7 +77,7 @@ export function FeatureCard({
                     <CardTitle className="text-xl font-black brutalist-text text-shadow-lg text-foreground group-hover:text-primary transition-colors duration-300">
                       {title}
                     </CardTitle>
-                    {badgeText && (
+                    {typeof badgeText === 'string' && badgeText.trim().length > 0 && (
                       <Badge
                         variant={badgeVariant === 'default' ? undefined : badgeVariant}
                         className={cn(
@@ -96,7 +96,7 @@ export function FeatureCard({
               </div>
 
               {/* Status Alert */}
-              {status && statusMessage && (
+              {status && typeof statusMessage === 'string' && statusMessage.trim().length > 0 && (
                 <Alert className={cn(
                   "mb-4 border-2",
                   status === 'success' && "border-accent/30 bg-accent/5",
@@ -139,7 +139,7 @@ export function FeatureCard({
         </HoverCardTrigger>
 
         {/* Hover Card Content */}
-        {hoverContent && (
+        {hoverContent !== null && (
           <HoverCardContent className="w-80">
             <div className="space-y-2">
               <h4 className="font-bold">{title}</h4>

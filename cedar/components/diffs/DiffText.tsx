@@ -206,8 +206,8 @@ export const DiffText: React.FC<DiffTextProps> = ({
 	}
 
 	return (
-		<span className={className}>
-			{reorderedChanges.map((part, index) => {
+        <span className={className}>
+            {reorderedChanges.map((part, index) => {
 				if (part.added) {
 					// Added text - green with typewriter effect
 					return animateChanges ? (
@@ -220,7 +220,7 @@ export const DiffText: React.FC<DiffTextProps> = ({
 						/>
 					) : (
 						// Handle multiline added text for non-animated case
-						(() => {
+						((() => {
 							if (diffMode === 'lines' && part.value.includes('\n')) {
 								const lines = part.value.split('\n');
 								return (
@@ -257,7 +257,7 @@ export const DiffText: React.FC<DiffTextProps> = ({
 									{part.value}
 								</span>
 							);
-						})()
+						})())
 					);
 				} else if (part.removed) {
 					// Removed text - red with strikethrough (no fade)
@@ -271,7 +271,7 @@ export const DiffText: React.FC<DiffTextProps> = ({
 						/>
 					) : (
 						// Handle multiline removed text for non-animated case
-						(() => {
+						((() => {
 							const lines = part.value.split('\n');
 							if (lines.length === 1) {
 								return (
@@ -311,7 +311,7 @@ export const DiffText: React.FC<DiffTextProps> = ({
 									))}
 								</React.Fragment>
 							);
-						})()
+						})())
 					);
 				} else {
 					// Unchanged text - handle line mode
@@ -331,8 +331,8 @@ export const DiffText: React.FC<DiffTextProps> = ({
 					return <span key={`unchanged-${index}`}>{part.value}</span>;
 				}
 			})}
-		</span>
-	);
+        </span>
+    );
 };
 
 export default DiffText;

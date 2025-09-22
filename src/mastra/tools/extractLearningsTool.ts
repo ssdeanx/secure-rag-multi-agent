@@ -1,9 +1,7 @@
 import { createTool } from '@mastra/core/tools';
 import { z } from 'zod';
-import { PinoLogger } from "@mastra/loggers";
+import { log } from "../config/logger";
 import { AISpanType } from '@mastra/core/ai-tracing';
-
-const logger = new PinoLogger({ level: 'info' });
 
 export const extractLearningsTool = createTool({
   id: 'extract-learnings',
@@ -35,7 +33,7 @@ export const extractLearningsTool = createTool({
       if (!learningExtractionAgent) {
         throw new Error('learningExtractionAgent not found on mastra instance');
       }
-      logger.info('Extracting learnings from search result', { title: result.title, url: result.url });
+      log.info('Extracting learnings from search result', { title: result.title, url: result.url });
       const response = await learningExtractionAgent.generate(
         [
           {
@@ -60,12 +58,12 @@ export const extractLearningsTool = createTool({
         },
       );
 
-      logger.info('Learning extraction response', { result: response.object });
+      log.info('Learning extraction response', { result: response.object });
 
       extractSpan?.end({ output: { learningLength: response.object?.learning?.length ?? 0, followUpQuestionsCount: response.object?.followUpQuestions?.length ?? 0 } });
       return response.object;
     } catch (error) {
-      logger.error('Error extracting learnings', {
+      log.error('Error extracting learnings', {
         error: error instanceof Error ? error.message : String(error),
         stack: error instanceof Error ? error.stack : undefined,
       });

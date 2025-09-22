@@ -2,7 +2,7 @@ import js from '@eslint/js'
 import tseslint from '@typescript-eslint/eslint-plugin'
 import tsparser from '@typescript-eslint/parser'
 import prettierConfig from 'eslint-config-prettier'
-import reactPlugin from 'eslint-plugin-react'
+//import reactPlugin from 'eslint-plugin-react'
 
 
 
@@ -12,7 +12,7 @@ export default [
   {
     files: ['**/*.ts', '**/*.tsx', '**/*.js', '**/*.jsx'],
     plugins: {
-      react: reactPlugin,
+//      react: reactPlugin,
       '@typescript-eslint': tseslint,
     },
     languageOptions: {
@@ -22,11 +22,6 @@ export default [
         sourceType: 'module',
         project: './tsconfig.json'
       },
-      env: {
-        browser: true,
-        node: true,
-        es2022: true,
-      },
     },
     settings: {
     react: {
@@ -34,7 +29,7 @@ export default [
       },
     },
     rules: {
-      ...reactPlugin.configs.recommended.rules,
+//      ...reactPlugin.configs.recommended.rules,
       // Standard style guide rules
       'no-unused-vars': 'warn', // Turn off base rule
       '@typescript-eslint/no-unused-vars': 'warn',

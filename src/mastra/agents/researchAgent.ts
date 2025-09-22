@@ -8,7 +8,6 @@ import { webScraperTool,
   htmlToMarkdownTool,
   contentCleanerTool
 } from "../tools/web-scraper-tool";
-//import { createGemini25Provider } from '../config/googleProvider';
 import { createResearchMemory } from '../config/libsql-storage';
 import { ContentSimilarityMetric, CompletenessMetric, TextualDifferenceMetric, KeywordCoverageMetric, ToneConsistencyMetric } from "@mastra/evals/nlp";
 import { log } from "../config/logger";
@@ -19,7 +18,7 @@ log.info("Initializing Research Agent...");
 const memory = createResearchMemory();
 
 export const researchAgent = new Agent({
-  id: 'researchwork',
+  id: 'research',
   name: 'Research Agent',
   description: 'An expert research agent that conducts thorough research using web search and analysis tools.',
   instructions: `
@@ -69,7 +68,7 @@ Example:
    keywordCoverage: new KeywordCoverageMetric(), // Keywords will be provided at runtime for evaluation
    toneConsistency: new ToneConsistencyMetric(),
  },
- model: google('gemini-2.5-flash-lite'),
+ model: google('gemini-2.5-flash'),
  tools: {
     webScraperTool,
     batchWebScraperTool,

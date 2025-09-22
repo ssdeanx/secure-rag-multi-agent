@@ -1,4 +1,5 @@
 import { log, logProgress } from '../config/logger';
+import { qdrantVector } from '../config/vector-store';
 
 const MAX_MAX_RETRIES = 3;
 export interface VectorMetadata {
@@ -37,7 +38,7 @@ export class VectorStorageService {
 
   constructor(options: Partial<StorageOptions> = {}) {
     this.defaultOptions = {
-      batchSize: 100,
+      batchSize: 200,
       maxRetries: 3,
       retryDelay: 1000,
       ...options
@@ -57,7 +58,8 @@ export class VectorStorageService {
     timestamp: string,
     vectorStore: unknown,
     indexName: string,
-    options: StorageOptions = {}
+    options: StorageOptions = {
+    }
   ): Promise<StorageResult> {
     const opts = { ...this.defaultOptions, ...options };
     const { batchSize } = opts;
@@ -123,19 +125,21 @@ export class VectorStorageService {
     log.info(`Storing ${embeddings.length} vectors as single batch`);
 
     try {
+      //FIXME
       const ids = chunks.map((_: unknown, i: number) => this.generateVectorId(docId, i));
       const metadata = this.createMetadata(chunks, docId, securityTags, versionId, timestamp);
 
       log.info(`Upserting ${embeddings.length} vectors for ${docId}`);
 
       // Store vectors in vector database
-      const result = await (vectorStore as any).upsert({
+      // FIXME
+      const result = await qdrantVector.upsert({
         indexName: process.env.QDRANT_COLLECTION ?? 'governed_rag',
         vectors: embeddings,
         metadata
       });
 
-      log.info(`Successfully stored ${embeddings.length} chunks for document ${docId}`);
+      log.info(`Successfully stored ${embeddings.length} chunks for document ${docId} to ${result}`);
 
       return {
         success: true,

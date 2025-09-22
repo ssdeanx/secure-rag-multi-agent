@@ -48,7 +48,7 @@ export async function generateStaticParams() {
     .map((file: string) => {
       const slug = file.replace(/\.(md|mdx)$/, '').split('/')
       return { slug }
-    })
+    });
 }
 
 const components = {

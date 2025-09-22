@@ -2,6 +2,7 @@ import { Memory } from "@mastra/memory";
 
 import { openAIEmbeddingProvider } from "../config/openai";
 import { log } from "../config/logger";
+import { google } from "@ai-sdk/google";
 
 export interface ChunkingOptions {
   tokenSize?: number;
@@ -23,7 +24,7 @@ export class ChunkingService {
     // Initialize Memory instance for access to native chunking
     // We need to provide an embedder even though we won't use it for embedding
     this.memory = new Memory({
-      embedder: openAIEmbeddingProvider.embedding("text-embedding-3-small")
+      embedder: google.textEmbedding('gemini-embedding-001')
     });
   }
 
@@ -34,7 +35,7 @@ const DEFAULT_4096 = 4096;
    */
 
   async chunkTextTokenBased(text: string, options: ChunkingOptions = {}): Promise<ChunkingResult> {
-    const { tokenSize = 4096 }: ChunkingOptions = options;
+    const {tokenSize = 8192, maxChunkSize = 200, strategy = "token-based" }: ChunkingOptions = (options);
 
     log.info(`Chunking text using token-based strategy (${tokenSize} tokens per chunk)`);
 
@@ -77,7 +78,7 @@ const DEFAULT_4096 = 4096;
    */
 
   chunkTextCharacterBased(text: string, options: ChunkingOptions = {}): ChunkingResult {
-    const { maxChunkSize = 1000, overlap = 200 }: ChunkingOptions = options;
+    const { maxChunkSize = 2000, overlap = 200 }: ChunkingOptions = options;
 
     // Validate input parameters
     if (maxChunkSize <= 0 || overlap < 0 || overlap >= maxChunkSize) {
@@ -136,13 +137,13 @@ const DEFAULT_4096 = 4096;
       return { tokenSize: 256, strategy: 'token-based' };
     } else if (textLength < 8000) {
       // Medium-small documents - moderate chunks
-      return { tokenSize: 512, strategy: 'token-based' };
+      return { tokenSize: 2048, strategy: 'token-based' };
     } else if (textLength < 50000) {
       // Medium documents - default size
-      return { tokenSize: 4096, strategy: 'token-based' };
+      return { tokenSize: 8192, strategy: 'token-based' };
     } else {
       // Large documents - larger chunks for efficiency
-      return { tokenSize: 8192, strategy: 'token-based' };
+      return { tokenSize: 12384, strategy: 'token-based' };
     }
   }
 

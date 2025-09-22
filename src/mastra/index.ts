@@ -1,5 +1,4 @@
 import { Mastra } from "@mastra/core";
-import { QdrantVector } from "@mastra/qdrant";
 import { answererAgent } from "./agents/answerer.agent";
 import { rerankAgent } from "./agents/rerank.agent";
 import { retrieveAgent } from "./agents/retrieve.agent";
@@ -24,7 +23,10 @@ import { productRoadmapAgent } from "./agents/productRoadmapAgent";
 import { editorAgent } from "./agents/editorAgent";
 import { generateReportWorkflow } from "./workflows/generateReportWorkflow";
 import { randomUUID } from "crypto";
+import { qdrantVector } from "./config/vector-store";
+import { SensitiveDataFilter } from '@mastra/core/ai-tracing';
 
+log.info("Mastra instance created");
 export const mastra = new Mastra({
   storage: sqlstore,
   logger: log,
@@ -33,15 +35,16 @@ export const mastra = new Mastra({
     rerank: rerankAgent,
     answerer: answererAgent,
     verifier: verifierAgent,
-    research: researchAgent,
     starter: starterAgent,
-    assistant: assistantAgent,
-    researchwork: researchAgent,
+    research: researchAgent,
+    researcher: researchAgent,
+    assist: assistantAgent,
+    assistant: assistantAgent, // backward-compatible alias
     report: reportAgent,
     copywriter: copywriterAgent,
     evaluation: evaluationAgent,
     learning: learningExtractionAgent,
-    roadmap: productRoadmapAgent,
+    productRoadmap: productRoadmapAgent,
     editor: editorAgent,
     // Add more agents here
   },
@@ -52,10 +55,7 @@ export const mastra = new Mastra({
     'generate-report-workflow': generateReportWorkflow
   },
   vectors: {
-    qdrant: new QdrantVector({
-      url: process.env.QDRANT_URL!,
-      apiKey: process.env.QDRANT_API_KEY,
-    }),
+    qdrant: qdrantVector,
   },
   server: {
     experimental_auth: new MastraJwtAuth({
@@ -75,7 +75,7 @@ export const mastra = new Mastra({
               realtime: process.env.NODE_ENV === 'development',
               logLevel: 'info',
               options: {
-                batchSize: 100,
+                batchSize: 200,
                 flushInterval: 5000,
               }
             }),

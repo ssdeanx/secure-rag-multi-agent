@@ -1,7 +1,8 @@
 'use client';
 
 import React from 'react';
-import { User, LogOut, Settings, Shield, Crown, Eye, Activity } from 'lucide-react';
+import Link from 'next/link';
+import { LogOut, Settings, Shield, Crown, Eye } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import {
   DropdownMenu,
@@ -10,13 +11,9 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
-import { Alert, AlertDescription } from '@/components/ui/alert';
 import { Badge } from '@/components/ui/badge';
-import { Avatar, AvatarFallback } from '@/components/ui/avatar';
-import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
-import { Separator } from '@/components/ui/separator';
 import { Progress } from '@/components/ui/progress';
-import { GovernedRAGLogo } from './GovernedRAGLogo';
+import { Avatar, AvatarFallback } from '@/components/ui/avatar';
 import { cn } from '@/lib/utils';
 
 interface UserMenuProps {
@@ -25,18 +22,19 @@ interface UserMenuProps {
 }
 
 export function UserMenu({ currentRole, onSignOut }: UserMenuProps) {
-  if (!currentRole) {
+  // Explicitly handle null/undefined/empty string so conditional narrowing is clear to TS/linter
+  if (typeof currentRole !== 'string' || currentRole.trim() === '') {
     return null;
   }
 
   const getRoleIcon = (role: string) => {
     if (role.includes('admin')) {
-      return <Crown className="h-5 w-5 text-accent animate-pulse" />;
+      return <Crown className={cn("h-5 w-5 text-accent animate-pulse")} />;
     }
     if (role.includes('viewer')) {
-      return <Eye className="h-5 w-5 text-primary" />;
+      return <Eye className={cn("h-5 w-5 text-primary")} />;
     }
-    return <Shield className="h-5 w-5 text-accent" />;
+    return <Shield className={cn("h-5 w-5 text-accent")} />;
   };
 
   const getRoleLabel = (role: string) => {
@@ -66,39 +64,13 @@ export function UserMenu({ currentRole, onSignOut }: UserMenuProps) {
   };
 
   const getRoleStatus = (role: string) => {
-    if (role.includes('admin')) {
-      return 'Full Access';
-    }
-    if (role.includes('viewer')) {
-      return 'Read Only';
-    }
+    if (role.includes('admin')) { return 'Full Access'; }
+    if (role.includes('viewer')) { return 'Read Only'; }
     return 'Standard Access';
   };
 
   return (
-    <TooltipProvider>
-      <div className="space-y-3">
-        {/* User Status Alert */}
-        <Alert className="border-2 border-primary/20 bg-gradient-mocha/50 backdrop-blur-sm">
-          <Activity className="h-4 w-4" />
-          <AlertDescription className="flex items-center justify-between">
-            <div className="flex items-center space-x-2">
-              <Avatar className="h-6 w-6">
-                <AvatarFallback className="bg-accent text-accent-foreground text-xs">
-                  {currentRole.charAt(0).toUpperCase()}
-                </AvatarFallback>
-              </Avatar>
-              <span className="font-medium">Access Level:</span>
-            </div>
-            <Badge variant="secondary" className="bg-accent/20 text-accent">
-              {getRoleStatus(currentRole)}
-            </Badge>
-          </AlertDescription>
-        </Alert>
-
-        <Separator className="bg-primary/20" />
-
-        <DropdownMenu>
+    <DropdownMenu>
       <DropdownMenuTrigger asChild>
         <Button
           variant="outline"
@@ -114,19 +86,21 @@ export function UserMenu({ currentRole, onSignOut }: UserMenuProps) {
           )}
           aria-label="User menu"
         >
-          <div className="flex items-center space-x-2">
-            <div className="p-1 rounded-md bg-accent/10 group-hover:bg-accent/20 transition-colors duration-300">
-              {getRoleIcon(currentRole)}
+          <div className={cn("flex items-center space-x-2")}>
+            <Avatar className={cn("h-8 w-8")}>
+              <AvatarFallback className={cn(getRoleColor(currentRole), 'text-xs')}>{currentRole.charAt(0).toUpperCase()}</AvatarFallback>
+            </Avatar>
+            <div className={cn("flex flex-col leading-tight")}>
+              <span className={cn(
+                "hidden sm:inline-block text-sm font-bold uppercase tracking-wider",
+                getRoleColor(currentRole),
+                "text-shadow-sm"
+              )}>
+                {getRoleLabel(currentRole)}
+              </span>
+              <span className={cn("text-xs text-muted-foreground")}>{getRoleStatus(currentRole)}</span>
             </div>
-            <span className={cn(
-              "hidden sm:inline-block text-sm font-bold uppercase tracking-wider",
-              getRoleColor(currentRole),
-              "text-shadow-sm"
-            )}>
-              {getRoleLabel(currentRole)}
-            </span>
           </div>
-          <div className="absolute -bottom-1 left-1/2 transform -translate-x-1/2 w-2 h-2 bg-accent rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
         </Button>
       </DropdownMenuTrigger>
 
@@ -141,96 +115,85 @@ export function UserMenu({ currentRole, onSignOut }: UserMenuProps) {
         )}
       >
         {/* Header Section */}
-        <div className="px-6 py-4 border-b-2 border-primary/20 bg-accent/5">
-          <div className="flex items-center space-x-3">
-            <div className="p-2 rounded-lg bg-accent/10 border border-accent/20">
+        <div className={cn("px-6 py-4 border-b-2 border-primary/20 bg-accent/5")}>
+          <div className={cn("flex items-center space-x-3")}>
+            <div className={cn("p-2 rounded-lg bg-accent/10 border border-accent/20")}>
               {getRoleIcon(currentRole)}
             </div>
-            <div className="flex flex-col flex-1">
-              <span className={cn(
-                "text-sm font-black brutalist-text",
-                getRoleColor(currentRole),
-                "text-shadow-lg"
-              )}>
-                {getRoleLabel(currentRole)}
-              </span>
-              <span className="text-xs text-muted-foreground font-medium">
+            <div className={cn("flex flex-col flex-1")}>
+              <div className={cn("flex items-center gap-2")}>
+                <span className={cn(
+                  "text-sm font-black brutalist-text",
+                  getRoleColor(currentRole),
+                  "text-shadow-lg"
+                )}>
+                  {getRoleLabel(currentRole)}
+                </span>
+                <Badge variant="secondary" className={cn("text-xs")}>{getRoleStatus(currentRole)}</Badge>
+              </div>
+              <span className={cn("text-xs text-muted-foreground font-medium")}>
                 Authenticated User
               </span>
-              <div className="mt-2 space-y-1">
-                <div className="flex justify-between text-xs">
+              <div className={cn("mt-2 space-y-1")}>
+                <div className={cn("flex justify-between text-xs")}>
                   <span>Access Level</span>
                   <span>{getRoleProgress(currentRole)}%</span>
                 </div>
-                <Progress value={getRoleProgress(currentRole)} className="h-2" />
+                <Progress value={getRoleProgress(currentRole)} className={cn("h-2")} />
               </div>
             </div>
           </div>
         </div>
 
-        <DropdownMenuSeparator className="bg-primary/20" />
+        <DropdownMenuSeparator className={cn("bg-primary/20")} />
 
         {/* Menu Items */}
-        <div className="p-2">
-          <Tooltip>
-            <TooltipTrigger asChild>
-              <DropdownMenuItem className={cn(
-                "group/item cursor-pointer px-4 py-3 rounded-lg",
-                "hover-lift hover-glow hover-scale",
-                "transition-all duration-300 ease-spring",
-                "hover:bg-accent/20 border border-transparent hover:border-accent/30",
-                "focus:bg-accent/20 focus:border-accent/30"
-              )}>
-                <Settings className="mr-3 h-5 w-5 transition-all duration-300 group-hover/item:rotate-90 group-hover/item:scale-110 text-foreground" />
-                <span className="font-bold text-foreground group-hover/item:text-accent transition-colors duration-300">
-                  Settings
-                </span>
-                <Badge variant="outline" className="ml-auto text-xs">
-                  <Shield className="h-3 w-3 mr-1" />
+        <div className={cn("p-2")}>
+          <DropdownMenuItem asChild>
+            <Link href="/settings" className={cn(
+              "group/item flex items-center px-4 py-3 rounded-lg",
+              "hover-lift hover-glow hover-scale",
+              "transition-all duration-300 ease-spring",
+              "hover:bg-accent/20 border border-transparent hover:border-accent/30",
+              "focus:bg-accent/20 focus:border-accent/30"
+            )}>
+              <div className={cn("flex items-center w-full")}>
+                <Settings className={cn("mr-3 h-5 w-5 transition-all duration-300 group-hover/item:rotate-90 group-hover/item:scale-110 text-foreground")} />
+                <span className={cn("font-bold text-foreground group-hover/item:text-accent transition-colors duration-300")}>Settings</span>
+                <Badge variant="outline" className={cn("ml-auto text-xs")}>
+                  <Shield className={cn("h-3 w-3 mr-1")} />
                   Config
                 </Badge>
-              </DropdownMenuItem>
-            </TooltipTrigger>
-            <TooltipContent>
-              <p>Access user settings and preferences</p>
-            </TooltipContent>
-          </Tooltip>
+              </div>
+            </Link>
+          </DropdownMenuItem>
 
-          <DropdownMenuSeparator className="bg-primary/20 my-2" />
+          <DropdownMenuSeparator className={cn("bg-primary/20 my-2")} />
 
-          <Tooltip>
-            <TooltipTrigger asChild>
-              <DropdownMenuItem
-                onClick={onSignOut}
-                className={cn(
-                  "group/item cursor-pointer px-4 py-3 rounded-lg",
-                  "text-destructive hover:text-destructive-foreground",
-                  "hover-lift hover-glow hover-scale",
-                  "transition-all duration-300 ease-spring",
-                  "hover:bg-destructive/20 border border-transparent hover:border-destructive/30",
-                  "focus:bg-destructive/20 focus:border-destructive/30"
-                )}
-              >
-                <LogOut className="mr-3 h-5 w-5 transition-all duration-300 group-hover/item:scale-110 group-hover/item:-rotate-12 text-destructive" />
-                <span className="font-bold">
-                  Sign Out
-                </span>
-                <Badge variant="destructive" className="ml-auto text-xs">
-                  Exit
-                </Badge>
-              </DropdownMenuItem>
-            </TooltipTrigger>
-            <TooltipContent>
-              <p>Sign out of your account securely</p>
-            </TooltipContent>
-          </Tooltip>
+          <DropdownMenuItem
+            onClick={onSignOut}
+            className={cn(
+              "group/item cursor-pointer px-4 py-3 rounded-lg",
+              "text-destructive hover:text-destructive-foreground",
+              "hover-lift hover-glow hover-scale",
+              "transition-all duration-300 ease-spring",
+              "hover:bg-destructive/20 border border-transparent hover:border-destructive/30",
+              "focus:bg-destructive/20 focus:border-destructive/30"
+            )}
+          >
+            <div className={cn("flex items-center w-full")}>
+              <LogOut className={cn("mr-3 h-5 w-5 transition-all duration-300 group-hover/item:scale-110 group-hover/item:-rotate-12 text-destructive")} />
+              <span className={cn("font-bold")}>Sign Out</span>
+              <Badge variant="destructive" className={cn("ml-auto text-xs")}>Exit</Badge>
+            </div>
+          </DropdownMenuItem>
+
+          <p className={cn("text-xs text-muted-foreground mt-2")}>Sign out of your account securely</p>
         </div>
 
         {/* Decorative bottom element */}
-        <div className="absolute bottom-2 right-2 w-4 h-4 bg-accent/20 rounded-full blur-sm animate-pulse" />
+        <div className={cn("absolute bottom-2 right-2 w-4 h-4 bg-accent/20 rounded-full blur-sm animate-pulse")} />
       </DropdownMenuContent>
     </DropdownMenu>
-    </div>
-    </TooltipProvider>
   );
 }

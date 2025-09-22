@@ -1,39 +1,43 @@
 import React from 'react';
 import { Inter } from 'next/font/google';
+import { cn } from '@/lib/utils';
 
-import './globals.css';
+import './global.css';
 import { ThemeProvider } from '../components/ThemeProvider';
 import { Toaster } from '../components/ui/toaster';
 import { TopNavigation } from '../components/TopNavigation';
-import { Footer } from '../components/Footer';
 
-import type { Metadata } from 'next';
+import type { Metadata, Viewport } from 'next';
 
 const inter = Inter({ subsets: ['latin'] });
 
 export const metadata: Metadata = {
-  title: 'Governed RAG - Secure AI with Mastra',
-  description: 'Enterprise-grade secure RAG with role-based access control',
-  applicationName: 'Governed RAG',
+  title: 'Deanmachines - AI Solutions',
+  description: 'Advanced AI solutions and machine learning tools',
+  applicationName: 'Deanmachines',
   authors: [{ name: 'ssdeanx', url: 'https://github.com/ssdeanx/governed-rag-ai' }],
   keywords: [
     'AI',
-    'RAG',
-    'Retrieval-Augmented Generation',
+    'Machine Learning',
+    'AI Solutions',
     'Next.js',
     'TypeScript',
     'Mastra',
     'Enterprise AI',
-    'Secure AI',
-    'Role-Based Access Control',
-    'RBAC'
-  ],
-  themeColor: [
-    { media: '(prefers-color-scheme: light)', color: 'white' },
-    { media: '(prefers-color-scheme: dark)', color: 'black' },
+    'AI Tools'
   ],
   generator: 'Next.js',
 };
+
+export const viewport: Viewport = {
+  width: "device-width",
+  initialScale: 1,
+  themeColor: [
+    { media: "(prefers-color-scheme: dark)", color: "#000000" },
+    { media: "(prefers-color-scheme: light)", color: "#ffffff" }
+  ],
+  colorScheme: "dark"
+}
 
 export default function RootLayout({
   children,
@@ -42,24 +46,18 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en" suppressHydrationWarning>
-      <body className={inter.className}>
+      <body className={cn(`${inter.className} antialiased bg-background text-foreground`)}>
         <ThemeProvider
           attribute="class"
           defaultTheme="system"
           enableSystem
           disableTransitionOnChange
         >
-          <div className="site-wrapper">
+          <div className="relative flex min-h-screen flex-col">
             <TopNavigation />
-
-            <main className="main-content app-container">
-              {children}
-            </main>
-
-            <Footer />
+            <main className="flex-1">{children}</main>
+            <Toaster />
           </div>
-
-          <Toaster />
         </ThemeProvider>
       </body>
     </html>

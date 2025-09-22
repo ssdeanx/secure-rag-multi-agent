@@ -9,7 +9,7 @@ import { log } from "../config/logger";
 
 log.info('Initializing Policy Agent...');
 
-const memory = createResearchMemory();
+const store = createResearchMemory();
 
 export const policyAgent = new Agent({
   id: "policy",
@@ -32,10 +32,12 @@ Rules:
 Examples:
 - Finance user: {"roles": ["finance.viewer"], "tenant": "acme", "stepUp": false} → {"allowTags": ["role:finance.viewer", "tenant:acme"], "maxClassification": "internal"}
 - HR user: {"roles": ["hr.viewer"], "tenant": "acme", "stepUp": false} → {"allowTags": ["role:hr.viewer", "tenant:acme"], "maxClassification": "confidential"}`,
-  memory,
+  memory: store,
   evals: {
     // Add any evaluation metrics if needed
   },
+  scorers: {},
+  workflows: {},
 });
 
 export const policyOutputSchema = accessFilterSchema.extend({

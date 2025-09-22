@@ -1,0 +1,602 @@
+@import "tailwindcss";
+@import "tw-animate-css";
+
+
+
+:root {
+  /* Supabase theme tokens (light mode) - direct HSL values (no raw H S% L% variables) */
+
+  /* Primary brand */
+  --color-primary: hsl(153 60% 53%);
+  --color-primary-foreground: hsl(0 0% 100%);
+
+  /* Accent / secondary variants */
+  --color-primary-600: hsl(154 55% 45%);
+  --color-accent: hsl(154 55% 45%);
+  --color-accent-foreground: hsl(0 0% 100%);
+
+  /* Surface / background (Athens Gray) */
+  --color-background: hsl(210 15% 98%);
+
+  /* Foreground / text (Bunker) */
+  --color-foreground: hsl(202 24% 9%);
+
+  --color-card: hsl(0 0% 100%);
+  --color-card-foreground: hsl(202 24% 9%);
+  --color-popover: hsl(0 0% 100%);
+  --color-popover-foreground: hsl(202 24% 9%);
+
+  /* Muted / subtle UI */
+  --color-muted: hsl(200 9% 91%);
+  --color-muted-foreground: hsl(210 10% 46%);
+
+  /* Destructive (red) */
+  --color-destructive: hsl(0 78% 58%);
+  --color-destructive-foreground: hsl(0 0% 100%);
+
+  /* Borders / inputs / rings */
+  --color-border: hsl(200 8% 91%);
+  --color-input: hsl(200 8% 91%);
+  /* Ring colors (use HSL-based rgba via HSLA if needed) */
+  --color-ring: hsla(153 60% 45% / 0.9);
+  --color-ring-weak: hsla(153 60% 45% / 0.12);
+
+  /* Success and security colors */
+  --color-success: hsl(181 84% 39%);
+  --color-success-foreground: hsl(0 0% 100%);
+
+  /* Useful UI tokens duplicated for Tailwind compatibility */
+  --background: hsl(210 15% 98%);
+  --foreground: hsl(202 24% 9%);
+  --card: hsl(0 0% 100%);
+  --card-foreground: hsl(202 24% 9%);
+  --popover: hsl(0 0% 100%);
+  --popover-foreground: hsl(202 24% 9%);
+  --primary: hsl(153 60% 53%);
+  --primary-foreground: hsl(0 0% 100%);
+  --secondary: hsl(200 9% 91%);
+  --secondary-foreground: hsl(210 10% 46%);
+  --muted: hsl(200 9% 91%);
+  --muted-foreground: hsl(210 10% 46%);
+  --accent: hsl(154 55% 45%);
+  --accent-foreground: hsl(0 0% 100%);
+  --destructive: hsl(0 78% 58%);
+  --border: hsl(200 8% 91%);
+  --input: hsl(200 8% 91%);
+  --ring: hsla(153 60% 45% / 0.9);
+
+  /* Chart colors (kept neutral/accessible complements) */
+  --chart-1: hsl(153 60% 43%); /* supabase green-ish */
+  --chart-2: hsl(176 85% 36%); /* teal */
+  --chart-3: hsl(42 96% 50%); /* amber */
+  --chart-4: hsl(221 84% 54%); /* blue */
+  --chart-5: hsl(220 7% 45%); /* neutral */
+
+  /* Sidebar tokens (light) */
+  --sidebar: hsl(0 0% 100%);
+  --sidebar-foreground: hsl(202 24% 9%);
+  --sidebar-primary: hsl(153 60% 53%);
+  --sidebar-primary-foreground: hsl(0 0% 100%);
+  --sidebar-accent: hsl(154 55% 45%);
+  --sidebar-accent-foreground: hsl(0 0% 100%);
+  --sidebar-border: hsl(210 10% 92%);
+  --sidebar-ring: hsla(153 60% 45% / 0.12);
+}
+
+.dark {
+  /* Dark mode tokens (Supabase-inspired) - direct HSL values */
+  --color-background: hsl(210 8% 6%); /* deep neutral for panels */
+  --color-foreground: hsl(200 10% 92%); /* light text */
+  --color-card: hsl(205 12% 8%);
+  --color-card-foreground: hsl(200 10% 92%);
+  --color-popover: hsl(205 12% 8%);
+  --color-popover-foreground: hsl(200 10% 92%);
+
+  /* Brand (slightly desaturated for dark) */
+  --color-primary: hsl(153 55% 48%);
+  --color-primary-foreground: hsl(210 8% 3%);
+  --color-primary-600: hsl(154 50% 40%);
+
+  --color-muted: hsl(210 9% 12%);
+  --color-muted-foreground: hsl(210 8% 60%);
+
+  --color-destructive: hsl(0 78% 58%);
+  --color-destructive-foreground: hsl(0 0% 100%);
+
+  --color-border: hsl(200 8% 14%);
+  --color-input: hsl(200 8% 14%);
+  --color-ring: hsla(153 60% 45% / 0.9);
+  --color-ring-weak: hsla(153 60% 45% / 0.14);
+
+  /* Tailwind-friendly duplicates */
+  --background: hsl(210 8% 6%);
+  --foreground: hsl(200 10% 92%);
+  --card: hsl(205 12% 8%);
+  --card-foreground: hsl(200 10% 92%);
+  --popover: hsl(205 12% 8%);
+  --popover-foreground: hsl(200 10% 92%);
+  --primary: hsl(153 55% 48%);
+  --primary-foreground: hsl(210 8% 3%);
+  --secondary: hsl(210 9% 12%);
+  --secondary-foreground: hsl(210 8% 60%);
+  --muted: hsl(210 9% 12%);
+  --muted-foreground: hsl(210 8% 60%);
+  --accent: hsl(154 50% 40%);
+  --accent-foreground: hsl(210 8% 3%);
+  --destructive: hsl(0 78% 58%);
+  --border: hsl(200 8% 14%);
+  --input: hsl(200 8% 14%);
+  --ring: hsla(153 60% 45% / 0.9);
+}
+
+/* Smooth scrolling behavior */
+html {
+  scroll-behavior: smooth;
+  overflow-x: hidden;
+  scroll-padding-top: 4rem; /* Adjust if you have a fixed header */
+}
+
+/* App level layout utilities */
+html, body {
+  height: 100%;
+  max-height: 100%;
+  width: 100%;
+  max-width: 100%;
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  font-size: 16px;
+  line-height: 1.5;
+  font-weight: 400;
+  background-color: var(--background);
+  color: var(--foreground);
+  /* Define standard transition for interactive elements */
+  --duration-normal: 0.2s;
+  --ease-in-out: cubic-bezier(0.4, 0, 0.2, 1);
+  /* Define standard border radius */
+  --radius: 0.5rem;
+  --radius-sm: 0.375rem;
+  --font-size-sm: 0.875rem; /* 14px */
+}
+
+body {
+  /* Use utility tokens and ensure the app stacks vertically + centers horizontally */
+  background: var(--background);
+  color: var(--foreground);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  /* Ensure body doesn't introduce extra scrollbars */
+  overflow-x: hidden;
+  overflow-y: auto;
+
+  /* Default transition for background and color changes */
+  transition: background-color var(--duration-normal) var(--ease-in-out), color var(--duration-normal) var(--ease-in-out);
+
+  /* Prevent layout shift when switching themes */
+  /* This is a simple approach; for more complex apps, consider using a CSS class toggle */
+  will-change: background-color, color;
+}
+
+
+@media (prefers-color-scheme: dark) {
+  :root:not(.light) {
+    /* Match dark tokens when system prefers dark */
+    --color-background-h: 210 8% 6%;
+    --color-background: hsl(var(--color-background-h));
+    --color-foreground-h: 200 10% 92%;
+    --color-foreground: hsl(var(--color-foreground-h));
+    --background: var(--color-background);
+    --foreground: var(--color-foreground);
+  }
+}
+
+/* Keyframe animations */
+@keyframes scroll-fade-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes scroll-slide-up {
+  from {
+    opacity: 0;
+    transform: translateY(2rem);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes scroll-scale-in {
+  from {
+    opacity: 0;
+    transform: scale(0.8);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes loading-shimmer {
+  0% {
+    left: -100%;
+  }
+  100% {
+    left: 100%;
+  }
+}
+
+@keyframes slide-in-from-bottom-4 {
+  from {
+    opacity: 0;
+    transform: translateY(1rem);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fade-in-50 {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+/* Neon Glow Effects - Zinc/Yellow/Red/Green Only (No Pink/Purple) */
+.neon-glow-blue {
+  box-shadow:
+    0 0 5px oklch(60.232% 0.19838 255.011),
+    0 0 10px oklch(60.232% 0.19838 255.011),
+    0 0 15px oklch(60.232% 0.19838 255.011),
+    0 0 20px oklch(60.232% 0.19838 255.011);
+}
+
+.neon-glow-yellow { /* Renamed from pink */
+  box-shadow:
+    0 0 5px oklch(93.366% 0.17141 102.758), /* Lightest yellow */
+    0 0 10px oklch(93.366% 0.17141 102.758),
+    0 0 15px oklch(93.366% 0.17141 102.758),
+    0 0 20px oklch(93.366% 0.17141 102.758);
+}
+
+.neon-glow-teal {
+  box-shadow:
+    0 0 5px oklch(82.547% 0.15258 146.089),
+    0 0 10px oklch(82.547% 0.15258 146.089),
+    0 0 15px oklch(82.547% 0.15258 146.089),
+    0 0 20px oklch(82.547% 0.15258 146.089);
+}
+
+.neon-glow-red {
+  box-shadow:
+    0 0 5px oklch(62.352% 0.22529 26.783),
+    0 0 10px oklch(62.352% 0.22529 26.783),
+    0 0 15px oklch(62.352% 0.22529 26.783),
+    0 0 20px oklch(62.352% 0.22529 26.783);
+}
+
+.neon-glow-green {
+  box-shadow:
+    0 0 5px oklch(0.7 0.02 140),
+    0 0 10px oklch(0.7 0.2 140),
+    0 0 15px oklch(0.7 0.2 140),
+    0 0 20px oklch(0.7 0.2 140);
+}
+
+/* Animated Gradient Effects */
+@keyframes gradient-shift {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+.animated-gradient {
+  background: linear-gradient(-45deg, hsl(210 8% 6%), hsla(153 55% 48% / 0.1), hsl(210 9% 12%), hsla(154 50% 40% / 0.1));
+  background-size: 400% 400%;
+  animation: gradient-shift 7s ease infinite;
+}
+
+.animated-gradient-subtle {
+  background: linear-gradient(-45deg, hsl(210 8% 6%), hsl(210 9% 12%), hsla(153 55% 48% / 0.05));
+  background-size: 400% 400%;
+  animation: gradient-shift 6s ease infinite;
+}
+
+/* Enhanced Hover Effects - Supabase dark green */
+.hover-lift {
+  transition: transform var(--duration-normal) var(--ease-in-out), filter var(--duration-normal) var(--ease-in-out);
+}
+
+.hover-lift:hover {
+  transform: translateY(-2px) scale(1.02);
+  filter: brightness(1.1);
+}
+
+.hover-glow {
+  transition: box-shadow var(--duration-normal) var(--ease-in-out);
+}
+
+.hover-glow:hover {
+  box-shadow: 0 0 20px hsla(153 55% 48% / 0.5);
+}
+
+/* Enhanced Backdrop Blur */
+.backdrop-blur-enhanced {
+  /* vendor-prefixed first for broader support */
+  -webkit-backdrop-filter: blur(20px) saturate(180%);
+  backdrop-filter: blur(20px) saturate(180%);
+}
+
+/* Custom component styles */
+.glass-effect {
+  background: rgba(15, 21, 34, 0.7);
+  -webkit-backdrop-filter: blur(10px);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.836);
+  border-radius: var(--radius);
+}
+
+.glass-light {
+  background: rgba(255, 255, 255, 0.1);
+  -webkit-backdrop-filter: blur(12px);
+  backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.836);
+  border-radius: var(--radius);
+}
+
+.glass-dark {
+  background: rgba(0, 0, 0, 0.3);
+  -webkit-backdrop-filter: blur(15px);
+  backdrop-filter: blur(15px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: var(--radius);
+}
+
+.glass-subtle {
+  background: rgba(255, 255, 255, 0.05);
+  -webkit-backdrop-filter: blur(8px);
+  backdrop-filter: blur(8px);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: var(--radius);
+}
+
+
+.gradient-border {
+  background: linear-gradient(to right, hsl(153 55% 48%), hsl(154 50% 40%), hsl(200 8% 14%));
+  padding: 1px;
+  border-radius: var(--radius);
+}
+
+
+
+.security-badge-public {
+  background-color: hsla(153 55% 48% / 0.1);
+  color: hsl(153 55% 48%);
+  border: 1px solid hsla(153 55% 48% / 0.2);
+  border-radius: var(--radius);
+  padding: 0.25rem 0.5rem;
+  font-size: 0.75rem;
+  font-weight: 500;
+}
+
+.security-badge-internal {
+  background-color: hsla(42 96% 50% / 0.1);
+  color: hsl(42 96% 50%);
+  border: 1px solid hsla(42 96% 50% / 0.2);
+  border-radius: var(--radius);
+  padding: 0.25rem 0.5rem;
+  font-size: 0.75rem;
+  font-weight: 500;
+}
+
+.security-badge-confidential {
+  background-color: hsla(0 78% 58% / 0.1);
+  color: hsl(0 78% 58%);
+  border: 1px solid hsla(0 78% 58% / 0.2);
+  border-radius: var(--radius);
+  padding: 0.25rem 0.5rem;
+  font-size: 0.75rem;
+  font-weight: 500;
+}
+
+/* Removed non-standard @theme inline block — variables are already defined in :root and .dark above */
+
+* {
+  border-color: var(--border);
+  outline-color: var(--ring) / 0.5;
+}
+body {
+  background-color: var(--background);
+  color: var(--foreground);
+}
+
+/* Global button utilities to style shadnui Button with shared classes */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: var(--radius);
+  padding: 0.375rem 0.75rem; /* matches px-3 py-1.5 */
+  font-size: var(--font-size-sm);
+  font-weight: 500;
+  line-height: 1;
+  border: 2px solid;
+  transition: all 0.2s ease-in-out;
+}
+
+/* Light mode button styles */
+.light .btn {
+  background: var(--background);
+  color: var(--foreground);
+  border-color: var(--foreground);
+}
+
+.light .btn:hover {
+  background: var(--foreground);
+  color: var(--background);
+  border-color: var(--foreground);
+}
+
+/* Dark mode button styles */
+.dark .btn {
+  background: var(--foreground);
+  color: var(--background);
+  border-color: var(--background);
+}
+
+.dark .btn:hover {
+  background: var(--background);
+  color: var(--foreground);
+  border-color: var(--foreground);
+}
+
+.btn:where(:not(:disabled)):focus-visible {
+  /* approximate Tailwind focus ring behavior */
+  outline: 2px solid var(--ring);
+  outline-offset: 2px;
+  box-shadow: 0 0 0 2px var(--color-ring-weak);
+}
+
+.btn-ghost {
+  background: transparent;
+}
+
+/* Light mode ghost button */
+.light .btn-ghost {
+  border-color: var(--border);
+  color: var(--foreground);
+}
+
+.light .btn-ghost:hover {
+  background-color: var(--accent);
+  color: var(--accent-foreground);
+  border-color: var(--accent);
+}
+
+/* Dark mode ghost button */
+.dark .btn-ghost {
+  border-color: var(--border);
+  color: var(--foreground);
+}
+
+.dark .btn-ghost:hover {
+  background-color: var(--accent);
+  color: var(--accent-foreground);
+  border-color: var(--accent);
+}
+
+/* Use color-mix when available for more accurate accent blending */
+@supports (color: color-mix(in srgb, var(--accent) 5%, transparent)) {
+  .light .btn-ghost:hover {
+    background-color: color-mix(in srgb, var(--accent) 8%, transparent);
+  }
+
+  .dark .btn-ghost:hover {
+    background-color: color-mix(in srgb, var(--accent) 8%, transparent);
+  }
+}
+
+.btn-primary {
+  /* Fallback for browsers without color-mix: use the defined color token directly */
+  background: var(--color-primary);
+  color: var(--color-primary-foreground);
+  border-color: transparent;
+}
+
+/* Prefer color-mix when supported for accurate rendering */
+@supports (color: color-mix(in srgb, var(--color-primary) 100%, transparent)) {
+  .btn-primary {
+    background: color-mix(in srgb, var(--color-primary) 100%, transparent);
+    color: color-mix(in srgb, var(--color-primary-foreground) 100%, transparent);
+  }
+}
+
+.btn-sm {
+  font-size: var(--font-size-sm);
+  padding: 0.25rem 0.625rem; /* matches px-2.5 py-1 */
+  border-radius: var(--radius-sm);
+}
+
+/* Small helper for sign-in form */
+.login-container {
+  max-width: 420px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+/* Prevent SVG logos from growing beyond their intended icon size
+   Fixes cases where compound utility classes or global rules caused
+   SVGs to scale to viewport dimensions (observed as huge buttons/logos). */
+.logo-fixed-size {
+  max-width: 100%;
+  max-height: 100%;
+  width: auto;
+  height: auto;
+  display: inline-block;
+}
+
+/* Fallback button rules: if Tailwind/utility classes aren't being applied
+  (e.g. during dev or if build isn't running), enforce sane defaults so
+  buttons look rounded and tappable instead of square and tiny. These are
+  intentionally specific to beat global resets. */
+
+button, input[type="button"], input[type="submit"], .btn, [class*="btn-"] {
+  border-radius: var(--radius);
+  padding: 0.375rem 0.75rem; /* px-3 py-1.5 */
+  min-height: 2.25rem; /* 36px */
+  min-width: 2.25rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  line-height: 1;
+  font-size: var(--font-size-sm);
+  box-sizing: border-box;
+}
+
+/* Make icon-only buttons circular by default (when using icon size variant)
+   but keep generic fallback for other buttons. */
+
+[class*="btn-icon"], .icon-button, .btn-icon {
+  border-radius: 9999px;
+  padding: 0.5rem;
+  height: 2.5rem;
+  width: 2.5rem;
+}
+
+
+
+/* Enhanced Accessibility - Reduced Motion */
+
+@media (prefers-reduced-motion: reduce) {
+  .hover-lift,
+  .hover-glow,
+  .hover-scale,
+  .hover-rotate,
+  .animated-gradient,
+  .pulse-slow,
+  .scroll-reveal,
+  .scroll-fade-in,
+  .scroll-slide-up,
+  .scroll-scale-in,
+  .interactive-element,
+  .loading-state::after,
+  /* Add particles pause if CSS controllable */
+  #tsparticles {
+    animation: none;
+    transition: none;
+    transform: none;
+  }
+
+  html {
+    scroll-behavior: auto;
+  }
+}

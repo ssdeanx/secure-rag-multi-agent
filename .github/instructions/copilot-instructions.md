@@ -175,6 +175,8 @@ logError('step-name', error, context);
 
 **Reviewer**: sam (primary maintainer)
 
+**Ban**: never run `npm run build` or `npm run lint` as these are broken and will cause issues. Always use internal linting tools (get_errors) to validate changes.
+
 ---
 
 ## MCP Tools in Workflows
@@ -183,15 +185,17 @@ logError('step-name', error, context);
 - mcp_cedar-mcp_mastraSpecialist
 - Cedar-MCP tools
 - Lotus Wisdom tools
+  *Iterate until the tool is satified*
 - mcp_mcp-deepwiki_deepwiki_fetch
 - mcp_mastra_mastraBlog
 - mcp_mastra_mastraChanges
 - mcp_mastra_mastraDocs
 - vscode-websearchforcopilot_webSearch
+  *Iterate until the user is satified*
 - mcp_multi-agent-d_multiagentdebate
+  *Iterate until the tool is satified*
 - mcp_clear-thought_visualreasoning
+  *Iterate until the tool is satified*
 - mcp_clear-thought_metacognitivemonitoring
-
-**Tip**: When using mcp_clear-thought_visualreasoning, always iterate through multiple operations (create → update → observe) until nextOperationNeeded is false to fully develop your visual understanding.
 
 **Reviewer**: sam (primary maintainer)

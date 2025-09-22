@@ -166,7 +166,11 @@ export class DocumentIndexingService {
     doc: DocumentInput,
     vectorStore: unknown,
     indexName: string,
-    options: ProcessingOptions = {}
+    options: ProcessingOptions = {
+      chunking: { maxChunkSize: 1000, overlap: 200 },
+      embedding: { batchSize: 200 },
+      storage: { batchSize: 200 }
+    }
   ): Promise<IndexingResult> {
     return this.processor.processDocument(doc, vectorStore, indexName, options);
   }
@@ -179,10 +183,14 @@ export class DocumentIndexingService {
     docs: DocumentInput[],
     vectorStore: unknown,
     indexName: string,
-    options: ProcessingOptions = {},
+    options: ProcessingOptions = {
+      chunking: { maxChunkSize: 1000, overlap: 200 },
+      embedding: { batchSize: 200 },
+      storage: { batchSize: 200 }
+    },
     progressCallback?: (progress: unknown) => void
   ): Promise<IndexingResult[]> {
-    return this.processor.processDocuments(docs, vectorStore, indexName, progressCallback);
+    return this.processor.processDocuments(docs,  vectorStore, indexName,  progressCallback);
   }
 
   /**
@@ -191,7 +199,11 @@ export class DocumentIndexingService {
 
   static async getProcessingEstimate(
     docs: DocumentInput[],
-    options: ProcessingOptions = {}
+    options: ProcessingOptions = {
+      chunking: { maxChunkSize: 1000, overlap: 200 },
+      embedding: { batchSize: 200 },
+      storage: { batchSize: 200 }
+    }
   ): Promise<unknown> {
     return this.processor.getProcessingEstimate(docs, options);
   }

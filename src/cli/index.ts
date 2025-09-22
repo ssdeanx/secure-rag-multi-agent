@@ -1,5 +1,5 @@
 import { mastra } from '../mastra/index';
-import { logWorkflowStart, logWorkflowEnd, logError, logProgress, logger } from '../mastra/config/logger';
+import { logWorkflowStart, logWorkflowEnd, logError, logProgress, log } from '../mastra/config/logger';
 import * as dotenv from 'dotenv';
 import * as fs from 'fs/promises';
 import * as path from 'path';
@@ -7,7 +7,7 @@ import * as path from 'path';
 dotenv.config();
 
 async function indexDocuments() {
-  logger.info('🚀 Starting document indexing for Governed RAG');
+  log.info('🚀 Starting document indexing for Governed RAG');
 
   const sampleDocs: any[] = [
     {
@@ -40,15 +40,15 @@ async function indexDocuments() {
   for (const doc of sampleDocs) {
     try {
       await fs.access(doc.filePath);
-      logger.info(`✅ Found: ${path.basename(doc.filePath)}`);
+      log.info(`✅ Found: ${path.basename(doc.filePath)}`);
       validDocs.push(doc);
     } catch {
-      logger.warn(`⚠️ Skipping: ${path.basename(doc.filePath)} (not found)`);
+      log.warn(`⚠️ Skipping: ${path.basename(doc.filePath)} (not found)`);
     }
   }
 
   if (validDocs.length === 0) {
-    logger.warn('❌ No documents found to index. Please add documents to the corpus/ directory.');
+    log.warn('❌ No documents found to index. Please add documents to the corpus/ directory.');
     return;
   }
 
@@ -62,16 +62,16 @@ async function indexDocuments() {
       inputData: { documents: validDocs }
     });
 
-    logger.info('📄 Document Details:');
+    log.info('📄 Document Details:');
     logWorkflowEnd('governed-rag-index', result as any, Date.now() - startTime);
     // Log document results
     const resultData = (result as any).result ?? result;
     if (resultData.documents) {
       resultData.documents.forEach((doc: any) => {
         if (doc.status === 'success') {
-          logger.info(`✅ ${doc.docId}: ${doc.chunks} chunks indexed`);
+          log.info(`✅ ${doc.docId}: ${doc.chunks} chunks indexed`);
         } else {
-          logger.error(`❌ ${doc.docId}: ${doc.error}`);
+          log.error(`❌ ${doc.docId}: ${doc.error}`);
         }
       });
     }
@@ -82,7 +82,7 @@ async function indexDocuments() {
 }
 
 async function queryRAG(jwt: string, question: string) {
-  logger.info('🔍 Querying Governed RAG');
+  log.info('🔍 Querying Governed RAG');
 
   try {
     const startTime = Date.now();
@@ -98,13 +98,13 @@ async function queryRAG(jwt: string, question: string) {
       const resultData = (result as any).result ?? result;
       logWorkflowEnd('governed-rag-answer', resultData, Date.now() - startTime);
 
-      logger.info('✅ Answer generated successfully!');
-      logger.info(`📝 Answer: ${resultData.answer}`);
+      log.info('✅ Answer generated successfully!');
+      log.info(`📝 Answer: ${resultData.answer}`);
 
       if (resultData.citations?.length > 0) {
-        logger.info('📚 Citations:');
+        log.info('📚 Citations:');
         resultData.citations.forEach((citation: any) => {
-          logger.info(`- ${citation.docId}${(citation.source) ? ` (${citation.source})` : ''}`);
+          log.info(`- ${citation.docId}${(citation.source) ? ` (${citation.source})` : ''}`);
         });
       }
     } else {
@@ -120,7 +120,7 @@ async function main() {
   const command = args[0];
 
   if (!command || command === 'help') {
-    logger.info('Governed RAG CLI\n\nCommands:\n  index                      - Index sample documents\n  query <jwt> <question>     - Query with JWT auth\n  demo                       - Run interactive demo\n  help                       - Show this help message\n\nExamples:\n  npm run cli index\n  npm run cli query "eyJ..." "What is our finance policy?"\n  npm run cli demo');
+    log.info('Governed RAG CLI\n\nCommands:\n  index                      - Index sample documents\n  query <jwt> <question>     - Query with JWT auth\n  demo                       - Run interactive demo\n  help                       - Show this help message\n\nExamples:\n  npm run cli index\n  npm run cli query "eyJ..." "What is our finance policy?"\n  npm run cli demo');
   }
 
   switch (command) {
@@ -133,22 +133,22 @@ async function main() {
       const question = args.slice(2).join(' ');
 
       if (!jwt || !question) {
-        logger.error('❌ Usage: npm run cli query <jwt> <question>');
+        log.error('❌ Usage: npm run cli query <jwt> <question>');
         return;
       }
       await queryRAG(jwt, question);
       break; }
     case 'demo':
-      logger.info('🎮 Interactive Demo Mode\nThis would launch an interactive demo (to be implemented)');
+      log.info('🎮 Interactive Demo Mode\nThis would launch an interactive demo (to be implemented)');
       break;
     default:
-      logger.error(`❌ Unknown command: ${command}\nRun "npm run cli help" for usage information`);
+      log.error(`❌ Unknown command: ${command}\nRun "npm run cli help" for usage information`);
   }
 }
 
 if (require.main === module) {
   main().catch((error: unknown) => {
-    logger.error(`Fatal error: ${error}`);
+    log.error(`Fatal error: ${error}`);
     process.exit(1);
   });
 }

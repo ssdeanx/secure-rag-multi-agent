@@ -1,7 +1,5 @@
 import { Agent } from "@mastra/core";
 //import { z } from "zod";
-
-import { openAIModel } from "../config/openai";
 import { verificationResultSchema } from "../schemas/agent-schemas";
 import { createResearchMemory } from '../config/libsql-storage';
 import { google } from "@ai-sdk/google";
@@ -14,7 +12,7 @@ const memory = createResearchMemory();
 export const verifierAgent = new Agent({
   id: "verifier",
   name: "verifier",
-  model: google('gemini-2.5-flash-lite'),
+  model: google('gemini-2.5-flash'),
   //model: openAIModel, --- IGNORE ---
   description: "A strict answer verification agent that ensures the provided answer is fully supported by the given contexts and relevant to the question.",
   instructions: `You are a strict answer verification agent. Your task is to:
@@ -62,6 +60,8 @@ Always return valid JSON matching this exact structure.`,
   evals: {
     // Add any evaluation metrics if needed
   },
+  scorers: {},
+  workflows: {},
 });
 
 export const verifierOutputSchema = verificationResultSchema;

@@ -60,8 +60,8 @@ export const MarkdownRenderer: React.FC<MarkdownRendererProps> = ({
 	const wrapperClassName = inline ? `inline ${className}` : className;
 
 	return (
-		<Wrapper className={wrapperClassName}>
-			<ReactMarkdown
+        <Wrapper className={wrapperClassName}>
+            <ReactMarkdown
 				remarkPlugins={[remarkGfm]}
 				components={{
 					p: ({ children }) =>
@@ -243,8 +243,8 @@ export const MarkdownRenderer: React.FC<MarkdownRendererProps> = ({
 				}}>
 				{content}
 			</ReactMarkdown>
-		</Wrapper>
-	);
+        </Wrapper>
+    );
 };
 
 export default MarkdownRenderer;

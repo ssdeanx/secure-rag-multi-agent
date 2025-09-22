@@ -8,7 +8,7 @@ import { Separator } from '@/components/ui/separator';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
 import { Avatar, AvatarFallback } from '@/components/ui/avatar';
 import { cn } from '@/lib/utils';
-import { GovernedRAGLogo } from './GovernedRAGLogo';
+import { DeanMachinesLogo } from './DeanMachinesLogo';
 
 export function Footer() {
   const currentYear = new Date().getFullYear();
@@ -51,14 +51,14 @@ export function Footer() {
         <div className="absolute top-0 left-1/4 w-32 h-32 bg-accent/10 rounded-full blur-3xl animate-pulse" />
         <div className="absolute bottom-0 right-1/4 w-24 h-24 bg-primary/10 rounded-full blur-2xl animate-pulse" />
 
-        <div className="relative app-container py-12">
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 lg:gap-12">
+        <div className="relative app-container py-8">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 lg:gap-8">
             {/* Brand Section */}
             <div className="space-y-6 group hover-lift">
               <div className="flex items-center space-x-4 group hover-lift">
                 <Avatar className="h-14 w-14 border-2 border-accent/30">
                   <AvatarFallback className="bg-accent/10 text-accent font-bold">
-                    <GovernedRAGLogo className="h-7 w-7" />
+                    <DeanMachinesLogo className="h-7 w-7" />
                   </AvatarFallback>
                 </Avatar>
                 <div className="flex flex-col">
@@ -132,7 +132,7 @@ export function Footer() {
         </div>
 
         {/* Bottom Section */}
-        <div className="mt-12 pt-8 border-t-2 border-primary/20 flex flex-col sm:flex-row justify-between items-center space-y-6 sm:space-y-0">
+        <div className="mt-8 pt-6 border-t-2 border-primary/20 flex flex-col sm:flex-row justify-between items-center space-y-4 sm:space-y-0">
           <div className="text-sm text-muted-foreground text-center sm:text-left">
             <span className="font-semibold">© {currentYear} Governed RAG.</span> Built with{' '}
             <a
