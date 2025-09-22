@@ -5,8 +5,10 @@ import { motion } from 'framer-motion';
 import { DeanMachinesLogo } from '../DeanMachinesLogo';
 import { Button } from '@/components/ui/button';
 import Particles, { initParticlesEngine } from "@tsparticles/react";
-import type { Container, Engine } from "@tsparticles/engine";
+import type { Engine } from "@tsparticles/engine";
 import { loadLinksPreset } from "@tsparticles/preset-links";
+import { HoverCard, HoverCardTrigger, HoverCardContent } from '@/components/ui/hover-card';
+import Link from 'next/link';
 
 interface AnimatedHeroProps {
   mode?: string;
@@ -22,9 +24,9 @@ export function AnimatedHero({ mode = 'general' }: AnimatedHeroProps) {
         setInit(true);
     });
   }, []);
+  // wont work
+  const particlesLoaded = async (): Promise<void> => {
 
-  const particlesLoaded = async (container?: Container): Promise<void> => {
-    console.log(container);
   };
 
   const subtitle = mode === 'enterprise' ? 'Enterprise-Grade AI Innovation' : 'Advanced AI Solutions for Enterprise Innovation. Empower your business with cutting-edge machine learning and intelligent automation.';
@@ -103,7 +105,7 @@ export function AnimatedHero({ mode = 'general' }: AnimatedHeroProps) {
 
   return (
     <motion.section
-      className="min-h-screen relative flex flex-col items-center justify-center text-center px-4 py-20 overflow-hidden"
+      className="min-h-screen relative flex flex-col items-center justify-center text-center px-4 py-20 overflow-hidden bg-background text-foreground"
       initial="hidden"
       whileInView="visible"
       viewport={{ once: true }}
@@ -112,13 +114,20 @@ export function AnimatedHero({ mode = 'general' }: AnimatedHeroProps) {
         visible: { opacity: 1, transition: { staggerChildren: 0.2 } },
       }}
     >
-      {init && <Particles id="tsparticles" particlesLoaded={particlesLoaded} options={options as any} className="absolute inset-0 z-0" />}
+      {init && <Particles id="tsparticles" particlesLoaded={particlesLoaded} options={options as unknown as object} className="absolute inset-0 z-0" />}
       <div className="relative z-10 max-w-4xl mx-auto text-center">
         <motion.div
           variants={{ hidden: { opacity: 0, y: 50 }, visible: { opacity: 1, y: 0 } }}
           transition={{ duration: 0.8, ease: 'easeOut' }}
         >
-          <DeanMachinesLogo className="h-16 w-16 mx-auto mb-6" />
+          <HoverCard>
+            <HoverCardTrigger>
+              <DeanMachinesLogo className="h-16 w-16 mx-auto mb-6" />
+            </HoverCardTrigger>
+            <HoverCardContent className="w-64">
+              <div className="text-sm text-muted-foreground">Deanmachines — Governed RAG: secure, role-based AI for enterprise.</div>
+            </HoverCardContent>
+          </HoverCard>
         </motion.div>
         <motion.h1
           variants={{ hidden: { opacity: 0, y: 30 }, visible: { opacity: 1, y: 0 } }}
@@ -141,10 +150,10 @@ export function AnimatedHero({ mode = 'general' }: AnimatedHeroProps) {
           transition={{ duration: 0.8, delay: 0.6, ease: 'easeOut' }}
         >
           <Button size="lg" className="px-8" asChild>
-            <a href="/demo-rag">Try Demo</a>
+            <Link href="/demo-rag">Try Demo</Link>
           </Button>
           <Button variant="outline" size="lg" className="px-8" asChild>
-            <a href="/docs">Learn More</a>
+            <Link href="/docs">Learn More</Link>
           </Button>
         </motion.div>
       </div>

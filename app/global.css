@@ -2,146 +2,131 @@
 @import "tw-animate-css";
 @import "@tailwindcss/postcss";
 
+
 :root {
-  /* Zinc-Based Professional Theme - Pure Cool Neutrals (No Mocha/Warmth) */
-  --color-background: oklch(100% 0 0); /* Pure white */
-  --color-foreground: oklch(0.15 0.02 25);
-  --color-card: oklch(100% 0 0); /* MATCH background exactly */
-  --color-card-foreground: oklch(0.15 0.02 25);
-  --color-popover: oklch(100% 0 0); /* MATCH background exactly */
-  --color-popover-foreground: oklch(0.15 0.02 25);
+  /* Supabase theme tokens (light mode) - direct HSL values (no raw H S% L% variables) */
 
-  /* Primary - Pure Zinc */
-  --color-primary: oklch(0.25 0.02 25); /* Zinc 700-800 */
-  --color-primary-foreground: oklch(0.98 0.005 45);
+  /* Primary brand */
+  --color-primary: hsl(153 60% 53%);
+  --color-primary-foreground: hsl(0 0% 100%);
 
-  /* Secondary - Cool Zinc Gray (No Warmth) */
-  --color-secondary: oklch(0.92 0.005 45); /* Pure cool silver */
-  --color-secondary-foreground: oklch(0.15 0.02 25);
+  /* Accent / secondary variants */
+  --color-primary-600: hsl(154 55% 45%);
+  --color-accent: hsl(154 55% 45%);
+  --color-accent-foreground: hsl(0 0% 100%);
 
-  /* Muted - Cool Zinc */
-  --color-muted: oklch(0.88 0.005 50);
-  --color-muted-foreground: oklch(0.45 0.01 35);
+  /* Surface / background (Athens Gray) */
+  --color-background: hsl(210 15% 98%);
 
-  /* Accent -  */
-  --color-accent: oklch(60.227% 0.20069 141.929); 
-  --color-accent-foreground: oklch(0.15 0.02 25);
+  /* Foreground / text (Bunker) */
+  --color-foreground: hsl(202 24% 9%);
 
-  /* Destructive - Red */
-  --color-destructive: oklch(56.53% 0.22137 28.229 / 0.795);
-  --color-destructive-foreground: oklch(0.98 0.005 45);
+  --color-card: hsl(0 0% 100%);
+  --color-card-foreground: hsl(202 24% 9%);
+  --color-popover: hsl(0 0% 100%);
+  --color-popover-foreground: hsl(202 24% 9%);
 
-  /* Border - Subtle Zinc */
-  --color-border: oklch(0.85 0.005 45);
-  --color-input: oklch(0.85 0.005 45);
-  --color-ring: oklch(0.75 0.18 85); /* Yellow ring to match accent */
+  /* Muted / subtle UI */
+  --color-muted: hsl(200 9% 91%);
+  --color-muted-foreground: hsl(210 10% 46%);
 
-  /* Zinc-Based Color Variants - No Pink/Purple */
-  --color-green-light: oklch(0.85 0.08 142);
-  --color-green-dark: oklch(0.25 0.12 142);
-  --color-yellow-light: oklch(0.92 0.15 85);
-  --color-yellow-dark: oklch(0.45 0.18 85);
-  --color-red-light: oklch(62.793% 0.25768 29.223);
-  --color-red-dark: oklch(36.294% 0.14723 28.966);
-  --color-zinc-light: oklch(0.95 0.005 45);
-  --color-zinc-medium: oklch(41.265% 0.00559 33.899);
-  --color-zinc-dark: oklch(0.15 0.02 25);
+  /* Destructive (red) */
+  --color-destructive: hsl(0 78% 58%);
+  --color-destructive-foreground: hsl(0 0% 100%);
 
-  /* Duplicated for Tailwind compatibility - Updated to match */
-  --background: oklch(100% 0 0);
-  --foreground: oklch(0.15 0.02 25);
-  --card: oklch(100% 0 0);
-  --card-foreground: oklch(0.15 0.02 25);
-  --popover: oklch(100% 0 0);
-  --popover-foreground: oklch(0.15 0.02 25);
-  --primary: oklch(0.25 0.02 25); /* Zinc 700-800 equivalent */
-  --primary-foreground: oklch(0.98 0.005 45);
-  --secondary: oklch(0.75 0.03 45);
-  --secondary-foreground: oklch(0.15 0.02 25);
-  --muted: oklch(0.92 0.01 50);
-  --muted-foreground: oklch(0.45 0.02 35);
-  --accent: oklch(91.325% 0.1486 96.547);
-  --accent-foreground: oklch(0.98 0.005 45);
-  --destructive: oklch(54.433% 0.22338 29.223);
-  --border: oklch(0.88 0.005 45);
-  --input: oklch(0.88 0.005 45);
-  --ring: oklch(0.25 0.08 35);
-  --chart-1: oklch(0.646 0.222 41.116);
-  --chart-2: oklch(0.6 0.118 184.704);
-  --chart-3: oklch(0.398 0.07 85); /* Changed from purple to yellow */
-  --chart-4: oklch(0.828 0.189 84.429);
-  --chart-5: oklch(0.769 0.188 70.08);
-  --sidebar: oklch(0.985 0 0);
-  --sidebar-foreground: oklch(0.141 0.005 25); /* Changed from purple to zinc */
-  --sidebar-primary: oklch(0.21 0.006 35); /* Changed from purple to zinc */
-  --sidebar-primary-foreground: oklch(0.985 0 0);
-  --sidebar-accent: oklch(0.967 0.001 45); /* Changed from purple to zinc */
-  --sidebar-accent-foreground: oklch(0.21 0.006 35);
-  --sidebar-border: oklch(0.92 0.004 45); /* Changed from purple to zinc */
-  --sidebar-ring: oklch(0.705 0.015 35); /* Changed from purple to zinc */
+  /* Borders / inputs / rings */
+  --color-border: hsl(200 8% 91%);
+  --color-input: hsl(200 8% 91%);
+  /* Ring colors (use HSL-based rgba via HSLA if needed) */
+  --color-ring: hsla(153 60% 45% / 0.9);
+  --color-ring-weak: hsla(153 60% 45% / 0.12);
 
   /* Success and security colors */
-  --color-success: oklch(0.7 0.15 142);
-  --color-success-foreground: oklch(0.98 0 0);
-  --color-security-confidential: oklch(0.577 0.245 27.325);
-  --color-security-internal: oklch(0.769 0.188 70.08);
-  --color-security-public: oklch(0.646 0.222 41.116);
+  --color-success: hsl(181 84% 39%);
+  --color-success-foreground: hsl(0 0% 100%);
+
+  /* Useful UI tokens duplicated for Tailwind compatibility */
+  --background: hsl(210 15% 98%);
+  --foreground: hsl(202 24% 9%);
+  --card: hsl(0 0% 100%);
+  --card-foreground: hsl(202 24% 9%);
+  --popover: hsl(0 0% 100%);
+  --popover-foreground: hsl(202 24% 9%);
+  --primary: hsl(153 60% 53%);
+  --primary-foreground: hsl(0 0% 100%);
+  --secondary: hsl(200 9% 91%);
+  --secondary-foreground: hsl(210 10% 46%);
+  --muted: hsl(200 9% 91%);
+  --muted-foreground: hsl(210 10% 46%);
+  --accent: hsl(154 55% 45%);
+  --accent-foreground: hsl(0 0% 100%);
+  --destructive: hsl(0 78% 58%);
+  --border: hsl(200 8% 91%);
+  --input: hsl(200 8% 91%);
+  --ring: hsla(153 60% 45% / 0.9);
+
+  /* Chart colors (kept neutral/accessible complements) */
+  --chart-1: hsl(153 60% 43%); /* supabase green-ish */
+  --chart-2: hsl(176 85% 36%); /* teal */
+  --chart-3: hsl(42 96% 50%); /* amber */
+  --chart-4: hsl(221 84% 54%); /* blue */
+  --chart-5: hsl(220 7% 45%); /* neutral */
+
+  /* Sidebar tokens (light) */
+  --sidebar: hsl(0 0% 100%);
+  --sidebar-foreground: hsl(202 24% 9%);
+  --sidebar-primary: hsl(153 60% 53%);
+  --sidebar-primary-foreground: hsl(0 0% 100%);
+  --sidebar-accent: hsl(154 55% 45%);
+  --sidebar-accent-foreground: hsl(0 0% 100%);
+  --sidebar-border: hsl(210 10% 92%);
+  --sidebar-ring: hsla(153 60% 45% / 0.12);
 }
 
 .dark {
-  /* Dark Mode - Pure Zinc (No Mocha Warmth) */
-  --color-background: oklch(0% 0 0); /* Pure black */
-  --color-foreground: oklch(0.95 0.005 45);
-  --color-card: oklch(0.12 0.005 25); /* Cool zinc card */
-  --color-card-foreground: oklch(85.452% 0.0001 271.152);
-  --color-popover: oklch(0.12 0.005 25);
-  --color-popover-foreground: oklch(0.95 0.005 45);
+  /* Dark mode tokens (Supabase-inspired) - direct HSL values */
+  --color-background: hsl(210 8% 6%); /* deep neutral for panels */
+  --color-foreground: hsl(200 10% 92%); /* light text */
+  --color-card: hsl(205 12% 8%);
+  --color-card-foreground: hsl(200 10% 92%);
+  --color-popover: hsl(205 12% 8%);
+  --color-popover-foreground: hsl(200 10% 92%);
 
-  /* Primary - Pure Zinc */
-  --color-primary: oklch(0.20 0.02 25);
-  --color-primary-foreground: oklch(0.95 0.005 45);
+  /* Brand (slightly desaturated for dark) */
+  --color-primary: hsl(153 55% 48%);
+  --color-primary-foreground: hsl(210 8% 3%);
+  --color-primary-600: hsl(154 50% 40%);
 
-  /* Secondary - Cool Zinc (No Beige/Taupe) */
-  --color-secondary: oklch(27.274% 0.00003 271.152); /* Pure cool gray */
-  --color-secondary-foreground: oklch(0.95 0.005 45);
+  --color-muted: hsl(210 9% 12%);
+  --color-muted-foreground: hsl(210 8% 60%);
 
-  /* Muted - Cool Zinc */
-  --color-muted: oklch(0.18 0.005 35);
-  --color-muted-foreground: oklch(0.65 0.01 40);
+  --color-destructive: hsl(0 78% 58%);
+  --color-destructive-foreground: hsl(0 0% 100%);
 
-  /* Accent - Strict Yellow (No Coral/Pink) */
-  --color-accent: oklch(0.92 0.15 85); /* Cool yellow, no warmth */
-  --color-accent-foreground: oklch(0.08 0.02 25);
+  --color-border: hsl(200 8% 14%);
+  --color-input: hsl(200 8% 14%);
+  --color-ring: hsla(153 60% 45% / 0.9);
+  --color-ring-weak: hsla(153 60% 45% / 0.14);
 
-  /* Destructive - Bright Red */
-  --color-destructive: oklch(56% 0.19459 26.178);
-  --color-destructive-foreground: oklch(0.95 0.005 45);
-
-  /* Border - Subtle */
-  --color-border: oklch(0.22 0.01 30);
-  --color-input: oklch(0.22 0.01 30);
-  --color-ring: oklch(79.697% 0.03364 39.189);
-
-  
-  /* Duplicated for Tailwind compatibility - MATCH dark background */
-  --background: oklch(0% 0 0);
-  --foreground: oklch(0.95 0.005 45);
-  --card: oklch(0.12 0.005 25);
-  --card-foreground: oklch(0.95 0.005 45);
-  --popover: oklch(0.12 0.005 25);
-  --popover-foreground: oklch(0.95 0.005 45);
-  --primary: oklch(0.20 0.02 25); /* Darker zinc for dark mode */
-  --primary-foreground: oklch(0.95 0.005 45);
-  --secondary: oklch(0.25 0.02 45);
-  --secondary-foreground: oklch(0.95 0.005 45);
-  --muted: oklch(0.18 0.01 35);
-  --muted-foreground: oklch(0.65 0.02 40);
-  --accent: oklch(0.92 0.15 85); /* Cool yellow, no warmth */
-  --accent-foreground: oklch(0.08 0.02 25);
-  --destructive: oklch(0.65 0.25 15);
-  --border: oklch(0.22 0.01 30);
-  --input: oklch(0.22 0.01 30);
-  --ring: oklch(0.75 0.06 40);
+  /* Tailwind-friendly duplicates */
+  --background: hsl(210 8% 6%);
+  --foreground: hsl(200 10% 92%);
+  --card: hsl(205 12% 8%);
+  --card-foreground: hsl(200 10% 92%);
+  --popover: hsl(205 12% 8%);
+  --popover-foreground: hsl(200 10% 92%);
+  --primary: hsl(153 55% 48%);
+  --primary-foreground: hsl(210 8% 3%);
+  --secondary: hsl(210 9% 12%);
+  --secondary-foreground: hsl(210 8% 60%);
+  --muted: hsl(210 9% 12%);
+  --muted-foreground: hsl(210 8% 60%);
+  --accent: hsl(154 50% 40%);
+  --accent-foreground: hsl(210 8% 3%);
+  --destructive: hsl(0 78% 58%);
+  --border: hsl(200 8% 14%);
+  --input: hsl(200 8% 14%);
+  --ring: hsla(153 60% 45% / 0.9);
 }
 
 /* Smooth scrolling behavior */
@@ -166,8 +151,7 @@ html, body {
   color: var(--foreground);
   /* Define standard transition for interactive elements */
   --duration-normal: 0.2s;
-  --ease-in-out: cubic-bezier(0.4, 0, 0
-.2, 1);
+  --ease-in-out: cubic-bezier(0.4, 0, 0.2, 1);
   /* Define standard border radius */
   --radius: 0.5rem;
   --radius-sm: 0.375rem;
@@ -188,8 +172,13 @@ body {
 
 @media (prefers-color-scheme: dark) {
   :root:not(.light) {
-    --color-background: oklch(0% 0 0);
-    --color-foreground: oklch(0.95 0.005 45);
+    /* Match dark tokens when system prefers dark */
+    --color-background-h: 210 8% 6%;
+    --color-background: hsl(var(--color-background-h));
+    --color-foreground-h: 200 10% 92%;
+    --color-foreground: hsl(var(--color-foreground-h));
+    --background: var(--color-background);
+    --foreground: var(--color-foreground);
   }
 }
 
@@ -301,20 +290,19 @@ body {
   50% { background-position: 100% 50%; }
   100% { background-position: 0% 50%; }
 }
-
 .animated-gradient {
-  background: linear-gradient(-45deg, oklch(0.75 0.02 45), oklch(0.85 0.01 45), oklch(0.65 0.02 45), oklch(0.55 0.02 45));
+  background: linear-gradient(-45deg, hsl(210 8% 6%), hsla(153 55% 48% / 0.1), hsl(210 9% 12%), hsla(154 50% 40% / 0.1));
   background-size: 400% 400%;
   animation: gradient-shift 7s ease infinite;
 }
 
 .animated-gradient-subtle {
-  background: linear-gradient(-45deg, oklch(0.95 0.005 45), oklch(0.92 0.01 45), oklch(0.88 0.005 45));
+  background: linear-gradient(-45deg, hsl(210 8% 6%), hsl(210 9% 12%), hsla(153 55% 48% / 0.05));
   background-size: 400% 400%;
   animation: gradient-shift 6s ease infinite;
 }
 
-/* Enhanced Hover Effects */
+/* Enhanced Hover Effects - Supabase dark green */
 .hover-lift {
   transition: transform var(--duration-normal) var(--ease-in-out), filter var(--duration-normal) var(--ease-in-out);
 }
@@ -329,7 +317,7 @@ body {
 }
 
 .hover-glow:hover {
-  box-shadow: 0 0 20px oklch(0.7 0.02 45 / 0.5);
+  box-shadow: 0 0 20px hsla(153 55% 48% / 0.5);
 }
 
 /* Enhanced Backdrop Blur */
@@ -372,24 +360,19 @@ body {
   border-radius: var(--radius);
 }
 
+
 .gradient-border {
-  background: linear-gradient(to right, oklch(64.413% 0.20219 138.807), oklch(33.052% 0.10297 138.995), oklch(0.15 0.02 25));
+  background: linear-gradient(to right, hsl(153 55% 48%), hsl(154 50% 40%), hsl(200 8% 14%));
   padding: 1px;
   border-radius: var(--radius);
 }
 
+
+
 .security-badge-public {
-  /* Fallback for older browsers (e.g. Chrome < 111) */
-  background-color: rgba(16,185,129,0.1);
-  /* Prefer modern color-mix when available, otherwise fall back to rgba above */
-  @supports (color: color-mix(in srgb, #10b981 10%, transparent)) {
-    background-color: color-mix(in srgb, #10b981 10%, transparent);
-  }
-  color: #4ade80;
-  border: 1px solid rgba(16,185,129,0.2);
-  @supports (color: color-mix(in srgb, #10b981 20%, transparent)) {
-    border: 1px solid color-mix(in srgb, #10b981 20%, transparent);
-  }
+  background-color: hsla(153 55% 48% / 0.1);
+  color: hsl(153 55% 48%);
+  border: 1px solid hsla(153 55% 48% / 0.2);
   border-radius: var(--radius);
   padding: 0.25rem 0.5rem;
   font-size: 0.75rem;
@@ -397,16 +380,9 @@ body {
 }
 
 .security-badge-internal {
-  /* Fallback for older browsers (e.g. Chrome < 111) */
-  background-color: rgba(234,179,8,0.1);
-  @supports (color: color-mix(in srgb, #eab308 10%, transparent)) {
-    background-color: color-mix(in srgb, #eab308 10%, transparent);
-  }
-  color: #facc15;
-  border: 1px solid rgba(234,179,8,0.2);
-  @supports (color: color-mix(in srgb, #eab308 20%, transparent)) {
-    border: 1px solid color-mix(in srgb, #eab308 20%, transparent);
-  }
+  background-color: hsla(42 96% 50% / 0.1);
+  color: hsl(42 96% 50%);
+  border: 1px solid hsla(42 96% 50% / 0.2);
   border-radius: var(--radius);
   padding: 0.25rem 0.5rem;
   font-size: 0.75rem;
@@ -414,16 +390,9 @@ body {
 }
 
 .security-badge-confidential {
-  /* Fallback for older browsers (e.g. Chrome < 111) */
-  background-color: rgba(239,68,68,0.1);
-  @supports (color: color-mix(in srgb, #ef4444 10%, transparent)) {
-    background-color: color-mix(in srgb, #ef4444 10%, transparent);
-  }
-  color: #f87171;
-  border: 1px solid rgba(239,68,68,0.2);
-  @supports (color: color-mix(in srgb, #ef4444 20%, transparent)) {
-    border: 1px solid color-mix(in srgb, #ef4444 20%, transparent);
-  }
+  background-color: hsla(0 78% 58% / 0.1);
+  color: hsl(0 78% 58%);
+  border: 1px solid hsla(0 78% 58% / 0.2);
   border-radius: var(--radius);
   padding: 0.25rem 0.5rem;
   font-size: 0.75rem;
@@ -433,12 +402,12 @@ body {
 /* Removed non-standard @theme inline block — variables are already defined in :root and .dark above */
 
 * {
-  border-color: hsl(var(--border));
-  outline-color: hsl(var(--ring) / 0.5);
+  border-color: var(--border);
+  outline-color: var(--ring) / 0.5;
 }
 body {
-  background-color: hsl(var(--background));
-  color: hsl(var(--foreground));
+  background-color: var(--background);
+  color: var(--foreground);
 }
 
 /* Global button utilities to style shadnui Button with shared classes */
@@ -457,35 +426,35 @@ body {
 
 /* Light mode button styles */
 .light .btn {
-  background: hsl(var(--background));
-  color: hsl(var(--foreground));
-  border-color: hsl(var(--foreground));
+  background: var(--background);
+  color: var(--foreground);
+  border-color: var(--foreground);
 }
 
 .light .btn:hover {
-  background: hsl(var(--foreground));
-  color: hsl(var(--background));
-  border-color: hsl(var(--foreground));
+  background: var(--foreground);
+  color: var(--background);
+  border-color: var(--foreground);
 }
 
 /* Dark mode button styles */
 .dark .btn {
-  background: hsl(var(--foreground));
-  color: hsl(var(--background));
-  border-color: hsl(var(--background));
+  background: var(--foreground);
+  color: var(--background);
+  border-color: var(--background);
 }
 
 .dark .btn:hover {
-  background: hsl(var(--background));
-  color: hsl(var(--foreground));
-  border-color: hsl(var(--foreground));
+  background: var(--background);
+  color: var(--foreground);
+  border-color: var(--foreground);
 }
 
 .btn:where(:not(:disabled)):focus-visible {
   /* approximate Tailwind focus ring behavior */
-  outline: 2px solid hsl(var(--ring));
+  outline: 2px solid var(--ring);
   outline-offset: 2px;
-  box-shadow: 0 0 0 2px hsl(var(--ring) / 0.15);
+  box-shadow: 0 0 0 2px var(--color-ring-weak);
 }
 
 .btn-ghost {
@@ -494,26 +463,26 @@ body {
 
 /* Light mode ghost button */
 .light .btn-ghost {
-  border-color: hsl(var(--border));
-  color: hsl(var(--foreground));
+  border-color: var(--border);
+  color: var(--foreground);
 }
 
 .light .btn-ghost:hover {
-  background-color: hsl(var(--accent));
-  color: hsl(var(--accent-foreground));
-  border-color: hsl(var(--accent));
+  background-color: var(--accent);
+  color: var(--accent-foreground);
+  border-color: var(--accent);
 }
 
 /* Dark mode ghost button */
 .dark .btn-ghost {
-  border-color: hsl(var(--border));
-  color: hsl(var(--foreground));
+  border-color: var(--border);
+  color: var(--foreground);
 }
 
 .dark .btn-ghost:hover {
-  background-color: hsl(var(--accent));
-  color: hsl(var(--accent-foreground));
-  border-color: hsl(var(--accent));
+  background-color: var(--accent);
+  color: var(--accent-foreground);
+  border-color: var(--accent);
 }
 
 /* Use color-mix when available for more accurate accent blending */
@@ -567,9 +536,10 @@ body {
 }
 
 /* Fallback button rules: if Tailwind/utility classes aren't being applied
-   (e.g. during dev or if build isn't running), enforce sane defaults so
-   buttons look rounded and tappable instead of square and tiny. These are
-   intentionally specific to beat global resets. */
+  (e.g. during dev or if build isn't running), enforce sane defaults so
+  buttons look rounded and tappable instead of square and tiny. These are
+  intentionally specific to beat global resets. */
+
 button, input[type="button"], input[type="submit"], .btn, [class*="btn-"] {
   border-radius: var(--radius);
   padding: 0.375rem 0.75rem; /* px-3 py-1.5 */
@@ -585,6 +555,7 @@ button, input[type="button"], input[type="submit"], .btn, [class*="btn-"] {
 
 /* Make icon-only buttons circular by default (when using icon size variant)
    but keep generic fallback for other buttons. */
+
 [class*="btn-icon"], .icon-button, .btn-icon {
   border-radius: 9999px;
   padding: 0.5rem;
@@ -593,8 +564,9 @@ button, input[type="button"], input[type="submit"], .btn, [class*="btn-"] {
 }
 
 /* Header/title safety: cap the hero title so it doesn't become full-viewport-large
-   when fluid font sizes scale up unexpectedly. This keeps layout stable while
-   preserving the bold typographic style. */
+  when fluid font sizes scale up unexpectedly. This keeps layout stable while
+  preserving the bold typographic style. */
+
 .site-header .text-maximalist {
   max-width: 75%;
   display: block;
@@ -605,11 +577,13 @@ button, input[type="button"], input[type="submit"], .btn, [class*="btn-"] {
 
 /* Navigation helpers: keep top navigation elements aligned and not stretching
    across the entire header when layout utilities are missing */
+
 .site-header .flex, .site-header .items-center {
   align-items: center;
 }
 
 /* Enhanced Accessibility - Reduced Motion */
+
 @media (prefers-reduced-motion: reduce) {
   .hover-lift,
   .hover-glow,
