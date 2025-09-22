@@ -5,7 +5,10 @@ const google = createGoogleGenerativeAI({
   // custom settings
 });
 
-export const googleAI = google('gemini-2.5-pro');
+export const googleAIPro = google('gemini-2.5-pro',
+);
+export const googleAI = google('gemini-2.5-flash');
+export const googleAIFlashLite = google('gemini-2.5-flash-lite' );
 export const googleAIEmbedding = google('gemini-embedding-001');
 
 
