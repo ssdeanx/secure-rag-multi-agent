@@ -29,12 +29,12 @@ export function UserMenu({ currentRole, onSignOut }: UserMenuProps) {
 
   const getRoleIcon = (role: string) => {
     if (role.includes('admin')) {
-      return <Crown className="h-5 w-5 text-accent animate-pulse" />;
+      return <Crown className={cn("h-5 w-5 text-accent animate-pulse")} />;
     }
     if (role.includes('viewer')) {
-      return <Eye className="h-5 w-5 text-primary" />;
+      return <Eye className={cn("h-5 w-5 text-primary")} />;
     }
-    return <Shield className="h-5 w-5 text-accent" />;
+    return <Shield className={cn("h-5 w-5 text-accent")} />;
   };
 
   const getRoleLabel = (role: string) => {
@@ -86,11 +86,11 @@ export function UserMenu({ currentRole, onSignOut }: UserMenuProps) {
           )}
           aria-label="User menu"
         >
-          <div className="flex items-center space-x-2">
-            <Avatar className="h-8 w-8">
+          <div className={cn("flex items-center space-x-2")}>
+            <Avatar className={cn("h-8 w-8")}>
               <AvatarFallback className={cn(getRoleColor(currentRole), 'text-xs')}>{currentRole.charAt(0).toUpperCase()}</AvatarFallback>
             </Avatar>
-            <div className="flex flex-col leading-tight">
+            <div className={cn("flex flex-col leading-tight")}>
               <span className={cn(
                 "hidden sm:inline-block text-sm font-bold uppercase tracking-wider",
                 getRoleColor(currentRole),
@@ -98,7 +98,7 @@ export function UserMenu({ currentRole, onSignOut }: UserMenuProps) {
               )}>
                 {getRoleLabel(currentRole)}
               </span>
-              <span className="text-xs text-muted-foreground">{getRoleStatus(currentRole)}</span>
+              <span className={cn("text-xs text-muted-foreground")}>{getRoleStatus(currentRole)}</span>
             </div>
           </div>
         </Button>
@@ -115,13 +115,13 @@ export function UserMenu({ currentRole, onSignOut }: UserMenuProps) {
         )}
       >
         {/* Header Section */}
-        <div className="px-6 py-4 border-b-2 border-primary/20 bg-accent/5">
-          <div className="flex items-center space-x-3">
-            <div className="p-2 rounded-lg bg-accent/10 border border-accent/20">
+        <div className={cn("px-6 py-4 border-b-2 border-primary/20 bg-accent/5")}>
+          <div className={cn("flex items-center space-x-3")}>
+            <div className={cn("p-2 rounded-lg bg-accent/10 border border-accent/20")}>
               {getRoleIcon(currentRole)}
             </div>
-            <div className="flex flex-col flex-1">
-              <div className="flex items-center gap-2">
+            <div className={cn("flex flex-col flex-1")}>
+              <div className={cn("flex items-center gap-2")}>
                 <span className={cn(
                   "text-sm font-black brutalist-text",
                   getRoleColor(currentRole),
@@ -129,26 +129,26 @@ export function UserMenu({ currentRole, onSignOut }: UserMenuProps) {
                 )}>
                   {getRoleLabel(currentRole)}
                 </span>
-                <Badge variant="secondary" className="text-xs">{getRoleStatus(currentRole)}</Badge>
+                <Badge variant="secondary" className={cn("text-xs")}>{getRoleStatus(currentRole)}</Badge>
               </div>
-              <span className="text-xs text-muted-foreground font-medium">
+              <span className={cn("text-xs text-muted-foreground font-medium")}>
                 Authenticated User
               </span>
-              <div className="mt-2 space-y-1">
-                <div className="flex justify-between text-xs">
+              <div className={cn("mt-2 space-y-1")}>
+                <div className={cn("flex justify-between text-xs")}>
                   <span>Access Level</span>
                   <span>{getRoleProgress(currentRole)}%</span>
                 </div>
-                <Progress value={getRoleProgress(currentRole)} className="h-2" />
+                <Progress value={getRoleProgress(currentRole)} className={cn("h-2")} />
               </div>
             </div>
           </div>
         </div>
 
-        <DropdownMenuSeparator className="bg-primary/20" />
+        <DropdownMenuSeparator className={cn("bg-primary/20")} />
 
         {/* Menu Items */}
-        <div className="p-2">
+        <div className={cn("p-2")}>
           <DropdownMenuItem asChild>
             <Link href="/settings" className={cn(
               "group/item flex items-center px-4 py-3 rounded-lg",
@@ -157,18 +157,18 @@ export function UserMenu({ currentRole, onSignOut }: UserMenuProps) {
               "hover:bg-accent/20 border border-transparent hover:border-accent/30",
               "focus:bg-accent/20 focus:border-accent/30"
             )}>
-              <div className="flex items-center w-full">
-                <Settings className="mr-3 h-5 w-5 transition-all duration-300 group-hover/item:rotate-90 group-hover/item:scale-110 text-foreground" />
-                <span className="font-bold text-foreground group-hover/item:text-accent transition-colors duration-300">Settings</span>
-                <Badge variant="outline" className="ml-auto text-xs">
-                  <Shield className="h-3 w-3 mr-1" />
+              <div className={cn("flex items-center w-full")}>
+                <Settings className={cn("mr-3 h-5 w-5 transition-all duration-300 group-hover/item:rotate-90 group-hover/item:scale-110 text-foreground")} />
+                <span className={cn("font-bold text-foreground group-hover/item:text-accent transition-colors duration-300")}>Settings</span>
+                <Badge variant="outline" className={cn("ml-auto text-xs")}>
+                  <Shield className={cn("h-3 w-3 mr-1")} />
                   Config
                 </Badge>
               </div>
             </Link>
           </DropdownMenuItem>
 
-          <DropdownMenuSeparator className="bg-primary/20 my-2" />
+          <DropdownMenuSeparator className={cn("bg-primary/20 my-2")} />
 
           <DropdownMenuItem
             onClick={onSignOut}
@@ -181,18 +181,18 @@ export function UserMenu({ currentRole, onSignOut }: UserMenuProps) {
               "focus:bg-destructive/20 focus:border-destructive/30"
             )}
           >
-            <div className="flex items-center w-full">
-              <LogOut className="mr-3 h-5 w-5 transition-all duration-300 group-hover/item:scale-110 group-hover/item:-rotate-12 text-destructive" />
-              <span className="font-bold">Sign Out</span>
-              <Badge variant="destructive" className="ml-auto text-xs">Exit</Badge>
+            <div className={cn("flex items-center w-full")}>
+              <LogOut className={cn("mr-3 h-5 w-5 transition-all duration-300 group-hover/item:scale-110 group-hover/item:-rotate-12 text-destructive")} />
+              <span className={cn("font-bold")}>Sign Out</span>
+              <Badge variant="destructive" className={cn("ml-auto text-xs")}>Exit</Badge>
             </div>
           </DropdownMenuItem>
 
-          <p className="text-xs text-muted-foreground mt-2">Sign out of your account securely</p>
+          <p className={cn("text-xs text-muted-foreground mt-2")}>Sign out of your account securely</p>
         </div>
 
         {/* Decorative bottom element */}
-        <div className="absolute bottom-2 right-2 w-4 h-4 bg-accent/20 rounded-full blur-sm animate-pulse" />
+        <div className={cn("absolute bottom-2 right-2 w-4 h-4 bg-accent/20 rounded-full blur-sm animate-pulse")} />
       </DropdownMenuContent>
     </DropdownMenu>
   );

@@ -1,3 +1,4 @@
+import { cn } from '@/lib/utils';
 import { AnimatedHero } from '@/components/landing/AnimatedHero';
 import { InteractiveFeatures } from '@/components/landing/InteractiveFeatures';
 import { Stats } from '@/components/landing/Stats';
@@ -15,10 +16,14 @@ function FAQ() {
 
   return (
     <section className="py-16 bg-muted/30">
-      <div className="container mx-auto px-4">
-        <h2 className="text-3xl font-bold text-center mb-8">Frequently Asked Questions</h2>
-        <div className="max-w-2xl mx-auto">
-        </div>
+      <h2 className="text-3xl font-bold text-center mb-8">Frequently Asked Questions</h2>
+      <div className="space-y-4">
+        {faqs.map((faq, i) => (
+          <div key={i} className="p-4 bg-background rounded-lg border">
+            <h3 className="font-semibold mb-2">{faq.q}</h3>
+            <p className="text-muted-foreground">{faq.a}</p>
+          </div>
+        ))}
       </div>
     </section>
   );
@@ -26,7 +31,7 @@ function FAQ() {
 
 export default function Home() {
   return (
-    <>
+    <div className="max-w-7xl mx-auto px-4 py-8">  {/* Centers + pads all sections */}
       <AnimatedHero />
       <InteractiveFeatures />
       <Stats />
@@ -34,6 +39,6 @@ export default function Home() {
       <NewsletterForm />
       <CTA />
       <FAQ />
-    </>
+    </div>
   );
 }

@@ -132,6 +132,8 @@
 /* Smooth scrolling behavior */
 html {
   scroll-behavior: smooth;
+  overflow-x: hidden;
+  scroll-padding-top: 4rem; /* Adjust if you have a fixed header */
 }
 
 /* App level layout utilities */
@@ -159,14 +161,21 @@ html, body {
 }
 
 body {
-  /* Use utility tokens and ensure the app stacks vertically */
+  /* Use utility tokens and ensure the app stacks vertically + centers horizontally */
   background: var(--background);
   color: var(--foreground);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  display: flex;
-  flex-direction: column;
-  min-height: 100vh;
+  /* Ensure body doesn't introduce extra scrollbars */
+  overflow-x: hidden;
+  overflow-y: auto;
+
+  /* Default transition for background and color changes */
+  transition: background-color var(--duration-normal) var(--ease-in-out), color var(--duration-normal) var(--ease-in-out);
+
+  /* Prevent layout shift when switching themes */
+  /* This is a simple approach; for more complex apps, consider using a CSS class toggle */
+  will-change: background-color, color;
 }
 
 
@@ -563,24 +572,7 @@ button, input[type="button"], input[type="submit"], .btn, [class*="btn-"] {
   width: 2.5rem;
 }
 
-/* Header/title safety: cap the hero title so it doesn't become full-viewport-large
-  when fluid font sizes scale up unexpectedly. This keeps layout stable while
-  preserving the bold typographic style. */
 
-.site-header .text-maximalist {
-  max-width: 75%;
-  display: block;
-  white-space: normal;
-  overflow-wrap: break-word;
-  font-size: clamp(1.5rem, 4vw, 3rem); /* softer cap */
-}
-
-/* Navigation helpers: keep top navigation elements aligned and not stretching
-   across the entire header when layout utilities are missing */
-
-.site-header .flex, .site-header .items-center {
-  align-items: center;
-}
 
 /* Enhanced Accessibility - Reduced Motion */
 
@@ -599,9 +591,9 @@ button, input[type="button"], input[type="submit"], .btn, [class*="btn-"] {
   .loading-state::after,
   /* Add particles pause if CSS controllable */
   #tsparticles {
-    animation: none !important;
-    transition: none !important;
-    transform: none !important;
+    animation: none;
+    transition: none;
+    transform: none;
   }
 
   html {

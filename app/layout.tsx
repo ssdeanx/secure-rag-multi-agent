@@ -1,5 +1,6 @@
 import React from 'react';
 import { Inter } from 'next/font/google';
+import { cn } from '@/lib/utils';
 
 import './global.css';
 import { ThemeProvider } from '../components/ThemeProvider';
@@ -29,11 +30,14 @@ export const metadata: Metadata = {
 };
 
 export const viewport: Viewport = {
+  width: "device-width",
+  initialScale: 1,
   themeColor: [
-    { media: '(prefers-color-scheme: light)', color: 'white' },
-    { media: '(prefers-color-scheme: dark)', color: 'black' },
+    { media: "(prefers-color-scheme: dark)", color: "#000000" },
+    { media: "(prefers-color-scheme: light)", color: "#ffffff" }
   ],
-};
+  colorScheme: "dark"
+}
 
 export default function RootLayout({
   children,
@@ -42,18 +46,18 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en" suppressHydrationWarning>
-      <body className={`${inter.className} antialiased bg-background text-foreground min-h-screen flex flex-col`}>
+      <body className={cn(`${inter.className} antialiased bg-background text-foreground`)}>
         <ThemeProvider
           attribute="class"
           defaultTheme="system"
           enableSystem
           disableTransitionOnChange
         >
-          <TopNavigation />  {/* Direct child: no extra wrapper */}
-          <main className="flex-1 w-full">  {/* Full-width main below nav */}
-            {children}
-          </main>
-          <Toaster />
+          <div className="relative flex min-h-screen flex-col">
+            <TopNavigation />
+            <main className="flex-1">{children}</main>
+            <Toaster />
+          </div>
         </ThemeProvider>
       </body>
     </html>
