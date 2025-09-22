@@ -6,7 +6,7 @@ import ChatInterface from '@/components/ChatInterface';
 import IndexingPanel from '@/components/IndexingPanel';
 import FeatureCard from '@/components/FeatureCard';
 import LoggedInAlert from '@/components/LoggedInAlert';
-import { GovernedRAGLogo } from '@/components/GovernedRAGLogo';
+import { DeanMachinesLogo } from '@/components/DeanMachinesLogo';
 import { Lock } from 'lucide-react';
 import { useState } from 'react';
 
@@ -27,7 +27,7 @@ export default function Home() {
   return (
     <div className="min-h-screen bg-background flex flex-col">
       <div className="flex-1 overflow-auto">
-        <div className="app-container py-6">
+        <div className="max-w-7xl mx-auto px-4 py-6">
           <div className="w-full space-y-6 sm:space-y-8">
             {currentView === 'indexing' && (
               <IndexingPanel jwt={jwt || 'anonymous'} />
@@ -58,7 +58,7 @@ export default function Home() {
                     title="Public Access"
                     badgeVariant="default"
                     badgeText="Basic"
-                    icon={<GovernedRAGLogo className="text-green-600" />}
+                    icon={<DeanMachinesLogo className="text-green-600" />}
                     className="neon-glow-cyan"
                   >
                     Basic information available to all authenticated users
@@ -68,7 +68,7 @@ export default function Home() {
                     title="Internal Access"
                     badgeVariant="default"
                     badgeText="Department"
-                    icon={<GovernedRAGLogo className="text-blue-600" />}
+                    icon={<DeanMachinesLogo className="text-blue-600" />}
                     className="neon-glow-green"
                   >
                     Department-specific information for authorized roles
@@ -78,7 +78,7 @@ export default function Home() {
                     title="Confidential Access"
                     badgeVariant="destructive"
                     badgeText="Admin"
-                    icon={<GovernedRAGLogo className="text-red-600" />}
+                    icon={<DeanMachinesLogo className="text-red-600" />}
                     className="neon-glow-purple"
                   >
                     Sensitive data requiring admin privileges and step-up auth

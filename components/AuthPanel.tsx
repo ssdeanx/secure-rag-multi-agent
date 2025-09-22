@@ -115,7 +115,7 @@ export default function AuthPanel({ onAuth }: AuthPanelProps) {
 
   return (
     <TooltipProvider>
-      <div className="app-container">
+      <div className="max-w-7xl mx-auto px-4">
         <Card className="relative overflow-hidden border-4 border-primary/20 bg-gradient-mocha backdrop-blur-xl brutalist-card shadow-2xl">
           {/* Background decorative elements */}
           <div className="absolute top-0 left-0 w-32 h-32 bg-accent/10 rounded-full blur-3xl animate-pulse" />
@@ -189,7 +189,7 @@ export default function AuthPanel({ onAuth }: AuthPanelProps) {
                                   </div>
                                 </div>
                                 <div className="flex flex-col items-end space-y-2">
-                                  {role.stepUp && (
+                                  {(role.stepUp ?? false) && (
                                     <Badge variant="destructive" className="font-bold animate-pulse">
                                       Step-Up Auth
                                     </Badge>

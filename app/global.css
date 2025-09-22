@@ -419,6 +419,8 @@ body {
   color: var(--foreground);
 }
 
+/* Removed forced global centering - using proper Tailwind v4 container utilities */
+
 /* Global button utilities to style shadnui Button with shared classes */
 .btn {
   display: inline-flex;

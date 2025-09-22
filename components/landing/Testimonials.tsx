@@ -29,42 +29,40 @@ const testimonials = [
 export function Testimonials() {
 	return (
 		<section className="py-20 bg-background text-foreground">
-			<div className="container mx-auto px-4">
-				<motion.div
-					initial={{ opacity: 0, y: 50 }}
-					whileInView={{ opacity: 1, y: 0 }}
-					viewport={{ once: true }}
-					transition={{ duration: 0.8, ease: 'easeOut' }}
-				>
-					<h2 className="text-3xl font-bold text-center mb-12">What Our Clients Say</h2>
-				</motion.div>
-				<div className="grid md:grid-cols-3 gap-8">
-					{testimonials.map((testimonial, i) => (
-						<motion.div
-							key={i}
-							initial={{ opacity: 0, y: 50 }}
-							whileInView={{ opacity: 1, y: 0 }}
-							viewport={{ once: true }}
-							transition={{ duration: 0.5, delay: i * 0.2, ease: 'easeOut' }}
-						>
-							<Card className="h-full flex flex-col justify-between hover-lift">
-								<CardContent className="pt-6">
-									<p className="text-lg italic text-foreground">"{testimonial.quote}"</p>
-								</CardContent>
-								<CardHeader className="flex-row items-center gap-4">
-									<Avatar>
-										<AvatarImage src={testimonial.avatar} alt={testimonial.name} />
-										<AvatarFallback>{testimonial.name.charAt(0)}</AvatarFallback>
-									</Avatar>
-									<div>
-										<CardTitle className="text-base font-bold">{testimonial.name}</CardTitle>
-										<p className="text-sm text-muted-foreground">{testimonial.title}</p>
-									</div>
-								</CardHeader>
-							</Card>
-						</motion.div>
-					))}
-				</div>
+			<motion.div
+				initial={{ opacity: 0, y: 50 }}
+				whileInView={{ opacity: 1, y: 0 }}
+				viewport={{ once: true }}
+				transition={{ duration: 0.8, ease: 'easeOut' }}
+			>
+				<h2 className="text-3xl font-bold text-center mb-12">What Our Clients Say</h2>
+			</motion.div>
+			<div className="grid md:grid-cols-3 gap-8">
+				{testimonials.map((testimonial, i) => (
+					<motion.div
+						key={i}
+						initial={{ opacity: 0, y: 50 }}
+						whileInView={{ opacity: 1, y: 0 }}
+						viewport={{ once: true }}
+						transition={{ duration: 0.5, delay: i * 0.2, ease: 'easeOut' }}
+					>
+						<Card className="h-full flex flex-col justify-between hover-lift">
+							<CardContent className="pt-6">
+								<p className="text-lg italic text-foreground">"{testimonial.quote}"</p>
+							</CardContent>
+							<CardHeader className="flex-row items-center gap-4">
+								<Avatar>
+									<AvatarImage src={testimonial.avatar} alt={testimonial.name} />
+									<AvatarFallback>{testimonial.name.charAt(0)}</AvatarFallback>
+								</Avatar>
+								<div>
+									<CardTitle className="text-base font-bold">{testimonial.name}</CardTitle>
+									<p className="text-sm text-muted-foreground">{testimonial.title}</p>
+								</div>
+							</CardHeader>
+						</Card>
+					</motion.div>
+				))}
 			</div>
 		</section>
 	);

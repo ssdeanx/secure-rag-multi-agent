@@ -105,7 +105,7 @@ export function AnimatedHero({ mode = 'general' }: AnimatedHeroProps) {
 
   return (
     <motion.section
-      className="min-h-screen relative flex flex-col items-center justify-center text-center px-4 py-20 overflow-hidden bg-background text-foreground"
+      className="min-h-screen relative px-4 py-20 overflow-hidden bg-background text-foreground"
       initial="hidden"
       whileInView="visible"
       viewport={{ once: true }}
@@ -122,7 +122,7 @@ export function AnimatedHero({ mode = 'general' }: AnimatedHeroProps) {
         >
           <HoverCard>
             <HoverCardTrigger>
-              <DeanMachinesLogo className="h-16 w-16 mx-auto mb-6" />
+              <DeanMachinesLogo className="h-16 w-16 mb-6" />
             </HoverCardTrigger>
             <HoverCardContent className="w-64">
               <div className="text-sm text-muted-foreground">Deanmachines — Governed RAG: secure, role-based AI for enterprise.</div>

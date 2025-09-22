@@ -9,7 +9,7 @@ import { HoverCard, HoverCardTrigger, HoverCardContent } from '@/components/ui/h
 export function Hero() {
   return (
     <section className="py-20 bg-background text-foreground">
-      <div className="container mx-auto px-4 text-center">
+      <div className="max-w-4xl mx-auto px-4 text-center">
         <HoverCard>
           <HoverCardTrigger>
             <DeanMachinesLogo className="h-16 w-16 mx-auto mb-6 text-primary" />
