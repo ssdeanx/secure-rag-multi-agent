@@ -1,3 +1,19 @@
+// Kilocode: Tool Approval
+// owner: team-data
+// justification: fetch public docs for RAG indexing with whitelist
+// allowedDomains:
+//  - example.com
+//  - docs.example.com
+// allowedDataPaths:
+//  - corpus/public
+// sideEffects:
+//  - network: true
+//  - write: true
+// inputSchema: src/mastra/schemas/tool-schemas.ts::WebScraperInput
+// outputSchema: src/mastra/schemas/tool-schemas.ts::WebScraperOutput
+// approvedBy: sam
+// approvalDate: 9/22
+
 import { createTool } from "@mastra/core/tools";
 import { z } from "zod";
 import { AISpanType } from '@mastra/core/ai-tracing';

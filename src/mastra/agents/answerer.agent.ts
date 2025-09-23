@@ -1,10 +1,23 @@
+// Kilocode: Agent Contract
+// owner: team-ai
+// category: mastra-agent
+// approvalRequired: true
+// tools:
+//  - vector-query.tool
+// inputSchema: src/mastra/schemas/agent-schemas.ts::Input
+// outputSchema: src/mastra/schemas/agent-schemas.ts::AnswererOutput
+// requiredCallerClaims:
+//  - roles: [role:reader]
+//  - tenant: global
+// approvedBy: sam
+// approvalDate: 9/22
 import { Agent } from "@mastra/core";
 //import { z } from "zod";
 import { ragAnswerSchema } from "../schemas/agent-schemas";
 import { google } from "@ai-sdk/google";
 import { createResearchMemory } from '../config/libsql-storage';
 import { log } from "../config/logger";
-import { GoogleGenerativeAIProviderOptions } from '@ai-sdk/google';
+// removed unused import: GoogleGenerativeAIProviderOptions
 
 log.info('Initializing Answerer Agent...');
 

@@ -1,3 +1,18 @@
+// Kilocode: Tool Approval
+// owner: team-data
+// justification: manage corpus files within DATA_DIR
+// allowedDomains: []
+// allowedDataPaths:
+//  - corpus/
+//  - docs/data/
+// sideEffects:
+//  - network: false
+//  - write: true
+// inputSchema: src/mastra/schemas/tool-schemas.ts::ToolInput
+// outputSchema: src/mastra/schemas/tool-schemas.ts::ToolOutput
+// approvedBy: sam
+// approvalDate: 9/22
+
 
 import * as fs from 'fs/promises';
 import * as path from 'path';

@@ -1,3 +1,17 @@
+// Kilocode: Agent Contract
+// owner: team-ai
+// category: mastra-agent
+// approvalRequired: true
+// tools:
+//  - vector-query.tool
+// inputSchema: src/mastra/schemas/agent-schemas.ts::Input
+// outputSchema: src/mastra/schemas/agent-schemas.ts::AssistantOutput
+// requiredCallerClaims:
+//  - roles: [role:engineering]
+//  - tenant: engineering
+// approvedBy: samm
+// approvalDate: 9/22
+
 import { Agent } from "@mastra/core/agent";
 import { createOpenRouter } from "@openrouter/ai-sdk-provider";
 import { createResearchMemory } from '../config/libsql-storage';

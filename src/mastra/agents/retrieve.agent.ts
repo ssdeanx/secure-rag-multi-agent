@@ -1,3 +1,16 @@
+// Kilocode: Agent Contract
+// owner: team-ai
+// category: mastra-agent
+// approvalRequired: true
+// tools:
+//  - vector-query.tool
+// outputSchema: src/mastra/schemas/agent-schemas.ts::RetrieveOutput
+// requiredCallerClaims:
+//  - roles: [role:reader]
+//  - tenant: global
+// approvedBy: TODO
+// approvalDate: TODO
+
 import { Agent } from "@mastra/core";
 import { z } from "zod";
 import { documentContextSchema } from "../schemas/agent-schemas";
