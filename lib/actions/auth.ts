@@ -12,20 +12,20 @@ export async function generateDemoJWT(roleId: string) {
     executive: { roles: ['finance.admin', 'engineering.viewer', 'hr.viewer'], stepUp: false },
   };
 
+  if (!(roleId in roleMap)) {
+    throw new Error('Invalid role');
+  }
+
   const role = roleMap[roleId as keyof typeof roleMap];
 
-  if (!role) throw new Error('Invalid role');
-
-  const jwt = await new SignJWT({
-    sub: `demo-user-${roleId}@example.com`,
-    roles: ["employee", ...role.roles],
-    tenant: 'acme',
-    stepUp: role.stepUp,
-  })
-    .setProtectedHeader({ alg: 'HS256' })
-    .setIssuedAt()
-    .setExpirationTime('2h')
-    .sign(secret);
-
-  return jwt;
+  return await new SignJWT({
+      sub: `demo-user-${roleId}@example.com`,
+      roles: ["employee", ...role.roles],
+      tenant: 'acme',
+      stepUp: role.stepUp,
+    })
+      .setProtectedHeader({ alg: 'HS256' })
+      .setIssuedAt()
+      .setExpirationTime('2h')
+      .sign(secret);
 }

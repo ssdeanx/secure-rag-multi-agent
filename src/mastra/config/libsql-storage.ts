@@ -149,7 +149,7 @@ export const createLibSQLVectorStore = (tracingContext?: { context?: unknown; ru
     name: 'libsql_vector_store_initialization',
     input: {
       databaseUrl: databaseUrl.replace(/authToken=[^&]*/, 'authToken=***'), // Mask auth token
-      hasAuthToken: !((process.env.VECTOR_DATABASE_AUTH_TOKEN ?? process.env.DATABASE_AUTH_TOKEN) === null)
+      hasAuthToken: !!(process.env.VECTOR_DATABASE_AUTH_TOKEN ?? process.env.DATABASE_AUTH_TOKEN)
     }
   });
 
