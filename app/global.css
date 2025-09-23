@@ -164,6 +164,8 @@ body {
   /* Use utility tokens and ensure the app stacks vertically + centers horizontally */
   background: var(--background);
   color: var(--foreground);
+  text-align: center; /* Added to override default start/left for all components */
+
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   /* Ensure body doesn't introduce extra scrollbars */
@@ -417,6 +419,7 @@ body {
 body {
   background-color: var(--background);
   color: var(--foreground);
+  text-align: center; /* Added to override default start/left for all components */
 }
 
 /* Removed forced global centering - using proper Tailwind v4 container utilities */

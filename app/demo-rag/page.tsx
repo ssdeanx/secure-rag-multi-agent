@@ -6,7 +6,6 @@ import ChatInterface from '@/components/ChatInterface';
 import IndexingPanel from '@/components/IndexingPanel';
 import FeatureCard from '@/components/FeatureCard';
 import LoggedInAlert from '@/components/LoggedInAlert';
-import { DeanMachinesLogo } from '@/components/DeanMachinesLogo';
 import { Lock } from 'lucide-react';
 import { useState } from 'react';
 
@@ -58,7 +57,6 @@ export default function Home() {
                     title="Public Access"
                     badgeVariant="default"
                     badgeText="Basic"
-                    icon={<DeanMachinesLogo className="text-green-600" />}
                     className="neon-glow-cyan"
                   >
                     Basic information available to all authenticated users
@@ -68,7 +66,6 @@ export default function Home() {
                     title="Internal Access"
                     badgeVariant="default"
                     badgeText="Department"
-                    icon={<DeanMachinesLogo className="text-blue-600" />}
                     className="neon-glow-green"
                   >
                     Department-specific information for authorized roles
@@ -78,7 +75,6 @@ export default function Home() {
                     title="Confidential Access"
                     badgeVariant="destructive"
                     badgeText="Admin"
-                    icon={<DeanMachinesLogo className="text-red-600" />}
                     className="neon-glow-purple"
                   >
                     Sensitive data requiring admin privileges and step-up auth

@@ -1,14 +1,11 @@
 "use client";
 
-import React, { useState } from 'react';
+import React from 'react';
 import { motion } from 'framer-motion';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Dialog, DialogTrigger, DialogContent, DialogClose } from '@/components/ui/dialog';
 
 export function CTA() {
-  const [open, setOpen] = useState(false);
-
   return (
     <section className="py-20 bg-background text-foreground">
       <motion.div
@@ -24,20 +21,9 @@ export function CTA() {
           <CardContent>
             <p className="text-primary-foreground/80 mb-6">Explore the future of enterprise AI. Get started with a demo or dive into our documentation.</p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <Dialog open={open} onOpenChange={setOpen}>
-                <DialogTrigger asChild>
-                  <Button size="lg" variant="secondary">Try the Demo</Button>
-                </DialogTrigger>
-                <DialogContent>
-                  <div className="space-y-4">
-                    <h3 className="text-lg font-semibold">Request a Demo</h3>
-                    <p className="text-sm text-muted-foreground">We'll contact you to set up a live demo.</p>
-                    <DialogClose asChild>
-                      <Button variant="outline">Close</Button>
-                    </DialogClose>
-                  </div>
-                </DialogContent>
-              </Dialog>
+              <Button size="lg" asChild>
+                <a href="/demo-rag">Try the Demo</a>
+              </Button>
 
               <Button size="lg" variant="outline" className="border-primary-foreground text-primary-foreground hover:bg-primary-foreground hover:text-primary" asChild>
                 <a href="/docs">Read the Docs</a>
