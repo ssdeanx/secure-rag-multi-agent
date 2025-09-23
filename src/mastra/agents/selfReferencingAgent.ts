@@ -1,4 +1,5 @@
 import { Agent } from "@mastra/core/agent";
+import type { MCPServerResourceContent, Resource } from "@mastra/mcp";
 import { MCPServer } from "@mastra/mcp";
 import { MCPClient } from "@mastra/mcp";
 import { google } from '@ai-sdk/google';
@@ -8,6 +9,9 @@ import { contentCleanerTool, htmlToMarkdownTool, linkExtractorTool, siteMapExtra
 import { editorTool } from "../tools/editor-agent-tool";
 import { weatherTool } from "../tools/weather-tool";
 import { starterAgent } from "./starterAgent";
+import { evaluateResultTool } from "../tools/evaluateResultTool";
+import { extractLearningsTool } from "../tools/extractLearningsTool";
+import { copywriterTool } from "../tools/copywriter-agent-tool";
 
 const selfReferencingAgent = new Agent({
   id: 'selfReferencing',
@@ -25,15 +29,19 @@ const selfReferencingAgent = new Agent({
       },
     });
     return await mcpClient.getTools();
-    
+
   },
   workflows: {},
   scorers: {},
 });
- 
+
 // This works because tools resolve after server startup
-export const mcpServer = new MCPServer({
+export const mcp = new MCPServer({
+  id: "mcpServer",
+  description: "A self-referencing MCP server that hosts an agent capable of using tools from another MCP server.",
   name: "My MCP Server",
+  version: "1.0.0",
+
   agents: {
     selfReferencingAgent, assistantAgent, starterAgent,
   },
@@ -48,8 +56,21 @@ export const mcpServer = new MCPServer({
     contentCleanerTool,
     webScraperTool,
     editorTool,
+    copywriterTool,
+    evaluateResultTool,
+    extractLearningsTool,
     weatherTool
   },
-  version: "1.0.0",
-  description: "A self-referencing MCP server that hosts an agent capable of using tools from another MCP server.",
+  workflows: {},
+  prompts: {
+    listPrompts: () => Promise.resolve([]),
+  },
+  resources: {
+    listResources (): Promise<Resource[]> {
+      throw new Error("Function not implemented.");
+    },
+    getResourceContent: async (params: { uri: string; }): Promise<MCPServerResourceContent | MCPServerResourceContent[]> => {
+      throw new Error(`Function not implemented for URI: ${params.uri}`);
+    }
+  }
 });

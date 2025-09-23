@@ -85,18 +85,15 @@ export class LangfuseExporter implements AITracingExporter {
     }
 
     switch (event.type) {
-      case 'span_started':
+      case AITracingEventType.SPAN_STARTED:
         await this.handleSpanStarted(event.exportedSpan);
         break;
-      case 'span_updated':
+      case AITracingEventType.SPAN_UPDATED:
         await this.handleSpanUpdateOrEnd(event.exportedSpan, false);
         break;
-      case 'span_ended':
+      case AITracingEventType.SPAN_ENDED:
         await this.handleSpanUpdateOrEnd(event.exportedSpan, true);
         break;
-      case AITracingEventType.SPAN_STARTED: { throw new Error('Not implemented yet: AITracingEventType.SPAN_STARTED case') }
-      case AITracingEventType.SPAN_UPDATED: { throw new Error('Not implemented yet: AITracingEventType.SPAN_UPDATED case') }
-      case AITracingEventType.SPAN_ENDED: { throw new Error('Not implemented yet: AITracingEventType.SPAN_ENDED case') }
     }
 
     // Flush immediately in realtime mode for instant visibility
@@ -338,3 +335,4 @@ export class LangfuseExporter implements AITracingExporter {
     this.traceMap.clear();
   }
 }
+

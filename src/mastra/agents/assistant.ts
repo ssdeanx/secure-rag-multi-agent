@@ -4,13 +4,11 @@ import { createResearchMemory } from '../config/libsql-storage';
 import { ContentSimilarityMetric, CompletenessMetric, TextualDifferenceMetric, KeywordCoverageMetric, ToneConsistencyMetric } from "@mastra/evals/nlp";
 import { UnicodeNormalizer } from "@mastra/core/processors"
 import { BatchPartsProcessor } from "@mastra/core/processors";
-//import { chunkerTool } from '../tools/chunker-tool';
 import { readDataFileTool, writeDataFileTool, deleteDataFileTool, listDataDirTool } from '../tools/data-file-manager';
 //import { evaluateResultTool } from '../tools/evaluateResultTool';
 //import { extractLearningsTool } from '../tools/extractLearningsTool';
 ;
 import { webScraperTool,
-  siteMapExtractorTool,
   linkExtractorTool,
   htmlToMarkdownTool,
   contentCleanerTool
@@ -92,10 +90,6 @@ For complex research tasks that generate data, you MUST respond with a valid JSO
     writeDataFileTool,
     deleteDataFileTool,
     listDataDirTool,
-//    evaluateResultTool,
-//    extractLearningsTool,
-//    batchWebScraperTool,
-    siteMapExtractorTool,
     linkExtractorTool,
     htmlToMarkdownTool,
     contentCleanerTool,
