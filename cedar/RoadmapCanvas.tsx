@@ -3,7 +3,8 @@ import type {
   Connection,
   NodeChange,
   Node} from 'reactflow';
-import ReactFlow, {
+import ReactFlow,
+{
   addEdge,
   Background,
   ConnectionLineType,
@@ -25,7 +26,7 @@ export function RoadmapCanvas() {
   const { nodes: initialNodes, edges: initialEdges } = useRoadmapData();
   const [nodes, setNodes, onNodesChange] = useNodesState(initialNodes);
   const [edges, setEdges, onEdgesChange] = useEdgesState(initialEdges);
-  const [selectedNodes, setSelectedNodes] = useCedarState<Node<FeatureNodeData>[]>({
+  const [selectedNodes, setSelectedNodes] = useCedarState<Array<Node<FeatureNodeData>>>({
     key: 'selectedNodes',
     initialValue: [],
     description: 'Selected features in the roadmap',
@@ -34,8 +35,8 @@ export function RoadmapCanvas() {
   useCedarRoadmap(nodes, setNodes, edges, setEdges);
 
   useOnSelectionChange({
-    onChange: ({ nodes }) => {
-      setSelectedNodes(nodes);
+    onChange: ({ nodes: selected }) => {
+      setSelectedNodes(selected);
     },
   });
 
@@ -45,9 +46,9 @@ export function RoadmapCanvas() {
       // Clean up edges when nodes are deleted
       const deletions = changes.filter((change) => change.type === 'remove');
       if (deletions.length > 0) {
-        setEdges((edges) => {
+        setEdges((currentEdges) => {
           const deletedIds = deletions.map((d) => d.id);
-          return edges.filter(
+          return currentEdges.filter(
             (edge) => !deletedIds.includes(edge.source) && !deletedIds.includes(edge.target),
           );
         });

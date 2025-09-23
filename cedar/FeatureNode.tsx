@@ -109,8 +109,8 @@ function FeatureNodeComponent({ id, data, selected }: NodeProps<FeatureNodeData>
 
   // Resizing state
   const [isResizing, setIsResizing] = useState(false);
-  const [nodeSize, setNodeSize] = useState({ width, height: height || 'auto' });
-  const currentSizeRef = useRef({ width, height: height || 'auto' });
+  const [nodeSize, setNodeSize] = useState({ width, height: height ?? 'auto' });
+  const currentSizeRef = useRef({ width, height: height ?? 'auto' });
   const handleLabelDoubleClick = (handleId: string) => {
     const newLabel = window.prompt('Enter label for handle');
     if (newLabel !== null) {
@@ -184,12 +184,12 @@ function FeatureNodeComponent({ id, data, selected }: NodeProps<FeatureNodeData>
   useEffect(() => {
     if (data.width !== undefined || data.height !== undefined) {
       setNodeSize({
-        width: data.width || 320,
-        height: data.height || 'auto',
+        width: data.width ?? 320,
+        height: data.height ?? 'auto',
       });
       currentSizeRef.current = {
-        width: data.width || 320,
-        height: data.height || 'auto',
+        width: data.width ?? 320,
+        height: data.height ?? 'auto',
       };
     }
   }, [data.width, data.height]);
@@ -222,10 +222,10 @@ function FeatureNodeComponent({ id, data, selected }: NodeProps<FeatureNodeData>
     const startWidth = nodeSize.width;
     const startHeight = typeof nodeSize.height === 'number' ? nodeSize.height : 200;
 
-    const handleMouseMove = (e: MouseEvent) => {
+    const handleMouseMove = (event: MouseEvent) => {
       // Account for zoom level when calculating delta
-      const deltaX = (e.clientX - startX) / zoom;
-      const deltaY = (e.clientY - startY) / zoom;
+      const deltaX = (event.clientX - startX) / zoom;
+      const deltaY = (event.clientY - startY) / zoom;
 
       const newWidth = Math.max(200, startWidth + deltaX);
       const newHeight = Math.max(150, startHeight + deltaY);
@@ -338,7 +338,10 @@ function FeatureNodeComponent({ id, data, selected }: NodeProps<FeatureNodeData>
   const handleAcceptDiff = async () => {
     const nodes = getNodes();
     const node = nodes.find((n) => n.id === id);
-    if (!node?.data.diff) {
+    if (!node) {
+      return;
+    }
+    if (node.data.diff === null) {
       return;
     }
     if (node.data.diff === 'removed') {
@@ -355,7 +358,10 @@ function FeatureNodeComponent({ id, data, selected }: NodeProps<FeatureNodeData>
   const handleRejectDiff = () => {
     setNodes((nds) => {
       const node = nds.find((n) => n.id === id);
-      if (!node?.data.diff) {
+      if (!node) {
+        return nds;
+      }
+      if (node.data.diff === null) {
         return nds;
       }
       if (node.data.diff === 'added') {
@@ -549,7 +555,7 @@ function FeatureNodeComponent({ id, data, selected }: NodeProps<FeatureNodeData>
                   ))}
                 </DropdownMenuContent>
               </DropdownMenu>
-              {status === 'done' && packageVersion && (
+              {status === 'done' && (packageVersion !== null) && (
                 <Badge variant="outline" className="text-xs">
                   v{packageVersion}
                 </Badge>
@@ -623,7 +629,7 @@ function FeatureNodeComponent({ id, data, selected }: NodeProps<FeatureNodeData>
           {expanded && (
             <div className="mt-2 text-xs text-gray-700 dark:text-gray-300 flex-none overflow-y-auto">
               <ReactMarkdown remarkPlugins={[remarkGfm]}>
-                {data.details || 'No details provided.'}
+                {data.details ?? 'No details provided.'}
               </ReactMarkdown>
             </div>
           )}
@@ -669,13 +675,13 @@ function FeatureNodeComponent({ id, data, selected }: NodeProps<FeatureNodeData>
           style={{ zIndex: 20 }}
           onDoubleClick={() => handleLabelDoubleClick('left')}
           tabIndex={0}
-          onKeyDown={(e) => {
+          onKeyDown={(e: React.KeyboardEvent) => {
             if (e.key === 'Enter') {
               handleLabelDoubleClick('left');
             }
           }}
         >
-          {data.handleLabels?.['left'] && (
+          {data.handleLabels?.['left'] && data.handleLabels['left'].trim() !== '' && (
             <span className="absolute -left-8 bg-white dark:bg-gray-800 text-xs text-gray-700 dark:text-gray-300 px-1 rounded">
               {data.handleLabels['left']}
             </span>
@@ -695,7 +701,7 @@ function FeatureNodeComponent({ id, data, selected }: NodeProps<FeatureNodeData>
             }
           }}
         >
-          {data.handleLabels?.['right'] && (
+          {data.handleLabels?.['right'] && data.handleLabels['right'].trim() !== '' && (
             <span className="absolute -right-8 bg-white dark:bg-gray-800 text-xs text-gray-700 dark:text-gray-300 px-1 rounded">
               {data.handleLabels['right']}
             </span>
