@@ -1,5 +1,7 @@
 import type { StreamTextResult } from 'ai';
 
+/* eslint-disable @typescript-eslint/no-unused-vars */
+
 // ------------------- Functions for Data-Only SSE Format -------------------
 
 /**
@@ -9,7 +11,7 @@ import type { StreamTextResult } from 'ai';
  */
 
 export function createSSEStream(
-  cb: (controller: ReadableStreamDefaultController<Uint8Array>) => Promise<void>,
+  cb: (_controller: ReadableStreamDefaultController<Uint8Array>) => Promise<void>,
 ): Response {
   const encoder = new TextEncoder();
 
@@ -21,11 +23,8 @@ export function createSSEStream(
         controller.enqueue(encoder.encode('event: done\n'));
         controller.enqueue(encoder.encode('data:\n\n'));
       } catch (err) {
-        console.error('Error during SSE stream', err);
-
         const message = err instanceof Error ? err.message : 'Internal error';
-        controller.enqueue(encoder.encode('data: '));
-        controller.enqueue(encoder.encode(`${JSON.stringify({ type: 'error', message })}\n\n`));
+        controller.enqueue(encoder.encode(`data: ${JSON.stringify({ type: 'error', message })}\n\n`));
       } finally {
         controller.close();
       }
@@ -65,8 +64,7 @@ export function streamJSONEvent<T>(
   eventData: T,
 ) {
   const encoder = new TextEncoder();
-  controller.enqueue(encoder.encode('data: '));
-  controller.enqueue(encoder.encode(`${JSON.stringify(eventData)}\n\n`));
+  controller.enqueue(encoder.encode(`data: ${JSON.stringify(eventData)}\n\n`));
 }
 
 /**
@@ -75,7 +73,7 @@ export function streamJSONEvent<T>(
  */
 
 export async function handleTextStream(
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+
   streamResult: StreamTextResult<any, any>,
   streamController: ReadableStreamDefaultController<Uint8Array>,
 ): Promise<string> {
@@ -85,9 +83,11 @@ export async function handleTextStream(
   // Stream raw text chunks through data field
   for await (const chunk of streamResult.textStream) {
     chunks.push(chunk);
-    // Escape literal newlines for SSE compliance
-    const escaped = chunk.replace(/\n/g, '\\n');
-    streamController.enqueue(encoder.encode(`data:${escaped}\n\n`));
+    const lines = chunk.split('\n');
+    for (const line of lines) {
+      streamController.enqueue(encoder.encode(`data: ${line}\n`));
+    }
+    streamController.enqueue(encoder.encode('\n'));
   }
 
   return chunks.join('');

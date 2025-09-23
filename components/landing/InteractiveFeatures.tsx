@@ -60,7 +60,7 @@ export function InteractiveFeatures() {
 								</div>
 								<CardTitle>{feature.title}</CardTitle>
 							</CardHeader>
-							<CardDescription className="px-6 pb-6">
+							<CardDescription className="px-6 pb-6 text-center">
 								{feature.description}
 							</CardDescription>
 						</Card>

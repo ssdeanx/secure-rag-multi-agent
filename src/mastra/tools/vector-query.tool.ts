@@ -1,3 +1,17 @@
+// Kilocode: Tool Approval
+// owner: team-data
+// justification: authorized vector queries with RoleService enforcement
+// allowedDomains:
+//  -
+// allowedDataPaths:
+//  -
+// sideEffects:
+//  - network: true
+//  - write: false
+// inputSchema: src/mastra/schemas/tool-schemas.ts::VectorQueryInput
+// outputSchema: src/mastra/schemas/tool-schemas.ts::VectorQueryOutput
+// approvedBy: sam
+// approvalDate: 9/22
 import { createTool } from "@mastra/core/tools";
 import { z } from "zod";
 import { AISpanType } from '@mastra/core/ai-tracing';

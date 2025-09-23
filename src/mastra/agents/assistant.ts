@@ -1,16 +1,28 @@
+// Kilocode: Agent Contract
+// owner: team-ai
+// category: mastra-agent
+// approvalRequired: true
+// tools:
+//  - vector-query.tool
+// inputSchema: src/mastra/schemas/agent-schemas.ts::Input
+// outputSchema: src/mastra/schemas/agent-schemas.ts::AssistantOutput
+// requiredCallerClaims:
+//  - roles: [role:engineering]
+//  - tenant: engineering
+// approvedBy: samm
+// approvalDate: 9/22
+
 import { Agent } from "@mastra/core/agent";
 import { createOpenRouter } from "@openrouter/ai-sdk-provider";
 import { createResearchMemory } from '../config/libsql-storage';
 import { ContentSimilarityMetric, CompletenessMetric, TextualDifferenceMetric, KeywordCoverageMetric, ToneConsistencyMetric } from "@mastra/evals/nlp";
 import { UnicodeNormalizer } from "@mastra/core/processors"
 import { BatchPartsProcessor } from "@mastra/core/processors";
-//import { chunkerTool } from '../tools/chunker-tool';
 import { readDataFileTool, writeDataFileTool, deleteDataFileTool, listDataDirTool } from '../tools/data-file-manager';
 //import { evaluateResultTool } from '../tools/evaluateResultTool';
 //import { extractLearningsTool } from '../tools/extractLearningsTool';
 ;
 import { webScraperTool,
-  siteMapExtractorTool,
   linkExtractorTool,
   htmlToMarkdownTool,
   contentCleanerTool
@@ -92,10 +104,6 @@ For complex research tasks that generate data, you MUST respond with a valid JSO
     writeDataFileTool,
     deleteDataFileTool,
     listDataDirTool,
-//    evaluateResultTool,
-//    extractLearningsTool,
-//    batchWebScraperTool,
-    siteMapExtractorTool,
     linkExtractorTool,
     htmlToMarkdownTool,
     contentCleanerTool,

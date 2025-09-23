@@ -7,7 +7,7 @@ import { createWorkflow, createStep } from '@mastra/core/workflows';
 import { z } from 'zod';
 import { starterAgent } from '../agents/starterAgent';
 import { streamJSONEvent, streamProgressUpdate } from '../../utils/streamUtils';
-import { ActionSchema, ChatAgentResponseSchema } from './chatWorkflowTypes1';
+import { ActionSchema, ChatAgentResponseSchema } from './chatWorkflowSharedTypes';
 
 export const ChatInputSchema = z.object({
   prompt: z.string(),

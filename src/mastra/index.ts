@@ -26,6 +26,7 @@ import { randomUUID } from "crypto";
 import { qdrantVector } from "./config/vector-store";
 import { SensitiveDataFilter } from '@mastra/core/ai-tracing';
 
+
 log.info("Mastra instance created");
 export const mastra = new Mastra({
   storage: sqlstore,

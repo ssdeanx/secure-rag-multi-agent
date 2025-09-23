@@ -4,7 +4,6 @@ import { cn } from '@/lib/utils';
 
 import './global.css';
 import { ThemeProvider } from '../components/ThemeProvider';
-import { Toaster } from '../components/ui/toaster';
 import { TopNavigation } from '../components/TopNavigation';
 
 import type { Metadata, Viewport } from 'next';
@@ -56,7 +55,6 @@ export default function RootLayout({
           <div className="relative flex min-h-screen flex-col">
             <TopNavigation />
             <main>{children}</main>
-            <Toaster />
           </div>
         </ThemeProvider>
       </body>
