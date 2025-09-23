@@ -1,5 +1,5 @@
 import React from 'react';
-import { HTMLMotionProps } from 'motion/react';
+import type { HTMLMotionProps } from 'motion/react';
 import Flat3dContainer from '@/cedar/components/containers/Flat3dContainer';
 import { cn } from 'cedar-os';
 

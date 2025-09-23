@@ -20,7 +20,7 @@ export interface DebugLogEntry {
 		error?: Error;
 		streamContent?: string;
 		streamObjects?: object[];
-		completedItems?: (string | object)[];
+		completedItems?: Array<string | object>;
 		handledObject?: Record<string, unknown>; // For handler logs
 		handlers?: Array<{
 			processorName: string;
@@ -31,6 +31,7 @@ export interface DebugLogEntry {
 }
 
 export interface Message {
+	[key: string]: unknown;
 	id: string;
 	role: 'user' | 'assistant' | 'bot';
 	type: string;
@@ -38,7 +39,6 @@ export interface Message {
 	timestamp?: string;
 	createdAt?: string;
 	threadId?: string;
-	[key: string]: unknown;
 }
 
 export interface Badge {

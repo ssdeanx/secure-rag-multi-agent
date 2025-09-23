@@ -51,7 +51,7 @@ export const DebuggerPanel: React.FC<DebuggerPanelProps> = ({
 	useEffect(() => {
 		if (typeof window !== 'undefined') {
 			const defaultPosition = { x: window.innerWidth - 80, y: 20 };
-			setPosition(initialPosition || defaultPosition);
+			setPosition(initialPosition ?? defaultPosition);
 		}
 	}, [initialPosition]);
 
@@ -69,10 +69,13 @@ export const DebuggerPanel: React.FC<DebuggerPanelProps> = ({
 	const constraintsRef = useRef<HTMLDivElement>(null);
 
 	// Get debugger data from store
-	const agentConnectionLogs =
-		(store.agentConnectionLogs as DebugLogEntry[]) || [];
-	const messages = (store.messages as Message[]) || [];
-	const isDebugEnabled = (store.isDebugEnabled as boolean) ?? true;
+	const agentConnectionLogs = Array.isArray(store.agentConnectionLogs)
+		? (store.agentConnectionLogs as DebugLogEntry[])
+		: [];
+	const messages = Array.isArray(store.messages)
+		? (store.messages as Message[])
+		: [];
+	const isDebugEnabled = (store.isDebugEnabled) ?? true;
 
 	// Get all Cedar registered states
 	const registeredStates = store.registeredStates || {};
@@ -80,7 +83,9 @@ export const DebuggerPanel: React.FC<DebuggerPanelProps> = ({
 	// Resize handlers
 	const handleMouseMove = useCallback(
 		(e: MouseEvent) => {
-			if (!isResizing) return;
+			if (!isResizing) {
+     return;
+   }
 
 			let newWidth = panelWidth;
 			let newHeight = panelHeight;
@@ -141,23 +146,25 @@ export const DebuggerPanel: React.FC<DebuggerPanelProps> = ({
 	}, []);
 
 	useEffect(() => {
-		if (isResizing) {
-			if (typeof document !== 'undefined') {
-				document.addEventListener('mousemove', handleMouseMove);
-				document.addEventListener('mouseup', handleMouseUp);
-				document.body.style.userSelect = 'none';
-				document.body.style.webkitUserSelect = 'none';
+		if (isResizing && typeof document !== 'undefined') {
+        document.addEventListener('mousemove', handleMouseMove);
+  				document.addEventListener('mouseup', handleMouseUp);
+  				document.body.style.userSelect = 'none';
+  				document.body.style.webkitUserSelect = 'none';
 
-				if (isResizing === 'width') document.body.style.cursor = 'col-resize';
-				if (isResizing === 'height') document.body.style.cursor = 'row-resize';
-				if (
-					isResizing === 'both' ||
-					isResizing === 'bottom-left' ||
-					isResizing === 'bottom-right'
-				)
-					document.body.style.cursor = 'nwse-resize';
-			}
-		}
+  				if (isResizing === 'width') {
+        document.body.style.cursor = 'col-resize';
+      }
+  				if (isResizing === 'height') {
+        document.body.style.cursor = 'row-resize';
+      }
+  				if (
+  					isResizing === 'both' ||
+  					isResizing === 'bottom-left' ||
+  					isResizing === 'bottom-right'
+  				)
+  					{document.body.style.cursor = 'nwse-resize';}
+  }
 		return () => {
 			if (typeof document !== 'undefined') {
 				document.removeEventListener('mousemove', handleMouseMove);
@@ -335,7 +342,8 @@ export const DebuggerPanel: React.FC<DebuggerPanelProps> = ({
 								</button>
 								<button
 									onClick={() => setIsExpanded(false)}
-									className='p-1 hover:bg-gray-100 dark:hover:bg-gray-800 rounded transition-colors'>
+									className='p-1 hover:bg-gray-100 dark:hover:bg-gray-800 rounded transition-colors'
+									title="Close">
 									<X className='w-3 h-3' />
 								</button>
 							</div>

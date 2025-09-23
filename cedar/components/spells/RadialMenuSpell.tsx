@@ -45,7 +45,7 @@ const RadialMenuSpell: React.FC<RadialMenuSpellProps> = ({
 	const { styling } = useStyling();
 	const highlightColor = styling.color || '#3b82f6';
 	const textColor = styling.darkMode ? '#FFFFFF' : '#000000';
-	const borderColor = !styling.darkMode ? '#FFFFFF' : '#000000';
+	const borderColor = styling.darkMode ? '#000000' : '#FFFFFF';
 	const dividerColor = styling.darkMode ? '#FFFFFF' : '#000000';
 
 	const [hoverIndex, setHoverIndex] = useState<number | null>(null);
@@ -54,7 +54,7 @@ const RadialMenuSpell: React.FC<RadialMenuSpellProps> = ({
 		y: number;
 	} | null>(null);
 	const isCancelActive = hoverIndex === null;
-	const centerLabel = isCancelActive ? 'Cancel' : items[hoverIndex!].title;
+	const centerLabel = isCancelActive ? 'Cancel' : items[hoverIndex].title;
 
 	// Use a ref to track the hover index when deactivating
 	const hoverIndexRef = useRef<number | null>(null);
@@ -133,22 +133,31 @@ const RadialMenuSpell: React.FC<RadialMenuSpellProps> = ({
 	const getIndexFromAngle = (angleDegRaw: number): number | null => {
 		// Normalize angle to 0-360°
 		let angleDeg = angleDegRaw;
-		if (angleDeg < 0) angleDeg += 360;
+		if (angleDeg < 0) {
+    angleDeg += 360;
+  }
 		// Shift so that startDeg maps to 0
 		let shifted = angleDeg - startDeg;
 		// normalise into 0–availableDeg
-		while (shifted < 0) shifted += 360;
-		while (shifted >= availableDeg) shifted -= 360;
+		while (shifted < 0) {
+      shifted += 360;
+  }
+		while (shifted >= availableDeg) {
+      shifted -= 360;
+  }
 
-		if (shifted > availableDeg) return items.length - 1;
+		if (shifted > availableDeg) {
+    return items.length - 1;
+  }
 
-		const idx = Math.floor(shifted / sliceDeg);
-		return idx;
+		return Math.floor(shifted / sliceDeg);
 	};
 
 	// Event handlers -------------------------------------------------
 	useEffect(() => {
-		if (!menuPosition) return;
+		if (!menuPosition) {
+    return;
+  }
 
 		const handleMouseMove = (e: MouseEvent) => {
 			const dx = e.clientX - menuPosition.x;
@@ -165,7 +174,9 @@ const RadialMenuSpell: React.FC<RadialMenuSpellProps> = ({
 
 		const handleClick = (e: MouseEvent) => {
 			// Only handle left clicks
-			if (e.button !== 0) return;
+			if (e.button !== 0) {
+     return;
+   }
 
 			const dx = e.clientX - menuPosition.x;
 			const dy = e.clientY - menuPosition.y;
@@ -217,7 +228,9 @@ const RadialMenuSpell: React.FC<RadialMenuSpellProps> = ({
 	}, [menuPosition, items]);
 
 	// Don't render if menu is not active
-	if (!menuPosition) return null;
+	if (!menuPosition) {
+   return null;
+ }
 
 	// Render ---------------------------------------------------------
 	return (

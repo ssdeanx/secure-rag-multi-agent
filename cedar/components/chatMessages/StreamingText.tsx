@@ -23,11 +23,15 @@ export const StreamingText: React.FC<StreamingTextProps> = ({
 		const prevText = prevTextRef.current;
 
 		// Bail if nothing new
-		if (currentText === prevText) return;
+		if (currentText === prevText) {
+    return;
+  }
 
 		// Determine newly streamed chunk
 		const newChunk = currentText.slice(prevText.length);
-		if (!newChunk) return;
+		if (!newChunk) {
+    return;
+  }
 
 		// Animate the entire new chunk at once
 		const chunkEl = (

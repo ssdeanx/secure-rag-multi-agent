@@ -30,7 +30,9 @@ export const MarkdownRenderer: React.FC<MarkdownRendererProps> = ({
 
 	// Helper function to process prefix markers in text if needed
 	const processChildren = (children: React.ReactNode): React.ReactNode => {
-		if (!processPrefix) return children;
+		if (!processPrefix) {
+    return children;
+  }
 
 		if (typeof children === 'string') {
 			const parts = children.split(/(@@PREFIX@@.*?@@ENDPREFIX@@)/);
@@ -79,8 +81,8 @@ export const MarkdownRenderer: React.FC<MarkdownRendererProps> = ({
 							{children}
 						</a>
 					),
-					code: ({ children, className }) => {
-						const match = /language-(\w+)/.exec(className || '');
+					code: ({ children, className: codeClassName }) => {
+						const match = /language-(\w+)/.exec(codeClassName ?? '');
 						const isInline = !match;
 						const codeString = String(children).replace(/\n$/, '');
 

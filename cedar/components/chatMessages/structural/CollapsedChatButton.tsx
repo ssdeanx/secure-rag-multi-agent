@@ -43,11 +43,13 @@ export const CollapsedButton = forwardRef<
 
 	// Retrieve persisted offset (if any)
 	const getInitialOffset = () => {
-		if (typeof window === 'undefined') return BASE_OFFSET;
+		if (typeof window === 'undefined') {return BASE_OFFSET;}
 		const saved = window.localStorage.getItem('cedarCollapsedBottomOffset');
 		if (saved) {
 			const parsed = parseInt(saved, 10);
-			if (!isNaN(parsed)) return parsed;
+			if (!isNaN(parsed)) {
+     return parsed;
+   }
 		}
 		return BASE_OFFSET;
 	};
@@ -69,7 +71,9 @@ export const CollapsedButton = forwardRef<
 
 	// Horizontal offset (distance from corresponding side)
 	const getInitialSideOffset = () => {
-		if (typeof window === 'undefined') return BASE_SIDE_OFFSET;
+		if (typeof window === 'undefined') {
+    return BASE_SIDE_OFFSET;
+  }
 		const key =
 			side === 'left'
 				? 'cedarCollapsedLeftOffset'
@@ -77,7 +81,9 @@ export const CollapsedButton = forwardRef<
 		const saved = window.localStorage.getItem(key);
 		if (saved) {
 			const parsed = parseInt(saved, 10);
-			if (!isNaN(parsed)) return parsed;
+			if (!isNaN(parsed)) {
+     return parsed;
+   }
 		}
 		return BASE_SIDE_OFFSET;
 	};
@@ -111,7 +117,9 @@ export const CollapsedButton = forwardRef<
 
 	const handleMouseMove = useCallback(
 		(e: MouseEvent) => {
-			if (!isDragging) return;
+			if (!isDragging) {
+     return;
+   }
 			const deltaY = dragStartY.current - e.clientY; // positive when dragging up
 			const newBottomOffset = Math.max(
 				0,
@@ -139,7 +147,9 @@ export const CollapsedButton = forwardRef<
 	);
 
 	const handleMouseUp = useCallback(() => {
-		if (!isDragging) return;
+		if (!isDragging) {
+    return;
+  }
 		setIsDragging(false);
 		const SNAP_THRESHOLD = 20; // px tolerance to snap back to default
 		const nearDefault =
@@ -147,30 +157,28 @@ export const CollapsedButton = forwardRef<
 			Math.abs(sideOffset - BASE_SIDE_OFFSET) <= SNAP_THRESHOLD;
 
 		if (nearDefault) {
-			// Snap back to default
-			setBottomOffset(BASE_OFFSET);
-			setSideOffset(BASE_SIDE_OFFSET);
+  			// Snap back to default
+  			setBottomOffset(BASE_OFFSET);
+  			setSideOffset(BASE_SIDE_OFFSET);
 
-			// Clear persisted offsets
-			if (typeof window !== 'undefined') {
-				window.localStorage.removeItem('cedarCollapsedBottomOffset');
-				window.localStorage.removeItem('cedarCollapsedLeftOffset');
-				window.localStorage.removeItem('cedarCollapsedRightOffset');
-			}
-		} else {
-			// Persist the new offsets
-			if (typeof window !== 'undefined') {
-				window.localStorage.setItem(
-					'cedarCollapsedBottomOffset',
-					bottomOffset.toString()
-				);
-				const key =
-					side === 'left'
-						? 'cedarCollapsedLeftOffset'
-						: 'cedarCollapsedRightOffset';
-				window.localStorage.setItem(key, sideOffset.toString());
-			}
-		}
+  			// Clear persisted offsets
+  			if (typeof window !== 'undefined') {
+  				window.localStorage.removeItem('cedarCollapsedBottomOffset');
+  				window.localStorage.removeItem('cedarCollapsedLeftOffset');
+  				window.localStorage.removeItem('cedarCollapsedRightOffset');
+  			}
+  		}
+  else if (typeof window !== 'undefined') {
+  				window.localStorage.setItem(
+  					'cedarCollapsedBottomOffset',
+  					bottomOffset.toString()
+  				);
+  				const key =
+  					side === 'left'
+  						? 'cedarCollapsedLeftOffset'
+  						: 'cedarCollapsedRightOffset';
+  				window.localStorage.setItem(key, sideOffset.toString());
+  			}
 
 		if (typeof document !== 'undefined') {
 			document.body.style.cursor = '';
@@ -181,12 +189,10 @@ export const CollapsedButton = forwardRef<
 
 	// Bind/unbind document listeners while dragging
 	useEffect(() => {
-		if (isDragging) {
-			if (typeof document !== 'undefined') {
-				document.addEventListener('mousemove', handleMouseMove);
-				document.addEventListener('mouseup', handleMouseUp);
-			}
-		}
+		if (isDragging && typeof document !== 'undefined') {
+        document.addEventListener('mousemove', handleMouseMove);
+  				document.addEventListener('mouseup', handleMouseUp);
+  }
 		return () => {
 			if (typeof document !== 'undefined') {
 				document.removeEventListener('mousemove', handleMouseMove);

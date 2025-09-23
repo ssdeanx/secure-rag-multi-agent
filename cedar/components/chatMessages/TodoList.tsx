@@ -1,5 +1,6 @@
 import React from 'react';
-import { TodoListMessage, useMessages } from 'cedar-os';
+import type { TodoListMessage} from 'cedar-os';
+import { useMessages } from 'cedar-os';
 import { Check } from 'lucide-react';
 
 interface TodoListProps {
@@ -9,12 +10,16 @@ interface TodoListProps {
 const TodoList: React.FC<TodoListProps> = ({ message }) => {
 	const { items } = message;
 	const { messages, setMessages } = useMessages();
-	if (!items || items.length === 0) return null;
+	if (!items || items.length === 0) {
+   return null;
+ }
 
 	const toggleItem = (index: number) => {
 		setMessages(
 			messages.map((msg) => {
-				if (msg.id !== message.id) return msg;
+				if (msg.id !== message.id) {
+      return msg;
+    }
 				const m = msg as TodoListMessage;
 				const newItems = m.items.map((it, i) =>
 					i === index ? { ...it, done: !it.done } : it

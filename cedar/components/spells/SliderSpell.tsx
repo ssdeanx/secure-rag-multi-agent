@@ -68,21 +68,21 @@ const CustomSlider: React.FC<{
 
 	// Find current range if ranges are defined
 	const currentRange = useMemo(() => {
-		if (!ranges || ranges.length === 0) return null;
+		if (!ranges || ranges.length === 0) {
+    return null;
+  }
 
 		for (let i = 0; i < ranges.length; i++) {
 			const range = ranges[i];
 			if (i === ranges.length - 1) {
-				// Last range is inclusive at max
-				if (value >= range.min && value <= range.max) {
-					return { range, index: i };
-				}
-			} else {
-				// Other ranges are exclusive at max
-				if (value >= range.min && value < range.max) {
-					return { range, index: i };
-				}
-			}
+   				// Last range is inclusive at max
+   				if (value >= range.min && value <= range.max) {
+   					return { range, index: i };
+   				}
+   			}
+   else if (value >= range.min && value < range.max) {
+   					return { range, index: i };
+   				}
 		}
 		// Fallback to first range if no match
 		return { range: ranges[0], index: 0 };
@@ -98,8 +98,10 @@ const CustomSlider: React.FC<{
 
 	// Render icon if current range has one
 	const renderIcon = () => {
-		if (!currentRange?.range.icon) return null;
-		const icon = currentRange.range.icon;
+		if (!currentRange?.range.icon) {
+    return null;
+  }
+		const {icon} = currentRange.range;
 
 		if (typeof icon === 'string') {
 			// Emoji
@@ -124,8 +126,7 @@ const CustomSlider: React.FC<{
 							'inset 0px 4px 4px 0px rgba(0, 0, 0, 0.45), inset -0.5px 0.5px 0px rgba(255, 255, 255, 0.25)',
 					}}>
 					{/* Range segment indicators if ranges are defined */}
-					{ranges &&
-						ranges.map((range, index) => {
+					{ranges?.map((range, index) => {
 							const rangeMin = range.min;
 							const rangeMax = range.max;
 							const leftPercent = ((rangeMin - min) / (max - min)) * 100;
@@ -140,7 +141,7 @@ const CustomSlider: React.FC<{
 										left: `${leftPercent}%`,
 										width: `${widthPercent}%`,
 										backgroundColor: isActive
-											? range.color || styling.color || '#3b82f6'
+											? (range.color ?? styling.color) || '#3b82f6'
 											: 'transparent',
 										opacity: isActive ? 0.3 : 0,
 									}}
@@ -150,8 +151,7 @@ const CustomSlider: React.FC<{
 				</div>
 
 				{/* Range dividers if ranges are defined */}
-				{ranges &&
-					ranges.slice(1).map((range, index) => {
+				{ranges?.slice(1).map((range, index) => {
 						const dividerPercent = ((range.min - min) / (max - min)) * 100;
 						return (
 							<div
@@ -182,7 +182,7 @@ const CustomSlider: React.FC<{
 								backgroundColor: styling.darkMode
 									? 'rgba(0,0,0,0.8)'
 									: 'rgba(255,255,255,0.9)',
-								borderColor: currentRange?.range.color || 'transparent',
+								borderColor: currentRange?.range.color ?? 'transparent',
 								borderWidth: currentRange?.range.color ? '1px' : '0',
 								borderStyle: 'solid',
 							}}>
@@ -200,6 +200,7 @@ const CustomSlider: React.FC<{
 					value={value}
 					className='relative w-full h-full opacity-0 cursor-pointer'
 					readOnly
+					aria-label="Slider value control"
 				/>
 			</div>
 			{/* Label below the slider */}
@@ -287,7 +288,9 @@ const SliderSpell: React.FC<SliderSpellProps> = ({
 
 	// Handle mouse movement for slider control
 	useEffect(() => {
-		if (!sliderPosition || initialMouseX === null) return;
+		if (!sliderPosition || initialMouseX === null) {
+    return;
+  }
 
 		const handleMouseMove = (e: MouseEvent) => {
 			// Calculate horizontal movement from initial position
@@ -327,7 +330,9 @@ const SliderSpell: React.FC<SliderSpellProps> = ({
 	}, [sliderPosition, initialMouseX, initialValue, min, max, step]);
 
 	// Don't render if not active
-	if (!sliderPosition) return null;
+	if (!sliderPosition) {
+   return null;
+ }
 
 	// Calculate minimum width based on whether ranges are present
 	const minWidth = ranges && ranges.length > 0 ? '380px' : '320px';

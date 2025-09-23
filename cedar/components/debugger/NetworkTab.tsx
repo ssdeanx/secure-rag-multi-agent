@@ -133,8 +133,8 @@ export const NetworkTab: React.FC<NetworkTabProps> = ({
 			case 'stream-error':
 				return 'Stream Error';
 			case 'stream-complete':
-				const chunkLength = log.data.streamContent?.length || 0;
-				const objectCount = log.data.streamObjects?.length || 0;
+				{ const chunkLength = log.data.streamContent?.length ?? 0;
+				const objectCount = log.data.streamObjects?.length ?? 0;
 				if (chunkLength > 0 && objectCount > 0) {
 					return `Stream (${chunkLength} chars, ${objectCount} objects)`;
 				} else if (chunkLength > 0) {
@@ -142,7 +142,7 @@ export const NetworkTab: React.FC<NetworkTabProps> = ({
 				} else if (objectCount > 0) {
 					return `Stream (${objectCount} objects)`;
 				}
-				return 'Stream';
+				return 'Stream'; }
 			case 'response':
 				return 'Response';
 			case 'request':
@@ -298,7 +298,7 @@ export const NetworkTab: React.FC<NetworkTabProps> = ({
 													onToggle={() => toggleSection(`${log.id}-request`)}
 													badges={[
 														{
-															label: `Path: ${log.apiRoute || '/api/unknown'}`,
+															label: `Path: ${log.apiRoute ?? '/api/unknown'}`,
 															color: 'gray' as const,
 														},
 														{ label: 'Method: POST', color: 'blue' as const },
@@ -325,8 +325,8 @@ export const NetworkTab: React.FC<NetworkTabProps> = ({
 											)}
 
 											{/* Response Section */}
-											{(log.data.response ||
-												log.data.streamContent ||
+											{Boolean((log.data.response ??
+												log.data.streamContent) ??
 												log.data.streamObjects) && (
 												<CollapsibleSection
 													id={`${log.id}-response`}
@@ -347,7 +347,7 @@ export const NetworkTab: React.FC<NetworkTabProps> = ({
 																	: ('green' as const),
 														},
 														{
-															label: `Time: ${log.duration || 0}ms`,
+															label: `Time: ${log.duration ?? 0}ms`,
 															color: 'gray' as const,
 														},
 														...(log.data.streamContent
@@ -359,7 +359,7 @@ export const NetworkTab: React.FC<NetworkTabProps> = ({
 															  ]
 															: []),
 														{
-															label: `Provider: ${log.provider || 'unknown'}`,
+															label: `Provider: ${log.provider ?? 'unknown'}`,
 															color: 'gray' as const,
 														},
 													]}>
@@ -409,7 +409,7 @@ export const NetworkTab: React.FC<NetworkTabProps> = ({
 													onToggle={() => toggleSection(`${log.id}-handlers`)}
 													badges={(() => {
 														// Group handlers by processor name and create badges
-														const handlerCounts = log.data.handlers!.reduce(
+														const handlerCounts = log.data.handlers.reduce(
 															(acc, handler) => {
 																const name = handler.processorName;
 																acc[name] = (acc[name] || 0) + 1;
@@ -427,27 +427,27 @@ export const NetworkTab: React.FC<NetworkTabProps> = ({
 																color: (() => {
 																	// Color based on namespace
 																	if (processorName?.includes('builtin'))
-																		return 'green' as const;
+																		{return 'green' as const;}
 																	if (
 																		processorName?.includes('fallback') ||
 																		processorName?.includes('unhandled')
 																	)
-																		return 'yellow' as const;
+																		{return 'yellow' as const;}
 																	if (
 																		processorName?.includes('unknown') ||
 																		processorName?.includes('untyped')
 																	)
-																		return 'gray' as const;
+																		{return 'gray' as const;}
 																	if (
 																		processorName?.includes('validation-failed')
 																	)
-																		return 'red' as const;
+																		{return 'red' as const;}
 																	if (
 																		processorName?.includes('execution-error')
 																	)
-																		return 'red' as const;
+																		{return 'red' as const;}
 																	if (processorName?.includes('default'))
-																		return 'blue' as const;
+																		{return 'blue' as const;}
 																	return 'amber' as const;
 																})(),
 															})
@@ -496,7 +496,7 @@ export const NetworkTab: React.FC<NetworkTabProps> = ({
 																							'builtin'
 																						)
 																					)
-																						return 'bg-green-200 dark:bg-green-800 text-green-800 dark:text-green-200';
+																						{return 'bg-green-200 dark:bg-green-800 text-green-800 dark:text-green-200';}
 																					if (
 																						handler.processorName?.includes(
 																							'fallback'
@@ -505,7 +505,7 @@ export const NetworkTab: React.FC<NetworkTabProps> = ({
 																							'unhandled'
 																						)
 																					)
-																						return 'bg-yellow-200 dark:bg-yellow-800 text-yellow-800 dark:text-yellow-200';
+																						{return 'bg-yellow-200 dark:bg-yellow-800 text-yellow-800 dark:text-yellow-200';}
 																					if (
 																						handler.processorName?.includes(
 																							'unknown'
@@ -514,25 +514,25 @@ export const NetworkTab: React.FC<NetworkTabProps> = ({
 																							'untyped'
 																						)
 																					)
-																						return 'bg-gray-200 dark:bg-gray-700 text-gray-800 dark:text-gray-200';
+																						{return 'bg-gray-200 dark:bg-gray-700 text-gray-800 dark:text-gray-200';}
 																					if (
 																						handler.processorName?.includes(
 																							'validation-failed'
 																						)
 																					)
-																						return 'bg-red-200 dark:bg-red-800 text-red-800 dark:text-red-200';
+																						{return 'bg-red-200 dark:bg-red-800 text-red-800 dark:text-red-200';}
 																					if (
 																						handler.processorName?.includes(
 																							'execution-error'
 																						)
 																					)
-																						return 'bg-red-200 dark:bg-red-800 text-red-800 dark:text-red-200';
+																						{return 'bg-red-200 dark:bg-red-800 text-red-800 dark:text-red-200';}
 																					if (
 																						handler.processorName?.includes(
 																							'default'
 																						)
 																					)
-																						return 'bg-blue-200 dark:bg-blue-800 text-blue-800 dark:text-blue-200';
+																						{return 'bg-blue-200 dark:bg-blue-800 text-blue-800 dark:text-blue-200';}
 																					return 'bg-amber-200 dark:bg-amber-800 text-amber-800 dark:text-amber-200';
 																				})()
 																			)}>

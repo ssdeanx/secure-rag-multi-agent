@@ -109,7 +109,7 @@ const QuestioningSpell: React.FC<QuestioningSpellProps> = ({
 	}, [isActive]);
 
 	// Don't render if spell is not active
-	if (!isActive) return null;
+	if (!isActive) {return null;}
 
 	// Render ---------------------------------------------------------------------
 	return (

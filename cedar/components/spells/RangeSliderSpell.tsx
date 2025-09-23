@@ -82,13 +82,17 @@ const RangeSliderSpell: React.FC<RangeSliderSpellProps> = ({
 			const range = maxValue - minValue;
 
 			return options.map((option) => {
-				if (range === 0) return 50; // All same value, center them
+				if (range === 0) {
+      return 50;
+    } // All same value, center them
 				const normalizedPosition = (option.value - minValue) / range;
 				return padding + normalizedPosition * usableRange;
 			});
 		} else {
 			// Even spacing
-			if (options.length === 1) return [50];
+			if (options.length === 1) {
+     return [50];
+   }
 			return options.map((_, index) => {
 				const normalizedPosition = index / (options.length - 1);
 				return padding + normalizedPosition * usableRange;
@@ -108,8 +112,10 @@ const RangeSliderSpell: React.FC<RangeSliderSpellProps> = ({
 
 	// Render icon helper
 	const renderIcon = (option: RangeOption) => {
-		const icon = option.icon;
-		if (!icon) return null;
+		const {icon} = option;
+		if (!icon) {
+    return null;
+  }
 
 		if (typeof icon === 'string') {
 			// Emoji
@@ -169,7 +175,9 @@ const RangeSliderSpell: React.FC<RangeSliderSpellProps> = ({
 
 	// Handle mouse movement for slider control
 	useEffect(() => {
-		if (!sliderPosition || initialMouseX === null) return;
+		if (!sliderPosition || initialMouseX === null) {
+    return;
+  }
 
 		const handleMouseMove = (e: MouseEvent) => {
 			// Calculate horizontal movement from initial position
@@ -217,7 +225,9 @@ const RangeSliderSpell: React.FC<RangeSliderSpellProps> = ({
 	}, [sliderPosition, initialMouseX, initialIndex, optionPositions]);
 
 	// Don't render if not active
-	if (!sliderPosition) return null;
+	if (!sliderPosition) {
+   return null;
+ }
 
 	return (
 		<AnimatePresence>
@@ -271,8 +281,8 @@ const RangeSliderSpell: React.FC<RangeSliderSpellProps> = ({
 															width: isActive ? '12px' : '8px',
 															height: isActive ? '12px' : '8px',
 															backgroundColor: isActive
-																? option.color ||
-																  styling.accentColor ||
+																? (option.color ??
+																  styling.accentColor) ||
 																  '#3b82f6'
 																: styling.darkMode
 																? '#666'
@@ -316,7 +326,7 @@ const RangeSliderSpell: React.FC<RangeSliderSpellProps> = ({
 												backgroundColor: styling.darkMode
 													? 'rgba(0,0,0,0.9)'
 													: 'rgba(255,255,255,0.95)',
-												borderColor: currentOption.color || styling.color,
+												borderColor: currentOption.color ?? styling.color,
 												borderWidth: '1px',
 												borderStyle: 'solid',
 											}}

@@ -192,7 +192,7 @@ const DiffContainer: React.FC<DiffContainerProps> = ({
 
 	// Keyboard shortcut handler
 	useEffect(() => {
-		if (!showDiffActions || diffType === 'neutral') return;
+		if (!showDiffActions || diffType === 'neutral') {return;}
 
 		const handleKeyDown = (e: KeyboardEvent) => {
 			// Check for Cmd+Y (Mac) or Ctrl+Y (Windows/Linux)
@@ -345,7 +345,7 @@ const DiffContainer: React.FC<DiffContainerProps> = ({
 							scale: breatheScaled,
 							x: wave1,
 							y: wave2,
-							rotate: rotate,
+							rotate,
 						}}
 					/>
 

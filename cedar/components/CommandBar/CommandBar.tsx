@@ -223,7 +223,7 @@ export const CommandBar: React.FC<CommandBarProps> = ({
 	// Determine what should be displayed in the message area
 	const shouldShowProcessing = React.useMemo(() => {
 		// Show processing if we're processing AND there's no message to show naturally (without forcing)
-		return isProcessing && (!latestMessage || isLatestMessageHidden);
+		return Boolean(isProcessing && (!latestMessage || isLatestMessageHidden));
 	}, [isProcessing, latestMessage, isLatestMessageHidden]);
 
 	const shouldShowMessage = React.useMemo(() => {
@@ -272,7 +272,7 @@ export const CommandBar: React.FC<CommandBarProps> = ({
 		placeholder,
 		onFocus: () => setIsFocused(true),
 		onBlur: () => setIsFocused(false),
-		onSubmit: (text, editor, clearEditor) => {
+		onSubmit: (text, _editor, clearEditor) => {
 			console.log('onSubmit', text);
 			// Set baseline to hide any existing messages immediately when user sends a message
 			// Since the condition is `i > baselineMessageIndex`, we set it high enough to hide all current messages
@@ -329,7 +329,7 @@ export const CommandBar: React.FC<CommandBarProps> = ({
 	// Create spell configurations for all items with activation events
 	const spellConfigs = React.useMemo(() => {
 		return allItems
-			.filter((item) => item.activationEvent)
+			.filter((item) => Boolean(item.activationEvent))
 			.map((item) => ({
 				id: `command-bar-${item.id}`,
 				activationConditions: {
@@ -337,7 +337,7 @@ export const CommandBar: React.FC<CommandBarProps> = ({
 					mode: item.activationMode ?? ActivationModeEnum.TRIGGER,
 				},
 				onActivate: () => {
-					if (open && !item.disabled) {
+					if (open && !(item.disabled ?? false)) {
 						item.onSelect();
 						onClose?.();
 						// Use ref to get current editor instance
@@ -359,7 +359,7 @@ export const CommandBar: React.FC<CommandBarProps> = ({
 	useMultipleSpells({ spells: spellConfigs });
 
 	// Get the current search text
-	const searchText = getEditorText().toLowerCase().trim();
+	const searchText = (getEditorText() ?? '').toLowerCase().trim();
 
 	// Notify parent of search text changes
 	React.useEffect(() => {
@@ -379,11 +379,14 @@ export const CommandBar: React.FC<CommandBarProps> = ({
 				if (item.searchFunction) {
 					return item.searchFunction(searchText, item);
 				}
-				// Fall back to default search behavior
+				// Fall back to default search behavior, normalize description to avoid nullable boolean
+				const label = item.label.toLowerCase();
+				const id = item.id.toLowerCase();
+				const desc = (item.description ?? '').toLowerCase();
 				return (
-					item.label.toLowerCase().includes(searchText) ||
-					item.id.toLowerCase().includes(searchText) ||
-					(item.description?.toLowerCase().includes(searchText))
+					label.includes(searchText) ||
+					id.includes(searchText) ||
+					desc.includes(searchText)
 				);
 			});
 
@@ -451,7 +454,7 @@ export const CommandBar: React.FC<CommandBarProps> = ({
 
 	// Handle item selection
 	const handleItemSelect = (item: CommandBarItem) => {
-		if (!item.disabled) {
+		if (!(item.disabled ?? false)) {
 			item.onSelect();
 			onClose?.();
 			editor?.commands.blur();
@@ -651,7 +654,7 @@ export const CommandBar: React.FC<CommandBarProps> = ({
 										{groupIndex > 0 && <CommandSeparator />}
 
 										<CommandGroup
-											{...(group.heading && { heading: group.heading })}>
+											{...(group.heading ? { heading: group.heading } : {})}>
 											{group.items.map((item) => (
 												<CommandItem
 													key={item.id}
@@ -662,7 +665,7 @@ export const CommandBar: React.FC<CommandBarProps> = ({
 													onMouseDown={() => {
 														handleItemSelect(item);
 													}}
-													disabled={item.disabled}
+													disabled={item.disabled ?? false}
 													className={cn(
 														'flex items-center gap-2 cursor-pointer',
 														item.disabled && 'opacity-50 cursor-not-allowed',
@@ -721,7 +724,7 @@ export const CommandBar: React.FC<CommandBarProps> = ({
 											onMouseDown={() => {
 												handleItemSelect(item);
 											}}
-											disabled={item.disabled}
+											disabled={item.disabled ?? false}
 											className={cn(
 												'flex-1 flex items-center justify-between gap-1 p-2 rounded-md text-xs transition-colors cursor-pointer',
 												'focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2',

@@ -1,5 +1,6 @@
 import { cn, useStyling } from 'cedar-os';
-import { HTMLMotionProps, motion } from 'motion/react';
+import type { HTMLMotionProps} from 'motion/react';
+import { motion } from 'motion/react';
 import React from 'react';
 
 interface GlassyPaneContainerProps

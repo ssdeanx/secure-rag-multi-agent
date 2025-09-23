@@ -253,9 +253,7 @@ function hexToHSL(hex: string): { h: number; s: number; l: number } {
 	if (!hex.startsWith('#')) {
 		try {
 			// Try to extract values from rgb/rgba strings
-			const rgbMatch = hex.match(
-				/rgba?\((\d+),\s*(\d+),\s*(\d+)(?:,\s*[\d.]+)?\)/
-			);
+			const rgbMatch = /rgba?\((\d+),\s*(\d+),\s*(\d+)(?:,\s*[\d.]+)?\)/.exec(hex);
 			if (rgbMatch) {
 				const r = parseInt(rgbMatch[1]) / 255;
 				const g = parseInt(rgbMatch[2]) / 255;

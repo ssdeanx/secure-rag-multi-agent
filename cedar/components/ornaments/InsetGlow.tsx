@@ -1,4 +1,5 @@
-import { motion, HTMLMotionProps } from 'motion/react';
+import type { HTMLMotionProps } from 'motion/react';
+import { motion } from 'motion/react';
 import React from 'react';
 import { cn } from 'cedar-os';
 import { useStyling } from 'cedar-os';
@@ -21,7 +22,7 @@ const InsetGlow: React.FC<InsetGlowProps> = ({
 	pulse = false,
 }) => {
 	const { styling } = useStyling();
-	const resolvedColor = color || styling.color || '#54EAD8';
+	const resolvedColor = (color ?? styling.color) || '#54EAD8';
 
 	const { style: motionStyle = {}, ...rest } = motionProps;
 
