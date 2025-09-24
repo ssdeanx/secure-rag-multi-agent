@@ -11,7 +11,6 @@ import { ArrowRight, Link, AlertTriangle, CheckCircle, Lightbulb, X } from 'luci
 import { cn } from '@/lib/utils';
 import { z } from 'zod';
 import type { FeatureNodeData } from './FeatureNode';
-
 /**
  * Zod schema for roadmap item structure
  */

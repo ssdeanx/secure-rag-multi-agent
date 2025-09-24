@@ -329,7 +329,7 @@ export const CommandBar: React.FC<CommandBarProps> = ({
 	// Create spell configurations for all items with activation events
 	const spellConfigs = React.useMemo(() => {
 		return allItems
-			.filter((item) => Boolean(item.activationEvent))
+			.filter((item) => item.activationEvent !== null)
 			.map((item) => ({
 				id: `command-bar-${item.id}`,
 				activationConditions: {

@@ -54,7 +54,8 @@ const RadialMenuSpell: React.FC<RadialMenuSpellProps> = ({
 		y: number;
 	} | null>(null);
 	const isCancelActive = hoverIndex === null;
-	const centerLabel = isCancelActive ? 'Cancel' : items[hoverIndex].title;
+	const centerLabel =
+	  hoverIndex === null ? 'Cancel' : items[hoverIndex]?.title ?? '';
 
 	// Use a ref to track the hover index when deactivating
 	const hoverIndexRef = useRef<number | null>(null);

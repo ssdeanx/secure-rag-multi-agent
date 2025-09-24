@@ -9,12 +9,13 @@ interface JwtClaims {
   roles: string[];
 }
 
-async function verifyJwt(token: string) {
+async function verifyJwt(token: string): Promise<JwtClaims | null> {
   try {
     const secret = new TextEncoder().encode(process.env.JWT_SECRET ?? 'dev-secret');
-    const { payload } = await jwtVerify(token, secret as unknown as CryptoKey | Uint8Array);
+    const { payload } = await jwtVerify<JwtClaims>(token, secret);
     return payload as JwtClaims;
   } catch (err) {
+    console.error('JWT verification failed:', err);
     return null;
   }
 }
@@ -46,7 +47,7 @@ export async function POST(req: Request): Promise<Response> {
     if (claims) {
       parsed.data.userId = parsed.data.userId ?? (claims.sub);
       const roles = claims.roles as string[] | undefined;
-      // Explicit check to avoid 'any' in conditional: ensure roles is an array and has length
+      parsed.data.roles = roles ?? [];
       parsed.data.roles = (Array.isArray(parsed.data.roles) && parsed.data.roles.length > 0) ? parsed.data.roles : roles ?? [];
     }
 

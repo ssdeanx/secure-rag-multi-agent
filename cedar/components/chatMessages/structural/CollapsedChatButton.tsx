@@ -92,6 +92,11 @@ export const CollapsedButton = forwardRef<
 		getInitialSideOffset()
 	);
 
+	const bottomOffsetRef = useRef(bottomOffset);
+	const sideOffsetRef = useRef(sideOffset);
+	useEffect(() => { bottomOffsetRef.current = bottomOffset; }, [bottomOffset]);
+	useEffect(() => { sideOffsetRef.current = sideOffset; }, [sideOffset]);
+
 	const positionClasses = `${position} bottom-0 ${
 		side === 'left' ? 'left-0' : 'right-0'
 	}`;
@@ -153,8 +158,8 @@ export const CollapsedButton = forwardRef<
 		setIsDragging(false);
 		const SNAP_THRESHOLD = 20; // px tolerance to snap back to default
 		const nearDefault =
-			Math.abs(bottomOffset - BASE_OFFSET) <= SNAP_THRESHOLD &&
-			Math.abs(sideOffset - BASE_SIDE_OFFSET) <= SNAP_THRESHOLD;
+			Math.abs(bottomOffsetRef.current - BASE_OFFSET) <= SNAP_THRESHOLD &&
+			Math.abs(sideOffsetRef.current - BASE_SIDE_OFFSET) <= SNAP_THRESHOLD;
 
 		if (nearDefault) {
   			// Snap back to default
@@ -171,13 +176,13 @@ export const CollapsedButton = forwardRef<
   else if (typeof window !== 'undefined') {
   				window.localStorage.setItem(
   					'cedarCollapsedBottomOffset',
-  					bottomOffset.toString()
+  					bottomOffsetRef.current.toString()
   				);
   				const key =
   					side === 'left'
   						? 'cedarCollapsedLeftOffset'
   						: 'cedarCollapsedRightOffset';
-  				window.localStorage.setItem(key, sideOffset.toString());
+  				window.localStorage.setItem(key, sideOffsetRef.current.toString());
   			}
 
 		if (typeof document !== 'undefined') {
@@ -185,7 +190,7 @@ export const CollapsedButton = forwardRef<
 			document.body.style.userSelect = '';
 			document.body.style.setProperty('-webkit-user-select', '');
 		}
-	}, [isDragging, bottomOffset, sideOffset, side, BASE_OFFSET]);
+	}, [isDragging, side]);
 
 	// Bind/unbind document listeners while dragging
 	useEffect(() => {

@@ -41,7 +41,10 @@ const Container3D: React.FC<Container3DProps> = ({
 
 	const isDarkMode = styling.darkMode ?? false;
 	// Determine base color for shading (use passed color or default black/white)
-	const shadeBase = color ?? (isDarkMode ? '#000000' : '#ffffff');
+	const shadeBase =
+	  color && color.trim() !== ''
+	    ? color
+	    : (isDarkMode ? '#000000' : '#ffffff');
 
 	const restMotionProps = motionProps;
 
