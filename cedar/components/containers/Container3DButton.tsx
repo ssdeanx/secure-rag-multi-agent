@@ -1,5 +1,5 @@
 import React from 'react';
-import { HTMLMotionProps } from 'motion/react';
+import type { HTMLMotionProps } from 'motion/react';
 import Container3D from '@/cedar/components/containers/Container3D';
 import GlowingMesh from '@/cedar/components/ornaments/GlowingMesh';
 import { cn } from 'cedar-os';

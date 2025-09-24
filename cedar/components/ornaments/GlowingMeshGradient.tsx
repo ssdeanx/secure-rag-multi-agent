@@ -19,7 +19,7 @@ const GlowingMeshGradient: React.FC<GlowingMeshGradientProps> = ({
 				className='absolute'
 				style={{
 					borderRadius: '783.719px',
-					background: '#E90B76',
+					background: '#9FFF83',
 					mixBlendMode: 'plus-lighter' as React.CSSProperties['mixBlendMode'],
 					filter: 'blur(42px)',
 					width: '55%',

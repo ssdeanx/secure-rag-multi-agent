@@ -25,9 +25,7 @@ interface CaptionMessagesProps {
 const CaptionMessages: React.FC<CaptionMessagesProps> = ({
 	className = '',
 }) => {
-	const { messages } = useMessages();
-
-	const { isProcessing } = useMessages();
+	const {messages, isProcessing} = useMessages();
 
 	const store = useCedarStore((state) => state);
 	const styling = useCedarStore((state) => state.styling);
@@ -70,12 +68,12 @@ const CaptionMessages: React.FC<CaptionMessagesProps> = ({
 		);
 	}
 
-	if (!latestMessage) return null;
+	if (!latestMessage) {return null;}
 
 	// Render based on message type
 	switch (latestMessage.type) {
 		case 'text':
-			const textSizeClass = getTextSizeClass(latestMessage.content);
+			{ const textSizeClass = getTextSizeClass(latestMessage.content);
 			return (
 				<div className={containerClasses}>
 					<div className={`font-semibold ${textSizeClass}`}>
@@ -87,10 +85,10 @@ const CaptionMessages: React.FC<CaptionMessagesProps> = ({
 						/>
 					</div>
 				</div>
-			);
+			); }
 
 		case 'dialogue_options':
-			const dialogueMsg = latestMessage as DialogueOptionsMessage;
+			{ const dialogueMsg = latestMessage as DialogueOptionsMessage;
 			return (
 				<div className={containerClasses}>
 					<div className='flex flex-col space-y-3'>
@@ -116,10 +114,10 @@ const CaptionMessages: React.FC<CaptionMessagesProps> = ({
 						))}
 					</div>
 				</div>
-			);
+			); }
 
 		case 'ticker':
-			const tickerMsg = latestMessage as TickerMessage;
+			{ const tickerMsg = latestMessage as TickerMessage;
 			const mask =
 				'linear-gradient(to right, transparent 5%, black 15%, black 85%, transparent 95%)';
 			return (
@@ -168,10 +166,10 @@ const CaptionMessages: React.FC<CaptionMessagesProps> = ({
 						</Flat3dButton>
 					</div>
 				</div>
-			);
+			); }
 
 		case 'multiple_choice':
-			const multipleChoiceMsg = latestMessage as MultipleChoiceMessage;
+			{ const multipleChoiceMsg = latestMessage as MultipleChoiceMessage;
 			return (
 				<div className={containerClasses}>
 					<div className='w-full'>
@@ -211,10 +209,10 @@ const CaptionMessages: React.FC<CaptionMessagesProps> = ({
 						</div>
 					</div>
 				</div>
-			);
+			); }
 
 		case 'slider':
-			const sliderMsg = latestMessage as SliderMessage;
+			{ const sliderMsg = latestMessage as SliderMessage;
 			return (
 				<div className={containerClasses}>
 					<div className='w-full flex items-center'>
@@ -226,7 +224,7 @@ const CaptionMessages: React.FC<CaptionMessagesProps> = ({
 						/>
 					</div>
 				</div>
-			);
+			); }
 
 		default:
 			return null;

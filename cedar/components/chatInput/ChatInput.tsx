@@ -107,12 +107,10 @@ export const ChatInput: React.FC<{
 					editor.commands.focus();
 					setIsFocused(true);
 				}
-			} else if (e.key === 'Escape') {
-				if (isFocused && editor) {
-					editor.commands.blur();
-					setIsFocused(false);
-				}
-			}
+			} else if (e.key === 'Escape' && (isFocused && editor)) {
+                editor.commands.blur();
+          					setIsFocused(false);
+          }
 		};
 
 		// Add the event listener
@@ -136,19 +134,15 @@ export const ChatInput: React.FC<{
 				target.closest('[contenteditable="true"]') !== null;
 
 			// Handle M key for microphone (only when not typing)
-			if (e.key === 'm' || e.key === 'M') {
-				if (
-					!isTypingInInput &&
-					!e.shiftKey &&
-					!e.ctrlKey &&
-					!e.altKey &&
-					!e.metaKey
-				) {
-					e.preventDefault();
-					handleVoiceToggle();
-					return;
-				}
-			}
+			if ((e.key === 'm' || e.key === 'M') && (!isTypingInInput &&
+   					!e.shiftKey &&
+   					!e.ctrlKey &&
+   					!e.altKey &&
+   					!e.metaKey)) {
+         e.preventDefault();
+   					handleVoiceToggle();
+   					return;
+   }
 		};
 
 		// Add the event listener
@@ -237,12 +231,14 @@ export const ChatInput: React.FC<{
 					</button>
 					<button
 						type='button'
-						className='p-1 text-gray-600 dark:text-gray-200 hover:text-black dark:hover:text-white cursor-pointer'>
+						className='p-1 text-gray-600 dark:text-gray-200 hover:text-black dark:hover:text-white cursor-pointer'
+						title='Insert image'>
 						<Image className='w-4 h-4' />
 					</button>
 					<button
 						type='button'
-						className='p-1 text-gray-600 dark:text-gray-200 hover:text-black dark:hover:text-white cursor-pointer'>
+						className='p-1 text-gray-600 dark:text-gray-200 hover:text-black dark:hover:text-white cursor-pointer'
+						title='Insert code'>
 						<Code className='w-4 h-4' />
 					</button>
 				</div>

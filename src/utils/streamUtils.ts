@@ -87,7 +87,7 @@ export async function handleTextStream(
     for (const line of lines) {
       streamController.enqueue(encoder.encode(`data: ${line}\n`));
     }
-    streamController.enqueue(encoder.encode('\n'));
+    streamController.enqueue(encoder.encode('\n\n'));
   }
 
   return chunks.join('');

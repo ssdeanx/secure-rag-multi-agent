@@ -90,3 +90,9 @@ gha-creds-*.json
 .codeviz/Visuals/Unnamed-CodeViz-Diagram.md
 *.codeviz/
 *.codeviz/**/*.md
+
+
+.github/prompts/
+.github/chatmodes/
+.github/prompts/*.md
+.github/chatmodes/*.md

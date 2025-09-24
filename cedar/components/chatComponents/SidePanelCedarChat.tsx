@@ -87,7 +87,7 @@ export const SidePanelCedarChat: React.FC<SidePanelCedarChatProps> = ({
 									className='p-1.5 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-md transition-colors'
 									onClick={() => setShowChat(false)}
 									aria-label='Close chat'>
-									<X className='h-4 w-4' strokeWidth={2.5} />
+									<X className='h-4 w-4' strokeWidth={2.5} /> {/* Close icon */}
 								</button>
 							</div>
 						</div>

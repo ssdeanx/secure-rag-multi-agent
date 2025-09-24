@@ -102,7 +102,7 @@ export const ChatRenderer: React.FC<ChatRendererProps> = ({ message }) => {
 			); }
 
 		case 'ticker': {
-			const buttons = (message as TickerMessage).buttons;
+			const {buttons} = message as TickerMessage;
 			const items = buttons.map((button, bidx) => (
 				<Flat3dContainer
 					key={bidx}

@@ -23,7 +23,7 @@ const GlowingMesh: React.FC<GlowingMeshProps> = ({
 			<motion.div
 				className='absolute rounded-full opacity-60 mix-blend-plus-lighter'
 				style={{
-					background: '#E90B76',
+					background: '#F21631',
 					width: '60%',
 					height: '60%',
 					filter: 'blur(50px)',
@@ -46,7 +46,7 @@ const GlowingMesh: React.FC<GlowingMeshProps> = ({
 			<motion.div
 				className='absolute rounded-full opacity-55 mix-blend-plus-lighter'
 				style={{
-					background: '#0BE9A2',
+					background: '#9FFF83',
 					width: '50%',
 					height: '50%',
 					right: '10%',

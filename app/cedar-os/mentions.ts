@@ -1,8 +1,8 @@
 import React from 'react';
-import { Node, Edge } from 'reactflow';
+import type { Node, Edge } from 'reactflow';
 import { getCedarState, useStateBasedMentionProvider } from 'cedar-os';
 import { ArrowRight, Box } from 'lucide-react';
-import { FeatureNodeData } from '../../cedar/FeatureNode';
+import type { FeatureNodeData } from '../../cedar/FeatureNode';
 
 // [STEP 5]: To enable @ mentions, we use the useStateBasedMentionProvider hook.
 // This allows the user to reference any state value from the chat using something like @nodeName
@@ -18,7 +18,7 @@ export function useRoadmapMentions() {
     color: '#3B82F6', // Blue color for features
   });
 
-  const nodes = getCedarState('nodes') as Node<FeatureNodeData>[];
+  const nodes = getCedarState('nodes') as Array<Node<FeatureNodeData>>;
 
   useStateBasedMentionProvider({
     stateKey: 'edges',
@@ -26,8 +26,8 @@ export function useRoadmapMentions() {
     labelField: (edge: Edge) => {
       const sourceNode = nodes.find((n) => n.id === edge.source);
       const targetNode = nodes.find((n) => n.id === edge.target);
-      const sourceTitle = sourceNode?.data.title || edge.source;
-      const targetTitle = targetNode?.data.title || edge.target;
+      const sourceTitle = sourceNode?.data.title ?? edge.source;
+      const targetTitle = targetNode?.data.title ?? edge.target;
       return `${sourceTitle} → ${targetTitle}`;
     },
     description: 'Feature relationships, dependencies, and connections',

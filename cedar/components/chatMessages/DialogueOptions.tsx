@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
-import {
+import type {
 	DialogueOptionChoice,
-	DialogueOptionsMessage,
+	DialogueOptionsMessage} from 'cedar-os';
+import {
 	useCedarStore,
 	cn,
 } from 'cedar-os';
@@ -16,7 +17,9 @@ const DialogueOptions: React.FC<DialogueOptionsProps> = ({ message }) => {
 	const [selected, setSelected] = useState<string | null>(null);
 	const store = useCedarStore((state) => state);
 
-	if (!options || options.length === 0) return null;
+	if (!options || options.length === 0) {
+   return null;
+ }
 
 	return (
 		<>
@@ -29,7 +32,7 @@ const DialogueOptions: React.FC<DialogueOptionsProps> = ({ message }) => {
 							key={opt.title}
 							onClick={() => {
 								setSelected(opt.title);
-								if (onChoice) onChoice(opt, store);
+								if (onChoice) {onChoice(opt, store);}
 							}}
 							className={cn(
 								'rounded-md px-3 py-2 flex items-start',

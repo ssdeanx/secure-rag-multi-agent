@@ -25,7 +25,7 @@ export const MessagesTab: React.FC<MessagesTabProps> = ({
 	const threads = React.useMemo(() => {
 		const threadMap = new Map<string, Message[]>();
 		messages.forEach((msg) => {
-			const threadId = msg.threadId || 'default';
+			const threadId = msg.threadId ?? 'default';
 			if (!threadMap.has(threadId)) {
 				threadMap.set(threadId, []);
 			}
@@ -35,7 +35,7 @@ export const MessagesTab: React.FC<MessagesTabProps> = ({
 	}, [messages]);
 
 	const currentMessages = selectedThread
-		? threads.get(selectedThread) || []
+		? threads.get(selectedThread) ?? []
 		: messages;
 
 	const toggleExpanded = (messageId: string) => {
@@ -71,8 +71,8 @@ export const MessagesTab: React.FC<MessagesTabProps> = ({
 	};
 
 	const formatTimestamp = (msg: Message) => {
-		const timestamp = msg.timestamp || msg.createdAt;
-		if (!timestamp) return null;
+		const timestamp = msg.timestamp ?? msg.createdAt;
+		if (!timestamp) {return null;}
 		return new Date(timestamp).toLocaleTimeString('en-US', {
 			hour12: false,
 			hour: '2-digit',
@@ -87,7 +87,8 @@ export const MessagesTab: React.FC<MessagesTabProps> = ({
 			{threads.size > 1 && (
 				<div className='px-2 py-1 border-b border-gray-200 dark:border-gray-700'>
 					<select
-						value={selectedThread || 'all'}
+						aria-label="Select Thread"
+						value={selectedThread ?? 'all'}
 						onChange={(e) =>
 							setSelectedThread(
 								e.target.value === 'all' ? null : e.target.value

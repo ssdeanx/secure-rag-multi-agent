@@ -25,15 +25,22 @@ export const StatesTab: React.FC<StatesTabProps> = ({
 
 	const getStatePreview = (registeredState: registeredState): string => {
 		const value = registeredState?.value;
-		if (value === null) return 'null';
-		if (value === undefined) return 'undefined';
-		if (typeof value === 'string')
-			return `"${value.substring(0, 50)}${value.length > 50 ? '...' : ''}"`;
-		if (typeof value === 'number' || typeof value === 'boolean')
-			return String(value);
-		if (Array.isArray(value)) return `Array(${value.length})`;
-		if (typeof value === 'object')
-			return `Object(${Object.keys(value).length} keys)`;
+		if (value === null) {return 'null';}
+		if (value === undefined) {
+    return 'undefined';
+  }
+		if (typeof value === 'string') {
+    return `"${value.substring(0, 50)}${value.length > 50 ? '...' : ''}"`;
+  }
+		if (typeof value === 'number' || typeof value === 'boolean') {
+    return String(value);
+  }
+		if (Array.isArray(value)) {
+    return `Array(${value.length})`;
+  }
+		if (typeof value === 'object') {
+    return `Object(${Object.keys(value).length} keys)`;
+  }
 		return String(value);
 	};
 

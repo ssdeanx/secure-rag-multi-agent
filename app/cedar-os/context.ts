@@ -11,7 +11,7 @@ import type { FeatureNodeData } from '../../cedar/FeatureNode';
 export function useRoadmapContext() {
   useSubscribeStateToAgentContext(
     'selectedNodes',
-    (nodes: Node<FeatureNodeData>[]) => ({
+    (nodes: Array<Node<FeatureNodeData>>) => ({
       selectedFeatures: nodes.map((node) => ({
         id: node.id,
         title: node.data.title,
@@ -28,7 +28,7 @@ export function useRoadmapContext() {
     },
   );
 
-  useSubscribeStateToAgentContext('nodes', (nodes: Node<FeatureNodeData>[]) => ({
+  useSubscribeStateToAgentContext('nodes', (nodes: Array<Node<FeatureNodeData>>) => ({
     features: nodes.map((node) => ({
       id: node.id,
       title: node.data.title,

@@ -37,16 +37,18 @@ export const ChatBubbles: React.FC<ChatBubblesProps> = ({
 
 	// Function to check if a message is consecutive (same sender as previous)
 	const isConsecutiveMessage = (index: number): boolean => {
-		if (index === 0) return false;
+		if (index === 0) {
+    return false;
+  }
 		return messages[index].role === messages[index - 1].role;
 	};
 
 	// Determine container classes based on maxHeight with proper className merging
-	const containerClasses = maxHeight
+	const containerClasses = (maxHeight !== undefined)
 		? cn('overflow-x-hidden overflow-y-auto px-3', className)
 		: cn('flex-1 overflow-x-hidden overflow-y-auto min-h-0 px-3', className);
 
-	const containerStyle = maxHeight
+	const containerStyle = maxHeight !== undefined
 		? { height: maxHeight, contain: 'paint layout' }
 		: { contain: 'paint layout' };
 
