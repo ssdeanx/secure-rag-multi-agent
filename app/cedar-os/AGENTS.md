@@ -1,3 +1,126 @@
+<!-- AGENTS-META {"title":"Cedar OS Integration","version":"1.0.0","last_updated":"2025-09-24T22:52:25Z","applies_to":"/app/cedar-os","tags":["layer:frontend","domain:ui","type:integration","status:stable"],"status":"stable"} -->
+
+# Cedar OS (`/app/cedar-os`)
+
+## Persona
+**Name:** Interactive AI UI Orchestrator  
+**Role Objective:** Compose multi-mode chat UI and synchronize application state bi-directionally with Cedar OS agent context.  
+**Prompt Guidance Template:**
+
+```text
+You are the {persona_role} responsible for {responsibility_summary}.
+Constraints:
+1. UI components MUST stay presentational; complex state logic in hooks under /app/cedar-os/.
+2. MUST expose only curated state slices to agent context (principle of least context).
+3. MUST keep agent-triggered mutations pure & reversible via state setters.
+4. MUST avoid DOM imperative manipulation—use React state flows.
+Forbidden:
+- Embedding agent reasoning logic in components.
+- Direct mutation of data structures without setState.
+- Leaking sensitive UI state not needed for reasoning.
+Return concise code diff or hook change.
+```
+
+Where:
+
+- `{persona_role}` = "Interactive AI UI Orchestrator"
+- `{responsibility_summary}` = "bridging roadmap UI state with agent-readable context and reactive chat interfaces"
+
+## Purpose
+Provide a live exploratory product roadmap surface with integrated conversational AI that can observe and (eventually) influence structured UI state (nodes, edges, selection) via Cedar OS context mechanisms.
+
+## Scope
+### In-Scope
+
+- Roadmap canvas composition & chat mode switching
+- State exposure via context transformation & subscription hooks
+- Mention system configuration (`@` entity surfacing)
+- Agent safe action invocation wiring
+
+### Out-of-Scope
+
+- Core model prompt engineering (handled elsewhere)
+- Backend workflow orchestration
+- Persistence of roadmap graph (currently ephemeral)
+
+## Key Files
+
+| File | Responsibility | Notes |
+|------|----------------|-------|
+| `page.tsx` | Renders chat mode selector + canvas | Client component; imports hooks |
+| `cedar-os/state.ts` | Local UI state atoms/selectors | Source of truth for roadmap interactive state |
+| `cedar-os/context.ts` | Subscribes/export state to agent context | Uses subscription + transformation hooks |
+| `cedar-os/mentions.ts` | Mention provider setup | Maps state-derived entities to `@` tokens |
+| `cedar-os/hooks.ts` | Custom integration hooks | Encapsulates reusable UI <-> agent patterns |
+
+## Data Flow
+
+1. User selects chat mode (floating, sidepanel, caption) → stored in local state.
+2. Roadmap interactions (select node, link nodes) update state atoms.
+3. `context.ts` subscribes to chosen atoms → transforms into agent context shape.
+4. Agent reasoning may request actions (future) → dispatched via safe wrappers → state updates.
+5. UI reacts and re-renders; updated state re-exposed to agent context (closed loop).
+
+## State Exposure Guidelines
+
+| State Slice | Expose? | Transform Strategy | Notes |
+|-------------|---------|--------------------|-------|
+| Selected Nodes | Yes | Map to minimal array `{ id, label }` | Avoid heavy metadata |
+| All Nodes Graph | Partial | Provide counts + focused subset | Balance token cost |
+| UI Mode | Yes | Enum string | Helps agent tailor responses |
+| Internal Debug Flags | No | N/A | Not relevant for reasoning |
+
+## Best Practices
+
+1. Derive – don’t duplicate – computed view state in transformers.
+2. Keep context transformers pure & side-effect free.
+3. Memoize heavy derived structures before exposing.
+4. Keep chat mode components minimal; state logic belongs in hooks.
+5. Maintain deterministic ordering for mention entities (stable referencing).
+
+## Anti-Patterns
+
+- Passing entire raw graph JSON to context each render.
+- Allowing agent to directly mutate DOM or refs.
+- Embedding asynchronous fetch logic inside `page.tsx` (move to hooks).
+
+## Common Tasks
+
+| Task | Steps |
+|------|-------|
+| Add new chat mode | Create component → extend mode union → update selector → add conditional render |
+| Expose new state to agent | Add atom → subscribe in `context.ts` → transformer → test in debug panel |
+| Add mention entity type | Extend provider in `mentions.ts` → implement resolver → update docs |
+| Add agent action (future) | Define tool/action → register safe dispatcher in hooks → surface button/UI affordance |
+
+## Performance Considerations
+
+- Minimize re-renders by narrowing subscription granularity.
+- Avoid passing large objects through context; project minimal shapes.
+- Defer expensive layout computations until visible mode active.
+
+## Observability / Debugging
+
+- Add temporary console tracing in `context.ts` for transformer outputs.
+- Use internal debug panel (if available) to inspect exposed context keys.
+- Validate mention tokens resolve deterministically across refreshes.
+
+## Pitfalls
+
+- Infinite render loops from non-memoized transformer objects.
+- Leaking unnecessary state (increases token cost & privacy risk).
+- Chat mode conditional branches accumulating complex logic (refactor to components early).
+
+## Change Log
+
+| Version | Date (UTC) | Change |
+|---------|------------|--------|
+| 1.0.0 | 2025-09-24 | Standardized template applied; legacy content preserved |
+
+## Legacy Content (Preserved)
+
+```markdown
+<-- Begin Legacy -->
 # Cedar OS
 
 ## Persona
@@ -43,3 +166,5 @@
     1. "Is the UI not updating when the agent performs an action? Check the `DebuggerPanel` to see if the `setState` action was actually called by the agent."
     2. "Is the agent unaware of something on the screen? Verify that the relevant state is being subscribed to in `cedar-os/context.ts`."
     3. "Are `@` mentions not working? Ensure the `useStateBasedMentionProvider` in `cedar-os/mentions.ts` is correctly configured with the right `stateKey`."
+<-- End Legacy -->
+```

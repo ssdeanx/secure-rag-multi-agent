@@ -1,7 +1,6 @@
 import { NextRequest } from 'next/server';
 import { jwtVerify } from 'jose';
 import { createMastraClient } from '../../../lib/mastra/mastra-client';
-import { RoadmapSyncInput } from '../../../src/mastra/workflows/roadmapWorkflowSchemas';
 
 interface JwtClaims {
   [key: string]: unknown;

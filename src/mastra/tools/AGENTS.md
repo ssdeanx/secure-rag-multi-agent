@@ -1,3 +1,114 @@
+<!-- AGENTS-META {"title":"Mastra Tools","version":"1.0.0","last_updated":"2025-09-24T22:52:25Z","applies_to":"/src/mastra/tools","tags":["layer:backend","domain:rag","type:tools","status:stable"],"status":"stable"} -->
+
+# Tools Directory (`/src/mastra/tools`)
+
+## Persona
+**Name:** Senior Tooling & Integrations Engineer  
+**Role Objective:** Provide minimal, secure, schema-bound callable functions enabling agent actions with clear natural language affordances.  
+**Prompt Guidance Template:**
+
+```text
+You are the {persona_role} ensuring {responsibility_summary}.
+Constraints:
+1. MUST define strict input & output Zod schemas (no z.any()).
+2. MUST write precise descriptions (purpose + params + return).
+3. MUST fail loudly with descriptive errors (never silent nulls).
+4. MUST keep each tool single-purpose & side-effect transparent.
+Forbidden:
+- Bundling unrelated operations in one tool.
+- Exposing raw filesystem or network primitives unsafely.
+- Returning ambiguous polymorphic shapes.
+Return only the tool code diff.
+```
+
+Where:
+
+- `{persona_role}` = "Senior Tooling & Integrations Engineer"
+- `{responsibility_summary}` = "reliable external/system interaction surfaces for agents"
+
+## Purpose
+Encapsulate atomic operational capabilities (security checks, vector queries, content fetch, UI state mutation hooks) in auditable, schema-validated units invoked by agents.
+
+## Key Files
+
+| File | Responsibility | Notes |
+|------|----------------|-------|
+| `jwt-auth.tool.ts` | Verify & decode JWT | Security-critical; strict error paths |
+| `vector-query.tool.ts` | Secure filtered vector search | Applies role/classification filters |
+| `web-scraper-tool.ts` | Fetch & parse remote content | Network + HTML parsing safety |
+| `data-file-manager.ts` | Sandboxed file operations | Path normalization & traversal prevention |
+| `researchAgent.ts` | Research orchestration helpers | Multi-step research chain support |
+| `copywriter-agent-tool.ts` / `editor-agent-tool.ts` | Agent-as-tool composition | Enables cascading reasoning |
+| `roadmapTool.ts` | Cedar OS roadmap interactions | UI state bridging |
+| `weather-tool.ts` | Example external API call | Demonstrative pattern |
+
+## Tool Definition Pattern
+
+```ts
+export const sampleTool = createTool({
+  id: 'sample:normalizeText',
+  description: 'Normalizes input text by trimming and collapsing whitespace.',
+  inputSchema: z.object({ text: z.string().min(1) }),
+  outputSchema: z.object({ normalized: z.string() }),
+  execute: async ({ input, tracingContext }) => {
+    const start = Date.now();
+    const normalized = input.text.replace(/\s+/g, ' ').trim();
+    tracingContext?.span?.setAttribute('norm.ms', Date.now() - start);
+    return { normalized };
+  }
+});
+```
+
+## Quality Checklist
+
+| Aspect | Requirement |
+|--------|-------------|
+| Schema Strictness | No broad unions w/o justification |
+| Description Clarity | Mentions inputs & outputs explicitly |
+| Error Handling | Throws descriptive message with context |
+| Observability | Optional tracing spans for latency |
+| Security | Input sanitization & path/network safety |
+
+## Best Practices
+
+1. Prefer smaller tool surfaces – compose via workflows/agents.
+2. Give IDs namespaced (`vector:query`, `jwt:verify`) for clarity.
+3. Normalize external inputs early (case, trimming, encoding).
+4. Avoid hidden global state; keep pure where feasible.
+5. Tag tracing spans with cardinality-safe attributes only.
+
+## Anti-Patterns
+
+- Catch-all “utility” tool with mixed responsibilities.
+- Returning raw third-party API responses without shaping.
+- Broad try/catch that drops stack & context.
+
+## Common Tasks
+
+| Task | Steps |
+|------|-------|
+| Add new tool | Create file → implement `createTool` → strict schemas → description → export & register with agent |
+| Strengthen validation | Replace generic types with enums / refinements |
+| Add tracing | Wrap execution timing & annotate span |
+| Refactor large tool | Split logic; keep original id for stable contracts (or version new id) |
+
+## Debugging Checklist
+
+1. Tool not selected by agent → unclear description or overlapping semantic space with another tool.
+2. Validation errors → inspect schema constraints vs agent instruction examples.
+3. Slow execution → profile sections; add tracing timing.
+4. Security exception → confirm input normalization & boundary checks.
+
+## Change Log
+
+| Version | Date (UTC) | Change |
+|---------|------------|--------|
+| 1.0.0 | 2025-09-24 | Standardized template applied; legacy content preserved |
+
+## Legacy Content (Preserved)
+
+```markdown
+<-- Begin Legacy -->
 # Mastra Tools
 
 ## Persona
@@ -56,3 +167,5 @@
     1. "Is an agent failing to use your tool? Your `description` is likely unclear or doesn't match the agent's intent."
     2. "Is the tool throwing a Zod validation error? The agent is providing arguments that don't match your `inputSchema`. Check the agent's `instructions` to see why it's making that mistake."
     3. "Is the tool execution failing? Add detailed logging inside the `execute` function to trace its logic and inspect the values of its variables."
+<-- End Legacy -->
+```

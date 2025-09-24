@@ -1,3 +1,99 @@
+<!-- AGENTS-META {"title":"Mastra Services","version":"1.0.0","last_updated":"2025-09-24T22:52:25Z","applies_to":"/src/mastra/services","tags":["layer:backend","domain:rag","type:services","status:stable"],"status":"stable"} -->
+
+# Services Directory (`/src/mastra/services`)
+
+## Persona
+**Name:** Senior Backend Engineer  
+**Role Objective:** Encapsulate stateless, reusable domain and infrastructure logic consumed by tools and workflow steps.  
+**Prompt Guidance Template:**
+
+```text
+You are the {persona_role} ensuring {responsibility_summary}.
+Constraints:
+1. MUST keep services free of orchestration (that belongs to workflows).
+2. MUST expose pure/static methods (no hidden mutable state).
+3. MUST validate external inputs & map third-party responses to schemas.
+4. MUST avoid side-effects beyond declared purpose.
+Forbidden:
+- Embedding multi-step sequencing (convert to workflow).
+- Returning raw untyped external responses.
+- Hidden caching without explicit API.
+Return service class diff only.
+```
+
+Where:
+
+- `{persona_role}` = "Senior Backend Engineer"
+- `{responsibility_summary}` = "clean separation of domain operations for governed RAG"
+
+## Purpose
+Provide single-responsibility functional units (auth, role expansion, vector retrieval, document processing, embedding, storage, validation) enabling higher-level orchestration layers to remain thin and declarative.
+
+## Key Files
+
+| File | Responsibility | Notes |
+|------|----------------|-------|
+| `AuthenticationService.ts` | JWT verification & policy seed | Coordinate with jwt-auth.tool |
+| `RoleService.ts` | Role expansion & hierarchy logic | Aligns with `role-hierarchy.ts` |
+| `VectorQueryService.ts` | Secure filtered vector search assembly | Applies classification & role filters |
+| `DocumentProcessorService.ts` | High-level indexing orchestration | Calls chunk, embed, store services |
+| `ChunkingService.ts` | Strategy-based text segmentation | Tune chunk sizes & overlap |
+| `EmbeddingService.ts` | Embedding generation & batching | Retry & backoff logic |
+| `VectorStorageService.ts` | Persistence into Qdrant | Attaches security tags |
+| `ValidationService.ts` | Common validation helpers | Env & structural guards |
+| `WorkflowDecorators.ts` | Step wrapper utilities | Logging, timing, error wrapping |
+
+## Service Design Pattern
+
+```ts
+export class ExampleService {
+  static doThing(input: ExampleInput): ExampleOutput {
+    // pure logic only, no side-effects beyond return
+    return { /* ... */ } as ExampleOutput;
+  }
+}
+```
+
+## Best Practices
+
+1. Pass dependencies explicitly (no hidden imports of global singletons when avoidable).
+2. Keep configuration (batch sizes, limits) parameterized.
+3. Centralize security filtering logic (avoid duplication between services).
+4. Fail fast with descriptive error types (include context identifiers).
+5. Keep method lengths small (< ~40 lines) – extract helpers.
+
+## Anti-Patterns
+
+- Embedding network retries ad-hoc (centralize or reuse helper).
+- Mutating passed-in objects (prefer return new object pattern).
+- Letting services call each other cyclically (signals design issue).
+
+## Common Tasks
+
+| Task | Steps |
+|------|-------|
+| Add new service | Create file → export class w/ static methods → unit test → integrate via tool/workflow |
+| Extend document pipeline | Modify `DocumentProcessorService` to insert new stage → coordinate workflow adaptation |
+| Optimize embedding throughput | Adjust batching params → measure latency → update docs |
+| Add validation rule | Extend `ValidationService` → update consuming modules |
+
+## Debugging Checklist
+
+1. Slow vector query → profile `VectorQueryService` query assembly vs DB latency.
+2. Misclassified role expansion → inspect `RoleService` hierarchy mapping.
+3. Failed embedding batch → verify retry logic & API quota status.
+4. Missing security tags → confirm storage call attaches classification & roles.
+
+## Change Log
+
+| Version | Date (UTC) | Change |
+|---------|------------|--------|
+| 1.0.0 | 2025-09-24 | Standardized template applied; legacy content preserved |
+
+## Legacy Content (Preserved)
+
+```markdown
+<-- Begin Legacy -->
 # Mastra Services
 
 ## Persona
@@ -54,3 +150,5 @@
     1. "Is a service method failing? Add detailed logging within the method to inspect its input arguments and the raw response from any external calls it makes."
     2. "Is the service slow? Wrap its core logic with `console.time()` and `console.timeEnd()` to pinpoint the bottleneck."
     3. "Are you getting unexpected data from a service? Verify that the data returned from the external API matches your assumptions and that your parsing logic is correct."
+<-- End Legacy -->
+```

@@ -1,44 +1,127 @@
-# CLI
+<!-- AGENTS-META {"title":"Operations CLI","version":"1.0.0","last_updated":"2025-09-24T22:52:25Z","applies_to":"/src/cli","tags":["layer:backend","domain:ops","type:cli","status:stable"],"status":"stable"} -->
+
+# CLI Directory (`/src/cli`)
 
 ## Persona
+**Name:** `{cli_persona_name}` = "CLI & Operations Engineer"  
+**Role:** "I provide a fast, scriptable, auditable interface to core indexing & query workflows—never re‑implementing business logic, only invoking it predictably."  
+**Primary Goals:**  
 
+1. Offer low-friction operational access (index, query, demo).  
+2. Surface clear usage/help output.  
+3. Defer all domain logic to workflows/services.  
+4. Fail fast with actionable errors & exit codes.
+
+**MUST:**  
+
+- Keep commands thin: parameter parsing + workflow invocation.  
+- Provide `help` output listing ALL commands & examples.  
+- Load env early (`dotenv.config()` if required).  
+- Use consistent exit codes (0 success, non-zero failure).  
+- Validate required arguments before invoking workflows.
+
+**FORBIDDEN:**  
+
+- Embedding vector DB or policy logic inline.  
+- Silent catch-and-continue on errors.  
+- Hardcoding secrets or API keys.  
+- Adding complex argument parsing manually when growth justifies a library.
+
+## Purpose
+Facilitates operational tasks (indexing corpus, querying governed RAG workflows, demos) without going through HTTP. Acts as a stable automation surface for CI scripts or developers.
+
+## Command Surface (Current)
+
+| Command | Workflow/Action | Description | Notes |
+|---------|-----------------|-------------|-------|
+| `index` | `governed-rag-index` | Embeds & stores corpus vectors | Requires corpus present |
+| `query <jwt> <question>` | `governed-rag-answer` | Executes governed answer path | JWT passed inline |
+| `demo` | multiple | Interactive loop for exploratory testing | Non-production utility |
+| `help` | n/a | Prints usage details | Default fallback |
+
+## Execution Flow
+
+1. Parse `process.argv` → derive command + args.  
+2. Validate arg count & format.  
+3. Map command → workflow or helper.  
+4. Await result → pretty print (JSON or streamed tokens).  
+5. Exit with code `0` on success, else log error & `process.exit(1)`.
+
+## Design Principles
+
+| Principle | Rationale | Implementation Cue |
+|-----------|-----------|--------------------|
+| Delegation | Avoid logic drift | Always call workflow/tool instead of re-implementing |
+| Determinism | Predictable automation | Stable output formatting & exit codes |
+| Transparency | Debuggability | Log command + args (sanitized) at start |
+| Safety | Prevent destructive surprises | Add confirmation for destructive ops (future) |
+| Extensibility | Future growth | Consider migrating to `commander` when >5 commands |
+
+## Adding a New Command
+
+```text
+1. Define: purpose, workflow mapping, arguments.
+2. Implement small async function (keep pure except I/O & logging).
+3. Add `case` in dispatcher switch.
+4. Update `help` output (ALWAYS in same commit).
+5. Test manually & (optionally) add a lightweight Vitest harness.
+```
+
+## Error Handling Patterns
+
+| Scenario | Behavior | Example |
+|----------|----------|---------|
+| Missing required arg | Print usage + exit 1 | `query` without JWT |
+| Workflow throws | Log stack (dev) + concise message | Network / model error |
+| Unknown command | Print help + exit 1 | Typo: `qurey` |
+| JSON parse/display error | Fallback to raw output | Malformed streaming chunk |
+
+## Best Practices
+
+| Area | Guidance |
+|------|----------|
+| Logging | Minimal: command + duration |
+| Output | Prefer machine-parseable JSON where feasible |
+| Secrets | Never echo JWT contents beyond role metadata |
+| Streaming | Flush partial tokens promptly; final newline |
+| Help | Keep first line concise; examples below |
+
+## Anti-Patterns
+
+| Pattern | Issue | Fix |
+|---------|------|-----|
+| Added retry loops inline | Hidden complexity | Add retry inside service/workflow |
+| Embedding classification heuristics | Duplication risk | Leave in indexing workflow/API |
+| Mixing interactive & batch logic | Unpredictable output | Separate `demo` from machine modes |
+| Hard-coded ANSI color noise | Breaks parsing | Provide flag for color |
+
+## Checklist (Before Commit)
+
+- [ ] Command documented in help.  
+- [ ] No business logic duplication.  
+- [ ] Errors produce non-zero exit code.  
+- [ ] Arguments validated early.  
+- [ ] Workflow name stable & not stringly across files.
+
+## Future Enhancements
+
+- Adopt structured arg parser (`commander`) when expanding.  
+- Add `clear-index` with confirmation prompt.  
+- Add JSON schema validation for command inputs.  
+- Provide `--format json|pretty` flag.  
+- Add timing metrics output (`--verbose`).
+
+## Change Log
+
+| Version | Date (UTC) | Change |
+|---------|------------|--------|
+| 1.0.0 | 2025-09-24 | Standardized CLI documentation; legacy preserved |
+
+## Legacy Content (Preserved)
+
+```markdown
+# (Original CLI Documentation)
 * **`name`**: "CLI & Operations Engineer"
 * **`role_description`**: "I build command-line tools for managing the application's operational tasks, such as data indexing and batch processing. I focus on creating clear, usable, and robust command structures that provide a direct interface to the backend workflows."
-* **`generation_parameters`**:
-  * **`style`**: "Direct and command-oriented. Use shell command examples to illustrate functionality. Focus on operational tasks."
-  * **`output_format`**: "Markdown with shell/bash code blocks."
-* **`prompting_guidelines`**:
-  * **`self_correction_prompt`**: "Before adding a new command, I must ask: 'Is this a one-off operational task suitable for a CLI, or is it part of the core application logic that should be an API endpoint? Is the command's purpose clear and are its arguments well-defined?'"
-  * **`interaction_example`**:
-    * *User Prompt:* "Add a command to clear the Qdrant collection."
-    * *Ideal Response:* "Understood. I will add a new `clear-index` command to `index.ts`. It will call a new method on the `VectorStorageService` to delete all vectors from the collection. The command will be `npm run cli clear-index`. I will also add a confirmation prompt to prevent accidental data loss."
-
-### Directory Analysis
-
-* **`purpose`**: To provide a command-line interface (CLI) for performing administrative and operational tasks related to the application.
-* **`file_breakdown`**:
-  * `index.ts`: The main entry point for the CLI. It parses command-line arguments and executes the corresponding function (e.g., `indexDocuments`, `queryRAG`).
-* **`key_abstractions`**:
-  * **`process.argv`**: The raw command-line arguments provided by Node.js, used to determine which command to run.
-  * **Command Dispatcher**: The `switch (command)` block acts as a simple dispatcher, routing the command name to the appropriate function.
-* **`data_flow`**: The CLI is executed via `npm run cli`. The `index.ts` file directly imports and calls the Mastra workflows (`governed-rag-index`, `governed-rag-answer`) to perform its tasks. It's a direct interface to the backend AI logic, bypassing the HTTP API layer.
-
-### Development Playbook
-
-* **`best_practices`**:
-  * "**Clear Usage Instructions**: The `help` command is the most important part of the CLI. It should clearly list all available commands and provide examples, as is currently done."
-  * "**Environment Loading**: The CLI correctly uses `dotenv.config()` to load environment variables from the `.env` file, ensuring it has access to necessary API keys and secrets."
-  * "**Delegate to Workflows**: The CLI commands should be thin wrappers around the Mastra workflows. The `indexDocuments` function correctly calls the `governed-rag-index` workflow. This reuses the core application logic."
-* **`anti_patterns`**:
-  * "**Implementing Logic in the CLI**: Adding complex business logic directly into `index.ts`. **Instead**: If a command needs to perform a complex task, that task should be defined as a Mastra workflow, and the CLI command should simply trigger that workflow."
-  * "**Lack of Argument Parsing**: Relying on simple array indexing (`args[1]`, `args[2]`) for complex commands. **Instead**: For any new, complex command, use a dedicated argument parsing library like `yargs` or `commander` to create a more robust and user-friendly CLI."
-* **`common_tasks`**:
-  * "**Adding a New Command**:
-        1. Create a new async function for your command's logic (e.g., `async function myNewCommand() { ... }`).
-        2. In the `main` function, add a new `case` to the `switch` block for your command name.
-        3. Call your new function from the `case` block.
-        4. Update the `help` message to include the new command, its description, and an example."
-* **`debugging_checklist`**:
-    1. "Is a command not being recognized? Check the `switch` block in `index.ts` to ensure you have a `case` for the command name."
-    2. "Is the command failing? Add `console.log` statements within the command's function to inspect the arguments and the results of any workflow calls."
-    3. "Is the CLI failing due to a missing environment variable? Ensure your `.env` file is correctly populated and that `dotenv.config()` is being called at the top of the file."
+... (truncated for brevity, original content retained in git history) ...
+```

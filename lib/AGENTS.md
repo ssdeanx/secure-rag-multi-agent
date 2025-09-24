@@ -1,3 +1,93 @@
+<!-- AGENTS-META {"title":"Shared Frontend Library","version":"1.1.0","last_updated":"2025-09-24T22:52:25Z","applies_to":"/lib","tags":["layer:frontend","domain:shared","type:utilities","status:stable"],"status":"stable"} -->
+
+# Library Directory (`/lib`)
+
+## Directory Purpose
+Provides browser-safe shared utilities, lightweight client helpers, auth/JWT helpers, and MDX plugin definitions consumed across frontend routes and higher-level components.
+
+## Scope
+
+### In-Scope
+
+- Stateless utility functions (`utils.ts`)
+- JWT demo utility generation & helpers (`jwt-utils.ts`)
+- Auth/session helpers (`auth.ts`)
+- MDX transformer/plugin definitions (`mdx-plugins.*`)
+- Thin client initializers (Mastra client subfolder)
+
+### Out-of-Scope
+
+- Backend service logic (belongs in `src/mastra/services`)
+- React hooks (should live in `/hooks`)
+- Heavy state management or workflow orchestration
+
+## Key Files
+
+| File | Role | Notes |
+|------|------|-------|
+| `utils.ts` | Class name & misc utils | Exports `cn` combinator |
+| `jwt-utils.ts` | Demo token generators | Creates role-scoped JWTs for UI demos |
+| `auth.ts` | Auth helper / role resolution | Shared validation & claim mapping |
+| `mdx-plugins.ts` | MDX config (TS) | Type-safe plugin export |
+| `mdx-plugins.js` | MDX config (JS) | Legacy/interop variant |
+| `mastra/` | Client integration | Browser client pattern (see `/lib/mastra/AGENTS.md`) |
+| `actions/` | Action helpers | Server actions & JWT issuance (see `/lib/actions/AGENTS.md`) |
+
+## Responsibilities
+
+- Centralize pure browser-compatible helpers
+- Enable consistent MDX transformation pipeline
+- Support demo JWT generation while isolating secrets server side
+
+## Non-Responsibilities
+
+- Direct DOM manipulation side-effects (leave to components)
+- Server-only secrets or environment initialization
+- Business logic for retrieval or policy enforcement
+
+## Integration Points
+
+| Consumer | Usage |
+|----------|-------|
+| `/components` | Uses `cn`, jwt generation for `AuthPanel` |
+| `/app/api` | May import `auth.ts` for token utilities |
+| `/docs` | MDX plugins enrich doc rendering |
+| Agents/Workflows | Indirectly via exported helpers when safe |
+
+## Common Tasks
+
+1. Add Utility Function
+   - Append export in `utils.ts`
+   - Keep pure & side-effect free
+2. Extend JWT Demo Logic
+   - Add role case in `jwt-utils.ts`
+   - Ensure claims match policy expectations
+3. Add MDX Plugin
+   - Modify `mdx-plugins.ts` adding remark/rehype entry
+   - Validate build compiles MDX with new transform
+
+## Testing & QA
+
+- Unit test pure utilities with Vitest
+- Snapshot complex MDX transformation output when applicable
+- Validate JWT structure using `atob` decode in local dev
+
+## Security Notes
+
+- Never embed actual production secrets; demo tokens only
+- Keep cryptographic or signing logic server-side if expanded
+
+## Change Log
+
+| Version | Date (UTC) | Change |
+|---------|------------|--------|
+| 1.1.0 | 2025-09-24 | Added cross-links to `/lib/mastra` and `/lib/actions` subdocs |
+| 1.0.0 | 2025-09-24 | Standardized template applied; legacy content preserved |
+
+## Legacy Content (Preserved)
+> Original descriptive content retained verbatim for historical context.
+
+```markdown
 # Lib
 
 ## Persona
@@ -35,7 +125,7 @@
   * "**Placing Backend Code Here**: Adding a file that uses Node.js modules like `fs` or `path`. This will cause the Next.js build to fail because that code cannot run in the browser. **Instead**: All backend logic must reside in `/src`."
   * "**Putting React Hooks in `/lib`**: Creating a `useMyHook.ts` file here. **Instead**: All custom React hooks should be placed in the `/hooks` directory to maintain a clear separation of concerns."
 * **`common_tasks`**:
-  * "**Adding a New Frontend Utility**:
+  * "**Adding a New Frontend Utility**":
         1. Identify a piece of logic that is used in multiple components (e.g., a date formatting function).
         2. Add it as an exported function to `lib/utils.ts`.
         3. Ensure the function is pure and has no dependencies on Node.js APIs.
@@ -44,3 +134,4 @@
     1. "Are you getting a build error like 'Module not found: Can't resolve 'fs''? You have likely placed backend code in `/lib` by mistake. Move it to `/src/utils` or a service."
     2. "Is a utility function not working as expected? Since these should be pure functions, they are easy to test. Add a `console.log` in the component where you are using it to inspect the inputs you are passing to it."
     3. "Is the `cn` function producing unexpected class names? `console.log` the arguments you are passing to it. Remember that later classes in the argument list will override earlier ones if they are for the same Tailwind property."
+```

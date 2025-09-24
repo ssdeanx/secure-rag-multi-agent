@@ -1,3 +1,86 @@
+<!-- AGENTS-META {"title":"Mastra Policy","version":"1.0.0","last_updated":"2025-09-24T22:52:25Z","applies_to":"/src/mastra/policy","tags":["layer:backend","domain:policy","type:security","status:stable"],"status":"stable"} -->
+
+# Policy Directory (`/src/mastra/policy`)
+
+## Persona
+**Name:** Security & Policy Analyst  
+**Role Objective:** Maintain least-privilege, declarative access governance for corpus content and retrieval filtering.  
+**Prompt Guidance Template:**
+
+```text
+You are the {persona_role} ensuring {responsibility_summary}.
+Constraints:
+1. MUST express document access rules declaratively in acl.yaml.
+2. MUST align roles with role-hierarchy definitions (no undefined roles).
+3. MUST keep classification consistent with indexing security tags.
+4. MUST require re-index after ACL change for effect.
+Forbidden:
+- Embedding procedural access logic in services/agents.
+- Using overly broad roles when narrower suffice.
+- Adding conditional logic beyond YAML structure.
+Return only acl.yaml diff proposal.
+```
+
+Where:
+
+- `{persona_role}` = "Security & Policy Analyst"
+- `{responsibility_summary}` = "precise, auditable role & classification governed access"
+
+## Purpose
+Central source of document-level access control; transforms at indexing time into security tags consumed by vector filtering and policy-driven retrieval.
+
+## Key File
+
+| File | Responsibility | Notes |
+|------|----------------|-------|
+| `acl.yaml` | Declarative document ACL mapping | Applied during indexing → tags |
+
+## Data Flow
+
+1. Author edits `acl.yaml` (roles/classification per path).
+2. Run indexing workflow → documents chunked & tagged with `allowedRoles` + `classification`.
+3. Retrieval tool builds filter from user roles & classification bounds.
+4. Vector store returns only authorized contexts.
+
+## Best Practices
+
+1. Start restrictive; expand only when justified.
+2. Group related documents with consistent classification naming.
+3. Document rationale inline via YAML comments for audits.
+4. Periodically audit for unused or overly permissive roles.
+5. Automate validation script (future) to detect undefined roles.
+
+## Anti-Patterns
+
+- Granting `employee` on confidential departmental docs.
+- Mirroring business logic conditions in YAML (keep simple static mapping).
+- Forgetting to re-index after ACL changes (stale tags).
+
+## Common Tasks
+
+| Task | Steps |
+|------|-------|
+| Restrict document | Edit entry → narrow `allow.roles` → re-index |
+| Broaden access | Add role (verify hierarchy) → re-index → verify retrieval filters |
+| Add new document | Append entry with minimal roles + classification → index |
+| Audit roles | Scan ACL for broad roles on sensitive files → tighten |
+
+## Debugging Checklist
+
+1. Unauthorized visibility → check ACL entry & role hierarchy expansion.
+2. Missing access → verify role inheritance & correct classification level.
+3. Change not reflecting → ensure re-index executed after edit.
+
+## Change Log
+
+| Version | Date (UTC) | Change |
+|---------|------------|--------|
+| 1.0.0 | 2025-09-24 | Standardized template applied; legacy content preserved |
+
+## Legacy Content (Preserved)
+
+```markdown
+<-- Begin Legacy -->
 # Mastra Policy
 
 ## Persona
@@ -43,3 +126,5 @@
     1. "Is a user seeing a document they shouldn't? Check the `allow.roles` for that document in `acl.yaml`. Is a broad role like `employee` mistakenly included?"
     2. "Is a user being denied access to a document they *should* see? Check that their role is listed in `allow.roles`. Also, verify their role's inheritance in `role-hierarchy.ts` to ensure it's configured correctly."
     3. "After changing this file, did you re-run the indexing pipeline? Changes to `acl.yaml` only affect the `securityTags` on new or updated vector chunks."
+<-- End Legacy -->
+```

@@ -1,5 +1,5 @@
 ---
-applyTo: "docs/**/*.md"
+applyTo: ["docs/**/*.md"]
 ---
 # Project documentation writing guidelines
 

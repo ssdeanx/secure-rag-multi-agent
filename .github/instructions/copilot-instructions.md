@@ -1,6 +1,10 @@
 ---
 applyTo:: ["**"]
 description::'Instructions for GitHub Copilot specific to this repository.'
+tags:: ["repository-specific", "copilot", "instructions"]
+version:: "1.0.0"
+last_updated:: "2025-09-24T19:13:49Z"
+status:: "stable"
 ---
 
 # Repository-specific Copilot instructions

@@ -1,4 +1,3 @@
-/* eslint-disable tsdoc/syntax */
 /**
  * Role Hierarchy Configuration
  *
@@ -21,18 +20,21 @@ export const ROLE_HIERARCHY: RoleHierarchy = {
     'hr.admin', 'hr.viewer',
     'finance.admin', 'finance.viewer',
     'engineering.admin', 'engineering.viewer',
-    'employee', 'public'
+    'employee', 'reader', 'public'
   ],
 
   // Department admin roles - full access to their department + general access
-  'hr.admin': ['hr.viewer', 'employee', 'public'],
-  'finance.admin': ['finance.viewer', 'employee', 'public'],
-  'engineering.admin': ['engineering.viewer', 'employee', 'public'],
+  'hr.admin': ['hr.viewer', 'employee', 'reader', 'public'],
+  'finance.admin': ['finance.viewer', 'employee', 'reader', 'public'],
+  'engineering.admin': ['engineering.viewer', 'employee', 'reader', 'public'],
 
   // Department viewer roles - read access to their department + general access
-  'hr.viewer': ['employee', 'public'],
-  'finance.viewer': ['employee', 'public'],
-  'engineering.viewer': ['employee', 'public'],
+  'hr.viewer': ['employee', 'reader', 'public'],
+  'finance.viewer': ['employee', 'reader', 'public'],
+  'engineering.viewer': ['employee', 'reader', 'public'],
+
+  // Added reader role (inherits employee + public)
+  'reader': ['employee', 'public'],
 
   // Base employee role - access to general company documents
   'employee': ['public'],
@@ -54,13 +56,13 @@ export const ROLE_LEVELS: Record<string, number> = {
   'finance.viewer': 60,
   'engineering.viewer': 60,
   'employee': 40,
+  'reader': 35,
   'public': 10
 };
 
 /**
  * Get the privilege level of a role
  */
-
 export function getRoleLevel(role: string): number {
   return ROLE_LEVELS[role] || 0;
 }
@@ -68,7 +70,6 @@ export function getRoleLevel(role: string): number {
 /**
  * Check if a role exists in the hierarchy
  */
-
 export function isValidRole(role: string): boolean {
   return role in ROLE_HIERARCHY;
 }

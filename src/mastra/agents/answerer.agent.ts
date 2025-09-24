@@ -2,22 +2,17 @@
 // owner: team-ai
 // category: mastra-agent
 // approvalRequired: true
-// tools:
-//  - vector-query.tool
-// inputSchema: src/mastra/schemas/agent-schemas.ts::Input
-// outputSchema: src/mastra/schemas/agent-schemas.ts::AnswererOutput
+// outputSchema: src/mastra/schemas/agent-schemas.ts::answererOutputSchema
 // requiredCallerClaims:
-//  - roles: [role:reader]
+//  - roles: [role:employee]
 //  - tenant: global
 // approvedBy: sam
-// approvalDate: 9/22
+// approvalDate: 2025-09-24
 import { Agent } from "@mastra/core";
-//import { z } from "zod";
-import { ragAnswerSchema } from "../schemas/agent-schemas";
+import { answererOutputSchema } from "../schemas/agent-schemas";
 import { google } from "@ai-sdk/google";
 import { createResearchMemory } from '../config/libsql-storage';
 import { log } from "../config/logger";
-// removed unused import: GoogleGenerativeAIProviderOptions
 
 log.info('Initializing Answerer Agent...');
 
@@ -44,33 +39,15 @@ CRITICAL RELEVANCE CHECK:
 - Don't extrapolate or infer information not explicitly stated
 - If context mentions related but different topics, DON'T answer
 
-EXAMPLES OF WHAT NOT TO DO:
-- Question: "What are Termination Procedures?"
-- Context: "Service termination fee is $50"
-- WRONG: "Termination procedures include paying a $50 fee"
-- CORRECT: "The authorized documents don't contain information about this specific topic."
-
-IMPORTANT: You must respond with a valid JSON object in the following format:
+IMPORTANT: Respond with valid JSON:
 {
   "answer": "Your complete answer with inline citations",
   "citations": [{"docId": "document-id", "source": "source description"}]
-}
-
-Note: Both docId and source are REQUIRED fields in citations.
-
-Example correct response:
-{
-  "answer": "The finance policy states that expense reports must be submitted within 30 days [finance-policy-001]. Additionally, all expenses over $1000 require manager approval [finance-policy-001].",
-  "citations": [{"docId": "finance-policy-001", "source": "Finance Department Policy Manual"}]
-}
-
-Always respond with valid JSON that matches this exact structure.`,
+}`,
   memory: store,
-  evals: {
-    // Add any evaluation metrics if needed
-  },
+  evals: {},
   scorers: {},
   workflows: {},
 });
 
-export const answererOutputSchema = ragAnswerSchema;
+export { answererOutputSchema };

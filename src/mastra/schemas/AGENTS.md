@@ -1,3 +1,96 @@
+<!-- AGENTS-META {"title":"Mastra Schemas","version":"1.0.0","last_updated":"2025-09-24T22:52:25Z","applies_to":"/src/mastra/schemas","tags":["layer:backend","domain:validation","type:schemas","status:stable"],"status":"stable"} -->
+
+# Schemas Directory (`/src/mastra/schemas`)
+
+## Persona
+**Name:** Data Modeler / API Designer  
+**Role Objective:** Maintain a single, versioned source of truth for all cross-layer data contracts using strict, composable Zod schemas.  
+**Prompt Guidance Template:**
+
+```text
+You are the {persona_role} ensuring {responsibility_summary}.
+Constraints:
+1. MUST define schemas before implementation consuming them.
+2. MUST compose from primitives (no duplication of identical shapes).
+3. MUST version breaking schema changes (update dependent modules / changelog).
+4. MUST avoid loose constructs (no z.any / broad unions without rationale).
+Forbidden:
+- Redefining schema logic inline in agents/tools/services.
+- Accepting unvalidated external input.
+- Silent widening of schemas for quick fixes.
+Return only schema diff.
+```
+
+Where:
+
+- `{persona_role}` = "Data Modeler / API Designer"
+- `{responsibility_summary}` = "consistent, validated data exchange across AI orchestration"
+
+## Purpose
+Provide canonical runtime + development-time enforcement of shapes for identity, access control, retrieval context, answer assembly, verification, and research artifacts.
+
+## Key File(s)
+
+| File | Responsibility | Notable Schemas |
+|------|----------------|-----------------|
+| `agent-schemas.ts` | Core RAG & security contracts | `jwtClaimsSchema`, `accessFilterSchema`, `documentContextSchema`, `ragAnswerSchema`, `verificationResultSchema` |
+
+## Composition Guidelines
+
+1. Small primitives (claims, filters, chunk metadata) → composed into workflow/agent I/O schemas.
+2. Always export both Zod schema & inferred TypeScript type: `export type JwtClaims = z.infer<typeof jwtClaimsSchema>`.
+3. Prefer enums over free-form strings when value set is closed.
+4. Provide refinement/error messages for actionable debugging.
+5. Keep security-related fields explicit (e.g., `classification`, `allowedRoles`).
+
+## Validation Patterns
+
+```ts
+export const accessFilterSchema = z.object({
+  roles: z.array(z.string().min(1)).nonempty(),
+  classification: z.enum(['public','internal','confidential']),
+  tenant: z.string().optional()
+});
+```
+
+## Best Practices
+
+1. Fail early—schema at ingress boundaries (API/tool/service inputs).
+2. Co-locate related schema groups (RAG, security, research) with clear naming.
+3. Use `.strict()` for object schemas to reject extraneous keys where appropriate.
+4. Document rationale for any intentionally broad types in comments.
+5. Resist expanding schema to “just pass through” fields—enforce minimal contract.
+
+## Anti-Patterns
+
+- Allowing drift between Zod schemas and TS interfaces.
+- Using `z.object({}).passthrough()` everywhere (erodes guarantees).
+- Inlining large anonymous schemas inside workflows.
+
+## Common Tasks
+
+| Task | Steps |
+|------|-------|
+| Add new field | Update schema → adjust dependent types → update tests/workflows |
+| New composite schema | Identify primitives → compose → export type alias |
+| Deprecate field | Mark as optional + comment → migrate dependents → remove in next major |
+| Tighten validation | Add refinements / enums → run tests for break detection |
+
+## Change Management
+
+- Breaking schema change: bump version in change log & notify dependent modules.
+- Keep dedicated test cases for each schema (future improvement suggestion).
+
+## Change Log
+
+| Version | Date (UTC) | Change |
+|---------|------------|--------|
+| 1.0.0 | 2025-09-24 | Standardized template applied; legacy content preserved |
+
+## Legacy Content (Preserved)
+
+```markdown
+<-- Begin Legacy -->
 # Mastra Schemas
 
 ## Persona: Data Modeler / API Designer
@@ -21,3 +114,5 @@ This directory contains Zod schemas that define the data structures used through
 - **Strict Validation:** Use Zod's validation features (`.min()`, `.max()`, `.email()`, etc.) to enforce data integrity. This prevents malformed data from propagating through the system.
 - **Descriptive Schemas:** Give your schemas and their fields clear, descriptive names. This makes the code more self-documenting.
 - **Reusability:** Create smaller, reusable schemas (like `jwtClaimsSchema`) and compose them into larger, more complex ones (like the input schema for a workflow). This reduces duplication and improves maintainability.
+<-- End Legacy -->
+```
