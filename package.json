@@ -20,7 +20,7 @@
   "validate:agents": "node scripts/validate-agents-docs.mjs",
   "sync:agents": "node scripts/sync-agents-docs.mjs",
   "sync:agents:write": "node scripts/sync-agents-docs.mjs --write",
-  "check:agents:sync": "node scripts/sync-agents-docs.mjs | grep -q 'updated' && echo 'Run npm run sync:agents:write to update AGENTS docs.' && exit 1 || echo 'AGENTS docs in sync.'"
+  "check:agents:sync": "node scripts/check-agents-sync.mjs"
   },
   "keywords": [
     "rag",

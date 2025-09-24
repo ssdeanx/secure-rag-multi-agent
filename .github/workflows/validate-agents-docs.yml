@@ -25,7 +25,7 @@ jobs:
         node-version: 20
         cache: 'npm'
     - name: Install deps
-      run: npm install --no-audit --no-fund
+      run: npm install
     - name: Determine base ref
       id: base
       run: |
