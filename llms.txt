@@ -1,0 +1,178 @@
+# Mastra Governed RAG
+
+> A secure, enterprise-grade Retrieval-Augmented Generation (RAG) system built with Mastra AI orchestration framework, implementing role-based access control (RBAC) with hierarchical permissions, document classification, and multi-agent security pipelines to ensure users only access authorized corporate knowledge.
+
+This repository demonstrates production-ready governed RAG using Mastra's agentic architecture, combining Next.js frontend, Qdrant vector database, and OpenAI LLMs with comprehensive security controls for enterprise knowledge bases.
+
+## Documentation
+
+- [README.md](README.md): Main project documentation with architecture overview, quick start guide, and feature descriptions
+- [docs/index.md](docs/index.md): Comprehensive documentation index with system overview and core concepts
+- [docs/architecture.md](docs/architecture.md): Detailed system architecture, component relationships, and workflow explanations
+- [docs/security.md](docs/security.md): Security model documentation including role hierarchy, document classifications, and access policies
+- [docs/quick-start.md](docs/quick-start.md): Step-by-step setup and installation guide for local development
+- [docs/api-reference.md](docs/api-reference.md): Complete API documentation for chat and indexing endpoints
+- [docs/demo-roles.md](docs/demo-roles.md): Role-based access control demonstrations with sample queries and expected responses
+- [AGENTS.md](AGENTS.md): Comprehensive development guide covering project structure, technologies, and getting started
+
+## Specifications
+
+- [package.json](package.json): Project dependencies, scripts, and configuration
+- [src/mastra/config/role-hierarchy.ts](src/mastra/config/role-hierarchy.ts): Role hierarchy definitions and permission inheritance rules
+- [src/mastra/schemas/agent-schemas.ts](src/mastra/schemas/agent-schemas.ts): Zod schema definitions for all agent inputs and outputs
+- [src/mastra/policy/acl.yaml](src/mastra/policy/acl.yaml): Access Control List configuration defining document permissions and classifications
+- [src/mastra/workflows/governed-rag-answer.workflow.ts](src/mastra/workflows/governed-rag-answer.workflow.ts): Main RAG workflow orchestrating authentication, retrieval, and answer generation
+- [src/mastra/workflows/indexing.workflow.ts](src/mastra/workflows/indexing.workflow.ts): Document indexing workflow with security classification
+- [src/types.ts](src/types.ts): Core TypeScript type definitions for security, access control, and document management
+
+## Examples
+
+- [corpus/](corpus/): Sample document corpus with classified content (engineering handbook, finance policy, HR confidential)
+- [app/page.tsx](app/page.tsx): Main application page with chat interface and authentication
+- [app/cedar-os/page.tsx](app/cedar-os/page.tsx): Cedar OS interactive application builder showcase
+- [app/demo-rag/page.tsx](app/demo-rag/page.tsx): Governed RAG demonstration interface
+- [components/ChatInterface.tsx](components/ChatInterface.tsx): Primary chat UI component with streaming responses
+- [cedar/RoadmapCanvas.tsx](cedar/RoadmapCanvas.tsx): Interactive product roadmap canvas with drag-and-drop features
+- [cedar/SmartRelationshipRoadmap.tsx](cedar/SmartRelationshipRoadmap.tsx): AI-powered roadmap with relationship intelligence
+- [app/api/chat/route.ts](app/api/chat/route.ts): Chat API endpoint implementing governed RAG workflow
+- [app/api/index/route.ts](app/api/index/route.ts): Document indexing API with security classification
+- [app/api/auth/route.ts](app/api/auth/route.ts): Authentication API endpoints
+- [app/api/auth/login/route.ts](app/api/auth/login/route.ts): User login API endpoint
+- [app/api/auth/signup/route.ts](app/api/auth/signup/route.ts): User registration API endpoint
+- [app/api/auth/signout/route.ts](app/api/auth/signout/route.ts): User logout API endpoint
+- [app/api/roadmap/route.ts](app/api/roadmap/route.ts): Roadmap management API endpoints
+
+## Configuration
+
+- [.env.example](.env.example): Environment variables template with required API keys and configuration
+- [docker-compose.yml](docker-compose.yml): Docker services configuration for Qdrant and database
+- [next.config.mjs](next.config.mjs): Next.js configuration and build settings
+- [tsconfig.json](tsconfig.json): TypeScript configuration for the project
+- [tsconfig.cli.json](tsconfig.cli.json): TypeScript configuration for CLI tools
+- [eslint.config.js](eslint.config.js): ESLint configuration with TypeScript and Prettier integration
+- [prettier.config.js](prettier.config.js): Code formatting configuration
+- [vitest.config.ts](vitest.config.ts): Testing framework configuration
+- [next-sitemap.config.js](next-sitemap.config.js): SEO sitemap generation configuration
+- [src/mastra/config/logger.ts](src/mastra/config/logger.ts): Logging configuration and structured logging setup
+- [components.json](components.json): shadcn/ui component configuration
+
+## Agents
+
+- [src/mastra/agents/](src/mastra/agents/): Directory containing all specialized AI agents (authentication, retrieval, reranking, answering, verification)
+- [src/mastra/agents/identityAgent.ts](src/mastra/agents/identityAgent.ts): JWT validation and user identity verification
+- [src/mastra/agents/policyAgent.ts](src/mastra/agents/policyAgent.ts): Access policy generation and security filtering
+- [src/mastra/agents/retrieveAgent.ts](src/mastra/agents/retrieveAgent.ts): Vector search and document retrieval with security filters
+- [src/mastra/agents/rerankAgent.ts](src/mastra/agents/rerankAgent.ts): Result relevance scoring and reordering
+- [src/mastra/agents/answererAgent.ts](src/mastra/agents/answererAgent.ts): Answer generation from filtered contexts
+- [src/mastra/agents/verifierAgent.ts](src/mastra/agents/verifierAgent.ts): Compliance verification and security validation
+
+## Tools
+
+- [src/mastra/tools/](src/mastra/tools/): Reusable tool implementations for agent workflows
+- [src/mastra/tools/jwt-auth-tool.ts](src/mastra/tools/jwt-auth-tool.ts): JWT token validation and claims extraction
+- [src/mastra/tools/vector-query-tool.ts](src/mastra/tools/vector-query-tool.ts): Secure vector similarity search with access filtering
+- [src/mastra/tools/web-scraper-tool.ts](src/mastra/tools/web-scraper-tool.ts): Web content extraction and processing utilities
+- [src/mastra/tools/copywriter-agent-tool.ts](src/mastra/tools/copywriter-agent-tool.ts): AI-powered content creation and copywriting
+- [src/mastra/tools/data-file-manager.ts](src/mastra/tools/data-file-manager.ts): Comprehensive file system operations and management
+- [src/mastra/tools/editor-agent-tool.ts](src/mastra/tools/editor-agent-tool.ts): Content editing and improvement tool
+- [src/mastra/tools/weather-tool.ts](src/mastra/tools/weather-tool.ts): Weather data retrieval and geocoding integration
+- [src/mastra/tools/evaluate-result-tool.ts](src/mastra/tools/evaluate-result-tool.ts): Search result relevance evaluation
+- [src/mastra/tools/extract-learnings-tool.ts](src/mastra/tools/extract-learnings-tool.ts): Learning extraction and follow-up question generation
+- [src/mastra/tools/roadmap-tool.ts](src/mastra/tools/roadmap-tool.ts): Product roadmap feature management (CRUD operations)
+- [src/mastra/tools/starter-agent-tool.ts](src/mastra/tools/starter-agent-tool.ts): Dynamic multi-agent orchestration tool
+
+## Services
+
+- [src/mastra/services/](src/mastra/services/): Business logic and external service integrations
+- [src/mastra/services/AuthenticationService.ts](src/mastra/services/AuthenticationService.ts): JWT validation and user authentication
+- [src/mastra/services/RoleService.ts](src/mastra/services/RoleService.ts): Role hierarchy processing and access tag generation
+- [src/mastra/services/QdrantService.ts](src/mastra/services/QdrantService.ts): Vector database operations and management
+- [src/mastra/services/VectorQueryService.ts](src/mastra/services/VectorQueryService.ts): Secure vector queries with classification filtering
+- [src/mastra/services/ValidationService.ts](src/mastra/services/ValidationService.ts): Input validation and environment checks
+- [src/mastra/services/WorkflowDecorators.ts](src/mastra/services/WorkflowDecorators.ts): Workflow logging and monitoring decorators
+- [lib/mastra/mastra-client.ts](lib/mastra/mastra-client.ts): Mastra client configuration and authentication utilities
+
+## UI Components
+
+- [components/](components/): Reusable React components and UI elements
+- [components/AuthPanel.tsx](components/AuthPanel.tsx): Authentication interface with role selection
+- [components/ChatInterface.tsx](components/ChatInterface.tsx): Main chat UI with streaming responses
+- [components/FeatureCard.tsx](components/FeatureCard.tsx): Feature showcase cards
+- [components/Footer.tsx](components/Footer.tsx): Site footer component
+- [components/IndexingPanel.tsx](components/IndexingPanel.tsx): Document indexing interface
+- [components/LoggedInAlert.tsx](components/LoggedInAlert.tsx): User authentication status display
+- [components/Mermaid.tsx](components/Mermaid.tsx): Diagram rendering component
+- [components/SecurityIndicator.tsx](components/SecurityIndicator.tsx): Security status and access level indicators
+- [components/ThemeProvider.tsx](components/ThemeProvider.tsx): Theme management and dark/light mode
+- [components/ThemeToggle.tsx](components/ThemeToggle.tsx): Theme switching component
+- [components/TopNavigation.tsx](components/TopNavigation.tsx): Main navigation bar
+- [components/UserMenu.tsx](components/UserMenu.tsx): User account and settings menu
+- [components/AppSidebar.tsx](components/AppSidebar.tsx): Application sidebar navigation
+
+## Cedar OS
+
+- [cedar/](cedar/): Cedar OS - AI-powered interactive application builder
+- [cedar/RoadmapCanvas.tsx](cedar/RoadmapCanvas.tsx): Interactive product roadmap canvas with drag-and-drop
+- [cedar/SmartRelationshipRoadmap.tsx](cedar/SmartRelationshipRoadmap.tsx): AI-enhanced roadmap with relationship intelligence
+- [cedar/FeatureNode.tsx](cedar/FeatureNode.tsx): Feature node components for roadmap visualization
+- [cedar/RoadmapNode.tsx](cedar/RoadmapNode.tsx): Roadmap node components with status tracking
+- [cedar/ChatModeSelector.tsx](cedar/ChatModeSelector.tsx): Chat interface mode selector for Cedar OS
+- [cedar/useRoadmapData.ts](cedar/useRoadmapData.ts): Custom hook for roadmap data management
+- [cedar/button.tsx](cedar/button.tsx): Cedar OS button components
+- [cedar/badge.tsx](cedar/badge.tsx): Cedar OS badge components
+- [cedar/dropdown-menu.tsx](cedar/dropdown-menu.tsx): Cedar OS dropdown menu components
+- [app/cedar-os/](app/cedar-os/): Cedar OS application pages and routes
+- [app/cedar-os/page.tsx](app/cedar-os/page.tsx): Main Cedar OS showcase page
+- [app/cedar-os/context.ts](app/cedar-os/context.ts): Cedar OS application context and state management
+- [app/cedar-os/hooks.ts](app/cedar-os/hooks.ts): Cedar OS custom hooks
+- [app/cedar-os/mentions.ts](app/cedar-os/mentions.ts): Mention system for Cedar OS interactions
+- [app/cedar-os/state.ts](app/cedar-os/state.ts): Cedar OS state management
+
+- [docs/components/](docs/components/): Comprehensive OO component documentation for all agents, tools, workflows, and UI components
+- [cedar/](cedar/): Cedar OS interactive UI components and roadmap canvas implementation
+- [cedar/components/](cedar/components/): Additional Cedar OS UI component library
+- [gemini/1-project-overview.md](gemini/1-project-overview.md): Project overview and architecture summary
+- [gemini/2-development-guide.md](gemini/2-development-guide.md): Development workflow and best practices
+- [gemini/3-component-guide.md](gemini/3-component-guide.md): Component architecture and patterns
+- [gemini/4-testing-guide.md](gemini/4-testing-guide.md): Testing strategies and guidelines
+- [gemini/5-mastra-guide.md](gemini/5-mastra-guide.md): Mastra framework integration guide
+- [lib/](lib/): Shared utilities and external service clients
+- [lib/auth.ts](lib/auth.ts): Authentication utilities and helpers
+- [lib/jwt-utils.ts](lib/jwt-utils.ts): JWT token handling and validation utilities
+- [lib/mdx-plugins.ts](lib/mdx-plugins.ts): MDX processing plugins for documentation
+- [lib/utils.ts](lib/utils.ts): General utility functions
+- [lib/actions/](lib/actions/): Server actions for Next.js
+- [hooks/](hooks/): Custom React hooks for UI state management
+- [hooks/use-mobile.ts](hooks/use-mobile.ts): Mobile device detection hook
+- [tests/](tests/): Test suites and testing utilities
+- [src/cli/](src/cli/): Command-line interface for document indexing and management
+- [.github/instructions/](.github/instructions/): Repository-specific development guidelines and coding standards
+- [.github/prompts/](.github/prompts/): AI agent prompts and automation templates
+- [.github/workflows/](.github/workflows/): GitHub Actions CI/CD workflows for automated processes
+- [.vscode/settings.json](.vscode/settings.json): VS Code workspace settings
+- [.vscode/tasks.json](.vscode/tasks.json): VS Code task configurations
+- [.kiro/steering/](.kiro/steering/): Development steering documents and guidelines
+- [.kilocode/rules/](.kilocode/rules/): Development rules and coding standards
+- [.codacy/cli.sh](.codacy/cli.sh): Codacy CLI script for code quality analysis
+- [docker/](docker/): Alternative vector database configurations (ChromaDB, Pinecone, Weaviate, etc.)
+- [ai-memory.md](ai-memory.md): AI agent memory and conversation history
+- [.markdownlint.json](.markdownlint.json): Markdown linting configuration
+- [app/about/](app/about/): About page and company information
+- [app/blog/](app/blog/): Blog and news section
+- [app/contact/](app/contact/): Contact and support pages
+- [app/docs/](app/docs/): Documentation pages (MDX-based)
+- [app/login/](app/login/): Authentication and login pages
+- [app/tests/](app/tests/): Testing and debugging pages
+- [LICENSE](LICENSE): Project license information
+- [.gitignore](.gitignore): Git ignore patterns and rules
+- [globalSetup.ts](globalSetup.ts): Global test setup configuration
+- [testSetup.ts](testSetup.ts): Test environment setup
+
+## Application Core
+
+- [app/layout.tsx](app/layout.tsx): Root layout component with providers and metadata
+- [app/global.css](app/global.css): Global CSS styles and Tailwind imports
+- [next-env.d.ts](next-env.d.ts): Next.js TypeScript declarations
+- [public/robots.txt](public/robots.txt): SEO robots.txt configuration
+- [logs/mastra.log](logs/mastra.log): Mastra framework operation logs
+- [logs/workflow.log](logs/workflow.log): Workflow execution logs

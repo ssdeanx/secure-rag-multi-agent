@@ -8,8 +8,8 @@ import type { FeatureNodeData } from '../../cedar/FeatureNode';
 // [STEP 4]: There are a few ways to make your application states visible to your agent.
 // This allows your agent to understand and manipulate roadmap features using the state functions
 export function useRoadmapState(
-  nodes: Node<FeatureNodeData>[],
-  setNodes: React.Dispatch<React.SetStateAction<Node<FeatureNodeData>[]>>,
+  nodes: Array<Node<FeatureNodeData>>,
+  setNodes: React.Dispatch<React.SetStateAction<Array<Node<FeatureNodeData>>>>,
   edges: Edge[],
   setEdges: React.Dispatch<React.SetStateAction<Edge[]>>,
 ) {
@@ -40,7 +40,7 @@ export function useRoadmapState(
             return;
           }
 
-          const nodes = currentNodes as Node<FeatureNodeData>[];
+          const existingNodes = currentNodes;
           const nodeData = nodeArg;
 
           const newNode: Node<FeatureNodeData> = {
@@ -53,14 +53,14 @@ export function useRoadmapState(
             id: nodeData.id || uuidv4(),
             data: {
               ...nodeData.data,
-              nodeType: nodeData.data.nodeType || 'feature',
+              nodeType: nodeData.data.nodeType ?? 'feature',
               status: nodeData.data.status || 'planned',
               upvotes: nodeData.data.upvotes || 0,
-              comments: nodeData.data.comments || [],
+              comments: nodeData.data.comments ?? [],
             },
           };
 
-          setValue([...nodes, newNode]);
+          setValue([...existingNodes, newNode]);
         },
       },
 
@@ -69,18 +69,18 @@ export function useRoadmapState(
         description: 'Remove a feature or bug from the product roadmap',
         execute: (currentNodes, setValue, args: unknown) => {
           const nodeId = (args as { id?: string } | undefined)?.id;
-          if (!nodeId) {
+          if (nodeId === undefined || nodeId === '') {
             return;
           }
 
-          const nodes = currentNodes as Node<FeatureNodeData>[];
+          const existingNodes = currentNodes;
 
           // Remove the node
-          setValue(nodes.filter((node) => node.id !== nodeId));
+          setValue(existingNodes.filter((node) => node.id !== nodeId));
 
           // Clean up any connected edges
-          setEdges((edges) =>
-            edges.filter((edge) => edge.source !== nodeId && edge.target !== nodeId),
+          setEdges((prevEdges) =>
+            prevEdges.filter((edge) => edge.source !== nodeId && edge.target !== nodeId),
           );
         },
       },
@@ -94,10 +94,10 @@ export function useRoadmapState(
             return;
           }
 
-          const nodes = currentNodes as Node<FeatureNodeData>[];
+          const existingNodes = currentNodes;
 
           setValue(
-            nodes.map((node) =>
+            existingNodes.map((node) =>
               node.id === updatedNode.id
                 ? { ...node, data: { ...node.data, ...updatedNode.data } }
                 : node,

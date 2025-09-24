@@ -22,9 +22,7 @@ export default function HomePage() {
       try {
         // mastra client may not implement `chat` in older client versions;
         // call only if available to avoid runtime errors in the frontend.
-        // @ts-ignore - client.chat may be missing on older Mastra clients
-        if (typeof client.chat === 'function') {
-          // @ts-ignore
+        if ('chat' in client && typeof client.chat === 'function') {
           await client.chat({ message: 'Initialize roadmap context', context: { type: 'roadmap_init' } });
         }
       } catch (error) {
