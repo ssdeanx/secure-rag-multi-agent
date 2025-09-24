@@ -1,5 +1,4 @@
 import { createSSEStream } from '../../../../src/utils/streamUtils';
-import { RoadmapStreamInput } from '../../../../src/mastra/workflows/roadmapWorkflowSchemas';
 import { jwtVerify } from 'jose';
 
 interface JwtClaims {
@@ -11,8 +10,8 @@ interface JwtClaims {
 async function verifyJwt(token: string): Promise<JwtClaims | null> {
   try {
     const secretStr = process.env.JWT_SECRET;
-    if (secretStr === null || secretStr === '') {
-      if (process.env.NODE_ENV === 'production') {return null;}
+    if ((secretStr === null || secretStr === '') && process.env.NODE_ENV === 'production') {
+          return null;
     }
     const secret = new TextEncoder().encode(secretStr ?? 'dev-secret');
     const { payload } = await jwtVerify(token, secret /* , { issuer: '...', audience: '...', algorithms: ['HS256'] } */);

@@ -1,5 +1,5 @@
 ---
-applyTo: "**/*.md,**/*.prompt.md"
+applyTo: ["**/*.md,**/*.prompt.md"]
 description: "Memory of migration instruction generation patterns and best practices"
 ---
 

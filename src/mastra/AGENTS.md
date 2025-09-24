@@ -1,3 +1,152 @@
+<!-- AGENTS-META {"title":"Mastra Core Orchestration","version":"1.0.0","last_updated":"2025-09-24T22:52:25Z","applies_to":"/src/mastra","tags":["layer:backend","domain:rag","type:ai-core","status:stable"],"status":"stable"} -->
+
+# Mastra Core (`/src/mastra`)
+
+## Persona
+**Name:** Lead AI Architect  
+**Role Objective:** Ensure modular, observable, and policy-governed orchestration of agents, workflows, tools, services, and schemas.  
+**Prompt Guidance Template:**
+
+```text
+You are the {persona_role} ensuring {responsibility_summary}.
+Constraints:
+1. MUST register every agent/workflow/tool/service centrally in index.ts.
+2. MUST keep single Mastra instance (no duplicates).
+3. MUST validate data with schemas before cross-boundary passage.
+4. MUST preserve one-tool-call-per-agent execution policy.
+Forbidden:
+- Business logic inside agents (belongs in services/tools).
+- Direct DB or vector calls from workflows (delegate to services/tools).
+- Unregistered components used ad-hoc.
+Return only the minimal diff for proposed changes.
+```
+
+Where:
+
+- `{persona_role}` = "Lead AI Architect"
+- `{responsibility_summary}` = "scalable, governed orchestration of RAG components"
+
+## Purpose
+Central nervous system that binds AI reasoning units (agents) with operational processes (workflows), callable functions (tools), domain logic (services), structural data contracts (schemas), and security policy (policy) into a single governed runtime.
+
+## Structure Overview
+
+| Path | Responsibility | Notes |
+|------|----------------|-------|
+| `index.ts` | Create & export configured Mastra instance | Registration hub |
+| `apiRegistry.ts` | Expose workflow HTTP endpoints | Bridges to App Router |
+| `ai-tracing.ts` | Observability / Langfuse exporter setup | Conditional on env vars |
+| `agents/` | Single-responsibility reasoning entities | One tool call policy |
+| `workflows/` | Multi-step orchestration logic | Use createStep pattern |
+| `tools/` | Safe, side-effectful operations | Input/output schemas enforced |
+| `services/` | Reusable domain logic (pure/impure) | Called by tools & workflows |
+| `schemas/` | Zod data contracts | Mirror TypeScript interfaces |
+| `config/` | External service & model configuration | Qdrant, embeddings, models |
+| `policy/` | ACL / security rules | Role & classification gating |
+
+## Execution Flow (Typical Chat Request)
+
+1. API route invokes workflow (e.g., `governed-rag-answer`).
+2. Workflow steps: auth/identity → retrieval → synthesis → answer assembly.
+3. Agents invoked sequentially; each issues exactly one tool call.
+4. Tools call services (vector search, filtering, citation building).
+5. Schemas validate intermediate artifacts.
+6. Tracing exporter records spans & timing.
+
+## Registration Pattern
+
+```ts
+// index.ts (excerpt)
+import { someAgent } from './agents/some.agent';
+import { governedRagAnswer } from './workflows/governed-rag-answer.workflow';
+
+export const mastra = new Mastra({
+  agents: [someAgent, /* ... */],
+  workflows: [governedRagAnswer, /* ... */],
+  tools: [/* tool instances */],
+  services: [/* services */]
+});
+```
+
+Checklist before adding new component:
+
+| Item | Verified? |
+|------|----------|
+| File placed in correct subdirectory | ✅ |
+| Input/Output schemas defined | ✅ |
+| Registered in `index.ts` | ✅ |
+| Added to `apiRegistry.ts` if externally callable | ✅ |
+| Tracing spans auto-captured (or instrumented manually) | ✅ |
+
+## Best Practices
+
+1. Keep agents “thinking” only – no side-effects outside tool invocation.
+2. Use services to unify domain logic & reduce duplication.
+3. Prefer small workflow steps with explicit input/output schemas.
+4. Centralize model selection logic in config (avoid scattering providers).
+5. Enforce consistent naming: `*.agent.ts`, `*.workflow.ts`, `*.tool.ts`.
+
+## Anti-Patterns
+
+- Embedding retrieval logic directly in agents.
+- Skipping schema validation for intermediate objects.
+- Creating multiple vector client instances across tools/services.
+- Silent catch blocks swallowing errors (breaks observability).
+
+## Common Tasks
+
+| Task | Steps |
+|------|-------|
+| Add new agent | Create `*.agent.ts` → define prompt & tool usage → register in `index.ts` |
+| Add new workflow | Create `*.workflow.ts` using `createStep` pattern → register → expose if needed |
+| Add tool | Implement `*.tool.ts` with zod schema → register → reference in agent tool list |
+| Add service | Implement pure logic → unit test → inject into tools/workflows |
+| Add schema | Define Zod in `schemas/` → export & align TS interfaces |
+
+## Error Strategy
+
+| Layer | Pattern |
+|-------|---------|
+| Agents | Throw structured errors (type + message) for upstream handling |
+| Workflows | Wrap steps with try/catch → enrich context (step id) |
+| Tools | Validate inputs; return fail-fast errors |
+| Services | Minimize throwing; return typed results + error field |
+
+## Security & Governance
+
+- Policy-driven access filters integrated prior to vector search.
+- Role & classification propagation through workflow context.
+- Audit/log each workflow invocation (future extension hooking tracing exporter).
+
+## Observability
+
+- Tracing exporter attaches spans per workflow step & agent call.
+- Add custom annotations for long-running tool calls (e.g., vector search latency).
+- Avoid verbose logs in hot code paths (prefer structured spans).
+
+## Performance Considerations
+
+- Single Mastra instance avoids redundant client creation.
+- Batch embedding operations where feasible (indexing workflow).
+- Keep synchronous CPU in agents minimal; shift heavy lifting to services.
+
+## Pitfalls
+
+- Missing registration → component silently unused.
+- Overloaded agents with multi-responsibility prompts (split them).
+- Schemas drifting from TypeScript types (needs periodic audit).
+- Tool performing multiple conceptual actions (violates single-call predictability).
+
+## Change Log
+
+| Version | Date (UTC) | Change |
+|---------|------------|--------|
+| 1.0.0 | 2025-09-24 | Standardized template applied; legacy content preserved |
+
+## Legacy Content (Preserved)
+
+```markdown
+<-- Begin Legacy -->
 # Mastra Core
 
 ## Persona
@@ -51,3 +200,5 @@
     1. "Is your new agent or workflow not found? Check if you have correctly imported and registered it in `/src/mastra/index.ts`."
     2. "Is a workflow failing with a cryptic error? Check the Langfuse traces (configured in `ai-tracing.ts`) for a detailed, step-by-step visualization of the entire execution."
     3. "Is an API route for a workflow returning a 404? Verify that the route is correctly defined in `apiRegistry.ts`."
+<-- End Legacy -->
+```

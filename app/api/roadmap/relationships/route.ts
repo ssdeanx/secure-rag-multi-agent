@@ -1,7 +1,6 @@
 // filepath: app/api/roadmap/relationships/route.ts
 import type { NextRequest } from 'next/server';
 import { NextResponse } from 'next/server';
-import { roadmapRelationshipAnalysisWorkflow } from '@/src/mastra/workflows/roadmap-relationship-analysis.workflow';
 import { z } from 'zod';
 import { jwtVerify } from 'jose';
 

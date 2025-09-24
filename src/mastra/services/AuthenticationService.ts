@@ -36,7 +36,7 @@ export class AuthenticationService {
     return {
       sub: String(payload.sub ?? "unknown"),
       roles: Array.isArray(payload.roles) ? payload.roles : [],
-      tenant: payload.tenant ? String(payload.tenant) : process.env.TENANT,
+      tenant: (payload.tenant) ? String(payload.tenant) : process.env.TENANT,
       stepUp: Boolean(payload.stepUp),
       exp: payload.exp ? Number(payload.exp) : undefined,
       iat: payload.iat ? Number(payload.iat) : undefined,

@@ -1,3 +1,102 @@
+<!-- AGENTS-META {"title":"Mastra Workflows","version":"1.0.0","last_updated":"2025-09-24T22:52:25Z","applies_to":"/src/mastra/workflows","tags":["layer:backend","domain:rag","type:workflows","status:stable"],"status":"stable"} -->
+
+# Workflows Directory (`/src/mastra/workflows`)
+
+## Persona
+**Name:** Senior AI Workflow Engineer  
+**Role Objective:** Orchestrate deterministic, schema-validated multi-step processes that chain specialized agents, tools, and services.  
+**Prompt Guidance Template:**
+
+```text
+You are the {persona_role} ensuring {responsibility_summary}.
+Constraints:
+1. MUST define input/output Zod schemas BEFORE logic.
+2. MUST keep steps thin: delegate heavy logic to services.
+3. MUST enforce linear or explicitly branched data flow (no hidden side effects).
+4. MUST short-circuit early on validation/auth failures.
+Forbidden:
+- Fat steps containing deep business logic.
+- Using z.any() in production steps.
+- Implicit reliance on external mutable state.
+Return only workflow or step diff.
+```
+
+Where:
+
+- `{persona_role}` = "Senior AI Workflow Engineer"
+- `{responsibility_summary}` = "predictable orchestration of governed RAG & research pipelines"
+
+## Purpose
+Model end-to-end guarded processes: answering governed questions, indexing corpus content, executing research & reporting sequences, and powering chat variations.
+
+## Key Files
+
+| File | Responsibility | Notes |
+|------|----------------|-------|
+| `governed-rag-answer.workflow.ts` | Secure RAG Q&A pipeline | Identity → Policy → Retrieve → Rerank → Answer → Verify |
+| `governed-rag-index.workflow.ts` | Corpus ingestion | Single-step batching & storage |
+| `researchWorkflow.ts` / `generateReportWorkflow.ts` | Multi-phase research & reporting | May involve user approval gating |
+| `chatWorkflow*.ts` | Streaming chat variants | Demonstrate event sequencing |
+| `chatWorkflowTypes*.ts` | Shared chat schemas | Type safety for chat steps |
+
+## Orchestration Pattern
+
+```ts
+const stepA = createStep({ id:'a', inputSchema: AIn, outputSchema: AOut, execute: ... });
+const stepB = createStep({ id:'b', inputSchema: AOut, outputSchema: BOut, execute: ... });
+
+export const sampleWorkflow = createWorkflow({ id: 'sample' })
+  .then(stepA)
+  .then(stepB);
+```
+
+## Data Flow Principles
+
+1. Each step's `outputSchema` MUST match next step's `inputSchema`.
+2. No hidden global mutation—pass explicit values forward.
+3. Early termination on policy/security failure returns structured error.
+4. All external calls routed through services/tools (never inline fetch logic).
+
+## Best Practices
+
+1. Treat schemas as contracts—change requires downstream audit.
+2. Log step start/end & duration (already instrumented helpers available).
+3. Use narrow context objects – avoid bundling unused data forward.
+4. Add derived fields in a dedicated step (separation of enrichment logic).
+5. Prefer more steps with clarity over monolithic ambiguous logic.
+
+## Anti-Patterns
+
+- Chaining side-effectful mutable objects.
+- Skipping validation to “optimize performance”.
+- Embedding retry/backoff inside steps (belongs in services/utilities).
+
+## Common Tasks
+
+| Task | Steps |
+|------|-------|
+| Add new step | Define schemas → implement thin execute → insert into chain → run typecheck |
+| Insert caching layer | Create cache step after retrieval → check hit → short-circuit or pass through |
+| Branch workflow (future) | Introduce conditional step returning discriminator → route via orchestrator extension |
+| Add tracing detail | Wrap service calls with tracing child spans |
+
+## Debugging Checklist
+
+1. Step validation failure → confirm previous `outputSchema` alignment.
+2. Unexpected nulls → inspect service call return & schema guards.
+3. Latency spike → time individual step durations (tracing view).
+4. Missing tool effect → verify agent invoked & tool registered.
+
+## Change Log
+
+| Version | Date (UTC) | Change |
+|---------|------------|--------|
+| 1.0.0 | 2025-09-24 | Standardized template applied; legacy content preserved |
+
+## Legacy Content (Preserved)
+
+```markdown
+<-- Begin Legacy -->
 # Mastra Workflows
 
 ## Persona
@@ -47,3 +146,5 @@
     2. "Did the data entering the failing step match its `inputSchema`? Add a `console.log(JSON.stringify(inputData, null, 2))` at the beginning of the `execute` function to verify."
     3. "Is the service being called by the step throwing an error? Check the logs for that service."
     4. "Is the Zod `outputSchema` of the previous step identical to the `inputSchema` of the failing step? Any mismatch will cause a failure."
+<-- End Legacy -->
+```
