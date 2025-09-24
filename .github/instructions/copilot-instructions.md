@@ -1,5 +1,5 @@
 ---
-applyTo:: "**"
+applyTo:: ["**"]
 description::'Instructions for GitHub Copilot specific to this repository.'
 ---
 
