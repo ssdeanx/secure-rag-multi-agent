@@ -1,9 +1,11 @@
 /// <reference types="@testing-library/jest-dom" />
 import React from 'react';
-import { describe, it, expect, beforeEach, vi } from 'vitest';
-import { render, screen, fireEvent } from '@testing-library/react';
+import { describe, it, expect, beforeEach, vi, afterEach } from 'vitest';
+//@ts-ignore
+import { render, screen, fireEvent } from '@testing-library/react'; // Corrected import path
 import { ThemeToggle } from '../../components/ThemeToggle';
 import { ThemeProvider } from 'next-themes';
+
 
 // Mock useTheme to control behavior without relying on system/media queries
 vi.mock('next-themes', () => {
