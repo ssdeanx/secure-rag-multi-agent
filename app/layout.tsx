@@ -5,6 +5,8 @@ import { cn } from '@/lib/utils';
 import './global.css';
 import { ThemeProvider } from '../components/ThemeProvider';
 import { TopNavigation } from '../components/TopNavigation';
+import { Footer } from '../components/Footer';
+import RouteAnnouncer from '@/components/RouteAnnouncer';
 
 import type { Metadata, Viewport } from 'next';
 
@@ -54,7 +56,9 @@ export default function RootLayout({
         >
           <div className="relative flex min-h-screen flex-col">
             <TopNavigation />
-            <main>{children}</main>
+            <RouteAnnouncer />
+            <main id="main" className="flex-1 outline-none focus-visible:ring-2 focus-visible:ring-primary/60" role="main">{children}</main>
+            <Footer />
           </div>
         </ThemeProvider>
       </body>

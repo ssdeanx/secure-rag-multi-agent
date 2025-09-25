@@ -192,7 +192,6 @@ If you discover the plan is incorrect, incomplete, or needs modification:
 **Proposed Updated Section**:
 
 ```
-
 [Show exactly what you want to change it to]
 
 ```

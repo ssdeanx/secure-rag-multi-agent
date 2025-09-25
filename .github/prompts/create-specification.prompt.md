@@ -1,7 +1,6 @@
 ---
 mode: 'agent'
 description: 'Create a new specification file for the solution, optimized for Generative AI consumption.'
-tools: ['changes', 'codebase', 'editFiles', 'extensions', 'fetch', 'githubRepo', 'openSimpleBrowser', 'problems', 'runTasks', 'search', 'searchResults', 'terminalLastCommand', 'terminalSelection', 'testFailure', 'usages', 'vscodeAPI']
 ---
 # Create Specification
 

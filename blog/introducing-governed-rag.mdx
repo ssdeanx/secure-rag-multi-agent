@@ -1,0 +1,80 @@
+---
+title: "Introducing Governed RAG: Secure Retrieval-Augmented Generation for the Enterprise"
+date: 2025-09-25T12:00:00.000Z
+excerpt: "Announcing our governed RAG template—a production-grade, zero-trust architecture for secure AI knowledge access with hierarchical RBAC and auditability."
+tags: [announcement, security, architecture]
+author: "Core Team"
+---
+
+Welcome to the first official post on the Governed RAG project. This template was born from a simple tension:
+
+> Enterprises want the creativity and acceleration of AI—but *must not* leak sensitive knowledge or weaken compliance posture.
+
+## Why Another RAG Template?
+
+Most open RAG starters optimize for speed-to-demo. They skip (or hand-wave):
+
+- Hierarchical role inheritance
+- Document classification gates
+- Multi-agent layered security
+- Access-filtered vector retrieval
+- End-to-end auditability
+
+If you are building internal copilots, policy assistants, analytics explainers, or regulated LLM tooling—these are not optional extras. They are table stakes.
+
+## Core Architecture Pillars
+
+1. **Hierarchical RBAC** — `admin > dept_admin > dept_viewer > employee > public` with inheritance and claim reduction.
+2. **Document Classification** — `public | internal | confidential` preserved through indexing → retrieval → answer synthesis.
+3. **Security-Enforced Retrieval** — Access filters *applied at vector search time* (not just post filtering).
+4. **Multi-Agent Governance** — Identity → Policy → Retrieve → Rerank → Answer → Verify pipeline.
+5. **Step-Up Authentication** — Confidential contexts can trigger elevated verification before answer continuation.
+6. **Transparent Answers** — Citations + structured logs for every answer path.
+
+## What’s in This Release?
+
+- Production-aligned Next.js 15 + React 19 + Tailwind v4 foundation
+- MDX-driven Docs & Blog (you’re reading it!)
+- Hardened landing & content pages with prefers-reduced-motion support
+- Footer & navigation with accessible mobile sheet
+- Blog pipeline: file system posts → metadata extraction → static compilation
+- Custom frontmatter parser (no runtime dependency bloat)
+
+## Example: Role-Constrained Vector Query (Conceptual)
+
+```ts
+const allowed = derivePermissions(userClaims);
+const results = await vectorStore.query({
+  embedding,
+  filter: { classification: { $in: allowed.classifications }, dept: { $in: allowed.departments } },
+  topK: 12,
+});
+```
+
+Enforce *before* model context expansion—never after.
+
+## Roadmap Snapshot
+
+| Area | Upcoming |
+|------|----------|
+| Observability | Langfuse spans for each agent stage |
+| Search | Hybrid sparse+dense retrieval option |
+| Policies | Cedar policy engine integration experiment |
+| UI | Dark-mode adaptive syntax highlighting |
+| Evals | Automated red-team prompts for leakage detection |
+
+## How to Contribute
+
+1. Fork the repo
+2. Run `npm install && docker-compose up -d`
+3. Index sample corpus: `npm run cli index`
+4. Create a feature branch
+5. Open a PR with clear security notes
+
+## Closing
+
+Secure AI augmentation is an *architecture problem*, not just a prompt problem. This project gives you the scaffolding to build responsibly from day zero.
+
+Follow along—more deep dives coming soon.
+
+— The Governed RAG Core Team
