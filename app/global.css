@@ -1,5 +1,10 @@
 @import "tailwindcss";
 @import "tw-animate-css";
+/* Add the plugin imports here */
+/* ignore lint still works with v4 which is nice */
+@plugin "@tailwindcss/forms";
+@plugin "@tailwindcss/typography";
+/* Motion plugin is configured via Tailwind config; removing in-file @plugin to satisfy processor */
 
 
 
@@ -81,6 +86,19 @@
   --sidebar-accent-foreground: hsl(0 0% 100%);
   --sidebar-border: hsl(210 10% 92%);
   --sidebar-ring: hsla(153 60% 45% / 0.12);
+
+  /* Semantic status tokens */
+  --color-info: hsl(204 94% 50%);
+  --color-info-foreground: hsl(0 0% 100%);
+  --color-warning: hsl(42 96% 50%);
+  --color-warning-foreground: hsl(42 100% 12%);
+
+  /* Neon glow color tokens (oklch wrapped for reuse) */
+  --glow-blue: oklch(60.232% 0.19838 255.011);
+  --glow-yellow: oklch(93.366% 0.17141 102.758);
+  --glow-teal: oklch(82.547% 0.15258 146.089);
+  --glow-red: oklch(62.352% 0.22529 26.783);
+  --glow-green: oklch(70% 0.2 140);
 }
 
 .dark {
@@ -127,6 +145,12 @@
   --border: hsl(200 8% 14%);
   --input: hsl(200 8% 14%);
   --ring: hsla(153 60% 45% / 0.9);
+
+  /* Dark semantic overrides (if needed) */
+  --color-info: hsl(204 90% 60%);
+  --color-info-foreground: hsl(210 8% 6%);
+  --color-warning: hsl(42 96% 55%);
+  --color-warning-foreground: hsl(210 8% 6%);
 }
 
 /* Smooth scrolling behavior */
@@ -139,11 +163,9 @@ html {
 /* App level layout utilities */
 html, body {
   height: 100%;
-  max-height: 100%;
   width: 100%;
-  max-width: 100%;
-  margin: 10px; /* prevent horizontal scroll on mobile */
-  padding: 20px; /* small padding to avoid edge touching */
+  margin: 0;
+  padding: 0;
   box-sizing: border-box;
   font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
   font-size: 16px;
@@ -151,13 +173,157 @@ html, body {
   font-weight: 400;
   background-color: var(--background);
   color: var(--foreground);
-  /* Define standard transition for interactive elements */
   --duration-normal: 0.2s;
   --ease-in-out: cubic-bezier(0.4, 0, 0.2, 1);
-  /* Define standard border radius */
   --radius: 0.5rem;
   --radius-sm: 0.375rem;
-  --font-size-sm: 0.875rem; /* 14px */
+  --font-size-sm: 0.875rem;
+}
+
+/* Improved heading anchor scroll offset (accounts for sticky nav height) */
+h1[id], h2[id], h3[id], h4[id], h5[id], h6[id] {
+  scroll-margin-top: 5rem;
+}
+
+/* Consistent focus ring override (opt-in classes already use outline; unify) */
+:focus-visible {
+  outline: 2px solid var(--ring);
+  outline-offset: 2px;
+}
+
+/* Text balancing utility (progressive enhancement) */
+/* Text balance (progressive enhancement) */
+@supports (text-wrap: balance) {
+  .text-balance { text-wrap: balance; }
+}
+
+/* Large heading rhythm adjustments */
+h1, .heading-1 { line-height: 1.05; letter-spacing: -0.02em; }
+h2, .heading-2 { line-height: 1.15; letter-spacing: -0.01em; }
+
+/* Subtle card shadow and border unify */
+.elevated-card { box-shadow: 0 4px 16px -4px hsla(210 10% 20% / 0.08), 0 2px 4px -1px hsla(210 10% 20% / 0.06); }
+
+/* Larger interactive target for heading anchors */
+.heading-anchor { padding: 0 0.25rem; }
+
+@media (hover: hover) {
+  .heading-anchor { margin-left: 0.375rem; }
+}
+
+/* Prism syntax highlighting (light + dark harmonized to design tokens) */
+code[class*="language-"], pre[class*="language-"] {
+  color: var(--foreground);
+  background: none;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace;
+  font-size: 0.875rem;
+  line-height: 1.5;
+  direction: ltr;
+  text-align: left;
+  word-spacing: normal;
+  word-break: normal;
+  -moz-tab-size: 2;
+  -o-tab-size: 2;
+  tab-size: 2;
+  -webkit-hyphens: none;
+  -moz-hyphens: none;
+  -ms-hyphens: none;
+  hyphens: none;
+}
+
+pre[class*="language-"] {
+  padding: 1rem 1.25rem;
+  overflow: auto;
+  background: linear-gradient(
+    145deg,
+    hsl(210 15% 98%) 0%,
+    hsl(200 9% 91%) 100%
+  );
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  position: relative;
+}
+
+.dark pre[class*="language-"] {
+  background: linear-gradient(
+    145deg,
+    hsl(210 9% 12%) 0%,
+    hsl(205 12% 8%) 100%
+  );
+  border-color: hsl(200 8% 14%);
+}
+
+/* Inline code */
+:not(pre) > code[class*="language-"] {
+  background: var(--muted);
+  color: var(--foreground);
+  padding: 0.125rem 0.375rem;
+  border-radius: 0.375rem;
+  border: 1px solid var(--border);
+  font-size: 0.75rem;
+}
+
+.dark :not(pre) > code[class*="language-"] {
+  background: hsl(210 9% 12%);
+  border-color: hsl(200 8% 14%);
+}
+
+/* Token colors tuned for readability and contrast */
+.token.comment, .token.prolog, .token.doctype, .token.cdata {
+  color: hsl(210 10% 50%);
+  font-style: italic;
+}
+.dark .token.comment, .dark .token.prolog, .dark .token.doctype, .dark .token.cdata {
+  color: hsl(210 8% 55%);
+}
+.token.punctuation { color: hsl(210 10% 40%); }
+.dark .token.punctuation { color: hsl(210 8% 60%); }
+.token.property, .token.tag, .token.boolean, .token.number, .token.constant, .token.symbol { color: hsl(42 96% 40%); }
+.dark .token.property, .dark .token.tag, .dark .token.boolean, .dark .token.number, .dark .token.constant, .dark .token.symbol { color: hsl(42 96% 50%); }
+.token.selector, .token.attr-name, .token.string, .token.char, .token.builtin, .token.inserted { color: hsl(153 55% 35%); }
+.dark .token.selector, .dark .token.attr-name, .dark .token.string, .dark .token.char, .dark .token.builtin, .dark .token.inserted { color: hsl(153 55% 48%); }
+.token.operator, .token.entity, .token.url, .language-css .token.string, .style .token.string, .token.variable { color: hsl(176 85% 36%); }
+.dark .token.operator, .dark .token.entity, .dark .token.url, .dark .language-css .token.string, .dark .style .token.string, .dark .token.variable { color: hsl(176 85% 46%); }
+.token.atrule, .token.attr-value, .token.keyword { color: hsl(221 84% 45%); }
+.dark .token.atrule, .dark .token.attr-value, .dark .token.keyword { color: hsl(221 84% 60%); }
+.token.regex, .token.important { color: hsl(0 78% 50%); }
+.dark .token.regex, .dark .token.important { color: hsl(0 78% 58%); }
+.token.deleted { color: hsl(0 78% 58%); }
+.token.bold { font-weight: 600; }
+.token.italic { font-style: italic; }
+.token.entity { cursor: help; }
+
+/* Line highlighting (if using rehype-prism-plus line highlighting) */
+pre[class*="language-"] .line-highlight {
+  background: hsla(153 60% 45% / 0.08);
+  border-left: 3px solid var(--color-primary);
+  margin-left: -1.25rem;
+  margin-right: -1.25rem;
+  padding-left: 1rem;
+  padding-right: 1.25rem;
+}
+
+/* Heading anchors */
+.heading-anchor {
+  opacity: 0;
+  margin-left: 0.375rem;
+  color: var(--accent);
+  text-decoration: none;
+  transition: opacity 0.15s ease-in-out, color 0.15s ease-in-out;
+  font-weight: 400;
+}
+
+.anchor-icon { font-size: 0.875rem; }
+
+.prose h2:hover .heading-anchor, .prose h3:hover .heading-anchor,
+.prose h4:hover .heading-anchor, .prose h5:hover .heading-anchor {
+  opacity: 1;
+}
+
+.heading-anchor:focus-visible { opacity: 1; outline: 2px solid var(--ring); outline-offset: 2px; }
+
+@media (prefers-reduced-motion: reduce) {
+  .heading-anchor { transition: none; }
 }
 
 
@@ -235,45 +401,11 @@ html, body {
 }
 
 /* Neon Glow Effects - Zinc/Yellow/Red/Green Only (No Pink/Purple) */
-.neon-glow-blue {
-  box-shadow:
-    0 0 5px oklch(60.232% 0.19838 255.011),
-    0 0 10px oklch(60.232% 0.19838 255.011),
-    0 0 15px oklch(60.232% 0.19838 255.011),
-    0 0 20px oklch(60.232% 0.19838 255.011);
-}
-
-.neon-glow-yellow { /* Renamed from pink */
-  box-shadow:
-    0 0 5px oklch(93.366% 0.17141 102.758), /* Lightest yellow */
-    0 0 10px oklch(93.366% 0.17141 102.758),
-    0 0 15px oklch(93.366% 0.17141 102.758),
-    0 0 20px oklch(93.366% 0.17141 102.758);
-}
-
-.neon-glow-teal {
-  box-shadow:
-    0 0 5px oklch(82.547% 0.15258 146.089),
-    0 0 10px oklch(82.547% 0.15258 146.089),
-    0 0 15px oklch(82.547% 0.15258 146.089),
-    0 0 20px oklch(82.547% 0.15258 146.089);
-}
-
-.neon-glow-red {
-  box-shadow:
-    0 0 5px oklch(62.352% 0.22529 26.783),
-    0 0 10px oklch(62.352% 0.22529 26.783),
-    0 0 15px oklch(62.352% 0.22529 26.783),
-    0 0 20px oklch(62.352% 0.22529 26.783);
-}
-
-.neon-glow-green {
-  box-shadow:
-    0 0 5px oklch(0.7 0.02 140),
-    0 0 10px oklch(0.7 0.2 140),
-    0 0 15px oklch(0.7 0.2 140),
-    0 0 20px oklch(0.7 0.2 140);
-}
+.neon-glow-blue { box-shadow: 0 0 5px var(--glow-blue), 0 0 10px var(--glow-blue), 0 0 15px var(--glow-blue), 0 0 20px var(--glow-blue); }
+.neon-glow-yellow { box-shadow: 0 0 5px var(--glow-yellow), 0 0 10px var(--glow-yellow), 0 0 15px var(--glow-yellow), 0 0 20px var(--glow-yellow); }
+.neon-glow-teal { box-shadow: 0 0 5px var(--glow-teal), 0 0 10px var(--glow-teal), 0 0 15px var(--glow-teal), 0 0 20px var(--glow-teal); }
+.neon-glow-red { box-shadow: 0 0 5px var(--glow-red), 0 0 10px var(--glow-red), 0 0 15px var(--glow-red), 0 0 20px var(--glow-red); }
+.neon-glow-green { box-shadow: 0 0 5px var(--glow-green), 0 0 10px var(--glow-green), 0 0 15px var(--glow-green), 0 0 20px var(--glow-green); }
 
 /* Animated Gradient Effects */
 @keyframes gradient-shift {
@@ -392,15 +524,8 @@ html, body {
 
 /* Removed non-standard @theme inline block — variables are already defined in :root and .dark above */
 
-* {
-  border-color: var(--border);
-  outline-color: var(--ring) / 0.5;
-}
-body {
-  background-color: var(--background);
-  color: var(--foreground);
-  text-align: center; /* Added to override default start/left for all components */
-}
+* { border-color: var(--border); }
+body { background-color: var(--background); color: var(--foreground); }
 
 /* Removed forced global centering - using proper Tailwind v4 container utilities */
 

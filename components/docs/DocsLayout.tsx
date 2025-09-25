@@ -22,6 +22,8 @@ import {
 import { cn } from '@/lib/utils'
 import { Breadcrumb, BreadcrumbList, BreadcrumbItem, BreadcrumbLink, BreadcrumbPage, BreadcrumbSeparator } from '@/components/ui/breadcrumb'
 import { Collapsible, CollapsibleTrigger, CollapsibleContent } from '@/components/ui/collapsible'
+import { DocsTOC } from '@/components/docs/DocsTOC'
+import { DocsSearch } from '@/components/docs/DocsSearch'
 import { ScrollArea } from '@/components/ui/scroll-area'
 import { HoverCard, HoverCardTrigger, HoverCardContent } from '@/components/ui/hover-card'
 
@@ -61,6 +63,7 @@ export function DocsLayout({ children }: DocsLayoutProps) {
 
   return (
     <div className="min-h-screen bg-background text-foreground">
+      <a href="#docs-content" className="sr-only focus:not-sr-only px-3 py-2 bg-primary text-primary-foreground absolute top-2 left-2 rounded">Skip to content</a>
       <div className="container max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         {/* Header */}
         <div className="mb-8">
@@ -73,7 +76,7 @@ export function DocsLayout({ children }: DocsLayoutProps) {
                     <div className="absolute -top-1 -right-1 w-4 h-4 bg-accent rounded-full animate-ping" />
                   </div>
                   <div>
-                    <h1 className="text-3xl font-bold bg-gradient-to-r from-primary to-primary/60 bg-clip-text text-transparent">
+                    <h1 className="text-3xl lg:text-4xl font-bold bg-gradient-to-r from-primary to-primary/60 bg-clip-text text-transparent text-balance leading-tight">
                       Governed RAG Docs
                     </h1>
                     <p className="text-muted-foreground">Enterprise-grade AI with zero-trust security</p>
@@ -117,15 +120,18 @@ export function DocsLayout({ children }: DocsLayoutProps) {
           </div>
         </div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-4 gap-8">
-          {/* Sidebar Navigation (shadcn Sidebar) */}
-          <div className="lg:col-span-1">
+        <div className="grid grid-cols-1 xl:grid-cols-5 gap-8">
+          {/* Sidebar Navigation */}
+          <div className="xl:col-span-1">
             <Card className="sticky top-8">
               <CardHeader className="pb-4">
                 <CardTitle className="text-lg">Documentation</CardTitle>
                 <CardDescription>Navigate through our guides</CardDescription>
               </CardHeader>
               <CardContent className="p-2">
+                <div className="mb-4">
+                  <DocsSearch />
+                </div>
                 <ScrollArea>
                   <div className="space-y-4">
                     {navigation.map((section) => (
@@ -179,15 +185,28 @@ export function DocsLayout({ children }: DocsLayoutProps) {
             </Card>
           </div>
 
-          {/* Main Content */}
-          <div className="lg:col-span-3">
-            <Card className="min-h-[600px]">
-              <CardContent className="p-8">
-                <div className="prose prose-slate dark:prose-invert max-w-none">
-                  {children}
-                </div>
-              </CardContent>
-            </Card>
+          {/* Main Content + TOC */}
+          <div className="xl:col-span-4 grid grid-cols-1 lg:grid-cols-[minmax(0,1fr)_260px] gap-8">
+            <div>
+              <Card className="min-h-[600px] elevated-card" id="docs-content">
+                <CardContent className="p-6 sm:p-8">
+                  <div className="prose prose-slate dark:prose-invert max-w-none">
+                    {children}
+                  </div>
+                </CardContent>
+              </Card>
+            </div>
+            <aside className="hidden lg:block sticky top-8 self-start">
+              <Card>
+                <CardHeader className="pb-2">
+                  <CardTitle className="text-sm">Contents</CardTitle>
+                  <CardDescription className="text-xs">Page outline</CardDescription>
+                </CardHeader>
+                <CardContent className="pt-2">
+                  <DocsTOC />
+                </CardContent>
+              </Card>
+            </aside>
           </div>
         </div>
       </div>

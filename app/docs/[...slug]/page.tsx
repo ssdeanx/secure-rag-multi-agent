@@ -3,6 +3,8 @@ import path from 'path'
 import { notFound } from 'next/navigation'
 import { compileMDX } from 'next-mdx-remote/rsc'
 import mdxPlugins from '@/lib/mdx-plugins'
+import type { Metadata } from 'next'
+import { metadataFromFrontmatter } from '@/lib/metadata'
 import { DocsLayout } from '@/components/docs/DocsLayout'
 import { Mermaid } from '@/components/Mermaid'
 import { Badge } from '@/components/ui/badge'
@@ -38,6 +40,26 @@ import {
   ChevronRight,
   Home
 } from 'lucide-react'
+
+// Simple in-memory cache (per server runtime) for compiled docs to reduce FS + compilation cost per request.
+// Key: normalized slug path ("index" for root)
+// Value: { source, frontmatter, compiled: JSX }
+// This is intentionally minimal; a production deployment may replace with persistent layer or file hashing.
+const docsCache = new Map<string, { source: string; frontmatter: Record<string, unknown> }>()
+
+export async function generateMetadata({ params }: { params: { slug: string[] } }): Promise<Metadata> {
+  const slug = params.slug?.join('/') || 'index'
+  const cached = docsCache.get(slug)
+  if (cached) {
+    return metadataFromFrontmatter({
+      title: typeof cached.frontmatter.title === 'string' ? cached.frontmatter.title : undefined,
+      description: typeof cached.frontmatter.description === 'string' ? cached.frontmatter.description : undefined,
+      draft: cached.frontmatter.draft === true
+    }, `/docs/${slug === 'index' ? '' : slug}`)
+  }
+  // Fallback generic
+  return metadataFromFrontmatter({ title: 'Documentation', description: 'Governed RAG documentation' }, `/docs/${slug === 'index' ? '' : slug}`)
+}
 
 export async function generateStaticParams() {
   const docsDirectory = path.join(process.cwd(), 'docs')
@@ -152,9 +174,33 @@ export default async function DocsPage({ params }: { params: { slug: string[] } 
     }
   }
 
+  // Attempt cache hit
+  const cached = docsCache.get(slug)
+  if (!cached || cached.source !== source) {
+    // (Re)compile when missing or source changed.
+    try {
+      const { content, frontmatter } = await compileMDX({
+        source,
+        components,
+        options: {
+          parseFrontmatter: true,
+          mdxOptions: {
+            remarkPlugins: mdxPlugins.remarkPlugins,
+            rehypePlugins: mdxPlugins.rehypePlugins,
+          },
+        },
+      })
+      // Persist minimal cache (we store source + fm only; component tree reconstructed each request to avoid memory balloon)
+  docsCache.set(slug, { source, frontmatter })
+      return <DocsLayout>{content}</DocsLayout>
+    } catch {
+      notFound()
+    }
+  }
+  // Cached: recompile quickly (could store compiled result if memory budget allows)
   try {
     const { content } = await compileMDX({
-      source,
+      source: cached.source,
       components,
       options: {
         parseFrontmatter: true,
@@ -164,12 +210,7 @@ export default async function DocsPage({ params }: { params: { slug: string[] } 
         },
       },
     })
-
-    return (
-      <DocsLayout>
-        {content}
-      </DocsLayout>
-    )
+    return <DocsLayout>{content}</DocsLayout>
   } catch {
     notFound()
   }
