@@ -96,19 +96,28 @@ export const researchOutputSchema = z.object({
     url: z.string().optional(),
     relevance: z.string().optional(),
   })).optional(),
-  learnings: z.array(z.any()).optional(),
+  learnings: z.array(learningExtractionOutputSchema).optional(),
   completedQueries: z.array(z.string()).optional(),
   phase: z.string().optional()
-}).passthrough();
+}).loose();
 
 export const copywriterOutputSchema = z.object({
   content: z.string(),
   metadata: z.record(z.string(), z.unknown()).optional()
 });
 
+// Specific schema for the product roadmap actions
+export const roadmapActionSchema = z.object({
+  type: z.literal("setState"),
+  stateKey: z.literal("nodes"),
+  setterKey: z.enum(["addNode", "removeNode", "changeNode"]),
+  args: z.array(z.any()), // Args can be complex, leaving as any for now but could be tightened
+  content: z.string(),
+});
+
 export const productRoadmapOutputSchema = z.object({
   content: z.string(),
-  object: z.any().optional()
+  object: roadmapActionSchema.optional(),
 });
 
 export const reportOutputSchema = z.object({
@@ -121,6 +130,15 @@ export const starterOutputSchema = z.object({
 
 export const selfReferencingOutputSchema = z.object({
   content: z.string().optional()
+});
+
+export const assistantOutputSchema = z.object({
+  summary: z.string(),
+  data: z.string(),
+  sources: z.array(z.object({
+    url: z.string(),
+    title: z.string(),
+  }))
 });
 
 /**

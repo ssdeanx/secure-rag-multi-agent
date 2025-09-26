@@ -1,6 +1,5 @@
 import { Agent } from "@mastra/core";
-import { z } from "zod";
-import { documentContextSchema } from "../schemas/agent-schemas";
+import { rerankOutputSchema } from "../schemas/agent-schemas";
 import { createResearchMemory } from '../config/libsql-storage';
 import { google } from "@ai-sdk/google";
 import { log } from "../config/logger";
@@ -35,14 +34,13 @@ You must respond with a valid JSON object in the following format:
 }
 
 Always return valid JSON matching this exact structure.`,
+  defaultGenerateOptions: {
+    output: rerankOutputSchema,
+  },
   memory: store,
   evals: {
     // Add any evaluation metrics if needed
   },
   scorers: {},
   workflows: {},
-});
-
-export const rerankOutputSchema = z.object({
-  contexts: z.array(documentContextSchema)
 });

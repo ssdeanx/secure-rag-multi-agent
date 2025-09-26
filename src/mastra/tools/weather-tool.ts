@@ -2,6 +2,15 @@ import { createTool } from '@mastra/core/tools';
 import { z } from 'zod';
 import { log } from "../config/logger";
 import { AISpanType } from '@mastra/core/ai-tracing';
+import { RuntimeContext } from "@mastra/core/runtime-context";
+
+// Define the Zod schema for the runtime context
+const weatherToolContextSchema = z.object({
+  temperatureUnit: z.enum(["celsius", "fahrenheit"]).default("celsius"),
+});
+
+// Infer the TypeScript type from the Zod schema
+export type WeatherToolContext = z.infer<typeof weatherToolContextSchema>;
 
 interface GeocodingResponse {
   results?: Array<{
@@ -25,7 +34,7 @@ interface WeatherResponse {
 export const weatherTool = createTool({
   id: 'get-weather',
   description: 'Get current weather for a location',
-  inputSchema: z.object({ // Removed .slice() as it's not a valid method for ZodObject
+  inputSchema: z.object({
     location: z.string().describe('City name'),
   }),
   outputSchema: z.object({
@@ -36,21 +45,24 @@ export const weatherTool = createTool({
     windGust: z.number(),
     conditions: z.string(),
     location: z.string(),
+    unit: z.string(), // Add unit to output schema
   }),
-  execute: async ({ context, tracingContext }) => {
-    log.info(`Fetching weather for location: ${context.location}`);
+  execute: async ({ context, runtimeContext, tracingContext }) => {
+    const { temperatureUnit } = weatherToolContextSchema.parse(runtimeContext.get("weatherToolContext"));
+
+    log.info(`Fetching weather for location: ${context.location} in ${temperatureUnit}`);
 
     const weatherSpan = tracingContext?.currentSpan?.createChildSpan({
       type: AISpanType.TOOL_CALL,
       name: 'weather-tool',
-      input: { location: context.location }
+      input: { location: context.location, temperatureUnit }
     });
 
     try {
-      const result = await getWeather(context.location);
+      const result = await getWeather(context.location, temperatureUnit);
       weatherSpan?.end({ output: result });
       log.info(`Weather fetched successfully for ${context.location}`);
-      return result;
+      return { ...result, unit: temperatureUnit === "celsius" ? "°C" : "°F" };
     } catch (error) {
       const errorMessage = error instanceof Error ? error.message : String(error);
       weatherSpan?.end({ metadata: { error: errorMessage } });
@@ -60,7 +72,7 @@ export const weatherTool = createTool({
   },
 });
 
-const getWeather = async (location: string) => {
+const getWeather = async (location: string, unit: "celsius" | "fahrenheit") => {
   const geocodingUrl = `https://geocoding-api.open-meteo.com/v1/search?name=${encodeURIComponent(location)}&count=1`;
   const geocodingResponse = await fetch(geocodingUrl);
   const geocodingData = (await geocodingResponse.json()) as GeocodingResponse;
@@ -71,7 +83,7 @@ const getWeather = async (location: string) => {
 
   const { latitude, longitude, name } = geocodingData.results[0];
 
-  const weatherUrl = `https://api.open-meteo.com/v1/forecast?latitude=${latitude}&longitude=${longitude}&current=temperature_2m,apparent_temperature,relative_humidity_2m,wind_speed_10m,wind_gusts_10m,weather_code`;
+  const weatherUrl = `https://api.open-meteo.com/v1/forecast?latitude=${latitude}&longitude=${longitude}&current=temperature_2m,apparent_temperature,relative_humidity_2m,wind_speed_10m,wind_gusts_10m,weather_code&temperature_unit=${unit}`;
 
   const response = await fetch(weatherUrl);
   const data = (await response.json()) as WeatherResponse;

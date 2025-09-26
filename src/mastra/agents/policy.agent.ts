@@ -1,9 +1,8 @@
 import { Agent } from "@mastra/core";
 
 import { openAIModel } from "../config/openai";
-import { accessFilterSchema } from "../schemas/agent-schemas";
+import { policyOutputSchema } from "../schemas/agent-schemas";
 import { createResearchMemory } from '../config/libsql-storage';
-import z from "zod";
 import { google } from "@ai-sdk/google";
 import { log } from "../config/logger";
 
@@ -32,14 +31,13 @@ Rules:
 Examples:
 - Finance user: {"roles": ["finance.viewer"], "tenant": "acme", "stepUp": false} → {"allowTags": ["role:finance.viewer", "tenant:acme"], "maxClassification": "internal"}
 - HR user: {"roles": ["hr.viewer"], "tenant": "acme", "stepUp": false} → {"allowTags": ["role:hr.viewer", "tenant:acme"], "maxClassification": "confidential"}`,
+  defaultGenerateOptions: {
+    output: policyOutputSchema,
+  },
   memory: store,
   evals: {
     // Add any evaluation metrics if needed
   },
   scorers: {},
   workflows: {},
-});
-
-export const policyOutputSchema = accessFilterSchema.extend({
-  maxClassification: z.enum(["public", "internal", "confidential"])
 });

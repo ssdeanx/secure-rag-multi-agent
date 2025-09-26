@@ -44,10 +44,11 @@ IMPORTANT: Respond with valid JSON:
   "answer": "Your complete answer with inline citations",
   "citations": [{"docId": "document-id", "source": "source description"}]
 }`,
+  defaultGenerateOptions: {
+    output: answererOutputSchema,
+  },
   memory: store,
   evals: {},
   scorers: {},
   workflows: {},
 });
-
-export { answererOutputSchema };

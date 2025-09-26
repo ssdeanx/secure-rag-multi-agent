@@ -13,6 +13,7 @@
 // approvalDate: 9/22
 
 import { Agent } from "@mastra/core/agent";
+import { assistantOutputSchema } from "../schemas/agent-schemas";
 import { createOpenRouter } from "@openrouter/ai-sdk-provider";
 import { createResearchMemory } from '../config/libsql-storage';
 import { ContentSimilarityMetric, CompletenessMetric, TextualDifferenceMetric, KeywordCoverageMetric, ToneConsistencyMetric } from "@mastra/evals/nlp";
@@ -91,6 +92,9 @@ For complex research tasks that generate data, you MUST respond with a valid JSO
         },
       usage: { include: true }
     }),
+    defaultGenerateOptions: {
+      output: assistantOutputSchema,
+    },
     memory: store,
     evals: {
     contentSimilarity: new ContentSimilarityMetric({ ignoreCase: true, ignoreWhitespace: true }),

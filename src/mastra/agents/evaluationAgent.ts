@@ -1,4 +1,5 @@
 import { Agent } from '@mastra/core/agent';
+import { evaluationOutputSchema } from "../schemas/agent-schemas";
 import { createResearchMemory } from '../config/libsql-storage';
 import { ContentSimilarityMetric, CompletenessMetric, TextualDifferenceMetric, KeywordCoverageMetric, ToneConsistencyMetric } from "@mastra/evals/nlp"; // Non-LLM evals
 import { log } from "../config/logger";
@@ -46,6 +47,9 @@ CRITICAL: You must always respond with a valid JSON object in the following form
 </output_format>
   `,
   model: google('gemini-2.5-flash-lite'),
+  defaultGenerateOptions: {
+    output: evaluationOutputSchema,
+  },
   memory: store,
   evals: {
     contentSimilarity: new ContentSimilarityMetric({ ignoreCase: true, ignoreWhitespace: true }),

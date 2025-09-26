@@ -1,4 +1,5 @@
 import { Agent } from "@mastra/core/agent";
+import { selfReferencingOutputSchema } from "../schemas/agent-schemas";
 import type { MCPServerResourceContent, Resource } from "@mastra/mcp";
 import { MCPServer } from "@mastra/mcp";
 import { MCPClient } from "@mastra/mcp";
@@ -19,6 +20,9 @@ const selfReferencingAgent = new Agent({
   description: "An agent that can use tools from an http MCP server",
   instructions: "You can use remote calculation tools.",
   model: google("gemini-2.5-flash"),
+  defaultGenerateOptions: {
+    output: selfReferencingOutputSchema,
+  },
   tools: async () => {
     // Tools resolve when needed, not during initialization
     const mcpClient = new MCPClient({

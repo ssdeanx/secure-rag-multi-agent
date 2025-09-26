@@ -1,4 +1,5 @@
 import { Agent } from "@mastra/core/agent";
+import { editorOutputSchema } from "../schemas/agent-schemas";
 import { createResearchMemory } from '../config/libsql-storage';
 import { google } from '@ai-sdk/google';
 import { log } from "../config/logger";
@@ -89,6 +90,9 @@ You must respond with a JSON object in the following format:
 </output_format>
   `,
   model: google('gemini-2.5-flash'),
+  defaultGenerateOptions: {
+    output: editorOutputSchema,
+  },
   memory: store,
   scorers: {},
   workflows: {},

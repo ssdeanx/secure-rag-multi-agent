@@ -1,5 +1,6 @@
 
 import { Agent } from "@mastra/core/agent";
+import { copywriterOutputSchema } from "../schemas/agent-schemas";
 //import { createGemini25Provider } from "../config/googleProvider";
 import { createResearchMemory, STORAGE_CONFIG } from '../config/libsql-storage';
 import { webScraperTool,
@@ -124,6 +125,9 @@ Include relevant metadata such as title, summary, and key points when applicable
 </output_format>
   `,
   model: google('gemini-2.5-flash'),
+  defaultGenerateOptions: {
+    output: copywriterOutputSchema,
+  },
   memory: store,
   tools: {
     webScraperTool,

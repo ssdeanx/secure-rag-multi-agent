@@ -1,4 +1,5 @@
 import { Agent } from '@mastra/core/agent';
+import { productRoadmapOutputSchema } from "../schemas/agent-schemas";
 import { createResearchMemory, STORAGE_CONFIG } from '../config/libsql-storage';
 import { LIBSQL_PROMPT } from "@mastra/libsql";
 import { createGraphRAGTool, createVectorQueryTool } from "@mastra/rag";
@@ -163,6 +164,9 @@ When generating content, include the generated content in your response and indi
 </decision_logic>
   `,
   model: google('gemini-2.5-flash'),
+  defaultGenerateOptions: {
+    output: productRoadmapOutputSchema,
+  },
   memory: store,
   tools: {
     queryTool,

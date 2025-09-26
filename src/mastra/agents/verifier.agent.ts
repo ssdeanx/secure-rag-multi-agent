@@ -1,6 +1,5 @@
 import { Agent } from "@mastra/core";
-//import { z } from "zod";
-import { verificationResultSchema } from "../schemas/agent-schemas";
+import { verifierOutputSchema } from "../schemas/agent-schemas";
 import { createResearchMemory } from '../config/libsql-storage';
 import { google } from "@ai-sdk/google";
 import { log } from "../config/logger";
@@ -56,6 +55,9 @@ Common failure reasons:
 - "Context is not relevant to the question - answer should indicate no information found"
 
 Always return valid JSON matching this exact structure.`,
+  defaultGenerateOptions: {
+    output: verifierOutputSchema,
+  },
   memory,
   evals: {
     // Add any evaluation metrics if needed
@@ -63,5 +65,3 @@ Always return valid JSON matching this exact structure.`,
   scorers: {},
   workflows: {},
 });
-
-export const verifierOutputSchema = verificationResultSchema;
