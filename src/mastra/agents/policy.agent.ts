@@ -31,9 +31,6 @@ Rules:
 Examples:
 - Finance user: {"roles": ["finance.viewer"], "tenant": "acme", "stepUp": false} → {"allowTags": ["role:finance.viewer", "tenant:acme"], "maxClassification": "internal"}
 - HR user: {"roles": ["hr.viewer"], "tenant": "acme", "stepUp": false} → {"allowTags": ["role:hr.viewer", "tenant:acme"], "maxClassification": "confidential"}`,
-  defaultGenerateOptions: {
-    output: policyOutputSchema,
-  },
   memory: store,
   evals: {
     // Add any evaluation metrics if needed
@@ -41,3 +38,9 @@ Examples:
   scorers: {},
   workflows: {},
 });
+export { policyOutputSchema };
+// --- IGNORE ---
+// defaultGenerateOptions: {
+//   output: policyOutputSchema,
+// },
+// --- IGNORE ---

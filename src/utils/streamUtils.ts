@@ -11,7 +11,7 @@ import type { StreamTextResult } from 'ai';
  */
 
 export function createSSEStream(
-  cb: (_controller: ReadableStreamDefaultController<Uint8Array>) => Promise<void>,
+  cb: (controller: ReadableStreamDefaultController<Uint8Array>) => Promise<void>,
 ): Response {
   const encoder = new TextEncoder();
 

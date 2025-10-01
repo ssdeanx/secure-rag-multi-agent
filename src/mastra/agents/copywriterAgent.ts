@@ -125,9 +125,6 @@ Include relevant metadata such as title, summary, and key points when applicable
 </output_format>
   `,
   model: google('gemini-2.5-flash'),
-  defaultGenerateOptions: {
-    output: copywriterOutputSchema,
-  },
   memory: store,
   tools: {
     webScraperTool,
@@ -142,3 +139,5 @@ Include relevant metadata such as title, summary, and key points when applicable
   scorers: {},
   workflows: {},
 });
+
+export { copywriterOutputSchema };

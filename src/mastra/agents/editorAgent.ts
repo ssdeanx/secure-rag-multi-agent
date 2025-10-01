@@ -90,10 +90,8 @@ You must respond with a JSON object in the following format:
 </output_format>
   `,
   model: google('gemini-2.5-flash'),
-  defaultGenerateOptions: {
-    output: editorOutputSchema,
-  },
   memory: store,
   scorers: {},
   workflows: {},
 });
+export { editorOutputSchema };

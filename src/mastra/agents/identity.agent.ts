@@ -21,9 +21,6 @@ export const identityAgent = new Agent({
 
 Always use the jwt-auth tool - never attempt to decode JWTs manually.`,
   tools: { jwtAuth: jwtAuthTool },
-  defaultGenerateOptions: {
-    output: identityOutputSchema,
-  },
   memory: store,
   evals: {
     // Add any evaluation metrics if needed
@@ -31,3 +28,4 @@ Always use the jwt-auth tool - never attempt to decode JWTs manually.`,
   scorers: {},
   workflows: {},
 });
+export { identityOutputSchema };

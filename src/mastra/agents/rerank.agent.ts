@@ -34,9 +34,6 @@ You must respond with a valid JSON object in the following format:
 }
 
 Always return valid JSON matching this exact structure.`,
-  defaultGenerateOptions: {
-    output: rerankOutputSchema,
-  },
   memory: store,
   evals: {
     // Add any evaluation metrics if needed
@@ -44,3 +41,4 @@ Always return valid JSON matching this exact structure.`,
   scorers: {},
   workflows: {},
 });
+export { rerankOutputSchema };

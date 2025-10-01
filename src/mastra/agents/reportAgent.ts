@@ -61,9 +61,6 @@ Include a summary of the research process.
   - [Follow-up 2]
 </output_format>
   `,
-  defaultGenerateOptions: {
-    output: reportOutputSchema,
-  },
   evals: {
     contentSimilarity: new ContentSimilarityMetric({ ignoreCase: true, ignoreWhitespace: true }),
     completeness: new CompletenessMetric(),
@@ -76,3 +73,9 @@ Include a summary of the research process.
   scorers: {},
   workflows: {},
 });
+export { reportOutputSchema }
+// --- IGNORE ---
+// defaultGenerateOptions: {
+//   output: reportOutputSchema,
+// },
+// --- IGNORE ---

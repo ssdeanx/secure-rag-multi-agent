@@ -38,9 +38,7 @@ Example:
 }
 </output_format>
   `,
-  defaultGenerateOptions: {
-    output: learningExtractionOutputSchema,
-  },
+
   evals: {
     contentSimilarity: new ContentSimilarityMetric({ ignoreCase: true, ignoreWhitespace: true }),
     completeness: new CompletenessMetric(),
@@ -53,3 +51,5 @@ Example:
   scorers: {},
   workflows: {},
 });
+
+export { learningExtractionOutputSchema };

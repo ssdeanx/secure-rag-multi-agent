@@ -92,9 +92,6 @@ For complex research tasks that generate data, you MUST respond with a valid JSO
         },
       usage: { include: true }
     }),
-    defaultGenerateOptions: {
-      output: assistantOutputSchema,
-    },
     memory: store,
     evals: {
     contentSimilarity: new ContentSimilarityMetric({ ignoreCase: true, ignoreWhitespace: true }),
@@ -133,3 +130,4 @@ For complex research tasks that generate data, you MUST respond with a valid JSO
     workflows: {}, // This is where workflows will be defined
 })
 log.info('OpenRouter Assistant Agent Working...');
+export { assistantOutputSchema };

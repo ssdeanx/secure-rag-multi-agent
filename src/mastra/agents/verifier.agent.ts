@@ -55,9 +55,6 @@ Common failure reasons:
 - "Context is not relevant to the question - answer should indicate no information found"
 
 Always return valid JSON matching this exact structure.`,
-  defaultGenerateOptions: {
-    output: verifierOutputSchema,
-  },
   memory,
   evals: {
     // Add any evaluation metrics if needed
@@ -65,3 +62,4 @@ Always return valid JSON matching this exact structure.`,
   scorers: {},
   workflows: {},
 });
+export { verifierOutputSchema };

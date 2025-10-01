@@ -22,6 +22,7 @@ import { learningExtractionAgent } from "./agents/learningExtractionAgent";
 import { productRoadmapAgent } from "./agents/productRoadmapAgent";
 import { editorAgent } from "./agents/editorAgent";
 import { generateReportWorkflow } from "./workflows/generateReportWorkflow";
+import { chatWorkflow } from "./workflows/chatWorkflow1";
 import { randomUUID } from "crypto";
 import { qdrantVector } from "./config/vector-store";
 import { SensitiveDataFilter } from '@mastra/core/ai-tracing';
@@ -53,7 +54,9 @@ export const mastra = new Mastra({
     'governed-rag-index': governedRagIndex,
     'governed-rag-answer': governedRagAnswer,
     'research-workflow': researchWorkflow,
-    'generate-report-workflow': generateReportWorkflow
+    'generate-report-workflow': generateReportWorkflow,
+    'chat-workflow': chatWorkflow,
+    'chat-workflow-1': chatWorkflow, // backward-compatible alias
   },
   vectors: {
     qdrant: qdrantVector,

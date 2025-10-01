@@ -59,9 +59,7 @@ ${LIBSQL_PROMPT}
 `,
   memory,
   tools: { vectorQueryTool },
-  defaultGenerateOptions: {
-    output: retrieveOutputSchema,
-  },
   scorers: {},
   workflows: {}, // This is where workflows will be defined
 });
+export { retrieveOutputSchema };

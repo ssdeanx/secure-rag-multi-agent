@@ -164,9 +164,6 @@ When generating content, include the generated content in your response and indi
 </decision_logic>
   `,
   model: google('gemini-2.5-flash'),
-  defaultGenerateOptions: {
-    output: productRoadmapOutputSchema,
-  },
   memory: store,
   tools: {
     queryTool,
@@ -183,3 +180,4 @@ When generating content, include the generated content in your response and indi
   },
   workflows: {},
 });
+export { productRoadmapOutputSchema };

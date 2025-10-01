@@ -62,9 +62,6 @@ Example:
 }
 </output_format>
   `,
-  defaultGenerateOptions: {
-    output: researchOutputSchema,
-  },
  evals: {
    contentSimilarity: new ContentSimilarityMetric({ ignoreCase: true, ignoreWhitespace: true }),
    completeness: new CompletenessMetric(),
@@ -85,3 +82,4 @@ Example:
  },
  memory
 });
+export { researchOutputSchema }

@@ -50,10 +50,7 @@ You will respond in a JSON format with the following fields:
   maxOutputTokens: 65536, // Maximum output tokens (defaults to 65536)
   topP: 0.95, // Nucleus sampling threshold
   }),
-  defaultGenerateOptions: {
-    output: starterOutputSchema,
-  },
-  tools: {starterAgentTool, weatherTool},
+  tools: {weatherTool},
   scorers: {},
   workflows: {},
   evals: {
@@ -72,3 +69,4 @@ You will respond in a JSON format with the following fields:
       }),
   ],
 });
+export { starterOutputSchema };
