@@ -1,6 +1,5 @@
 import { Agent } from "@mastra/core";
-import { z } from "zod";
-import { documentContextSchema } from "../schemas/agent-schemas";
+import { rerankOutputSchema } from "../schemas/agent-schemas";
 import { createResearchMemory } from '../config/libsql-storage';
 import { google } from "@ai-sdk/google";
 import { log } from "../config/logger";
@@ -42,7 +41,4 @@ Always return valid JSON matching this exact structure.`,
   scorers: {},
   workflows: {},
 });
-
-export const rerankOutputSchema = z.object({
-  contexts: z.array(documentContextSchema)
-});
+export { rerankOutputSchema };

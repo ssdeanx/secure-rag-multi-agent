@@ -1,4 +1,5 @@
 import { Agent } from '@mastra/core/agent';
+import { researchOutputSchema } from "../schemas/agent-schemas";
 import { evaluateResultTool } from '../tools/evaluateResultTool';
 import { extractLearningsTool } from '../tools/extractLearningsTool';
 import { webScraperTool,
@@ -81,3 +82,4 @@ Example:
  },
  memory
 });
+export { researchOutputSchema }

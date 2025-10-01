@@ -73,6 +73,101 @@ This is a Next.js application implementing a secure, governed Retrieval-Augmente
 
 **Key Technologies:** Next.js, TypeScript, Mastra, Qdrant, LibSQL, Tailwind CSS, shadcn/ui, Zod
 
+## Architectural Diagram
+
+```mermaid
+C4Context
+    title Governed RAG System Architecture
+
+    System_Boundary(system, "Governed RAG System") {
+
+        Container(frontend, "Frontend Application", "Next.js App Router, React, TypeScript", "User Interface & Interaction") {
+            Component(app_router, "/app", "Next.js App Router", "Pages, Layouts, Route Structure")
+            Component(app_components, "/components", "App-Level Components", "High-level composed UI (Chat, Auth, Indexing)")
+            Component(cedar_components, "/cedar", "Cedar Core Components", "Low-level Cedar UI primitives (roadmap, chat, buttons)")
+            Component(cedar_os_integration, "/app/cedar-os", "Cedar OS Integration", "Product Roadmap / Cedar Integration")
+            Component(lib_shared, "/lib", "Shared Frontend Libraries", "Auth, JWT utilities, MDX plugins")
+            Component(lib_mastra_client, "/lib/mastra", "Mastra Browser Client", "Frontend Mastra client factory")
+            Component(lib_actions, "/lib/actions", "Frontend Server Actions", "Minimal privileged server actions")
+            Component(hooks, "/hooks", "React Hooks", "Reusable client-side logic")
+        }
+
+        Container(backend, "Backend Services", "Node.js, TypeScript, Mastra, Qdrant, LibSQL", "API Endpoints & AI Orchestration") {
+            Component(src_root, "/src", "Backend Source Root", "Entry point, types, utils, Mastra integration")
+            Component(api_route_handlers, "/app/api", "API Route Handlers", "Chat & Indexing Endpoints; Streaming")
+            Component(mastra_core, "/src/mastra", "Mastra Core Orchestration", "Orchestration, Registration, Tracing")
+            Component(mastra_agents, "/src/mastra/agents", "Mastra Agents", "Single-responsibility Reasoning Units")
+            Component(mastra_workflows, "/src/mastra/workflows", "Mastra Workflows", "Multi-step Orchestration Definitions")
+            Component(mastra_tools, "/src/mastra/tools", "Mastra Tools", "Safe Callable Functions for Agents")
+            Component(mastra_services, "/src/mastra/services", "Mastra Services", "Business/Domain Logic Modules")
+            Component(mastra_schemas, "/src/mastra/schemas", "Mastra Schemas", "Zod Contracts & Data Validation")
+            Component(mastra_config, "/src/mastra/config", "Mastra Configuration", "External Service Setup (Qdrant, Models)")
+            Component(mastra_policy, "/src/mastra/policy", "Mastra Policy / ACL", "Access Control Rule Sources")
+            Component(src_utils, "/src/utils", "Backend Utilities", "Stream & Helper Abstractions")
+            Component(src_cli, "/src/cli", "CLI Layer", "Indexing & Workflow Invocation CLI")
+        }
+
+        Container(data_stores, "Data Stores", "Qdrant, LibSQL", "Vector Database & Persistent Storage") {
+            Component(qdrant, "Qdrant", "Vector Database", "Stores document embeddings and metadata")
+            Component(libsql, "LibSQL", "SQLite-based Database", "Persistent storage for Mastra memory, etc.")
+        }
+
+        Container(content, "Content Corpus", "Markdown files", "Source documents for RAG") {
+            Component(corpus, "/corpus", "Sample Corpus", "Source docs for indexing with classification")
+        }
+
+        Container(documentation, "Documentation System", "MD/MDX files", "Project documentation") {
+            Component(docs, "/docs", "Documentation", "MD/MDX architecture & publishing")
+        }
+    }
+
+    Rel(app_router, "Mounts", app_components)
+    Rel(app_router, "Integrates with", cedar_os_integration)
+    Rel(app_router, "Calls", api_route_handlers, "HTTP/S")
+    Rel(app_router, "Uses", lib_shared)
+    Rel(app_router, "Uses", hooks)
+
+    Rel(app_components, "Composes from", cedar_components)
+    Rel(app_components, "Uses", lib_shared)
+
+    Rel(cedar_os_integration, "Consumes", cedar_components)
+    Rel(cedar_os_integration, "Exposes state to", mastra_agents, "via Cedar OS hooks")
+
+    Rel(lib_shared, "Uses", lib_mastra_client)
+    Rel(lib_shared, "Uses", lib_actions)
+
+    Rel(api_route_handlers, "Invokes", mastra_core, "Mastra Workflows")
+
+    Rel(mastra_core, "Orchestrates", mastra_agents)
+    Rel(mastra_core, "Orchestrates", mastra_workflows)
+    Rel(mastra_core, "Uses", mastra_tools)
+    Rel(mastra_core, "Uses", mastra_services)
+    Rel(mastra_core, "Validates with", mastra_schemas)
+    Rel(mastra_core, "Configured by", mastra_config)
+    Rel(mastra_core, "Enforces policies from", mastra_policy)
+    Rel(mastra_core, "Uses", src_utils)
+
+    Rel(mastra_agents, "Call", mastra_tools)
+    Rel(mastra_workflows, "Chain", mastra_agents)
+    Rel(mastra_workflows, "Chain", mastra_tools)
+    Rel(mastra_workflows, "Chain", mastra_services)
+
+    Rel(mastra_tools, "Utilize", mastra_services)
+    Rel(mastra_tools, "Interact with", qdrant, "Vector Search")
+    Rel(mastra_tools, "Interact with", libsql, "Data Storage")
+
+    Rel(mastra_services, "Interact with", qdrant, "Vector Storage")
+    Rel(mastra_services, "Interact with", libsql, "Data Storage")
+
+    Rel(src_cli, "Invokes", mastra_core, "Mastra Workflows")
+
+    Rel(qdrant, "Stores", corpus, "Embeddings & Metadata")
+    Rel(libsql, "Stores", corpus, "Memory & Metadata")
+
+    Rel(corpus, "Indexed by", mastra_workflows, "governed-rag-index")
+    Rel(docs, "Content for", app_router)
+```
+
 ## Setup Commands
 
 ### Environment Setup

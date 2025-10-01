@@ -1,5 +1,6 @@
 import { google } from '@ai-sdk/google';
 import { Agent } from '@mastra/core/agent';
+import { starterOutputSchema } from "../schemas/agent-schemas";
 import { log } from "../config/logger";
 import { starterAgentTool } from '../tools/starter-agent-tool';
 import gemini from '../config/gemini-cli';
@@ -49,7 +50,7 @@ You will respond in a JSON format with the following fields:
   maxOutputTokens: 65536, // Maximum output tokens (defaults to 65536)
   topP: 0.95, // Nucleus sampling threshold
   }),
-  tools: {starterAgentTool, weatherTool},
+  tools: {weatherTool},
   scorers: {},
   workflows: {},
   evals: {
@@ -68,3 +69,4 @@ You will respond in a JSON format with the following fields:
       }),
   ],
 });
+export { starterOutputSchema };

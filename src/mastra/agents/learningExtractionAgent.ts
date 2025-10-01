@@ -1,4 +1,5 @@
 import { Agent } from '@mastra/core/agent';
+import { learningExtractionOutputSchema } from "../schemas/agent-schemas";
 import { google } from '@ai-sdk/google';
 import { createResearchMemory } from '../config/libsql-storage';
 import { ContentSimilarityMetric, CompletenessMetric, TextualDifferenceMetric, KeywordCoverageMetric, ToneConsistencyMetric } from "@mastra/evals/nlp";
@@ -37,6 +38,7 @@ Example:
 }
 </output_format>
   `,
+
   evals: {
     contentSimilarity: new ContentSimilarityMetric({ ignoreCase: true, ignoreWhitespace: true }),
     completeness: new CompletenessMetric(),
@@ -49,3 +51,5 @@ Example:
   scorers: {},
   workflows: {},
 });
+
+export { learningExtractionOutputSchema };

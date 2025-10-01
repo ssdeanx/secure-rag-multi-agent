@@ -94,7 +94,25 @@ export default [
       'vitest.config.ts',
       'globalSetup.ts',
       'testSetup.ts',
-      'vite.config.ts'
+      'vite.config.ts',
+      '.github/**',
+      '.kilocode/**',
+      'scripts/**',
+      '.gemini/**',
+      '.spec/**',
+      '.specstory/**',
+      '.kiro/**',
+      '.vscode/**',
+      '.codacy/**',
+      'docs/**',
+      'components/ui/**',
+      'docker/**',
+      'public/**',
+      'coverage/**',
+      'LICENSE',
+      'CHANGELOG.md',
+      'README.md',
+      'CONTRIBUTING.md',
     ]
   }
 ]

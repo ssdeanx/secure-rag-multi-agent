@@ -1,4 +1,5 @@
 import { Agent } from '@mastra/core/agent';
+import { reportOutputSchema } from "../schemas/agent-schemas";
 import { createResearchMemory } from '../config/libsql-storage';
 import { ContentSimilarityMetric, CompletenessMetric, TextualDifferenceMetric, KeywordCoverageMetric, ToneConsistencyMetric } from "@mastra/evals/nlp";
 import { log } from "../config/logger";
@@ -72,3 +73,9 @@ Include a summary of the research process.
   scorers: {},
   workflows: {},
 });
+export { reportOutputSchema }
+// --- IGNORE ---
+// defaultGenerateOptions: {
+//   output: reportOutputSchema,
+// },
+// --- IGNORE ---

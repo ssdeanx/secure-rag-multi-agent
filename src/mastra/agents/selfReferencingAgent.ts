@@ -1,4 +1,5 @@
 import { Agent } from "@mastra/core/agent";
+import { selfReferencingOutputSchema } from "../schemas/agent-schemas";
 import type { MCPServerResourceContent, Resource } from "@mastra/mcp";
 import { MCPServer } from "@mastra/mcp";
 import { MCPClient } from "@mastra/mcp";
@@ -74,3 +75,5 @@ export const mcp = new MCPServer({
     }
   }
 });
+
+export { selfReferencingAgent, selfReferencingOutputSchema };

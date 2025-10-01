@@ -18,17 +18,24 @@ import { AISpanType } from '@mastra/core/ai-tracing';
 import { ValidationService } from "../services/ValidationService";
 import { VectorQueryService } from "../services/VectorQueryService";
 import { log } from "../config/logger";
+import { RuntimeContext } from "@mastra/core/runtime-context";
+
+// Define the expected shape of the runtime context for this tool
+export interface VectorQueryContext {
+  accessFilter: {
+    allowTags: string[];
+    maxClassification: "public" | "internal" | "confidential";
+  };
+}
 
 // In-memory counter to track tool calls per request
 const toolCallCounters = new Map<string, number>();
 
 export const vectorQueryTool = createTool({
   id: "vector-query",
-  description: "Qdrant query with allowTags + classification filter",
+  description: "Qdrant query with allowTags + classification filter from the runtime context",
   inputSchema: z.object({
     question: z.string(),
-    allowTags: z.array(z.string()),
-    maxClassification: z.enum(["public","internal","confidential"]),
     topK: z.number()
   }),
   outputSchema: z.object({
@@ -42,15 +49,21 @@ export const vectorQueryTool = createTool({
       classification: z.enum(["public","internal","confidential"])
     }))
   }),
-  execute: async ({ context, mastra, tracingContext }) => {
+  execute: async ({ context, runtimeContext, mastra, tracingContext }) => {
+    const accessFilter = (runtimeContext as RuntimeContext<VectorQueryContext>).get("accessFilter");
+    if (!accessFilter) {
+      throw new Error("Access filter not found in runtime context");
+    }
+    const { allowTags, maxClassification } = accessFilter;
+
     // Create a span for tracing
     const span = tracingContext?.currentSpan?.createChildSpan({
       type: AISpanType.TOOL_CALL,
       name: 'vector-query-tool',
       input: {
         questionLength: context.question.length,
-        allowTagsCount: context.allowTags.length,
-        maxClassification: context.maxClassification,
+        allowTagsCount: allowTags.length,
+        maxClassification: maxClassification,
         topK: context.topK
       }
     });
@@ -85,7 +98,7 @@ export const vectorQueryTool = createTool({
       ValidationService.validateVectorStore(store);
 
       const indexName: string = process.env.QDRANT_COLLECTION ?? "governed_rag";
-      const { question, allowTags, maxClassification, topK = 8 } = context;
+      const { question, topK = 8 } = context;
       // Use environment variable or default for similarity threshold
       const minSimilarity = parseFloat(process.env.VECTOR_SIMILARITY_THRESHOLD ?? '0.4');
       log.info('🔧 Extracted parameters', { question, allowTags, maxClassification, topK, minSimilarity });

@@ -12,8 +12,7 @@
 // approvalDate: TODO
 
 import { Agent } from "@mastra/core";
-import { z } from "zod";
-import { documentContextSchema } from "../schemas/agent-schemas";
+import { retrieveOutputSchema } from "../schemas/agent-schemas";
 import { vectorQueryTool } from "../tools/vector-query.tool";
 import { createResearchMemory } from '../config/libsql-storage';
 import { google } from "@ai-sdk/google";
@@ -63,7 +62,4 @@ ${LIBSQL_PROMPT}
   scorers: {},
   workflows: {}, // This is where workflows will be defined
 });
-
-export const retrieveOutputSchema = z.object({
-  contexts: z.array(documentContextSchema)
-});
+export { retrieveOutputSchema };

@@ -1,8 +1,7 @@
 import { Agent } from "@mastra/core";
-import { jwtClaimsSchema } from "../schemas/agent-schemas";
+import { identityOutputSchema } from "../schemas/agent-schemas";
 import { jwtAuthTool } from "../tools/jwt-auth.tool";
 import { createResearchMemory } from '../config/libsql-storage';
-import z from "zod";
 import { google } from "@ai-sdk/google";
 import { log } from "../config/logger";
 
@@ -29,7 +28,4 @@ Always use the jwt-auth tool - never attempt to decode JWTs manually.`,
   scorers: {},
   workflows: {},
 });
-
-export const identityOutputSchema = jwtClaimsSchema.extend({
-  error: z.string().optional()
-});
+export { identityOutputSchema };

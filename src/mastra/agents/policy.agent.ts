@@ -1,9 +1,8 @@
 import { Agent } from "@mastra/core";
 
 import { openAIModel } from "../config/openai";
-import { accessFilterSchema } from "../schemas/agent-schemas";
+import { policyOutputSchema } from "../schemas/agent-schemas";
 import { createResearchMemory } from '../config/libsql-storage';
-import z from "zod";
 import { google } from "@ai-sdk/google";
 import { log } from "../config/logger";
 
@@ -39,7 +38,9 @@ Examples:
   scorers: {},
   workflows: {},
 });
-
-export const policyOutputSchema = accessFilterSchema.extend({
-  maxClassification: z.enum(["public", "internal", "confidential"])
-});
+export { policyOutputSchema };
+// --- IGNORE ---
+// defaultGenerateOptions: {
+//   output: policyOutputSchema,
+// },
+// --- IGNORE ---
