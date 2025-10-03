@@ -89,7 +89,7 @@ You must respond with a JSON object in the following format:
 }
 </output_format>
   `,
-  model: google('gemini-2.5-flash'),
+  model: google('gemini-2.5-flash-preview-09-2025'),
   memory: store,
   scorers: {},
   workflows: {},

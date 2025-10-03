@@ -46,7 +46,7 @@ CRITICAL: You must always respond with a valid JSON object in the following form
 }
 </output_format>
   `,
-  model: google('gemini-2.5-flash-lite'),
+  model: google('gemini-2.5-flash-lite-preview-09-2025'),
   memory: store,
   evals: {
     contentSimilarity: new ContentSimilarityMetric({ ignoreCase: true, ignoreWhitespace: true }),

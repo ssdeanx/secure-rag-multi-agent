@@ -124,7 +124,7 @@ Produce the final content in well-formatted Markdown with appropriate structure 
 Include relevant metadata such as title, summary, and key points when applicable.
 </output_format>
   `,
-  model: google('gemini-2.5-flash'),
+  model: google('gemini-2.5-flash-preview-09-2025'),
   memory: store,
   tools: {
     webScraperTool,
