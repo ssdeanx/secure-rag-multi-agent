@@ -5,7 +5,7 @@ import { logError, logProgress, logStepEnd, logStepStart } from '../config/logge
 
 import type { IndexingResult } from "../services/DocumentIndexingService";
 import { DocumentIndexingService } from "../services/DocumentIndexingService";
-import { qdrantVector } from "../config/vector-store";
+import { pgVector } from "../config/pg-storage";
 
 
 // Single step that handles all document indexing
@@ -38,16 +38,16 @@ const indexDocumentsStep = createStep({
     logStepStart('index-documents', { totalDocuments: totalDocs });
 
     try {
-      const vectorStore = qdrantVector
+      const vectorStore = pgVector
       const indexName: string = process.env.QDRANT_COLLECTION ?? "governed_rag";
 
       // Ensure the index exists with proper dimension (don't delete, just recreate if needed)
       try {
         await vectorStore.createIndex({
           indexName,
-          dimension: 3072, // text-embedding-3-small dimension
+          dimension: 1568, // gemini-embedding-001 dimension
         });
-        console.log('GOVERNED-RAG-INDEX.WORKFLOW', `Index ${indexName} created or already exists`);
+        console.log('GOVERNED-RAG-INDEX.WORKFLOW', `PgVector index ${indexName} created or already exists`);
       } catch (createError) {
         console.log('GOVERNED-RAG-INDEX.WORKFLOW', `Index creation info:`, createError)
         console.log(`Index creation info:`, createError);

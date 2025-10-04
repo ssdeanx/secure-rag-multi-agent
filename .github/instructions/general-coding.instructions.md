@@ -12,6 +12,7 @@ status: "stable"
 Apply the general coding guidelines to all code.
 
 ## TypeScript Guidelines
+
 - Use TypeScript for all new code
 - Follow functional programming principles where possible
 - Use interfaces or types for data structures and type definitions
@@ -23,8 +24,8 @@ Apply the general coding guidelines to all code.
 - Handle errors with try/catch blocks or Promise.catch
 - Use ESLint and Prettier for code formatting and linting
 
-
 ## React Guidelines
+
 - Use functional components with hooks
 - Follow the React hooks rules (no conditional hooks)
 - Use React.FC type for components with children
@@ -35,6 +36,7 @@ Apply the general coding guidelines to all code.
 - Use React Router for navigation and routing
 
 ## General Best Practices
+
 - Write clear, descriptive comments and JSDoc for functions and classes
 - Use meaningful variable and function names
 - Adhere to the DRY (Don't Repeat Yourself) principle

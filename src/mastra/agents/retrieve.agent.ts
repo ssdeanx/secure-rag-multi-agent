@@ -18,6 +18,7 @@ import { createResearchMemory } from '../config/libsql-storage';
 import { google } from "@ai-sdk/google";
 import { log } from "../config/logger";
 import { LIBSQL_PROMPT } from "@mastra/libsql";
+import { pgMemory } from "../config/pg-storage";
 
 log.info('Initializing Retrieve Agent...');
 
@@ -54,10 +55,10 @@ export const retrieveAgent = new Agent({
 - Answering questions without using the tool
 - Adding explanatory text about what you found
 
-${LIBSQL_PROMPT}
+
 
 `,
-  memory,
+  memory: pgMemory,
   tools: { vectorQueryTool },
   scorers: {},
   workflows: {}, // This is where workflows will be defined

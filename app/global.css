@@ -1,5 +1,8 @@
 @import "tailwindcss";
-@import "tw-animate-css";
+
+/* Motion and animation utilities */
+@import "../node_modules/tw-animate-css/dist/tw-animate.css";
+
 /* Add the plugin imports here */
 /* ignore lint still works with v4 which is nice */
 @plugin "@tailwindcss/forms";

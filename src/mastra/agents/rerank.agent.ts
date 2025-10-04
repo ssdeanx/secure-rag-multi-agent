@@ -1,12 +1,12 @@
 import { Agent } from "@mastra/core";
 import { rerankOutputSchema } from "../schemas/agent-schemas";
-import { createResearchMemory } from '../config/libsql-storage';
 import { google } from "@ai-sdk/google";
 import { log } from "../config/logger";
+import { pgMemory } from "../config/pg-storage";
 
 log.info('Initializing Rerank Agent...');
 
-const store = createResearchMemory();
+
 
 export const rerankAgent = new Agent({
   id: "rerank",
@@ -34,7 +34,7 @@ You must respond with a valid JSON object in the following format:
 }
 
 Always return valid JSON matching this exact structure.`,
-  memory: store,
+  memory: pgMemory,
   evals: {
     // Add any evaluation metrics if needed
   },

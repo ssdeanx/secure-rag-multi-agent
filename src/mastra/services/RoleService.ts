@@ -1,4 +1,3 @@
-/* eslint-disable tsdoc/syntax */
 import { ROLE_HIERARCHY, getRoleLevel, isValidRole, getInheritorRoles } from '../config/role-hierarchy';
 
 /**

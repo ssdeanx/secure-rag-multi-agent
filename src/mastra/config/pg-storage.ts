@@ -10,7 +10,7 @@ import type { RuntimeContext } from '@mastra/core/runtime-context';
 import type { UIMessage } from 'ai';
 
 // Production-grade PostgreSQL configuration with supported options
-export const store = new PostgresStore({
+export const pgStore = new PostgresStore({
   // Connection configuration
   connectionString: process.env.SUPABASE ?? process.env.DATABASE_URL ?? "postgresql://user:password@localhost:5432/mydb",
 
@@ -46,7 +46,7 @@ export const pgVector = new PgVector({
 
 // Memory configuration using PgVector (1568 dimensions)
 export const pgMemory = new Memory({
-  storage: store,
+  storage: pgStore,
   vector: pgVector, // Using PgVector for 1568 dimension embeddings
   embedder: google.textEmbedding("gemini-embedding-001"),
 

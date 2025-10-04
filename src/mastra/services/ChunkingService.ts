@@ -1,6 +1,5 @@
 import { Memory } from "@mastra/memory";
 
-import { openAIEmbeddingProvider } from "../config/openai";
 import { log } from "../config/logger";
 import { google } from "@ai-sdk/google";
 
@@ -35,7 +34,7 @@ const DEFAULT_4096 = 4096;
    */
 
   async chunkTextTokenBased(text: string, options: ChunkingOptions = {}): Promise<ChunkingResult> {
-    const {tokenSize = 8192, maxChunkSize = 200, strategy = "token-based" }: ChunkingOptions = (options);
+    const {tokenSize = 8192}: ChunkingOptions = (options);
 
     log.info(`Chunking text using token-based strategy (${tokenSize} tokens per chunk)`);
 

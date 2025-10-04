@@ -1,7 +1,5 @@
 import { Agent } from '@mastra/core/agent';
 import { productRoadmapOutputSchema } from "../schemas/agent-schemas";
-import { createResearchMemory, STORAGE_CONFIG } from '../config/libsql-storage';
-import { LIBSQL_PROMPT } from "@mastra/libsql";
 import { createGraphRAGTool, createVectorQueryTool } from "@mastra/rag";
 import { google } from '@ai-sdk/google';
 import { log } from "../config/logger";
@@ -9,32 +7,9 @@ import { extractLearningsTool } from '../tools/extractLearningsTool';
 import { editorTool } from '../tools/editor-agent-tool';
 import { copywriterTool } from '../tools/copywriter-agent-tool';
 import { evaluateResultTool } from '../tools/evaluateResultTool';
+import { pgMemory } from '../config/pg-storage';
 
-log.info('Initializing Product Roadmap Agent...');
 
-const store = createResearchMemory();
-
-const queryTool = createVectorQueryTool({
-  vectorStoreName:  "vectorStore",
-  indexName: STORAGE_CONFIG.VECTOR_INDEXES.RESEARCH_DOCUMENTS, // Use research documents index
-  model: google.textEmbedding("gemini-embedding-001"),
-  enableFilter: true,
-  description: "Search for semantically similar content in the LibSQL vector store using embeddings. Supports filtering, ranking, and context retrieval."
-});
-
-const graphQueryTool = createGraphRAGTool({
-  vectorStoreName:  "vectorStore",
-  indexName: STORAGE_CONFIG.VECTOR_INDEXES.RESEARCH_DOCUMENTS, // Use research documents index
-  model: google.textEmbedding("gemini-embedding-001"),
-  graphOptions: {
-    threshold: 0.7,
-    dimension: 3072, // Default for gemini-embedding-001
-    randomWalkSteps: 15,
-    restartProb: 0.3
-  },
-  enableFilter: true,
-  description: "Graph-based search for semantically similar content in the LibSQL vector store using embeddings. Supports filtering, ranking, and context retrieval."
-});
 
 export const productRoadmapAgent = new Agent({
   id: 'productRoadmap',
@@ -87,7 +62,6 @@ Available feature priorities:
 
 <tool_usage>
 Use the provided tools to interact with the product roadmap database.
-${LIBSQL_PROMPT}
 
 Content Creation Tools:
 - Use copywriterTool for creating feature descriptions, documentation, release notes, and communications
@@ -164,10 +138,8 @@ When generating content, include the generated content in your response and indi
 </decision_logic>
   `,
   model: google('gemini-2.5-flash'),
-  memory: store,
+  memory: pgMemory,
   tools: {
-    queryTool,
-    graphQueryTool,
     extractLearningsTool,
     editorTool,
     copywriterTool,

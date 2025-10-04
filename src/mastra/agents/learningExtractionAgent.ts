@@ -1,13 +1,12 @@
 import { Agent } from '@mastra/core/agent';
 import { learningExtractionOutputSchema } from "../schemas/agent-schemas";
 import { google } from '@ai-sdk/google';
-import { createResearchMemory } from '../config/libsql-storage';
 import { ContentSimilarityMetric, CompletenessMetric, TextualDifferenceMetric, KeywordCoverageMetric, ToneConsistencyMetric } from "@mastra/evals/nlp";
 import { log } from "../config/logger";
+import { pgMemory } from '../config/pg-storage';
 
 log.info("Initializing Learning Extraction Agent...");
 
-const store = createResearchMemory();
 export const learningExtractionAgent = new Agent({
   id: 'learning',
   name: 'Learning Extraction Agent',
@@ -47,7 +46,7 @@ Example:
     toneConsistency: new ToneConsistencyMetric(),
   },
   model: google('gemini-2.5-flash'),
-  memory: store,
+  memory: pgMemory,
   scorers: {},
   workflows: {},
 });

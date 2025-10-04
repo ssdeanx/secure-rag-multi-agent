@@ -9,14 +9,14 @@ import { webScraperTool,
   htmlToMarkdownTool,
   contentCleanerTool
 } from "../tools/web-scraper-tool";
-import { createResearchMemory } from '../config/libsql-storage';
 import { ContentSimilarityMetric, CompletenessMetric, TextualDifferenceMetric, KeywordCoverageMetric, ToneConsistencyMetric } from "@mastra/evals/nlp";
 import { log } from "../config/logger";
 import { google } from '@ai-sdk/google';
+import { pgMemory } from '../config/pg-storage';
 
 log.info("Initializing Research Agent...");
 
-const memory = createResearchMemory();
+
 
 export const researchAgent = new Agent({
   id: 'research',
@@ -80,6 +80,6 @@ Example:
     evaluateResultTool,
     extractLearningsTool,
  },
- memory
+ memory: pgMemory
 });
 export { researchOutputSchema }

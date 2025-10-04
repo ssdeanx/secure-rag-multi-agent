@@ -1,119 +1,180 @@
 # Active Context
 
-**Updated:** 2025-01-XX
+**Updated:** 2025-10-04, 14:30 EST
 
 ## Current Work Focus
 
 ### Active Development Area
 
-**Primary Focus**: Memory Bank Completion and Accuracy Validation
+**Primary Focus**: Database Migration - Qdrant to PgVector 🔄
 
-- TASK002: Correcting all memory bank files with 100% accurate information
-- Reading actual source code to eliminate assumptions
-- Documenting complete multi-agent platform (not just secure RAG)
-- Ensuring exact component counts (16 agents, 9 workflows, 11 tools, 10 services, 47 UI components)
+- ✅ COMPLETE: VNext Networks Created (research-content-network, governed-rag-network)
+- ✅ COMPLETE: All 7 workflows migrated to VNext APIs
+- ✅ COMPLETE: Comprehensive test suites created (23/23 passing)
+- ✅ COMPLETE: PgVector configuration exists in pg-storage.ts
+- 🔄 IN PROGRESS: Migrating vector database from Qdrant to PgVector
+- 🎯 NEXT: Update all services, tools, and agents to use PgVector
+- 🎯 NEXT: Update environment variables and documentation
 
 ### Recent Changes
 
-1. **Memory Bank Structure Corrections** (2025-01-XX)
-   - Fixed Cedar OS status: Planned (NOT integrated)
-   - Documented lib/ bridge architecture (mastra-client.ts mandatory)
-   - Documented public website (/, /about, /blog, /docs, /contact, /login)
-   - Documented MDX content system (blog.ts, mdx-plugins.ts)
-   - Documented dual authentication (custom JWT + Supabase)
+0. **Mastra vNext Agent Networks Created** (2025-10-04, 14:00) 🎉
+    - Created research-content-network.ts (220 lines)
+    - Created governed-rag-network.ts (250 lines)
+    - Both networks using NewAgentNetwork from '@mastra/core/network/vNext'
+    - Registered in vnext_networks config in main index.ts
+    - Created comprehensive AGENTS.md documentation (335 lines)
+    - Networks support .generate(), .stream(), and .loop() methods
+    - Non-deterministic LLM-based routing for dynamic multi-agent collaboration
+    - Zero compilation errors ✅
 
-2. **Root-Level Files Documented** (2025-01-XX)
-   - `ai-tracing.ts`: Custom Langfuse exporter (339 lines)
-   - `apiRegistry.ts`: API route registration (98 lines, /chat + /chat/stream)
-   - Documented observability strategy (realtime mode, graceful credential handling)
+1. **Chat Workflows VNext Migration Complete** (2025-10-03, 10:40) 🎉
+    - Migrated chatWorkflow1.ts: starterAgent.generate() → generateVNext()
+    - Added structuredOutput with ChatAgentResponseSchema
+    - Fixed modelSettings: { temperature, maxOutputTokens: maxTokens }
+    - Verified chatWorkflow.ts already using streamVNext() - no changes needed
+    - Created chatWorkflow1.test.ts (8 comprehensive test cases)
+    - Created chatWorkflow.test.ts (8 comprehensive test cases)
+    - Achieved 100% test success: 23/23 tests passing (includes contentGenerationWorkflow)
+    - Learned correct workflow test pattern: createRunAsync() + streamVNext()
+    - Duration: 1.18s for all tests
+    - Zero TypeScript compilation errors ✅
 
-3. **Testing and Styling Documented** (2025-01-XX)
-   - Vitest 3.2.4 with @mastra/evals integration
-   - globalSetup.ts and testSetup.ts configuration
-   - Tailwind CSS v4.1.13 custom theme (Supabase colors, neon glows, glass effects)
-   - 47 shadcn/ui components (exact count)
+2. **Content Generation Workflow Created** (2025-10-02, 16:30)
+    - Created contentGenerationWorkflow.ts (278 lines, 5 steps)
+    - Multi-agent pipeline: validate → draft → refine → evaluate → finalize
+    - Agents: copywriterAgent, editorAgent, evaluationAgent
+    - Uses .map() pattern to combine step results
+    - All patterns verified against official Mastra documentation
+    - Zero compilation errors ✅
 
-4. **Core Files Completed** (2025-01-XX)
-   - ✅ `projectbrief.md`: Complete and accurate
-   - ✅ `productContext.md`: Expanded with 8 personas, 8 features
-   - ✅ `systemPatterns.md`: Security pipeline, lib/ bridge, observability, agent-as-tool patterns
-   - ✅ `techContext.md`: Full tech stack, development setup, constraints
-   - ✅ `progress.md`: What works, in progress, planned, recent milestones, known issues
-   - 🔄 `activeContext.md`: This file (updating now)
+3. **Backend Registration Complete** (2025-10-02, 16:35)
+    - Registered as 'content-generation' in index.ts (7th workflow)
+    - Created POST /content/generate (standard request-response)
+    - Created POST /content/generate/stream (SSE streaming)
+    - Uses lib/mastra-client.ts bridge pattern
+    - Examined Cedar MCP integration patterns
+
+4. **Proper SSE Streaming Implemented** (2025-10-02, 16:45)
+    - Uses createSSEStream, streamProgressUpdate, streamJSONEvent
+    - Sends progress updates during workflow execution
+    - Streams final result as JSON event
+    - Follows exact pattern from existing chat routes
+    - All TypeScript errors resolved ✅
+
+5. **Schema Definitions Extended** (2025-10-02, 16:00)
+    - Added 7 new schemas in agent-schemas.ts
+    - cedarContextSchema, cedarActionSchema, contentGenerationInputSchema
+    - validatedRequestSchema, draftContentSchema, refinedContentSchema
+    - evaluationResultSchema, finalContentSchema
+    - Fixed export naming: agentOutputSchemas (camelCase)
+    - Created VERIFIED_PATTERNS.md reference document
+
+6. **Critical Learning Session** (2025-10-02, 15:15-16:00)
+    - User intervention: stopped API guessing
+    - Fetched ALL 14 official Mastra documentation URLs
+    - Learned correct execute parameters (NO writer, NO context)
+    - Verified actual codebase patterns (all exports camelCase)
+    - User warning: "you never chec all the urls... its critical"
+    - Lesson: ALWAYS verify against official docs, NEVER guess
+
+7. **Memory Bank Sync** (2025-10-02, 14:00-14:40)
+    - Created TASK003 with 6 phases
+    - Completed Phase 1: System Understanding
+    - Completed Phase 2: Task Structure
+    - Completed Phase 2.5: Content Generation Workflow
+    - Updated task completion to 55%
 
 ## Next Steps
 
-### Immediate Tasks (COMPLETED ✅)
+### Immediate Tasks (Ready for Testing)
 
-1. ✅ **Final Validation** (TASK002)
-   - All counts verified (16 agents, 9 workflows, 11 tools, 10 services, 47 components)
-   - Cedar OS confirmed as "planned" everywhere
-   - lib/ bridge pattern documented everywhere
-   - Testing and Tailwind details accurate
-   - User review and approval received
+1. **Test Workflow Execution** (HIGH PRIORITY)
+    - Create test-content-workflow.ts script
+    - Test with sample data: blog post, technical article, etc.
+    - Verify all 5 steps execute correctly
+    - Check quality evaluation and finalization logic
 
-2. ✅ **TASK002 Closure**
-   - Marked completion at 100%
-   - Final validation log entry added
-   - Task successfully closed
+2. **Test API Endpoints** (HIGH PRIORITY)
+    - Test POST /content/generate with curl/HTTP client
+    - Test POST /content/generate/stream with EventSource
+    - Verify response matches finalContentSchema
+    - Test error handling with invalid input
+
+3. **Update Memory Bank Documentation** (MEDIUM PRIORITY)
+    - Update progress.md with workflow completion
+    - Document testing results
+    - Update systemPatterns.md with workflow patterns
+
+4. ✅ **Final Validation** (TASK002)
+    - All counts verified (16 agents, 9 workflows, 11 tools, 10 services, 47 components)
+    - Cedar OS confirmed as "planned" everywhere
+    - lib/ bridge pattern documented everywhere
+    - Testing and Tailwind details accurate
+    - User review and approval received
+
+5. ✅ **TASK002 Closure**
+    - Marked completion at 100%
+    - Final validation log entry added
+    - Task successfully closed
 
 ### Short-Term Goals (NEXT SESSION - HIGH PRIORITY)
 
 1. **Workflow Expansion and Refinement** 🎯
-   - Create workflows for all specialized agents (copywriter, editor, evaluation, research, report)
-   - Refine existing workflows to work seamlessly with Cedar OS types
-   - Build on chatWorkflow.ts (productRoadmapAgent example) and chatWorkflow1.ts (starterAgent example)
-   - Create production-ready version of governed RAG (question → answer) workflow
-   - Transform demo workflows into professional, production-grade implementations
-   
-   **Key Deliverables**:
-   - Content generation workflow (copywriter → editor → evaluation)
-   - Research workflow refinement (multi-phase with suspend/resume)
-   - Professional RAG workflow (gov-rag with Cedar integration)
-   - Report generation workflow (research → learning extraction → report compilation)
+    - Create workflows for all specialized agents (copywriter, editor, evaluation, research, report)
+    - Refine existing workflows to work seamlessly with Cedar OS types
+    - Build on chatWorkflow.ts (productRoadmapAgent example) and chatWorkflow1.ts (starterAgent example)
+    - Create production-ready version of governed RAG (question → answer) workflow
+    - Transform demo workflows into professional, production-grade implementations
+
+    **Key Deliverables**:
+    - Content generation workflow (copywriter → editor → evaluation)
+    - Research workflow refinement (multi-phase with suspend/resume)
+    - Professional RAG workflow (gov-rag with Cedar integration)
+    - Report generation workflow (research → learning extraction → report compilation)
 
 2. **CLI Infrastructure Documentation**
-   - Document src/cli/index.ts (corpus loading through CLI)
-   - Document src/types.ts (Principal, AccessFilter, Document, Chunk interfaces)
-   - Document src/index.ts (main exports)
-   - Update memory bank with CLI capabilities and type definitions
-   - "acme" is example tenant name for documentation
+    - Document src/cli/index.ts (corpus loading through CLI)
+    - Document src/types.ts (Principal, AccessFilter, Document, Chunk interfaces)
+    - Document src/index.ts (main exports)
+    - Update memory bank with CLI capabilities and type definitions
+    - "acme" is example tenant name for documentation
 
 3. **Cedar OS Type Integration**
-   - Define Cedar types needed for workflow integration
-   - Create type definitions for Cedar ↔ Mastra bridge
-   - Ensure workflows can accept Cedar state
-   - Document type contracts between systems
-   - Create migration scripts (LibSQL → PostgreSQL)
-   - Document data transition strategy
-   - Test with sample data
-   - Plan production cutover
+    - Define Cedar types needed for workflow integration
+    - Create type definitions for Cedar ↔ Mastra bridge
+    - Ensure workflows can accept Cedar state
+    - Document type contracts between systems
+    - Create migration scripts (LibSQL → PostgreSQL)
+    - Document data transition strategy
+    - Test with sample data
+    - Plan production cutover
 
-3. **Performance Optimization**
-   - Profile vector search performance
-   - Implement query result caching
-   - Optimize embedding generation batching
-   - Load testing with 10K+ documents
+4. **Performance Optimization**
+    - Profile vector search performance
+    - Implement query result caching
+    - Optimize embedding generation batching
+    - Load testing with 10K+ documents
 
 ### Medium-Term Goals (Next Month)
 
 1. **Step-Up Authentication**
-   - Implement elevated access prompts
-   - Add temporary token elevation
-   - Enhanced audit logging for privileged access
-   - UI for step-up authentication flow
+    - Implement elevated access prompts
+    - Add temporary token elevation
+    - Enhanced audit logging for privileged access
+    - UI for step-up authentication flow
 
 2. **Audit Log Export**
-   - CSV/JSON export API endpoint
-   - UI for log viewing
-   - Compliance report generation
-   - Integration with compliance tools
+    - CSV/JSON export API endpoint
+    - UI for log viewing
+    - Compliance report generation
+    - Integration with compliance tools
 
 3. **Real-Time Indexing**
-   - API endpoint for on-the-fly indexing
-   - Incremental updates without full re-index
-   - WebSocket notifications for completion
-   - UI for real-time index status
+    - API endpoint for on-the-fly indexing
+    - Incremental updates without full re-index
+    - WebSocket notifications for completion
+    - UI for real-time index status
 
 ## Active Decisions and Considerations
 
@@ -216,6 +277,7 @@
 - E2E tests for critical user flows (future)
 
 **Next Action**: Add integration tests for security pipeline workflow
+
 - Tool Architecture Design
 - Service Layer Design
 
@@ -249,7 +311,7 @@
 
 4. **Cross-Reference Format**: Use file paths, IDs, or both for linking designs/requirements/tasks?
 
-5. **Index File Updates**: Manual or automated updates to _index.md files?
+5. **Index File Updates**: Manual or automated updates to \_index.md files?
 
 ## Context for AI Agents
 
@@ -322,7 +384,7 @@ When starting any new task, review these files in order:
 
 1. Start by reading this file (activeContext.md)
 2. Review progress.md for current status
-3. Check tasks/_index.md for active work
+3. Check tasks/\_index.md for active work
 4. Reference systemPatterns.md for architecture context
 5. Always update both subtask table AND progress log
 

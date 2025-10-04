@@ -1,6 +1,240 @@
 # Progress
 
-**Updated:** 2025-01-XX
+**Updated:** 2025-10-04, 14:30 EST
+
+## Current Work: Database Migration - Qdrant to PgVector 🔄
+
+**Date:** 2025-10-04, 14:30 EST
+**Status:** In Progress
+
+### Migration Overview
+
+Transitioning from Qdrant vector database to PostgreSQL with PgVector extension. The pg-storage.ts configuration already exists with full PgVector support (1568 dimensions, Google Gemini embeddings). Need to update all tools, services, and agents to use the existing PgVector configuration.
+
+**Affected Components:**
+
+- vector-query.tool.ts (primary vector search tool)
+- VectorQueryService.ts
+- VectorStorageService.ts
+- All governed RAG agents (retrieve, rerank, answerer, verifier)
+- Main Mastra index.ts configuration
+- Environment variables and documentation
+
+## Recent Completion: Mastra vNext Agent Networks Created 🎉
+
+**Date:** 2025-10-04, 14:00 EST
+
+**Achievement:** Successfully created two production-ready vNext agent networks with comprehensive documentation.
+
+### What Was Accomplished
+
+1. **research-content-network.ts Created** ✅
+    - 220 lines of production-ready network code
+    - 6 specialized agents: research, learning, copywriter, editor, evaluation, report
+    - 3 workflows: research-workflow, generate-report, content-generation
+    - Dynamic LLM-based routing for multi-agent collaboration
+    - Memory-backed task history using createResearchMemory()
+    - Model: google('gemini-2.0-flash-exp') for routing decisions
+
+2. **governed-rag-network.ts Created** ✅
+    - 250 lines with security-first design
+    - 4 security agents: retrieve, rerank, answerer, verifier
+    - 1 workflow: governed-rag-answer (6-stage secure pipeline)
+    - Role-based access control (RBAC) integration
+    - Document classification enforcement (public/internal/confidential)
+    - Audit logging and compliance features
+
+3. **Network Integration** ✅
+    - Created networks/index.ts for clean barrel exports
+    - Registered in src/mastra/index.ts vnext_networks config
+    - Both networks accessible via mastra.vnext_getNetwork('network-id')
+    - Zero TypeScript compilation errors
+
+4. **Comprehensive Documentation** ✅
+    - Created networks/AGENTS.md (335 lines)
+    - Documented all three network methods: .generate(), .stream(), .loop()
+    - Provided usage examples for both networks
+    - Explained differences between workflows vs networks
+    - Added best practices and troubleshooting guides
+    - Updated root AGENTS.md with network entries
+
+### Key Learning: NewAgentNetwork from '@mastra/core/network/vNext'
+
+**Critical Pattern Discovered:**
+
+- Import: `NewAgentNetwork` from '@mastra/core/network/vNext' (NOT from '@mastra/core')
+- Required fields: id, name, instructions, model, agents, workflows, memory
+- Model is REQUIRED for routing agent decisions
+- Memory is REQUIRED for .loop() method (complex multi-step tasks)
+
+**User Correction:**
+Initial implementation used wrong import (`AgentNetwork` from '@mastra/core'). User correction: "no you must not got wrong info thats not how you use it... #mcp_mastra_mastraDocs" led to discovering correct vNext experimental patterns.
+
+### Network Capabilities
+
+**Three Execution Modes:**
+
+1. `.generate(message, { runtimeContext })` - Single task execution
+2. `.stream(message, { runtimeContext })` - Streaming single task
+3. `.loop(message, { runtimeContext })` - Complex multi-step with memory
+
+**Network vs Workflow Decision:**
+
+- **Use Networks:** Unstructured input, need reasoning about approach, dynamic collaboration
+- **Use Workflows:** Known steps, deterministic execution, predictable performance
+
+### Patterns for Future Networks
+
+**Network Configuration Template:**
+
+```typescript
+import { NewAgentNetwork } from '@mastra/core/network/vNext'
+import { google } from '@ai-sdk/google'
+import { createResearchMemory } from '../config/libsql-storage'
+
+export const myNetwork = new NewAgentNetwork({
+    id: 'network-id',
+    name: 'Network Name',
+    instructions: 'Routing agent system prompt...',
+    model: google('gemini-2.0-flash-exp'),
+    agents: { agent1, agent2 },
+    workflows: { workflow1: workflow1 },
+    memory: createResearchMemory(),
+})
+```
+
+**Registration Pattern:**
+
+```typescript
+export const mastra = new Mastra({
+    vnext_networks: {
+        'network-id': networkInstance,
+    },
+})
+```
+
+### Impact
+
+- **Two Production Networks**: research-content and governed-rag ready for use
+- **Non-deterministic Orchestration**: LLM-based routing enables flexible task handling
+- **Memory-Backed Decisions**: Task history enables intelligent routing and completion detection
+- **Security Integration**: governed-rag-network maintains RBAC and classification controls
+- **Documentation Complete**: Full AGENTS.md with examples and best practices
+
+---
+
+## Previous Completion: VNext Migration Phase Complete 🎉
+
+**Date:** 2025-10-03, 10:40 EST
+
+**Achievement:** Successfully completed VNext migration for all workflows with comprehensive test coverage.
+
+### What Was Accomplished
+
+1. **chatWorkflow1.ts Migration** ✅
+    - Migrated: `starterAgent.generate()` → `starterAgent.generateVNext()`
+    - Added structuredOutput with ChatAgentResponseSchema
+    - Fixed modelSettings structure: `{ temperature, maxOutputTokens: maxTokens }`
+    - Returns: `{ content, object?: ActionSchema, usage }`
+    - Zero compilation errors
+
+2. **chatWorkflow.ts Verification** ✅
+    - Verified already using `productRoadmapAgent.streamVNext()`
+    - No changes needed - already on VNext
+    - Confirmed with grep_search (no .stream( calls found)
+    - Memory and streaming configuration correct
+
+3. **Test Suite Creation** ✅
+    - Created chatWorkflow1.test.ts (8 test cases, 223 lines)
+    - Created chatWorkflow.test.ts (8 test cases, 208 lines)
+    - Both test files using correct createRunAsync() + streamVNext() pattern
+    - Test coverage: basic execution, temperature/maxTokens handling, systemPrompt, structured output, error handling
+
+4. **Test Success Achievement** 🎉
+    - **100% test success rate: 23/23 tests passing**
+    - chatWorkflow.test.ts: 8/8 passing
+    - chatWorkflow1.test.ts: 8/8 passing
+    - contentGenerationWorkflow.test.ts: 7/7 passing
+    - Test duration: 1.18s
+    - Zero TypeScript compilation errors
+
+### Patterns Learned
+
+**Correct Workflow Test Pattern:**
+
+```typescript
+const run = await workflow.createRunAsync()
+const stream = run.streamVNext({
+    inputData: {
+        prompt: 'test',
+        temperature: 0.7,
+        maxTokens: 150,
+    },
+})
+const result = await stream.result
+expect(result?.status).toBe('success')
+const output = (result as any).result
+expect(output.content).toBeDefined()
+```
+
+**VNext API Usage:**
+
+- `agent.generateVNext()` - for structured generation
+- `agent.streamVNext()` - for streaming responses
+- Both use: `modelSettings: { temperature, maxOutputTokens }` (NOT maxTokens!)
+- structuredOutput: `{ schema: ZodSchema }`
+
+**Structured Output Mock Pattern:**
+
+```typescript
+mockResolvedValue({
+    text: 'Response text',
+    object: {
+        content: 'Required content field',
+        action: {
+            /* optional action fields */
+        },
+    },
+})
+```
+
+### Migration Status Summary
+
+**All Workflows on VNext (7/7):**
+
+1. ✅ governed-rag-answer.workflow.ts
+2. ✅ governed-rag-index.workflow.ts (no agents - indexing only)
+3. ✅ contentGenerationWorkflow.ts
+4. ✅ researchWorkflow.ts
+5. ✅ generateReportWorkflow.ts
+6. ✅ chatWorkflow.ts
+7. ✅ chatWorkflow1.ts
+
+**Test Coverage (3/7):**
+
+- ✅ contentGenerationWorkflow.ts - 7 tests passing
+- ✅ chatWorkflow.ts - 8 tests passing
+- ✅ chatWorkflow1.ts - 8 tests passing
+- ⏸️ Other workflows - testing deferred (optional)
+
+### Impact
+
+- **Production Ready**: All workflows using VNext APIs, compatible with Gemini 2.5 Flash
+- **Quality Assurance**: 100% test success rate validates correct implementation
+- **Documentation**: Test patterns documented for future workflow development
+- **Template Available**: chatWorkflow.ts and chatWorkflow1.ts provide excellent test suite templates
+
+### User Guidance Impact
+
+User's iterative corrections were critical to success:
+
+1. "must use vnext for both generate or stream" - clarified full scope
+2. "all those tests are wrong always chec #get_errors" - prevented running broken tests
+3. "thats not how you test. npx vitest run" - taught correct test command
+
+This guidance led to discovering proper patterns and achieving 100% success.
+
+---
 
 ## What Works
 
@@ -17,12 +251,12 @@
 **Multi-Agent Security Pipeline**
 
 - 6-agent security pipeline operational:
-  1. Identity Agent - JWT validation and claim extraction
-  2. Policy Agent - Access filter generation based on role hierarchy
-  3. Retrieve Agent - Qdrant search with security filters
-  4. Rerank Agent - Relevance scoring with continued access validation
-  5. Answerer Agent - Secure response generation with citations
-  6. Verifier Agent - Final compliance checking and audit logging
+    1. Identity Agent - JWT validation and claim extraction
+    2. Policy Agent - Access filter generation based on role hierarchy
+    3. Retrieve Agent - Qdrant search with security filters
+    4. Rerank Agent - Relevance scoring with continued access validation
+    5. Answerer Agent - Secure response generation with citations
+    6. Verifier Agent - Final compliance checking and audit logging
 - Zero-trust validation at every stage
 - Audit logging via PinoLogger (logs/workflow.log, logs/mastra.log)
 
@@ -39,7 +273,7 @@
 **Mastra Integration**
 
 - Mastra 0.18.0 orchestrating 16 specialized agents
-- 9 workflows: secure RAG, indexing, research, report generation, chat
+- **7 workflows now registered**: secure RAG, indexing, research, report generation, 2 chat variants, **content generation (NEW)**
 - Memory persistence with LibSQL (dev) and PostgreSQL (prod)
 - Multiple AI providers (OpenAI, Google Gemini, Anthropic, Vertex AI)
 - Custom Langfuse observability via `ai-tracing.ts` (339 lines)
@@ -60,9 +294,54 @@
 - `chatWorkflow` - Chat orchestration with streaming (productRoadmapAgent example)
 - `chatWorkflow1` - Starter agent template workflow
 - `generateReportWorkflow` - Report compilation
-- Streaming response generation via SSE (`/chat/stream`)
+- **`content-generation` workflow (NEW ✨)** - 5-step multi-agent content pipeline:
+    1. validateContentRequest - Input validation and Cedar context preparation
+    2. generateDraft - Copywriter agent creates initial content
+    3. refineDraft - Editor agent improves clarity and style
+    4. evaluateContent - Quality assessment with metrics
+    5. finalizeContent - Final output with quality checks
+- Streaming response generation via SSE (`/chat/stream`, `/content/generate/stream`)
 - Error handling and recovery implemented
 - **Workflow Templates Ready**: chatWorkflow.ts (productRoadmap) and chatWorkflow1.ts (starter) provide excellent foundations for expanding to other agents
+
+### Content Generation System ✅ **NEW**
+
+**Multi-Agent Content Pipeline**
+
+- 5-step workflow: validate → draft → refine → evaluate → finalize
+- Agents involved: copywriterAgent, editorAgent, evaluationAgent
+- Content types: blog, article, social, marketing, technical, business
+- Quality metrics: clarity, accuracy, engagement, relevance, grammar
+- Minimum quality threshold enforcement (configurable)
+- 278 lines of production-ready code
+
+**API Endpoints**
+
+- POST /content/generate - Standard request-response
+- POST /content/generate/stream - SSE streaming with progress updates
+- Registered in apiRegistry.ts with proper Zod validation
+- Uses lib/mastra-client.ts bridge for frontend integration
+
+**Schema Definitions**
+
+- 7 new Zod schemas in agent-schemas.ts:
+    - cedarContextSchema - Optional Cedar UI state integration
+    - cedarActionSchema - Cedar setState action format
+    - contentGenerationInputSchema - Workflow input
+    - validatedRequestSchema - Post-validation output
+    - draftContentSchema - Copywriter output
+    - refinedContentSchema - Editor output with changes
+    - evaluationResultSchema - Quality metrics
+    - finalContentSchema - Final workflow output
+
+**Development Patterns Verified**
+
+- Created VERIFIED_PATTERNS.md reference document
+- All patterns verified against official Mastra documentation
+- Proper execute parameters documented (NO writer, NO context)
+- Correct .map() usage for combining step results
+- Agent call format: agent.generate([{ role: 'user', content }])
+- All exports use camelCase naming convention
 
 ### Multi-Agent Platform Features ✅
 
@@ -80,6 +359,7 @@
 - Copywriter agent (blog, marketing, technical, business content)
 - Editor agent for refinement and polishing
 - Evaluation agent for quality assessment
+- **Full workflow orchestration now available**
 - Content follows brand voice and technical accuracy
 - 5x productivity increase over manual writing
 
@@ -190,29 +470,29 @@
 **Key Work Items**:
 
 1. **Workflow Creation for Specialized Agents**
-   - Content generation workflow (copywriter → editor → evaluation)
-   - Professional RAG workflow (gov-rag question → answer with Cedar types)
-   - Research workflow refinement (enhanced suspend/resume)
-   - Report generation workflow (research → learning extraction → compilation)
-   - Evaluation workflow (quality assessment pipeline)
+    - Content generation workflow (copywriter → editor → evaluation)
+    - Professional RAG workflow (gov-rag question → answer with Cedar types)
+    - Research workflow refinement (enhanced suspend/resume)
+    - Report generation workflow (research → learning extraction → compilation)
+    - Evaluation workflow (quality assessment pipeline)
 
 2. **Workflow Template Expansion**
-   - Build on chatWorkflow.ts (productRoadmapAgent example)
-   - Build on chatWorkflow1.ts (starterAgent template)
-   - Create reusable workflow patterns for agent orchestration
-   - Ensure all workflows support streaming and error handling
+    - Build on chatWorkflow.ts (productRoadmapAgent example)
+    - Build on chatWorkflow1.ts (starterAgent template)
+    - Create reusable workflow patterns for agent orchestration
+    - Ensure all workflows support streaming and error handling
 
 3. **Cedar OS Type Integration**
-   - Define Cedar types for workflow integration
-   - Create type contracts between Cedar UI and Mastra workflows
-   - Enable workflows to consume Cedar state
-   - Bridge productRoadmap agent with Cedar components
+    - Define Cedar types for workflow integration
+    - Create type contracts between Cedar UI and Mastra workflows
+    - Enable workflows to consume Cedar state
+    - Bridge productRoadmap agent with Cedar components
 
 4. **CLI and Type System**
-   - Document src/cli/index.ts (corpus loading via CLI)
-   - Document src/types.ts (Principal, AccessFilter, Document, Chunk)
-   - Document src/index.ts (main exports)
-   - Example tenant: "acme" for documentation
+    - Document src/cli/index.ts (corpus loading via CLI)
+    - Document src/types.ts (Principal, AccessFilter, Document, Chunk)
+    - Document src/index.ts (main exports)
+    - Example tenant: "acme" for documentation
 
 **Rationale**: Having comprehensive, well-designed workflows will allow professional implementation compared to blind exploration. The existing chatWorkflow examples provide excellent templates to expand upon.
 
@@ -543,7 +823,7 @@ Running Next.js and Mastra backend separately during development allows independ
 **Starting Work**
 
 1. Read memory bank files (projectbrief, activeContext, progress)
-2. Check current tasks in tasks/_index.md
+2. Check current tasks in tasks/\_index.md
 3. Review relevant design and requirement docs
 4. Update task status to "In Progress"
 5. Make changes with logging and validation
@@ -560,7 +840,7 @@ Running Next.js and Mastra backend separately during development allows independ
 
 1. Update task progress log
 2. Mark subtasks complete
-3. Update _index.md status
+3. Update \_index.md status
 4. Create PR with clear description
 5. Link to related requirements/designs
 

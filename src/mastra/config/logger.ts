@@ -21,7 +21,7 @@ export const log = new PinoLogger({
 
 // Create a simple file logger wrapper
 //
-const logFilePath: string = path.join(logsDir, process.cwd(), 'workflow.log');
+const logFilePath: string = path.join(logsDir, 'workflow.log');
 const logToFile = (message: string, data?: Record<string, unknown>) => {
   const timestamp = new Date().toISOString();
   const logEntry = {

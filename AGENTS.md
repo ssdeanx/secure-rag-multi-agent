@@ -52,6 +52,7 @@
 | `/src/mastra` | Mastra Core | ai | rag | Orchestration, registration, tracing |
 | `/src/mastra/agents` | Agents | ai | rag | Single-responsibility reasoning units |
 | `/src/mastra/workflows` | Workflows | ai | rag | Multi-step orchestration definitions |
+| `/src/mastra/networks` | vNext Networks | ai | rag | Non-deterministic LLM-based multi-agent orchestration |
 | `/src/mastra/tools` | Tools | ai | rag | Safe callable functions for agents |
 | `/src/mastra/services` | Services | backend | rag | Business/domain logic modules |
 | `/src/mastra/schemas` | Schemas | backend | validation | Zod contracts & data validation |
@@ -98,6 +99,7 @@ C4Context
             Component(mastra_core, "/src/mastra", "Mastra Core Orchestration", "Orchestration, Registration, Tracing")
             Component(mastra_agents, "/src/mastra/agents", "Mastra Agents", "Single-responsibility Reasoning Units")
             Component(mastra_workflows, "/src/mastra/workflows", "Mastra Workflows", "Multi-step Orchestration Definitions")
+            Component(mastra_networks, "/src/mastra/networks", "Mastra vNext Networks", "Non-deterministic LLM-based Multi-agent Orchestration")
             Component(mastra_tools, "/src/mastra/tools", "Mastra Tools", "Safe Callable Functions for Agents")
             Component(mastra_services, "/src/mastra/services", "Mastra Services", "Business/Domain Logic Modules")
             Component(mastra_schemas, "/src/mastra/schemas", "Mastra Schemas", "Zod Contracts & Data Validation")
@@ -140,6 +142,7 @@ C4Context
 
     Rel(mastra_core, "Orchestrates", mastra_agents)
     Rel(mastra_core, "Orchestrates", mastra_workflows)
+    Rel(mastra_core, "Orchestrates", mastra_networks)
     Rel(mastra_core, "Uses", mastra_tools)
     Rel(mastra_core, "Uses", mastra_services)
     Rel(mastra_core, "Validates with", mastra_schemas)
@@ -151,6 +154,9 @@ C4Context
     Rel(mastra_workflows, "Chain", mastra_agents)
     Rel(mastra_workflows, "Chain", mastra_tools)
     Rel(mastra_workflows, "Chain", mastra_services)
+    Rel(mastra_networks, "Route to", mastra_agents, "Dynamic LLM routing")
+    Rel(mastra_networks, "Route to", mastra_workflows, "Dynamic LLM routing")
+    Rel(mastra_networks, "Use memory from", libsql, "Task history")
 
     Rel(mastra_tools, "Utilize", mastra_services)
     Rel(mastra_tools, "Interact with", qdrant, "Vector Search")
@@ -478,6 +484,7 @@ This AGENTS.md file provides the technical context needed for coding agents to e
 | Mastra Core Orchestration | [src/mastra/AGENTS.md](src/mastra/AGENTS.md) | backend | rag | stable |
 | Mastra Agents | [src/mastra/agents/AGENTS.md](src/mastra/agents/AGENTS.md) | backend | rag | stable |
 | Mastra Workflows | [src/mastra/workflows/AGENTS.md](src/mastra/workflows/AGENTS.md) | backend | rag | stable |
+| Mastra vNext Networks | [src/mastra/networks/AGENTS.md](src/mastra/networks/AGENTS.md) | ai | rag | stable |
 | Mastra Tools | [src/mastra/tools/AGENTS.md](src/mastra/tools/AGENTS.md) | backend | rag | stable |
 | Mastra Services | [src/mastra/services/AGENTS.md](src/mastra/services/AGENTS.md) | backend | rag | stable |
 | Mastra Schemas | [src/mastra/schemas/AGENTS.md](src/mastra/schemas/AGENTS.md) | backend | validation | stable |
@@ -488,7 +495,7 @@ This AGENTS.md file provides the technical context needed for coding agents to e
 | Corpus Source Documents | [corpus/AGENTS.md](corpus/AGENTS.md) | content | rag | stable |
 | React Hooks Directory | [hooks/AGENTS.md](hooks/AGENTS.md) | frontend | ui | stable |
 
-_Total:_ 25 subordinate documentation files indexed.
+_Total:_ 26 subordinate documentation files indexed.
 
 @/**/AGENTS.md
 

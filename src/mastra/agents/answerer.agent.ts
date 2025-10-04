@@ -11,12 +11,10 @@
 import { Agent } from "@mastra/core";
 import { answererOutputSchema } from "../schemas/agent-schemas";
 import { google } from "@ai-sdk/google";
-import { createResearchMemory } from '../config/libsql-storage';
 import { log } from "../config/logger";
+import { pgMemory } from "../config/pg-storage";
 
 log.info('Initializing Answerer Agent...');
-
-const store = createResearchMemory();
 
 export const answererAgent = new Agent({
   id: "answerer",
@@ -44,7 +42,7 @@ IMPORTANT: Respond with valid JSON:
   "answer": "Your complete answer with inline citations",
   "citations": [{"docId": "document-id", "source": "source description"}]
 }`,
-  memory: store,
+  memory: pgMemory,
   evals: {},
   scorers: {},
   workflows: {},

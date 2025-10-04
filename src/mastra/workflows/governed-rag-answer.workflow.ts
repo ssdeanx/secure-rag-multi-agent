@@ -23,17 +23,21 @@ const authenticationStep = createStep({
   }),
   execute: async ({ inputData }) => {
     const startTime = Date.now();
-    logStepStart('authentication', { question: inputData.question, hasJWT: !!inputData.jwt });
+    logStepStart('authentication', { hasJwt: !!inputData.jwt });
 
     try {
-      const { claims, accessFilter } = await AuthenticationService.authenticateAndAuthorize(inputData.jwt);
+      // Validate JWT and extract claims using schema
+      const { accessFilter } = await AuthenticationService.authenticateAndAuthorize(inputData.jwt);
+
+      // Validate the access filter structure
+      const validatedFilter = accessFilterSchema.parse(accessFilter);
 
       const output = {
-        accessFilter,
+        accessFilter: validatedFilter,
         question: inputData.question
       };
 
-      logStepEnd('authentication', { accessFilter: accessFilter.allowTags, maxClassification: accessFilter.maxClassification }, Date.now() - startTime);
+      logStepEnd('authentication', { accessFilter: validatedFilter.allowTags, maxClassification: validatedFilter.maxClassification }, Date.now() - startTime);
       return output;
     } catch (error) {
       logError('authentication', error, { question: inputData.question });
@@ -68,7 +72,7 @@ const retrievalStep = createStep({
       const agent = mastra?.getAgent('retrieve') || retrieveAgent;
       console.log(`[${requestId}] 🤖 Calling retrieve agent...`);
 
-      const retrieveResult = await agent.generate(JSON.stringify({
+      const retrieveResult = await agent.generateVNext(JSON.stringify({
         question: inputData.question,
         access: inputData.accessFilter,
         requestId  // Pass request ID to agent for tracking
@@ -81,7 +85,7 @@ const retrievalStep = createStep({
       console.log(`[${requestId}] 📋 Full retrieve result structure:`, JSON.stringify({
         hasToolResults: !!retrieveResult.toolResults,
         toolResultsLength: retrieveResult.toolResults?.length,
-        toolResultsKeys: retrieveResult.toolResults?.map(tr => ({ toolName: tr.toolName, hasResult: !!tr.result })),
+        toolResultsKeys: retrieveResult.toolResults?.map(tr => ({ toolName: tr.payload?.toolName, hasResult: !!tr.payload?.result })),
         hasText: !!retrieveResult.text,
         textLength: retrieveResult.text?.length,
         textPreview: retrieveResult.text?.substring(0, 200)
@@ -98,7 +102,7 @@ const retrievalStep = createStep({
         let toolResult = null;
 
         for (const toolName of possibleToolNames) {
-          toolResult = retrieveResult.toolResults.find(tr => tr.toolName === toolName);
+          toolResult = retrieveResult.toolResults.find(tr => tr.payload?.toolName === toolName);
           if (toolResult) {
             console.log(`[${requestId}] ✅ Found tool result with name: ${toolName}`);
             break;
@@ -108,17 +112,26 @@ const retrievalStep = createStep({
         if (!toolResult) {
           // If no match found, take the first available tool result
           toolResult = retrieveResult.toolResults[0];
-          console.log(`[${requestId}] 🔄 No matching tool name found, using first tool result: ${toolResult.toolName}`);
+          console.log(`[${requestId}] 🔄 No matching tool name found, using first tool result: ${toolResult.payload?.toolName}`);
         }
 
-        if (toolResult?.result?.contexts) {
-          contexts = toolResult.result.contexts;
-          console.log(`[${requestId}] 📄 Extracted ${contexts.length} contexts from tool results`);
+        // Type assertion and validation using retrieveOutputSchema
+        const toolResultData = toolResult?.payload?.result as { contexts?: any[] } | undefined;
+        if (toolResultData?.contexts) {
+          // Validate the output against the schema
+          try {
+            const validated = retrieveOutputSchema.parse({ contexts: toolResultData.contexts });
+            contexts = validated.contexts;
+            console.log(`[${requestId}] 📄 Extracted and validated ${contexts.length} contexts from tool results`);
+          } catch (validationError) {
+            console.warn(`[${requestId}] ⚠️ Schema validation failed, using raw contexts`, validationError);
+            contexts = toolResultData.contexts;
+          }
         } else {
           console.log(`[${requestId}] ⚠️ Tool result found but no contexts property`, {
-            toolName: toolResult?.toolName,
-            hasResult: !!toolResult?.result,
-            resultKeys: toolResult?.result ? Object.keys(toolResult.result) : []
+            toolName: toolResult?.payload?.toolName,
+            hasResult: !!toolResult?.payload?.result,
+            resultKeys: toolResult?.payload?.result ? Object.keys(toolResult.payload.result as Record<string, any>) : []
           });
         }
       } else {
@@ -175,11 +188,14 @@ const retrievalStep = createStep({
 
       // Rerank contexts for relevance
       try {
-        const rerankResult = await rerankAgent.generate(JSON.stringify({
+        const rerankResult = await rerankAgent.generateVNext(JSON.stringify({
           question: inputData.question,
           contexts
         }), {
-          experimental_output: rerankOutputSchema
+          structuredOutput: {
+            schema: rerankOutputSchema
+          },
+          maxSteps: 1
         });
 
         const rerankResponse = rerankResult.object ?? { contexts: [] };
@@ -228,11 +244,14 @@ const answerStep = createStep({
     try {
       logAgentActivity('answerer', 'generating-answer', { contextsCount: inputData.contexts.length });
 
-      const result = await answererAgent.generate(JSON.stringify({
+      const result = await answererAgent.generateVNext(JSON.stringify({
         question: inputData.question,
         contexts: inputData.contexts
       }), {
-        experimental_output: answererOutputSchema
+        structuredOutput: {
+          schema: answererOutputSchema
+        },
+        maxSteps: 1
       });
 
       const answer = result.object ?? { answer: "Unable to generate answer", citations: [] };
@@ -280,12 +299,15 @@ const verifyStep = createStep({
     try {
       logAgentActivity('verifier', 'verifying-answer', { citationsCount: inputData.answer.citations?.length || 0 });
 
-      const result = await verifierAgent.generate(JSON.stringify({
+      const result = await verifierAgent.generateVNext(JSON.stringify({
         answer: inputData.answer,
         question: inputData.question,
         contexts: inputData.contexts
       }), {
-        experimental_output: verifierOutputSchema
+        structuredOutput: {
+          schema: verifierOutputSchema
+        },
+        maxSteps: 1
       });
 
       const verification = result.object ?? { ok: false, reason: "Verification failed" };
