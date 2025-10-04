@@ -1,9 +1,6 @@
-import { embedMany } from "ai";
 import * as crypto from "crypto";
-
 import * as fs from "fs/promises";
 
-import { openAIEmbeddingProvider } from "../config/openai";
 import type { ChunkingResult} from "./ChunkingService";
 import { ChunkingService } from "./ChunkingService";
 import type { ProcessingOptions } from "./DocumentProcessorService";
@@ -66,13 +63,27 @@ export class DocumentIndexingService {
     allowedRoles: string[],
     tenant: string
   ): string[] {
+    // Validate inputs using ValidationService
+    ValidationService.validateEnvironmentVariable('TENANT', tenant);
+    
+    if (!classification || !['public', 'internal', 'confidential'].includes(classification)) {
+      throw new Error(`Invalid classification: ${classification}`);
+    }
+    
+    if (!Array.isArray(allowedRoles) || allowedRoles.length === 0) {
+      throw new Error('allowedRoles must be a non-empty array');
+    }
+
     const tags: string[] = [`classification:${classification}`];
+    
     // Add explicit role tags first
     allowedRoles.forEach(role => {
       tags.push(`role:${role}`);
     });
-    // Auto-add hierarchical base roles based on classification and content type
+    
+    // Use RoleService to get hierarchical roles
     const roleSet = new Set(allowedRoles);
+    
     // For internal and public documents, add employee access if not department-specific
     if (classification === 'internal' || classification === 'public') {
       const isDepartmentSpecific = allowedRoles.some(role =>
@@ -83,15 +94,19 @@ export class DocumentIndexingService {
         console.log(`INDEXING: Auto-added 'employee' role for ${classification} document`);
       }
     }
+    
     // For public documents, add public access
     if (classification === 'public' && !roleSet.has('public')) {
       tags.push('role:public');
       console.log(`INDEXING: Auto-added 'public' role for public document`);
     }
+    
     // Add tenant tag
     if (tenant) {
       tags.push(`tenant:${tenant}`);
     }
+    
+    // Log the generated tags using RoleService formatting for consistency
     console.log(`INDEXING: Generated security tags for ${classification} document:`, tags);
     return tags;
   }

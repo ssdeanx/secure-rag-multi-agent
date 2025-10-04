@@ -1,13 +1,12 @@
 import { Agent } from '@mastra/core/agent';
 import { reportOutputSchema } from "../schemas/agent-schemas";
-import { createResearchMemory } from '../config/libsql-storage';
 import { ContentSimilarityMetric, CompletenessMetric, TextualDifferenceMetric, KeywordCoverageMetric, ToneConsistencyMetric } from "@mastra/evals/nlp";
 import { log } from "../config/logger";
 import { google } from '@ai-sdk/google';
+import { pgMemory } from '../config/pg-storage';
 
 log.info("Initializing Report Agent...");
 
-const store = createResearchMemory();
 export const reportAgent = new Agent({
   id: 'report',
   name: 'Report Agent',
@@ -69,7 +68,7 @@ Include a summary of the research process.
     toneConsistency: new ToneConsistencyMetric(),
   },
   model: google('gemini-2.5-flash'),
-  memory: store,
+  memory: pgMemory,
   scorers: {},
   workflows: {},
 });

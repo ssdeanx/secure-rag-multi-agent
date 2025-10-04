@@ -89,12 +89,17 @@ const callAgent = createStep({
       streamProgressUpdate(streamController, 'Generating response...', 'in_progress');
     }
 
-    const response = await starterAgent.generate(messages.map((m) => m.content), {
+    const response = await starterAgent.generateVNext(messages.map((m) => m.content), {
       // If system prompt is provided, overwrite the default system prompt for this agent
       ...(systemPrompt ? ({ instructions: systemPrompt } as const) : {}),
-      temperature,
-      maxTokens,
-      experimental_output: ChatAgentResponseSchema,
+      modelSettings: {
+        temperature,
+        maxOutputTokens: maxTokens,
+      },
+      structuredOutput: {
+        schema: ChatAgentResponseSchema
+      },
+      maxSteps: 1
     });
 
     const { content, action } = response.object ?? {

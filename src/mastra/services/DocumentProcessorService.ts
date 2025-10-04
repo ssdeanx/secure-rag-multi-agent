@@ -95,8 +95,7 @@ export class DocumentProcessorService {
 
       // Stage 3: Generate embeddings
       const embeddingResult = await this.embeddingService.generateEmbeddings(
-        chunkingResult.chunks,
-        options.embedding
+        chunkingResult.chunks
       );
       console.log('DOCUMENT_PROCESSOR_SERVICE', `Embeddings generated: ${embeddingResult.embeddings.length} embeddings, ${embeddingResult.batchesProcessed} batches`);
       console.log(`Embeddings generated: ${embeddingResult.embeddings.length} embeddings, ${embeddingResult.batchesProcessed} batches`);
@@ -302,7 +301,7 @@ export class DocumentProcessorService {
 
     const avgDocSize: number = totalSize / sampledDocs.length;
     const totalEstimatedSize: number = avgDocSize * docs.length;
-    const EMBEDDING_DIMENSION = 3072; // gemini-embedding-001
+    const EMBEDDING_DIMENSION = 1568; // gemini-embedding-001
 
     // Get optimal chunking settings
     const optimalChunking = this.chunkingService.getOptimalChunkSize(avgDocSize);

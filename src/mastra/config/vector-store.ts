@@ -1,29 +1,25 @@
-import { QdrantVector } from '@mastra/qdrant'
-import { embedMany } from "ai";
-import { google } from "@ai-sdk/google";
+// Re-export pgVector and utilities from pg-storage.ts
+import { pgVector, generateEmbeddings as pgGenerateEmbeddings } from './pg-storage';
 import { log } from "./logger";
-import { AISpanType, AITracingEventType } from '@mastra/core/ai-tracing';
+import { AISpanType } from '@mastra/core/ai-tracing';
 
-// Production-grade QdrantVector configuration
-const qVector = new QdrantVector({
-  url: process.env.QDRANT_URL ?? 'http://localhost:6333',
-  apiKey: process.env.QDRANT_API_KEY ?? '',
-  https: process.env.QDRANT_HTTPS === 'true', // Enable TLS when explicitly set
-})
+// Use PgVector instead of Qdrant
+const vectorStore = pgVector;
 
 /**
- * Initialize the Qdrant vector store index with production settings.
+ * Initialize the PgVector store index with production settings.
  * Call this during application bootstrap.
  */
 export async function initVectorStore() {
   try {
-    await qVector.createIndex({
+    await vectorStore.createIndex({
       indexName: 'governed_rag',
-      dimension: 3072,
+      dimension: 1568, // Gemini embedding dimension
       metric: 'cosine',
     });
+    log.info('PgVector index initialized successfully', { indexName: 'governed_rag', dimension: 1568 });
   } catch (error) {
-    log.error('Failed to initialize Qdrant vector store index', {
+    log.error('Failed to initialize PgVector store index', {
       error: error instanceof Error ? error.message : String(error),
     });
     throw error;
@@ -104,9 +100,9 @@ export class VectorStoreUtils {
     }
 
     // Validate dimension matches expected
-    if (dimension !== 3072) {
+    if (dimension !== 1568) {
       log.warn('Vector dimension does not match expected dimension', {
-        expected: 3072,
+        expected: 1568,
         actual: dimension
       });
     }
@@ -128,9 +124,9 @@ export class VectorStoreUtils {
       throw new Error('Query vector cannot be empty');
     }
 
-    if (queryVector.length !== 3072) {
+    if (queryVector.length !== 1568) {
       log.warn('Query vector dimension does not match expected dimension', {
-        expected: 3072,
+        expected: 1568,
         actual: queryVector.length
       });
     }
@@ -182,7 +178,7 @@ export class VectorStoreUtils {
           tracingEnabled: this.tracingEnabled
         });
 
-        const result = await qVector.upsert({
+        const result = await vectorStore.upsert({
           indexName,
           vectors,
           metadata,
@@ -262,7 +258,7 @@ export class VectorStoreUtils {
           tracingEnabled: this.tracingEnabled
         });
 
-        const result = await qVector.query({
+        const result = await vectorStore.query({
           indexName,
           queryVector,
           topK: options.topK || 10,
@@ -408,11 +404,11 @@ export class VectorStoreUtils {
    */
   static async healthCheck(): Promise<boolean> {
     try {
-      const indexes = await qVector.listIndexes();
-      log.info('Vector store health check passed', { indexCount: indexes.length });
+      const indexes = await vectorStore.listIndexes();
+      log.info('PgVector store health check passed', { indexCount: indexes.length });
       return true;
     } catch (error) {
-      log.error('Vector store health check failed', {
+      log.error('PgVector store health check failed', {
         error: error instanceof Error ? error.message : String(error)
       });
       return false;
@@ -424,7 +420,7 @@ export class VectorStoreUtils {
    */
   static async getIndexStats(indexName: string) {
     try {
-      const stats = await qVector.describeIndex({ indexName });
+      const stats = await vectorStore.describeIndex({ indexName });
       log.info('Retrieved index statistics', { indexName, stats });
       return stats;
     } catch (error) {
@@ -452,50 +448,8 @@ class VectorStoreError extends Error {
   }
 }
 
-// Production-grade embedding generation with Gemini
-export async function generateEmbeddings(chunks: Array<{ text: string; metadata?: any; id?: string }>) {
-  if (!chunks.length) {
-    log.warn("No chunks provided for embedding generation");
-    return { embeddings: [] };
-  }
-
-  const startTime = Date.now();
-  log.info("Starting embedding generation with Gemini", {
-    chunkCount: chunks.length,
-    totalTextLength: chunks.reduce((sum, chunk) => sum + (chunk.text?.length ?? 0), 0),
-    model: 'gemini-embedding-001'
-  });
-
-  try {
-    const { embeddings } = await embedMany({
-      values: chunks.map(chunk => chunk.text),
-      model: google.textEmbedding('gemini-embedding-001'),
-      maxRetries: parseInt(process.env.EMBEDDING_MAX_RETRIES ?? '3'),
-      abortSignal: new AbortController().signal,
-    });
-
-    const processingTime = Date.now() - startTime;
-    log.info("Gemini embeddings generated successfully", {
-      embeddingCount: embeddings.length,
-      embeddingDimension: embeddings[0]?.length || 0,
-      processingTimeMs: processingTime,
-      model: 'gemini-embedding-001',
-    });
-
-    return { embeddings };
-
-  } catch (error) {
-    const processingTime = Date.now() - startTime;
-    log.error("Gemini embedding generation failed", {
-      error: error instanceof Error ? error.message : 'Unknown error',
-      chunkCount: chunks.length,
-      processingTimeMs: processingTime,
-      model: 'gemini-embedding-001',
-    });
-
-    throw error;
-  }
-}
+// Re-export generateEmbeddings from pg-storage.ts
+export const generateEmbeddings = pgGenerateEmbeddings;
 
 // Enhanced upsert with automatic embedding generation
 export async function upsertWithEmbeddings(
@@ -531,43 +485,18 @@ export async function upsertWithEmbeddings(
   );
 }
 
-// Database-specific configuration for Qdrant
-export const qdrantConfig = {
-  // Connection settings
+// Database-specific configuration for PgVector
+export const pgVectorConfig = {
+  // Connection settings inherited from pg-storage.ts
   connection: {
-    url: process.env.QDRANT_URL ?? 'http://localhost:6333',
-    apiKey: process.env.QDRANT_API_KEY ?? '',
-    https: process.env.QDRANT_HTTPS === 'true',
-    timeout: parseInt(process.env.QDRANT_TIMEOUT ?? '30000'), // 30 seconds
-    retryAttempts: parseInt(process.env.QDRANT_RETRY_ATTEMPTS ?? '3'),
+    connectionString: process.env.SUPABASE ?? process.env.DATABASE_URL,
+    schemaName: process.env.DB_SCHEMA ?? 'public',
   },
 
   // Index settings
   index: {
-    dimension: 3072,
+    dimension: 1568, // Gemini embedding dimension
     metric: 'cosine' as const,
-    vectorsConfig: {
-      onDisk: true,
-    },
-    optimizersConfig: {
-      defaultSegmentNumber: 2,
-      maxSegmentSize: 20000,
-      memmapThreshold: 10000,
-      indexingThreshold: 10000,
-    },
-    hnswConfig: {
-      m: 16,
-      efConstruct: 100,
-      fullScanThreshold: 10000,
-      maxIndexingThreads: 0,
-    },
-    quantizationConfig: {
-      scalar: {
-        type: 'int8' as const,
-        quantile: 0.99,
-        alwaysRam: false,
-      }
-    }
   },
 
   // Query optimization settings
@@ -576,20 +505,20 @@ export const qdrantConfig = {
     maxTopK: 100,
     scoreThreshold: 0.0,
     enableFiltering: true,
-    enableHybridSearch: false,
+    minScore: parseFloat(process.env.PG_MIN_SCORE ?? '0.7'),
+    ef: parseInt(process.env.PG_EF ?? '200'),
+    probes: parseInt(process.env.PG_PROBES ?? '10'),
   },
 
   // Performance settings
   performance: {
     batchSize: 100,
     maxConcurrentRequests: 10,
-    enableCompression: true,
-    enableCaching: false,
   }
 };
 
-// Export enhanced vector store instance
-export { qVector as qdrantVector };
+// Export PgVector instance (backward compatible naming)
+export { vectorStore as qdrantVector, pgVector };
 
 // Basic index for common queries
 //await store.createIndex({
@@ -649,4 +578,3 @@ export { qVector as qdrantVector };
 //  })),
 //  sparseVectors: chunks.map((chunk) => chunk.metadata?.sparseVector), // Optional sparse vectors
 //});
-

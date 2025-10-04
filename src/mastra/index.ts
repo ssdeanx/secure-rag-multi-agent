@@ -9,7 +9,7 @@ import { governedRagIndex } from "./workflows/governed-rag-index.workflow";
 import { MastraJwtAuth } from '@mastra/auth';
 import { LangfuseExporter } from "./ai-tracing";
 import { SamplingStrategyType } from "@mastra/core/ai-tracing";
-import { store } from './config/pg-storage'
+import { pgStore, pgVector } from './config/pg-storage'
 import { sqlstore } from "./config/libsql-storage";
 import { researchAgent } from "./agents/researchAgent";
 import { starterAgent } from "./agents/starterAgent";
@@ -25,13 +25,13 @@ import { generateReportWorkflow } from "./workflows/generateReportWorkflow";
 import { chatWorkflow } from "./workflows/chatWorkflow1";
 import { contentGenerationWorkflow } from "./workflows/contentGenerationWorkflow";
 import { randomUUID } from "crypto";
-import { qdrantVector } from "./config/vector-store";
 import { SensitiveDataFilter } from '@mastra/core/ai-tracing';
+import { researchContentNetwork, governedRagNetwork } from "./networks";
 
 
 log.info("Mastra instance created");
 export const mastra = new Mastra({
-  storage: sqlstore,
+  storage: pgStore,
   logger: log,
   agents: {
     retrieve: retrieveAgent,
@@ -61,7 +61,11 @@ export const mastra = new Mastra({
     'content-generation': contentGenerationWorkflow,
   },
   vectors: {
-    qdrant: qdrantVector,
+    pgVector: pgVector,
+  },
+  vnext_networks: {
+    'research-content-network': researchContentNetwork,
+    'governed-rag-network': governedRagNetwork,
   },
   server: {
     experimental_auth: new MastraJwtAuth({

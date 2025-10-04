@@ -3,7 +3,7 @@ import { createGeminiProvider } from 'ai-sdk-provider-gemini-cli';
 
 const useApiKey = !!process.env.GOOGLE_GENERATIVE_AI_API_KEY || process.env.NODE_ENV === 'production';
 const gemini = createGeminiProvider({
-  authType: useApiKey ? 'oauth-personal':'api-key', // Use OAuth in dev, production use API
+  authType: useApiKey ? 'api-key' : 'oauth-personal', // Use OAuth in dev, production use API
   apiKey: useApiKey ? process.env.GOOGLE_GENERATIVE_AI_API_KEY : undefined, // Provide API key if using API key auth
   cacheDir: process.env.GEMINI_OAUTH_CACHE, // directory to store cached tokens
 });

@@ -2,7 +2,7 @@
 import { Agent } from "@mastra/core/agent";
 import { copywriterOutputSchema } from "../schemas/agent-schemas";
 //import { createGemini25Provider } from "../config/googleProvider";
-import { createResearchMemory, STORAGE_CONFIG } from '../config/libsql-storage';
+
 import { webScraperTool,
 //  batchWebScraperTool,
 //  siteMapExtractorTool,
@@ -11,35 +11,10 @@ import { webScraperTool,
   contentCleanerTool
 } from "../tools/web-scraper-tool";
 import { google } from '@ai-sdk/google';
-import { LIBSQL_PROMPT } from "@mastra/libsql";
-import { createGraphRAGTool, createVectorQueryTool } from "@mastra/rag";
 import { log } from "../config/logger";
+import { pgMemory } from "../config/pg-storage";
 
 log.info('Initializing Copywriter Agent...');
-
-const store = createResearchMemory();
-
-const queryTool = createVectorQueryTool({
-  vectorStoreName:  "vectorStore",
-  indexName: STORAGE_CONFIG.VECTOR_INDEXES.RESEARCH_DOCUMENTS, // Use research documents index
-  model: google.textEmbedding("gemini-embedding-001"),
-  enableFilter: true,
-  description: "Search for semantically similar content in the LibSQL vector store using embeddings. Supports filtering, ranking, and context retrieval."
-});
-
-const graphQueryTool = createGraphRAGTool({
-  vectorStoreName:  "vectorStore",
-  indexName: STORAGE_CONFIG.VECTOR_INDEXES.RESEARCH_DOCUMENTS, // Use research documents index
-  model: google.textEmbedding("gemini-embedding-001"),
-  graphOptions: {
-    threshold: 0.7,
-    dimension: 3072, // Default for gemini-embedding-001
-    randomWalkSteps: 15,
-    restartProb: 0.3
-  },
-  enableFilter: true,
-  description: "Graph-based search for semantically similar content in the LibSQL vector store using embeddings. Supports filtering, ranking, and context retrieval."
-});
 
 export const copywriterAgent = new Agent({
   id: "copywriter",
@@ -116,7 +91,6 @@ For each content type, adapt your approach:
 - Use the \`webScraperTool\` to gather initial information and context from URLs
 - Use the \`queryTool\` to search for relevant information within the existing knowledge base
 - Use the \`contentCleanerTool\` and \`htmlToMarkdownTool\` to process and format scraped web content
-${LIBSQL_PROMPT}
 </tool_usage>
 
 <output_format>
@@ -125,11 +99,9 @@ Include relevant metadata such as title, summary, and key points when applicable
 </output_format>
   `,
   model: google('gemini-2.5-flash-preview-09-2025'),
-  memory: store,
+  memory: pgMemory,
   tools: {
     webScraperTool,
-    queryTool,
-    graphQueryTool,
 //    batchWebScraperTool,
  //   siteMapExtractorTool,
 //    linkExtractorTool,

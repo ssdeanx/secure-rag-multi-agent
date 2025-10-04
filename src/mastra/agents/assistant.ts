@@ -15,7 +15,6 @@
 import { Agent } from "@mastra/core/agent";
 import { assistantOutputSchema } from "../schemas/agent-schemas";
 import { createOpenRouter } from "@openrouter/ai-sdk-provider";
-import { createResearchMemory } from '../config/libsql-storage';
 import { ContentSimilarityMetric, CompletenessMetric, TextualDifferenceMetric, KeywordCoverageMetric, ToneConsistencyMetric } from "@mastra/evals/nlp";
 import { UnicodeNormalizer } from "@mastra/core/processors"
 import { BatchPartsProcessor } from "@mastra/core/processors";
@@ -31,11 +30,10 @@ import { webScraperTool,
 import { log } from "../config/logger";
 import { editorTool } from "../tools/editor-agent-tool";
 import { weatherTool } from "../tools/weather-tool";
+import { pgMemory } from "../config/pg-storage";
 
 
 log.info('Initializing OpenRouter Assistant Agent...');
-
-const store = createResearchMemory();
 
 const openrouter = createOpenRouter({
     apiKey: process.env.OPENROUTER_API_KEY,
@@ -92,7 +90,7 @@ For complex research tasks that generate data, you MUST respond with a valid JSO
         },
       usage: { include: true }
     }),
-    memory: store,
+    memory: pgMemory,
     evals: {
     contentSimilarity: new ContentSimilarityMetric({ ignoreCase: true, ignoreWhitespace: true }),
     completeness: new CompletenessMetric(),

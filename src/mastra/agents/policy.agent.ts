@@ -2,13 +2,11 @@ import { Agent } from "@mastra/core";
 
 import { openAIModel } from "../config/openai";
 import { policyOutputSchema } from "../schemas/agent-schemas";
-import { createResearchMemory } from '../config/libsql-storage';
 import { google } from "@ai-sdk/google";
 import { log } from "../config/logger";
+import { pgMemory } from "../config/pg-storage";
 
 log.info('Initializing Policy Agent...');
-
-const store = createResearchMemory();
 
 export const policyAgent = new Agent({
   id: "policy",
@@ -31,7 +29,7 @@ Rules:
 Examples:
 - Finance user: {"roles": ["finance.viewer"], "tenant": "acme", "stepUp": false} → {"allowTags": ["role:finance.viewer", "tenant:acme"], "maxClassification": "internal"}
 - HR user: {"roles": ["hr.viewer"], "tenant": "acme", "stepUp": false} → {"allowTags": ["role:hr.viewer", "tenant:acme"], "maxClassification": "confidential"}`,
-  memory: store,
+  memory: pgMemory,
   evals: {
     // Add any evaluation metrics if needed
   },

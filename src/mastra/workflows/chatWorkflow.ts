@@ -272,10 +272,12 @@ const callAgent = createStep({
     }
 
     const messageContents = messages.map((m) => m.content);
-    const streamResult = await productRoadmapAgent.stream(messageContents, {
+    const streamResult = await productRoadmapAgent.streamVNext(messageContents, {
       ...((systemPrompt !== null) ? ({ instructions: systemPrompt } as const) : {}),
-      temperature,
-      maxTokens,
+      modelSettings: {
+        temperature,
+        maxOutputTokens: maxTokens,
+      },
       ...(resourceId && threadId ? { memory: { resource: resourceId, thread: threadId } } : {}),
     });
 

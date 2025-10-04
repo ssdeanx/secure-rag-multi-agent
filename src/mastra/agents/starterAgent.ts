@@ -51,6 +51,7 @@ You will respond in a JSON format with the following fields:
   topP: 0.95, // Nucleus sampling threshold
   }),
   tools: {weatherTool},
+
   scorers: {},
   workflows: {},
   evals: {

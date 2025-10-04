@@ -1,6 +1,5 @@
 import { embedMany } from "ai";
 import { google } from "@ai-sdk/google";
-import { openAIEmbeddingProvider } from "../config/openai";
 import { ValidationService } from "./ValidationService";
 import { RoleService } from "./RoleService";
 import { log } from "../config/logger";

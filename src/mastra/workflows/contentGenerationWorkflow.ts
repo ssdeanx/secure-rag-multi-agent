@@ -89,7 +89,7 @@ Tone: ${inputData.tone}
 ${inputData.targetAudience ? `Target Audience: ${inputData.targetAudience}` : ''}`;
 
       // Call copywriter agent with message format
-      const result = await copywriterAgent.generate([{ role: 'user', content: prompt }]);
+      const result = await copywriterAgent.generateVNext([{ role: 'user', content: prompt }]);
 
       const content = result.text || '';
       const wordCount = content.split(/\s+/).length;
@@ -132,9 +132,12 @@ const refineDraft = createStep({
 Original Content:
 ${inputData.content}`;
 
-      // Call editor agent with experimental_output for structured response
-      const result = await editorAgent.generate([{ role: 'user', content: prompt }], {
-        experimental_output: editorOutputSchema
+      // Call editor agent with structuredOutput for structured response
+      const result = await editorAgent.generateVNext([{ role: 'user', content: prompt }], {
+        structuredOutput: {
+          schema: editorOutputSchema
+        },
+        maxSteps: 1
       });
 
       const editedContent = result.object?.editedContent || result.text || inputData.content;
@@ -182,9 +185,12 @@ Assess:
 3. Target audience appropriateness
 4. Overall effectiveness`;
 
-      // Call evaluation agent with experimental_output for structured response
-      const result = await evaluationAgent.generate([{ role: 'user', content: prompt }], {
-        experimental_output: evaluationOutputSchema
+      // Call evaluation agent with structuredOutput for structured response
+      const result = await evaluationAgent.generateVNext([{ role: 'user', content: prompt }], {
+        structuredOutput: {
+          schema: evaluationOutputSchema
+        },
+        maxSteps: 1
       });
 
       // Parse evaluation result

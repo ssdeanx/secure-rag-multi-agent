@@ -1,5 +1,5 @@
 import { log, logProgress } from '../config/logger';
-import { qdrantVector } from '../config/vector-store';
+import { pgVector } from '../config/pg-storage';
 
 const MAX_MAX_RETRIES = 3;
 export interface VectorMetadata {
@@ -131,9 +131,8 @@ export class VectorStorageService {
 
       log.info(`Upserting ${embeddings.length} vectors for ${docId}`);
 
-      // Store vectors in vector database
-      // FIXME
-      const result = await qdrantVector.upsert({
+      // Store vectors in vector database using pgVector
+      const result = await pgVector.upsert({
         indexName: process.env.QDRANT_COLLECTION ?? 'governed_rag',
         vectors: embeddings,
         metadata

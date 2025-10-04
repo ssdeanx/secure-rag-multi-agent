@@ -2,8 +2,8 @@ import { Memory } from "@mastra/memory";
 import { embedMany } from "ai";
 import { google } from "@ai-sdk/google";
 
-import { EmbedManyResult } from "@mastra/core";
 import { log } from "../config/logger";
+import { generateEmbeddings as pgGenerateEmbeddings } from "../config/pg-storage";
 
 const MAX_RETRIES = 3;
 
@@ -49,8 +49,31 @@ export class EmbeddingService {
   }
 
   /**
+   * Generate embeddings using pg-storage optimized implementation
+   * This is the recommended method as it uses the shared pg-storage configuration
+   */
+  async generateEmbeddings(chunks: string[]): Promise<EmbeddingResult> {
+    console.log('EMBEDDING_SERVICE', `Using pg-storage generateEmbeddings for ${chunks.length} chunks`);
+    
+    const chunkData = chunks.map((text, i) => ({ text, id: `chunk-${i}` }));
+    const { embeddings } = await pgGenerateEmbeddings(chunkData);
+    
+    const typedEmbeddings = embeddings as number[][];
+    const dimension = typedEmbeddings.length > 0 ? typedEmbeddings[0].length : 1568;
+    
+    return {
+      embeddings: typedEmbeddings,
+      chunks,
+      totalChunks: chunks.length,
+      batchesProcessed: 1,
+      dimension
+    };
+  }
+
+  /**
    * Generate embeddings using Mastra's native implementation with caching
    * This method uses Mastra's built-in caching and retry logic
+   * @deprecated Use generateEmbeddings() instead which uses pg-storage
    */
 
   async generateEmbeddingsNative(chunks: string[]): Promise<EmbeddingResult> {
@@ -131,10 +154,10 @@ export class EmbeddingService {
   }
 
   /**
-   * Main embedding generation method - automatically selects best strategy
+   * Main embedding generation method - uses pg-storage optimized implementation
+   * Automatically handles batching and caching
    */
-
-  async generateEmbeddings(chunks: string[], options: EmbeddingOptions = {}): Promise<EmbeddingResult> {
+  async generateEmbeddingsLegacy(chunks: string[], options: EmbeddingOptions = {}): Promise<EmbeddingResult> {
     const opts = { ...this.defaultOptions, ...options };
 
     // For smaller documents, use native implementation with caching
@@ -169,7 +192,7 @@ export class EmbeddingService {
     recommendation: string;
   } {
     // Rough estimates based on typical embedding dimensions and chunk sizes
-    const embeddingDimension = 3072; // text-embedding-3-small
+    const embeddingDimension = 1568; // gemini-embedding-001
     const bytesPerFloat = 4;
     const embeddingSize: number = embeddingDimension * bytesPerFloat;
     const textSize: number = avgChunkSize * 2; // UTF-16 encoding
