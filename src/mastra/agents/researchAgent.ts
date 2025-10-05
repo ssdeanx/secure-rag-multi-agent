@@ -17,7 +17,6 @@ import { pgMemory } from '../config/pg-storage';
 log.info("Initializing Research Agent...");
 
 
-
 export const researchAgent = new Agent({
   id: 'research',
   name: 'Research Agent',
@@ -69,7 +68,7 @@ Example:
    keywordCoverage: new KeywordCoverageMetric(), // Keywords will be provided at runtime for evaluation
    toneConsistency: new ToneConsistencyMetric(),
  },
- model: google('gemini-2.5-flash'),
+ model: google('gemini-2.5-flash-preview-09-2025'),
  tools: {
     webScraperTool,
     batchWebScraperTool,

@@ -85,11 +85,11 @@ const callAgent = createStep({
   execute: async ({ inputData }) => {
     const { messages, temperature, maxTokens, streamController, systemPrompt } = inputData;
 
-    if (streamController) {
+    if (streamController !== null) {
       streamProgressUpdate(streamController, 'Generating response...', 'in_progress');
     }
 
-    const response = await starterAgent.generateVNext(messages.map((m) => m.content), {
+    const response = await starterAgent.generate(messages.map((m) => m.content), {
       // If system prompt is provided, overwrite the default system prompt for this agent
       ...(systemPrompt ? ({ instructions: systemPrompt } as const) : {}),
       modelSettings: {
@@ -113,11 +113,11 @@ const callAgent = createStep({
     };
 
     console.log('Chat workflow result', result);
-    if (streamController) {
+    if (streamController !== null) {
       streamJSONEvent(streamController, result);
     }
 
-    if (streamController) {
+    if (streamController !== null) {
       streamProgressUpdate(streamController, 'Response generated', 'complete');
     }
 

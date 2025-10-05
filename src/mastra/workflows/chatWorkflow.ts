@@ -1,6 +1,6 @@
 // ---------------------------------------------
-// Workflows are a Mastra primitive to orchestrate agents and complex sequences of tasks
-// Docs: https://mastra.ai/en/docs/workflows/overview
+// Cedar OS Integrated Chat Workflow
+// Integrates with Cedar OS state management and roadmap functionality
 // ---------------------------------------------
 
 import { createWorkflow, createStep } from '@mastra/core/workflows';
@@ -8,14 +8,16 @@ import { z } from 'zod';
 import { productRoadmapAgent } from '../agents/productRoadmapAgent';
 import { streamJSONEvent, handleTextStream } from '../../utils/streamUtils';
 import type { StreamTextResult } from 'ai';
+import { MessageSchema, ExecuteFunctionResponseSchema, ActionResponseSchema } from './chatWorkflowSharedTypes';
+import { AISpanType } from '@mastra/core/ai-tracing';
 
 // ---------------------------------------------
-// Mastra nested streaming – emit placeholder events
+// Mastra nested streaming support
+// Docs: https://mastra.ai/blog/nested-streaming-support
 // ---------------------------------------------
 
 /**
- * All possible event types that can be emitted by Mastra primitives when using the
- * new nested streaming support (see https://mastra.ai/blog/nested-streaming-support).
+ * Event types for Mastra workflow streaming
  */
 export type MastraEventType =
   | 'start'
@@ -28,103 +30,79 @@ export type MastraEventType =
   | 'step-output'
   | 'finish';
 
-// Helper array so we can iterate easily when emitting placeholder events.
-const mastraEventTypes: MastraEventType[] = [
-  'start',
-  'step-start',
-  'tool-call',
-  'tool-result',
-  'step-finish',
-  'tool-output',
-  'step-result',
-  'step-output',
-  'finish',
-];
-
-// Pre-defined sample event objects that follow the shapes shown in the
-// nested-streaming blog post. These are purely illustrative and use mock IDs.
-const sampleMastraEvents: Record<MastraEventType, Record<string, unknown>> = {
+// Event templates for Cedar UI integration
+const mastraEventTemplates: Record<MastraEventType, Record<string, unknown>> = {
   start: {
     type: 'start',
-    from: 'AGENT',
-    payload: {},
+    from: 'WORKFLOW',
+    payload: { workflowId: 'chatWorkflow' },
   },
   'step-start': {
     type: 'step-start',
-    from: 'AGENT',
+    from: 'WORKFLOW',
     payload: {
-      messageId: 'msg_123',
-      request: { role: 'user', content: 'Hello, world!' },
-      warnings: [],
+      stepName: 'callAgent',
+      startedAt: Date.now(),
     },
   },
   'tool-call': {
     type: 'tool-call',
     from: 'AGENT',
     payload: {
-      toolCallId: 'tc_456',
-      args: { foo: 'bar' },
-      toolName: 'sampleTool',
+      toolCallId: 'tc_' + Date.now(),
+      args: {},
+      toolName: 'chatAgent',
     },
   },
   'tool-result': {
     type: 'tool-result',
     from: 'AGENT',
     payload: {
-      toolCallId: 'tc_456',
-      toolName: 'sampleTool',
+      toolCallId: 'tc_' + Date.now(),
+      toolName: 'chatAgent',
       result: { success: true },
     },
   },
   'step-finish': {
     type: 'step-finish',
-    from: 'AGENT',
+    from: 'WORKFLOW',
     payload: {
       reason: 'completed',
       usage: {
-        promptTokens: 10,
-        completionTokens: 20,
-        totalTokens: 30,
+        promptTokens: 0,
+        completionTokens: 0,
+        totalTokens: 0,
       },
-      response: { text: 'Done!' },
-      messageId: 'msg_123',
-      providerMetadata: {
-        openai: {
-          reasoningTokens: 5,
-          acceptedPredictionTokens: 10,
-          rejectedPredictionTokens: 0,
-          cachedPromptTokens: 0,
-        },
-      },
+      response: { text: '' },
+      endedAt: Date.now(),
     },
   },
   'tool-output': {
     type: 'tool-output',
-    from: 'USER',
+    from: 'AGENT',
     payload: {
-      output: { text: 'Nested output from agent' },
-      toolCallId: 'tc_456',
-      toolName: 'sampleTool',
+      output: { text: '' },
+      toolCallId: 'tc_' + Date.now(),
+      toolName: 'chatAgent',
     },
   },
   'step-result': {
     type: 'step-result',
     from: 'WORKFLOW',
     payload: {
-      stepName: 'exampleStep',
-      result: { data: 'example' },
-      stepCallId: 'sc_789',
+      stepName: 'callAgent',
+      result: { content: '' },
       status: 'success',
       endedAt: Date.now(),
     },
   },
   'step-output': {
     type: 'step-output',
-    from: 'USER',
+    from: 'AGENT',
     payload: {
-      output: { text: 'Nested output from step' },
-      toolCallId: 'tc_456',
-      toolName: 'sampleTool',
+      output: { text: '' },
+      toolCallId: 'tc_' + Date.now(),
+      toolName: 'chatAgent',
     },
   },
   finish: {
@@ -132,16 +110,13 @@ const sampleMastraEvents: Record<MastraEventType, Record<string, unknown>> = {
     from: 'WORKFLOW',
     payload: {
       totalUsage: {
-        promptTokens: 15,
-        completionTokens: 35,
-        totalTokens: 50,
+        promptTokens: 0,
+        completionTokens: 0,
+        totalTokens: 0,
       },
     },
   },
 };
-
-// The emitMastraEvents step will be declared after buildAgentContext to ensure
-// buildAgentContext is defined before we reference it.
 
 export const ChatInputSchema = z.object({
   prompt: z.string(),
@@ -154,53 +129,89 @@ export const ChatInputSchema = z.object({
   streamController: z.any().optional(),
   // For structured output
   output: z.any().optional(),
+  // Cedar OS context
+  cedarContext: z.object({
+    nodes: z.array(z.object({
+      id: z.string(),
+      title: z.string(),
+      description: z.string(),
+      status: z.string(),
+      type: z.string(),
+      upvotes: z.number(),
+      commentCount: z.number(),
+    })),
+    selectedNodes: z.array(z.object({
+      id: z.string(),
+      title: z.string(),
+      description: z.string(),
+      status: z.string(),
+      type: z.string(),
+      upvotes: z.number(),
+      commentCount: z.number(),
+    })),
+    currentDate: z.string(),
+  }).optional(),
 });
 
-export const ChatOutputSchema = z.object({
-  content: z.string(),
-  usage: z.any().optional(),
-});
+export const ChatOutputSchema = ExecuteFunctionResponseSchema;
 
 export type ChatOutput = z.infer<typeof ChatOutputSchema>;
 
-// 1. fetchContext – passthrough (placeholder)
+// 1. fetchContext – prepare context for agent
 const fetchContext = createStep({
   id: 'fetchContext',
-  description: 'Placeholder step – you might want to fetch some information for your agent here',
+  description: 'Prepare and merge context data for the agent',
   inputSchema: ChatInputSchema,
   outputSchema: ChatInputSchema.extend({
     context: z.any().optional(),
   }),
   execute: async ({ inputData }) => {
-    console.log('Chat workflow received input data', inputData);
-    // [STEP 5] (Backend): If the user adds a node via @mention then sends a message, the agent will receive it here in the user prompt field.
-    // [STEP 6] (Backend): If you call the subscribeInputContext hook on the frontend, the agent will receive that state as context, formatted in the way you specified.
+    // Process frontend context (from @mentions, input context, etc.)
     const frontendContext = inputData.prompt;
 
-    // Merge, filter, or modify the frontend context as needed
-    const unifiedContext = frontendContext;
-
-    return { ...inputData, prompt: unifiedContext };
+    // Context is ready for agent processing
+    return { ...inputData, context: frontendContext };
   },
 });
 
 // 2. buildAgentContext – build message array
 const buildAgentContext = createStep({
   id: 'buildAgentContext',
-  description: 'Combine fetched information and build LLM messages',
+  description: 'Combine fetched information and build LLM messages with Cedar OS context',
   inputSchema: fetchContext.outputSchema,
   outputSchema: ChatInputSchema.extend({
-    messages: z.array(
-      z.object({
-        role: z.enum(['system', 'user', 'assistant']),
-        content: z.string(),
-      }),
-    ),
+    messages: z.array(MessageSchema),
   }),
   execute: async ({ inputData }) => {
-    const { prompt, temperature, maxTokens, streamController, resourceId, threadId } = inputData;
+    const { prompt, temperature, maxTokens, streamController, resourceId, threadId, cedarContext } = inputData;
 
-    const messages = [{ role: 'user' as const, content: prompt }];
+    // Build system prompt with Cedar OS context
+    let enhancedSystemPrompt = inputData.systemPrompt ?? '';
+
+    if (cedarContext) {
+      const contextInfo = `
+Current Roadmap State:
+- Total features: ${cedarContext.nodes.length}
+- Selected features: ${cedarContext.selectedNodes.length}
+- Current date: ${cedarContext.currentDate}
+
+Available Actions:
+- addNode: Add a new feature to the roadmap
+- removeNode: Remove a feature from the roadmap
+- changeNode: Update an existing feature
+
+When users request roadmap changes, respond with a JSON object containing 'content' (your response text) and 'action' (the roadmap action to execute).
+`;
+
+      enhancedSystemPrompt = enhancedSystemPrompt
+        ? `${enhancedSystemPrompt}\n\n${contextInfo}`
+        : contextInfo;
+    }
+
+    const messages = [
+      { role: 'system' as const, content: enhancedSystemPrompt },
+      { role: 'user' as const, content: prompt }
+    ];
 
     return {
           ...inputData,
@@ -210,38 +221,31 @@ const buildAgentContext = createStep({
           streamController,
           resourceId,
           threadId,
+          systemPrompt: enhancedSystemPrompt,
         };
   },
 });
 
-// 2.5 emitMastraEvents – emit a placeholder event for every new Mastra event type
-const emitMastraEvents = createStep({
-  id: 'emitMastraEvents',
-  description: 'Emit placeholder JSON events for every Mastra nested streaming event type',
+// 2.5 emitWorkflowEvents – emit streaming events for Cedar UI
+const emitWorkflowEvents = createStep({
+  id: 'emitWorkflowEvents',
+  description: 'Emit streaming events for Cedar UI integration',
   inputSchema: buildAgentContext.outputSchema,
   outputSchema: buildAgentContext.outputSchema,
   execute: async ({ inputData }) => {
     const { streamController } = inputData;
 
-    if (streamController) {
-      for (const eventType of mastraEventTypes) {
-        const sample = sampleMastraEvents[eventType];
-        streamJSONEvent(streamController, sample);
-      }
+    if (streamController !== null) {
+      // Emit workflow start
+      streamJSONEvent(streamController, mastraEventTemplates.start);
 
-      streamJSONEvent(streamController, {
-        type: 'alert',
-        level: 'info',
-        text: 'Mastra events emitted',
-      });
-      streamJSONEvent(streamController, {
-        type: 'unregistered_event',
-        level: 'info',
-        text: 'Mastra events emitted',
-      });
+      // Emit step start
+      streamJSONEvent(streamController, mastraEventTemplates['step-start']);
+
+      // Emit tool call (agent invocation)
+      streamJSONEvent(streamController, mastraEventTemplates['tool-call']);
     }
 
-    // Pass data through untouched so subsequent steps receive the original input
     return inputData;
   },
 });
@@ -252,7 +256,7 @@ const callAgent = createStep({
   description: 'Invoke the chat agent with streaming and return final text',
   inputSchema: buildAgentContext.outputSchema,
   outputSchema: ChatOutputSchema,
-  execute: async ({ inputData }) => {
+  execute: async ({ inputData, tracingContext }) => {
     const {
       messages,
       temperature,
@@ -261,9 +265,28 @@ const callAgent = createStep({
       systemPrompt,
       resourceId,
       threadId,
+      cedarContext,
     } = inputData;
 
-    if (streamController) {
+    // Create AI tracing span for agent execution
+    const agentSpan = tracingContext?.currentSpan?.createChildSpan({
+      type: AISpanType.AGENT_RUN,
+      name: 'productRoadmapAgent-execution',
+      input: {
+        messageCount: messages.length,
+        hasCedarContext: !!cedarContext,
+        temperature,
+        maxTokens,
+        hasMemory: !!(resourceId && threadId && resourceId.trim() !== '' && threadId.trim() !== ''),
+      },
+      metadata: {
+        agentId: 'productRoadmapAgent',
+        workflowStep: 'callAgent',
+        cedarIntegration: true,
+      },
+    });
+
+    if (streamController !== null) {
       streamJSONEvent(streamController, {
         type: 'progress_update',
         status: 'in_progress',
@@ -272,42 +295,176 @@ const callAgent = createStep({
     }
 
     const messageContents = messages.map((m) => m.content);
-    const streamResult = await productRoadmapAgent.streamVNext(messageContents, {
+    const agentOptions: Record<string, unknown> = {
       ...((systemPrompt !== null) ? ({ instructions: systemPrompt } as const) : {}),
       modelSettings: {
         temperature,
         maxOutputTokens: maxTokens,
       },
-      ...(resourceId && threadId ? { memory: { resource: resourceId, thread: threadId } } : {}),
-    });
+      // Enable structured output to get actions from productRoadmapAgent
+      output: 'json',
+    };
+
+    if (resourceId !== null && resourceId !== '' && threadId !== null && threadId !== '') {
+      agentOptions.memory = { resource: resourceId, thread: threadId };
+    }
+
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const streamResult = await productRoadmapAgent.stream(messageContents, agentOptions as any);
 
     let finalText = '';
-    if (streamController && (streamResult as unknown as StreamTextResult<any, unknown>)) {
-      finalText = await handleTextStream(streamResult as unknown as StreamTextResult<any, unknown>, streamController);
+
+    // Handle streaming response
+    if (streamController !== null) {
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      finalText = await handleTextStream(streamResult as unknown as StreamTextResult<any, any>, streamController);
+
+      // Emit completion events for Cedar UI
+      streamJSONEvent(streamController, {
+        type: 'tool-result',
+        from: 'AGENT',
+        payload: {
+          toolCallId: 'tc_' + Date.now(),
+          toolName: 'chatAgent',
+          result: { success: true, content: finalText },
+        },
+      });
+
+      streamJSONEvent(streamController, {
+        type: 'step-finish',
+        from: 'WORKFLOW',
+        payload: {
+          reason: 'completed',
+          usage: {
+            promptTokens: 0,
+            completionTokens: 0,
+            totalTokens: 0,
+          },
+          response: { text: finalText },
+          endedAt: Date.now(),
+        },
+      });
+
+      streamJSONEvent(streamController, {
+        type: 'step-result',
+        from: 'WORKFLOW',
+        payload: {
+          stepName: 'callAgent',
+          result: { content: finalText },
+          status: 'success',
+          endedAt: Date.now(),
+        },
+      });
+
+      streamJSONEvent(streamController, {
+        type: 'finish',
+        from: 'WORKFLOW',
+        payload: {
+          totalUsage: {
+            promptTokens: 0,
+            completionTokens: 0,
+            totalTokens: 0,
+          },
+        },
+      });
+
       streamJSONEvent(streamController, {
         type: 'progress_update',
         status: 'complete',
         text: 'Response generated',
       });
     } else {
-      for await (const chunk of (streamResult as any).textStream) {
-        finalText += chunk as string;
+      // Handle non-streaming response
+      for await (const chunk of (streamResult as { textStream: AsyncIterable<string> }).textStream) {
+        finalText += chunk;
       }
     }
 
-    return { content: finalText };
+    // Create child span for action parsing
+    const parseSpan = agentSpan?.createChildSpan({
+      type: AISpanType.GENERIC,
+      name: 'parse-structured-response',
+      input: {
+        responseLength: finalText.length,
+        isJsonResponse: finalText.trim().startsWith('{'),
+      },
+      metadata: {
+        operation: 'action-parsing',
+        workflowStep: 'callAgent',
+      },
+    });
+
+    // Parse structured response from productRoadmapAgent
+    let content = finalText;
+    let action: z.infer<typeof ActionResponseSchema> | undefined = undefined;
+
+    try {
+      // Try to parse as JSON for structured output with actions
+      const parsedResponse = JSON.parse(finalText);
+      if (parsedResponse !== null && typeof parsedResponse === 'object') {
+        content = (parsedResponse as Record<string, unknown>).content as string ?? (parsedResponse as Record<string, unknown>).text as string ?? finalText;
+        const rawAction = (parsedResponse as Record<string, unknown>).action ?? (parsedResponse as Record<string, unknown>).object;
+
+        // Validate action against schema
+        if (rawAction !== undefined) {
+          const validatedAction = ActionResponseSchema.safeParse(rawAction);
+          if (validatedAction.success) {
+            action = validatedAction.data;
+          }
+        }
+      }
+    } catch {
+      // Not JSON, use as plain text
+      content = finalText;
+    }
+
+    // End parsing span
+    parseSpan?.end({
+      output: {
+        contentLength: content.length,
+        hasAction: !!action,
+        actionType: action?.type,
+      },
+      metadata: {
+        parsingSuccess: !!action,
+        contentExtracted: content !== finalText,
+      },
+    });
+
+    // End agent execution span
+    agentSpan?.end({
+      output: {
+        contentLength: content.length,
+        hasAction: !!action,
+        cedarContextUsed: !!cedarContext,
+      },
+      metadata: {
+        agentId: 'productRoadmapAgent',
+        workflowStep: 'callAgent',
+        responseType: action ? 'structured-with-action' : 'text-only',
+        cedarIntegration: true,
+      },
+    });
+
+    // Return ExecuteFunctionResponseSchema format
+    return {
+      content,
+      ...(action !== undefined && { object: action }),
+    };
   },
 });
 
-export const chatWorkflow = createWorkflow({
-  id: 'chatWorkflow',
-  description:
-    'Chat workflow that replicates the old /chat/execute-function endpoint behaviour with optional streaming',
+export const cedarChatWorkflow = createWorkflow({
+  id: 'cedarChatWorkflow',
+  description: 'Streaming chat workflow with Cedar OS roadmap integration and product roadmap agent',
   inputSchema: ChatInputSchema,
   outputSchema: ChatOutputSchema,
 })
   .then(fetchContext)
   .then(buildAgentContext)
-  .then(emitMastraEvents)
+  .then(emitWorkflowEvents)
   .then(callAgent)
   .commit();
+
+// Keep the old export for backward compatibility
+export const chatWorkflow = cedarChatWorkflow;

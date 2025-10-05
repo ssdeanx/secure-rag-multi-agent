@@ -67,7 +67,7 @@ Include a summary of the research process.
     keywordCoverage: new KeywordCoverageMetric(), // Keywords will be provided at runtime for evaluation
     toneConsistency: new ToneConsistencyMetric(),
   },
-  model: google('gemini-2.5-flash'),
+  model: google('gemini-2.5-flash-preview-09-2025'),
   memory: pgMemory,
   scorers: {},
   workflows: {},

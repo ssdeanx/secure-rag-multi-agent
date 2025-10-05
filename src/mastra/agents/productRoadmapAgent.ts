@@ -9,8 +9,6 @@ import { copywriterTool } from '../tools/copywriter-agent-tool';
 import { evaluateResultTool } from '../tools/evaluateResultTool';
 import { pgMemory } from '../config/pg-storage';
 
-
-
 export const productRoadmapAgent = new Agent({
   id: 'productRoadmap',
   name: 'Product Roadmap Agent',

@@ -6,8 +6,6 @@ import { pgMemory } from "../config/pg-storage";
 
 log.info('Initializing Verifier Agent...');
 
-
-
 export const verifierAgent = new Agent({
   id: "verifier",
   name: "verifier",
