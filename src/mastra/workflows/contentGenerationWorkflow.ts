@@ -1,9 +1,9 @@
 /**
  * Content Generation Workflow
- * 
+ *
  * Multi-agent content creation pipeline with quality feedback loop
  * Uses streamVNext for enhanced streaming capabilities
- * 
+ *
  * Pipeline:
  * 1. validateContentRequest - Input validation and Cedar context extraction
  * 2. generateDraft - Initial content creation via copywriterAgent
@@ -53,7 +53,7 @@ const validateContentRequest = createStep({
         contentType: inputData.contentType,
         topic: inputData.topic,
         requirements: inputData.requirements,
-        tone: inputData.tone || 'professional',
+        tone: inputData.tone ?? 'professional',
         targetAudience: inputData.targetAudience,
         cedarContext: inputData.cedarContext,
         minQualityScore: inputData.minQualityScore || 0.7
@@ -86,7 +86,7 @@ const generateDraft = createStep({
 
 Requirements: ${inputData.requirements}
 Tone: ${inputData.tone}
-${inputData.targetAudience ? `Target Audience: ${inputData.targetAudience}` : ''}`;
+${(inputData.targetAudience !== null) ? `Target Audience: ${inputData.targetAudience}` : ''}`;
 
       // Call copywriter agent with message format
       const result = await copywriterAgent.generateVNext([{ role: 'user', content: prompt }]);
@@ -196,7 +196,7 @@ Assess:
       // Parse evaluation result
       const isRelevant = result.object?.isRelevant ?? true;
       const reason = result.object?.reason || result.text || 'Quality evaluation completed';
-      
+
       // Calculate quality score (simplified - in production use actual metrics)
       const baseScore = isRelevant ? 0.8 : 0.5;
       const lengthBonus = Math.min(inputData.wordCount / 500, 0.2); // Bonus for sufficient length
@@ -253,6 +253,7 @@ const finalizeContent = createStep({
         summaryOfChanges: refinedContent.summaryOfChanges,
         improvementSuggestions: refinedContent.improvementSuggestions,
         wordCount: refinedContent.wordCount,
+        meetsThreshold, // Added: Include the threshold check result in output for observability
         cedarAction: undefined // Future: emit Cedar actions if needed
       };
 

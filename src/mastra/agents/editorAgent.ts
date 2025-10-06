@@ -3,6 +3,7 @@ import { editorOutputSchema } from "../schemas/agent-schemas";
 import { google } from '@ai-sdk/google';
 import { log } from "../config/logger";
 import { pgMemory } from "../config/pg-storage";
+import { googleAI } from "../config/google";
 
 log.info('Initializing Editor Agent...');
 
@@ -88,7 +89,7 @@ You must respond with a JSON object in the following format:
 }
 </output_format>
   `,
-  model: google('gemini-2.5-flash-preview-09-2025'),
+  model: googleAI,
   memory: pgMemory,
   scorers: {},
   workflows: {},

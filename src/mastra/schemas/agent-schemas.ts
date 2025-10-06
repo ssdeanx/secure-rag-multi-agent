@@ -220,7 +220,8 @@ export const finalContentSchema = z.object({
   summaryOfChanges: z.string(),
   improvementSuggestions: z.string(),
   wordCount: z.number(),
-  cedarAction: cedarActionSchema
+  meetsThreshold: z.boolean(), // Added: Boolean indicating if quality threshold was met
+  cedarAction: z.any().optional() // Future: emit Cedar actions if needed
 });
 
 /**

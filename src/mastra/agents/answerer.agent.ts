@@ -13,13 +13,14 @@ import { answererOutputSchema } from "../schemas/agent-schemas";
 import { google } from "@ai-sdk/google";
 import { log } from "../config/logger";
 import { pgMemory } from "../config/pg-storage";
+import { googleAI } from "../config/google";
 
 log.info('Initializing Answerer Agent...');
 
 export const answererAgent = new Agent({
   id: "answerer",
   name: "answerer",
-  model: google('gemini-2.5-flash'),
+  model: googleAI,
   description: "A STRICT governed RAG answer composer that crafts answers using ONLY the provided contexts, ensuring all statements are backed by citations.",
   instructions: `You are a STRICT governed RAG answer composer. Follow these rules EXACTLY:
 

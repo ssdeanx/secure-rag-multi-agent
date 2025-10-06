@@ -10,7 +10,6 @@ import { MastraJwtAuth } from '@mastra/auth';
 import { LangfuseExporter } from "./ai-tracing";
 import { SamplingStrategyType } from "@mastra/core/ai-tracing";
 import { pgStore, pgVector } from './config/pg-storage'
-import { sqlstore } from "./config/libsql-storage";
 import { researchAgent } from "./agents/researchAgent";
 import { starterAgent } from "./agents/starterAgent";
 import { assistantAgent } from "./agents/assistant";
@@ -49,6 +48,8 @@ export const mastra = new Mastra({
     learning: learningExtractionAgent,
     productRoadmap: productRoadmapAgent,
     editor: editorAgent,
+    'research-content-network': researchContentNetwork,
+    'governed-rag-network': governedRagNetwork,
     // Add more agents here
   },
   workflows: {
@@ -61,11 +62,7 @@ export const mastra = new Mastra({
     'content-generation': contentGenerationWorkflow,
   },
   vectors: {
-    pgVector: pgVector,
-  },
-  vnext_networks: {
-    'research-content-network': researchContentNetwork,
-    'governed-rag-network': governedRagNetwork,
+    pgVector,
   },
   server: {
     experimental_auth: new MastraJwtAuth({
@@ -73,6 +70,7 @@ export const mastra = new Mastra({
     }),
   },
   observability: {
+      default: { enabled: true }, // Enable default tracing with DefaultExporter and CloudExporter
       configs: {
         langfuse: {
           serviceName: process.env.SERVICE_NAME ?? 'mastra',

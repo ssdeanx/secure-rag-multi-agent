@@ -4,6 +4,7 @@ import { ContentSimilarityMetric, CompletenessMetric, TextualDifferenceMetric, K
 import { log } from "../config/logger";
 import { google } from '@ai-sdk/google';
 import { pgMemory } from '../config/pg-storage';
+import { googleAIFlashLite } from '../config/google';
 
 log.info("Initializing Evaluation Agent...");
 
@@ -44,7 +45,7 @@ CRITICAL: You must always respond with a valid JSON object in the following form
 }
 </output_format>
   `,
-  model: google('gemini-2.5-flash-lite-preview-09-2025'),
+  model: googleAIFlashLite,
   memory: pgMemory,
   evals: {
     contentSimilarity: new ContentSimilarityMetric({ ignoreCase: true, ignoreWhitespace: true }),

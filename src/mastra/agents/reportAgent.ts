@@ -4,6 +4,7 @@ import { ContentSimilarityMetric, CompletenessMetric, TextualDifferenceMetric, K
 import { log } from "../config/logger";
 import { google } from '@ai-sdk/google';
 import { pgMemory } from '../config/pg-storage';
+import { googleAI } from '../config/google';
 
 log.info("Initializing Report Agent...");
 
@@ -67,7 +68,7 @@ Include a summary of the research process.
     keywordCoverage: new KeywordCoverageMetric(), // Keywords will be provided at runtime for evaluation
     toneConsistency: new ToneConsistencyMetric(),
   },
-  model: google('gemini-2.5-flash'),
+  model: googleAI,
   memory: pgMemory,
   scorers: {},
   workflows: {},

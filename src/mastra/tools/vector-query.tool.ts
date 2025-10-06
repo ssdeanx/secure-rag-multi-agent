@@ -1,7 +1,7 @@
 // Kilocode: Tool Approval
 // owner: team-data
 // justification: authorized vector queries with       const store = mastra!.getVector("pgVector");
-  
+
       // Use environment variable or default for similarity thresholdrvice enforcement
 // allowedDomains:
 //  -
@@ -20,7 +20,7 @@ import { AISpanType } from '@mastra/core/ai-tracing';
 import { ValidationService } from "../services/ValidationService";
 import { VectorQueryService } from "../services/VectorQueryService";
 import { log } from "../config/logger";
-import { RuntimeContext } from "@mastra/core/runtime-context";
+import type { RuntimeContext } from "@mastra/core/runtime-context";
 
 // Define the expected shape of the runtime context for this tool
 export interface VectorQueryContext {
@@ -65,7 +65,7 @@ export const vectorQueryTool = createTool({
       input: {
         questionLength: context.question.length,
         allowTagsCount: allowTags.length,
-        maxClassification: maxClassification,
+        maxClassification,
         topK: context.topK
       }
     });

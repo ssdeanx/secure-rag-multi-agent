@@ -14,19 +14,16 @@
 import { Agent } from "@mastra/core";
 import { retrieveOutputSchema } from "../schemas/agent-schemas";
 import { vectorQueryTool } from "../tools/vector-query.tool";
-import { createResearchMemory } from '../config/libsql-storage';
-import { google } from "@ai-sdk/google";
 import { log } from "../config/logger";
-import { LIBSQL_PROMPT } from "@mastra/libsql";
 import { pgMemory } from "../config/pg-storage";
+import { googleAIFlashLite } from "../config/google";
 
 log.info('Initializing Retrieve Agent...');
 
-const memory = createResearchMemory();
 export const retrieveAgent = new Agent({
   id: "retrieve",
   name: "retrieve",
-  model: google('gemini-2.5-flash-lite'),
+  model: googleAIFlashLite,
   description: "A document retrieval agent that retrieves relevant documents based on a user's question and access level.",
   instructions: `You are a document retrieval agent. You MUST call vectorQueryTool EXACTLY ONCE and ONLY return its results.
 

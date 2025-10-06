@@ -72,7 +72,7 @@ const retrievalStep = createStep({
       const agent = mastra?.getAgent('retrieve') || retrieveAgent;
       console.log(`[${requestId}] 🤖 Calling retrieve agent...`);
 
-      const retrieveResult = await agent.generateVNext(JSON.stringify({
+      const retrieveResult = await agent.generate(JSON.stringify({
         question: inputData.question,
         access: inputData.accessFilter,
         requestId  // Pass request ID to agent for tracking
@@ -130,8 +130,8 @@ const retrievalStep = createStep({
         } else {
           console.log(`[${requestId}] ⚠️ Tool result found but no contexts property`, {
             toolName: toolResult?.payload?.toolName,
-            hasResult: !!toolResult?.payload?.result,
-            resultKeys: toolResult?.payload?.result ? Object.keys(toolResult.payload.result as Record<string, any>) : []
+            hasResult: !!(toolResult?.payload?.result),
+            resultKeys: (toolResult?.payload?.result) ? Object.keys(toolResult.payload.result as Record<string, any>) : []
           });
         }
       } else {
@@ -144,18 +144,18 @@ const retrievalStep = createStep({
           // First, check if this looks like a real tool response
           if (retrieveResult.text.startsWith('{"contexts"') && retrieveResult.text.endsWith('}')) {
             const parsed = JSON.parse(retrieveResult.text);
-            if (parsed.contexts && Array.isArray(parsed.contexts)) {
+            if ((Boolean(parsed.contexts)) && Array.isArray(parsed.contexts)) {
               // STRICT SECURITY VALIDATION: Only accept real database results
               const validContexts = parsed.contexts.filter((ctx: { docId: any; text: string | string[]; score: number; versionId: any; source: any; securityTags: any; classification: any; }) => {
                 return (
                   // Must have core database fields
-                  (ctx.docId &&
+                  ((Boolean(ctx.docId)) &&
                   ctx.text &&
                   typeof ctx.score === 'number' &&
-                  ctx.versionId &&
-                  ctx.source &&
+                  (Boolean(ctx.versionId)) &&
+                  (Boolean(ctx.source)) &&
                   Array.isArray(ctx.securityTags) &&
-                  ctx.classification &&
+                  (Boolean(ctx.classification)) &&
                   // Text must not look like generated content
                   !ctx.text.includes('The Termination Procedures are as follows') &&
                   !ctx.text.includes('# Git Workflow at ACME') &&
@@ -188,7 +188,7 @@ const retrievalStep = createStep({
 
       // Rerank contexts for relevance
       try {
-        const rerankResult = await rerankAgent.generateVNext(JSON.stringify({
+        const rerankResult = await rerankAgent.generate(JSON.stringify({
           question: inputData.question,
           contexts
         }), {
@@ -200,7 +200,7 @@ const retrievalStep = createStep({
 
         const rerankResponse = rerankResult.object ?? { contexts: [] };
         const output: { contexts: any; question: string; } = {
-          contexts: rerankResponse.contexts || contexts,
+          contexts: rerankResponse.contexts,
           question: inputData.question
         };
 
@@ -244,7 +244,7 @@ const answerStep = createStep({
     try {
       logAgentActivity('answerer', 'generating-answer', { contextsCount: inputData.contexts.length });
 
-      const result = await answererAgent.generateVNext(JSON.stringify({
+      const result = await answererAgent.generate(JSON.stringify({
         question: inputData.question,
         contexts: inputData.contexts
       }), {
@@ -299,7 +299,7 @@ const verifyStep = createStep({
     try {
       logAgentActivity('verifier', 'verifying-answer', { citationsCount: inputData.answer.citations?.length || 0 });
 
-      const result = await verifierAgent.generateVNext(JSON.stringify({
+      const result = await verifierAgent.generate(JSON.stringify({
         answer: inputData.answer,
         question: inputData.question,
         contexts: inputData.contexts
@@ -318,7 +318,7 @@ const verifyStep = createStep({
           inputData.answer.answer.includes("don't contain information about this")) {
           const output = {
             answer: inputData.answer.answer,
-            citations: inputData.answer.citations || []
+            citations: inputData.answer.citations
           };
           logStepEnd('answer-verification', { verified: true, insufficientEvidence: true, citationsCount: output.citations.length }, Date.now() - startTime);
           return output;
@@ -330,7 +330,7 @@ const verifyStep = createStep({
 
       const output = {
         answer: inputData.answer.answer,
-        citations: inputData.answer.citations || []
+        citations: inputData.answer.citations
       };
 
       logStepEnd('answer-verification', { verified: true, citationsCount: output.citations.length }, Date.now() - startTime);

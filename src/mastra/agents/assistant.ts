@@ -31,13 +31,9 @@ import { log } from "../config/logger";
 import { editorTool } from "../tools/editor-agent-tool";
 import { weatherTool } from "../tools/weather-tool";
 import { pgMemory } from "../config/pg-storage";
-
+import { googleAI } from "../config/google";
 
 log.info('Initializing OpenRouter Assistant Agent...');
-
-const openrouter = createOpenRouter({
-    apiKey: process.env.OPENROUTER_API_KEY,
-})
 
 export const assistantAgent = new Agent({
     id: "assistant",
@@ -81,15 +77,7 @@ For complex research tasks that generate data, you MUST respond with a valid JSO
 }
 </output_format>
     `,
-    model: openrouter("x-ai/grok-4-fast:free",
-    {
-      includeReasoning: true,
-      extraBody: {
-          reasoning: { max_tokens: 20000 },
-          stream: true
-        },
-      usage: { include: true }
-    }),
+    model: googleAI,
     memory: pgMemory,
     evals: {
     contentSimilarity: new ContentSimilarityMetric({ ignoreCase: true, ignoreWhitespace: true }),

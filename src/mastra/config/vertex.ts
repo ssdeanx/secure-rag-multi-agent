@@ -15,9 +15,8 @@ const vertex = createVertex({
   ...((keyFile !== null) ? { googleAuthOptions: { keyFile } } : {}),
 });
 
-export const vertexAIPro = vertex('gemini-2.5-pro',
-);
-export const vertexAIFlash = vertex('gemini-2.5-flash');
-export const vertexAIFlashLite = vertex('gemini-2.5-flash-lite' );
+export const vertexAIPro = vertex('gemini-2.5-pro',);
+export const vertexAIFlash = vertex('gemini-2.5-flash-preview-09-2025');
+export const vertexAIFlashLite = vertex('gemini-2.5-flash-lite-preview-09-2025');
 
 export default vertex

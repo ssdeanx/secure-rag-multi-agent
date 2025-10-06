@@ -1,6 +1,7 @@
 import { createWorkflow, createStep } from '@mastra/core/workflows';
 import { z } from 'zod';
 import { log } from "../config/logger";
+import { researchAgent } from '../agents/researchAgent';
 
 // Step 1: Get user query
 const getUserQueryStep = createStep({
@@ -47,11 +48,11 @@ const researchStep = createStep({
     researchData: z.any(),
     summary: z.string(),
   }),
-  execute: async ({ inputData, mastra }) => {
+  execute: async ({ inputData }) => {
     const { query } = inputData;
 
     try {
-      const agent = mastra.getAgent('researchAgent');
+      const agent = researchAgent;
       const researchPrompt = `Research the following topic thoroughly using the two-phase process: "${query}".
 
       Phase 1: Search for 2-3 initial queries about this topic
@@ -59,7 +60,7 @@ const researchStep = createStep({
 
       Return findings in JSON format with queries, searchResults, learnings, completedQueries, and phase.`;
 
-      const result = await agent.generateVNext(
+      const result = await agent.generate(
         [
           {
             role: 'user',

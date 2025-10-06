@@ -13,6 +13,7 @@ import { webScraperTool,
 import { google } from '@ai-sdk/google';
 import { log } from "../config/logger";
 import { pgMemory } from "../config/pg-storage";
+import { googleAI } from "../config/google";
 
 log.info('Initializing Copywriter Agent...');
 
@@ -98,7 +99,7 @@ Produce the final content in well-formatted Markdown with appropriate structure 
 Include relevant metadata such as title, summary, and key points when applicable.
 </output_format>
   `,
-  model: google('gemini-2.5-flash-preview-09-2025'),
+  model: googleAI,
   memory: pgMemory,
   tools: {
     webScraperTool,

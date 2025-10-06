@@ -1,38 +1,24 @@
 import { Memory } from "@mastra/memory";
 import { PgVector, PostgresStore } from '@mastra/pg';
 import { google } from "@ai-sdk/google";
-import { createVectorQueryTool, MDocument, createGraphRAGTool } from "@mastra/rag";
+import { createVectorQueryTool, createGraphRAGTool } from "@mastra/rag";
+import type { UIMessage } from "ai";
 import { embedMany } from "ai";
 import { log } from "./logger";
-import type { AITracingEvent } from '@mastra/core/ai-tracing';
+import type { RuntimeContext } from "@mastra/core/runtime-context";
 import { AISpanType } from '@mastra/core/ai-tracing';
-import type { RuntimeContext } from '@mastra/core/runtime-context';
-import type { UIMessage } from 'ai';
+import type { TracingContext } from '@mastra/core/ai-tracing';
 
 // Production-grade PostgreSQL configuration with supported options
 export const pgStore = new PostgresStore({
   // Connection configuration
   connectionString: process.env.SUPABASE ?? process.env.DATABASE_URL ?? "postgresql://user:password@localhost:5432/mydb",
-
   // Schema management
   schemaName: process.env.DB_SCHEMA ?? 'public',
-
   // Connection pooling (using supported pg.Pool options)
   max: parseInt(process.env.DB_MAX_CONNECTIONS ?? '20'), // Maximum connections in pool
   idleTimeoutMillis: parseInt(process.env.DB_IDLE_TIMEOUT ?? '30000'), // 30 seconds
   connectionTimeoutMillis: parseInt(process.env.DB_CONNECTION_TIMEOUT ?? '2000'), // 2 seconds
-
-  // SSL configuration for production
-  ssl: process.env.NODE_ENV === 'production' ? {
-    rejectUnauthorized: true,
-    ca: process.env.DB_SSL_CA,
-    cert: process.env.DB_SSL_CERT,
-    key: process.env.DB_SSL_KEY,
-  } : false,
-
-  // Application name for monitoring
-  application_name: 'mastra-governed-rag',
-
   // Keep alive settings
   keepAlive: true,
   keepAliveInitialDelayMillis: 0,
@@ -49,11 +35,9 @@ export const pgMemory = new Memory({
   storage: pgStore,
   vector: pgVector, // Using PgVector for 1568 dimension embeddings
   embedder: google.textEmbedding("gemini-embedding-001"),
-
   options: {
     // Message management
     lastMessages: parseInt(process.env.MEMORY_LAST_MESSAGES ?? '500'),
-
     // Advanced semantic recall with supported options
     semanticRecall: {
       topK: parseInt(process.env.SEMANTIC_TOP_K ?? '5'),
@@ -61,9 +45,8 @@ export const pgMemory = new Memory({
         before: parseInt(process.env.SEMANTIC_RANGE_BEFORE ?? '3'),
         after: parseInt(process.env.SEMANTIC_RANGE_AFTER ?? '2')
       },
-      scope: (process.env.SEMANTIC_SCOPE === 'thread' ? 'thread' : 'resource') as 'resource' | 'thread',
+      scope: (process.env.SEMANTIC_SCOPE === 'resource' ? 'resource' : 'thread'),
     },
-
     // Enhanced working memory with supported template
     workingMemory: {
       enabled: true,
@@ -101,7 +84,6 @@ export const pgMemory = new Memory({
 - **Follow-ups Needed**: [To be learned]
       `,
     },
-
     // Thread management with supported options
     threads: {
       generateTitle: process.env.THREAD_GENERATE_TITLE !== 'true',
@@ -109,13 +91,10 @@ export const pgMemory = new Memory({
   },
 });
 
-// Keep the original agentMemory as an alias for backward compatibility
-export const agentMemory = pgMemory;
-
 // Graph-based RAG tool using PgVector
 export const graphQueryTool = createGraphRAGTool({
   vectorStoreName: "pgVector",
-  indexName: "agentMemoryIndex",
+  indexName: "governed_rag",
   model: google.textEmbedding("gemini-embedding-001"),
 
   // Supported graph options
@@ -132,9 +111,8 @@ export const graphQueryTool = createGraphRAGTool({
 // PostgreSQL vector query tool using PgVector
 export const pgQueryTool = createVectorQueryTool({
   vectorStoreName: "pgVector",
-  indexName: "agentMemoryIndex",
+  indexName: "governed_rag",
   model: google.textEmbedding("gemini-embedding-001"),
-
   // Supported database configuration for PgVector
   databaseConfig: {
     pgVector: {
@@ -143,17 +121,15 @@ export const pgQueryTool = createVectorQueryTool({
       probes: parseInt(process.env.PG_PROBES ?? '10'), // IVFFlat probe parameter
     }
   },
-
   // Advanced filtering
   enableFilter: true,
-
   description: "Advanced vector search with filtering and ranking for PostgreSQL semantic content retrieval.",
 });
 
-// Production-grade embedding generation with AI tracing
+// Production-grade embedding generation with tracing
 export async function generateEmbeddings(
-  chunks: Array<{ text: string; metadata?: any; id?: string }>,
-  tracingContext?: { currentSpan?: { createChildSpan: (config: any) => any } }
+  chunks: Array<{ text: string; metadata?: Record<string, unknown>; id?: string }>,
+  tracingContext?: TracingContext
 ) {
   if (!chunks.length) {
     log.warn("No chunks provided for embedding generation");
@@ -162,31 +138,26 @@ export async function generateEmbeddings(
 
   const startTime = Date.now();
 
-  // Create AI tracing span for embedding operation
-  const isTracingEnabled = process.env.AI_TRACING_ENABLED === 'true';
-
-  const createTracingSpan = () => {
-    if (isTracingEnabled && tracingContext?.currentSpan) {
-      return tracingContext.currentSpan.createChildSpan({
-        type: AISpanType.LLM_CHUNK,
-        name: 'generateEmbeddings',
-        input: {
-          chunkCount: chunks.length,
-          totalTextLength: chunks.reduce((sum, chunk) => sum + (chunk.text?.length ?? 0), 0),
-          model: 'gemini-embedding-001'
-        }
-      });
-    }
-    return null;
-  };
-
-  const span = createTracingSpan();
+  // Create tracing span for embedding generation
+  const embeddingSpan = tracingContext?.currentSpan?.createChildSpan({
+    type: AISpanType.GENERIC,
+    name: 'generate-embeddings',
+    input: {
+      chunkCount: chunks.length,
+      totalTextLength: chunks.reduce((sum, chunk) => sum + (chunk.text?.length ?? 0), 0),
+      model: 'gemini-embedding-001'
+    },
+    metadata: {
+      component: 'pg-storage',
+      operationType: 'embedding',
+      model: 'gemini-embedding-001',
+    },
+  });
 
   log.info("Starting embedding generation", {
     chunkCount: chunks.length,
     totalTextLength: chunks.reduce((sum, chunk) => sum + (chunk.text?.length ?? 0), 0),
-    model: 'gemini-embedding-001',
-    tracingEnabled: isTracingEnabled
+    model: 'gemini-embedding-001'
   });
 
   try {
@@ -205,18 +176,20 @@ export async function generateEmbeddings(
       model: 'gemini-embedding-001',
     });
 
-    // End tracing span with success
-    if (span) {
-      span.end({
-        output: { embeddingCount: embeddings.length, success: true },
-        metadata: {
-          operation: 'generateEmbeddings',
-          chunkCount: chunks.length,
-          processingTimeMs: processingTime,
-          model: 'gemini-embedding-001'
-        }
-      });
-    }
+    // Update and end span successfully
+    embeddingSpan?.end({
+      output: {
+        embeddingCount: embeddings.length,
+        embeddingDimension: embeddings[0]?.length || 0,
+        processingTimeMs: processingTime,
+        success: true,
+      },
+      metadata: {
+        model: 'gemini-embedding-001',
+        operation: 'embedding-generation',
+        finalStatus: 'success',
+      },
+    });
 
     return { embeddings };
 
@@ -229,50 +202,56 @@ export async function generateEmbeddings(
       model: 'gemini-embedding-001',
     });
 
-    // Record error in tracing span
-    if (span) {
-      span.error({
-        error: error instanceof Error ? error : new Error(String(error)),
-        metadata: {
-          operation: 'generateEmbeddings',
-          chunkCount: chunks.length,
-          processingTimeMs: processingTime
-        }
-      });
-    }
+    // Record error in span and end it
+    embeddingSpan?.error({
+      error: error instanceof Error ? error : new Error('Unknown embedding error'),
+      metadata: {
+        model: 'gemini-embedding-001',
+        operation: 'embedding-generation',
+        processingTime,
+        chunkCount: chunks.length,
+      },
+    });
+
+    embeddingSpan?.end({
+      output: {
+        success: false,
+        processingTimeMs: processingTime,
+        error: error instanceof Error ? error.message : 'Unknown error',
+      },
+      metadata: {
+        model: 'gemini-embedding-001',
+        operation: 'embedding-generation',
+        finalStatus: 'error',
+      },
+    });
 
     throw error;
   }
 }
 
-// Database health check and monitoring with runtime context support
-export async function checkDatabaseHealth(runtimeContext?: RuntimeContext): Promise<{
+// Database health check and monitoring
+export async function checkDatabaseHealth(): Promise<{
   status: 'healthy' | 'degraded' | 'unhealthy';
-  details: Record<string, any>;
+  details: Record<string, unknown>;
   timestamp: string;
 }> {
   const startTime = Date.now();
 
-  // Extract runtime configuration if provided
-  const customTimeout = runtimeContext?.get('healthCheckTimeout') as number;
-  const includeDetailedMetrics = runtimeContext?.get('includeDetailedMetrics') as boolean;
-  const customChecks = runtimeContext?.get('customChecks') as string[];
-
-  const details: Record<string, any> = {
-    connectionStringConfigured: !!(process.env.SUPABASE || process.env.DATABASE_URL),
+  const details: Record<string, unknown> = {
+    connectionStringConfigured: Boolean(process.env.SUPABASE ?? process.env.DATABASE_URL),
     schemaName: process.env.DB_SCHEMA ?? 'public',
     maxConnections: parseInt(process.env.DB_MAX_CONNECTIONS ?? '20'),
     runtimeConfig: {
-      customTimeout: customTimeout || 'default',
-      includeDetailedMetrics: includeDetailedMetrics || false,
-      customChecks: customChecks || []
+      customTimeout: 'default',
+      includeDetailedMetrics: false,
+      customChecks: []
     }
   };
 
   try {
     // Test basic connectivity by attempting to use the store
     // Since we can't directly access the pool, we'll use a simple query approach
-    const testQuery = "SELECT 1 as health_check";
     // For now, we'll assume the store is healthy if it was created successfully
     Object.assign(details, { connectionTest: 'passed' });
 
@@ -283,33 +262,21 @@ export async function checkDatabaseHealth(runtimeContext?: RuntimeContext): Prom
       missingTables: [] // Would need actual table checking
     });
 
-    // Add detailed metrics if requested
-    if (includeDetailedMetrics) {
-      Object.assign(details, {
-        detailedMetrics: {
-          connectionPoolSize: parseInt(process.env.DB_MAX_CONNECTIONS ?? '20'),
-          idleTimeout: parseInt(process.env.DB_IDLE_TIMEOUT ?? '30000'),
-          schemaName: process.env.DB_SCHEMA ?? 'public',
-          vectorDimensions: 1568,
-          memoryEnabled: true
-        }
-      });
-    }
-
-    // Execute custom checks if provided
-    if (customChecks && customChecks.length > 0) {
-      const checkResults: Record<string, string> = {};
-      for (const check of customChecks) {
-        // Mock custom check execution
-        Object.assign(checkResults, { [check]: 'passed' });
+    // Add detailed metrics
+    Object.assign(details, {
+      detailedMetrics: {
+        connectionPoolSize: parseInt(process.env.DB_MAX_CONNECTIONS ?? '20'),
+        idleTimeout: parseInt(process.env.DB_IDLE_TIMEOUT ?? '30000'),
+        schemaName: process.env.DB_SCHEMA ?? 'public',
+        vectorDimensions: 1568,
+        memoryEnabled: true
       }
-      Object.assign(details, { customCheckResults: checkResults });
-    }
+    });
 
     Object.assign(details, { totalCheckTime: Date.now() - startTime });
 
     // Determine health status
-    const isConnectionConfigured = details.connectionStringConfigured;
+    const isConnectionConfigured = Boolean(details.connectionStringConfigured);
     const healthStatus: 'healthy' | 'degraded' | 'unhealthy' = isConnectionConfigured ? 'healthy' : 'degraded';
 
     return {
@@ -416,13 +383,11 @@ log.info("PG Storage config loaded with PgVector support", {
   semanticRecallEnabled: true,
 });
 
-// Create tracing event for embedding operation
-
 // Utility function to format messages for UI consumption
 export function formatStorageMessages(
   operation: string,
   status: 'success' | 'error' | 'info',
-  details: Record<string, any>
+  details: Record<string, unknown>
 ): UIMessage[] {
   const timestamp = new Date().toISOString();
 
@@ -431,7 +396,7 @@ export function formatStorageMessages(
     id: `storage-${operation}-${Date.now()}`,
     createdAt: new Date(timestamp),
     role: 'system' as const,
-    parts: [] as any[], // UIMessage requires parts property
+    parts: [] as Array<{ type: string; text: string }>, // UIMessage requires parts property
     metadata: {
       operation,
       status,
@@ -441,16 +406,16 @@ export function formatStorageMessages(
   };
 
   // Determine message content based on status
-  const getMessageContent = (status: string, details: Record<string, any>): string => {
-    switch (status) {
+  const getMessageContent = (msgStatus: string, messageDetails: Record<string, unknown>): string => {
+    switch (msgStatus) {
       case 'success':
         return `✅ Storage operation '${operation}' completed successfully`;
       case 'error':
-        return `❌ Storage operation '${operation}' failed: ${details.error || 'Unknown error'}`;
+        return `❌ Storage operation '${operation}' failed: ${String(messageDetails.error ?? 'Unknown error')}`;
       case 'info':
-        return `ℹ️ Storage operation '${operation}': ${details.message || 'Processing...'}`;
+        return `ℹ️ Storage operation '${operation}': ${String(messageDetails.message ?? 'Processing...')}`;
       default:
-        return `Storage operation '${operation}' status: ${status}`;
+        return `Storage operation '${operation}' status: ${msgStatus}`;
     }
   };
 
@@ -466,18 +431,33 @@ export function formatStorageMessages(
   return [messageData as UIMessage];
 }
 
-// Enhanced database operation with message formatting
+// Enhanced database operation with message formatting and tracing
 export async function performStorageOperation(
   operation: string,
-  operationFn: () => Promise<any>,
-  runtimeContext?: RuntimeContext
+  operationFn: () => Promise<unknown>,
+  runtimeContext?: RuntimeContext,
+  tracingContext?: TracingContext
 ): Promise<{
   success: boolean;
-  result?: any;
+  result?: unknown;
   messages: UIMessage[];
   error?: string;
 }> {
   const startTime = Date.now();
+
+  // Create tracing span for storage operation
+  const storageSpan = tracingContext?.currentSpan?.createChildSpan({
+    type: AISpanType.GENERIC,
+    name: `storage-${operation}`,
+    input: {
+      operation,
+      enableDetailedLogging: runtimeContext?.get('enableDetailedLogging'),
+    },
+    metadata: {
+      component: 'pg-storage',
+      operationType: 'database',
+    },
+  });
 
   try {
     // Get runtime configuration
@@ -488,6 +468,20 @@ export async function performStorageOperation(
     const result = await operationFn();
 
     const processingTime = Date.now() - startTime;
+
+    // Update span with success information
+    storageSpan?.update({
+      output: {
+        success: true,
+        processingTimeMs: processingTime,
+        resultSize: result !== undefined && result !== null ? JSON.stringify(result).length : 0,
+      },
+      metadata: {
+        operation,
+        processingTime,
+        success: true,
+      },
+    });
 
     // Create success messages
     const details = {
@@ -500,19 +494,30 @@ export async function performStorageOperation(
     const messages = formatStorageMessages(operation, 'success', details);
 
     // Add custom formatting if specified
-    if (customMessageFormat && messages[0]) {
+    if (customMessageFormat && messages.length > 0) {
       const replacementText = customMessageFormat
         .replace('{operation}', operation)
         .replace('{time}', `${processingTime}ms`)
         .replace('{status}', 'success');
 
       // Update message content in parts array (UIMessage structure)
-      const targetMessage = messages[0] as any;
-      if (targetMessage.parts && targetMessage.parts[0]) {
-        // Use Object.assign to avoid linter confusion about self-assignment
-        Object.assign(targetMessage.parts[0], { text: replacementText });
-      }
+      const targetMessage = messages[0];
+      // Use Object.assign to avoid linter confusion about self-assignment
+      Object.assign(targetMessage.parts[0], { text: replacementText });
     }
+
+    // End span successfully
+    storageSpan?.end({
+      output: {
+        success: true,
+        processingTimeMs: processingTime,
+        messageCount: messages.length,
+      },
+      metadata: {
+        operation,
+        finalStatus: 'success',
+      },
+    });
 
     return {
       success: true,
@@ -524,6 +529,16 @@ export async function performStorageOperation(
     const processingTime = Date.now() - startTime;
     const errorMessage = error instanceof Error ? error.message : 'Unknown error';
 
+    // Record error in span
+    storageSpan?.error({
+      error: error instanceof Error ? error : new Error(errorMessage),
+      metadata: {
+        operation,
+        processingTime,
+        errorType: error instanceof Error ? error.constructor.name : 'Unknown',
+      },
+    });
+
     const details = {
       operation,
       processingTimeMs: processingTime,
@@ -532,6 +547,20 @@ export async function performStorageOperation(
     };
 
     const messages = formatStorageMessages(operation, 'error', details);
+
+    // End span with error
+    storageSpan?.end({
+      output: {
+        success: false,
+        processingTimeMs: processingTime,
+        error: errorMessage,
+      },
+      metadata: {
+        operation,
+        finalStatus: 'error',
+        errorMessage,
+      },
+    });
 
     return {
       success: false,

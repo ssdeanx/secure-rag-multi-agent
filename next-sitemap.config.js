@@ -13,7 +13,7 @@ export async function additionalPaths(config) {
       loc: '/docs',
       changefreq: 'daily',
       priority: 0.8,
-      lastmod: config.autoLastmod ? new Date().toISOString() : undefined,
+      lastmod: (config.autoLastmod) ? new Date().toISOString() : undefined,
     },
     {
       loc: '/login',

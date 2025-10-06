@@ -8,8 +8,7 @@ import { editorTool } from '../tools/editor-agent-tool';
 import { copywriterTool } from '../tools/copywriter-agent-tool';
 import { evaluateResultTool } from '../tools/evaluateResultTool';
 import { pgMemory } from '../config/pg-storage';
-
-
+import { googleAI } from '../config/google';
 
 export const productRoadmapAgent = new Agent({
   id: 'productRoadmap',
@@ -137,7 +136,7 @@ When generating content, include the generated content in your response and indi
 }
 </decision_logic>
   `,
-  model: google('gemini-2.5-flash'),
+  model: googleAI,
   memory: pgMemory,
   tools: {
     extractLearningsTool,

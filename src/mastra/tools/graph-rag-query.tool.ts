@@ -18,7 +18,7 @@ import { AISpanType } from '@mastra/core/ai-tracing';
 import { ValidationService } from "../services/ValidationService";
 import { VectorQueryService } from "../services/VectorQueryService";
 import { log } from "../config/logger";
-import { RuntimeContext } from "@mastra/core/runtime-context";
+import type { RuntimeContext } from "@mastra/core/runtime-context";
 import { graphQueryTool } from "../config/pg-storage";
 
 // Define the expected shape of the runtime context for this tool
@@ -68,7 +68,7 @@ export const graphRagQueryTool = createTool({
       input: {
         questionLength: context.question.length,
         allowTagsCount: allowTags.length,
-        maxClassification: maxClassification,
+        maxClassification,
         topK: context.topK,
         includeRelated: context.includeRelated,
         maxHops: context.maxHops,
@@ -110,12 +110,12 @@ export const graphRagQueryTool = createTool({
       const indexName = "governed_rag";
       const { question, topK = 8 } = context;
       const minSimilarity = parseFloat(process.env.VECTOR_SIMILARITY_THRESHOLD ?? '0.4');
-      
+
       log.info('🕸️ Graph query parameters', {
-        question, 
-        allowTags, 
-        maxClassification, 
-        topK, 
+        question,
+        allowTags,
+        maxClassification,
+        topK,
         minSimilarity,
         includeRelated: context.includeRelated,
         maxHops: context.maxHops
@@ -132,7 +132,7 @@ export const graphRagQueryTool = createTool({
       let enrichedResults = baseResults;
       if (context.includeRelated && baseResults.length > 0) {
         log.info(`[${requestId}] 🔗 Enriching ${baseResults.length} results with graph relationships`);
-        
+
         // For now, we'll use the base results and mark them for future graph enhancement
         // The graphQueryTool from pg-storage can be integrated here when needed
         enrichedResults = baseResults.map(result => ({
@@ -168,10 +168,10 @@ export const graphRagQueryTool = createTool({
       // Record error in tracing span
       span?.error({
         error: error instanceof Error ? error : new Error(errorMessage),
-        metadata: { 
-          operation: 'graph-rag-query', 
+        metadata: {
+          operation: 'graph-rag-query',
           topK: context.topK,
-          includeRelated: context.includeRelated 
+          includeRelated: context.includeRelated
         }
       });
 
