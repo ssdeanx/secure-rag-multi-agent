@@ -26,6 +26,7 @@ import { contentGenerationWorkflow } from "./workflows/contentGenerationWorkflow
 import { randomUUID } from "crypto";
 import { SensitiveDataFilter } from '@mastra/core/ai-tracing';
 import { researchContentNetwork, governedRagNetwork } from "./networks";
+import { apiRoutes } from "./apiRegistry";
 
 
 log.info("Mastra instance created");
@@ -65,6 +66,7 @@ export const mastra = new Mastra({
     pgVector,
   },
   server: {
+    apiRoutes,
     experimental_auth: new MastraJwtAuth({
         secret: process.env.JWT_TOKEN!
     }),

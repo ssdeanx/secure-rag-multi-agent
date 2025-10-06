@@ -14,7 +14,15 @@ This index tracks all requirement specifications in the system. Requirements tra
 
 ## Active Requirements
 
-No requirements have been created yet. As requirements are added, they will appear here organized by status and priority.
+1. **[REQ001] - JWT Authentication** (High Priority)
+   - **Status:** Proposed
+   - **Added:** 2025-10-06
+   - **Summary:** Server-side JWT authentication for all API routes with role claim extraction, validation, and expiration enforcement.
+
+2. **[REQ002] - Role-Based Access Control (RBAC) Validation** (High Priority)
+   - **Status:** Proposed
+   - **Added:** 2025-10-06
+   - **Summary:** Hierarchical role validation with inheritance and access filters applied at the vector-query layer.
 
 ## Critical Priority Requirements
 

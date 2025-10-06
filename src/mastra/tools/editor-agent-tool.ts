@@ -88,7 +88,7 @@ export const editorTool = createTool({
           error: errorMsg
         }
       });
-      throw error;
+      throw new Error(`Failed to edit content: ${errorMsg}`);
     }
   }
 });

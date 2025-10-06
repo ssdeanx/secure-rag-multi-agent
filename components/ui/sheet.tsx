@@ -3,9 +3,28 @@ import * as SheetPrimitive from "@radix-ui/react-dialog"
 import { XIcon } from "lucide-react"
 
 import { cn } from "@/lib/utils"
+import { registerSheet, unregisterSheet, notifyOpen } from './sheet-manager'
 
 function Sheet({ ...props }: React.ComponentProps<typeof SheetPrimitive.Root>) {
-  return <SheetPrimitive.Root data-slot="sheet" {...props} />
+  // If the consumer controls `open` via props and provides `onOpenChange`, we wrap
+  // the onOpenChange to notify other sheets when this one opens.
+  const id = React.useId()
+
+  const { onOpenChange } = props as any
+
+  React.useEffect(() => {
+    // register a close function if the consumer provided a way to close (via onOpenChange)
+    const closeFn = () => onOpenChange?.(false)
+    registerSheet(id, closeFn)
+    return () => unregisterSheet(id)
+  }, [id, onOpenChange])
+
+  const handleOpenChange = (open: boolean) => {
+    if (open) notifyOpen(id)
+    onOpenChange?.(open)
+  }
+
+  return <SheetPrimitive.Root data-slot="sheet" {...props} onOpenChange={handleOpenChange} />
 }
 
 function SheetTrigger({
@@ -50,6 +69,19 @@ function SheetContent({
 }: React.ComponentProps<typeof SheetPrimitive.Content> & {
   side?: "top" | "right" | "bottom" | "left"
 }) {
+  // detect if a Title is provided by the consumer to avoid rendering a duplicate
+  const childrenArray = React.Children.toArray(children);
+  const hasTitle = childrenArray.some((child) =>
+    React.isValidElement(child) &&
+    (child.type === SheetPrimitive.Title || ((child.props as any)?.['data-slot'] === 'sheet-title'))
+  );
+  // detect if a Description is provided
+  const hasDescription = childrenArray.some((child) =>
+    React.isValidElement(child) &&
+    (child.type === SheetPrimitive.Description || ((child.props as any)?.['data-slot'] === 'sheet-description'))
+  );
+  const id = React.useId();
+  const ariaDescribedBy = (props as any)['aria-describedby'] || (!hasDescription ? `${id}-desc` : undefined);
   return (
     <SheetPortal>
       <SheetOverlay />
@@ -67,8 +99,19 @@ function SheetContent({
             "data-[state=closed]:slide-out-to-bottom data-[state=open]:slide-in-from-bottom inset-x-0 bottom-0 h-auto border-t",
           className
         )}
+        aria-describedby={ariaDescribedBy}
         {...props}
       >
+        {/* If the consumer hasn't provided a title, render a visually hidden one for accessibility */}
+        {!hasTitle && (
+          <SheetPrimitive.Title className="sr-only">Dialog</SheetPrimitive.Title>
+        )}
+        {/* If the consumer hasn't provided a description, render a visually hidden one and ensure aria-describedby points to it */}
+        {!hasDescription && (
+          <SheetPrimitive.Description id={`${id}-desc`} className="sr-only">
+            Dialog content
+          </SheetPrimitive.Description>
+        )}
         {children}
         <SheetPrimitive.Close className="ring-offset-background focus:ring-ring data-[state=open]:bg-secondary absolute top-4 right-4 rounded-xs opacity-70 transition-opacity hover:opacity-100 focus:ring-2 focus:ring-offset-2 focus:outline-hidden disabled:pointer-events-none">
           <XIcon className="size-4" />

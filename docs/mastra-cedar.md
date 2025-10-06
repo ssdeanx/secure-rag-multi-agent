@@ -50,3 +50,24 @@
 - [Agentic State Access](https://docs.cedarcopilot.com/state-access/agentic-state-access)
 - [Agentic Actions](https://docs.cedarcopilot.com/state-access/agentic-actions)
 - [Chat Overview](https://docs.cedarcopilot.com/chat/chat-overview)
+
+- [Typing Agent Requests](https://docs.cedarcopilot.com/type-safety/typing-agent-requests)
+- [Typing Agent Responses](https://docs.cedarcopilot.com/type-safety/typing-agent-responses)
+
+- [Agentic State Access](https://docs.cedarcopilot.com/state-access/agentic-state-access)
+- [Agentic Actions](https://docs.cedarcopilot.com/state-access/agentic-actions)
+
+- [Custom Message Rendering](https://docs.cedarcopilot.com/chat/custom-message-rendering)
+- [Thread Management](https://docs.cedarcopilot.com/chat/thread-management)
+- [Message Storage Configuration](https://docs.cedarcopilot.com/chat/message-storage-configuration)
+- [Agent Context](https://docs.cedarcopilot.com/agent-context/agent-context)
+- [State Diff Internals](https://docs.cedarcopilot.com/state-diff/state-diff-internals)
+- [Using State Diff](https://docs.cedarcopilot.com/state-diff/using-state-diff)
+- [State Subscription](https://docs.cedarcopilot.com/agent-context/subscribing-state)
+- [Mentions](https://docs.cedarcopilot.com/agent-context/mentions)
+- [Streaming](https://docs.cedarcopilot.com/chat/streaming)
+
+- [Mastra Configuration Options](https://docs.cedarcopilot.com/agent-backend-connection/agent-backend-connection#mastra-configuration-options)
+- [Custom Request Processing](https://docs.cedarcopilot.com/agent-backend-connection/custom-request)
+- [Custom Response Processing](https://docs.cedarcopilot.com/agent-backend-connection/custom-response-processing)
+- [Custom](https://docs.cedarcopilot.com/agent-backend-connection/custom)

@@ -3,10 +3,7 @@ import { Inter } from 'next/font/google';
 import { cn } from '@/lib/utils';
 
 import './global.css';
-import { ThemeProvider } from '../components/ThemeProvider';
-import { TopNavigation } from '../components/TopNavigation';
-import { Footer } from '../components/Footer';
-import RouteAnnouncer from '@/components/RouteAnnouncer';
+import ClientRoot from '@/components/ClientRoot';
 
 import type { Metadata, Viewport } from 'next';
 
@@ -48,19 +45,9 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <body className={cn(`${inter.className} antialiased bg-background text-foreground`)}>
-        <ThemeProvider
-          attribute="class"
-          defaultTheme="system"
-          enableSystem
-          disableTransitionOnChange
-        >
-          <div className="relative flex min-h-screen flex-col">
-            <TopNavigation />
-            <RouteAnnouncer />
-            <main id="main" className="flex-1 outline-none focus-visible:ring-2 focus-visible:ring-primary/60" role="main">{children}</main>
-            <Footer />
-          </div>
-        </ThemeProvider>
+        <ClientRoot>
+          {children}
+        </ClientRoot>
       </body>
     </html>
   );

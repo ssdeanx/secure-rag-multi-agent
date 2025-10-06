@@ -5,7 +5,7 @@ import { productRoadmapAgent } from '../../agents/productRoadmapAgent';
 // Mock the agent
 vi.mock('../../agents/productRoadmapAgent', () => ({
   productRoadmapAgent: {
-    streamVNext: vi.fn()
+    stream: vi.fn()  // Changed from streamVNext to stream to match workflow usage
   }
 }));
 
@@ -15,7 +15,7 @@ describe('chatWorkflow', () => {
     vi.clearAllMocks();
     
     // Setup default mock implementation for streaming
-    (productRoadmapAgent.streamVNext as any).mockResolvedValue({
+    (productRoadmapAgent.stream as any).mockResolvedValue({
       textStream: (async function* () {
         yield 'Test';
         yield ' streaming';
@@ -28,7 +28,7 @@ describe('chatWorkflow', () => {
   it('should execute workflow with valid input data and return response', async () => {
     const run = await chatWorkflow.createRunAsync();
 
-    const stream = run.streamVNext({
+    const stream = run.stream({  // Already correct, no change needed
       inputData: {
         prompt: 'Hello, how are you?',
         temperature: 0.7,
@@ -36,7 +36,7 @@ describe('chatWorkflow', () => {
       },
     });
 
-    const result = await stream.result;
+    const result = await stream.getWorkflowState();
 
     expect(result).toBeDefined();
     expect(result?.status).toBe('success');
@@ -51,45 +51,45 @@ describe('chatWorkflow', () => {
   it('should handle prompt without temperature', async () => {
     const run = await chatWorkflow.createRunAsync();
 
-    const stream = run.streamVNext({
+    const stream = run.stream({  // Changed from streamVNext to stream
       inputData: {
         prompt: 'What is TypeScript?',
         maxTokens: 200
       },
     });
 
-    const result = await stream.result;
+    const result = await stream.getWorkflowState();
 
     expect(result).toBeDefined();
     expect(result?.status).toBe('success');
     
     // Verify the agent was called (temperature will be undefined since not provided)
-    expect(productRoadmapAgent.streamVNext).toHaveBeenCalled();
+    expect(productRoadmapAgent.stream).toHaveBeenCalled();  // Changed from streamVNext to stream
   });
 
   it('should handle prompt without maxTokens', async () => {
     const run = await chatWorkflow.createRunAsync();
 
-    const stream = run.streamVNext({
+    const stream = run.stream({  // Changed from streamVNext to stream
       inputData: {
         prompt: 'Explain React hooks',
         temperature: 0.5
       },
     });
 
-    const result = await stream.result;
+    const result = await stream.getWorkflowState();
 
     expect(result).toBeDefined();
     expect(result?.status).toBe('success');
     
     // Verify the agent was called (maxTokens will be undefined since not provided)
-    expect(productRoadmapAgent.streamVNext).toHaveBeenCalled();
+    expect(productRoadmapAgent.stream).toHaveBeenCalled();  // Changed from streamVNext to stream
   });
 
   it('should handle custom temperature and maxTokens', async () => {
     const run = await chatWorkflow.createRunAsync();
 
-    const stream = run.streamVNext({
+    const stream = run.stream({  // Changed from streamVNext to stream
       inputData: {
         prompt: 'Write a poem about code',
         temperature: 0.9,
@@ -97,13 +97,13 @@ describe('chatWorkflow', () => {
       },
     });
 
-    const result = await stream.result;
+    const result = await stream.getWorkflowState();
 
     expect(result).toBeDefined();
     expect(result?.status).toBe('success');
     
     // Verify the agent was called with custom settings
-    expect(productRoadmapAgent.streamVNext).toHaveBeenCalledWith(
+    expect(productRoadmapAgent.stream).toHaveBeenCalledWith(  // Changed from streamVNext to stream
       expect.any(Array),
       expect.objectContaining({
         modelSettings: expect.objectContaining({
@@ -117,7 +117,7 @@ describe('chatWorkflow', () => {
   it('should handle streaming with memory context', async () => {
     const run = await chatWorkflow.createRunAsync();
 
-    const stream = run.streamVNext({
+    const stream = run.stream({  // Changed from streamVNext to stream
       inputData: {
         prompt: 'Continue our conversation',
         temperature: 0.7,
@@ -127,13 +127,13 @@ describe('chatWorkflow', () => {
       },
     });
 
-    const result = await stream.result;
+    const result = await stream.getWorkflowState();
 
     expect(result).toBeDefined();
     expect(result?.status).toBe('success');
     
     // Verify the agent was called with memory configuration
-    expect(productRoadmapAgent.streamVNext).toHaveBeenCalledWith(
+    expect(productRoadmapAgent.stream).toHaveBeenCalledWith(  // Changed from streamVNext to stream
       expect.any(Array),
       expect.objectContaining({
         memory: {
@@ -147,7 +147,7 @@ describe('chatWorkflow', () => {
   it('should include systemPrompt when provided', async () => {
     const run = await chatWorkflow.createRunAsync();
 
-    const stream = run.streamVNext({
+    const stream = run.stream({  // Changed from streamVNext to stream
       inputData: {
         prompt: 'Explain async/await',
         systemPrompt: 'You are a technical expert',
@@ -156,13 +156,13 @@ describe('chatWorkflow', () => {
       },
     });
 
-    const result = await stream.result;
+    const result = await stream.getWorkflowState();
 
     expect(result).toBeDefined();
     expect(result?.status).toBe('success');
     
     // Verify the agent was called with instructions
-    expect(productRoadmapAgent.streamVNext).toHaveBeenCalledWith(
+    expect(productRoadmapAgent.stream).toHaveBeenCalledWith(  // Changed from streamVNext to stream
       expect.any(Array),
       expect.objectContaining({
         instructions: 'You are a technical expert'
@@ -173,7 +173,7 @@ describe('chatWorkflow', () => {
   it('should handle prompt with conversation context', async () => {
     const run = await chatWorkflow.createRunAsync();
 
-    const stream = run.streamVNext({
+    const stream = run.stream({  // Changed from streamVNext to stream
       inputData: {
         prompt: 'Follow up: Can you explain that in more detail?',
         temperature: 0.7,
@@ -181,21 +181,21 @@ describe('chatWorkflow', () => {
       },
     });
 
-    const result = await stream.result;
+    const result = await stream.getWorkflowState();
 
     expect(result).toBeDefined();
     expect(result?.status).toBe('success');
     
     // Verify the agent was called
-    expect(productRoadmapAgent.streamVNext).toHaveBeenCalled();
+    expect(productRoadmapAgent.stream).toHaveBeenCalled();  // Changed from streamVNext to stream
   });
 
   it('should handle agent errors gracefully', async () => {
-    (productRoadmapAgent.streamVNext as any).mockRejectedValue(new Error('Streaming Error'));
+    (productRoadmapAgent.stream as any).mockRejectedValue(new Error('Streaming Error'));  // Changed from streamVNext to stream
 
     const run = await chatWorkflow.createRunAsync();
 
-    const stream = run.streamVNext({
+    const stream = run.stream({  // Changed from streamVNext to stream
       inputData: {
         prompt: 'This will fail',
         temperature: 0.7,
@@ -203,7 +203,7 @@ describe('chatWorkflow', () => {
       },
     });
 
-    const result = await stream.result;
+    const result = await stream.getWorkflowState();
 
     // Workflow should handle error appropriately
     expect(result).toBeDefined();
