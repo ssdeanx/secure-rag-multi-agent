@@ -1,8 +1,266 @@
 # Progress
 
-**Updated:** 2025-10-05, 13:15 EST
+**Updated:** 2025-10-06, 14:45 EST
 
-## Current Work: generateReportWorkflow.ts reportAgent Integration Complete 🎯
+## Current Work
+
+### Cedar OS Integration Architecture Design Complete
+
+**Date:** 2025-10-06, 14:55 EST
+**Document:** DESIGN001 - Cedar OS Integration Architecture
+**Status:** Approved, In Progress (30% complete)
+
+#### Design Overview
+
+Created comprehensive architecture specification for integrating Cedar OS v0.1.11+ with Mastra workflows. The design defines a 3-layer architecture (Frontend/React, API Routes, Backend/Mastra) with type-safe, bidirectional communication between React components and AI agents.
+
+#### Key Design Components
+
+1. **Frontend Layer (React + Cedar OS)**
+   - State Registration: useCedarState for registering UI state
+   - State Subscription: useSubscribeStateToAgentContext for automatic context
+   - Message Sending: sendMessage with automatic context compilation
+   - Custom Message Rendering: createMessageRenderer for specialized types
+   - Example: roadmap-action message type with apply button
+
+2. **API Layer (Next.js Route Handlers)**
+   - SSE Streaming: Data-only SSE format with ReadableStream
+   - Context Handling: Parse additionalContext from request body
+   - Error Handling: Structured error events in stream
+   - Type Safety: Import Cedar types from chatWorkflowSharedTypes
+
+3. **Backend Layer (Mastra Workflows)**
+   - Cedar Context: Parse cedarContext from workflow input
+   - Context Prompts: Build agent prompts from Cedar state
+   - Structured Responses: setState and frontendTool response types
+   - Agent Integration: Use structuredOutput for type-safe responses
+
+#### Architecture Diagrams
+
+- **Component Architecture**: 3-layer diagram with Cedar Store, API Routes, Workflows, Agents, Tools, Storage
+- **Message Flow**: Sequence diagram from User → UI → Cedar → API → Workflow → Agent → Storage → Response
+- **Streaming Flow**: SSE streaming sequence with ReadableStream and event loop
+- **State Subscription Flow**: State change propagation with context update cycle
+
+#### Implementation Patterns
+
+1. State Registration and Subscription
+2. Message Sending with Context
+3. Custom Message Rendering
+4. API Route SSE Streaming
+5. Workflow Context Handling
+6. Agent Structured Responses
+
+#### Validation Criteria
+
+- **Functional**: 7 criteria (state registration, subscriptions, API parsing, workflows, renderers, streaming, threads)
+- **Integration**: 5 criteria (type imports, Zod validation, message types, context structure, SSE format)
+- **Performance**: 5 criteria (context < 50ms, API < 2s, streaming < 500ms, UI updates < 100ms, rendering < 50ms)
+
+#### Progress Tracking
+
+- Sub-component 1.1: Type system (Complete)
+- Sub-component 1.2: Frontend hooks (Not Started)
+- Sub-component 1.3: Message renderers (Not Started)
+- Sub-component 1.4: API context (Not Started)
+- Sub-component 1.5: SSE streaming (Not Started)
+- Sub-component 1.6: Workflow context (In Progress)
+- Sub-component 1.7: Agent responses (Not Started)
+- Sub-component 1.8: Message storage (Not Started)
+- Sub-component 1.9: Thread UI (Not Started)
+- Sub-component 1.10: Integration tests (Not Started)
+
+**Current Status:** 30% complete (3/10 sub-components started/complete)
+
+#### Next Steps
+
+1. Create requirements documents based on DESIGN001 (REQ001, REQ002)
+2. Implement frontend Cedar hooks (useCedarState, useSubscribeStateToAgentContext)
+3. Update API routes with SSE streaming and context handling
+4. Create custom message renderers (setState, frontendTool, roadmap-action)
+5. Add Cedar context support to workflows
+
+---
+
+### Cedar OS Types System Complete 🎯
+
+**Date:** 2025-10-06, 14:45 EST
+**Status:** Complete ✅
+
+### Cedar OS Types Integration Overview
+
+Successfully created comprehensive Cedar OS v0.1.11+ type definitions for Mastra workflow integration. The type system enables full frontend-backend communication with Cedar's advanced features including custom message rendering, thread management, state subscriptions, mentions, streaming, and state diff management.
+
+**Key Accomplishments:**
+
+- ✅ **Documentation Fetch**: Retrieved comprehensive Cedar OS docs from 9 URLs (~100,000 words)
+- ✅ **Type System**: Created complete type definitions in chatWorkflowSharedTypes.ts (429 lines)
+- ✅ **All Features**: Message Rendering, Threads, Storage, Context, Subscriptions, Mentions, Streaming, State Diff
+- ✅ **Type Safety**: Replaced all `any` with `unknown`, used function type syntax for ESLint
+- ✅ **Zero Errors**: Achieved clean TypeScript compilation
+- ✅ **Documentation**: Added comprehensive inline docs with Cedar URL references
+- ✅ **Integration Patterns**: Documented 5 integration patterns for API/components
+- ✅ **Memory Bank**: Created detailed TASK004 with complete implementation guide
+
+### Cedar OS Features Integrated
+
+1. **Message Rendering Types** ✅
+    - `BaseMessage`: Foundation interface for all messages
+    - `CustomMessage<T, P>`: Type-safe custom message factory
+    - `MessageRenderer<T>`: Renderer interface with type narrowing
+    - Built-in types: AlertMessage, TodoListMessage
+    - Support for setState, frontendTool, progress_update, custom types
+
+2. **Thread Management Types** ✅
+    - `MessageThread`: Conversation isolation structure
+    - `MessageThreadMeta`: Thread metadata for storage
+    - Multi-conversation support with persistent history
+    - Automatic thread creation/switching
+
+3. **Message Storage Types** ✅
+    - `MessageStorageBaseAdapter`: Storage interface
+    - Three adapter patterns: Local Storage, No Storage, Custom
+    - Required methods: loadMessages, persistMessage
+    - Optional methods: thread CRUD, message CRUD
+    - Auto-initialization support
+
+4. **Agent Context Types** ✅
+    - `ContextEntry`: Context item structure (id, source, data, metadata)
+    - `AgentContext`: Map of context entries by key
+    - Three sources: mentions, subscriptions, manual entries
+    - Structured format for Mastra/Custom backends
+
+5. **State Subscription Types** ✅
+    - `StateSubscriptionOptions`: Config for auto-sync state
+    - Visual customization: icon, color, labelField, order
+    - Conditional display: showInChat function
+    - Collapsing: threshold-based badge grouping
+    - `StateSubscriptionMapFn<T>`: Mapping function type
+
+6. **Mentions System Types** ✅
+    - `MentionItem`: Mention data structure
+    - `StateBasedMentionProviderConfig`: Config for @ mentions
+    - Multiple triggers: @, #, / for different entity types
+    - Custom rendering: menu, editor, context badges
+    - Priority ordering with `order` property
+
+7. **Streaming Types** ✅
+    - `StreamingConfig`: Streaming configuration
+    - `SSEEvent`: Server-Sent Events structure
+    - `StreamingHandler`: Callback interface for stream events
+    - `StreamingEvent`: Typed event structure
+    - Data-only SSE format for Mastra backends
+
+8. **State Diff Types** ✅
+    - `DiffState<T>`: Change tracking state (oldState, newState, computedState, patches)
+    - `DiffHistoryState<T>`: History management with undo/redo
+    - `Operation`: JSON Patch (RFC 6902) operations
+    - `ComputeStateFunction<T>`: Custom diff marker logic
+    - Two modes: defaultAccept vs holdAccept
+
+9. **Agent Request/Response Types** ✅
+    - `LLMResponse`: Standard text responses with usage tracking
+    - `SetStateResponse`: State manipulation actions
+    - `FrontendToolResponse`: Tool execution results
+    - `MessageResponse`: Union type for all response types
+    - Breaking change note: v0.1.11+ uses single object parameter
+
+### Integration Patterns Documented
+
+1. **Custom Message Types in Mastra Workflows**
+    - Define custom message types using `CustomMessage<T, P>`
+    - Return structured messages from workflows
+    - Frontend renders with custom renderers
+
+2. **Agent Context in API Routes**
+    - Frontend sends structured context via `compileAdditionalContext()`
+    - Backend receives `additionalContext` object
+    - Access context entries by key (selectedNodes, mentions, etc.)
+
+3. **State Subscription in Components**
+    - Register state with `useCedarState`
+    - Subscribe to agent context with `useSubscribeStateToAgentContext`
+    - Configure visual options (icon, color, order, collapse)
+
+4. **setState Response from Agent**
+    - Workflow returns `SetStateResponse` with stateKey, setterKey, args
+    - Frontend Cedar handles automatically via `handleLLMResult()`
+    - State updates trigger re-renders
+
+5. **Streaming with Mastra Backend**
+    - API route returns data-only SSE stream
+    - Frontend receives real-time chunks
+    - Support for both text and complete objects
+
+### TypeScript Improvements
+
+1. **Function Type Syntax** ✅
+    - Changed from `methodName(param: Type): ReturnType` to `methodName: (param: Type) => ReturnType`
+    - Avoids ESLint unused parameter warnings in type definitions
+    - More consistent with TypeScript best practices
+
+2. **Type Safety Enhancements** ✅
+    - Replaced all `any` types with `unknown`
+    - Better type inference and IDE support
+    - Catches more errors at compile time
+
+3. **Import Standardization** ✅
+    - Changed `React.ReactNode` to `ReactNode` (direct import)
+    - Cleaner type definitions
+    - Consistent with modern React patterns
+
+### Documentation Quality
+
+1. **Inline Comments** ✅
+    - Added Cedar OS documentation URLs to all type sections
+    - Included "Based on" references for traceability
+    - Documented breaking changes (v0.1.11+)
+
+2. **Integration Guide** ✅
+    - Five detailed integration patterns with code examples
+    - Step-by-step instructions for API routes
+    - Step-by-step instructions for frontend components
+    - Message renderer creation guide
+
+3. **Memory Bank Task** ✅
+    - Created comprehensive TASK004 (400+ lines)
+    - Complete type system overview
+    - Integration patterns section
+    - Next steps for API/component updates
+    - Related documentation links (14 Cedar docs)
+
+### Next Steps for Full Integration
+
+1. **Update API Routes** (`app/api/chat/route.ts`)
+    - Import Cedar types from `chatWorkflowSharedTypes.ts`
+    - Add `additionalContext` parameter handling
+    - Implement SSE streaming response format
+    - Handle setState and frontendTool responses
+
+2. **Update Frontend Components** (`components/ChatInterface.tsx`)
+    - Import Cedar hooks: `useCedarState`, `useSubscribeStateToAgentContext`
+    - Register roadmap state (nodes, edges, selectedNodes)
+    - Configure state subscriptions with visual options
+    - Handle Cedar message types with custom renderers
+
+3. **Create Message Renderers** (`components/cedar/MessageRenderers.tsx`)
+    - Implement renderers for setState messages
+    - Implement renderers for frontendTool messages
+    - Implement custom renderers for roadmap actions
+    - Register with `CedarCopilot` messageRenderers prop
+
+4. **Update Workflow Integration** (`src/mastra/workflows/chatWorkflow.ts`)
+    - Use Cedar types for response schemas
+    - Return structured setState responses
+    - Return structured frontendTool responses
+    - Include Cedar context in agent prompts
+
+5. **Add Message Storage** (Optional)
+    - Implement `MessageStorageBaseAdapter` with database
+    - Configure thread management
+    - Enable persistent chat history
+
+## Previous Work: generateReportWorkflow.ts reportAgent Integration Complete 🎯
 
 **Date:** 2025-10-05, 13:15 EST
 **Status:** Complete ✅

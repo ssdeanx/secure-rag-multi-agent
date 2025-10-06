@@ -1,6 +1,6 @@
 # Designs Index
 
-**Last Updated:** 2025-09-30
+**Last Updated:** 2025-10-06
 
 This index tracks all design documents in the system. Design documents define technical specifications, architectural decisions, and implementation approaches.
 
@@ -14,7 +14,17 @@ This index tracks all design documents in the system. Design documents define te
 
 ## Active Designs
 
-No designs have been created yet. As designs are added, they will appear here organized by status.
+### In Progress
+
+1. **[DESIGN001] - Cedar OS Integration Architecture** (30% Complete)
+   - Status: Approved
+   - Added: 2025-10-06, 14:50 EST
+   - Priority: High
+   - Complexity: Complex
+   - Focus: Complete architecture for Cedar OS v0.1.11+ integration with Mastra workflows
+   - Key Components: Frontend state management, API route context handling, workflow Cedar context, agent structured responses, SSE streaming, message persistence
+   - Related Tasks: TASK004 (Cedar OS Types Integration)
+   - Next Steps: Implement frontend hooks, API route updates, custom message renderers
 
 ## Draft Designs
 
@@ -26,7 +36,12 @@ No designs currently in review.
 
 ## Approved Designs
 
-No approved designs currently.
+1. **[DESIGN001] - Cedar OS Integration Architecture** (In Progress - 30%)
+   - Comprehensive 3-layer architecture specification
+   - Component diagrams and data flow sequences
+   - Implementation patterns for all layers
+   - Validation criteria (functional, integration, performance)
+   - File: [DESIGN001]-cedar-os-integration-architecture.md
 
 ## Implemented Designs
 
