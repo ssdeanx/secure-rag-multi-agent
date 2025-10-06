@@ -3,15 +3,14 @@ import { rerankOutputSchema } from "../schemas/agent-schemas";
 import { google } from "@ai-sdk/google";
 import { log } from "../config/logger";
 import { pgMemory } from "../config/pg-storage";
+import { googleAI } from "../config/google";
 
 log.info('Initializing Rerank Agent...');
-
-
 
 export const rerankAgent = new Agent({
   id: "rerank",
   name: "rerank",
-  model: google('gemini-2.5-flash'),
+  model: googleAI,
   description: "A context reranking agent that reorders provided contexts based on their relevance to the question.",
   instructions: `You are a context reranking agent. Your task is to:
 

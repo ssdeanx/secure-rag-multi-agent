@@ -4,13 +4,14 @@ import { jwtAuthTool } from "../tools/jwt-auth.tool";
 import { google } from "@ai-sdk/google";
 import { log } from "../config/logger";
 import { pgMemory } from "../config/pg-storage";
+import { googleAIFlashLite } from "../config/google";
 
 log.info('Initializing Identity Agent...');
 
 export const identityAgent = new Agent({
   id: "identity",
   name: "identity",
-  model: google('gemini-2.5-flash-lite'),
+  model: googleAIFlashLite,
   description: "An identity extraction agent that extracts user claims from a JWT token.",
   instructions: `You are an identity extraction agent. Your task is to:
 1. Call the jwt-auth tool with the provided JWT token

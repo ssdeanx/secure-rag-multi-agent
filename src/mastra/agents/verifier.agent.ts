@@ -3,13 +3,14 @@ import { verifierOutputSchema } from "../schemas/agent-schemas";
 import { google } from "@ai-sdk/google";
 import { log } from "../config/logger";
 import { pgMemory } from "../config/pg-storage";
+import { googleAI } from "../config/google";
 
 log.info('Initializing Verifier Agent...');
 
 export const verifierAgent = new Agent({
   id: "verifier",
   name: "verifier",
-  model: google('gemini-2.5-flash'),
+  model: googleAI,
   //model: openAIModel, --- IGNORE ---
   description: "A strict answer verification agent that ensures the provided answer is fully supported by the given contexts and relevant to the question.",
   instructions: `You are a strict answer verification agent. Your task is to:

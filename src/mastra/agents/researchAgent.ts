@@ -13,6 +13,7 @@ import { ContentSimilarityMetric, CompletenessMetric, TextualDifferenceMetric, K
 import { log } from "../config/logger";
 import { google } from '@ai-sdk/google';
 import { pgMemory } from '../config/pg-storage';
+import { googleAI } from '../config/google';
 
 log.info("Initializing Research Agent...");
 
@@ -68,7 +69,7 @@ Example:
    keywordCoverage: new KeywordCoverageMetric(), // Keywords will be provided at runtime for evaluation
    toneConsistency: new ToneConsistencyMetric(),
  },
- model: google('gemini-2.5-flash-preview-09-2025'),
+ model: googleAI,
  tools: {
     webScraperTool,
     batchWebScraperTool,
