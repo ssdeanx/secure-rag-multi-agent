@@ -1,6 +1,7 @@
 import { MDocument } from "@mastra/rag";
 import { createTool } from "@mastra/core/tools";
 import { z } from "zod";
+import { AISpanType } from '@mastra/core/ai-tracing';
 import { pgVector } from "../config/pg-storage";
 import { logStepStart, logStepEnd, logError, logToolExecution } from "../config/logger";
 import { embedMany } from "ai";
@@ -108,9 +109,24 @@ Use this tool when you need advanced document processing with metadata extractio
   `,
   inputSchema: MastraDocumentChunkingInputSchema,
   outputSchema: MastraDocumentChunkingOutputSchema,
-  execute: async ({ context }) => {
+  execute: async ({ context, tracingContext }) => {
     const startTime = Date.now();
     logToolExecution("mastra-chunker", { input: context });
+
+    // Create a span for tracing
+    const span = tracingContext?.currentSpan?.createChildSpan({
+      type: AISpanType.LLM_CHUNK,
+      name: 'mastra-chunker-tool',
+      input: {
+        documentLength: context.documentContent.length,
+        chunkingStrategy: context.chunkingStrategy,
+        chunkSize: context.chunkSize,
+        extractTitle: context.extractTitle,
+        extractSummary: context.extractSummary,
+        extractKeywords: context.extractKeywords,
+        extractQuestions: context.extractQuestions,
+      }
+    });
 
     try {
       // Create MDocument from input
@@ -265,6 +281,17 @@ Use this tool when you need advanced document processing with metadata extractio
       };
 
       logStepEnd("mastra-chunker", output, totalProcessingTime);
+
+      // End tracing span with success
+      span?.end({
+        output: {
+          success: true,
+          chunkCount: chunks.length,
+          processingTimeMs: totalProcessingTime,
+          chunkingStrategy: context.chunkingStrategy,
+        }
+      });
+
       return output;
 
     } catch (error) {
@@ -274,6 +301,16 @@ Use this tool when you need advanced document processing with metadata extractio
       logError("mastra-chunker", error, {
         context,
         processingTimeMs: processingTime,
+      });
+
+      // Record error in tracing span
+      span?.error({
+        error: error instanceof Error ? error : new Error(errorMessage),
+        metadata: {
+          operation: 'mastra-chunker',
+          chunkingStrategy: context.chunkingStrategy,
+          processingTimeMs: processingTime,
+        }
       });
 
       return {
@@ -328,9 +365,22 @@ content indexing, or semantic search capabilities.
   `,
   inputSchema: CustomDocumentChunkingInputSchema,
   outputSchema: CustomDocumentChunkingOutputSchema,
-  execute: async ({ context }) => {
+  execute: async ({ context, tracingContext }) => {
     const startTime = Date.now();
     logToolExecution("mdocument-chunker", { input: context });
+
+    // Create a span for tracing
+    const span = tracingContext?.currentSpan?.createChildSpan({
+      type: AISpanType.LLM_CHUNK,
+      name: 'mdocument-chunker-tool',
+      input: {
+        documentLength: context.documentContent.length,
+        chunkingStrategy: context.chunkingStrategy,
+        chunkSize: context.chunkSize,
+        generateEmbeddings: context.generateEmbeddings,
+        indexName: 'governed_rag',
+      }
+    });
 
     try {
       // Create MDocument from input
@@ -479,24 +529,9 @@ content indexing, or semantic search capabilities.
       if (embeddingGenerated && embeddings.length > 0) {
         const storageStartTime = Date.now();
 
-        // Ensure index exists (create if needed)
-        try {
-          await pgVector.createIndex({
-            indexName: context.indexName,
-            dimension: 1568, // Gemini embedding dimension
-            metric: "cosine",
-          });
-        } catch {
-          // Index might already exist, continue
-          logStepStart("index-creation-skipped", {
-            indexName: context.indexName,
-            reason: "Index may already exist",
-          });
-        }
-
         // Store vectors with metadata
         await pgVector.upsert({
-          indexName: context.indexName,
+          indexName: 'governed_rag',
           vectors: embeddings,
           metadata: chunksForProcessing.map((chunk) => chunk.metadata),
           ids: chunksForProcessing.map((chunk) => chunk.id),
@@ -504,7 +539,7 @@ content indexing, or semantic search capabilities.
 
         const storageTime = Date.now() - storageStartTime;
         logStepStart("vectors-stored", {
-          indexName: context.indexName,
+          indexName: 'governed_rag',
           vectorCount: embeddings.length,
           storageTimeMs: storageTime,
         });
@@ -527,6 +562,18 @@ content indexing, or semantic search capabilities.
       };
 
       logStepEnd("mdocument-chunker", output, totalProcessingTime);
+
+      // End tracing span with success
+      span?.end({
+        output: {
+          success: true,
+          chunkCount: chunksForProcessing.length,
+          processingTimeMs: totalProcessingTime,
+          embeddingsGenerated: embeddingGenerated,
+          chunkingStrategy: context.chunkingStrategy,
+        }
+      });
+
       return output;
 
     } catch (error) {
@@ -536,6 +583,17 @@ content indexing, or semantic search capabilities.
       logError("mdocument-chunker", error, {
         context,
         processingTimeMs: processingTime,
+      });
+
+      // Record error in tracing span
+      span?.error({
+        error: error instanceof Error ? error : new Error(errorMessage),
+        metadata: {
+          operation: 'mdocument-chunker',
+          chunkingStrategy: context.chunkingStrategy,
+          generateEmbeddings: context.generateEmbeddings,
+          processingTimeMs: processingTime,
+        }
       });
 
       return {

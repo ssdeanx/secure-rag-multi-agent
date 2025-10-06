@@ -28,7 +28,7 @@ export const editorTool = createTool({
         contentType,
         contentLength: content.length,
         hasInstructions: !!instructions,
-        tone: tone || 'not-specified'
+        tone: tone ?? 'not-specified'
       }
     });
 
@@ -58,7 +58,7 @@ export const editorTool = createTool({
         // Fallback for non-JSON responses
         parsedResult = {
           editedContent: result.text,
-          contentType: contentType,
+          contentType,
           changes: ["Content edited and improved"],
           suggestions: []
         };
@@ -67,17 +67,17 @@ export const editorTool = createTool({
       span?.end({
         output: {
           success: true,
-          outputLength: parsedResult.editedContent?.length || 0,
-          changesCount: parsedResult.changes?.length || 0,
-          contentType: parsedResult.contentType || contentType
+          outputLength: parsedResult.editedContent?.length ?? 0,
+          changesCount: parsedResult.changes?.length ?? 0,
+          contentType: parsedResult.contentType ?? contentType
         }
       });
 
       return {
-        editedContent: parsedResult.editedContent || parsedResult.copy || result.text,
-        contentType: parsedResult.contentType || contentType,
-        changes: parsedResult.changes || ["Content edited and improved"],
-        suggestions: parsedResult.suggestions || []
+        editedContent: parsedResult.editedContent ?? parsedResult.copy ?? result.text,
+        contentType: parsedResult.contentType ?? contentType,
+        changes: parsedResult.changes ?? ["Content edited and improved"],
+        suggestions: parsedResult.suggestions ?? []
       };
 
     } catch (error) {

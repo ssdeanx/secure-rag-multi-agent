@@ -6,6 +6,8 @@ import type { UIMessage } from "ai";
 import { embedMany } from "ai";
 import { log } from "./logger";
 import type { RuntimeContext } from "@mastra/core/runtime-context";
+import { AISpanType } from '@mastra/core/ai-tracing';
+import type { TracingContext } from '@mastra/core/ai-tracing';
 
 // Production-grade PostgreSQL configuration with supported options
 export const pgStore = new PostgresStore({
@@ -124,9 +126,10 @@ export const pgQueryTool = createVectorQueryTool({
   description: "Advanced vector search with filtering and ranking for PostgreSQL semantic content retrieval.",
 });
 
-// Production-grade embedding generation
+// Production-grade embedding generation with tracing
 export async function generateEmbeddings(
-  chunks: Array<{ text: string; metadata?: Record<string, unknown>; id?: string }>
+  chunks: Array<{ text: string; metadata?: Record<string, unknown>; id?: string }>,
+  tracingContext?: TracingContext
 ) {
   if (!chunks.length) {
     log.warn("No chunks provided for embedding generation");
@@ -134,6 +137,22 @@ export async function generateEmbeddings(
   }
 
   const startTime = Date.now();
+
+  // Create tracing span for embedding generation
+  const embeddingSpan = tracingContext?.currentSpan?.createChildSpan({
+    type: AISpanType.GENERIC,
+    name: 'generate-embeddings',
+    input: {
+      chunkCount: chunks.length,
+      totalTextLength: chunks.reduce((sum, chunk) => sum + (chunk.text?.length ?? 0), 0),
+      model: 'gemini-embedding-001'
+    },
+    metadata: {
+      component: 'pg-storage',
+      operationType: 'embedding',
+      model: 'gemini-embedding-001',
+    },
+  });
 
   log.info("Starting embedding generation", {
     chunkCount: chunks.length,
@@ -157,6 +176,21 @@ export async function generateEmbeddings(
       model: 'gemini-embedding-001',
     });
 
+    // Update and end span successfully
+    embeddingSpan?.end({
+      output: {
+        embeddingCount: embeddings.length,
+        embeddingDimension: embeddings[0]?.length || 0,
+        processingTimeMs: processingTime,
+        success: true,
+      },
+      metadata: {
+        model: 'gemini-embedding-001',
+        operation: 'embedding-generation',
+        finalStatus: 'success',
+      },
+    });
+
     return { embeddings };
 
   } catch (error) {
@@ -166,6 +200,30 @@ export async function generateEmbeddings(
       chunkCount: chunks.length,
       processingTimeMs: processingTime,
       model: 'gemini-embedding-001',
+    });
+
+    // Record error in span and end it
+    embeddingSpan?.error({
+      error: error instanceof Error ? error : new Error('Unknown embedding error'),
+      metadata: {
+        model: 'gemini-embedding-001',
+        operation: 'embedding-generation',
+        processingTime,
+        chunkCount: chunks.length,
+      },
+    });
+
+    embeddingSpan?.end({
+      output: {
+        success: false,
+        processingTimeMs: processingTime,
+        error: error instanceof Error ? error.message : 'Unknown error',
+      },
+      metadata: {
+        model: 'gemini-embedding-001',
+        operation: 'embedding-generation',
+        finalStatus: 'error',
+      },
     });
 
     throw error;
@@ -325,8 +383,6 @@ log.info("PG Storage config loaded with PgVector support", {
   semanticRecallEnabled: true,
 });
 
-// Create tracing event for embedding operation
-
 // Utility function to format messages for UI consumption
 export function formatStorageMessages(
   operation: string,
@@ -375,11 +431,12 @@ export function formatStorageMessages(
   return [messageData as UIMessage];
 }
 
-// Enhanced database operation with message formatting
+// Enhanced database operation with message formatting and tracing
 export async function performStorageOperation(
   operation: string,
   operationFn: () => Promise<unknown>,
-  runtimeContext?: RuntimeContext
+  runtimeContext?: RuntimeContext,
+  tracingContext?: TracingContext
 ): Promise<{
   success: boolean;
   result?: unknown;
@@ -387,6 +444,20 @@ export async function performStorageOperation(
   error?: string;
 }> {
   const startTime = Date.now();
+
+  // Create tracing span for storage operation
+  const storageSpan = tracingContext?.currentSpan?.createChildSpan({
+    type: AISpanType.GENERIC,
+    name: `storage-${operation}`,
+    input: {
+      operation,
+      enableDetailedLogging: runtimeContext?.get('enableDetailedLogging'),
+    },
+    metadata: {
+      component: 'pg-storage',
+      operationType: 'database',
+    },
+  });
 
   try {
     // Get runtime configuration
@@ -397,6 +468,20 @@ export async function performStorageOperation(
     const result = await operationFn();
 
     const processingTime = Date.now() - startTime;
+
+    // Update span with success information
+    storageSpan?.update({
+      output: {
+        success: true,
+        processingTimeMs: processingTime,
+        resultSize: result !== undefined && result !== null ? JSON.stringify(result).length : 0,
+      },
+      metadata: {
+        operation,
+        processingTime,
+        success: true,
+      },
+    });
 
     // Create success messages
     const details = {
@@ -421,6 +506,19 @@ export async function performStorageOperation(
       Object.assign(targetMessage.parts[0], { text: replacementText });
     }
 
+    // End span successfully
+    storageSpan?.end({
+      output: {
+        success: true,
+        processingTimeMs: processingTime,
+        messageCount: messages.length,
+      },
+      metadata: {
+        operation,
+        finalStatus: 'success',
+      },
+    });
+
     return {
       success: true,
       result,
@@ -431,6 +529,16 @@ export async function performStorageOperation(
     const processingTime = Date.now() - startTime;
     const errorMessage = error instanceof Error ? error.message : 'Unknown error';
 
+    // Record error in span
+    storageSpan?.error({
+      error: error instanceof Error ? error : new Error(errorMessage),
+      metadata: {
+        operation,
+        processingTime,
+        errorType: error instanceof Error ? error.constructor.name : 'Unknown',
+      },
+    });
+
     const details = {
       operation,
       processingTimeMs: processingTime,
@@ -439,6 +547,20 @@ export async function performStorageOperation(
     };
 
     const messages = formatStorageMessages(operation, 'error', details);
+
+    // End span with error
+    storageSpan?.end({
+      output: {
+        success: false,
+        processingTimeMs: processingTime,
+        error: errorMessage,
+      },
+      metadata: {
+        operation,
+        finalStatus: 'error',
+        errorMessage,
+      },
+    });
 
     return {
       success: false,

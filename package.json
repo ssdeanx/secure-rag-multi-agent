@@ -6,6 +6,7 @@
   "type": "module",
   "scripts": {
     "test": "vitest",
+    "coverage": "vitest run --coverage",
     "dev": "dotenvx run -- concurrently -n \"NEXT,MASTRA\" -c \"blue.bold,green.bold\" \"npm run dev:next\" \"npm run dev:mastra\"",
     "dev:next": "next dev --turbopack",
     "dev:mastra": "mastra dev --dir src/mastra",

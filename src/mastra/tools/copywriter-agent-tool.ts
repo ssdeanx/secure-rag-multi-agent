@@ -34,8 +34,8 @@ export const copywriterTool = createTool({
       input: {
         topic,
         contentType,
-        targetAudience: targetAudience || 'general',
-        tone: tone || 'engaging',
+        targetAudience: targetAudience ?? 'general',
+        tone: tone ?? 'engaging',
         length,
         hasRequirements: !!specificRequirements
       }
@@ -79,6 +79,7 @@ export const copywriterTool = createTool({
         case "creative":
           prompt += "\n\nCreate engaging creative content with storytelling elements and vivid language.";
           break;
+        case "general": { throw new Error('Not implemented yet: "general" case') }
       }
 
       const result = await agent.generate(prompt);
@@ -88,7 +89,7 @@ export const copywriterTool = createTool({
       const wordCount = content.split(/\s+/).length;
 
       // Extract title if present (look for # or ## at start)
-      const titleMatch = content.match(/^#{1,2}\s+(.+)$/m);
+      const titleMatch = /^#{1,2}\s+(.+)$/m.exec(content);
       const title = titleMatch ? titleMatch[1] : undefined;
 
       // Create a simple summary from the first paragraph or first few sentences
