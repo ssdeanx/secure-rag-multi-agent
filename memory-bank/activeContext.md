@@ -53,6 +53,18 @@ NEXT:
 🎯 Add Cedar context support to workflows (cedarChatWorkflow)
 🎯 Create requirements documents (REQ001, REQ002) based on DESIGN001
 
+### Recent Integrations (code-level)
+
+- **API Routes (`src/mastra/apiRegistry.ts`)** (2025-10-06): `/chat`, `/chat/stream`, `/content/generate`, and `/content/generate/stream` are registered and wired to Mastra workflows. Handlers parse and validate input with Zod schemas and support both standard request/response and SSE streaming flows.
+
+- **Chat Workflow (`src/mastra/workflows/chatWorkflow.ts`)** (2025-10-06): `cedarChatWorkflow` (exported as `chatWorkflow` for backward compatibility) implements Cedar-aware input (`ChatInputSchema`), nested streaming support, workflow event emission templates for Cedar UI, and structured action parsing (setState/frontendTool). Uses `productRoadmapAgent` for roadmap actions and supports both streaming and non-streaming execution.
+
+- **Chat Types (`src/mastra/workflows/chatWorkflowTypes.ts` & `src/mastra/workflows/chatWorkflowSharedTypes.ts`)** (2025-10-06): Added comprehensive Cedar type contracts and Zod schemas (ExecuteFunctionResponseSchema, ActionResponseSchema, SetStateResponseSchema, MessageSchema, etc.) to ensure strong type-safety across frontend ↔ API ↔ workflow boundaries.
+
+- **Product Roadmap Agent (`src/mastra/agents/productRoadmapAgent.ts`)** (2025-10-06): Agent `productRoadmap` uses `pgMemory` (Postgres memory) and content tools (`copywriterTool`, `editorTool`, `evaluateResultTool`, `extractLearningsTool`) to support content generation and roadmap actions; returns structured `setState` actions for Cedar UI.
+
+- **Storage Backend**: Confirmed Postgres-based vector & memory stack (`pgStore`, `pgVector`, `pgMemory`) is in use (`src/mastra/config/pg-storage.ts`) — no Qdrant usage in runtime configuration.
+
 ### Recent Changes
 
 1. **Cedar OS Types System Complete** (2025-10-06, 14:45) ✅
