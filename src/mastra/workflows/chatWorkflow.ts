@@ -7,9 +7,97 @@ import { createWorkflow, createStep } from '@mastra/core/workflows';
 import { z } from 'zod';
 import { productRoadmapAgent } from '../agents/productRoadmapAgent';
 import { streamJSONEvent, handleTextStream } from '../../utils/streamUtils';
-import type { StreamTextResult } from 'ai';
-import { MessageSchema, ExecuteFunctionResponseSchema, ActionResponseSchema } from './chatWorkflowSharedTypes';
+import type {
+  // New Cedar OS Integration Types
+  BaseMessage,
+  MessageRenderer,
+  MessageThread,
+  MessageStorageBaseAdapter,
+  AgentContext,
+  DiffState} from './chatWorkflowSharedTypes';
+import {
+  MessageSchema,
+  ExecuteFunctionResponseSchema,
+  ActionResponseSchema,
+  MessageThreadMeta,
+  DiffHistoryState,
+  ContextEntry,
+  AlertMessage,
+  TodoListMessage,
+} from './chatWorkflowSharedTypes';
 import { AISpanType } from '@mastra/core/ai-tracing';
+
+// ---------------------------------------------
+// Cedar OS Integration Types
+// Based on Cedar documentation: https://docs.cedarcopilot.com/type-safety/typing-agent-requests
+// ---------------------------------------------
+
+// Context schemas for additionalContext (T generic parameter)
+const CedarContextSchemas = {
+  nodes: z.array(z.object({
+    id: z.string(),
+    title: z.string(),
+    description: z.string(),
+    status: z.string(),
+    type: z.string(),
+    upvotes: z.number(),
+    commentCount: z.number(),
+  })).describe('Current roadmap/feature nodes'),
+
+  selectedNodes: z.array(z.object({
+    id: z.string(),
+    title: z.string(),
+    description: z.string(),
+    status: z.string(),
+    type: z.string(),
+    upvotes: z.number(),
+    commentCount: z.number(),
+  })).describe('User-selected nodes'),
+
+  // Cedar system fields (automatically added)
+  frontendTools: z.record(z.string(), z.unknown()).optional().describe('Available frontend tools'),
+  stateSetters: z.record(z.string(), z.unknown()).optional().describe('Available state setters'),
+  schemas: z.record(z.string(), z.unknown()).optional().describe('Zod schemas for validation'),
+
+  // New Cedar OS context fields
+  agentContext: z.custom<AgentContext>().optional().describe('Agent context with mentions and subscriptions'),
+  messageThread: z.custom<MessageThread>().optional().describe('Current message thread for conversation isolation'),
+  diffState: z.custom<DiffState>().optional().describe('Current state diff tracking'),
+  customMessages: z.array(z.custom<BaseMessage>()).optional().describe('Custom message types for rendering'),
+};
+
+// Custom fields schema for additional params (E generic parameter)
+const CedarCustomFieldsSchema = z.object({
+  resourceId: z.string().optional().describe('Memory resource identifier'),
+  threadId: z.string().optional().describe('Memory thread identifier'),
+  currentDate: z.string().describe('Current date context'),
+
+  // New Cedar OS custom fields
+  messageRenderer: z.custom<MessageRenderer>().optional().describe('Custom message renderer'),
+  storageAdapter: z.custom<MessageStorageBaseAdapter>().optional().describe('Message storage adapter'),
+  diffMode: z.enum(['defaultAccept', 'holdAccept']).optional().describe('State diff acceptance mode'),
+});
+
+// Cedar MastraParams typing (matches Cedar's expected structure)
+// Based on: https://docs.cedarcopilot.com/type-safety/typing-agent-requests#configurable-providers-support-custom-fields
+export const ChatInputSchema = z.object({
+  prompt: z.string().describe('User input prompt'),
+  temperature: z.number().optional().describe('LLM temperature setting'),
+  maxTokens: z.number().optional().describe('Maximum tokens to generate'),
+  systemPrompt: z.string().optional().describe('System prompt override'),
+
+  // Cedar custom fields (E generic parameter)
+  ...CedarCustomFieldsSchema.shape,
+
+  // Stream controller for real-time responses
+  streamController: z.any().optional().describe('Streaming controller'),
+
+  // Structured output configuration
+  output: z.any().optional().describe('Output schema for structured responses'),
+
+  // Cedar OS Context (T generic parameter - additionalContext)
+  cedarContext: z.object(CedarContextSchemas).optional().describe('Cedar OS context and state access'),
+});
 
 // ---------------------------------------------
 // Mastra nested streaming support
@@ -118,41 +206,6 @@ const mastraEventTemplates: Record<MastraEventType, Record<string, unknown>> = {
   },
 };
 
-export const ChatInputSchema = z.object({
-  prompt: z.string(),
-  temperature: z.number().optional(),
-  maxTokens: z.number().optional(),
-  systemPrompt: z.string().optional(),
-  // Memory linkage (optional)
-  resourceId: z.string().optional(),
-  threadId: z.string().optional(),
-  streamController: z.any().optional(),
-  // For structured output
-  output: z.any().optional(),
-  // Cedar OS context
-  cedarContext: z.object({
-    nodes: z.array(z.object({
-      id: z.string(),
-      title: z.string(),
-      description: z.string(),
-      status: z.string(),
-      type: z.string(),
-      upvotes: z.number(),
-      commentCount: z.number(),
-    })),
-    selectedNodes: z.array(z.object({
-      id: z.string(),
-      title: z.string(),
-      description: z.string(),
-      status: z.string(),
-      type: z.string(),
-      upvotes: z.number(),
-      commentCount: z.number(),
-    })),
-    currentDate: z.string(),
-  }).optional(),
-});
-
 export const ChatOutputSchema = ExecuteFunctionResponseSchema;
 
 export type ChatOutput = z.infer<typeof ChatOutputSchema>;
@@ -181,6 +234,8 @@ const buildAgentContext = createStep({
   inputSchema: fetchContext.outputSchema,
   outputSchema: ChatInputSchema.extend({
     messages: z.array(MessageSchema),
+    // Add support for custom message types
+    customMessages: z.array(z.custom<BaseMessage>()).optional(),
   }),
   execute: async ({ inputData }) => {
     const { prompt, temperature, maxTokens, streamController, resourceId, threadId, cedarContext } = inputData;
@@ -193,7 +248,7 @@ const buildAgentContext = createStep({
 Current Roadmap State:
 - Total features: ${cedarContext.nodes.length}
 - Selected features: ${cedarContext.selectedNodes.length}
-- Current date: ${cedarContext.currentDate}
+- Current date: ${inputData.currentDate || new Date().toISOString()}
 
 Available Actions:
 - addNode: Add a new feature to the roadmap
@@ -277,7 +332,7 @@ const callAgent = createStep({
         hasCedarContext: !!cedarContext,
         temperature,
         maxTokens,
-        hasMemory: !!(resourceId && threadId && resourceId.trim() !== '' && threadId.trim() !== ''),
+        hasMemory: !!(resourceId && threadId && resourceId.trim() && threadId.trim()),
       },
       metadata: {
         agentId: 'productRoadmapAgent',
@@ -310,13 +365,14 @@ const callAgent = createStep({
     }
 
 
-    const streamResult = await productRoadmapAgent.stream(messageContents, agentOptions as any);
+    const streamResult = await productRoadmapAgent.stream(messageContents, agentOptions);
 
     let finalText = '';
 
     // Handle streaming response
     if (streamController !== null) {
-      finalText = await handleTextStream(streamResult as unknown as StreamTextResult<any, any>, streamController);
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      finalText = await handleTextStream(streamResult as any, streamController);
 
       // Emit completion events for Cedar UI
       streamJSONEvent(streamController, {

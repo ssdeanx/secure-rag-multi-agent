@@ -7,7 +7,7 @@ import { usePathname } from 'next/navigation';
 import { cn } from '@/lib/utils';
 import { ThemeToggle } from './ThemeToggle';
 import { Menubar, MenubarMenu, MenubarTrigger } from '@/components/ui/menubar';
-import { Sheet, SheetTrigger, SheetContent } from '@/components/ui/sheet';
+import { Sheet, SheetTrigger, SheetContent, SheetTitle } from '@/components/ui/sheet';
 import { Button } from '@/components/ui/button';
 import { Menu } from 'lucide-react';
 
@@ -36,53 +36,61 @@ export function TopNavigation({ children, currentRole }: TopNavigationProps): JS
       <a href="#main" className="sr-only focus:not-sr-only focus:absolute focus:top-2 focus:left-2 focus:z-50 focus:rounded-md focus:bg-primary focus:px-4 focus:py-2 focus:text-primary-foreground">Skip to content</a>
   <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center gap-4">
         <nav className="hidden md:flex flex-1 items-center space-x-4" aria-label="Main navigation">
-          <Menubar className="w-full flex items-center justify-between space-x-6">
-            {/* Logo as first trigger */}
-            <MenubarMenu>
-              <MenubarTrigger asChild className={cn(
-                'btn-ghost hover-lift neon-glow-green font-bold no-underline',
-                pathname === '/' ? 'text-primary bg-primary/5' : 'text-foreground/70'
-              )}>
-                <Link href="/" className="no-underline text-balance inline-flex items-center">
-                  <span className="tracking-tight">Deanmachines</span>
-                </Link>
-              </MenubarTrigger>
-            </MenubarMenu>
-            {/* Nav links */}
-            {navigationLinks.map((link) => {
-              const active = pathname === link.href || pathname?.startsWith(link.href);
-              return (
-                <MenubarMenu key={link.href}>
-                  <MenubarTrigger asChild className={cn(
-                    'btn-ghost hover-lift neon-glow-green',
-                    active ? 'text-primary bg-primary/5' : 'text-foreground/70'
-                  )}>
-                    <Link href={link.href} aria-current={active ? 'page' : undefined} className="no-underline px-2 py-1 rounded-md focus-visible:ring-2 focus-visible:ring-primary/50">
-                      {link.label}
-                    </Link>
-                  </MenubarTrigger>
-                </MenubarMenu>
-              );
-            })}
-            {/* ThemeToggle as second-last */}
-            <MenubarMenu>
-              <MenubarTrigger asChild className="btn-ghost hover-lift neon-glow-green">
-                <div className="px-1 py-1 rounded-md focus-visible:ring-2 focus-visible:ring-primary/50"><ThemeToggle /></div>
-              </MenubarTrigger>
-            </MenubarMenu>
-            {/* Conditional Login as last */}
-            {typeof currentRole !== 'string' || currentRole.trim() === '' ? (
+          <Menubar className="w-full flex items-center">
+            {/* Left: Logo */}
+            <div className="flex items-center">
               <MenubarMenu>
                 <MenubarTrigger asChild className={cn(
-                  'btn-ghost hover-lift neon-glow-green',
-                  pathname?.startsWith('/login') ? 'text-primary bg-primary/5' : 'text-foreground/70'
+                  'btn-ghost hover-lift neon-glow-green font-bold no-underline',
+                  pathname === '/' ? 'text-primary bg-primary/5' : 'text-foreground/70'
                 )}>
-                  <Link href="/login" className="no-underline px-2 py-1 rounded-md focus-visible:ring-2 focus-visible:ring-primary/50">
-                    Login
+                  <Link href="/" className="no-underline text-balance inline-flex items-center">
+                    <span className="tracking-tight">Deanmachines</span>
                   </Link>
                 </MenubarTrigger>
               </MenubarMenu>
-            ) : null}
+            </div>
+
+            {/* Center: Nav links */}
+            <div className="flex-1 flex items-center justify-center space-x-6">
+              {navigationLinks.map((link) => {
+                const active = pathname === link.href || pathname?.startsWith(link.href);
+                return (
+                  <MenubarMenu key={link.href}>
+                    <MenubarTrigger asChild className={cn(
+                      'btn-ghost hover-lift neon-glow-green',
+                      active ? 'text-primary bg-primary/5' : 'text-foreground/70'
+                    )}>
+                      <Link href={link.href} aria-current={active ? 'page' : undefined} className="no-underline px-2 py-1 rounded-md focus-visible:ring-2 focus-visible:ring-primary/50">
+                        {link.label}
+                      </Link>
+                    </MenubarTrigger>
+                  </MenubarMenu>
+                );
+              })}
+            </div>
+
+            {/* Right: Theme toggle + Auth */}
+            <div className="flex items-center gap-2">
+              <MenubarMenu>
+                <MenubarTrigger asChild className="btn-ghost hover-lift neon-glow-green">
+                  <div className="px-1 py-1 rounded-md focus-visible:ring-2 focus-visible:ring-primary/50"><ThemeToggle /></div>
+                </MenubarTrigger>
+              </MenubarMenu>
+
+              {typeof currentRole !== 'string' || currentRole.trim() === '' ? (
+                <MenubarMenu>
+                  <MenubarTrigger asChild className={cn(
+                    'btn-ghost hover-lift neon-glow-green',
+                    pathname?.startsWith('/login') ? 'text-primary bg-primary/5' : 'text-foreground/70'
+                  )}>
+                    <Link href="/login" className="no-underline px-2 py-1 rounded-md focus-visible:ring-2 focus-visible:ring-primary/50">
+                      Login
+                    </Link>
+                  </MenubarTrigger>
+                </MenubarMenu>
+              ) : null}
+            </div>
           </Menubar>
         </nav>
         {/* Mobile Menu */}
@@ -95,6 +103,7 @@ export function TopNavigation({ children, currentRole }: TopNavigationProps): JS
               </Button>
             </SheetTrigger>
             <SheetContent side="right" className="w-64" aria-label="Mobile navigation">
+              <SheetTitle className="sr-only">Mobile navigation</SheetTitle>
               <nav className="flex flex-col gap-2 mt-6">
                 {navigationLinks.map((link) => {
                   const active = pathname === link.href || pathname?.startsWith(link.href);
