@@ -309,14 +309,13 @@ const callAgent = createStep({
       agentOptions.memory = { resource: resourceId, thread: threadId };
     }
 
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+
     const streamResult = await productRoadmapAgent.stream(messageContents, agentOptions as any);
 
     let finalText = '';
 
     // Handle streaming response
     if (streamController !== null) {
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       finalText = await handleTextStream(streamResult as unknown as StreamTextResult<any, any>, streamController);
 
       // Emit completion events for Cedar UI

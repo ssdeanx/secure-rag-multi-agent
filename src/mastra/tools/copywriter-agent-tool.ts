@@ -126,7 +126,7 @@ export const copywriterTool = createTool({
           contentType
         }
       });
-      throw error;
+      throw new Error(`Failed to generate content: ${errorMsg}`);
     }
   }
 });
