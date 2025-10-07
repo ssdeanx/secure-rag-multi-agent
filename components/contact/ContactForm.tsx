@@ -50,16 +50,16 @@ export function ContactForm() {
     <form
       onSubmit={handleSubmit}
       noValidate
-      className="space-y-4"
+      className="space-y-6 max-w-2xl mx-auto"
       aria-describedby={error !== null && error.length > 0 ? 'contact-error' : undefined}
     >
-      <div className="grid sm:grid-cols-2 gap-4">
-        <div className="space-y-1">
-          <label htmlFor="contact-name" className="text-sm font-medium">Name *</label>
+      <div className="grid sm:grid-cols-2 gap-6">
+        <div className="space-y-2">
+          <label htmlFor="contact-name" className="text-sm font-semibold text-foreground">Name *</label>
           <Input id="contact-name" value={form.name} onChange={(e) => update('name', e.target.value)} required aria-required="true" />
         </div>
-        <div className="space-y-1">
-          <label htmlFor="contact-email" className="text-sm font-medium">Email *</label>
+        <div className="space-y-2">
+          <label htmlFor="contact-email" className="text-sm font-semibold text-foreground">Email *</label>
             <Input
               id="contact-email"
               type="email"
@@ -76,8 +76,8 @@ export function ContactForm() {
             />
         </div>
       </div>
-      <div className="space-y-1">
-        <label className="text-sm font-medium">Category</label>
+      <div className="space-y-2">
+        <label className="text-sm font-semibold text-foreground">Category</label>
         <Select value={form.category} onValueChange={(v) => update('category', v)}>
           <SelectTrigger className="w-full"><SelectValue placeholder="Select category" /></SelectTrigger>
           <SelectContent>
@@ -88,8 +88,8 @@ export function ContactForm() {
           </SelectContent>
         </Select>
       </div>
-      <div className="space-y-1">
-        <label htmlFor="contact-message" className="text-sm font-medium">Message *</label>
+      <div className="space-y-2">
+        <label htmlFor="contact-message" className="text-sm font-semibold text-foreground">Message *</label>
         <Textarea id="contact-message" value={form.message} onChange={(e) => update('message', e.target.value)} rows={6} required aria-required="true" />
       </div>
       <div aria-live="polite" aria-atomic="true" className="min-h-[1.5rem]">
@@ -99,11 +99,11 @@ export function ContactForm() {
           <p className="text-sm text-green-600">Message sent successfully. We'll respond soon.</p>
         ) : null}
       </div>
-      <div className="flex items-center gap-4">
-        <Button type="submit" disabled={loading} aria-busy={loading} size="lg">
+      <div className="flex items-center gap-4 pt-2">
+        <Button type="submit" disabled={loading} aria-busy={loading} size="lg" className="bg-primary hover:bg-primary/90 transition-all duration-200 font-semibold">
           {loading ? 'Sending…' : 'Send Message'}
         </Button>
-        <Button type="reset" variant="outline" onClick={() => { setForm({ name: '', email: '', category: 'general', message: '' }); setError(null); setSuccess(false); }} disabled={loading}>Reset</Button>
+        <Button type="reset" variant="outline" className="border-2 transition-all duration-200 hover:bg-primary/5" onClick={() => { setForm({ name: '', email: '', category: 'general', message: '' }); setError(null); setSuccess(false); }} disabled={loading}>Reset</Button>
       </div>
     </form>
   );

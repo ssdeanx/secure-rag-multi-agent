@@ -79,7 +79,7 @@ export function NewsletterForm() {
                 disabled={loading}
                 required
               />
-              <Button type="submit" size="lg" disabled={loading} aria-disabled={loading} aria-busy={loading}>
+              <Button type="submit" size="lg" disabled={loading} className="bg-primary hover:bg-primary/90 transition-colors disabled:opacity-50" aria-disabled={loading} aria-busy={loading}>
                 {loading ? 'Submitting…' : 'Subscribe'}
               </Button>
             </form>

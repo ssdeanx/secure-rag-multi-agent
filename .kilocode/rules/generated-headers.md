@@ -1,9 +1,9 @@
 # Kilocode header drafts and model→dimension mapping
 
-Decision: canonical embedding dimension: 3072
+Decision: canonical embedding dimension: 1536
 
 Model to embedding dimension mapping:
-- gemini-embedding-001 => 3072
+- gemini-embedding-001 => 1536
 - (other models may vary; verify before use)
 
 Agent header template

@@ -27,11 +27,11 @@ export function InteractiveFeatures() {
 	const reduceMotion = useReducedMotion();
 	const prefersReducedMotion = reduceMotion === true;
 	return (
-		<section aria-labelledby="features-heading" className="py-20 bg-background text-foreground">
+<section aria-labelledby="features-heading" className="py-20 bg-background text-foreground">
 			<motion.div
 				{...(prefersReducedMotion
-					? {}
-					: { initial: { opacity: 0, y: 50 }, whileInView: { opacity: 1, y: 0 }, transition: { duration: 0.8 } })}
+? {}
+: { initial: { opacity: 0, y: 50 }, whileInView: { opacity: 1, y: 0 }, transition: { duration: 0.8 } })}
 				viewport={{ once: true }}
 			>
 				<h2 id="features-heading" className="text-3xl font-bold text-center mb-4">
@@ -41,28 +41,28 @@ export function InteractiveFeatures() {
 					Explore the core capabilities that make Deanmachines the leader in governed AI.
 				</p>
 			</motion.div>
-			<ul className="grid md:grid-cols-3 gap-8" aria-label="Key product features">
+			<ul className="grid md:grid-cols-3 gap-8 max-w-6xl mx-auto px-4" aria-label="Key product features">
 				{features.map((feature, i) => (
-					<li key={feature.title} className="h-full list-none">
+<li key={feature.title} className="h-full list-none">
 						<motion.div
 							{...(prefersReducedMotion
-								? {}
-								: {
-										initial: { opacity: 0, y: 50 },
-										whileInView: { opacity: 1, y: 0 },
-										transition: { duration: 0.5, delay: i * 0.15 },
-									})}
+? {}
+: {
+initial: { opacity: 0, y: 50 },
+whileInView: { opacity: 1, y: 0 },
+transition: { duration: 0.5, delay: i * 0.15 },
+})}
 							viewport={{ once: true }}
 							aria-label={`${feature.title} feature`}
 						>
-							<Card className="text-center h-full hover-lift hover-glow transition-all duration-300 focus-within:ring-2 focus-within:ring-primary/60">
+							<Card className="text-center h-full transition-all duration-300 hover:shadow-2xl hover:shadow-primary/10 hover:border-primary/50 hover:-translate-y-2 border-2 bg-card/50 backdrop-blur-sm">
 								<CardHeader>
-									<div className="mx-auto bg-primary/10 rounded-full p-3 w-fit mb-4" aria-hidden="true">
+									<div className="mx-auto bg-primary/15 rounded-full p-4 w-fit mb-4 shadow-lg shadow-primary/20" aria-hidden="true">
 										{feature.icon}
 									</div>
-									<CardTitle>{feature.title}</CardTitle>
+									<CardTitle className="text-xl font-semibold">{feature.title}</CardTitle>
 								</CardHeader>
-								<CardDescription className="px-6 pb-6 text-center">
+								<CardDescription className="px-6 pb-6 text-center text-base text-foreground/80">
 									{feature.description}
 								</CardDescription>
 							</Card>

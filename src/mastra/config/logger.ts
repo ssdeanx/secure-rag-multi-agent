@@ -34,7 +34,7 @@ const logToFile = (message: string, data?: Record<string, unknown>) => {
 
 export const logWorkflowStart = (workflowId: string, input: Record<string, unknown>) => {
   const message = `🚀 Starting workflow: ${workflowId}`;
-  const data: { workflowId: string; input: Record<string, unknown>; timestamp: any; } = {
+  const data: { workflowId: string; input: Record<string, unknown>; timestamp: string; } = {
     workflowId,
     input,
     timestamp: new Date().toISOString(),
@@ -45,7 +45,7 @@ export const logWorkflowStart = (workflowId: string, input: Record<string, unkno
 
 export const logWorkflowEnd = (workflowId: string, output: Record<string, unknown>, duration: number) => {
   const message = `✅ Workflow completed: ${workflowId}`;
-  const data: { workflowId: string; output: Record<string, unknown>; duration: string; timestamp: any; } = {
+  const data: { workflowId: string; output: Record<string, unknown>; duration: string; timestamp: string; } = {
     workflowId,
     output,
     duration: `${duration}ms`,
@@ -57,7 +57,7 @@ export const logWorkflowEnd = (workflowId: string, output: Record<string, unknow
 
 export const logStepStart = (stepId: string, input: Record<string, unknown>) => {
   const message = `📋 Starting step: ${stepId}`;
-  const data: { stepId: string; input: Record<string, unknown>; timestamp: any; } = {
+  const data: { stepId: string; input: Record<string, unknown>; timestamp: string; } = {
     stepId,
     input,
     timestamp: new Date().toISOString(),
@@ -68,7 +68,7 @@ export const logStepStart = (stepId: string, input: Record<string, unknown>) => 
 
 export const logStepEnd = (stepId: string, output: Record<string, unknown>, duration: number) => {
   const message = `✓ Step completed: ${stepId}`;
-  const data: { stepId: string; output: Record<string, unknown>; duration: string; timestamp: any; } = {
+  const data: { stepId: string; output: Record<string, unknown>; duration: string; timestamp: string; } = {
     stepId,
     output,
     duration: `${duration}ms`,
@@ -80,7 +80,7 @@ export const logStepEnd = (stepId: string, output: Record<string, unknown>, dura
 
 export const logToolExecution = (toolId: string, input: Record<string, unknown>, output?: Record<string, unknown>) => {
   const message = `🔧 Tool execution: ${toolId}`;
-  const data: { toolId: string; input: Record<string, unknown>; output: any; timestamp: any; } = {
+  const data: { toolId: string; input: Record<string, unknown>; output?: Record<string, unknown>; timestamp: string; } = {
     toolId,
     input,
     output,
@@ -92,7 +92,7 @@ export const logToolExecution = (toolId: string, input: Record<string, unknown>,
 
 export const logAgentActivity = (agentId: string, action: string, details: Record<string, unknown>) => {
   const message = `🤖 Agent activity: ${agentId} - ${action}`;
-  const data: { agentId: string; action: string; details: Record<string, unknown>; timestamp: any; } = {
+  const data: { agentId: string; action: string; details: Record<string, unknown>; timestamp: string; } = {
     agentId,
     action,
     details,
@@ -104,7 +104,7 @@ export const logAgentActivity = (agentId: string, action: string, details: Recor
 
 export const logError = (component: string, error: Error | unknown, context?: Record<string, unknown>) => {
   const message = `❌ Error in ${component}`;
-  const data: { component: string; error: any; stack: any; context: any; timestamp: any; } = {
+  const data: { component: string; error: string; stack?: string; context?: Record<string, unknown>; timestamp: string; } = {
     component,
     error: error instanceof Error ? error.message : String(error),
     stack: error instanceof Error ? error.stack : undefined,
@@ -117,7 +117,7 @@ export const logError = (component: string, error: Error | unknown, context?: Re
 
 export const logProgress = (message: string, progress: number, total: number) => {
   const logMessage = `📊 Progress: ${message} (${progress}/${total})`;
-  const data: { message: string; progress: number; total: number; percentage: any; timestamp: any; } = {
+  const data: { message: string; progress: number; total: number; percentage: number; timestamp: string; } = {
     message,
     progress,
     total,

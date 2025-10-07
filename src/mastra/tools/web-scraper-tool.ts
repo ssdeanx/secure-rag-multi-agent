@@ -221,7 +221,7 @@ export const HtmlProcessor = {
 };
 
 // Enhanced error handling utilities
-class ScrapingError extends Error {
+export class ScrapingError extends Error {
   public readonly code: string;
   public readonly statusCode?: number;
   public readonly url?: string;
@@ -242,7 +242,7 @@ class ScrapingError extends Error {
   }
 }
 
-class ValidationUtils {
+export class ValidationUtils {
   static validateUrl(url: string): boolean {
     try {
       const parsedUrl = new URL(url);
