@@ -74,6 +74,7 @@ export async function POST(request: NextRequest) {
           const startTime = Date.now();
 
           // Get workflow from mastra and use createRunAsync
+          // cannot import mastra at like this in a route file
           const workflow = mastra.getWorkflows()['governed-rag-answer'];
           const run = await workflow.createRunAsync();
 
@@ -105,7 +106,7 @@ export async function POST(request: NextRequest) {
             );
           } else {
             const errorMessage = result.status === 'failed' && 'error' in result
-              ? result.error?.message || 'Failed to process your request'
+              ? result.error?.message ?? 'Failed to process your request'
               : 'Failed to process your request';
             controller.enqueue(
               encoder.encode(`data: ${JSON.stringify({

@@ -1,19 +1,19 @@
 # 🔐 Mastra Governed RAG
 
-![Next.js](https://img.shields.io/badge/Next.js-15.5.3-blue?style=flat&logo=next.js)
-![TypeScript](https://img.shields.io/badge/TypeScript-5.9.2-green?style=flat&logo=typescript)
-![Mastra](https://img.shields.io/badge/Mastra-0.17-orange?style=flat)
-![Vitest](https://img.shields.io/badge/Vitest-3-red?style=flat&logo=vitest)
+![Next.js](https://img.shields.io/badge/Next.js-15.5.4-blue?style=flat&logo=next.js)
+![TypeScript](https://img.shields.io/badge/TypeScript-5.9.3-green?style=flat&logo=typescript)
+![Mastra](https://img.shields.io/badge/Mastra-0.20-orange?style=flat)
+![Vitest](https://img.shields.io/badge/Vitest-3.2.4-red?style=flat&logo=vitest)
 ![Node](https://img.shields.io/badge/Node-%3E=20.9-blue?style=flat&logo=node.js)
+![Google AI](https://img.shields.io/badge/Google%20AI-Gemini-blue?style=flat&logo=google)
 ![OpenAI](https://img.shields.io/badge/OpenAI-API-blue)
-![Qdrant](https://img.shields.io/badge/Qdrant-Vector%20DB-orange)
-![Zod](https://img.shields.io/badge/Zod-Schema-red)
+![OpenRouter](https://img.shields.io/badge/OpenRouter-API-purple)
 ![Tailwind CSS](https://img.shields.io/badge/Tailwind%20CSS-4.1-blue)
 ![Lucide React](https://img.shields.io/badge/Lucide%20React-Icons-yellow)
 ![shadcn/ui](https://img.shields.io/badge/shadcn%2Fui-Components-indigo)
 ![Docker](https://img.shields.io/badge/Docker-Container-blue)
+![PostgreSQL](https://img.shields.io/badge/PostgreSQL-18-blue?style=flat&logo=postgresql)
 ![Mermaid](https://img.shields.io/badge/Mermaid-Diagrams-blue)
-![Zod](https://img.shields.io/badge/Zod-red)
 
 Secure Retrieval-Augmented Generation (RAG) with role-based access control using Mastra AI orchestration.
 
@@ -34,27 +34,88 @@ Traditional RAG systems risk exposing sensitive data. This template provides ent
 ### Architecture
 
 ```mermaid
-graph LR
+graph TB
     User[User / JWT Authentication] --> UI[Next.js UI<br/>shadcn/ui, Tailwind CSS, Lucide React]
-    UI --> API[Next.js API Routes]
-    API --> Mastra[Mastra Workflow<br/>Agents, Services, Tools]
-    Mastra --> Qdrant[Qdrant Vector DB]
-    Mastra --> OpenAI[OpenAI Embeddings / LLM]
-    Qdrant -.-> Mastra
-    OpenAI -.-> Mastra
+    UI --> API[Next.js API Routes<br/>/api/chat, /api/index, /api/auth]
+    API --> Mastra[Mastra Workflow Engine<br/>Multi-Agent Orchestration]
+
+    GoogleAI[Google AI / Gemini<br/>LLM & Embeddings] --> Mastra
+    OpenAI[OpenAI<br/>Secondary Provider] --> Mastra
+    OpenRouter[OpenRouter<br/>Additional Providers] --> Mastra
+
+    PostgreSQL[(PostgreSQL + PgVector<br/>Vector Storage & Memory)] --> Mastra
+    Redis[(Redis<br/>Caching & Sessions)] --> Mastra
+
+    subgraph MastraInternal[Mastra Core Components]
+        Agents[17 Specialized Agents<br/>Identity, Policy, Retrieve, Rerank, Answerer, Verifier<br/>Research, Report, Copywriter, Evaluation, Learning<br/>Product Roadmap, Editor, Self-Referencing, Assistant]
+        Workflows[11 Orchestrated Workflows<br/>Governed RAG Answer, Governed RAG Index<br/>Research, Content Generation, Generate Report<br/>Chat, Supporting Types]
+        Tools[15 Secure Tools<br/>Vector Query, JWT Auth, Document Chunking<br/>Web Scraper, Copywriter, Editor, Evaluate<br/>Weather, Roadmap, Data File Manager]
+        Networks[2 Multi-Agent Networks<br/>Research Content Network<br/>Governed RAG Network]
+    end
+
+    Agents --> Tools
+    Workflows --> Agents
+    Networks --> Workflows
+    Networks --> Agents
 ```
 
-**RAG Security Pipeline:**
+**Detailed RAG Security Pipeline:**
 
 ```mermaid
 flowchart TD
-    A[User Query + JWT] --> B[Identity Agent<br/>Validate User]
-    B --> C[Policy Agent<br/>Access Filtering]
-    C --> D[Retrieve Agent<br/>Qdrant Vector Search]
-    D --> E[Rerank Agent<br/>Relevance Scoring]
-    E --> F[Answerer Agent<br/>Generate Answer]
-    F --> G[Verifier Agent<br/>Compliance Check]
-    G --> H[Secure Response<br/>With Citations]
+    %% Input Layer
+    A[User Query + JWT] --> B[Identity Agent<br/>JWT Validation & User Context]
+
+    %% Security Layer
+    B --> C[Policy Agent<br/>Role-Based Access Control<br/>Document Classification Filtering]
+
+    %% Retrieval Layer
+    C --> D[Retrieve Agent<br/>PgVector Similarity Search<br/>Security-Filtered Results]
+
+    %% Processing Layer
+    D --> E[Rerank Agent<br/>Relevance Scoring<br/>Context Ranking]
+
+    %% Generation Layer
+    E --> F[Answerer Agent<br/>Secure Response Generation<br/>Citation Assembly]
+
+    %% Verification Layer
+    F --> G[Verifier Agent<br/>Compliance Validation<br/>PII Detection<br/>Policy Enforcement]
+
+    %% Output Layer
+    G --> H[Secure Response<br/>With Citations & Metadata]
+
+    %% Multi-Agent Enhancement
+    I[Research Content Network<br/>Multi-Source Analysis] -.-> F
+    J[Governed RAG Network<br/>Cross-Agent Coordination] -.-> G
+
+    %% Supporting Components
+    subgraph K["Available Tools (15 total)"]
+        L[Vector Query Tool<br/>Secure Similarity Search]
+        M[Document Chunking Tool<br/>Intelligent Text Splitting]
+        N[Web Scraper Tool<br/>Content Extraction]
+        O[JWT Auth Tool<br/>Token Validation]
+        P[Content Tools<br/>Copywriter, Editor, Evaluation]
+        Q[Data Tools<br/>Weather, Roadmap, File Manager]
+    end
+
+    %% Tool Usage
+    D -.-> L
+    D -.-> M
+    F -.-> P
+    I -.-> N
+    I -.-> Q
+    B -.-> O
+
+    %% Styling
+    classDef inputLayer fill:#e3f2fd,stroke:#1976d2,stroke-width:2px
+    classDef securityLayer fill:#fff3e0,stroke:#f57c00,stroke-width:2px
+    classDef retrievalLayer fill:#e8f5e8,stroke:#388e3c,stroke-width:2px
+    classDef processingLayer fill:#fce4ec,stroke:#c2185b,stroke-width:2px
+    classDef generationLayer fill:#f3e5f5,stroke:#7b1fa2,stroke-width:2px
+    classDef verificationLayer fill:#fff8e1,stroke:#fbc02d,stroke-width:2px
+    classDef outputLayer fill:#e0f2f1,stroke:#00796b,stroke-width:2px
+
+    class A,B,C,D,E,F,G,H inputLayer,securityLayer,retrievalLayer,processingLayer,generationLayer,verificationLayer,outputLayer
 ```
 
 ## Getting Started
@@ -83,10 +144,11 @@ flowchart TD
    # Edit .env with your OpenAI API key and other settings
    ```
 
-3. **Start services:**
+3. **Start database (optional):**
 
    ```bash
-   docker-compose up -d  # Qdrant vector database
+   # Only needed if using local PostgreSQL
+   docker-compose up -d db
    ```
 
 4. **Index documents:**
@@ -101,19 +163,6 @@ flowchart TD
    npm run dev  # http://localhost:3000
    ```
 
-> [!TIP]
-> For detailed setup instructions, see the [Quick Start Guide](./docs/quick-start.md).
-
-## Features
-
-### Security & Governance
-
-- **Role-Based Access Control**: Hierarchical permissions with inheritance
-- **Document Classification**: Public, internal, and confidential content levels
-- **Step-Up Authentication**: Elevated access for sensitive operations
-- **Audit Logging**: Comprehensive security event tracking
-- **Zero-Trust Architecture**: Security validation at every pipeline stage
-
 ### AI & RAG Capabilities
 
 - **Multi-Agent Orchestration**: Specialized agents for different RAG stages
@@ -122,8 +171,82 @@ flowchart TD
 - **Citation Generation**: Source attribution with access verification
 - **Streaming Responses**: Real-time answer generation with SSE
 
-### Developer Experience
+## AI Agents
 
+This system employs a comprehensive multi-agent architecture with 17 specialized agents:
+
+### Core RAG Agents
+
+- **Identity Agent** - Validates user authentication and permissions
+- **Policy Agent** - Enforces access control and security policies
+- **Retrieve Agent** - Performs intelligent document retrieval with security filtering
+- **Rerank Agent** - Ranks and scores retrieved documents for relevance
+- **Answerer Agent** - Generates secure responses with citations
+- **Verifier Agent** - Validates responses for compliance and accuracy
+
+### Specialized Agents
+
+- **Research Agent** - Conducts in-depth research and analysis
+- **Report Agent** - Generates structured reports and summaries
+- **Copywriter Agent** - Creates marketing and communication content
+- **Evaluation Agent** - Assesses content quality and relevance
+- **Learning Extraction Agent** - Identifies and extracts key learnings
+- **Product Roadmap Agent** - Analyzes product strategy and roadmaps
+- **Editor Agent** - Reviews and improves content quality
+- **Self-Referencing Agent** - Maintains context across conversations
+- **Assistant Agent** - Provides general AI assistance
+- **Starter Agent** - Handles initial query processing
+
+### Network Agents
+
+- **Research Content Network** - Orchestrates multi-agent research workflows
+- **Governed RAG Network** - Manages secure RAG operations across agents
+
+Each agent follows a single-tool-call policy, ensuring predictable and auditable AI behavior while maintaining security governance throughout the entire pipeline.
+## AI Tools
+
+The system includes 15 specialized tools that agents can invoke to perform specific operations:
+
+### Core RAG Tools
+
+- **Vector Query Tool** - Performs secure vector similarity searches with access filtering
+- **JWT Auth Tool** - Validates and processes JWT tokens for user authentication
+- **Document Chunking Tool** - Intelligently splits documents into manageable chunks for indexing
+- **Graph RAG Query Tool** - Executes complex graph-based retrieval augmented generation queries
+
+### Content & Analysis Tools
+
+- **Copywriter Agent Tool** - Generates marketing and communication content
+- **Editor Agent Tool** - Reviews and improves content quality and clarity
+- **Evaluate Result Tool** - Assesses the quality and relevance of generated content
+- **Extract Learnings Tool** - Identifies and extracts key insights and learnings
+- **Starter Agent Tool** - Handles initial query processing and routing
+
+### Research & Data Tools
+
+- **Web Scraper Tool** - Extracts and processes web content for research
+- **Weather Tool** - Provides weather data and forecasting capabilities
+- **Roadmap Tool** - Analyzes product strategy and roadmap information
+- **Data File Manager** - Manages file operations and data processing tasks
+
+### Core RAG Workflows
+
+- **Governed RAG Answer Workflow** - Main workflow for secure question answering with citations
+- **Governed RAG Index Workflow** - Handles document indexing with classification and security tagging
+- **Chat Workflow** - Manages conversational interactions with context preservation
+
+### Specialized Workflows
+
+- **Research Workflow** - Conducts comprehensive research operations across multiple sources
+- **Content Generation Workflow** - Creates various types of content using multiple agents
+- **Generate Report Workflow** - Produces structured reports and analytical summaries
+
+### Supporting Workflows
+
+- **Chat Workflow Types** - Type definitions and utilities for chat operations
+- **Chat Workflow Shared Types** - Common types and interfaces for workflow communication
+
+All workflows implement comprehensive error handling, tracing, and security validation at each step, ensuring reliable and auditable AI operations.
 - **Type-Safe Development**: Full TypeScript with Zod schema validation
 - **Hot Reload**: Concurrent development for frontend and backend
 - **Comprehensive Testing**: Vitest framework with service and workflow tests
@@ -145,7 +268,10 @@ mastra-governed-rag/
 │   │   ├── workflows/     # Orchestrated agent workflows
 │   │   ├── tools/         # Reusable agent tools
 │   │   ├── services/      # Business logic and integrations
-│   │   └── config/        # Configuration and role hierarchy
+│   │   ├── networks/      # Multi-agent orchestration networks
+│   │   ├── schemas/       # Data validation schemas
+│   │   ├── config/        # Configuration and role hierarchy
+│   │   └── policy/        # Access control policies
 │   └── cli/               # Command-line interface
 ├── lib/                    # Shared utilities and client libraries
 └── docker-compose.yml     # Development services
@@ -256,7 +382,7 @@ docker-compose up -d
 - Configure production environment variables
 - Set up proper JWT secrets
 - Enable audit logging
-- Configure Qdrant for production scale
+- Configure PostgreSQL + PgVector for production scale
 
 ## Security Model
 
@@ -291,19 +417,22 @@ docs:
 - [Security Implementation](./docs/security.md)
 - [API Reference](./docs/api-reference.md)
 - [Mastra Framework](https://mastra.ai)
-- [Qdrant Documentation](https://qdrant.tech/documentation/)
+- [PostgreSQL Documentation](https://www.postgresql.org/docs/)
 
 ## Troubleshooting
 
 ### Common Issues
 
-#### Qdrant Connection Failed
+#### PostgreSQL Connection Failed
 
 ```bash
-# Check Qdrant status
-curl http://localhost:6333/health
+# Check PostgreSQL status
+docker-compose ps
 
-# Restart services
+# Check logs
+docker-compose logs db
+
+# Restart database
 docker-compose down && docker-compose up -d
 ```
 
@@ -318,7 +447,7 @@ npm run jwt:finance  # or other roles
 
 - Verify document indexing: `npm run cli index`
 - Check user role permissions
-- Review Qdrant collection status
+- Review PgVector collection status
 
 For detailed troubleshooting, see [Troubleshooting Guide](./docs/troubleshooting.md).
 
@@ -332,7 +461,7 @@ For detailed troubleshooting, see [Troubleshooting Guide](./docs/troubleshooting
 
 ---
 
-Built with ❤️ using [Mastra](https://mastra.ai) • [Next.js](https://nextjs.org) • [Qdrant](https://qdrant.tech)
+Built with ❤️ using [Mastra](https://mastra.ai) • [Next.js](https://nextjs.org) • [PostgreSQL](https://postgresql.org)
 
 ## Contributing
 

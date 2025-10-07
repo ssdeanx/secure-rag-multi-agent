@@ -34,7 +34,7 @@ export function ValuesGrid() {
                 {...(prefReduce ? {} : { initial: { opacity: 0, y: 24 }, whileInView: { opacity: 1, y: 0 }, transition: { duration: 0.5, delay: i * 0.1 } })}
                 viewport={{ once: true }}
               >
-                <Card className="h-full hover-lift hover-glow transition-colors">
+                <Card className="h-full transition-all duration-300 hover:shadow-lg hover:border-primary/40 hover:-translate-y-1 border-2">
                   <CardHeader>
                     <CardTitle className="text-lg">{val.title}</CardTitle>
                     <CardDescription>{val.description}</CardDescription>

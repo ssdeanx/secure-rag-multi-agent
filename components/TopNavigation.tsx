@@ -41,11 +41,11 @@ export function TopNavigation({ children, currentRole }: TopNavigationProps): JS
             <div className="flex items-center">
               <MenubarMenu>
                 <MenubarTrigger asChild className={cn(
-                  'btn-ghost hover-lift neon-glow-green font-bold no-underline',
-                  pathname === '/' ? 'text-primary bg-primary/5' : 'text-foreground/70'
+                  'btn-ghost font-bold no-underline transition-all duration-200 hover:text-primary hover:scale-105',
+                  pathname === '/' ? 'text-primary' : 'text-foreground'
                 )}>
                   <Link href="/" className="no-underline text-balance inline-flex items-center">
-                    <span className="tracking-tight">Deanmachines</span>
+                    <span className="text-xl tracking-tight font-extrabold bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">Deanmachines</span>
                   </Link>
                 </MenubarTrigger>
               </MenubarMenu>
@@ -58,8 +58,8 @@ export function TopNavigation({ children, currentRole }: TopNavigationProps): JS
                 return (
                   <MenubarMenu key={link.href}>
                     <MenubarTrigger asChild className={cn(
-                      'btn-ghost hover-lift neon-glow-green',
-                      active ? 'text-primary bg-primary/5' : 'text-foreground/70'
+                      'btn-ghost transition-all duration-200 hover:text-primary hover:bg-primary/5 hover:scale-105 font-medium',
+                      active ? 'text-primary bg-primary/10 font-semibold' : 'text-foreground'
                     )}>
                       <Link href={link.href} aria-current={active ? 'page' : undefined} className="no-underline px-2 py-1 rounded-md focus-visible:ring-2 focus-visible:ring-primary/50">
                         {link.label}
@@ -73,7 +73,7 @@ export function TopNavigation({ children, currentRole }: TopNavigationProps): JS
             {/* Right: Theme toggle + Auth */}
             <div className="flex items-center gap-2">
               <MenubarMenu>
-                <MenubarTrigger asChild className="btn-ghost hover-lift neon-glow-green">
+                <MenubarTrigger asChild className="btn-ghost">
                   <div className="px-1 py-1 rounded-md focus-visible:ring-2 focus-visible:ring-primary/50"><ThemeToggle /></div>
                 </MenubarTrigger>
               </MenubarMenu>
@@ -81,8 +81,8 @@ export function TopNavigation({ children, currentRole }: TopNavigationProps): JS
               {typeof currentRole !== 'string' || currentRole.trim() === '' ? (
                 <MenubarMenu>
                   <MenubarTrigger asChild className={cn(
-                    'btn-ghost hover-lift neon-glow-green',
-                    pathname?.startsWith('/login') ? 'text-primary bg-primary/5' : 'text-foreground/70'
+                    'btn-ghost transition-all duration-200 hover:text-primary hover:bg-primary/10 hover:scale-105 font-medium',
+                    pathname?.startsWith('/login') ? 'text-primary bg-primary/10 font-semibold' : 'text-foreground'
                   )}>
                     <Link href="/login" className="no-underline px-2 py-1 rounded-md focus-visible:ring-2 focus-visible:ring-primary/50">
                       Login

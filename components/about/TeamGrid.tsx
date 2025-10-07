@@ -36,10 +36,10 @@ export function TeamGrid() {
                 {...(prefReduce ? {} : { initial: { opacity: 0, y: 30 }, whileInView: { opacity: 1, y: 0 }, transition: { duration: 0.55, delay: i * 0.12 } })}
                 viewport={{ once: true }}
               >
-                <Card className="h-full text-center hover-lift hover-glow">
+                <Card className="h-full text-center transition-all duration-300 hover:shadow-lg hover:border-primary/40 hover:-translate-y-1">
                   <CardHeader className="items-center">
-                    <Avatar className="mb-3 h-16 w-16 ring-2 ring-primary/40">
-                      <AvatarFallback>{member.initials}</AvatarFallback>
+                    <Avatar className="mb-3 h-20 w-20 border-2 border-primary/20">
+                      <AvatarFallback className="text-lg font-semibold bg-primary/10 text-primary">{member.initials}</AvatarFallback>
                     </Avatar>
                     <CardTitle className="text-lg leading-tight">{member.name}</CardTitle>
                     <CardDescription>{member.role}</CardDescription>
