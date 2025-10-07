@@ -124,8 +124,8 @@ export function AuthForm({ defaultMode = 'login' }: AuthFormProps) {
             title="Toggle password visibility"
             onClick={() => setShowPassword(v => !v)}
             className="absolute inset-y-0 right-0 px-4 text-sm font-semibold text-primary hover:text-primary/80 focus:outline-none focus:ring-2 focus:ring-primary/50 transition-colors duration-200"
-            aria-pressed={showPassword}
-            aria-expanded={showPassword}
+            aria-pressed={showPassword ? "true" : "false"}
+            aria-expanded={showPassword ? "true" : "false"}
             aria-controls="auth-password"
             aria-label={showPassword ? 'Hide password' : 'Show password'}
             aria-describedby="password-help"
