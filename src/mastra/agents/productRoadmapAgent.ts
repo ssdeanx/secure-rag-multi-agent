@@ -1,15 +1,21 @@
 import { Agent } from '@mastra/core/agent'
 import { productRoadmapOutputSchema } from '../schemas/agent-schemas'
-import { createGraphRAGTool, createVectorQueryTool } from '@mastra/rag'
-import { google } from '@ai-sdk/google'
 import { log } from '../config/logger'
 import { extractLearningsTool } from '../tools/extractLearningsTool'
 import { editorTool } from '../tools/editor-agent-tool'
 import { copywriterTool } from '../tools/copywriter-agent-tool'
 import { evaluateResultTool } from '../tools/evaluateResultTool'
-import { pgMemory } from '../config/pg-storage'
+import { graphQueryTool, pgMemory, pgQueryTool } from '../config/pg-storage'
 import { googleAI } from '../config/google'
+import { PGVECTOR_PROMPT } from '@mastra/pg'
+import { mdocumentChunker } from '../tools/document-chunking.tool'
+import { htmlToMarkdownTool, webScraperTool } from '../tools/web-scraper-tool'
+import { vectorQueryTool } from '../tools/vector-query.tool'
+import { BatchPartsProcessor, UnicodeNormalizer } from '@mastra/core/processors'
 
+log.info('Initializing productRoadmap Agent...')
+
+// Create RAG tools for interacting with the product roadmap graph database
 export const productRoadmapAgent = new Agent({
     id: 'productRoadmap',
     name: 'Product Roadmap Agent',
@@ -74,6 +80,7 @@ When creating content:
 - For technical documentation: Use technical contentType with professional tone
 - For user communications: Use business contentType with clear, professional tone
 - For social media updates: Use social contentType with engaging tone
+- ${PGVECTOR_PROMPT}
 </tool_usage>
 
 <content_generation>
@@ -144,7 +151,28 @@ When generating content, include the generated content in your response and indi
         editorTool,
         copywriterTool,
         evaluateResultTool,
+        pgQueryTool,
+        graphQueryTool,
+        mdocumentChunker,
+        webScraperTool,
+        htmlToMarkdownTool,
+        vectorQueryTool
     },
+    inputProcessors: [
+            new UnicodeNormalizer({
+                stripControlChars: true,
+                collapseWhitespace: true,
+                preserveEmojis: true,
+                trim: true,
+            }),
+        ],
+        outputProcessors: [
+            new BatchPartsProcessor({
+                batchSize: 10, // Maximum parts to batch together
+                maxWaitTime: 50, // Maximum time to wait before emitting (ms)
+                emitOnNonText: true, // Emit immediately on non-text parts
+            }),
+        ],
     evals: {
         // Add any evaluation metrics if needed
     },

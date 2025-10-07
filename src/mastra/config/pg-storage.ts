@@ -1,5 +1,5 @@
 import { Memory } from '@mastra/memory'
-import { PgVector, PostgresStore } from '@mastra/pg'
+import { PgVector, PostgresStore, PGVECTOR_PROMPT } from '@mastra/pg'
 import { google } from '@ai-sdk/google'
 import { createVectorQueryTool, createGraphRAGTool } from '@mastra/rag'
 import type { UIMessage } from 'ai'
@@ -61,7 +61,7 @@ export const pgMemory = new Memory({
         // Enhanced working memory with supported template
         workingMemory: {
             enabled: true,
-            scope: 'resource', // 'resource' | 'thread' | 'global'
+            scope: 'resource', // 'resource' | 'thread'
             template: `
 # User Profile & Context
 ## Personal Information
@@ -93,7 +93,8 @@ export const pgMemory = new Memory({
 - **Outstanding Questions**: [To be learned]
 - **Action Items**: [To be learned]
 - **Follow-ups Needed**: [To be learned]
-      `,
+        `,
+        version: "vnext", // Enable the improved/experimental tool
         },
         // Thread management with supported options
         threads: {

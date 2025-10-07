@@ -41,10 +41,13 @@ import {
 import { log } from '../config/logger'
 import { editorTool } from '../tools/editor-agent-tool'
 import { weatherTool } from '../tools/weather-tool'
-import { pgMemory } from '../config/pg-storage'
+import { pgMemory, pgQueryTool } from '../config/pg-storage'
 import { googleAI } from '../config/google'
-
-log.info('Initializing OpenRouter Assistant Agent...')
+import { PGVECTOR_PROMPT } from '@mastra/pg'
+import { mdocumentChunker } from '../tools/document-chunking.tool'
+import { evaluateResultTool } from '../tools/evaluateResultTool'
+import { extractLearningsTool } from '../tools/extractLearningsTool'
+log.info('Initializing Assistant Agent...')
 
 export const assistantAgent = new Agent({
     id: 'assistant',
@@ -74,6 +77,7 @@ When given a research task, you must follow this process:
 - **Bulk Scraping:** Use \`batchWebScraperTool\` for downloading multiple pages at once. Use \`webScraperTool\` for single pages.
 - **Data Management:** Use \`writeDataFileTool\` to save your findings (e.g., "scraped_content.md", "research_summary.json"). Use \`listDataDirTool\` to see your saved files.
 - **Inform the User:** Always inform the user which step you are on and which tool you are using.
+- **${PGVECTOR_PROMPT}**
 </tool_usage>
 
 <output_format>
@@ -102,6 +106,10 @@ For complex research tasks that generate data, you MUST respond with a valid JSO
     },
     tools: {
         // Corrected indentation for the 'tools' object
+        pgQueryTool,
+        mdocumentChunker,
+        extractLearningsTool,
+        evaluateResultTool,
         readDataFileTool,
         writeDataFileTool,
         deleteDataFileTool,
