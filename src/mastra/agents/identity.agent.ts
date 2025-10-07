@@ -1,11 +1,11 @@
 import { Agent } from '@mastra/core'
 import { identityOutputSchema } from '../schemas/agent-schemas'
 import { jwtAuthTool } from '../tools/jwt-auth.tool'
-import { google } from '@ai-sdk/google'
+
 import { log } from '../config/logger'
 import { pgMemory } from '../config/pg-storage'
 import { googleAIFlashLite } from '../config/google'
-
+import { PGVECTOR_PROMPT } from '@mastra/pg'
 log.info('Initializing Identity Agent...')
 
 export const identityAgent = new Agent({
@@ -18,6 +18,8 @@ export const identityAgent = new Agent({
 1. Call the jwt-auth tool with the provided JWT token
 2. Return the extracted claims in the exact format received
 3. If the JWT is invalid or expired, return an error message
+
+${PGVECTOR_PROMPT}
 
 Always use the jwt-auth tool - never attempt to decode JWTs manually.`,
     tools: { jwtAuth: jwtAuthTool },
