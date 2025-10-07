@@ -131,37 +131,37 @@ flowchart TD
 
 1. **Clone and install:**
 
-   ```bash
-   git clone https://github.com/ssdeanx/governed-rag-ai.git
-   cd mastra-governed-rag
-   npm install
-   ```
+    ```bash
+    git clone https://github.com/ssdeanx/governed-rag-ai.git
+    cd mastra-governed-rag
+    npm install
+    ```
 
 2. **Configure environment:**
 
-   ```bash
-   cp .env.example .env
-   # Edit .env with your OpenAI API key and other settings
-   ```
+    ```bash
+    cp .env.example .env
+    # Edit .env with your OpenAI API key and other settings
+    ```
 
 3. **Start database (optional):**
 
-   ```bash
-   # Only needed if using local PostgreSQL
-   docker-compose up -d db
-   ```
+    ```bash
+    # Only needed if using local PostgreSQL
+    docker-compose up -d db
+    ```
 
 4. **Index documents:**
 
-   ```bash
-   npm run cli index
-   ```
+    ```bash
+    npm run cli index
+    ```
 
 5. **Start development:**
 
-   ```bash
-   npm run dev  # http://localhost:3000
-   ```
+    ```bash
+    npm run dev  # http://localhost:3000
+    ```
 
 ### AI & RAG Capabilities
 
@@ -203,6 +203,7 @@ This system employs a comprehensive multi-agent architecture with 17 specialized
 - **Governed RAG Network** - Manages secure RAG operations across agents
 
 Each agent follows a single-tool-call policy, ensuring predictable and auditable AI behavior while maintaining security governance throughout the entire pipeline.
+
 ## AI Tools
 
 The system includes 15 specialized tools that agents can invoke to perform specific operations:
@@ -284,19 +285,19 @@ mastra-governed-rag/
 
 ```typescript
 // Generate JWT for a finance viewer
-const jwt = generateDemoJWT('finance');
+const jwt = generateDemoJWT('finance')
 
 // Query the system
 const response = await fetch('/api/chat', {
-  method: 'POST',
-  headers: { 'Content-Type': 'application/json' },
-  body: JSON.stringify({
-    jwt,
-    question: 'What is the expense reimbursement policy?'
-  })
-});
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({
+        jwt,
+        question: 'What is the expense reimbursement policy?',
+    }),
+})
 
-const result = await response.json();
+const result = await response.json()
 // Returns secure answer with citations
 ```
 
@@ -405,10 +406,10 @@ Policies are defined in `src/mastra/policy/acl.yaml`:
 
 ```yaml
 docs:
-  - path: "./corpus/finance-policy.md"
-    allow:
-      roles: ["finance.viewer", "finance.admin"]
-    classification: "internal"
+    - path: './corpus/finance-policy.md'
+      allow:
+          roles: ['finance.viewer', 'finance.admin']
+      classification: 'internal'
 ```
 
 ## Resources
@@ -473,4 +474,5 @@ We welcome contributions! Please see our [Contributing Guide](./CONTRIBUTING.md)
 This project is licensed under the MIT License - see the [LICENSE](./LICENSE) file for details.
 
 ---
+
 Built with ❤️ by Mastra Community. Questions? Open an issue.

@@ -24,7 +24,7 @@ This specification outlines the requirements for refactoring the existing Mastra
 #### Acceptance Criteria
 
 1. WHEN migrating configuration THEN the existing `tailwind.config.js` file SHALL be removed
-2. WHEN migrating configuration THEN the existing `postcss.config.js` file SHALL be removed  
+2. WHEN migrating configuration THEN the existing `postcss.config.js` file SHALL be removed
 3. WHEN creating CSS configuration THEN a `@theme` block SHALL be added to `app/globals.css`
 4. WHEN defining theme values THEN CSS custom properties SHALL be used instead of JavaScript objects
 5. WHEN migrating colors THEN existing color values SHALL be preserved using CSS variable syntax

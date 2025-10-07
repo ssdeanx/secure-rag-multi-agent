@@ -1,11 +1,11 @@
 ---
-title: "Editor Agent"
-description: "A versatile content editor that improves clarity, coherence, and quality across various content types including technical writing, documentation, emails, reports, and creative content"
-component_type: "Mastra Agent"
-framework: "Mastra"
-language: "TypeScript"
-platform: "Node.js"
-tags: ["agent", "editing", "content-improvement", "grammar", "style", "clarity"]
+title: 'Editor Agent'
+description: 'A versatile content editor that improves clarity, coherence, and quality across various content types including technical writing, documentation, emails, reports, and creative content'
+component_type: 'Mastra Agent'
+framework: 'Mastra'
+language: 'TypeScript'
+platform: 'Node.js'
+tags: ['agent', 'editing', 'content-improvement', 'grammar', 'style', 'clarity']
 ---
 
 # Editor Agent (`src/mastra/agents/editorAgent.ts`)
@@ -154,12 +154,15 @@ graph TB
 ### Agent Properties
 
 #### `id: "editor"`
+
 Unique identifier for the agent within the Mastra system.
 
 #### `name: "Editor"`
+
 Human-readable name for the agent.
 
 #### `description`
+
 "A versatile content editor that improves clarity, coherence, and quality across various content types including technical writing, documentation, emails, reports, and creative content."
 
 ### Supported Content Types
@@ -242,10 +245,10 @@ The agent follows a systematic 5-step editing process:
 
 ```json
 {
-  "editedContent": "The full, edited version of the text.",
-  "contentType": "Identified content type (e.g., 'technical', 'business', 'creative', 'general')",
-  "summaryOfChanges": "A brief, bulleted list of the most significant changes made.",
-  "improvementSuggestions": "Optional suggestions for further improvement or structural changes."
+    "editedContent": "The full, edited version of the text.",
+    "contentType": "Identified content type (e.g., 'technical', 'business', 'creative', 'general')",
+    "summaryOfChanges": "A brief, bulleted list of the most significant changes made.",
+    "improvementSuggestions": "Optional suggestions for further improvement or structural changes."
 }
 ```
 
@@ -331,7 +334,7 @@ The agent follows a systematic 5-step editing process:
 ### Memory Configuration
 
 ```typescript
-const store = createResearchMemory();
+const store = createResearchMemory()
 // Uses LibSQL for persistent conversation storage
 ```
 
@@ -346,36 +349,36 @@ GOOGLE_GENERATIVE_AI_API_KEY=your-api-key
 ### Content Quality Issues
 
 1. **Over-Editing Problems**
-   - Review content type guidelines
-   - Ensure author voice preservation
-   - Balance improvements with original intent
+    - Review content type guidelines
+    - Ensure author voice preservation
+    - Balance improvements with original intent
 
 2. **Inappropriate Tone**
-   - Verify audience analysis
-   - Check content type identification
-   - Adjust formality level appropriately
+    - Verify audience analysis
+    - Check content type identification
+    - Adjust formality level appropriately
 
 3. **Structural Issues**
-   - Assess logical flow requirements
-   - Ensure content organization
-   - Validate formatting consistency
+    - Assess logical flow requirements
+    - Ensure content organization
+    - Validate formatting consistency
 
 ### Technical Issues
 
 1. **Memory Storage Problems**
-   - Check LibSQL connectivity
-   - Verify storage configuration
-   - Ensure proper session management
+    - Check LibSQL connectivity
+    - Verify storage configuration
+    - Ensure proper session management
 
 2. **Model Response Issues**
-   - Validate API key configuration
-   - Check model availability
-   - Monitor response quality and consistency
+    - Validate API key configuration
+    - Check model availability
+    - Monitor response quality and consistency
 
 3. **JSON Format Errors**
-   - Ensure all required fields are present
-   - Validate JSON structure compliance
-   - Check for proper escaping and formatting
+    - Ensure all required fields are present
+    - Validate JSON structure compliance
+    - Check for proper escaping and formatting
 
 ## References
 

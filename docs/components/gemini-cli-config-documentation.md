@@ -75,13 +75,13 @@ graph TD
 
 - INT-001: Exported models.
 
-| Export | Model ID | Purpose | Notes |
-|--------|----------|---------|-------|
-| `geminiAI` | `gemini-2.5-pro` | Pro generation | {} options |
-| `geminiAIFlash` | `gemini-2.5-flash` | Fast gen | {} |
-| `geminiAIFlashLite` | `gemini-2.5-flash-lite` | Lite | {} |
-| `geminiAIFlashimg` | `gemini-2.5-flash-image-preview` | Image | {} |
-| `geminiAIv` /v2/v3 | Experimental audio/tts | Specialized | Preview models |
+| Export              | Model ID                         | Purpose        | Notes          |
+| ------------------- | -------------------------------- | -------------- | -------------- |
+| `geminiAI`          | `gemini-2.5-pro`                 | Pro generation | {} options     |
+| `geminiAIFlash`     | `gemini-2.5-flash`               | Fast gen       | {}             |
+| `geminiAIFlashLite` | `gemini-2.5-flash-lite`          | Lite           | {}             |
+| `geminiAIFlashimg`  | `gemini-2.5-flash-image-preview` | Image          | {}             |
+| `geminiAIv` /v2/v3  | Experimental audio/tts           | Specialized    | Preview models |
 
 INT notes:
 
@@ -108,15 +108,15 @@ Edge cases and considerations:
 ### Provider Setup
 
 ```ts
-import { geminiAI } from '../config/gemini-cli';
+import { geminiAI } from '../config/gemini-cli'
 
-const agent = new Agent({model: geminiAI});
+const agent = new Agent({ model: geminiAI })
 ```
 
 ### With Options
 
 ```ts
-const model = geminiAIFlashimg({stream: true});
+const model = geminiAIFlashimg({ stream: true })
 ```
 
 Best practices:

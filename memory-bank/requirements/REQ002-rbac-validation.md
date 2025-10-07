@@ -18,6 +18,7 @@ THE SYSTEM SHALL apply hierarchical role-based access control filters to all vec
 ## Acceptance Criteria
 
 **Crit-001**
+
 1. WHEN a query is executed, THE SYSTEM SHALL apply pre-filters to the vector query based on the user's role claims.
 2. THE SYSTEM SHALL support role inheritance (e.g., admin inherits dept_admin privileges).
 3. IF no role claim is present, THEN THE SYSTEM SHALL treat the user as `public` with minimal access.
@@ -49,15 +50,14 @@ Test vector queries with sample documents and assert returned IDs respect access
 
 ### Validation Steps
 
-| ID | Description | Status | Updated | Notes |
-|----|-------------|--------|---------|-------|
-|1.1| Retrieval tool filter support | Not Started | - | - |
-|1.2| Role inheritance tests | Not Started | - | - |
-|1.3| Audit logging tests | Not Started | - | - |
+| ID  | Description                   | Status      | Updated | Notes |
+| --- | ----------------------------- | ----------- | ------- | ----- |
+| 1.1 | Retrieval tool filter support | Not Started | -       | -     |
+| 1.2 | Role inheritance tests        | Not Started | -       | -     |
+| 1.3 | Audit logging tests           | Not Started | -       | -     |
 
 ## Requirement Log
 
 ### 2025-10-06 15:10
+
 - Requirement created to formalize RBAC access filtering behavior.
-
-

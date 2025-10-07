@@ -74,16 +74,16 @@ graph TD
 
 - INT-001: Static methods.
 
-| Method | Purpose | Parameters | Return Type | Notes |
-|--------|---------|------------|-------------|-------|
-| `expandRoles` | Add inherited | `string[] userRoles` | `string[]` | Sorted desc level; warns unknown |
-| `canAccessRole` | Check role | `string[] user, string required` | `bool` | Via expand |
-| `canAccessDocument` | Check doc tags | `string[] user, string[] docTags` | `bool` | Some match; empty=true |
-| `generateAccessTags` | Tags for query | `string[] user, string? tenant` | `{allowTags[], user/expanded[]}` | role:/tenant: |
-| `getMaxPrivilegeLevel` | Highest level | `string[] user` | `number` | Max from levels |
-| `formatRolesForLogging` | Log string | `string[] user` | `string` | Original/effective/max |
-| `validateDocumentRoles` | Check roles | `string[] doc` | `{valid: bool, warnings[]}` | Unknown roles |
-| `getDocumentAccessibleRoles` | Inheritors for doc | `string[] doc` | `string[]` | Sorted; self + inheritors |
+| Method                       | Purpose            | Parameters                        | Return Type                      | Notes                            |
+| ---------------------------- | ------------------ | --------------------------------- | -------------------------------- | -------------------------------- |
+| `expandRoles`                | Add inherited      | `string[] userRoles`              | `string[]`                       | Sorted desc level; warns unknown |
+| `canAccessRole`              | Check role         | `string[] user, string required`  | `bool`                           | Via expand                       |
+| `canAccessDocument`          | Check doc tags     | `string[] user, string[] docTags` | `bool`                           | Some match; empty=true           |
+| `generateAccessTags`         | Tags for query     | `string[] user, string? tenant`   | `{allowTags[], user/expanded[]}` | role:/tenant:                    |
+| `getMaxPrivilegeLevel`       | Highest level      | `string[] user`                   | `number`                         | Max from levels                  |
+| `formatRolesForLogging`      | Log string         | `string[] user`                   | `string`                         | Original/effective/max           |
+| `validateDocumentRoles`      | Check roles        | `string[] doc`                    | `{valid: bool, warnings[]}`      | Unknown roles                    |
+| `getDocumentAccessibleRoles` | Inheritors for doc | `string[] doc`                    | `string[]`                       | Sorted; self + inheritors        |
 
 INT notes:
 
@@ -110,19 +110,19 @@ Edge cases and considerations:
 ### Expansion
 
 ```ts
-const expanded = RoleService.expandRoles(['employee']); // ['employee', 'public']
+const expanded = RoleService.expandRoles(['employee']) // ['employee', 'public']
 ```
 
 ### Access Check
 
 ```ts
-const canView = RoleService.canAccessDocument(['hr.admin'], ['role:employee']); // true
+const canView = RoleService.canAccessDocument(['hr.admin'], ['role:employee']) // true
 ```
 
 ### Tags
 
 ```ts
-const tags = RoleService.generateAccessTags(['admin'], 'acme');
+const tags = RoleService.generateAccessTags(['admin'], 'acme')
 // {allowTags: ['role:admin', ... , 'tenant:acme'], ...}
 ```
 

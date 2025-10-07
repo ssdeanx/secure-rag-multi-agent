@@ -22,10 +22,10 @@ Small UI control that allows switching between three chat presentation modes: ca
 
 ## 2. Interface Documentation
 
-| Prop | Purpose | Type | Required |
-|------|---------|------|----------|
-| `currentMode` | Current selected chat mode | one of `caption`, `floating`, `sidepanel` | Yes |
-| `onModeChange` | Callback invoked when user selects a mode | `(mode: ChatMode) => void` | Yes |
+| Prop           | Purpose                                   | Type                                      | Required |
+| -------------- | ----------------------------------------- | ----------------------------------------- | -------- |
+| `currentMode`  | Current selected chat mode                | one of `caption`, `floating`, `sidepanel` | Yes      |
+| `onModeChange` | Callback invoked when user selects a mode | `(mode: ChatMode) => void`                | Yes      |
 
 ## 3. Implementation Details
 

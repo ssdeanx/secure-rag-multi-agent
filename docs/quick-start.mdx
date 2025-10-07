@@ -1,22 +1,28 @@
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
+import {
+    Card,
+    CardContent,
+    CardDescription,
+    CardHeader,
+    CardTitle,
+} from '@/components/ui/card'
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import { Mermaid } from '@/components/Mermaid'
 import {
-  CheckCircle,
-  AlertTriangle,
-  Play,
-  Download,
-  Settings,
-  Database,
-  Terminal,
-  FileText,
-  Shield,
-  ArrowRight,
-  Copy,
-  ExternalLink
+    CheckCircle,
+    AlertTriangle,
+    Play,
+    Download,
+    Settings,
+    Database,
+    Terminal,
+    FileText,
+    Shield,
+    ArrowRight,
+    Copy,
+    ExternalLink,
 } from 'lucide-react'
 
 # Quick Start Guide
@@ -24,11 +30,12 @@ import {
 This guide provides step-by-step instructions to set up and run the Mastra Governed RAG application locally.
 
 <Alert className="mb-6">
-  <Play className="h-4 w-4" />
-  <AlertTitle>Get Started in 5 Minutes</AlertTitle>
-  <AlertDescription>
-    Follow this guide to have a fully functional governed RAG system running locally with sample documents and role-based access control.
-  </AlertDescription>
+    <Play className="h-4 w-4" />
+    <AlertTitle>Get Started in 5 Minutes</AlertTitle>
+    <AlertDescription>
+        Follow this guide to have a fully functional governed RAG system running
+        locally with sample documents and role-based access control.
+    </AlertDescription>
 </Alert>
 
 <!-- toc -->
@@ -106,6 +113,7 @@ This guide provides step-by-step instructions to set up and run the Mastra Gover
 
     class A,B,C,D,E,F step
     class A1,B1,C1,C2,D1,D2,E1,F1 action
+
 `} />
 
 <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
@@ -123,19 +131,20 @@ This guide provides step-by-step instructions to set up and run the Mastra Gover
     </CardContent>
   </Card>
 
-  <Card>
+<Card>
     <CardHeader>
-      <CardTitle className="flex items-center gap-2">
-        <Settings className="h-5 w-5 text-blue-600" />
-        Configuration
-      </CardTitle>
+        <CardTitle className="flex items-center gap-2">
+            <Settings className="h-5 w-5 text-blue-600" />
+            Configuration
+        </CardTitle>
     </CardHeader>
     <CardContent>
-      <CardDescription>
-        Minimal configuration required - just copy the example environment file and add your API key.
-      </CardDescription>
+        <CardDescription>
+            Minimal configuration required - just copy the example environment
+            file and add your API key.
+        </CardDescription>
     </CardContent>
-  </Card>
+</Card>
 
   <Card>
     <CardHeader>
@@ -164,48 +173,52 @@ This guide provides step-by-step instructions to set up and run the Mastra Gover
     <TabsTrigger value="run">6. Run</TabsTrigger>
   </TabsList>
 
-  <TabsContent value="clone">
+<TabsContent value="clone">
     <Card>
-      <CardHeader>
-        <CardTitle>Clone the Repository</CardTitle>
-        <CardDescription>Get the source code from GitHub</CardDescription>
-      </CardHeader>
-      <CardContent>
-        <div className="bg-muted p-4 rounded-lg mb-4">
-          <pre className="text-sm overflow-x-auto">
-            <code>{`git clone https://github.com/ssdeanx/governed-rag-ai.git
+        <CardHeader>
+            <CardTitle>Clone the Repository</CardTitle>
+            <CardDescription>Get the source code from GitHub</CardDescription>
+        </CardHeader>
+        <CardContent>
+            <div className="bg-muted p-4 rounded-lg mb-4">
+                <pre className="text-sm overflow-x-auto">
+                    <code>{`git clone https://github.com/ssdeanx/governed-rag-ai.git
 cd mastra-governed-rag`}</code>
-          </pre>
-        </div>
-        <div className="flex items-center text-sm text-muted-foreground">
-          <CheckCircle className="h-4 w-4 mr-2 text-green-500" />
-          Repository cloned successfully
-        </div>
-      </CardContent>
+                </pre>
+            </div>
+            <div className="flex items-center text-sm text-muted-foreground">
+                <CheckCircle className="h-4 w-4 mr-2 text-green-500" />
+                Repository cloned successfully
+            </div>
+        </CardContent>
     </Card>
-  </TabsContent>
+</TabsContent>
 
-  <TabsContent value="install">
+<TabsContent value="install">
     <Card>
-      <CardHeader>
-        <CardTitle>Install Dependencies</CardTitle>
-        <CardDescription>Install all required Node.js packages</CardDescription>
-      </CardHeader>
-      <CardContent>
-        <div className="bg-muted p-4 rounded-lg mb-4">
-          <pre className="text-sm overflow-x-auto">
-            <code>npm install</code>
-          </pre>
-        </div>
-        <Alert>
-          <AlertTriangle className="h-4 w-4" />
-          <AlertDescription>
-            This may take a few minutes to download and install all dependencies including Mastra, Next.js, and vector database clients.
-          </AlertDescription>
-        </Alert>
-      </CardContent>
+        <CardHeader>
+            <CardTitle>Install Dependencies</CardTitle>
+            <CardDescription>
+                Install all required Node.js packages
+            </CardDescription>
+        </CardHeader>
+        <CardContent>
+            <div className="bg-muted p-4 rounded-lg mb-4">
+                <pre className="text-sm overflow-x-auto">
+                    <code>npm install</code>
+                </pre>
+            </div>
+            <Alert>
+                <AlertTriangle className="h-4 w-4" />
+                <AlertDescription>
+                    This may take a few minutes to download and install all
+                    dependencies including Mastra, Next.js, and vector database
+                    clients.
+                </AlertDescription>
+            </Alert>
+        </CardContent>
     </Card>
-  </TabsContent>
+</TabsContent>
 
   <TabsContent value="env">
     <Card>
@@ -253,6 +266,7 @@ cd mastra-governed-rag`}</code>
         </div>
       </CardContent>
     </Card>
+
   </TabsContent>
 
   <TabsContent value="services">
@@ -304,6 +318,7 @@ cd mastra-governed-rag`}</code>
         </div>
       </CardContent>
     </Card>
+
   </TabsContent>
 
   <TabsContent value="index">
@@ -364,6 +379,7 @@ npm run cli index`}</code>
         </div>
       </CardContent>
     </Card>
+
   </TabsContent>
 
   <TabsContent value="run">
@@ -421,6 +437,7 @@ npm run cli index`}</code>
         </div>
       </CardContent>
     </Card>
+
   </TabsContent>
 </Tabs>
 
@@ -524,6 +541,7 @@ npm run cli index`}</code>
         </div>
       </div>
     </CardContent>
+
   </Card>
 </div>
 
@@ -542,17 +560,18 @@ npm run cli index`}</code>
     </CardContent>
   </Card>
 
-  <Card>
+<Card>
     <CardHeader>
-      <CardTitle className="text-lg">Extend Roles</CardTitle>
-      <CardDescription>Configure access control</CardDescription>
+        <CardTitle className="text-lg">Extend Roles</CardTitle>
+        <CardDescription>Configure access control</CardDescription>
     </CardHeader>
     <CardContent>
-      <p className="text-sm text-muted-foreground">
-        Modify <code>src/mastra/config/role-hierarchy.ts</code> to match your organization's structure.
-      </p>
+        <p className="text-sm text-muted-foreground">
+            Modify <code>src/mastra/config/role-hierarchy.ts</code> to match
+            your organization's structure.
+        </p>
     </CardContent>
-  </Card>
+</Card>
 
   <Card>
     <CardHeader>
@@ -568,17 +587,17 @@ npm run cli index`}</code>
 </div>
 
 <div className="flex gap-4">
-  <Button asChild>
-    <a href="/docs/security">
-      <Shield className="h-4 w-4 mr-2" />
-      Security Guide
-      <ArrowRight className="h-4 w-4 ml-2" />
-    </a>
-  </Button>
-  <Button variant="outline" asChild>
-    <a href="/docs/api-reference">
-      <FileText className="h-4 w-4 mr-2" />
-      API Reference
-    </a>
-  </Button>
+    <Button asChild>
+        <a href="/docs/security">
+            <Shield className="h-4 w-4 mr-2" />
+            Security Guide
+            <ArrowRight className="h-4 w-4 ml-2" />
+        </a>
+    </Button>
+    <Button variant="outline" asChild>
+        <a href="/docs/api-reference">
+            <FileText className="h-4 w-4 mr-2" />
+            API Reference
+        </a>
+    </Button>
 </div>

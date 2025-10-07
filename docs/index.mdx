@@ -1,50 +1,56 @@
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
+import {
+    Card,
+    CardContent,
+    CardDescription,
+    CardHeader,
+    CardTitle,
+} from '@/components/ui/card'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'
 import { Mermaid } from '@/components/Mermaid'
 import {
-  Shield,
-  Zap,
-  Users,
-  Code,
-  Layers,
-  BookOpen,
-  Play,
-  Github,
-  ExternalLink,
-  CheckCircle,
-  Star,
-  ArrowRight,
-  Database,
-  Lock,
-  Brain
+    Shield,
+    Zap,
+    Users,
+    Code,
+    Layers,
+    BookOpen,
+    Play,
+    Github,
+    ExternalLink,
+    CheckCircle,
+    Star,
+    ArrowRight,
+    Database,
+    Lock,
+    Brain,
 } from 'lucide-react'
 
 # Mastra Governed RAG Documentation
 
 <div className="flex flex-wrap justify-center gap-2 mb-8">
-  <Badge variant="secondary" className="px-3 py-1">
-    <Shield className="h-3 w-3 mr-1" />
-    Mastra Framework
-  </Badge>
-  <Badge variant="secondary" className="px-3 py-1">
-    <Code className="h-3 w-3 mr-1" />
-    Next.js 15.5.3
-  </Badge>
-  <Badge variant="secondary" className="px-3 py-1">
-    <Database className="h-3 w-3 mr-1" />
-    TypeScript 5.9.2
-  </Badge>
-  <Badge variant="secondary" className="px-3 py-1">
-    <Brain className="h-3 w-3 mr-1" />
-    OpenAI GPT-4o-mini
-  </Badge>
-  <Badge variant="secondary" className="px-3 py-1">
-    <Layers className="h-3 w-3 mr-1" />
-    Qdrant Vector DB
-  </Badge>
+    <Badge variant="secondary" className="px-3 py-1">
+        <Shield className="h-3 w-3 mr-1" />
+        Mastra Framework
+    </Badge>
+    <Badge variant="secondary" className="px-3 py-1">
+        <Code className="h-3 w-3 mr-1" />
+        Next.js 15.5.3
+    </Badge>
+    <Badge variant="secondary" className="px-3 py-1">
+        <Database className="h-3 w-3 mr-1" />
+        TypeScript 5.9.2
+    </Badge>
+    <Badge variant="secondary" className="px-3 py-1">
+        <Brain className="h-3 w-3 mr-1" />
+        OpenAI GPT-4o-mini
+    </Badge>
+    <Badge variant="secondary" className="px-3 py-1">
+        <Layers className="h-3 w-3 mr-1" />
+        Qdrant Vector DB
+    </Badge>
 </div>
 
 <!-- toc -->
@@ -96,6 +102,7 @@ import {
     class Agent,Workflow,Security backend
     class VectorDB,DocStore,Cache data
     class LLM,Embed external
+
 `} />
 
 <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
@@ -113,19 +120,20 @@ import {
     </CardContent>
   </Card>
 
-  <Card>
+<Card>
     <CardHeader>
-      <CardTitle className="flex items-center gap-2">
-        <Zap className="h-5 w-5 text-blue-600" />
-        High Performance
-      </CardTitle>
+        <CardTitle className="flex items-center gap-2">
+            <Zap className="h-5 w-5 text-blue-600" />
+            High Performance
+        </CardTitle>
     </CardHeader>
     <CardContent>
-      <CardDescription>
-        Optimized vector search with Qdrant, Redis caching, and efficient document processing workflows.
-      </CardDescription>
+        <CardDescription>
+            Optimized vector search with Qdrant, Redis caching, and efficient
+            document processing workflows.
+        </CardDescription>
     </CardContent>
-  </Card>
+</Card>
 
   <Card>
     <CardHeader>
@@ -147,11 +155,13 @@ import {
 **Mastra Governed RAG** is a production-ready, enterprise-grade Retrieval-Augmented Generation (RAG) system that combines cutting-edge AI capabilities with robust security controls. Built on the [Mastra AI orchestration framework](https://mastra.ai), this system provides secure, role-based access to sensitive corporate knowledge bases while maintaining compliance with organizational security policies.
 
 <Alert className="mb-6">
-  <Shield className="h-4 w-4" />
-  <AlertTitle>Zero-Trust Security Model</AlertTitle>
-  <AlertDescription>
-    Unlike traditional RAG systems, every query is authenticated and authorized at multiple pipeline stages with document access filtered based on user roles and classifications.
-  </AlertDescription>
+    <Shield className="h-4 w-4" />
+    <AlertTitle>Zero-Trust Security Model</AlertTitle>
+    <AlertDescription>
+        Unlike traditional RAG systems, every query is authenticated and
+        authorized at multiple pipeline stages with document access filtered
+        based on user roles and classifications.
+    </AlertDescription>
 </Alert>
 
 ### 🎯 What Makes It Special
@@ -182,30 +192,30 @@ import {
     </CardContent>
   </Card>
 
-  <Card>
+<Card>
     <CardHeader className="pb-3">
-      <CardTitle className="text-lg flex items-center">
-        <Brain className="h-5 w-5 mr-2 text-primary" />
-        AI-Powered
-      </CardTitle>
+        <CardTitle className="text-lg flex items-center">
+            <Brain className="h-5 w-5 mr-2 text-primary" />
+            AI-Powered
+        </CardTitle>
     </CardHeader>
     <CardContent>
-      <ul className="space-y-2 text-sm">
-        <li className="flex items-center">
-          <CheckCircle className="h-4 w-4 mr-2 text-green-500" />
-          Multi-agent orchestration
-        </li>
-        <li className="flex items-center">
-          <CheckCircle className="h-4 w-4 mr-2 text-green-500" />
-          Intelligent reranking
-        </li>
-        <li className="flex items-center">
-          <CheckCircle className="h-4 w-4 mr-2 text-green-500" />
-          Citation tracking
-        </li>
-      </ul>
+        <ul className="space-y-2 text-sm">
+            <li className="flex items-center">
+                <CheckCircle className="h-4 w-4 mr-2 text-green-500" />
+                Multi-agent orchestration
+            </li>
+            <li className="flex items-center">
+                <CheckCircle className="h-4 w-4 mr-2 text-green-500" />
+                Intelligent reranking
+            </li>
+            <li className="flex items-center">
+                <CheckCircle className="h-4 w-4 mr-2 text-green-500" />
+                Citation tracking
+            </li>
+        </ul>
     </CardContent>
-  </Card>
+</Card>
 
   <Card>
     <CardHeader className="pb-3">
@@ -330,6 +340,7 @@ graph TB
         </CardContent>
       </Card>
     </div>
+
   </TabsContent>
 
   <TabsContent value="ai" className="space-y-4">
@@ -374,6 +385,7 @@ graph TB
         </CardContent>
       </Card>
     </div>
+
   </TabsContent>
 
   <TabsContent value="dev" className="space-y-4">
@@ -418,6 +430,7 @@ graph TB
         </CardContent>
       </Card>
     </div>
+
   </TabsContent>
 </Tabs>
 
@@ -436,25 +449,31 @@ graph TB
     </CardContent>
   </Card>
 
-  <Card>
+<Card>
     <CardHeader>
-      <CardTitle className="text-lg">Compliance Chatbots</CardTitle>
-      <CardDescription>Regulatory compliance automation</CardDescription>
+        <CardTitle className="text-lg">Compliance Chatbots</CardTitle>
+        <CardDescription>Regulatory compliance automation</CardDescription>
     </CardHeader>
     <CardContent>
-      <p className="text-sm">Automated compliance checking and policy enforcement through conversational interfaces.</p>
+        <p className="text-sm">
+            Automated compliance checking and policy enforcement through
+            conversational interfaces.
+        </p>
     </CardContent>
-  </Card>
+</Card>
 
-  <Card>
+<Card>
     <CardHeader>
-      <CardTitle className="text-lg">Executive Dashboards</CardTitle>
-      <CardDescription>Cross-department insights</CardDescription>
+        <CardTitle className="text-lg">Executive Dashboards</CardTitle>
+        <CardDescription>Cross-department insights</CardDescription>
     </CardHeader>
     <CardContent>
-      <p className="text-sm">Aggregated intelligence from multiple departments with appropriate access controls.</p>
+        <p className="text-sm">
+            Aggregated intelligence from multiple departments with appropriate
+            access controls.
+        </p>
     </CardContent>
-  </Card>
+</Card>
 
   <Card>
     <CardHeader>
@@ -479,23 +498,23 @@ graph TB
     </CardContent>
   </Card>
 
-  <Card>
+<Card>
     <CardHeader>
-      <CardTitle className="text-sm">Healthcare</CardTitle>
+        <CardTitle className="text-sm">Healthcare</CardTitle>
     </CardHeader>
     <CardContent>
-      <p className="text-xs">HIPAA-compliant medical knowledge bases</p>
+        <p className="text-xs">HIPAA-compliant medical knowledge bases</p>
     </CardContent>
-  </Card>
+</Card>
 
-  <Card>
+<Card>
     <CardHeader>
-      <CardTitle className="text-sm">Legal Firms</CardTitle>
+        <CardTitle className="text-sm">Legal Firms</CardTitle>
     </CardHeader>
     <CardContent>
-      <p className="text-xs">Privilege-aware document retrieval</p>
+        <p className="text-xs">Privilege-aware document retrieval</p>
     </CardContent>
-  </Card>
+</Card>
 
   <Card>
     <CardHeader>
@@ -540,19 +559,19 @@ npm run cli index
 </div>
 
 <div className="flex gap-4 mb-8">
-  <Button asChild>
-    <a href="/docs/quick-start">
-      <Play className="h-4 w-4 mr-2" />
-      Detailed Setup Guide
-      <ArrowRight className="h-4 w-4 ml-2" />
-    </a>
-  </Button>
-  <Button variant="outline" asChild>
-    <a href="/docs/demo-roles">
-      <Users className="h-4 w-4 mr-2" />
-      Try Demo Roles
-    </a>
-  </Button>
+    <Button asChild>
+        <a href="/docs/quick-start">
+            <Play className="h-4 w-4 mr-2" />
+            Detailed Setup Guide
+            <ArrowRight className="h-4 w-4 ml-2" />
+        </a>
+    </Button>
+    <Button variant="outline" asChild>
+        <a href="/docs/demo-roles">
+            <Users className="h-4 w-4 mr-2" />
+            Try Demo Roles
+        </a>
+    </Button>
 </div>
 
 ## 📚 Documentation Structure
@@ -578,58 +597,66 @@ npm run cli index
 ## 🔧 System Requirements
 
 <div className="overflow-x-auto mb-6">
-  <table className="w-full border-collapse border border-border">
-    <thead>
-      <tr className="bg-muted">
-        <th className="border border-border p-3 text-left">Component</th>
-        <th className="border border-border p-3 text-left">Minimum</th>
-        <th className="border border-border p-3 text-left">Recommended</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td className="border border-border p-3 font-medium">Node.js</td>
-        <td className="border border-border p-3">20.9.0</td>
-        <td className="border border-border p-3">20.15.0+</td>
-      </tr>
-      <tr>
-        <td className="border border-border p-3 font-medium">Memory</td>
-        <td className="border border-border p-3">4GB RAM</td>
-        <td className="border border-border p-3">8GB RAM</td>
-      </tr>
-      <tr>
-        <td className="border border-border p-3 font-medium">Storage</td>
-        <td className="border border-border p-3">10GB</td>
-        <td className="border border-border p-3">50GB SSD</td>
-      </tr>
-      <tr>
-        <td className="border border-border p-3 font-medium">Docker</td>
-        <td className="border border-border p-3">24.0+</td>
-        <td className="border border-border p-3">25.0+</td>
-      </tr>
-    </tbody>
-  </table>
+    <table className="w-full border-collapse border border-border">
+        <thead>
+            <tr className="bg-muted">
+                <th className="border border-border p-3 text-left">
+                    Component
+                </th>
+                <th className="border border-border p-3 text-left">Minimum</th>
+                <th className="border border-border p-3 text-left">
+                    Recommended
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td className="border border-border p-3 font-medium">
+                    Node.js
+                </td>
+                <td className="border border-border p-3">20.9.0</td>
+                <td className="border border-border p-3">20.15.0+</td>
+            </tr>
+            <tr>
+                <td className="border border-border p-3 font-medium">Memory</td>
+                <td className="border border-border p-3">4GB RAM</td>
+                <td className="border border-border p-3">8GB RAM</td>
+            </tr>
+            <tr>
+                <td className="border border-border p-3 font-medium">
+                    Storage
+                </td>
+                <td className="border border-border p-3">10GB</td>
+                <td className="border border-border p-3">50GB SSD</td>
+            </tr>
+            <tr>
+                <td className="border border-border p-3 font-medium">Docker</td>
+                <td className="border border-border p-3">24.0+</td>
+                <td className="border border-border p-3">25.0+</td>
+            </tr>
+        </tbody>
+    </table>
 </div>
 
 ### Supported Platforms
 
 <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
-  <div className="flex items-center">
-    <CheckCircle className="h-5 w-5 mr-2 text-green-500" />
-    <span className="text-sm">Linux (Ubuntu 20.04+)</span>
-  </div>
-  <div className="flex items-center">
-    <CheckCircle className="h-5 w-5 mr-2 text-green-500" />
-    <span className="text-sm">macOS (12.0+)</span>
-  </div>
-  <div className="flex items-center">
-    <CheckCircle className="h-5 w-5 mr-2 text-green-500" />
-    <span className="text-sm">Windows (WSL2)</span>
-  </div>
-  <div className="flex items-center">
-    <CheckCircle className="h-5 w-5 mr-2 text-green-500" />
-    <span className="text-sm">Docker (all platforms)</span>
-  </div>
+    <div className="flex items-center">
+        <CheckCircle className="h-5 w-5 mr-2 text-green-500" />
+        <span className="text-sm">Linux (Ubuntu 20.04+)</span>
+    </div>
+    <div className="flex items-center">
+        <CheckCircle className="h-5 w-5 mr-2 text-green-500" />
+        <span className="text-sm">macOS (12.0+)</span>
+    </div>
+    <div className="flex items-center">
+        <CheckCircle className="h-5 w-5 mr-2 text-green-500" />
+        <span className="text-sm">Windows (WSL2)</span>
+    </div>
+    <div className="flex items-center">
+        <CheckCircle className="h-5 w-5 mr-2 text-green-500" />
+        <span className="text-sm">Docker (all platforms)</span>
+    </div>
 </div>
 
 ## 🌟 Sample Interactions
@@ -640,25 +667,36 @@ npm run cli index
     <TabsTrigger value="hr">HR Admin</TabsTrigger>
   </TabsList>
 
-  <TabsContent value="finance">
+<TabsContent value="finance">
     <Card>
-      <CardHeader>
-        <CardTitle>Finance Team Member Query</CardTitle>
-        <CardDescription>Expense reimbursement policy inquiry</CardDescription>
-      </CardHeader>
-      <CardContent>
-        <div className="bg-muted p-4 rounded-lg font-mono text-sm">
-          <div className="text-blue-600 mb-2">User: "What's our expense reimbursement policy?"</div>
-          <div className="text-green-600">
-            System: [Authenticates as finance.viewer]<br/>
-            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;[Filters documents: classification ≤ internal, roles include finance.*]<br/>
-            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;[Retrieves: finance-policy.md, expense-guidelines.pdf]<br/>
-            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;[Generates answer with citations]
-          </div>
-        </div>
-      </CardContent>
+        <CardHeader>
+            <CardTitle>Finance Team Member Query</CardTitle>
+            <CardDescription>
+                Expense reimbursement policy inquiry
+            </CardDescription>
+        </CardHeader>
+        <CardContent>
+            <div className="bg-muted p-4 rounded-lg font-mono text-sm">
+                <div className="text-blue-600 mb-2">
+                    User: "What's our expense reimbursement policy?"
+                </div>
+                <div className="text-green-600">
+                    System: [Authenticates as finance.viewer]
+                    <br />
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;[Filters
+                    documents: classification ≤ internal, roles include
+                    finance.*]
+                    <br />
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;[Retrieves:
+                    finance-policy.md, expense-guidelines.pdf]
+                    <br />
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;[Generates answer
+                    with citations]
+                </div>
+            </div>
+        </CardContent>
     </Card>
-  </TabsContent>
+</TabsContent>
 
   <TabsContent value="hr">
     <Card>
@@ -712,6 +750,7 @@ npm run build
 # CLI tools
 
 npm run cli -- --help`}</code>
+
   </pre>
 </div>
 
@@ -730,17 +769,19 @@ npm run cli -- --help`}</code>
     </CardContent>
   </Card>
 
-  <Card>
+<Card>
     <CardHeader>
-      <CardTitle className="text-lg flex items-center">
-        <Github className="h-5 w-5 mr-2" />
-        GitHub
-      </CardTitle>
+        <CardTitle className="text-lg flex items-center">
+            <Github className="h-5 w-5 mr-2" />
+            GitHub
+        </CardTitle>
     </CardHeader>
     <CardContent>
-      <p className="text-sm">Issues, discussions, and source code repository.</p>
+        <p className="text-sm">
+            Issues, discussions, and source code repository.
+        </p>
     </CardContent>
-  </Card>
+</Card>
 
   <Card>
     <CardHeader>
@@ -758,14 +799,36 @@ npm run cli -- --help`}</code>
 ---
 
 <div className="text-center py-8">
-  <p className="text-lg font-semibold mb-4">Built with ❤️ using Mastra AI Framework</p>
-  <div className="flex flex-wrap justify-center gap-4 text-sm text-muted-foreground">
-    <a href="https://mastra.ai" className="hover:text-primary transition-colors">Mastra.ai</a>
-    <span>•</span>
-    <a href="https://nextjs.org" className="hover:text-primary transition-colors">Next.js</a>
-    <span>•</span>
-    <a href="https://qdrant.tech" className="hover:text-primary transition-colors">Qdrant</a>
-    <span>•</span>
-    <a href="https://openai.com" className="hover:text-primary transition-colors">OpenAI</a>
-  </div>
+    <p className="text-lg font-semibold mb-4">
+        Built with ❤️ using Mastra AI Framework
+    </p>
+    <div className="flex flex-wrap justify-center gap-4 text-sm text-muted-foreground">
+        <a
+            href="https://mastra.ai"
+            className="hover:text-primary transition-colors"
+        >
+            Mastra.ai
+        </a>
+        <span>•</span>
+        <a
+            href="https://nextjs.org"
+            className="hover:text-primary transition-colors"
+        >
+            Next.js
+        </a>
+        <span>•</span>
+        <a
+            href="https://qdrant.tech"
+            className="hover:text-primary transition-colors"
+        >
+            Qdrant
+        </a>
+        <span>•</span>
+        <a
+            href="https://openai.com"
+            className="hover:text-primary transition-colors"
+        >
+            OpenAI
+        </a>
+    </div>
 </div>

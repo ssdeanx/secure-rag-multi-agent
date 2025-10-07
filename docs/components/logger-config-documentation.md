@@ -27,10 +27,9 @@ Pino-based logger configuration with file transport (mastra.log, workflow.log) a
 - ARC-001: Design patterns: Logger factory with helpers.
 
 - ARC-002: Dependencies:
+    - @mastra/loggers (PinoLogger, FileTransport)
 
-  - @mastra/loggers (PinoLogger, FileTransport)
-
-  - node:fs/path (dir/file)
+    - node:fs/path (dir/file)
 
 - ARC-003: Interactions: log.info/error with data; file append JSON.
 
@@ -80,14 +79,14 @@ graph TD
 
 - INT-001: Exported log and helpers.
 
-| Helper | Purpose | Parameters | Notes |
-|--------|---------|------------|-------|
-| `logWorkflowStart` | Start log | `id, input` | Info + file |
-| `logStepStart/End` | Step events | `id, input/output, duration?` | With ms |
-| `logToolExecution` | Tool call | `id, input, output?` | Optional output |
-| `logAgentActivity` | Agent action | `id, action, details` | Structured |
-| `logError` | Errors | `component, error, context?` | Stack if Error |
-| `logProgress` | Progress | `msg, progress, total` | Percentage calc |
+| Helper             | Purpose      | Parameters                    | Notes           |
+| ------------------ | ------------ | ----------------------------- | --------------- |
+| `logWorkflowStart` | Start log    | `id, input`                   | Info + file     |
+| `logStepStart/End` | Step events  | `id, input/output, duration?` | With ms         |
+| `logToolExecution` | Tool call    | `id, input, output?`          | Optional output |
+| `logAgentActivity` | Agent action | `id, action, details`         | Structured      |
+| `logError`         | Errors       | `component, error, context?`  | Stack if Error  |
+| `logProgress`      | Progress     | `msg, progress, total`        | Percentage calc |
 
 INT notes:
 
@@ -114,15 +113,15 @@ Edge cases and considerations:
 ### Workflow Logging
 
 ```ts
-logWorkflowStart('research', {query: 'AI'});
+logWorkflowStart('research', { query: 'AI' })
 // Later
-logWorkflowEnd('research', {data}, 5000);
+logWorkflowEnd('research', { data }, 5000)
 ```
 
 ### Error
 
 ```ts
-logError('step', new Error('Fail'), {input});
+logError('step', new Error('Fail'), { input })
 ```
 
 Best practices:
@@ -153,6 +152,6 @@ Best practices:
 
 - REF-004: Troubleshooting: No file — check permissions.
 
-- REF-005: Related: Workflows using log*
+- REF-005: Related: Workflows using log\*
 
 - REF-006: Change history: 1.0 (2025-09-23)

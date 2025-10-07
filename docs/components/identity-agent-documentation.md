@@ -1,11 +1,11 @@
 ---
-title: "Identity Agent"
-description: "An identity extraction agent that extracts user claims from JWT tokens using the jwt-auth tool"
-component_type: "Mastra Agent"
-framework: "Mastra"
-language: "TypeScript"
-platform: "Node.js"
-tags: ["agent", "identity", "jwt", "authentication", "claims"]
+title: 'Identity Agent'
+description: 'An identity extraction agent that extracts user claims from JWT tokens using the jwt-auth tool'
+component_type: 'Mastra Agent'
+framework: 'Mastra'
+language: 'TypeScript'
+platform: 'Node.js'
+tags: ['agent', 'identity', 'jwt', 'authentication', 'claims']
 ---
 
 # Identity Agent (`src/mastra/agents/identity.agent.ts`)
@@ -133,12 +133,15 @@ graph TB
 ### Agent Properties
 
 #### `id: "identity"`
+
 Unique identifier for the agent within the Mastra system.
 
 #### `name: "identity"`
+
 Human-readable name for the agent.
 
 #### `description`
+
 "An identity extraction agent that extracts user claims from a JWT token."
 
 ### Core Functionality
@@ -181,7 +184,7 @@ The agent follows a strict 3-step process:
 
 ```typescript
 jwtClaimsSchema.extend({
-  error: z.string().optional()
+    error: z.string().optional(),
 })
 ```
 
@@ -191,7 +194,7 @@ The output includes all JWT claims fields plus optional error handling.
 
 ```typescript
 {
-  error: "Error message describing the JWT validation failure"
+    error: 'Error message describing the JWT validation failure'
 }
 ```
 
@@ -257,14 +260,16 @@ Based on `jwtClaimsSchema` from agent schemas, including:
 ### Memory Configuration
 
 ```typescript
-const store = createResearchMemory();
+const store = createResearchMemory()
 // Uses LibSQL for persistent identity conversation storage
 ```
 
 ### Tool Configuration
 
 ```typescript
-tools: { jwtAuth: jwtAuthTool }
+tools: {
+    jwtAuth: jwtAuthTool
+}
 ```
 
 ### Required Environment Variables
@@ -278,36 +283,36 @@ GOOGLE_GENERATIVE_AI_API_KEY=your-api-key
 ### Authentication Issues
 
 1. **Invalid JWT Tokens**
-   - Verify token format and structure
-   - Check token expiration
-   - Validate signing and issuer
+    - Verify token format and structure
+    - Check token expiration
+    - Validate signing and issuer
 
 2. **Tool Execution Failures**
-   - Ensure jwt-auth tool is properly configured
-   - Check tool dependencies and imports
-   - Verify tool initialization
+    - Ensure jwt-auth tool is properly configured
+    - Check tool dependencies and imports
+    - Verify tool initialization
 
 3. **Schema Validation Errors**
-   - Confirm JWT claims match expected schema
-   - Check for required vs optional fields
-   - Validate claim data types
+    - Confirm JWT claims match expected schema
+    - Check for required vs optional fields
+    - Validate claim data types
 
 ### Technical Issues
 
 1. **Model Response Problems**
-   - Verify API key configuration
-   - Check model availability
-   - Monitor response parsing
+    - Verify API key configuration
+    - Check model availability
+    - Monitor response parsing
 
 2. **Memory Storage Issues**
-   - Check LibSQL connectivity
-   - Verify storage configuration
-   - Ensure proper session handling
+    - Check LibSQL connectivity
+    - Verify storage configuration
+    - Ensure proper session handling
 
 3. **Import/Dependency Errors**
-   - Validate all required imports
-   - Check schema file locations
-   - Ensure tool availability
+    - Validate all required imports
+    - Check schema file locations
+    - Ensure tool availability
 
 ## References
 

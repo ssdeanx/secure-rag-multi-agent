@@ -17,14 +17,14 @@ This index tracks all design documents in the system. Design documents define te
 ### In Progress
 
 1. **[DESIGN001] - Cedar OS Integration Architecture** (30% Complete)
-   - Status: Approved
-   - Added: 2025-10-06, 14:50 EST
-   - Priority: High
-   - Complexity: Complex
-   - Focus: Complete architecture for Cedar OS v0.1.11+ integration with Mastra workflows
-   - Key Components: Frontend state management, API route context handling, workflow Cedar context, agent structured responses, SSE streaming, message persistence
-   - Related Tasks: TASK004 (Cedar OS Types Integration)
-   - Next Steps: Implement frontend hooks, API route updates, custom message renderers
+    - Status: Approved
+    - Added: 2025-10-06, 14:50 EST
+    - Priority: High
+    - Complexity: Complex
+    - Focus: Complete architecture for Cedar OS v0.1.11+ integration with Mastra workflows
+    - Key Components: Frontend state management, API route context handling, workflow Cedar context, agent structured responses, SSE streaming, message persistence
+    - Related Tasks: TASK004 (Cedar OS Types Integration)
+    - Next Steps: Implement frontend hooks, API route updates, custom message renderers
 
 ## Draft Designs
 
@@ -37,11 +37,11 @@ No designs currently in review.
 ## Approved Designs
 
 1. **[DESIGN001] - Cedar OS Integration Architecture** (In Progress - 30%)
-   - Comprehensive 3-layer architecture specification
-   - Component diagrams and data flow sequences
-   - Implementation patterns for all layers
-   - Validation criteria (functional, integration, performance)
-   - File: [DESIGN001]-cedar-os-integration-architecture.md
+    - Comprehensive 3-layer architecture specification
+    - Component diagrams and data flow sequences
+    - Implementation patterns for all layers
+    - Validation criteria (functional, integration, performance)
+    - File: [DESIGN001]-cedar-os-integration-architecture.md
 
 ## Implemented Designs
 
@@ -50,45 +50,45 @@ The following features are implemented but need to be documented as design speci
 ### Needs Documentation
 
 1. **Security Pipeline Architecture**
-   - Multi-agent security validation pipeline
-   - 6-stage process: Identity → Policy → Retrieve → Rerank → Answer → Verify
-   - Zero-trust validation model
+    - Multi-agent security validation pipeline
+    - 6-stage process: Identity → Policy → Retrieve → Rerank → Answer → Verify
+    - Zero-trust validation model
 
 2. **RBAC System Design**
-   - Hierarchical role model with inheritance
-   - Numeric weight system (10-100)
-   - JWT-based authentication
-   - Role claim validation
+    - Hierarchical role model with inheritance
+    - Numeric weight system (10-100)
+    - JWT-based authentication
+    - Role claim validation
 
 3. **Agent Architecture**
-   - Kilocode contract pattern
-   - Single-responsibility agents
-   - Tool abstraction layer
-   - Memory management
+    - Kilocode contract pattern
+    - Single-responsibility agents
+    - Tool abstraction layer
+    - Memory management
 
 4. **Workflow Orchestration**
-   - Mastra workflow execution
-   - Step-based pipeline
-   - Structured logging
-   - Error handling
+    - Mastra workflow execution
+    - Step-based pipeline
+    - Structured logging
+    - Error handling
 
 5. **Vector Storage Design**
-   - Qdrant integration
-   - Metadata filtering
-   - Security-aware queries
-   - Document classification
+    - Qdrant integration
+    - Metadata filtering
+    - Security-aware queries
+    - Document classification
 
 6. **Frontend Architecture**
-   - Next.js App Router
-   - Component hierarchy
-   - State management
-   - Streaming responses
+    - Next.js App Router
+    - Component hierarchy
+    - State management
+    - Streaming responses
 
 7. **API Layer Design**
-   - Route handlers
-   - JWT validation
-   - Request/response schemas
-   - Error responses
+    - Route handlers
+    - JWT validation
+    - Request/response schemas
+    - Error responses
 
 ## Deprecated Designs
 
@@ -150,8 +150,8 @@ When creating a new design document, use this structure:
 
 ### Sub-components
 
-| ID | Description | Status | Updated | Notes |
-|----|-------------|--------|---------|-------|
+| ID  | Description | Status   | Updated        | Notes   |
+| --- | ----------- | -------- | -------------- | ------- |
 | 1.1 | [Component] | [Status] | [Date], [Time] | [Notes] |
 
 ## Design Log

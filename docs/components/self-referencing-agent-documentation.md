@@ -1,11 +1,19 @@
 ---
-title: "Self-Referencing Agent"
-description: "An MCP server agent that creates a self-referencing architecture hosting multiple agents and tools, capable of connecting to external MCP servers"
-component_type: "Mastra Agent + MCP Server"
-framework: "Mastra + MCP"
-language: "TypeScript"
-platform: "Node.js"
-tags: ["agent", "mcp-server", "self-referencing", "distributed", "tool-orchestration", "web-scraping"]
+title: 'Self-Referencing Agent'
+description: 'An MCP server agent that creates a self-referencing architecture hosting multiple agents and tools, capable of connecting to external MCP servers'
+component_type: 'Mastra Agent + MCP Server'
+framework: 'Mastra + MCP'
+language: 'TypeScript'
+platform: 'Node.js'
+tags:
+    [
+        'agent',
+        'mcp-server',
+        'self-referencing',
+        'distributed',
+        'tool-orchestration',
+        'web-scraping',
+    ]
 ---
 
 # Self-Referencing Agent (`src/mastra/agents/selfReferencingAgent.ts`)
@@ -178,12 +186,15 @@ graph TB
 ### Agent Properties
 
 #### `id: 'selfReferencing'`
+
 Unique identifier for the agent within the Mastra system.
 
 #### `name: "selfReferencingAgent"`
+
 Human-readable name for the agent.
 
 #### `description`
+
 "An agent that can use tools from an http MCP server"
 
 ### Core Expertise
@@ -200,12 +211,13 @@ Human-readable name for the agent.
 
 ```typescript
 export const mcp = new MCPServer({
-  id: "mcpServer",
-  description: "A self-referencing MCP server that hosts an agent capable of using tools from another MCP server.",
-  name: "My MCP Server",
-  version: "1.0.0",
-  // ... configuration
-});
+    id: 'mcpServer',
+    description:
+        'A self-referencing MCP server that hosts an agent capable of using tools from another MCP server.',
+    name: 'My MCP Server',
+    version: '1.0.0',
+    // ... configuration
+})
 ```
 
 ### Server Components
@@ -232,14 +244,14 @@ The agent uses dynamic tool resolution through MCP client:
 
 ```typescript
 tools: async () => {
-  const mcpClient = new MCPClient({
-    servers: {
-      myServer: {
-        url: new URL("http://localhost:4111/api/mcp/mcpServer/mcp"),
-      },
-    },
-  });
-  return await mcpClient.getTools();
+    const mcpClient = new MCPClient({
+        servers: {
+            myServer: {
+                url: new URL('http://localhost:4111/api/mcp/mcpServer/mcp'),
+            },
+        },
+    })
+    return await mcpClient.getTools()
 }
 ```
 
@@ -427,23 +439,23 @@ workflows: {},
 
 ```typescript
 const mcp = new MCPServer({
-  id: "mcpServer",
-  name: "My MCP Server",
-  version: "1.0.0",
-  // ... full configuration
-});
+    id: 'mcpServer',
+    name: 'My MCP Server',
+    version: '1.0.0',
+    // ... full configuration
+})
 ```
 
 ### MCP Client Configuration
 
 ```typescript
 const mcpClient = new MCPClient({
-  servers: {
-    myServer: {
-      url: new URL("http://localhost:4111/api/mcp/mcpServer/mcp"),
+    servers: {
+        myServer: {
+            url: new URL('http://localhost:4111/api/mcp/mcpServer/mcp'),
+        },
     },
-  },
-});
+})
 ```
 
 ### Required Environment Variables
@@ -465,7 +477,7 @@ GOOGLE_GENERATIVE_AI_API_KEY=your-api-key
 
 ```typescript
 // Tools are resolved dynamically from external MCP server
-const tools = await mcpClient.getTools();
+const tools = await mcpClient.getTools()
 // Returns available tools from connected MCP server
 ```
 
@@ -482,53 +494,53 @@ const tools = await mcpClient.getTools();
 ### MCP Server Issues
 
 1. **Server Startup Failures**
-   - Verify port 4111 availability
-   - Check network configuration
-   - Validate MCP server dependencies
+    - Verify port 4111 availability
+    - Check network configuration
+    - Validate MCP server dependencies
 
 2. **Connection Problems**
-   - Confirm external MCP server URL correctness
-   - Check network connectivity
-   - Verify authentication credentials
+    - Confirm external MCP server URL correctness
+    - Check network connectivity
+    - Verify authentication credentials
 
 3. **Tool Resolution Errors**
-   - Ensure external server is running
-   - Check tool availability on remote server
-   - Validate MCP protocol compatibility
+    - Ensure external server is running
+    - Check tool availability on remote server
+    - Validate MCP protocol compatibility
 
 ### Agent Coordination Issues
 
 1. **Agent Communication Problems**
-   - Verify agent imports and dependencies
-   - Check agent initialization order
-   - Validate inter-agent communication protocols
+    - Verify agent imports and dependencies
+    - Check agent initialization order
+    - Validate inter-agent communication protocols
 
 2. **Tool Loading Failures**
-   - Confirm tool module imports
-   - Check tool dependencies
-   - Verify tool registration in server
+    - Confirm tool module imports
+    - Check tool dependencies
+    - Verify tool registration in server
 
 3. **Resource Management Errors**
-   - Implement resource handlers if needed
-   - Check resource URI formats
-   - Validate resource access permissions
+    - Implement resource handlers if needed
+    - Check resource URI formats
+    - Validate resource access permissions
 
 ### Performance Issues
 
 1. **Slow Tool Resolution**
-   - Check network latency to external servers
-   - Monitor tool loading performance
-   - Optimize dynamic loading strategy
+    - Check network latency to external servers
+    - Monitor tool loading performance
+    - Optimize dynamic loading strategy
 
 2. **Memory Usage Problems**
-   - Monitor agent and tool memory consumption
-   - Implement resource cleanup
-   - Check for memory leaks in long-running processes
+    - Monitor agent and tool memory consumption
+    - Implement resource cleanup
+    - Check for memory leaks in long-running processes
 
 3. **Concurrent Access Issues**
-   - Implement proper locking mechanisms
-   - Check thread safety of shared resources
-   - Monitor concurrent agent execution
+    - Implement proper locking mechanisms
+    - Check thread safety of shared resources
+    - Monitor concurrent agent execution
 
 ## References
 

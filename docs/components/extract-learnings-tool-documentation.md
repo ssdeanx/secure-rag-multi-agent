@@ -1,11 +1,18 @@
 ---
-title: "Extract Learnings Tool - Technical Documentation"
-component_path: "src/mastra/tools/extractLearningsTool.ts"
-version: "1.0"
-date_created: "2025-09-23"
-last_updated: "2025-09-23"
-owner: "AI Team"
-tags: ["tool", "learning-extraction", "insights", "follow-up-questions", "research-analysis"]
+title: 'Extract Learnings Tool - Technical Documentation'
+component_path: 'src/mastra/tools/extractLearningsTool.ts'
+version: '1.0'
+date_created: '2025-09-23'
+last_updated: '2025-09-23'
+owner: 'AI Team'
+tags:
+    [
+        'tool',
+        'learning-extraction',
+        'insights',
+        'follow-up-questions',
+        'research-analysis',
+    ]
 ---
 
 # Extract Learnings Tool Documentation
@@ -124,30 +131,30 @@ graph TB
 
 ### Input Schema
 
-| Property | Type | Required | Description |
-|----------|------|----------|-------------|
-| `query` | `string` | Yes | The original research query |
-| `result` | `ResultObject` | Yes | Search result to analyze |
+| Property | Type           | Required | Description                 |
+| -------- | -------------- | -------- | --------------------------- |
+| `query`  | `string`       | Yes      | The original research query |
+| `result` | `ResultObject` | Yes      | Search result to analyze    |
 
 ### Result Object Schema
 
-| Property | Type | Description |
-|----------|------|-------------|
-| `title` | `string` | Result title |
-| `url` | `string` | Result URL |
+| Property  | Type     | Description         |
+| --------- | -------- | ------------------- |
+| `title`   | `string` | Result title        |
+| `url`     | `string` | Result URL          |
 | `content` | `string` | Full result content |
 
 ### Output Schema
 
-| Property | Type | Description |
-|----------|------|-------------|
-| `learning` | `string` | Key insight extracted from content |
+| Property            | Type       | Description                          |
+| ------------------- | ---------- | ------------------------------------ |
+| `learning`          | `string`   | Key insight extracted from content   |
 | `followUpQuestions` | `string[]` | Array of follow-up questions (max 1) |
 
 ### Public Methods
 
-| Method | Parameters | Return Type | Description |
-|--------|------------|-------------|-------------|
+| Method      | Parameters                 | Return Type                 | Description                     |
+| ----------- | -------------------------- | --------------------------- | ------------------------------- |
 | `execute()` | `context: ExtractionInput` | `Promise<ExtractionOutput>` | Extract learnings and questions |
 
 ## 4. Usage Examples
@@ -155,20 +162,21 @@ graph TB
 ### Basic Learning Extraction
 
 ```typescript
-import { extractLearningsTool } from './src/mastra/tools/extractLearningsTool';
+import { extractLearningsTool } from './src/mastra/tools/extractLearningsTool'
 
 const result = await extractLearningsTool.execute({
-  context: {
-    query: "How do renewable energy sources impact climate change?",
-    result: {
-      title: "Solar Power and Climate Benefits",
-      url: "https://example.com/solar-climate",
-      content: "Solar energy reduces carbon emissions by 95% compared to fossil fuels..."
-    }
-  },
-  mastra: mastraInstance,
-  tracingContext: tracingContext
-});
+    context: {
+        query: 'How do renewable energy sources impact climate change?',
+        result: {
+            title: 'Solar Power and Climate Benefits',
+            url: 'https://example.com/solar-climate',
+            content:
+                'Solar energy reduces carbon emissions by 95% compared to fossil fuels...',
+        },
+    },
+    mastra: mastraInstance,
+    tracingContext: tracingContext,
+})
 
 // Result:
 // {
@@ -181,23 +189,23 @@ const result = await extractLearningsTool.execute({
 
 ```typescript
 // Within an iterative research process
-const searchResults = await performSearch(query);
-const learnings = [];
+const searchResults = await performSearch(query)
+const learnings = []
 
 for (const searchResult of searchResults) {
-  const extraction = await extractLearningsTool.execute({
-    context: { query, result: searchResult },
-    mastra: mastraInstance,
-    tracingContext: tracingContext
-  });
+    const extraction = await extractLearningsTool.execute({
+        context: { query, result: searchResult },
+        mastra: mastraInstance,
+        tracingContext: tracingContext,
+    })
 
-  learnings.push(extraction.learning);
+    learnings.push(extraction.learning)
 
-  // Use follow-up questions for next research iteration
-  if (extraction.followUpQuestions.length > 0) {
-    const nextQuery = extraction.followUpQuestions[0];
-    // Continue research with new question
-  }
+    // Use follow-up questions for next research iteration
+    if (extraction.followUpQuestions.length > 0) {
+        const nextQuery = extraction.followUpQuestions[0]
+        // Continue research with new question
+    }
 }
 ```
 
@@ -205,37 +213,34 @@ for (const searchResult of searchResults) {
 
 ```typescript
 const extractions = await Promise.all(
-  searchResults.map(result =>
-    extractLearningsTool.execute({
-      context: { query: mainQuery, result },
-      mastra: mastraInstance,
-      tracingContext: tracingContext
-    })
-  )
-);
+    searchResults.map((result) =>
+        extractLearningsTool.execute({
+            context: { query: mainQuery, result },
+            mastra: mastraInstance,
+            tracingContext: tracingContext,
+        })
+    )
+)
 
 // Synthesize learnings into comprehensive summary
-const synthesis = extractions
-  .map(ext => ext.learning)
-  .join('\n\n');
+const synthesis = extractions.map((ext) => ext.learning).join('\n\n')
 
-const allQuestions = extractions
-  .flatMap(ext => ext.followUpQuestions);
+const allQuestions = extractions.flatMap((ext) => ext.followUpQuestions)
 ```
 
 ### Error Handling
 
 ```typescript
 try {
-  const extraction = await extractLearningsTool.execute({
-    context: { query, result },
-    mastra: mastraInstance,
-    tracingContext: tracingContext
-  });
+    const extraction = await extractLearningsTool.execute({
+        context: { query, result },
+        mastra: mastraInstance,
+        tracingContext: tracingContext,
+    })
 } catch (error) {
-  // Handle extraction failure
-  console.log('Learning extraction failed, using fallback');
-  const fallbackLearning = extractFallbackLearning(result);
+    // Handle extraction failure
+    console.log('Learning extraction failed, using fallback')
+    const fallbackLearning = extractFallbackLearning(result)
 }
 ```
 
@@ -275,17 +280,17 @@ try {
 
 ### Dependencies
 
-| Package | Version | Purpose |
-|---------|---------|---------|
-| `@mastra/core/tools` | ^0.1.0 | Tool framework |
-| `@mastra/core/ai-tracing` | ^0.1.0 | AI tracing integration |
-| `zod` | ^3.22.4 | Schema validation |
+| Package                   | Version | Purpose                |
+| ------------------------- | ------- | ---------------------- |
+| `@mastra/core/tools`      | ^0.1.0  | Tool framework         |
+| `@mastra/core/ai-tracing` | ^0.1.0  | AI tracing integration |
+| `zod`                     | ^3.22.4 | Schema validation      |
 
 ### Environment Variables
 
-| Variable | Required | Default | Description |
-|----------|----------|---------|-------------|
-| None | - | - | Uses Mastra agent configuration |
+| Variable | Required | Default | Description                     |
+| -------- | -------- | ------- | ------------------------------- |
+| None     | -        | -       | Uses Mastra agent configuration |
 
 ### Testing
 
@@ -323,8 +328,8 @@ curl http://localhost:3000/api/health/extract
 
 ### Change History
 
-| Version | Date | Changes |
-|---------|------|---------|
-| 1.0 | 2025-09-23 | Initial implementation with AI-powered extraction |
-| 0.9 | 2025-09-20 | Added follow-up question generation |
-| 0.8 | 2025-09-15 | Basic learning extraction functionality |
+| Version | Date       | Changes                                           |
+| ------- | ---------- | ------------------------------------------------- |
+| 1.0     | 2025-09-23 | Initial implementation with AI-powered extraction |
+| 0.9     | 2025-09-20 | Added follow-up question generation               |
+| 0.8     | 2025-09-15 | Basic learning extraction functionality           |

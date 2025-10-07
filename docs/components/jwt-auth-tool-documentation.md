@@ -1,11 +1,11 @@
 ---
-title: "JWT Auth Tool - Technical Documentation"
-component_path: "src/mastra/tools/jwt-auth.tool.ts"
-version: "1.0"
-date_created: "2025-09-23"
-last_updated: "2025-09-23"
-owner: "AI Team"
-tags: ["tool", "authentication", "jwt", "security", "claims"]
+title: 'JWT Auth Tool - Technical Documentation'
+component_path: 'src/mastra/tools/jwt-auth.tool.ts'
+version: '1.0'
+date_created: '2025-09-23'
+last_updated: '2025-09-23'
+owner: 'AI Team'
+tags: ['tool', 'authentication', 'jwt', 'security', 'claims']
 ---
 
 # JWT Auth Tool Documentation
@@ -111,25 +111,25 @@ graph TB
 
 ### Input Schema
 
-| Property | Type | Required | Description |
-|----------|------|----------|-------------|
-| `jwt` | `string` | Yes | JWT token to verify |
+| Property | Type     | Required | Description         |
+| -------- | -------- | -------- | ------------------- |
+| `jwt`    | `string` | Yes      | JWT token to verify |
 
 ### Output Schema
 
-| Property | Type | Description |
-|----------|------|-------------|
-| `sub` | `string` | User subject identifier |
-| `roles` | `string[]` | Array of user roles |
-| `tenant` | `string?` | Optional tenant identifier |
+| Property | Type       | Description                          |
+| -------- | ---------- | ------------------------------------ |
+| `sub`    | `string`   | User subject identifier              |
+| `roles`  | `string[]` | Array of user roles                  |
+| `tenant` | `string?`  | Optional tenant identifier           |
 | `stepUp` | `boolean?` | Optional step-up authentication flag |
-| `exp` | `number?` | Optional token expiration timestamp |
-| `iat` | `number?` | Optional token issued-at timestamp |
+| `exp`    | `number?`  | Optional token expiration timestamp  |
+| `iat`    | `number?`  | Optional token issued-at timestamp   |
 
 ### Public Methods
 
-| Method | Parameters | Return Type | Description |
-|--------|------------|-------------|-------------|
+| Method      | Parameters                 | Return Type             | Description                                |
+| ----------- | -------------------------- | ----------------------- | ------------------------------------------ |
 | `execute()` | `context: { jwt: string }` | `Promise<ClaimsObject>` | Execute JWT verification and return claims |
 
 ## 4. Usage Examples
@@ -137,13 +137,13 @@ graph TB
 ### Basic JWT Verification
 
 ```typescript
-import { jwtAuthTool } from './src/mastra/tools/jwt-auth.tool';
+import { jwtAuthTool } from './src/mastra/tools/jwt-auth.tool'
 
 const result = await jwtAuthTool.execute({
-  context: { jwt: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..." },
-  mastra: mastraInstance,
-  tracingContext: tracingContext
-});
+    context: { jwt: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...' },
+    mastra: mastraInstance,
+    tracingContext: tracingContext,
+})
 
 // Result:
 // {
@@ -161,14 +161,14 @@ const result = await jwtAuthTool.execute({
 ```typescript
 // Within a Mastra agent
 const claims = await jwtAuthTool.execute({
-  context: { jwt: tokenFromRequest },
-  mastra: this.mastra,
-  tracingContext: this.tracingContext
-});
+    context: { jwt: tokenFromRequest },
+    mastra: this.mastra,
+    tracingContext: this.tracingContext,
+})
 
 // Use claims for authorization
 if (claims.roles.includes('admin')) {
-  // Allow admin operations
+    // Allow admin operations
 }
 ```
 
@@ -176,14 +176,14 @@ if (claims.roles.includes('admin')) {
 
 ```typescript
 try {
-  const claims = await jwtAuthTool.execute({
-    context: { jwt: invalidToken },
-    mastra: mastraInstance,
-    tracingContext: tracingContext
-  });
+    const claims = await jwtAuthTool.execute({
+        context: { jwt: invalidToken },
+        mastra: mastraInstance,
+        tracingContext: tracingContext,
+    })
 } catch (error) {
-  // Handle authentication failure
-  console.error('JWT verification failed:', error.message);
+    // Handle authentication failure
+    console.error('JWT verification failed:', error.message)
 }
 ```
 
@@ -224,17 +224,17 @@ try {
 
 ### Dependencies
 
-| Package | Version | Purpose |
-|---------|---------|---------|
-| `@mastra/core/tools` | ^0.1.0 | Tool framework |
-| `@mastra/core/ai-tracing` | ^0.1.0 | AI tracing integration |
-| `zod` | ^3.22.4 | Schema validation |
+| Package                   | Version | Purpose                |
+| ------------------------- | ------- | ---------------------- |
+| `@mastra/core/tools`      | ^0.1.0  | Tool framework         |
+| `@mastra/core/ai-tracing` | ^0.1.0  | AI tracing integration |
+| `zod`                     | ^3.22.4 | Schema validation      |
 
 ### Environment Variables
 
-| Variable | Required | Default | Description |
-|----------|----------|---------|-------------|
-| None | - | - | Uses AuthenticationService configuration |
+| Variable | Required | Default | Description                              |
+| -------- | -------- | ------- | ---------------------------------------- |
+| None     | -        | -       | Uses AuthenticationService configuration |
 
 ### Testing
 
@@ -272,8 +272,8 @@ curl http://localhost:3000/api/health/jwt-auth
 
 ### Change History
 
-| Version | Date | Changes |
-|---------|------|---------|
-| 1.0 | 2025-09-23 | Initial implementation with tracing support |
-| 0.9 | 2025-09-20 | Added comprehensive error handling |
-| 0.8 | 2025-09-15 | Basic JWT verification functionality |
+| Version | Date       | Changes                                     |
+| ------- | ---------- | ------------------------------------------- |
+| 1.0     | 2025-09-23 | Initial implementation with tracing support |
+| 0.9     | 2025-09-20 | Added comprehensive error handling          |
+| 0.8     | 2025-09-15 | Basic JWT verification functionality        |

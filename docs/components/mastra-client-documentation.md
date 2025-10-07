@@ -41,11 +41,11 @@ graph TD
 
 ## 3. Interface Documentation
 
-| Function/Export | Purpose | Parameters | Return Type | Notes |
-|-----------------|---------|------------|-------------|-------|
-| `getMastraBaseUrl()` | Determine the configured Mastra base URL | none | `string` | Prefers `MASTRA_BASE_URL` env var, falls back to `http://localhost:4111` for dev |
-| `mastraClient` | Pre-configured service-level Mastra client | none | `MastraClient` | Adds Authorization header if `JWT_TOKEN` env var is present |
-| `createMastraClient(token?)` | Factory to create a client for a specific user token | `token?: string` | `MastraClient` | Caller-provided token is added as Bearer header |
+| Function/Export              | Purpose                                              | Parameters       | Return Type    | Notes                                                                            |
+| ---------------------------- | ---------------------------------------------------- | ---------------- | -------------- | -------------------------------------------------------------------------------- |
+| `getMastraBaseUrl()`         | Determine the configured Mastra base URL             | none             | `string`       | Prefers `MASTRA_BASE_URL` env var, falls back to `http://localhost:4111` for dev |
+| `mastraClient`               | Pre-configured service-level Mastra client           | none             | `MastraClient` | Adds Authorization header if `JWT_TOKEN` env var is present                      |
+| `createMastraClient(token?)` | Factory to create a client for a specific user token | `token?: string` | `MastraClient` | Caller-provided token is added as Bearer header                                  |
 
 ## 4. Implementation Details
 
@@ -56,14 +56,14 @@ graph TD
 ## 5. Usage Examples
 
 ```ts
-import { mastraClient, createMastraClient } from '@/lib/mastra/mastra-client';
+import { mastraClient, createMastraClient } from '@/lib/mastra/mastra-client'
 
 // service client usage (server-side)
-await mastraClient.doSomething();
+await mastraClient.doSomething()
 
 // per-request client in an API route
-const client = createMastraClient(userToken);
-await client.chat({ message: 'hello' });
+const client = createMastraClient(userToken)
+await client.chat({ message: 'hello' })
 ```
 
 ## 6. Quality Attributes

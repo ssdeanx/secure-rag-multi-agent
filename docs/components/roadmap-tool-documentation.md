@@ -1,11 +1,18 @@
 ---
-title: "Roadmap Tool - Technical Documentation"
-component_path: "src/mastra/tools/roadmapTool.ts"
-version: "1.0"
-date_created: "2025-09-23"
-last_updated: "2025-09-23"
-owner: "Product Team"
-tags: ["tool", "roadmap", "feature-management", "crud-operations", "product-planning"]
+title: 'Roadmap Tool - Technical Documentation'
+component_path: 'src/mastra/tools/roadmapTool.ts'
+version: '1.0'
+date_created: '2025-09-23'
+last_updated: '2025-09-23'
+owner: 'Product Team'
+tags:
+    [
+        'tool',
+        'roadmap',
+        'feature-management',
+        'crud-operations',
+        'product-planning',
+    ]
 ---
 
 # Roadmap Tool Documentation
@@ -122,23 +129,23 @@ graph TB
 
 ### Feature Schema
 
-| Property | Type | Required | Description |
-|----------|------|----------|-------------|
-| `id` | `string` | Yes | Unique feature identifier |
-| `title` | `string` | Yes | Feature title |
-| `description` | `string` | Yes | Feature description |
-| `status` | `FeatureStatus` | Yes | Current status (done, planned, backlog, in progress) |
-| `nodeType` | `string` | Yes | Node type (always 'feature') |
-| `upvotes` | `number` | Yes | Number of upvotes |
-| `comments` | `Comment[]` | Yes | Array of feature comments |
+| Property      | Type            | Required | Description                                          |
+| ------------- | --------------- | -------- | ---------------------------------------------------- |
+| `id`          | `string`        | Yes      | Unique feature identifier                            |
+| `title`       | `string`        | Yes      | Feature title                                        |
+| `description` | `string`        | Yes      | Feature description                                  |
+| `status`      | `FeatureStatus` | Yes      | Current status (done, planned, backlog, in progress) |
+| `nodeType`    | `string`        | Yes      | Node type (always 'feature')                         |
+| `upvotes`     | `number`        | Yes      | Number of upvotes                                    |
+| `comments`    | `Comment[]`     | Yes      | Array of feature comments                            |
 
 ### Comment Schema
 
-| Property | Type | Required | Description |
-|----------|------|----------|-------------|
-| `id` | `string` | Yes | Comment identifier |
-| `author` | `string` | Yes | Comment author |
-| `text` | `string` | Yes | Comment content |
+| Property | Type     | Required | Description        |
+| -------- | -------- | -------- | ------------------ |
+| `id`     | `string` | Yes      | Comment identifier |
+| `author` | `string` | Yes      | Comment author     |
+| `text`   | `string` | Yes      | Comment content    |
 
 ### Tool Interfaces
 
@@ -146,78 +153,76 @@ graph TB
 
 **Input Schema:**
 
-| Property | Type | Required | Description |
-|----------|------|----------|-------------|
-| `id` | `string` | No | Feature ID (auto-generated if not provided) |
-| `title` | `string` | Yes | Feature title |
-| `description` | `string` | Yes | Feature description |
-| `status` | `FeatureStatus` | No | Initial status (default: 'planned') |
-| `upvotes` | `number` | No | Initial upvotes (default: 0) |
-| `comments` | `Comment[]` | No | Initial comments (default: []) |
+| Property      | Type            | Required | Description                                 |
+| ------------- | --------------- | -------- | ------------------------------------------- |
+| `id`          | `string`        | No       | Feature ID (auto-generated if not provided) |
+| `title`       | `string`        | Yes      | Feature title                               |
+| `description` | `string`        | Yes      | Feature description                         |
+| `status`      | `FeatureStatus` | No       | Initial status (default: 'planned')         |
+| `upvotes`     | `number`        | No       | Initial upvotes (default: 0)                |
+| `comments`    | `Comment[]`     | No       | Initial comments (default: [])              |
 
 **Output Schema:**
 
-| Property | Type | Description |
-|----------|------|-------------|
+| Property  | Type      | Description              |
+| --------- | --------- | ------------------------ |
 | `success` | `boolean` | Operation success status |
-| `feature` | `Feature` | Created feature object |
-
+| `feature` | `Feature` | Created feature object   |
 
 #### Update Feature Tool
 
 **Input Schema:**
 
-| Property | Type | Required | Description |
-|----------|------|----------|-------------|
-| `id` | `string` | Yes | Feature ID to update |
-| `title` | `string` | No | New feature title |
-| `description` | `string` | No | New feature description |
-| `status` | `FeatureStatus` | No | New feature status |
-| `upvotes` | `number` | No | New upvotes count |
-| `comments` | `Comment[]` | No | New comments array |
+| Property      | Type            | Required | Description             |
+| ------------- | --------------- | -------- | ----------------------- |
+| `id`          | `string`        | Yes      | Feature ID to update    |
+| `title`       | `string`        | No       | New feature title       |
+| `description` | `string`        | No       | New feature description |
+| `status`      | `FeatureStatus` | No       | New feature status      |
+| `upvotes`     | `number`        | No       | New upvotes count       |
+| `comments`    | `Comment[]`     | No       | New comments array      |
 
 **Output Schema:**
 
-| Property | Type | Description |
-|----------|------|-------------|
+| Property  | Type      | Description              |
+| --------- | --------- | ------------------------ |
 | `success` | `boolean` | Operation success status |
-| `feature` | `Feature` | Updated feature object |
-
+| `feature` | `Feature` | Updated feature object   |
 
 #### Delete Feature Tool
 
 **Input Schema:**
 
-| Property | Type | Required | Description |
-|----------|------|----------|-------------|
-| `id` | `string` | Yes | Feature ID to delete |
+| Property | Type     | Required | Description          |
+| -------- | -------- | -------- | -------------------- |
+| `id`     | `string` | Yes      | Feature ID to delete |
 
 **Output Schema:**
 
-| Property | Type | Description |
-|----------|------|-------------|
+| Property  | Type      | Description              |
+| --------- | --------- | ------------------------ |
 | `success` | `boolean` | Operation success status |
-| `message` | `string` | Success message |
-
+| `message` | `string`  | Success message          |
 
 ## 4. Usage Examples
 
 ### Adding New Features
 
 ```typescript
-import { addFeatureTool } from './src/mastra/tools/roadmapTool';
+import { addFeatureTool } from './src/mastra/tools/roadmapTool'
 
 const newFeature = await addFeatureTool.execute({
-  context: {
-    title: "User Authentication Enhancement",
-    description: "Implement multi-factor authentication and social login options",
-    status: "planned",
-    upvotes: 0,
-    comments: []
-  },
-  mastra: mastraInstance,
-  tracingContext: tracingContext
-});
+    context: {
+        title: 'User Authentication Enhancement',
+        description:
+            'Implement multi-factor authentication and social login options',
+        status: 'planned',
+        upvotes: 0,
+        comments: [],
+    },
+    mastra: mastraInstance,
+    tracingContext: tracingContext,
+})
 
 // Result:
 // {
@@ -237,60 +242,60 @@ const newFeature = await addFeatureTool.execute({
 ### Updating Feature Status
 
 ```typescript
-import { updateFeatureTool } from './src/mastra/tools/roadmapTool';
+import { updateFeatureTool } from './src/mastra/tools/roadmapTool'
 
 const updatedFeature = await updateFeatureTool.execute({
-  context: {
-    id: "feature-123",
-    status: "in progress",
-    upvotes: 15,
-    comments: [
-      {
-        id: "comment-1",
-        author: "product-manager",
-        text: "This is critical for Q4 release"
-      }
-    ]
-  },
-  mastra: mastraInstance,
-  tracingContext: tracingContext
-});
+    context: {
+        id: 'feature-123',
+        status: 'in progress',
+        upvotes: 15,
+        comments: [
+            {
+                id: 'comment-1',
+                author: 'product-manager',
+                text: 'This is critical for Q4 release',
+            },
+        ],
+    },
+    mastra: mastraInstance,
+    tracingContext: tracingContext,
+})
 ```
 
 ### Feature Lifecycle Management
 
 ```typescript
-import { roadmapTools } from './src/mastra/tools/roadmapTool';
+import { roadmapTools } from './src/mastra/tools/roadmapTool'
 
 // Create feature
 const feature = await roadmapTools.addFeatureTool.execute({
-  context: {
-    title: "Dashboard Analytics",
-    description: "Add comprehensive analytics to user dashboard",
-    status: "backlog"
-  },
-  mastra: mastraInstance,
-  tracingContext: tracingContext
-});
+    context: {
+        title: 'Dashboard Analytics',
+        description: 'Add comprehensive analytics to user dashboard',
+        status: 'backlog',
+    },
+    mastra: mastraInstance,
+    tracingContext: tracingContext,
+})
 
 // Update through development stages
 await roadmapTools.updateFeatureTool.execute({
-  context: { id: feature.feature.id, status: "planned" },
-  mastra: mastraInstance,
-  tracingContext: tracingContext
-});
+    context: { id: feature.feature.id, status: 'planned' },
+    mastra: mastraInstance,
+    tracingContext: tracingContext,
+})
 
 await roadmapTools.updateFeatureTool.execute({
-  context: { id: feature.feature.id, status: "in progress" },
-  mastra: mastraInstance,
-  tracingContext: tracingContext
-});
+    context: { id: feature.feature.id, status: 'in progress' },
+    mastra: mastraInstance,
+    tracingContext: tracingContext,
+})
 
 await roadmapTools.updateFeatureTool.execute({
-  context: { id: feature.feature.id, status: "done" },
-  mastra: mastraInstance,
-  tracingContext: tracingContext
-});
+    context: { id: feature.feature.id, status: 'done' },
+    mastra: mastraInstance,
+    tracingContext: tracingContext,
+})
 ```
 
 ### Collaborative Feature Development
@@ -298,39 +303,39 @@ await roadmapTools.updateFeatureTool.execute({
 ```typescript
 // Add comments and upvotes
 const collaborativeUpdate = await updateFeatureTool.execute({
-  context: {
-    id: "feature-456",
-    upvotes: 23,
-    comments: [
-      {
-        id: "comment-1",
-        author: "developer",
-        text: "Technical implementation looks feasible"
-      },
-      {
-        id: "comment-2",
-        author: "designer",
-        text: "UI mockups ready for review"
-      }
-    ]
-  },
-  mastra: mastraInstance,
-  tracingContext: tracingContext
-});
+    context: {
+        id: 'feature-456',
+        upvotes: 23,
+        comments: [
+            {
+                id: 'comment-1',
+                author: 'developer',
+                text: 'Technical implementation looks feasible',
+            },
+            {
+                id: 'comment-2',
+                author: 'designer',
+                text: 'UI mockups ready for review',
+            },
+        ],
+    },
+    mastra: mastraInstance,
+    tracingContext: tracingContext,
+})
 ```
 
 ### Error Handling
 
 ```typescript
 try {
-  const result = await deleteFeatureTool.execute({
-    context: { id: "non-existent-feature" },
-    mastra: mastraInstance,
-    tracingContext: tracingContext
-  });
+    const result = await deleteFeatureTool.execute({
+        context: { id: 'non-existent-feature' },
+        mastra: mastraInstance,
+        tracingContext: tracingContext,
+    })
 } catch (error) {
-  console.log('Feature deletion failed:', error.message);
-  // Handle error appropriately
+    console.log('Feature deletion failed:', error.message)
+    // Handle error appropriately
 }
 ```
 
@@ -370,17 +375,17 @@ try {
 
 ### Dependencies
 
-| Package | Version | Purpose |
-|---------|---------|---------|
-| `@mastra/core/tools` | ^0.1.0 | Tool framework |
-| `@mastra/core/ai-tracing` | ^0.1.0 | AI tracing integration |
-| `zod` | ^3.22.4 | Schema validation |
+| Package                   | Version | Purpose                |
+| ------------------------- | ------- | ---------------------- |
+| `@mastra/core/tools`      | ^0.1.0  | Tool framework         |
+| `@mastra/core/ai-tracing` | ^0.1.0  | AI tracing integration |
+| `zod`                     | ^3.22.4 | Schema validation      |
 
 ### Environment Variables
 
-| Variable | Required | Default | Description |
-|----------|----------|---------|-------------|
-| None | - | - | Uses Mastra configuration |
+| Variable | Required | Default | Description               |
+| -------- | -------- | ------- | ------------------------- |
+| None     | -        | -       | Uses Mastra configuration |
 
 ### Testing
 
@@ -421,9 +426,9 @@ curl http://localhost:3000/api/health/roadmap
 
 ### Change History
 
-| Version | Date | Changes |
-|---------|------|---------|
-| 1.0 | 2025-09-23 | Complete CRUD operations with tracing integration |
-| 0.9 | 2025-09-20 | Added comment and upvote functionality |
-| 0.8 | 2025-09-15 | Basic feature creation and status tracking |
-| 0.7 | 2025-09-10 | Initial roadmap tool implementation |
+| Version | Date       | Changes                                           |
+| ------- | ---------- | ------------------------------------------------- |
+| 1.0     | 2025-09-23 | Complete CRUD operations with tracing integration |
+| 0.9     | 2025-09-20 | Added comment and upvote functionality            |
+| 0.8     | 2025-09-15 | Basic feature creation and status tracking        |
+| 0.7     | 2025-09-10 | Initial roadmap tool implementation               |

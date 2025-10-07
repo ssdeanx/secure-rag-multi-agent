@@ -3,94 +3,98 @@
 # Corpus Directory (`/corpus`)
 
 ## Persona
+
 **Name:** `{corpus_persona_name}` = "Data & Content Curator"  
 **Role:** "I steward the source documents that feed the governed RAG pipeline, ensuring classification-relevant naming, consistency, and re-index safety."  
-**Core Goals:**  
+**Core Goals:**
 
-1. Maintain high-signal, minimal noise Markdown sources.  
-2. Preserve naming conventions that drive automatic classification.  
-3. Ensure sensitive documents are clearly identifiable for policy filters.  
+1. Maintain high-signal, minimal noise Markdown sources.
+2. Preserve naming conventions that drive automatic classification.
+3. Ensure sensitive documents are clearly identifiable for policy filters.
 4. Trigger re-index operations only when required.
 
-**MUST:**  
+**MUST:**
 
-- Store only Markdown `.md` sources.  
-- Follow naming heuristics (e.g., `hr-` / `confidential` / `finance`).  
-- Keep document scope narrowly focused per file.  
+- Store only Markdown `.md` sources.
+- Follow naming heuristics (e.g., `hr-` / `confidential` / `finance`).
+- Keep document scope narrowly focused per file.
 - Communicate when deletions require cleanup (stale vectors) via re-index.
 
-**FORBIDDEN:**  
+**FORBIDDEN:**
 
-- Embedding credentials or secrets.  
-- Dumping large, unstructured logs or exports.  
+- Embedding credentials or secrets.
+- Dumping large, unstructured logs or exports.
 - Mixing unrelated policy domains in one file.
 
 ## Purpose
+
 Authoritative raw content for indexing into the vector store. Filenames guide automatic `classification` & `allowedRoles` logic inside `app/api/index/route.ts`.
 
 ## Current Files
 
-| File | Classification Heuristics | Expected Access | Notes |
-|------|---------------------------|-----------------|-------|
-| `engineering-handbook.md` | Contains `engineering` | engineering roles + employee | Public-ish internal reference |
-| `finance-policy.md` | Contains `finance` | finance roles + exec | Internal controls & approvals |
-| `hr-confidential.md` | Contains `hr` + `confidential` | hr.admin + exec (step-up) | Sensitive personnel guidance |
+| File                      | Classification Heuristics      | Expected Access              | Notes                         |
+| ------------------------- | ------------------------------ | ---------------------------- | ----------------------------- |
+| `engineering-handbook.md` | Contains `engineering`         | engineering roles + employee | Public-ish internal reference |
+| `finance-policy.md`       | Contains `finance`             | finance roles + exec         | Internal controls & approvals |
+| `hr-confidential.md`      | Contains `hr` + `confidential` | hr.admin + exec (step-up)    | Sensitive personnel guidance  |
 
 ## Indexing Flow
 
-1. Index route reads filenames.  
-2. Applies heuristics → derives `classification` & `allowedRoles`.  
-3. Embeds content & stores vectors with security tags.  
+1. Index route reads filenames.
+2. Applies heuristics → derives `classification` & `allowedRoles`.
+3. Embeds content & stores vectors with security tags.
 4. Retrieval filters by both role and classification at query time.
 
 ## Best Practices
 
-| Area | Guidance |
-|------|----------|
-| Naming | Use explicit domain prefixes (`hr-`, `finance-`, `engineering-`) |
-| Granularity | Prefer smaller topical docs over monoliths |
-| Sensitivity | Include `confidential` in filename for high-sensitivity items |
-| Change Control | Batch related edits then re-index once |
-| Removal | After deleting a file, run a cleanup or full re-index |
+| Area           | Guidance                                                         |
+| -------------- | ---------------------------------------------------------------- |
+| Naming         | Use explicit domain prefixes (`hr-`, `finance-`, `engineering-`) |
+| Granularity    | Prefer smaller topical docs over monoliths                       |
+| Sensitivity    | Include `confidential` in filename for high-sensitivity items    |
+| Change Control | Batch related edits then re-index once                           |
+| Removal        | After deleting a file, run a cleanup or full re-index            |
 
 ## Common Mistakes & Anti-Patterns
 
-| Mistake | Impact | Fix |
-|---------|--------|-----|
-| Adding PDF/unsupported binary | Ignored or failure | Convert to Markdown |
-| Vague filenames | Misclassification | Rename with domain prefix |
-| Combining confidential + public sections | Leakage risk | Split into separate files |
-| Large policy dump | Retrieval noise | Break into thematic sections |
+| Mistake                                  | Impact             | Fix                          |
+| ---------------------------------------- | ------------------ | ---------------------------- |
+| Adding PDF/unsupported binary            | Ignored or failure | Convert to Markdown          |
+| Vague filenames                          | Misclassification  | Rename with domain prefix    |
+| Combining confidential + public sections | Leakage risk       | Split into separate files    |
+| Large policy dump                        | Retrieval noise    | Break into thematic sections |
 
 ## Re-Index Triggers
-Trigger a re-index when:  
 
-- Adding/removing a file.  
-- Changing filename (affects heuristics).  
-- Substantial content edits (semantics shift).  
+Trigger a re-index when:
+
+- Adding/removing a file.
+- Changing filename (affects heuristics).
+- Substantial content edits (semantics shift).
 - Updating classification logic in index route.
 
 ## Validation Checklist
 
-- [ ] File uses `.md` extension.  
-- [ ] Filename encodes domain & sensitivity.  
-- [ ] No secrets or personal data beyond policy scope.  
-- [ ] Content written in clear, answerable sections.  
+- [ ] File uses `.md` extension.
+- [ ] Filename encodes domain & sensitivity.
+- [ ] No secrets or personal data beyond policy scope.
+- [ ] Content written in clear, answerable sections.
 - [ ] Change logged (if governance requires audit).
 
 ## Future Enhancements
 
-- Add frontmatter for explicit classification (override heuristics).  
-- Introduce checksum tracking to detect drift.  
+- Add frontmatter for explicit classification (override heuristics).
+- Introduce checksum tracking to detect drift.
 - Add automated diff-based partial re-index.
 
 ## Change Log
 
-| Version | Date (UTC) | Change |
-|---------|------------|--------|
-| 1.0.0 | 2025-09-24 | Standardized corpus documentation + legacy preserved |
+| Version | Date (UTC) | Change                                               |
+| ------- | ---------- | ---------------------------------------------------- |
+| 1.0.0   | 2025-09-24 | Standardized corpus documentation + legacy preserved |
 
 ## Legacy Content (Preserved)
+
 > Original pre-standardization text retained below.
 
 ```markdown

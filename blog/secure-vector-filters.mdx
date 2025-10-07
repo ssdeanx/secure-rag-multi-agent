@@ -1,12 +1,12 @@
 ---
-title: "Deep Dive: Security-Filtered Vector Retrieval"
+title: 'Deep Dive: Security-Filtered Vector Retrieval'
 date: 2025-09-25T13:00:00.000Z
-excerpt: "Implementing classification and role-aware predicates directly inside vector similarity search for true zero-trust RAG."
+excerpt: 'Implementing classification and role-aware predicates directly inside vector similarity search for true zero-trust RAG.'
 tags: [retrieval, security, design]
-author: "Security Engineering"
+author: 'Security Engineering'
 ---
 
-Vector search without *pre-query* security constraints is an exfiltration bug waiting to ship. In this post we outline a pattern for binding **who** and **what** to **which** vectors are even *eligible* for semantic expansion.
+Vector search without _pre-query_ security constraints is an exfiltration bug waiting to ship. In this post we outline a pattern for binding **who** and **what** to **which** vectors are even _eligible_ for semantic expansion.
 
 ## The Problem
 
@@ -27,14 +27,14 @@ Post-filtering results after an unrestricted similarity search leaks:
 ## Pseudocode
 
 ```ts
-const envelope = buildEnvelope(jwtClaims);
+const envelope = buildEnvelope(jwtClaims)
 const filter = {
-  must: [
-    { key: 'classification', match: { any: envelope.classifications } },
-    { key: 'department', match: { any: envelope.departments } },
-  ]
-};
-const results = await qdrant.query({ vector, filter, top: 8 });
+    must: [
+        { key: 'classification', match: { any: envelope.classifications } },
+        { key: 'department', match: { any: envelope.departments } },
+    ],
+}
+const results = await qdrant.query({ vector, filter, top: 8 })
 ```
 
 ## Metadata Hygiene
@@ -54,16 +54,16 @@ Attach a structured log envelope:
 
 ```json
 {
-  "event": "vector.secure_query",
-  "user": "finance.viewer",
-  "classification_scope": ["public","internal"],
-  "topk": 8,
-  "duration_ms": 42
+    "event": "vector.secure_query",
+    "user": "finance.viewer",
+    "classification_scope": ["public", "internal"],
+    "topk": 8,
+    "duration_ms": 42
 }
 ```
 
 ## Key Takeaway
 
-Security belongs *inside* the retrieval operator, not bolted on after.
+Security belongs _inside_ the retrieval operator, not bolted on after.
 
 — Security Engineering

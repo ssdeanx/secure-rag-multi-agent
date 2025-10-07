@@ -27,16 +27,15 @@ Application root layout for Next.js app. Provides global HTML structure, font lo
 - ARC-001: Design patterns: Composition - the layout composes UI primitives (`ThemeProvider`, `TopNavigation`) and acts as a stable shell.
 
 - ARC-002: Dependencies:
+    - Next.js `Metadata` and `Viewport` types and conventions
 
-  - Next.js `Metadata` and `Viewport` types and conventions
+    - next/font/google for optimized font loading (`Inter`)
 
-  - next/font/google for optimized font loading (`Inter`)
+    - `ThemeProvider` component (project-local)
 
-  - `ThemeProvider` component (project-local)
+    - `TopNavigation` component (project-local)
 
-  - `TopNavigation` component (project-local)
-
-  - `cn` utility for className composition
+    - `cn` utility for className composition
 
 - ARC-003: Interactions: Exports `metadata` and `viewport` for Next.js to use. Renders children inside a `<main>` placed under the TopNavigation.
 
@@ -59,11 +58,11 @@ graph TD
 
 ## 3. Interface Documentation
 
-| Export / Prop | Purpose | Type | Notes |
-|---------------|---------|------|-------|
-| `metadata` | Application metadata used by Next.js | `Metadata` | Title, description and SEO fields. |
-| `viewport` | Viewport configuration used by Next.js | `Viewport` | Theme color and color scheme hints. |
-| `children` | Page content | `React.ReactNode` | Rendered inside `<main>` |
+| Export / Prop | Purpose                                | Type              | Notes                               |
+| ------------- | -------------------------------------- | ----------------- | ----------------------------------- |
+| `metadata`    | Application metadata used by Next.js   | `Metadata`        | Title, description and SEO fields.  |
+| `viewport`    | Viewport configuration used by Next.js | `Viewport`        | Theme color and color scheme hints. |
+| `children`    | Page content                           | `React.ReactNode` | Rendered inside `<main>`            |
 
 ## 4. Implementation Details
 
@@ -91,11 +90,11 @@ This file is a Next.js `app` layout; it's automatically used by the framework wh
 ## 7. Reference Information
 
 - REF-001: Related components
-  - `components/TopNavigation.tsx`
-  - `components/ThemeProvider.tsx`
+    - `components/TopNavigation.tsx`
+    - `components/ThemeProvider.tsx`
 
 - REF-002: Testing
-  - Validate rendering of layout and presence of TopNavigation in integration tests.
+    - Validate rendering of layout and presence of TopNavigation in integration tests.
 
 - REF-003: Change history
-  - 1.0 (2025-09-23) - Initial documentation
+    - 1.0 (2025-09-23) - Initial documentation

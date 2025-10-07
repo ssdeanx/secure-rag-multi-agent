@@ -20,23 +20,22 @@ A responsive layout component for documentation pages, featuring a sticky sideba
 
 - OVR-002: Scope: Renders header (branding, breadcrumb, badges), sidebar (collapsible sections), and main card for children. Handles pathname for active states. Excludes content generation.
 
-- OVR-003: Context: Wraps dynamic docs pages (/docs/*) to create a consistent, navigable experience.
+- OVR-003: Context: Wraps dynamic docs pages (/docs/\*) to create a consistent, navigable experience.
 
 ## 2. Architecture Section
 
 - ARC-001: Design patterns: Layout composition with conditional rendering (lg:grid-cols-4).
 
 - ARC-002: Dependencies:
+    - React (usePathname)
 
-  - React (usePathname)
+    - next/navigation (Link, usePathname)
 
-  - next/navigation (Link, usePathname)
+    - shadcn/ui (Card, Button, Badge, Separator, Collapsible, ScrollArea, HoverCard, Breadcrumb)
 
-  - shadcn/ui (Card, Button, Badge, Separator, Collapsible, ScrollArea, HoverCard, Breadcrumb)
+    - lucide-react (icons: BookOpen, Play, etc.)
 
-  - lucide-react (icons: BookOpen, Play, etc.)
-
-  - cn utils (class merging)
+    - cn utils (class merging)
 
 - ARC-003: Interactions: Sticky sidebar; collapsible sections; active link highlighting via pathname.
 
@@ -86,15 +85,15 @@ graph TD
 
 - INT-001: Simple props interface.
 
-| Prop | Purpose | Type | Required | Usage Notes |
-|------|---------|------|----------|-------------|
-| `children` | Main content | `React.ReactNode` | Yes | MDX/docs content |
+| Prop       | Purpose      | Type              | Required | Usage Notes      |
+| ---------- | ------------ | ----------------- | -------- | ---------------- |
+| `children` | Main content | `React.ReactNode` | Yes      | MDX/docs content |
 
 ### Prop Types
 
 ```tsx
 interface DocsLayoutProps {
-  children: React.ReactNode;
+    children: React.ReactNode
 }
 ```
 
@@ -123,10 +122,10 @@ Edge cases and considerations:
 ### Basic Usage (in docs page)
 
 ```tsx
-import { DocsLayout } from '@/components/docs/DocsLayout';
+import { DocsLayout } from '@/components/docs/DocsLayout'
 
 export default function DocsPage({ children }) {
-  return <DocsLayout>{children}</DocsLayout>;
+    return <DocsLayout>{children}</DocsLayout>
 }
 ```
 
@@ -134,16 +133,16 @@ export default function DocsPage({ children }) {
 
 ```tsx
 // app/docs/[slug]/page.tsx
-import { DocsLayout } from '@/components/docs/DocsLayout';
+import { DocsLayout } from '@/components/docs/DocsLayout'
 
 export default function SlugPage({ params, children }) {
-  return (
-    <DocsLayout>
-      {/* MDX content */}
-      <h1>{params.slug}</h1>
-      {children}
-    </DocsLayout>
-  );
+    return (
+        <DocsLayout>
+            {/* MDX content */}
+            <h1>{params.slug}</h1>
+            {children}
+        </DocsLayout>
+    )
 }
 ```
 

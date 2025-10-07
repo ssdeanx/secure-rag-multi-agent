@@ -1,20 +1,21 @@
-import { Agent } from '@mastra/core/agent';
-import { productRoadmapOutputSchema } from "../schemas/agent-schemas";
-import { createGraphRAGTool, createVectorQueryTool } from "@mastra/rag";
-import { google } from '@ai-sdk/google';
-import { log } from "../config/logger";
-import { extractLearningsTool } from '../tools/extractLearningsTool';
-import { editorTool } from '../tools/editor-agent-tool';
-import { copywriterTool } from '../tools/copywriter-agent-tool';
-import { evaluateResultTool } from '../tools/evaluateResultTool';
-import { pgMemory } from '../config/pg-storage';
-import { googleAI } from '../config/google';
+import { Agent } from '@mastra/core/agent'
+import { productRoadmapOutputSchema } from '../schemas/agent-schemas'
+import { createGraphRAGTool, createVectorQueryTool } from '@mastra/rag'
+import { google } from '@ai-sdk/google'
+import { log } from '../config/logger'
+import { extractLearningsTool } from '../tools/extractLearningsTool'
+import { editorTool } from '../tools/editor-agent-tool'
+import { copywriterTool } from '../tools/copywriter-agent-tool'
+import { evaluateResultTool } from '../tools/evaluateResultTool'
+import { pgMemory } from '../config/pg-storage'
+import { googleAI } from '../config/google'
 
 export const productRoadmapAgent = new Agent({
-  id: 'productRoadmap',
-  name: 'Product Roadmap Agent',
-  description: 'Manages the product roadmap for the Cedar project, including features, priorities, and requests with enhanced content generation capabilities.',
-  instructions: `
+    id: 'productRoadmap',
+    name: 'Product Roadmap Agent',
+    description:
+        'Manages the product roadmap for the Cedar project, including features, priorities, and requests with enhanced content generation capabilities.',
+    instructions: `
 <role>
 You are a helpful product roadmap assistant for the Cedar open source project. Cedar is a JavaScript library that provides tools for building interactive AI applications.
 </role>
@@ -136,19 +137,18 @@ When generating content, include the generated content in your response and indi
 }
 </decision_logic>
   `,
-  model: googleAI,
-  memory: pgMemory,
-  tools: {
-    extractLearningsTool,
-    editorTool,
-    copywriterTool,
-    evaluateResultTool,
-  },
-  evals: {
-    // Add any evaluation metrics if needed
-  },
-  scorers: {
-  },
-  workflows: {},
-});
-export { productRoadmapOutputSchema };
+    model: googleAI,
+    memory: pgMemory,
+    tools: {
+        extractLearningsTool,
+        editorTool,
+        copywriterTool,
+        evaluateResultTool,
+    },
+    evals: {
+        // Add any evaluation metrics if needed
+    },
+    scorers: {},
+    workflows: {},
+})
+export { productRoadmapOutputSchema }

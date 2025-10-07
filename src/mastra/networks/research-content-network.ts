@@ -16,18 +16,18 @@
  * - Iterative content creation with evaluation and refinement
  */
 
-import { Agent } from '@mastra/core/agent';
-import { google } from '@ai-sdk/google';
-import { researchAgent } from '../agents/researchAgent';
-import { learningExtractionAgent } from '../agents/learningExtractionAgent';
-import { copywriterAgent } from '../agents/copywriterAgent';
-import { editorAgent } from '../agents/editorAgent';
-import { evaluationAgent } from '../agents/evaluationAgent';
-import { reportAgent } from '../agents/reportAgent';
-import { researchWorkflow } from '../workflows/researchWorkflow';
-import { generateReportWorkflow } from '../workflows/generateReportWorkflow';
-import { contentGenerationWorkflow } from '../workflows/contentGenerationWorkflow';
-import { pgMemory } from "../config/pg-storage";
+import { Agent } from '@mastra/core/agent'
+import { google } from '@ai-sdk/google'
+import { researchAgent } from '../agents/researchAgent'
+import { learningExtractionAgent } from '../agents/learningExtractionAgent'
+import { copywriterAgent } from '../agents/copywriterAgent'
+import { editorAgent } from '../agents/editorAgent'
+import { evaluationAgent } from '../agents/evaluationAgent'
+import { reportAgent } from '../agents/reportAgent'
+import { researchWorkflow } from '../workflows/researchWorkflow'
+import { generateReportWorkflow } from '../workflows/generateReportWorkflow'
+import { contentGenerationWorkflow } from '../workflows/contentGenerationWorkflow'
+import { pgMemory } from '../config/pg-storage'
 /**
  * Research and Content Network Agent
  *
@@ -48,9 +48,9 @@ import { pgMemory } from "../config/pg-storage";
  */
 
 export const researchContentNetwork = new Agent({
-  id: 'research-content-network',
-  name: 'Research Content Network',
-  instructions: `
+    id: 'research-content-network',
+    name: 'Research Content Network',
+    instructions: `
     A multi-agent network for comprehensive research and content generation.
 
     Capabilities:
@@ -66,29 +66,29 @@ export const researchContentNetwork = new Agent({
     - Iteratively improve content quality through evaluation
     - Extract patterns and insights from complex information
   `,
-  model: google('gemini-2.5-flash-preview-09-2025'),
+    model: google('gemini-2.5-flash-preview-09-2025'),
 
-  // Specialized agents for different tasks
-  agents: {
-    research: researchAgent,
-    learning: learningExtractionAgent,
-    copywriter: copywriterAgent,
-    editor: editorAgent,
-    evaluation: evaluationAgent,
-    report: reportAgent,
-  },
+    // Specialized agents for different tasks
+    agents: {
+        research: researchAgent,
+        learning: learningExtractionAgent,
+        copywriter: copywriterAgent,
+        editor: editorAgent,
+        evaluation: evaluationAgent,
+        report: reportAgent,
+    },
 
-  // Workflows for complex, multi-step processes
-  workflows: {
-    'research-workflow': researchWorkflow,
-    'generate-report': generateReportWorkflow,
-    'content-generation': contentGenerationWorkflow,
-  },
+    // Workflows for complex, multi-step processes
+    workflows: {
+        'research-workflow': researchWorkflow,
+        'generate-report': generateReportWorkflow,
+        'content-generation': contentGenerationWorkflow,
+    },
 
-  // Memory is REQUIRED for .network() method
-  // It stores task history and enables decision-making
-  memory: pgMemory,
-});
+    // Memory is REQUIRED for .network() method
+    // It stores task history and enables decision-making
+    memory: pgMemory,
+})
 
 /**
  * Example Usage:

@@ -54,15 +54,14 @@ Unit tests for token verification behavior and integration tests for protected e
 
 ### Validation Steps
 
-| ID | Description | Status | Updated | Notes |
-|----|-------------|--------|---------|-------|
-|1.1| Middleware implementation | Not Started | - | - |
-|1.2| Unit tests | Not Started | - | - |
-|1.3| Integration tests | Not Started | - | - |
+| ID  | Description               | Status      | Updated | Notes |
+| --- | ------------------------- | ----------- | ------- | ----- |
+| 1.1 | Middleware implementation | Not Started | -       | -     |
+| 1.2 | Unit tests                | Not Started | -       | -     |
+| 1.3 | Integration tests         | Not Started | -       | -     |
 
 ## Requirement Log
 
 ### 2025-10-06 15:05
+
 - Requirement created to formalize JWT authentication behavior.
-
-

@@ -17,14 +17,14 @@
  * - Compliance-aware response generation
  */
 
-import { Agent } from '@mastra/core/agent';
-import { google } from '@ai-sdk/google';
-import { retrieveAgent } from '../agents/retrieve.agent';
-import { rerankAgent } from '../agents/rerank.agent';
-import { answererAgent } from '../agents/answerer.agent';
-import { verifierAgent } from '../agents/verifier.agent';
-import { governedRagAnswer } from '../workflows/governed-rag-answer.workflow';
-import { pgMemory } from "../config/pg-storage";
+import { Agent } from '@mastra/core/agent'
+import { google } from '@ai-sdk/google'
+import { retrieveAgent } from '../agents/retrieve.agent'
+import { rerankAgent } from '../agents/rerank.agent'
+import { answererAgent } from '../agents/answerer.agent'
+import { verifierAgent } from '../agents/verifier.agent'
+import { governedRagAnswer } from '../workflows/governed-rag-answer.workflow'
+import { pgMemory } from '../config/pg-storage'
 
 /**
  * Governed RAG Network
@@ -46,9 +46,9 @@ import { pgMemory } from "../config/pg-storage";
  * The network ensures zero-trust security by validating access at every stage.
  */
 export const governedRagNetwork = new Agent({
-  id: 'governed-rag-network',
-  name: 'Governed RAG Network',
-  instructions: `
+    id: 'governed-rag-network',
+    name: 'Governed RAG Network',
+    instructions: `
     A secure RAG system with multi-agent orchestration and role-based access control.
     
     Capabilities:
@@ -69,24 +69,24 @@ export const governedRagNetwork = new Agent({
     - Compliance-aware response generation
     - Audit trails for regulatory requirements
   `,
-  model: google('gemini-2.5-flash-preview-09-2025'),
+    model: google('gemini-2.5-flash-preview-09-2025'),
 
-  // Security pipeline agents
-  agents: {
-    retrieve: retrieveAgent,
-    rerank: rerankAgent,
-    answerer: answererAgent,
-    verifier: verifierAgent,
-  },
+    // Security pipeline agents
+    agents: {
+        retrieve: retrieveAgent,
+        rerank: rerankAgent,
+        answerer: answererAgent,
+        verifier: verifierAgent,
+    },
 
-  // Complete RAG workflow
-  workflows: {
-    'governed-rag-answer': governedRagAnswer,
-  },
+    // Complete RAG workflow
+    workflows: {
+        'governed-rag-answer': governedRagAnswer,
+    },
 
-  // Memory for task history and security context
-  memory: pgMemory,
-});
+    // Memory for task history and security context
+    memory: pgMemory,
+})
 
 /**
  * Example Usage:

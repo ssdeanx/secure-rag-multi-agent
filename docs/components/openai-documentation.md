@@ -27,9 +27,8 @@ Configuration module for OpenAI API integration with extended timeouts for reaso
 - ARC-001: Design patterns: Configuration module with environment-driven setup and custom fetch wrapper.
 
 - ARC-002: Dependencies:
-
-  - `@ai-sdk/openai`: createOpenAI
-  - `dotenv`: Environment loading
+    - `@ai-sdk/openai`: createOpenAI
+    - `dotenv`: Environment loading
 
 - ARC-003: Interactions: Loads environment variables, creates providers with custom timeouts, exports configured instances.
 
@@ -69,13 +68,13 @@ graph TD
 
 - INT-001: Exports configuration objects and provider instances.
 
-| Export | Purpose | Type | Usage Notes |
-|--------|---------|------|-------------|
-| `openAIConfig` | Chat model config | `{apiKey, baseURL, model}` | From environment |
-| `openAIProvider` | Chat provider | `OpenAIProvider` | With custom timeouts |
-| `openAIModel` | Default chat model | `OpenAIModel` | Configured model instance |
-| `openAIEmbeddingConfig` | Embedding config | `{apiKey, baseURL}` | Separate API key support |
-| `openAIEmbeddingProvider` | Embedding provider | `OpenAIProvider` | For embedding operations |
+| Export                    | Purpose            | Type                       | Usage Notes               |
+| ------------------------- | ------------------ | -------------------------- | ------------------------- |
+| `openAIConfig`            | Chat model config  | `{apiKey, baseURL, model}` | From environment          |
+| `openAIProvider`          | Chat provider      | `OpenAIProvider`           | With custom timeouts      |
+| `openAIModel`             | Default chat model | `OpenAIModel`              | Configured model instance |
+| `openAIEmbeddingConfig`   | Embedding config   | `{apiKey, baseURL}`        | Separate API key support  |
+| `openAIEmbeddingProvider` | Embedding provider | `OpenAIProvider`           | For embedding operations  |
 
 ## 4. Implementation Details
 
@@ -95,31 +94,31 @@ Corner cases and considerations:
 ### Using chat model
 
 ```ts
-import { openAIModel } from '@/src/mastra/config/openai';
+import { openAIModel } from '@/src/mastra/config/openai'
 
 // Use in agent
 const agent = createAgent({
-  name: 'ChatAgent',
-  model: openAIModel,
-  // ...
-});
+    name: 'ChatAgent',
+    model: openAIModel,
+    // ...
+})
 ```
 
 ### Using embedding provider
 
 ```ts
-import { openAIEmbeddingProvider } from '@/src/mastra/config/openai';
+import { openAIEmbeddingProvider } from '@/src/mastra/config/openai'
 
-const embeddingModel = openAIEmbeddingProvider('text-embedding-3-small');
+const embeddingModel = openAIEmbeddingProvider('text-embedding-3-small')
 // Use for document embedding
 ```
 
 ### Custom model with provider
 
 ```ts
-import { openAIProvider } from '@/src/mastra/config/openai';
+import { openAIProvider } from '@/src/mastra/config/openai'
 
-const customModel = openAIProvider('gpt-4-turbo-preview');
+const customModel = openAIProvider('gpt-4-turbo-preview')
 // Use for specific tasks
 ```
 
@@ -148,26 +147,26 @@ OPENAI_EMBEDDING_API_KEY=sk-...
 ## 7. Reference Information
 
 - REF-001: Dependencies (approximate):
-  - @ai-sdk/openai (^1.0.0)
-  - dotenv (^16.0.0)
+    - @ai-sdk/openai (^1.0.0)
+    - dotenv (^16.0.0)
 
 - REF-002: Configuration
-  - OPENAI_API_KEY (required)
-  - OPENAI_BASE_URL (optional)
-  - OPENAI_MODEL (optional, default: gpt-4o-mini)
-  - OPENAI_EMBEDDING_API_KEY (optional)
+    - OPENAI_API_KEY (required)
+    - OPENAI_BASE_URL (optional)
+    - OPENAI_MODEL (optional, default: gpt-4o-mini)
+    - OPENAI_EMBEDDING_API_KEY (optional)
 
 - REF-003: Testing guidelines
-  - Mock environment variables.
-  - Test timeout behavior with slow responses.
+    - Mock environment variables.
+    - Test timeout behavior with slow responses.
 
 - REF-004: Troubleshooting
-  - Issue: Timeout errors — check network or increase timeout.
-  - Issue: Auth errors — verify API key validity.
+    - Issue: Timeout errors — check network or increase timeout.
+    - Issue: Auth errors — verify API key validity.
 
 - REF-005: Related docs
-  - OpenAI API documentation
-  - Other AI config files (vertex.ts, google.ts, etc.)
+    - OpenAI API documentation
+    - Other AI config files (vertex.ts, google.ts, etc.)
 
 - REF-006: Change history
-  - 1.0 (2025-09-23) - Initial documentation generated
+    - 1.0 (2025-09-23) - Initial documentation generated

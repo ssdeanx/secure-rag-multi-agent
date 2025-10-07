@@ -27,14 +27,13 @@ A React hook that subscribes application state (selected nodes and all nodes) to
 - ARC-001: Design patterns: Hook composition pattern. Leverages Cedar OS's subscription mechanism to bridge React state with agent context without tight coupling.
 
 - ARC-002: Dependencies:
+    - React (for hook definition)
 
-  - React (for hook definition)
+    - reactflow (Node<FeatureNodeData> type)
 
-  - reactflow (Node<FeatureNodeData> type)
+    - cedar-os (useSubscribeStateToAgentContext hook, getCedarState)
 
-  - cedar-os (useSubscribeStateToAgentContext hook, getCedarState)
-
-  - lucide-react (Box icon for visual representation)
+    - lucide-react (Box icon for visual representation)
 
 - ARC-003: Interactions: Subscribes to state changes and pushes formatted data to agent context. Agents receive this as structured input during generation, influencing responses based on current roadmap state.
 
@@ -87,15 +86,15 @@ graph TD
 
 - INT-001: Public interface is the hook itself—no props, called unconditionally in components.
 
-| Hook/Function | Purpose | Parameters | Return Type | Usage Notes |
-|---------------|---------|------------|-------------|-------------|
-| `useRoadmapContext()` | Subscribes roadmap state to agent context | None | `void` | Call at top-level in Cedar OS page/component. Requires Cedar OS provider in ancestor. |
+| Hook/Function         | Purpose                                   | Parameters | Return Type | Usage Notes                                                                           |
+| --------------------- | ----------------------------------------- | ---------- | ----------- | ------------------------------------------------------------------------------------- |
+| `useRoadmapContext()` | Subscribes roadmap state to agent context | None       | `void`      | Call at top-level in Cedar OS page/component. Requires Cedar OS provider in ancestor. |
 
 ### Hook Usage
 
 ```ts
 // No parameters; called directly
-useRoadmapContext();
+useRoadmapContext()
 ```
 
 Notes:
@@ -123,17 +122,13 @@ Corner cases and considerations:
 ### Basic Usage (in Cedar OS page)
 
 ```tsx
-import { useRoadmapContext } from './context';
+import { useRoadmapContext } from './context'
 
 export default function CedarOSPage() {
-  // Other hooks (state, mentions)...
-  useRoadmapContext(); // Subscribe state to agent context
+    // Other hooks (state, mentions)...
+    useRoadmapContext() // Subscribe state to agent context
 
-  return (
-    <div>
-      {/* Roadmap canvas and chat */}
-    </div>
-  );
+    return <div>{/* Roadmap canvas and chat */}</div>
 }
 ```
 
@@ -160,16 +155,18 @@ sequenceDiagram
 ```tsx
 // Extend formatter for richer context
 useSubscribeStateToAgentContext(
-  'selectedNodes',
-  (nodes) => ({
-    selectedFeatures: nodes.map(node => ({
-      ...node.data,
-      position: node.position, // Include layout if relevant
-      connections: edges.filter(e => e.source === node.id || e.target === node.id).length
-    }))
-  }),
-  { icon: BoxIcon, color: '#C06520' }
-);
+    'selectedNodes',
+    (nodes) => ({
+        selectedFeatures: nodes.map((node) => ({
+            ...node.data,
+            position: node.position, // Include layout if relevant
+            connections: edges.filter(
+                (e) => e.source === node.id || e.target === node.id
+            ).length,
+        })),
+    }),
+    { icon: BoxIcon, color: '#C06520' }
+)
 ```
 
 Best practices:
@@ -195,39 +192,34 @@ Best practices:
 ## 7. Reference Information
 
 - REF-001: Dependencies (approximate):
+    - react (^18) - hook runtime
 
-  - react (^18) - hook runtime
+    - cedar-os (latest) - subscription mechanism
 
-  - cedar-os (latest) - subscription mechanism
+    - reactflow (^11) - Node<FeatureNodeData> type
 
-  - reactflow (^11) - Node<FeatureNodeData> type
-
-  - lucide-react (^0.300) - Box icon
+    - lucide-react (^0.300) - Box icon
 
 - REF-002: Configuration: Requires CedarProvider in app root. No additional setup beyond calling the hook.
 
 - REF-003: Testing guidelines:
+    - Unit test: Mock useSubscribeStateToAgentContext and verify calls with correct keys/formatters.
 
-  - Unit test: Mock useSubscribeStateToAgentContext and verify calls with correct keys/formatters.
-
-  - Integration: Render in test env with mock state; assert agent context receives formatted data.
+    - Integration: Render in test env with mock state; assert agent context receives formatted data.
 
 - REF-004: Troubleshooting
+    - Issue: Context not updating in agent — ensure state is registered (useRoadmapState) and cedar-os provider wraps component.
 
-  - Issue: Context not updating in agent — ensure state is registered (useRoadmapState) and cedar-os provider wraps component.
+    - Issue: Large payloads — optimize formatters to include only essential fields.
 
-  - Issue: Large payloads — optimize formatters to include only essential fields.
-
-  - Issue: Icons not rendering — verify lucide-react import and theme compatibility.
+    - Issue: Icons not rendering — verify lucide-react import and theme compatibility.
 
 - REF-005: Related docs
+    - `app/cedar-os/state.ts` — State registration (useRoadmapState)
 
-  - `app/cedar-os/state.ts` — State registration (useRoadmapState)
+    - `app/cedar-os/mentions.ts` — Mention providers (useRoadmapMentions)
 
-  - `app/cedar-os/mentions.ts` — Mention providers (useRoadmapMentions)
-
-  - `cedar/FeatureNode.tsx` — FeatureNodeData type definition
+    - `cedar/FeatureNode.tsx` — FeatureNodeData type definition
 
 - REF-006: Change history
-
-  - 1.0 (2025-09-23) - Initial documentation generated
+    - 1.0 (2025-09-23) - Initial documentation generated

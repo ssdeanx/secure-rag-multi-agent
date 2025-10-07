@@ -40,9 +40,9 @@ This is a Next.js page component; no external usage needed. Edit the child compo
 ## 5. Reference Information
 
 - REF-001: Child components to review for details:
-  - `components/landing/InteractiveFeatures.tsx`
-  - `components/landing/NewsletterForm.tsx`
-  - `components/landing/CTA.tsx`
+    - `components/landing/InteractiveFeatures.tsx`
+    - `components/landing/NewsletterForm.tsx`
+    - `components/landing/CTA.tsx`
 
 - REF-002: Change history
-  - 1.0 (2025-09-23) - Initial documentation
+    - 1.0 (2025-09-23) - Initial documentation

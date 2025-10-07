@@ -17,9 +17,9 @@ This file documents the small presentational components used on the site landing
 - Purpose: Showcase a grid of product features with icons and animated entrance.
 
 - Key details:
-  - Uses `framer-motion` for reveal animations.
-  - Renders a 3-column responsive grid of `Card` components.
-  - Self-contained and purely presentational.
+    - Uses `framer-motion` for reveal animations.
+    - Renders a 3-column responsive grid of `Card` components.
+    - Self-contained and purely presentational.
 
 - Props: none.
 
@@ -30,22 +30,22 @@ This file documents the small presentational components used on the site landing
 - Purpose: Collect user email for newsletter subscription.
 
 - Key details:
-  - Client-side component with local state for `email`, `submitted`, and `error`.
-  - Validates email client-side with a simple regex; posts to `/api/newsletter` on submit.
-  - Displays success and error states.
+    - Client-side component with local state for `email`, `submitted`, and `error`.
+    - Validates email client-side with a simple regex; posts to `/api/newsletter` on submit.
+    - Displays success and error states.
 
 - Props: none.
 
 - Testing notes:
-  - Test validation logic, submission flow (mocking fetch), and UI transitions for submitted state.
+    - Test validation logic, submission flow (mocking fetch), and UI transitions for submitted state.
 
 ## 3. CTA (Call to Action)
 
 - Purpose: Render a centered call-to-action card with primary CTAs (Try Demo / Read Docs).
 
 - Key details:
-  - Uses `framer-motion` for entrance animation and `Card`/`Button` UI primitives.
-  - Buttons use `asChild` to render anchor links under the project's button primitive.
+    - Uses `framer-motion` for entrance animation and `Card`/`Button` UI primitives.
+    - Buttons use `asChild` to render anchor links under the project's button primitive.
 
 - Props: none.
 

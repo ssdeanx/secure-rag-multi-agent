@@ -27,14 +27,13 @@ A React hook that registers roadmap state (nodes, edges, currentDate) with Cedar
 - ARC-001: Design patterns: State adapter/bridge. Maps React Flow state to Cedar's registration API with custom executors.
 
 - ARC-002: Dependencies:
+    - React (useState, useEffect)
 
-  - React (useState, useEffect)
+    - reactflow (Node, Edge, FeatureNodeData)
 
-  - reactflow (Node, Edge, FeatureNodeData)
+    - cedar-os (useCedarState, useRegisterState)
 
-  - cedar-os (useCedarState, useRegisterState)
-
-  - uuid (v4 for IDs)
+    - uuid (v4 for IDs)
 
 - ARC-003: Interactions: Registers state with setters; agents call via actions. useEffect logs date changes.
 
@@ -89,26 +88,26 @@ graph TD
 
 - INT-001: Hook params from React Flow.
 
-| Parameter | Purpose | Type | Required | Usage Notes |
-|-----------|---------|------|----------|-------------|
-| `nodes` | Roadmap nodes | `Node<FeatureNodeData>[]` | Yes | Current state |
-| `setNodes` | Update nodes | `Dispatch<SetStateAction<Node<FeatureNodeData>[]>>` | Yes | Setter |
-| `edges` | Roadmap edges | `Edge[]` | Yes | Current state |
-| `setEdges` | Update edges | `Dispatch<SetStateAction<Edge[]>>` | Yes | Setter |
+| Parameter  | Purpose       | Type                                                | Required | Usage Notes   |
+| ---------- | ------------- | --------------------------------------------------- | -------- | ------------- |
+| `nodes`    | Roadmap nodes | `Node<FeatureNodeData>[]`                           | Yes      | Current state |
+| `setNodes` | Update nodes  | `Dispatch<SetStateAction<Node<FeatureNodeData>[]>>` | Yes      | Setter        |
+| `edges`    | Roadmap edges | `Edge[]`                                            | Yes      | Current state |
+| `setEdges` | Update edges  | `Dispatch<SetStateAction<Edge[]>>`                  | Yes      | Setter        |
 
 ### Hook Usage
 
 ```tsx
-import { useRoadmapState } from './state';
-import { useNodesState, useEdgesState } from 'reactflow';
+import { useRoadmapState } from './state'
+import { useNodesState, useEdgesState } from 'reactflow'
 
 function App() {
-  const [nodes, setNodes] = useNodesState(initialNodes);
-  const [edges, setEdges] = useEdgesState(initialEdges);
+    const [nodes, setNodes] = useNodesState(initialNodes)
+    const [edges, setEdges] = useEdgesState(initialEdges)
 
-  useRoadmapState(nodes, setNodes, edges, setEdges);
+    useRoadmapState(nodes, setNodes, edges, setEdges)
 
-  // Agent can now call addNode etc.
+    // Agent can now call addNode etc.
 }
 ```
 
@@ -140,27 +139,29 @@ Corner cases and considerations:
 
 ```tsx
 // In Cedar page
-const [nodes, setNodes] = useNodesState([]);
-const [edges, setEdges] = useEdgesState([]);
+const [nodes, setNodes] = useNodesState([])
+const [edges, setEdges] = useEdgesState([])
 
-useRoadmapState(nodes, setNodes, edges, setEdges);
+useRoadmapState(nodes, setNodes, edges, setEdges)
 ```
 
 ### Agent Action Example (received by agent)
 
 ```json
 {
-  "type": "setState",
-  "stateKey": "nodes",
-  "setterKey": "addNode",
-  "args": [{
-    "data": {
-      "title": "New Feature",
-      "description": "AI Integration",
-      "status": "planned"
-    }
-  }],
-  "content": "Added new AI feature to roadmap"
+    "type": "setState",
+    "stateKey": "nodes",
+    "setterKey": "addNode",
+    "args": [
+        {
+            "data": {
+                "title": "New Feature",
+                "description": "AI Integration",
+                "status": "planned"
+            }
+        }
+    ],
+    "content": "Added new AI feature to roadmap"
 }
 ```
 
@@ -204,25 +205,21 @@ Best practices:
 ## 7. Reference Information
 
 - REF-001: Dependencies:
-
-  - react (^18), reactflow (^11), cedar-os (latest), uuid (^9)
+    - react (^18), reactflow (^11), cedar-os (latest), uuid (^9)
 
 - REF-002: Configuration: Initial date string; random pos in [100-500,100-400].
 
 - REF-003: Testing: Mock setters; assert state updates correctly.
 
 - REF-004: Troubleshooting
+    - No updates: Verify registration before agent calls.
 
-  - No updates: Verify registration before agent calls.
-
-  - Random pos off-screen: Adjust ranges based on canvas size.
+    - Random pos off-screen: Adjust ranges based on canvas size.
 
 - REF-005: Related docs
+    - cedar/FeatureNode.tsx (data type)
 
-  - cedar/FeatureNode.tsx (data type)
-
-  - app/cedar-os/hooks.ts (composition)
+    - app/cedar-os/hooks.ts (composition)
 
 - REF-006: Change history
-
-  - 1.0 (2025-09-23) - Initial documentation
+    - 1.0 (2025-09-23) - Initial documentation

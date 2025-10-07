@@ -1,11 +1,18 @@
 ---
-title: "Starter Agent Tool - Technical Documentation"
-component_path: "src/mastra/tools/starter-agent-tool.ts"
-version: "1.0"
-date_created: "2025-09-23"
-last_updated: "2025-09-23"
-owner: "AI Team"
-tags: ["tool", "agent-dispatch", "dynamic-invocation", "orchestration", "multi-agent"]
+title: 'Starter Agent Tool - Technical Documentation'
+component_path: 'src/mastra/tools/starter-agent-tool.ts'
+version: '1.0'
+date_created: '2025-09-23'
+last_updated: '2025-09-23'
+owner: 'AI Team'
+tags:
+    [
+        'tool',
+        'agent-dispatch',
+        'dynamic-invocation',
+        'orchestration',
+        'multi-agent',
+    ]
 ---
 
 # Starter Agent Tool Documentation
@@ -142,37 +149,37 @@ graph TB
 
 ### Input Schema
 
-| Property | Type | Required | Description |
-|----------|------|----------|-------------|
-| `agentType` | `enum` | Yes | Type of agent to invoke (research, copywriter, editor, assistant, productRoadmap) |
-| `task` | `string` | Yes | Specific task or request description |
-| `context` | `string` | No | Additional background information |
-| `parameters` | `any` | No | Agent-specific configuration parameters |
-| `expectedOutput` | `string` | No | Description of desired output format |
+| Property         | Type     | Required | Description                                                                       |
+| ---------------- | -------- | -------- | --------------------------------------------------------------------------------- |
+| `agentType`      | `enum`   | Yes      | Type of agent to invoke (research, copywriter, editor, assistant, productRoadmap) |
+| `task`           | `string` | Yes      | Specific task or request description                                              |
+| `context`        | `string` | No       | Additional background information                                                 |
+| `parameters`     | `any`    | No       | Agent-specific configuration parameters                                           |
+| `expectedOutput` | `string` | No       | Description of desired output format                                              |
 
 ### Output Schema
 
-| Property | Type | Description |
-|----------|------|-------------|
-| `agentCalled` | `string` | Name/ID of the invoked agent |
-| `result` | `string` | Generated result from the agent |
-| `success` | `boolean` | Whether the agent call succeeded |
-| `metadata` | `object` | Additional execution metadata |
+| Property      | Type      | Description                      |
+| ------------- | --------- | -------------------------------- |
+| `agentCalled` | `string`  | Name/ID of the invoked agent     |
+| `result`      | `string`  | Generated result from the agent  |
+| `success`     | `boolean` | Whether the agent call succeeded |
+| `metadata`    | `object`  | Additional execution metadata    |
 
 ### Agent Types
 
-| Agent Type | Description | Use Case |
-|------------|-------------|----------|
-| `research` | Research and information gathering | Data analysis, fact-finding, investigation |
-| `copywriter` | Content creation and writing | Marketing copy, articles, creative writing |
-| `editor` | Content editing and improvement | Proofreading, content enhancement, feedback |
-| `assistant` | General assistance | Task help, guidance, general queries |
-| `productRoadmap` | Product planning and roadmapping | Feature planning, product strategy |
+| Agent Type       | Description                        | Use Case                                    |
+| ---------------- | ---------------------------------- | ------------------------------------------- |
+| `research`       | Research and information gathering | Data analysis, fact-finding, investigation  |
+| `copywriter`     | Content creation and writing       | Marketing copy, articles, creative writing  |
+| `editor`         | Content editing and improvement    | Proofreading, content enhancement, feedback |
+| `assistant`      | General assistance                 | Task help, guidance, general queries        |
+| `productRoadmap` | Product planning and roadmapping   | Feature planning, product strategy          |
 
 ### Public Methods
 
-| Method | Parameters | Return Type | Description |
-|--------|------------|-------------|-------------|
+| Method      | Parameters                      | Return Type                      | Description              |
+| ----------- | ------------------------------- | -------------------------------- | ------------------------ |
 | `execute()` | `context: AgentInvocationInput` | `Promise<AgentInvocationOutput>` | Execute agent invocation |
 
 ## 4. Usage Examples
@@ -180,18 +187,18 @@ graph TB
 ### Basic Agent Invocation
 
 ```typescript
-import { starterAgentTool } from './src/mastra/tools/starter-agent-tool';
+import { starterAgentTool } from './src/mastra/tools/starter-agent-tool'
 
 const researchResult = await starterAgentTool.execute({
-  context: {
-    agentType: "research",
-    task: "Analyze the impact of renewable energy on global carbon emissions",
-    context: "Focus on solar and wind power technologies",
-    expectedOutput: "Summary with key statistics and trends"
-  },
-  mastra: mastraInstance,
-  tracingContext: tracingContext
-});
+    context: {
+        agentType: 'research',
+        task: 'Analyze the impact of renewable energy on global carbon emissions',
+        context: 'Focus on solar and wind power technologies',
+        expectedOutput: 'Summary with key statistics and trends',
+    },
+    mastra: mastraInstance,
+    tracingContext: tracingContext,
+})
 
 // Result:
 // {
@@ -212,61 +219,62 @@ const researchResult = await starterAgentTool.execute({
 ```typescript
 // Create marketing copy
 const copyResult = await starterAgentTool.execute({
-  context: {
-    agentType: "copywriter",
-    task: "Write a product description for our new AI assistant",
-    context: "Target audience: small business owners, tone: professional yet approachable",
-    parameters: {
-      wordCount: 150,
-      includeCallToAction: true
-    }
-  },
-  mastra: mastraInstance,
-  tracingContext: tracingContext
-});
+    context: {
+        agentType: 'copywriter',
+        task: 'Write a product description for our new AI assistant',
+        context:
+            'Target audience: small business owners, tone: professional yet approachable',
+        parameters: {
+            wordCount: 150,
+            includeCallToAction: true,
+        },
+    },
+    mastra: mastraInstance,
+    tracingContext: tracingContext,
+})
 
 // Edit the content
 const editResult = await starterAgentTool.execute({
-  context: {
-    agentType: "editor",
-    task: "Review and improve this product description",
-    context: copyResult.result,
-    expectedOutput: "Polished, error-free version with improved clarity"
-  },
-  mastra: mastraInstance,
-  tracingContext: tracingContext
-});
+    context: {
+        agentType: 'editor',
+        task: 'Review and improve this product description',
+        context: copyResult.result,
+        expectedOutput: 'Polished, error-free version with improved clarity',
+    },
+    mastra: mastraInstance,
+    tracingContext: tracingContext,
+})
 ```
 
 ### Multi-Agent Research Pipeline
 
 ```typescript
 const researchPipeline = [
-  {
-    agentType: "research" as const,
-    task: "Gather data on electric vehicle market trends",
-    context: "Focus on 2024-2025 projections"
-  },
-  {
-    agentType: "copywriter" as const,
-    task: "Create a market analysis report",
-    context: "Use the research data to create an executive summary"
-  },
-  {
-    agentType: "editor" as const,
-    task: "Polish the market analysis report",
-    context: "Ensure professional tone and accurate data presentation"
-  }
-];
+    {
+        agentType: 'research' as const,
+        task: 'Gather data on electric vehicle market trends',
+        context: 'Focus on 2024-2025 projections',
+    },
+    {
+        agentType: 'copywriter' as const,
+        task: 'Create a market analysis report',
+        context: 'Use the research data to create an executive summary',
+    },
+    {
+        agentType: 'editor' as const,
+        task: 'Polish the market analysis report',
+        context: 'Ensure professional tone and accurate data presentation',
+    },
+]
 
-const results = [];
+const results = []
 for (const step of researchPipeline) {
-  const result = await starterAgentTool.execute({
-    context: step,
-    mastra: mastraInstance,
-    tracingContext: tracingContext
-  });
-  results.push(result);
+    const result = await starterAgentTool.execute({
+        context: step,
+        mastra: mastraInstance,
+        tracingContext: tracingContext,
+    })
+    results.push(result)
 }
 ```
 
@@ -274,42 +282,44 @@ for (const step of researchPipeline) {
 
 ```typescript
 const roadmapPlanning = await starterAgentTool.execute({
-  context: {
-    agentType: "productRoadmap",
-    task: "Plan Q4 feature development for our analytics dashboard",
-    context: "Priority features: real-time data visualization, custom reporting, user segmentation",
-    parameters: {
-      timeline: "3 months",
-      teamSize: 5,
-      dependencies: ["data pipeline", "UI framework"]
+    context: {
+        agentType: 'productRoadmap',
+        task: 'Plan Q4 feature development for our analytics dashboard',
+        context:
+            'Priority features: real-time data visualization, custom reporting, user segmentation',
+        parameters: {
+            timeline: '3 months',
+            teamSize: 5,
+            dependencies: ['data pipeline', 'UI framework'],
+        },
+        expectedOutput:
+            'Detailed roadmap with milestones and resource allocation',
     },
-    expectedOutput: "Detailed roadmap with milestones and resource allocation"
-  },
-  mastra: mastraInstance,
-  tracingContext: tracingContext
-});
+    mastra: mastraInstance,
+    tracingContext: tracingContext,
+})
 ```
 
 ### Error Handling
 
 ```typescript
 try {
-  const result = await starterAgentTool.execute({
-    context: {
-      agentType: "unknownAgent", // Invalid agent type
-      task: "Some task"
-    },
-    mastra: mastraInstance,
-    tracingContext: tracingContext
-  });
+    const result = await starterAgentTool.execute({
+        context: {
+            agentType: 'unknownAgent', // Invalid agent type
+            task: 'Some task',
+        },
+        mastra: mastraInstance,
+        tracingContext: tracingContext,
+    })
 
-  if (!result.success) {
-    console.log('Agent invocation failed:', result.result);
-    // Handle failure appropriately
-  }
+    if (!result.success) {
+        console.log('Agent invocation failed:', result.result)
+        // Handle failure appropriately
+    }
 } catch (error) {
-  console.log('Tool execution error:', error);
-  // Handle unexpected errors
+    console.log('Tool execution error:', error)
+    // Handle unexpected errors
 }
 ```
 
@@ -349,17 +359,17 @@ try {
 
 ### Dependencies
 
-| Package | Version | Purpose |
-|---------|---------|---------|
-| `@mastra/core/tools` | ^0.1.0 | Tool framework |
-| `@mastra/core/ai-tracing` | ^0.1.0 | AI tracing integration |
-| `zod` | ^3.22.4 | Schema validation |
+| Package                   | Version | Purpose                |
+| ------------------------- | ------- | ---------------------- |
+| `@mastra/core/tools`      | ^0.1.0  | Tool framework         |
+| `@mastra/core/ai-tracing` | ^0.1.0  | AI tracing integration |
+| `zod`                     | ^3.22.4 | Schema validation      |
 
 ### Environment Variables
 
-| Variable | Required | Default | Description |
-|----------|----------|---------|-------------|
-| None | - | - | Uses Mastra agent configuration |
+| Variable | Required | Default | Description                     |
+| -------- | -------- | ------- | ------------------------------- |
+| None     | -        | -       | Uses Mastra agent configuration |
 
 ### Testing
 
@@ -403,10 +413,10 @@ tail -f logs/starter-agent.log
 
 ### Change History
 
-| Version | Date | Changes |
-|---------|------|---------|
-| 1.0 | 2025-09-23 | Complete multi-agent orchestration with error handling |
-| 0.9 | 2025-09-20 | Added product roadmap agent support |
-| 0.8 | 2025-09-15 | Enhanced prompt building and parameter handling |
-| 0.7 | 2025-09-10 | Basic agent routing functionality |
-| 0.6 | 2025-09-05 | Initial agent mapping and invocation logic |
+| Version | Date       | Changes                                                |
+| ------- | ---------- | ------------------------------------------------------ |
+| 1.0     | 2025-09-23 | Complete multi-agent orchestration with error handling |
+| 0.9     | 2025-09-20 | Added product roadmap agent support                    |
+| 0.8     | 2025-09-15 | Enhanced prompt building and parameter handling        |
+| 0.7     | 2025-09-10 | Basic agent routing functionality                      |
+| 0.6     | 2025-09-05 | Initial agent mapping and invocation logic             |

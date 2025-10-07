@@ -27,9 +27,8 @@ Logging configuration and utility functions for structured logging across the Ma
 - ARC-001: Design patterns: Configuration module with utility functions. Combines Pino for console/file logging with custom file wrapper.
 
 - ARC-002: Dependencies:
-
-  - `@mastra/loggers`: PinoLogger and FileTransport
-  - `node:fs`, `node:path`: File system operations
+    - `@mastra/loggers`: PinoLogger and FileTransport
+    - `node:fs`, `node:path`: File system operations
 
 - ARC-003: Interactions: Functions write to console via Pino and append to workflow.log file. No external services.
 
@@ -75,17 +74,17 @@ graph TD
 
 - INT-001: Exports logger instance and utility functions.
 
-| Export | Purpose | Parameters | Return Type | Usage Notes |
-|--------|---------|------------|-------------|-------------|
-| `log` | Pino logger instance | none | `PinoLogger` | Use for general logging |
-| `logWorkflowStart` | Log workflow start | `workflowId: string, input: Record` | `void` | Logs to console and file |
-| `logWorkflowEnd` | Log workflow completion | `workflowId, output, duration: number` | `void` | Includes duration |
-| `logStepStart` | Log step start | `stepId: string, input: Record` | `void` | For workflow steps |
-| `logStepEnd` | Log step completion | `stepId, output, duration` | `void` | Includes duration |
-| `logToolExecution` | Log tool usage | `toolId, input, output?` | `void` | For Mastra tools |
-| `logAgentActivity` | Log agent actions | `agentId, action, details` | `void` | For agent activities |
-| `logError` | Log errors | `component, error, context?` | `void` | Structured error logging |
-| `logProgress` | Log progress | `message, progress, total` | `void` | With percentage |
+| Export             | Purpose                 | Parameters                             | Return Type  | Usage Notes              |
+| ------------------ | ----------------------- | -------------------------------------- | ------------ | ------------------------ |
+| `log`              | Pino logger instance    | none                                   | `PinoLogger` | Use for general logging  |
+| `logWorkflowStart` | Log workflow start      | `workflowId: string, input: Record`    | `void`       | Logs to console and file |
+| `logWorkflowEnd`   | Log workflow completion | `workflowId, output, duration: number` | `void`       | Includes duration        |
+| `logStepStart`     | Log step start          | `stepId: string, input: Record`        | `void`       | For workflow steps       |
+| `logStepEnd`       | Log step completion     | `stepId, output, duration`             | `void`       | Includes duration        |
+| `logToolExecution` | Log tool usage          | `toolId, input, output?`               | `void`       | For Mastra tools         |
+| `logAgentActivity` | Log agent actions       | `agentId, action, details`             | `void`       | For agent activities     |
+| `logError`         | Log errors              | `component, error, context?`           | `void`       | Structured error logging |
+| `logProgress`      | Log progress            | `message, progress, total`             | `void`       | With percentage          |
 
 ## 4. Implementation Details
 
@@ -105,20 +104,20 @@ Corner cases and considerations:
 ### Basic logging
 
 ```ts
-import { log } from '@/src/mastra/config/logger';
+import { log } from '@/src/mastra/config/logger'
 
-log.info('Application started');
-log.error('Something went wrong', { error: 'details' });
+log.info('Application started')
+log.error('Something went wrong', { error: 'details' })
 ```
 
 ### Workflow logging
 
 ```ts
-import { logWorkflowStart, logWorkflowEnd } from '@/src/mastra/config/logger';
+import { logWorkflowStart, logWorkflowEnd } from '@/src/mastra/config/logger'
 
-logWorkflowStart('rag-workflow', { question: 'What is AI?' });
+logWorkflowStart('rag-workflow', { question: 'What is AI?' })
 // ... workflow execution ...
-logWorkflowEnd('rag-workflow', { answer: '...' }, 1500);
+logWorkflowEnd('rag-workflow', { answer: '...' }, 1500)
 ```
 
 ### Step logging
@@ -134,12 +133,12 @@ logStepEnd('retrieval-step', { results: [...] }, 500);
 ### Error logging
 
 ```ts
-import { logError } from '@/src/mastra/config/logger';
+import { logError } from '@/src/mastra/config/logger'
 
 try {
-  // risky operation
+    // risky operation
 } catch (error) {
-  logError('VectorService', error, { userId: '123' });
+    logError('VectorService', error, { userId: '123' })
 }
 ```
 
@@ -154,23 +153,23 @@ try {
 ## 7. Reference Information
 
 - REF-001: Dependencies (approximate):
-  - @mastra/loggers (^1.0.0)
-  - node:fs, node:path (built-in)
+    - @mastra/loggers (^1.0.0)
+    - node:fs, node:path (built-in)
 
 - REF-002: Configuration
-  - Log level set to 'info'; modify in Pino config.
-  - Log directory: 'logs' relative to cwd.
+    - Log level set to 'info'; modify in Pino config.
+    - Log directory: 'logs' relative to cwd.
 
 - REF-003: Testing guidelines
-  - Mock fs operations for file logging tests.
-  - Test structured output format.
+    - Mock fs operations for file logging tests.
+    - Test structured output format.
 
 - REF-004: Troubleshooting
-  - Issue: No logs appear — check directory permissions.
-  - Issue: File logging fails — verify logs directory exists.
+    - Issue: No logs appear — check directory permissions.
+    - Issue: File logging fails — verify logs directory exists.
 
 - REF-005: Related docs
-  - Mastra workflow and agent documentation
+    - Mastra workflow and agent documentation
 
 - REF-006: Change history
-  - 1.0 (2025-09-23) - Initial documentation generated
+    - 1.0 (2025-09-23) - Initial documentation generated

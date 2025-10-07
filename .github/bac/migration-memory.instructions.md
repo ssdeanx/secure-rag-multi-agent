@@ -1,10 +1,10 @@
 ---
-applyTo: ["**/*.md", "**/*.mdx", "prompt.md"]
-description: "Memory of migration instruction generation patterns and best practices"
-tags: ["migration", "instructions", "patterns"]
+applyTo: ['**/*.md', '**/*.mdx', 'prompt.md']
+description: 'Memory of migration instruction generation patterns and best practices'
+tags: ['migration', 'instructions', 'patterns']
 version: 1.0.0
-last_updated: "2025-09-24T19:13:49Z"
-status: "stable"
+last_updated: '2025-09-24T19:13:49Z'
+status: 'stable'
 ---
 
 # Migration Instruction Generation Memory

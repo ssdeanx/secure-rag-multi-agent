@@ -1,11 +1,18 @@
 ---
-title: "Starter Agent"
-description: "A basic starter agent template for Cedar-OS + Mastra applications that assists users with product roadmap navigation, feature priorities, and general tasks"
-component_type: "Mastra Agent"
-framework: "Mastra + Cedar-OS"
-language: "TypeScript"
-platform: "Node.js"
-tags: ["agent", "starter-template", "product-roadmap", "feature-management", "cedar-os"]
+title: 'Starter Agent'
+description: 'A basic starter agent template for Cedar-OS + Mastra applications that assists users with product roadmap navigation, feature priorities, and general tasks'
+component_type: 'Mastra Agent'
+framework: 'Mastra + Cedar-OS'
+language: 'TypeScript'
+platform: 'Node.js'
+tags:
+    [
+        'agent',
+        'starter-template',
+        'product-roadmap',
+        'feature-management',
+        'cedar-os',
+    ]
 ---
 
 # Starter Agent (`src/mastra/agents/starterAgent.ts`)
@@ -175,12 +182,15 @@ graph TB
 ### Agent Properties
 
 #### `id: 'starter'`
+
 Unique identifier for the agent within the Mastra system.
 
 #### `name: 'Starter Agent'`
+
 Human-readable name for the agent.
 
 #### `description`
+
 'A basic starter agent that assists users with general questions and tasks.'
 
 ### Core Expertise
@@ -213,7 +223,7 @@ The agent responds in a structured JSON format:
 
 ```json
 {
-  "content": "The response to the user's question or task"
+    "content": "The response to the user's question or task"
 }
 ```
 
@@ -231,9 +241,9 @@ The agent responds in a structured JSON format:
 
 ```typescript
 model: gemini('gemini-2.5-pro', {
-  temperature: 0.7,     // Balanced creativity and consistency
-  maxOutputTokens: 65536, // Large output capacity
-  topP: 0.95,           // Nucleus sampling for quality
+    temperature: 0.7, // Balanced creativity and consistency
+    maxOutputTokens: 65536, // Large output capacity
+    topP: 0.95, // Nucleus sampling for quality
 })
 ```
 
@@ -285,12 +295,12 @@ model: gemini('gemini-2.5-pro', {
 
 ```typescript
 inputProcessors: [
-  new UnicodeNormalizer({
-    stripControlChars: true,
-    collapseWhitespace: true,
-    preserveEmojis: true,
-    trim: true,
-  }),
+    new UnicodeNormalizer({
+        stripControlChars: true,
+        collapseWhitespace: true,
+        preserveEmojis: true,
+        trim: true,
+    }),
 ]
 ```
 
@@ -322,8 +332,8 @@ inputProcessors: [
 
 ```typescript
 contentSimilarity: new ContentSimilarityMetric({
-  ignoreCase: true,
-  ignoreWhitespace: true
+    ignoreCase: true,
+    ignoreWhitespace: true,
 })
 ```
 
@@ -437,8 +447,8 @@ WEATHER_API_KEY=your-weather-api-key
 
 ```typescript
 const result = await starterAgent.generate({
-  question: "How do I navigate the product roadmap?"
-});
+    question: 'How do I navigate the product roadmap?',
+})
 
 // Returns: JSON response with roadmap navigation guidance
 ```
@@ -447,8 +457,8 @@ const result = await starterAgent.generate({
 
 ```typescript
 const result = await starterAgent.generate({
-  question: "What are the current feature priorities?"
-});
+    question: 'What are the current feature priorities?',
+})
 
 // Returns: JSON response with priority information
 ```
@@ -457,8 +467,8 @@ const result = await starterAgent.generate({
 
 ```typescript
 const result = await starterAgent.generate({
-  question: "Can you help me with this task?"
-});
+    question: 'Can you help me with this task?',
+})
 
 // Returns: JSON response with assistance content
 ```
@@ -495,60 +505,60 @@ const result = await starterAgent.generate({
 ### Response Quality Issues
 
 1. **Inconsistent Responses**
-   - Check temperature setting (lower for consistency)
-   - Review evaluation metrics for quality feedback
-   - Validate input processing configuration
+    - Check temperature setting (lower for consistency)
+    - Review evaluation metrics for quality feedback
+    - Validate input processing configuration
 
 2. **Poor Response Quality**
-   - Adjust model parameters (temperature, topP)
-   - Review and update instructions for clarity
-   - Check evaluation metrics for specific issues
+    - Adjust model parameters (temperature, topP)
+    - Review and update instructions for clarity
+    - Check evaluation metrics for specific issues
 
 3. **Incorrect Response Format**
-   - Verify response format specifications in instructions
-   - Check JSON structure compliance
-   - Validate response validation logic
+    - Verify response format specifications in instructions
+    - Check JSON structure compliance
+    - Validate response validation logic
 
 ### Tool Integration Problems
 
 1. **Tool Execution Failures**
-   - Verify tool imports and registration
-   - Check tool dependencies and configuration
-   - Validate tool call parameters
+    - Verify tool imports and registration
+    - Check tool dependencies and configuration
+    - Validate tool call parameters
 
 2. **Tool Response Issues**
-   - Review tool output processing
-   - Check error handling for tool failures
-   - Validate tool response integration
+    - Review tool output processing
+    - Check error handling for tool failures
+    - Validate tool response integration
 
 3. **Performance Issues**
-   - Monitor tool execution times
-   - Check for tool bottlenecks
-   - Optimize tool usage patterns
+    - Monitor tool execution times
+    - Check for tool bottlenecks
+    - Optimize tool usage patterns
 
 ### Input Processing Issues
 
 1. **Text Normalization Problems**
-   - Verify Unicode normalizer configuration
-   - Check input text encoding
-   - Validate processing parameter settings
+    - Verify Unicode normalizer configuration
+    - Check input text encoding
+    - Validate processing parameter settings
 
 2. **Input Validation Errors**
-   - Review input schema requirements
-   - Check input format compliance
-   - Validate preprocessing logic
+    - Review input schema requirements
+    - Check input format compliance
+    - Validate preprocessing logic
 
 ### Evaluation Metric Issues
 
 1. **Metric Calculation Errors**
-   - Verify metric configuration parameters
-   - Check metric dependencies
-   - Validate evaluation runtime setup
+    - Verify metric configuration parameters
+    - Check metric dependencies
+    - Validate evaluation runtime setup
 
 2. **Inconsistent Evaluations**
-   - Review metric implementation consistency
-   - Check evaluation context and parameters
-   - Validate metric result interpretation
+    - Review metric implementation consistency
+    - Check evaluation context and parameters
+    - Validate metric result interpretation
 
 ## References
 

@@ -27,14 +27,13 @@ A composite React hook that orchestrates Cedar OS integration for the roadmap ap
 - ARC-001: Design patterns: Hook composition/facade pattern. Encapsulates multiple concerns into a unified interface.
 
 - ARC-002: Dependencies:
+    - React (hook definition)
 
-  - React (hook definition)
+    - reactflow (Node, Edge types)
 
-  - reactflow (Node, Edge types)
+    - cedar-os (useCedarState, useRegisterState, useStateBasedMentionProvider, useSubscribeStateToAgentContext)
 
-  - cedar-os (useCedarState, useRegisterState, useStateBasedMentionProvider, useSubscribeStateToAgentContext)
-
-  - Local sub-hooks: useRoadmapState, useRoadmapMentions, useRoadmapContext
+    - Local sub-hooks: useRoadmapState, useRoadmapMentions, useRoadmapContext
 
 - ARC-003: Interactions: Delegates to sub-hooks; no direct agent calls. Enables reactive updates where state changes propagate to agent context and mentions.
 
@@ -91,33 +90,33 @@ graph TD
 
 - INT-001: Public interface: Hook with roadmap state props.
 
-| Parameter | Purpose | Type | Required | Usage Notes |
-|-----------|---------|------|----------|-------------|
-| `nodes` | Current roadmap nodes | `Node<FeatureNodeData>[]` | Yes | Passed from React Flow state |
-| `setNodes` | Setter for nodes | `React.Dispatch<React.SetStateAction<Node<FeatureNodeData>[]>>` | Yes | React Flow setter |
-| `edges` | Current roadmap edges | `Edge[]` | Yes | Passed from React Flow state |
-| `setEdges` | Setter for edges | `React.Dispatch<React.SetStateAction<Edge[]>>` | Yes | React Flow setter |
+| Parameter  | Purpose               | Type                                                            | Required | Usage Notes                  |
+| ---------- | --------------------- | --------------------------------------------------------------- | -------- | ---------------------------- |
+| `nodes`    | Current roadmap nodes | `Node<FeatureNodeData>[]`                                       | Yes      | Passed from React Flow state |
+| `setNodes` | Setter for nodes      | `React.Dispatch<React.SetStateAction<Node<FeatureNodeData>[]>>` | Yes      | React Flow setter            |
+| `edges`    | Current roadmap edges | `Edge[]`                                                        | Yes      | Passed from React Flow state |
+| `setEdges` | Setter for edges      | `React.Dispatch<React.SetStateAction<Edge[]>>`                  | Yes      | React Flow setter            |
 
 ### Hook Usage
 
 ```tsx
-import { useNodesState, useEdgesState } from 'reactflow';
-import { useCedarRoadmap } from './hooks';
+import { useNodesState, useEdgesState } from 'reactflow'
+import { useCedarRoadmap } from './hooks'
 
 function RoadmapContainer() {
-  const [nodes, setNodes, onNodesChange] = useNodesState(initialNodes);
-  const [edges, setEdges, onEdgesChange] = useEdgesState(initialEdges);
+    const [nodes, setNodes, onNodesChange] = useNodesState(initialNodes)
+    const [edges, setEdges, onEdgesChange] = useEdgesState(initialEdges)
 
-  useCedarRoadmap(nodes, setNodes, edges, setEdges);
+    useCedarRoadmap(nodes, setNodes, edges, setEdges)
 
-  return (
-    <ReactFlow
-      nodes={nodes}
-      edges={edges}
-      onNodesChange={onNodesChange}
-      onEdgesChange={onEdgesChange}
-    />
-  );
+    return (
+        <ReactFlow
+            nodes={nodes}
+            edges={edges}
+            onNodesChange={onNodesChange}
+            onEdgesChange={onEdgesChange}
+        />
+    )
 }
 ```
 
@@ -146,17 +145,17 @@ Edge cases and considerations:
 ### Basic Usage (in page component)
 
 ```tsx
-import { useCedarRoadmap } from './hooks';
-import { useNodesState, useEdgesState } from 'reactflow';
-import { initialNodes, initialEdges } from './useRoadmapData';
+import { useCedarRoadmap } from './hooks'
+import { useNodesState, useEdgesState } from 'reactflow'
+import { initialNodes, initialEdges } from './useRoadmapData'
 
 export default function CedarOSPage() {
-  const [nodes, setNodes, onNodesChange] = useNodesState(initialNodes);
-  const [edges, setEdges, onEdgesChange] = useEdgesState(initialEdges);
+    const [nodes, setNodes, onNodesChange] = useNodesState(initialNodes)
+    const [edges, setEdges, onEdgesChange] = useEdgesState(initialEdges)
 
-  useCedarRoadmap(nodes, setNodes, edges, setEdges);
+    useCedarRoadmap(nodes, setNodes, edges, setEdges)
 
-  return <RoadmapCanvas nodes={nodes} edges={edges} /* ... */ />;
+    return <RoadmapCanvas nodes={nodes} edges={edges} /* ... */ />
 }
 ```
 
@@ -183,18 +182,23 @@ sequenceDiagram
 ### Advanced Usage (with error boundary)
 
 ```tsx
-import { ErrorBoundary } from 'react-error-boundary';
+import { ErrorBoundary } from 'react-error-boundary'
 
 function CedarRoadmapWithErrorHandling() {
-  const [nodes, setNodes] = useNodesState([]);
-  const [edges, setEdges] = useEdgesState([]);
+    const [nodes, setNodes] = useNodesState([])
+    const [edges, setEdges] = useEdgesState([])
 
-  return (
-    <ErrorBoundary fallback={<div>Cedar integration error</div>}>
-      <useCedarRoadmap nodes={nodes} setNodes={setNodes} edges={edges} setEdges={setEdges} />
-      {/* Canvas */}
-    </ErrorBoundary>
-  );
+    return (
+        <ErrorBoundary fallback={<div>Cedar integration error</div>}>
+            <useCedarRoadmap
+                nodes={nodes}
+                setNodes={setNodes}
+                edges={edges}
+                setEdges={setEdges}
+            />
+            {/* Canvas */}
+        </ErrorBoundary>
+    )
 }
 ```
 
@@ -221,35 +225,30 @@ Best practices:
 ## 7. Reference Information
 
 - REF-001: Dependencies:
+    - react (^18) - composition runtime
 
-  - react (^18) - composition runtime
+    - reactflow (^11) - state types
 
-  - reactflow (^11) - state types
-
-  - cedar-os (latest) - core features
+    - cedar-os (latest) - core features
 
 - REF-002: Configuration: Requires CedarProvider. Params from React Flow useNodesState/useEdgesState.
 
 - REF-003: Testing guidelines:
+    - Unit: Mock sub-hooks; verify calls with params.
 
-  - Unit: Mock sub-hooks; verify calls with params.
-
-  - Integration: Render with mock state; assert agent context updates.
+    - Integration: Render with mock state; assert agent context updates.
 
 - REF-004: Troubleshooting
+    - Issue: "No Cedar context" — Ensure CedarProvider wraps component tree.
 
-  - Issue: "No Cedar context" — Ensure CedarProvider wraps component tree.
-
-  - Issue: State not propagating — Verify params are up-to-date from React Flow.
+    - Issue: State not propagating — Verify params are up-to-date from React Flow.
 
 - REF-005: Related docs
+    - `app/cedar-os/state.ts` (useRoadmapState)
 
-  - `app/cedar-os/state.ts` (useRoadmapState)
+    - `app/cedar-os/mentions.ts` (useRoadmapMentions)
 
-  - `app/cedar-os/mentions.ts` (useRoadmapMentions)
-
-  - `app/cedar-os/context.ts` (useRoadmapContext)
+    - `app/cedar-os/context.ts` (useRoadmapContext)
 
 - REF-006: Change history
-
-  - 1.0 (2025-09-23) - Initial documentation
+    - 1.0 (2025-09-23) - Initial documentation

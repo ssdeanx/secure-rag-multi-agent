@@ -27,8 +27,7 @@ Configuration module defining the hierarchical relationships between user roles 
 - ARC-001: Design patterns: Configuration module pattern. Exports constants and pure functions for role operations.
 
 - ARC-002: Dependencies:
-
-  - None (pure configuration module)
+    - None (pure configuration module)
 
 - ARC-003: Interactions: Provides read-only data structures and utility functions. No side effects.
 
@@ -64,19 +63,19 @@ graph TD
 
 - INT-001: Exports constants and functions for role management.
 
-| Export | Purpose | Type | Usage Notes |
-|--------|---------|------|-------------|
-| `ROLE_HIERARCHY` | Role inheritance mappings | `RoleHierarchy` | Maps each role to array of inherited roles |
-| `ROLE_LEVELS` | Privilege levels for comparison | `Record<string, number>` | Higher numbers = higher privilege |
-| `getRoleLevel(role)` | Get privilege level | `(role: string) => number` | Returns 0 for unknown roles |
-| `isValidRole(role)` | Validate role exists | `(role: string) => boolean` | Checks if role is defined in hierarchy |
-| `getInheritorRoles(targetRole)` | Find roles that inherit access | `(targetRole: string) => string[]` | Returns sorted array of inheriting roles |
+| Export                          | Purpose                         | Type                               | Usage Notes                                |
+| ------------------------------- | ------------------------------- | ---------------------------------- | ------------------------------------------ |
+| `ROLE_HIERARCHY`                | Role inheritance mappings       | `RoleHierarchy`                    | Maps each role to array of inherited roles |
+| `ROLE_LEVELS`                   | Privilege levels for comparison | `Record<string, number>`           | Higher numbers = higher privilege          |
+| `getRoleLevel(role)`            | Get privilege level             | `(role: string) => number`         | Returns 0 for unknown roles                |
+| `isValidRole(role)`             | Validate role exists            | `(role: string) => boolean`        | Checks if role is defined in hierarchy     |
+| `getInheritorRoles(targetRole)` | Find roles that inherit access  | `(targetRole: string) => string[]` | Returns sorted array of inheriting roles   |
 
 ### Type Definitions
 
 ```ts
 interface RoleHierarchy {
-  [role: string]: string[];
+    [role: string]: string[]
 }
 ```
 
@@ -98,36 +97,36 @@ Corner cases and considerations:
 ### Checking role validity
 
 ```ts
-import { isValidRole } from '@/src/mastra/config/role-hierarchy';
+import { isValidRole } from '@/src/mastra/config/role-hierarchy'
 
-const valid = isValidRole('hr.admin'); // true
-const invalid = isValidRole('unknown'); // false
+const valid = isValidRole('hr.admin') // true
+const invalid = isValidRole('unknown') // false
 ```
 
 ### Getting privilege levels
 
 ```ts
-import { getRoleLevel } from '@/src/mastra/config/role-hierarchy';
+import { getRoleLevel } from '@/src/mastra/config/role-hierarchy'
 
-const adminLevel = getRoleLevel('admin'); // 100
-const publicLevel = getRoleLevel('public'); // 10
+const adminLevel = getRoleLevel('admin') // 100
+const publicLevel = getRoleLevel('public') // 10
 ```
 
 ### Finding inheritors
 
 ```ts
-import { getInheritorRoles } from '@/src/mastra/config/role-hierarchy';
+import { getInheritorRoles } from '@/src/mastra/config/role-hierarchy'
 
-const inheritors = getInheritorRoles('employee');
+const inheritors = getInheritorRoles('employee')
 // Returns: ['admin', 'hr.admin', 'finance.admin', 'engineering.admin', 'employee']
 ```
 
 ### Using hierarchy directly
 
 ```ts
-import { ROLE_HIERARCHY } from '@/src/mastra/config/role-hierarchy';
+import { ROLE_HIERARCHY } from '@/src/mastra/config/role-hierarchy'
 
-const inherited = ROLE_HIERARCHY['hr.viewer'];
+const inherited = ROLE_HIERARCHY['hr.viewer']
 // Returns: ['employee', 'public']
 ```
 
@@ -142,21 +141,21 @@ const inherited = ROLE_HIERARCHY['hr.viewer'];
 ## 7. Reference Information
 
 - REF-001: Dependencies (approximate):
-  - None
+    - None
 
 - REF-002: Configuration
-  - Edit `ROLE_HIERARCHY` and `ROLE_LEVELS` to modify role structure.
+    - Edit `ROLE_HIERARCHY` and `ROLE_LEVELS` to modify role structure.
 
 - REF-003: Testing guidelines
-  - Test inheritance chains and level ordering.
-  - Validate all roles in hierarchy are consistent.
+    - Test inheritance chains and level ordering.
+    - Validate all roles in hierarchy are consistent.
 
 - REF-004: Troubleshooting
-  - Issue: Unexpected access — verify hierarchy definitions.
-  - Issue: Invalid role errors — check spelling against constants.
+    - Issue: Unexpected access — verify hierarchy definitions.
+    - Issue: Invalid role errors — check spelling against constants.
 
 - REF-005: Related docs
-  - `src/mastra/services/RoleService.ts` - Uses this configuration
+    - `src/mastra/services/RoleService.ts` - Uses this configuration
 
 - REF-006: Change history
-  - 1.0 (2025-09-23) - Initial documentation generated
+    - 1.0 (2025-09-23) - Initial documentation generated

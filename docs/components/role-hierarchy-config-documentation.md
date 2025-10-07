@@ -68,19 +68,19 @@ graph TD
 
 - INT-001: Exports.
 
-| Export | Purpose | Type | Notes |
-|--------|---------|------|-------|
-| `ROLE_HIERARCHY` | Inheritance map | `RoleHierarchy` | {admin: [...], ...} |
-| `ROLE_LEVELS` | Privilege numbers | `Record<string, number>` | admin=100, public=10 |
-| `getRoleLevel` | Get level | `(role: string) => number` | 0 if unknown |
-| `isValidRole` | Check existence | `(role: string) => bool` | In hierarchy |
-| `getInheritorRoles` | Find inheritors | `(target: string) => string[]` | Sorted by level |
+| Export              | Purpose           | Type                           | Notes                |
+| ------------------- | ----------------- | ------------------------------ | -------------------- |
+| `ROLE_HIERARCHY`    | Inheritance map   | `RoleHierarchy`                | {admin: [...], ...}  |
+| `ROLE_LEVELS`       | Privilege numbers | `Record<string, number>`       | admin=100, public=10 |
+| `getRoleLevel`      | Get level         | `(role: string) => number`     | 0 if unknown         |
+| `isValidRole`       | Check existence   | `(role: string) => bool`       | In hierarchy         |
+| `getInheritorRoles` | Find inheritors   | `(target: string) => string[]` | Sorted by level      |
 
 ### RoleHierarchy Type
 
 ```ts
 interface RoleHierarchy {
-  [role: string]: string[];
+    [role: string]: string[]
 }
 ```
 
@@ -109,16 +109,16 @@ Edge cases and considerations:
 ### Inheritance Check
 
 ```ts
-const level = getRoleLevel('admin'); // 100
-const valid = isValidRole('hr.admin'); // true
-const inheritors = getInheritorRoles('employee'); // ['admin', 'hr.admin', ...] sorted
+const level = getRoleLevel('admin') // 100
+const valid = isValidRole('hr.admin') // true
+const inheritors = getInheritorRoles('employee') // ['admin', 'hr.admin', ...] sorted
 ```
 
 ### In Service
 
 ```ts
 if (isValidRole(role)) {
-  const inherited = ROLE_HIERARCHY[role] || [];
+    const inherited = ROLE_HIERARCHY[role] || []
 }
 ```
 

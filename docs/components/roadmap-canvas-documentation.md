@@ -25,11 +25,11 @@ React Flow-based canvas that renders roadmap `nodes` and `edges` and provides in
 - ARC-001: Built on `reactflow` and project-specific node types (`roadmapNodeTypes`).
 
 - ARC-002: Dependencies:
-  - reactflow (React Flow core, Controls, Background, hooks)
-  - `roadmapNodeTypes` (custom node renderers)
-  - `useRoadmapData` (initial data)
-  - `useCedarRoadmap` (custom hook for syncing canvas state)
-  - `useCedarState` (shared app state for selected nodes)
+    - reactflow (React Flow core, Controls, Background, hooks)
+    - `roadmapNodeTypes` (custom node renderers)
+    - `useRoadmapData` (initial data)
+    - `useCedarRoadmap` (custom hook for syncing canvas state)
+    - `useCedarState` (shared app state for selected nodes)
 
 ## 3. Implementation Details
 

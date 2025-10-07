@@ -22,10 +22,10 @@
 ```typescript
 // BEFORE (main)
 export const myAgent = new Agent({
-  id: "my-agent",
-  name: "My Agent",
-  // ... basic config
-});
+    id: 'my-agent',
+    name: 'My Agent',
+    // ... basic config
+})
 
 // AFTER (develop)
 // Kilocode: Agent Contract
@@ -42,13 +42,13 @@ export const myAgent = new Agent({
 // approvedBy: samm
 // approvalDate: 9/24
 
-import { Agent } from "@mastra/core/agent";
-import { createResearchMemory } from '../config/libsql-storage';
+import { Agent } from '@mastra/core/agent'
+import { createResearchMemory } from '../config/libsql-storage'
 
 export const myAgent = new Agent({
-  id: "my-agent",
-  name: "My Agent",
-  instructions: `
+    id: 'my-agent',
+    name: 'My Agent',
+    instructions: `
 <role>
 You are a [Role Description].
 </role>
@@ -63,9 +63,9 @@ When given a task, you must follow this process:
 2. **[Step 2]**
 </process>
   `,
-  memory: createResearchMemory(),
-  // ... enhanced config with evals, processors, tools
-});
+    memory: createResearchMemory(),
+    // ... enhanced config with evals, processors, tools
+})
 ```
 
 #### Workflow Logging Pattern
@@ -113,22 +113,20 @@ const workflowStep = createStep({
 ```tsx
 // BEFORE (main)
 const MyComponent = () => {
-  return <div>Content</div>;
-};
+    return <div>Content</div>
+}
 
 // AFTER (develop)
-import Container3D from '@/cedar/components/containers/Container3D';
-import { FloatingContainer } from '@/cedar/components/structural/FloatingContainer';
+import Container3D from '@/cedar/components/containers/Container3D'
+import { FloatingContainer } from '@/cedar/components/structural/FloatingContainer'
 
 const MyComponent: React.FC<MyComponentProps> = ({ className = '' }) => {
-  return (
-    <Container3D className={className}>
-      <FloatingContainer>
-        Content
-      </FloatingContainer>
-    </Container3D>
-  );
-};
+    return (
+        <Container3D className={className}>
+            <FloatingContainer>Content</FloatingContainer>
+        </Container3D>
+    )
+}
 ```
 
 ### 2. Transformations with Validation
@@ -149,12 +147,12 @@ const MyComponent: React.FC<MyComponentProps> = ({ className = '' }) => {
 
 ### 3. API Correspondences
 
-| Old API | New API | Notes | Example |
-| ------- | ------- | ----- | ------- |
-| Basic Agent | Kilocode Agent | Added approval workflow | See assistant.ts |
-| Simple Workflow | Logged Workflow | Added tracing and error handling | See chatWorkflow.ts |
-| Basic Component | Cedar Component | Added 3D styling and structure | See CedarCaptionChat.tsx |
-| Simple Config | Enhanced Config | Added comprehensive typing | See libsql-storage.ts |
+| Old API         | New API         | Notes                            | Example                  |
+| --------------- | --------------- | -------------------------------- | ------------------------ |
+| Basic Agent     | Kilocode Agent  | Added approval workflow          | See assistant.ts         |
+| Simple Workflow | Logged Workflow | Added tracing and error handling | See chatWorkflow.ts      |
+| Basic Component | Cedar Component | Added 3D styling and structure   | See CedarCaptionChat.tsx |
+| Simple Config   | Enhanced Config | Added comprehensive typing       | See libsql-storage.ts    |
 
 ### 4. New Patterns to Adopt
 
@@ -276,11 +274,11 @@ How to report incorrect transformations:
 ```typescript
 // BEFORE (main)
 export const simpleAgent = new Agent({
-  id: "simple",
-  name: "Simple Agent",
-  instructions: "You are a helpful assistant.",
-  model: openai("gpt-4"),
-});
+    id: 'simple',
+    name: 'Simple Agent',
+    instructions: 'You are a helpful assistant.',
+    model: openai('gpt-4'),
+})
 ```
 
 ```typescript
@@ -297,13 +295,13 @@ export const simpleAgent = new Agent({
 // approvedBy: samm
 // approvalDate: 9/24
 
-import { Agent } from "@mastra/core/agent";
-import { createResearchMemory } from '../config/libsql-storage';
+import { Agent } from '@mastra/core/agent'
+import { createResearchMemory } from '../config/libsql-storage'
 
 export const simpleAgent = new Agent({
-  id: "simple",
-  name: "Simple Agent",
-  instructions: `
+    id: 'simple',
+    name: 'Simple Agent',
+    instructions: `
 <role>
 You are a helpful assistant.
 </role>
@@ -317,9 +315,9 @@ You are a helpful assistant.
 2. Provide a helpful response
 </process>
   `,
-  model: openai("gpt-4"),
-  memory: createResearchMemory(),
-});
+    model: openai('gpt-4'),
+    memory: createResearchMemory(),
+})
 ```
 
 **COPILOT INSTRUCTIONS:**
@@ -330,34 +328,34 @@ When you see a basic agent definition, transform it to include Kilocode header, 
 ```typescript
 // BEFORE (main)
 const basicStep = createStep({
-  execute: async ({ input }) => {
-    return { result: "done" };
-  }
-});
+    execute: async ({ input }) => {
+        return { result: 'done' }
+    },
+})
 ```
 
 ```typescript
 // AFTER (develop)
 const basicStep = createStep({
-  id: 'basic-step',
-  inputSchema: z.object({
-    input: z.string()
-  }),
-  outputSchema: z.object({
-    result: z.string()
-  }),
-  execute: async ({ inputData }) => {
-    logStepStart('basic-step', inputData);
-    try {
-      const result = { result: "done" };
-      logStepEnd('basic-step', result, Date.now() - startTime);
-      return result;
-    } catch (error) {
-      logError('basic-step', error, inputData);
-      throw error;
-    }
-  }
-});
+    id: 'basic-step',
+    inputSchema: z.object({
+        input: z.string(),
+    }),
+    outputSchema: z.object({
+        result: z.string(),
+    }),
+    execute: async ({ inputData }) => {
+        logStepStart('basic-step', inputData)
+        try {
+            const result = { result: 'done' }
+            logStepEnd('basic-step', result, Date.now() - startTime)
+            return result
+        } catch (error) {
+            logError('basic-step', error, inputData)
+            throw error
+        }
+    },
+})
 ```
 
 **COPILOT INSTRUCTIONS:**
@@ -408,22 +406,20 @@ const workflowStep = createStep({
 ```tsx
 // BEFORE (main)
 const MyComponent = () => {
-  return <div>Content</div>;
-};
+    return <div>Content</div>
+}
 
 // AFTER (develop)
-import Container3D from '@/cedar/components/containers/Container3D';
-import { FloatingContainer } from '@/cedar/components/structural/FloatingContainer';
+import Container3D from '@/cedar/components/containers/Container3D'
+import { FloatingContainer } from '@/cedar/components/structural/FloatingContainer'
 
 const MyComponent: React.FC<MyComponentProps> = ({ className = '' }) => {
-  return (
-    <Container3D className={className}>
-      <FloatingContainer>
-        Content
-      </FloatingContainer>
-    </Container3D>
-  );
-};
+    return (
+        <Container3D className={className}>
+            <FloatingContainer>Content</FloatingContainer>
+        </Container3D>
+    )
+}
 ```
 
 ### 2. Conditional Transformations
@@ -444,12 +440,12 @@ const MyComponent: React.FC<MyComponentProps> = ({ className = '' }) => {
 
 ### 3. API Correspondences Table
 
-| Old API | New API | Notes | Example |
-| ------- | ------- | ----- | ------- |
-| Basic Agent | Kilocode Agent | Added approval workflow | See assistant.ts |
-| Simple Workflow | Logged Workflow | Added tracing and error handling | See chatWorkflow.ts |
-| Basic Component | Cedar Component | Added 3D styling and structure | See CedarCaptionChat.tsx |
-| Simple Config | Enhanced Config | Added comprehensive typing | See libsql-storage.ts |
+| Old API         | New API         | Notes                            | Example                  |
+| --------------- | --------------- | -------------------------------- | ------------------------ |
+| Basic Agent     | Kilocode Agent  | Added approval workflow          | See assistant.ts         |
+| Simple Workflow | Logged Workflow | Added tracing and error handling | See chatWorkflow.ts      |
+| Basic Component | Cedar Component | Added 3D styling and structure   | See CedarCaptionChat.tsx |
+| Simple Config   | Enhanced Config | Added comprehensive typing       | See libsql-storage.ts    |
 
 ### 4. Recommended New Patterns
 
@@ -571,11 +567,11 @@ How to report incorrect transformations:
 ```typescript
 // BEFORE (main)
 export const simpleAgent = new Agent({
-  id: "simple",
-  name: "Simple Agent",
-  instructions: "You are a helpful assistant.",
-  model: openai("gpt-4"),
-});
+    id: 'simple',
+    name: 'Simple Agent',
+    instructions: 'You are a helpful assistant.',
+    model: openai('gpt-4'),
+})
 ```
 
 ```typescript
@@ -592,13 +588,13 @@ export const simpleAgent = new Agent({
 // approvedBy: samm
 // approvalDate: 9/24
 
-import { Agent } from "@mastra/core/agent";
-import { createResearchMemory } from '../config/libsql-storage';
+import { Agent } from '@mastra/core/agent'
+import { createResearchMemory } from '../config/libsql-storage'
 
 export const simpleAgent = new Agent({
-  id: "simple",
-  name: "Simple Agent",
-  instructions: `
+    id: 'simple',
+    name: 'Simple Agent',
+    instructions: `
 <role>
 You are a helpful assistant.
 </role>
@@ -612,9 +608,9 @@ You are a helpful assistant.
 2. Provide a helpful response
 </process>
   `,
-  model: openai("gpt-4"),
-  memory: createResearchMemory(),
-});
+    model: openai('gpt-4'),
+    memory: createResearchMemory(),
+})
 ```
 
 **COPILOT INSTRUCTIONS:**
@@ -625,34 +621,34 @@ When you see a basic agent definition, transform it to include Kilocode header, 
 ```typescript
 // BEFORE (main)
 const basicStep = createStep({
-  execute: async ({ input }) => {
-    return { result: "done" };
-  }
-});
+    execute: async ({ input }) => {
+        return { result: 'done' }
+    },
+})
 ```
 
 ```typescript
 // AFTER (develop)
 const basicStep = createStep({
-  id: 'basic-step',
-  inputSchema: z.object({
-    input: z.string()
-  }),
-  outputSchema: z.object({
-    result: z.string()
-  }),
-  execute: async ({ inputData }) => {
-    logStepStart('basic-step', inputData);
-    try {
-      const result = { result: "done" };
-      logStepEnd('basic-step', result, Date.now() - startTime);
-      return result;
-    } catch (error) {
-      logError('basic-step', error, inputData);
-      throw error;
-    }
-  }
-});
+    id: 'basic-step',
+    inputSchema: z.object({
+        input: z.string(),
+    }),
+    outputSchema: z.object({
+        result: z.string(),
+    }),
+    execute: async ({ inputData }) => {
+        logStepStart('basic-step', inputData)
+        try {
+            const result = { result: 'done' }
+            logStepEnd('basic-step', result, Date.now() - startTime)
+            return result
+        } catch (error) {
+            logError('basic-step', error, inputData)
+            throw error
+        }
+    },
+})
 ```
 
 **COPILOT INSTRUCTIONS:**

@@ -7,8 +7,8 @@ vi.mock('../config/logger', () => ({
     log: {
         info: vi.fn(),
         error: vi.fn(),
-        warn: vi.fn()
-    }
+        warn: vi.fn(),
+    },
 }))
 
 describe('Evaluate Result Tool', () => {
@@ -19,8 +19,8 @@ describe('Evaluate Result Tool', () => {
             createChildSpan: vi.fn().mockImplementation(() => {
                 mockSpan = { end: vi.fn() }
                 return mockSpan
-            })
-        }
+            }),
+        },
     } as any
 
     let mockAgent: any
@@ -31,19 +31,21 @@ describe('Evaluate Result Tool', () => {
         mockSpan = undefined
 
         // Reset the mock implementation after clearing
-        mockTracingContext.currentSpan.createChildSpan.mockImplementation(() => {
-            mockSpan = { end: vi.fn() }
-            return mockSpan
-        })
+        mockTracingContext.currentSpan.createChildSpan.mockImplementation(
+            () => {
+                mockSpan = { end: vi.fn() }
+                return mockSpan
+            }
+        )
 
         // Mock the agent
         mockAgent = {
-            generate: vi.fn()
+            generate: vi.fn(),
         }
 
         // Mock mastra
         mockMastra = {
-            getAgent: vi.fn().mockReturnValue(mockAgent)
+            getAgent: vi.fn().mockReturnValue(mockAgent),
         }
     })
 
@@ -56,8 +58,8 @@ describe('Evaluate Result Tool', () => {
             const mockResponse = {
                 object: {
                     isRelevant: true,
-                    reason: 'This result directly addresses the query about machine learning algorithms'
-                }
+                    reason: 'This result directly addresses the query about machine learning algorithms',
+                },
             }
             mockAgent.generate.mockResolvedValue(mockResponse)
 
@@ -67,17 +69,18 @@ describe('Evaluate Result Tool', () => {
                     result: {
                         title: 'Top 10 Machine Learning Algorithms',
                         url: 'https://example.com/ml-algorithms',
-                        content: 'This article covers the most important machine learning algorithms including...'
-                    }
+                        content:
+                            'This article covers the most important machine learning algorithms including...',
+                    },
                 },
                 mastra: mockMastra,
                 runtimeContext: mockRuntimeContext,
-                tracingContext: mockTracingContext
+                tracingContext: mockTracingContext,
             })
 
             expect(result).toEqual({
                 isRelevant: true,
-                reason: 'This result directly addresses the query about machine learning algorithms'
+                reason: 'This result directly addresses the query about machine learning algorithms',
             })
 
             expect(mockMastra.getAgent).toHaveBeenCalledWith('evaluationAgent')
@@ -85,11 +88,13 @@ describe('Evaluate Result Tool', () => {
                 expect.arrayContaining([
                     expect.objectContaining({
                         role: 'user',
-                        content: expect.stringContaining('Evaluate whether this search result is relevant')
-                    })
+                        content: expect.stringContaining(
+                            'Evaluate whether this search result is relevant'
+                        ),
+                    }),
                 ]),
                 expect.objectContaining({
-                    experimental_output: expect.any(Object)
+                    experimental_output: expect.any(Object),
                 })
             )
         })
@@ -98,8 +103,8 @@ describe('Evaluate Result Tool', () => {
             const mockResponse = {
                 object: {
                     isRelevant: false,
-                    reason: 'This result is about cooking recipes, not programming tutorials'
-                }
+                    reason: 'This result is about cooking recipes, not programming tutorials',
+                },
             }
             mockAgent.generate.mockResolvedValue(mockResponse)
 
@@ -109,17 +114,18 @@ describe('Evaluate Result Tool', () => {
                     result: {
                         title: 'Delicious Chocolate Chip Cookie Recipe',
                         url: 'https://example.com/cookies',
-                        content: 'Learn how to bake the perfect chocolate chip cookies...'
-                    }
+                        content:
+                            'Learn how to bake the perfect chocolate chip cookies...',
+                    },
                 },
                 mastra: mockMastra,
                 runtimeContext: mockRuntimeContext,
-                tracingContext: mockTracingContext
+                tracingContext: mockTracingContext,
             })
 
             expect(result).toEqual({
                 isRelevant: false,
-                reason: 'This result is about cooking recipes, not programming tutorials'
+                reason: 'This result is about cooking recipes, not programming tutorials',
             })
         })
 
@@ -127,8 +133,8 @@ describe('Evaluate Result Tool', () => {
             const mockResponse = {
                 object: {
                     isRelevant: true,
-                    reason: 'This is a new relevant result'
-                }
+                    reason: 'This is a new relevant result',
+                },
             }
             mockAgent.generate.mockResolvedValue(mockResponse)
 
@@ -138,13 +144,16 @@ describe('Evaluate Result Tool', () => {
                     result: {
                         title: 'React Performance Tips',
                         url: 'https://example.com/react-tips',
-                        content: 'Optimizing React applications...'
+                        content: 'Optimizing React applications...',
                     },
-                    existingUrls: ['https://example.com/old-article', 'https://example.com/another-old']
+                    existingUrls: [
+                        'https://example.com/old-article',
+                        'https://example.com/another-old',
+                    ],
                 },
                 mastra: mockMastra,
                 runtimeContext: mockRuntimeContext,
-                tracingContext: mockTracingContext
+                tracingContext: mockTracingContext,
             })
 
             expect(result.isRelevant).toBe(true)
@@ -160,23 +169,26 @@ describe('Evaluate Result Tool', () => {
                     result: {
                         title: 'Test Title',
                         url: 'https://example.com/duplicate',
-                        content: 'Test content'
+                        content: 'Test content',
                     },
-                    existingUrls: ['https://example.com/old', 'https://example.com/duplicate']
+                    existingUrls: [
+                        'https://example.com/old',
+                        'https://example.com/duplicate',
+                    ],
                 },
                 mastra: mockMastra,
                 runtimeContext: mockRuntimeContext,
-                tracingContext: mockTracingContext
+                tracingContext: mockTracingContext,
             })
 
             expect(result).toEqual({
                 isRelevant: false,
-                reason: 'URL already processed'
+                reason: 'URL already processed',
             })
 
             expect(mockAgent.generate).not.toHaveBeenCalled()
             expect(mockSpan.end).toHaveBeenCalledWith({
-                output: { isRelevant: false, reason: 'URL already processed' }
+                output: { isRelevant: false, reason: 'URL already processed' },
             })
         })
 
@@ -184,8 +196,8 @@ describe('Evaluate Result Tool', () => {
             const mockResponse = {
                 object: {
                     isRelevant: true,
-                    reason: 'First time seeing this URL'
-                }
+                    reason: 'First time seeing this URL',
+                },
             }
             mockAgent.generate.mockResolvedValue(mockResponse)
 
@@ -195,13 +207,13 @@ describe('Evaluate Result Tool', () => {
                     result: {
                         title: 'Test Title',
                         url: 'https://example.com/new',
-                        content: 'Test content'
-                    }
+                        content: 'Test content',
+                    },
                     // existingUrls not provided
                 },
                 mastra: mockMastra,
                 runtimeContext: mockRuntimeContext,
-                tracingContext: mockTracingContext
+                tracingContext: mockTracingContext,
             })
 
             expect(result.isRelevant).toBe(true)
@@ -220,21 +232,21 @@ describe('Evaluate Result Tool', () => {
                     result: {
                         title: 'Test Title',
                         url: 'https://example.com/test',
-                        content: 'Test content'
-                    }
+                        content: 'Test content',
+                    },
                 },
                 mastra: mockMastra,
                 runtimeContext: mockRuntimeContext,
-                tracingContext: mockTracingContext
+                tracingContext: mockTracingContext,
             })
 
             expect(result).toEqual({
                 isRelevant: false,
-                reason: 'Error in evaluation'
+                reason: 'Error in evaluation',
             })
 
             expect(mockSpan.end).toHaveBeenCalledWith({
-                metadata: { error: 'Agent evaluation failed' }
+                metadata: { error: 'Agent evaluation failed' },
             })
         })
 
@@ -247,21 +259,21 @@ describe('Evaluate Result Tool', () => {
                     result: {
                         title: 'Test Title',
                         url: 'https://example.com/test',
-                        content: 'Test content'
-                    }
+                        content: 'Test content',
+                    },
                 },
                 mastra: mockMastra,
                 runtimeContext: mockRuntimeContext,
-                tracingContext: mockTracingContext
+                tracingContext: mockTracingContext,
             })
 
             expect(result).toEqual({
                 isRelevant: false,
-                reason: 'Error in evaluation'
+                reason: 'Error in evaluation',
             })
 
             expect(mockSpan.end).toHaveBeenCalledWith({
-                metadata: { error: 'String error message' }
+                metadata: { error: 'String error message' },
             })
         })
 
@@ -272,21 +284,21 @@ describe('Evaluate Result Tool', () => {
                     result: {
                         title: 'Test Title',
                         url: 'https://example.com/test',
-                        content: 'Test content'
-                    }
+                        content: 'Test content',
+                    },
                 },
                 mastra: null as any, // mastra not available
                 runtimeContext: mockRuntimeContext,
-                tracingContext: mockTracingContext
+                tracingContext: mockTracingContext,
             })
 
             expect(result).toEqual({
                 isRelevant: false,
-                reason: 'Internal error: mastra not available'
+                reason: 'Internal error: mastra not available',
             })
 
             expect(mockSpan.end).toHaveBeenCalledWith({
-                metadata: { error: 'Mastra instance is not available' }
+                metadata: { error: 'Mastra instance is not available' },
             })
         })
     })
@@ -296,8 +308,8 @@ describe('Evaluate Result Tool', () => {
             const mockResponse = {
                 object: {
                     isRelevant: true,
-                    reason: 'Relevant result found'
-                }
+                    reason: 'Relevant result found',
+                },
             }
             mockAgent.generate.mockResolvedValue(mockResponse)
 
@@ -307,30 +319,35 @@ describe('Evaluate Result Tool', () => {
                     result: {
                         title: 'ML Algorithms Guide',
                         url: 'https://example.com/ml-guide',
-                        content: 'Comprehensive guide to ML algorithms...'
+                        content: 'Comprehensive guide to ML algorithms...',
                     },
-                    existingUrls: ['https://example.com/old1', 'https://example.com/old2']
+                    existingUrls: [
+                        'https://example.com/old1',
+                        'https://example.com/old2',
+                    ],
                 },
                 mastra: mockMastra,
                 runtimeContext: mockRuntimeContext,
-                tracingContext: mockTracingContext
+                tracingContext: mockTracingContext,
             })
 
-            expect(mockTracingContext.currentSpan.createChildSpan).toHaveBeenCalledWith({
+            expect(
+                mockTracingContext.currentSpan.createChildSpan
+            ).toHaveBeenCalledWith({
                 type: expect.any(String),
                 name: 'evaluate_result',
                 input: {
                     query: 'Machine learning algorithms',
                     url: 'https://example.com/ml-guide',
-                    existingUrlsCount: 2
-                }
+                    existingUrlsCount: 2,
+                },
             })
 
             expect(mockSpan.end).toHaveBeenCalledWith({
                 output: {
                     isRelevant: true,
-                    reason: 'Relevant result found'
-                }
+                    reason: 'Relevant result found',
+                },
             })
         })
 
@@ -344,16 +361,16 @@ describe('Evaluate Result Tool', () => {
                     result: {
                         title: 'Test Title',
                         url: 'https://example.com/test',
-                        content: 'Test content'
-                    }
+                        content: 'Test content',
+                    },
                 },
                 mastra: mockMastra,
                 runtimeContext: mockRuntimeContext,
-                tracingContext: mockTracingContext
+                tracingContext: mockTracingContext,
             })
 
             expect(mockSpan.end).toHaveBeenCalledWith({
-                metadata: { error: 'Evaluation error' }
+                metadata: { error: 'Evaluation error' },
             })
         })
     })

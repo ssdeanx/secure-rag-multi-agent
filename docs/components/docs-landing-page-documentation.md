@@ -27,12 +27,11 @@ The main documentation landing page at /docs, featuring hero section, status ale
 - ARC-001: Design patterns: Tabbed content with card grids; gradient backgrounds.
 
 - ARC-002: Dependencies:
+    - React/Next.js (page component)
 
-  - React/Next.js (page component)
+    - shadcn/ui (Card, Tabs, Alert, Badge, Button)
 
-  - shadcn/ui (Card, Tabs, Alert, Badge, Button)
-
-  - lucide-react (Shield, Zap, etc.)
+    - lucide-react (Shield, Zap, etc.)
 
 - ARC-003: Interactions: Tab switching; hover cards; static links.
 
@@ -80,10 +79,10 @@ graph TD
 
 - INT-001: Page component; no props.
 
-| Section | Purpose | Content | Notes |
-|---------|---------|---------|-------|
-| Hero | Intro/CTA | Title, desc, badges, buttons | Static |
-| Tabs | Navigation | 6 tabs with cards/grids | Responsive |
+| Section | Purpose    | Content                      | Notes      |
+| ------- | ---------- | ---------------------------- | ---------- |
+| Hero    | Intro/CTA  | Title, desc, badges, buttons | Static     |
+| Tabs    | Navigation | 6 tabs with cards/grids      | Responsive |
 
 INT notes:
 
@@ -112,7 +111,7 @@ Edge cases and considerations:
 ```tsx
 // app/docs/page.tsx
 export default function DocsPage() {
-  return <DocsLandingPage />; // This component
+    return <DocsLandingPage /> // This component
 }
 ```
 
@@ -120,9 +119,9 @@ export default function DocsPage() {
 
 ```tsx
 <Tabs defaultValue="custom">
-  <TabsContent value="custom">
-    <CustomCard />
-  </TabsContent>
+    <TabsContent value="custom">
+        <CustomCard />
+    </TabsContent>
 </Tabs>
 ```
 

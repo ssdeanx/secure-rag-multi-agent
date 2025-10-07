@@ -1,5 +1,5 @@
-import type { ReactNode } from 'react';
-import { CedarCopilot } from 'cedar-os';
+import type { ReactNode } from 'react'
+import { CedarCopilot } from 'cedar-os'
 
 /**
  * Cedar-OS Layout (Server Component)
@@ -31,7 +31,9 @@ export default function CedarLayout({ children }: { children: ReactNode }) {
         <CedarCopilot
             llmProvider={{
                 provider: 'mastra',
-                baseURL: process.env.NEXT_PUBLIC_MASTRA_URL  ?? 'http://localhost:4111',
+                baseURL:
+                    process.env.NEXT_PUBLIC_MASTRA_URL ??
+                    'http://localhost:4111',
                 apiKey: process.env.JWT_TOKEN, // JWT for Mastra auth
                 chatPath: '/chat', // Cedar auto-appends /stream for streaming
                 // Streaming is ENABLED BY DEFAULT
@@ -41,5 +43,5 @@ export default function CedarLayout({ children }: { children: ReactNode }) {
         >
             {children}
         </CedarCopilot>
-    );
+    )
 }

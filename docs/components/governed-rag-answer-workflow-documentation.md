@@ -27,12 +27,11 @@ Multi-agent workflow that implements secure Retrieval-Augmented Generation (RAG)
 - ARC-001: Design patterns: Mastra workflow pattern with sequential step execution and agent orchestration.
 
 - ARC-002: Dependencies:
-
-  - `@mastra/core`: createWorkflow, createStep
-  - Agent modules: retrieve, rerank, answerer, verifier agents
-  - Services: AuthenticationService
-  - Config: logger functions
-  - Schemas: agent-schemas for type safety
+    - `@mastra/core`: createWorkflow, createStep
+    - Agent modules: retrieve, rerank, answerer, verifier agents
+    - Services: AuthenticationService
+    - Config: logger functions
+    - Schemas: agent-schemas for type safety
 
 - ARC-003: Interactions: Takes JWT and question, returns answer with citations. Each step calls specialized agents and logs progress.
 
@@ -74,12 +73,12 @@ graph TD
 
 - INT-001: Workflow input/output schemas.
 
-| Property | Purpose | Type | Usage Notes |
-|----------|---------|------|-------------|
-| Input `jwt` | User authentication token | `string` | Required for access control |
-| Input `question` | User query | `string` | The question to answer |
-| Output `answer` | Generated answer | `string` | RAG-generated response |
-| Output `citations` | Source references | `Array<{docId, source}>` | Document citations |
+| Property           | Purpose                   | Type                     | Usage Notes                 |
+| ------------------ | ------------------------- | ------------------------ | --------------------------- |
+| Input `jwt`        | User authentication token | `string`                 | Required for access control |
+| Input `question`   | User query                | `string`                 | The question to answer      |
+| Output `answer`    | Generated answer          | `string`                 | RAG-generated response      |
+| Output `citations` | Source references         | `Array<{docId, source}>` | Document citations          |
 
 ### Step Details
 
@@ -107,17 +106,17 @@ Corner cases and considerations:
 ### Workflow execution
 
 ```ts
-import { governedRagAnswer } from '@/src/mastra/workflows/governed-rag-answer';
+import { governedRagAnswer } from '@/src/mastra/workflows/governed-rag-answer'
 
 // Execute the workflow
 const result = await governedRagAnswer.execute({
-  jwt: 'user-jwt-token',
-  question: 'What is the company vacation policy?'
-});
+    jwt: 'user-jwt-token',
+    question: 'What is the company vacation policy?',
+})
 
 // Result contains answer and citations
-console.log(result.answer);
-console.log(result.citations);
+console.log(result.answer)
+console.log(result.citations)
 ```
 
 ### Integration with API
@@ -125,11 +124,11 @@ console.log(result.citations);
 ```ts
 // In API route
 export async function POST(request: Request) {
-  const { jwt, question } = await request.json();
-  
-  const result = await governedRagAnswer.execute({ jwt, question });
-  
-  return Response.json(result);
+    const { jwt, question } = await request.json()
+
+    const result = await governedRagAnswer.execute({ jwt, question })
+
+    return Response.json(result)
 }
 ```
 
@@ -144,26 +143,26 @@ export async function POST(request: Request) {
 ## 7. Reference Information
 
 - REF-001: Dependencies (approximate):
-  - @mastra/core (^1.0.0)
-  - zod (^3.0.0)
+    - @mastra/core (^1.0.0)
+    - zod (^3.0.0)
 
 - REF-002: Configuration
-  - Requires configured agents and vector store
-  - Environment variables for external services
+    - Requires configured agents and vector store
+    - Environment variables for external services
 
 - REF-003: Testing guidelines
-  - Mock agents and services. Test each step independently.
-  - Verify security filtering with different user roles.
+    - Mock agents and services. Test each step independently.
+    - Verify security filtering with different user roles.
 
 - REF-004: Troubleshooting
-  - Issue: Auth failures — check JWT validity and user roles.
-  - Issue: No results — verify vector store and security filters.
-  - Issue: Verification failures — check verifier agent logic.
+    - Issue: Auth failures — check JWT validity and user roles.
+    - Issue: No results — verify vector store and security filters.
+    - Issue: Verification failures — check verifier agent logic.
 
 - REF-005: Related docs
-  - Agent documentation (retrieve, rerank, answerer, verifier)
-  - AuthenticationService documentation
-  - Vector query tool documentation
+    - Agent documentation (retrieve, rerank, answerer, verifier)
+    - AuthenticationService documentation
+    - Vector query tool documentation
 
 - REF-006: Change history
-  - 1.0 (2025-09-23) - Initial documentation generated
+    - 1.0 (2025-09-23) - Initial documentation generated

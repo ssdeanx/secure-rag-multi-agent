@@ -27,8 +27,7 @@ Configuration module for Google AI Gemini models via direct API. Provides pre-co
 - ARC-001: Design patterns: Configuration module pattern. Exports pre-configured model instances.
 
 - ARC-002: Dependencies:
-
-  - `@ai-sdk/google`: createGoogleGenerativeAI
+    - `@ai-sdk/google`: createGoogleGenerativeAI
 
 - ARC-003: Interactions: Creates Google AI client with API key, exports model instances.
 
@@ -63,12 +62,12 @@ graph TD
 
 - INT-001: Exports model instances.
 
-| Export | Purpose | Type | Usage Notes |
-|--------|---------|------|-------------|
-| `googleAIPro` | Gemini 2.5 Pro model | `GoogleModel` | High-performance model |
-| `googleAI` | Gemini 2.5 Flash model | `GoogleModel` | Balanced performance/cost |
-| `googleAIFlashLite` | Gemini 2.5 Flash Lite model | `GoogleModel` | Cost-optimized model |
-| `googleAIEmbedding` | Embedding model | `GoogleModel` | For document embeddings |
+| Export              | Purpose                     | Type          | Usage Notes               |
+| ------------------- | --------------------------- | ------------- | ------------------------- |
+| `googleAIPro`       | Gemini 2.5 Pro model        | `GoogleModel` | High-performance model    |
+| `googleAI`          | Gemini 2.5 Flash model      | `GoogleModel` | Balanced performance/cost |
+| `googleAIFlashLite` | Gemini 2.5 Flash Lite model | `GoogleModel` | Cost-optimized model      |
+| `googleAIEmbedding` | Embedding model             | `GoogleModel` | For document embeddings   |
 
 ## 4. Implementation Details
 
@@ -87,32 +86,32 @@ Corner cases and considerations:
 ### Using models in agents
 
 ```ts
-import { googleAIPro, googleAI } from '@/src/mastra/config/google';
+import { googleAIPro, googleAI } from '@/src/mastra/config/google'
 
 // High-quality agent
 const researchAgent = createAgent({
-  name: 'ResearchAgent',
-  model: googleAIPro,
-  // ...
-});
+    name: 'ResearchAgent',
+    model: googleAIPro,
+    // ...
+})
 
 // Cost-effective agent
 const summaryAgent = createAgent({
-  name: 'SummaryAgent',
-  model: googleAI,
-  // ...
-});
+    name: 'SummaryAgent',
+    model: googleAI,
+    // ...
+})
 ```
 
 ### Using embedding model
 
 ```ts
-import { googleAIEmbedding } from '@/src/mastra/config/google';
+import { googleAIEmbedding } from '@/src/mastra/config/google'
 
 // For document embedding
 const embeddings = await googleAIEmbedding.embed({
-  value: 'document text'
-});
+    value: 'document text',
+})
 ```
 
 ### Environment setup
@@ -133,21 +132,21 @@ GOOGLE_GENERATIVE_AI_API_KEY=your-api-key-here
 ## 7. Reference Information
 
 - REF-001: Dependencies (approximate):
-  - @ai-sdk/google (^1.0.0)
+    - @ai-sdk/google (^1.0.0)
 
 - REF-002: Configuration
-  - GOOGLE_GENERATIVE_AI_API_KEY (required)
+    - GOOGLE_GENERATIVE_AI_API_KEY (required)
 
 - REF-003: Testing guidelines
-  - Mock API key for unit tests.
-  - Test model instantiation.
+    - Mock API key for unit tests.
+    - Test model instantiation.
 
 - REF-004: Troubleshooting
-  - Issue: Auth errors — verify API key is valid and has proper permissions.
+    - Issue: Auth errors — verify API key is valid and has proper permissions.
 
 - REF-005: Related docs
-  - Google AI Gemini documentation
-  - Other AI config files (vertex.ts, openai.ts, etc.)
+    - Google AI Gemini documentation
+    - Other AI config files (vertex.ts, openai.ts, etc.)
 
 - REF-006: Change history
-  - 1.0 (2025-09-23) - Initial documentation generated
+    - 1.0 (2025-09-23) - Initial documentation generated

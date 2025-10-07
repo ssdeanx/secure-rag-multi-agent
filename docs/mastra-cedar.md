@@ -34,10 +34,10 @@
 - [Start Method](https://mastra.ai/en/reference/workflows/run-methods/start),
 - [Resume Method](https://mastra.ai/en/reference/workflows/run-methods/resume),
 - [Watch Method](https://mastra.ai/en/reference/workflows/run-methods/watch),
-- [Cancel Method*](https://mastra.ai/en/reference/workflows/run-methods/cancel),
-- [Run Stream VNext*](https://mastra.ai/en/reference/streaming/workflows/streamVNext),
-- [Resume Stream VNext*](https://mastra.ai/en/reference/streaming/workflows/resumeStreamVNext),
-- [ChunkType Reference*](https://mastra.ai/en/reference/streaming/ChunkType),
+- [Cancel Method\*](https://mastra.ai/en/reference/workflows/run-methods/cancel),
+- [Run Stream VNext\*](https://mastra.ai/en/reference/streaming/workflows/streamVNext),
+- [Resume Stream VNext\*](https://mastra.ai/en/reference/streaming/workflows/resumeStreamVNext),
+- [ChunkType Reference\*](https://mastra.ai/en/reference/streaming/ChunkType),
 - [Batch Run experiment with Scorers+Workflows](https://mastra.ai/en/reference/scorers/run-experiment)
 
 # Cedar Integration URLs

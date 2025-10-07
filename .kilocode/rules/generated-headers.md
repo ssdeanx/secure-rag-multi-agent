@@ -3,12 +3,14 @@
 Decision: canonical embedding dimension: 1536
 
 Model to embedding dimension mapping:
+
 - gemini-embedding-001 => 1536
 - (other models may vary; verify before use)
 
 Agent header template
 
 Template example:
+
 ```typescript
 // Kilocode: Agent Contract
 // owner: team-ai
@@ -24,7 +26,9 @@ Template example:
 ```
 
 Examples
+
 - [`src/mastra/agents/assistant.ts`](src/mastra/agents/assistant.ts:1)
+
 ```typescript
 // Kilocode: Agent Contract
 // owner: team-ai
@@ -37,7 +41,9 @@ Examples
 //  - roles: [role:engineering]
 //  - tenant: engineering
 ```
+
 - [`src/mastra/agents/answerer.agent.ts`](src/mastra/agents/answerer.agent.ts:1)
+
 ```typescript
 // Kilocode: Agent Contract
 // owner: team-ai
@@ -51,7 +57,9 @@ Examples
 //  - roles: [role:reader]
 //  - tenant: global
 ```
+
 - [`src/mastra/agents/retrieve.agent.ts`](src/mastra/agents/retrieve.agent.ts:1)
+
 ```typescript
 // Kilocode: Agent Contract
 // owner: team-ai
@@ -64,7 +72,9 @@ Examples
 //  - roles: [role:reader]
 //  - tenant: global
 ```
+
 - [`src/mastra/agents/verifier.agent.ts`](src/mastra/agents/verifier.agent.ts:1)
+
 ```typescript
 // Kilocode: Agent Contract
 // owner: team-ai
@@ -81,6 +91,7 @@ Examples
 Tools approval template
 
 Template:
+
 ```typescript
 // Kilocode: Tool Approval
 // owner: team-data
@@ -97,7 +108,9 @@ Template:
 ```
 
 Examples
+
 - [`src/mastra/tools/web-scraper-tool.ts`](src/mastra/tools/web-scraper-tool.ts:1)
+
 ```typescript
 // Kilocode: Tool Approval
 // owner: team-data
@@ -113,7 +126,9 @@ Examples
 // approvedBy: TODO
 // approvalDate: TODO
 ```
+
 - [`src/mastra/tools/data-file-manager.ts`](src/mastra/tools/data-file-manager.ts:1)
+
 ```typescript
 // Kilocode: Tool Approval
 // owner: team-data
@@ -128,7 +143,9 @@ Examples
 // approvedBy: TODO
 // approvalDate: TODO
 ```
+
 - [`src/mastra/tools/vector-query.tool.ts`](src/mastra/tools/vector-query.tool.ts:1)
+
 ```typescript
 // Kilocode: Tool Approval
 // owner: team-data
@@ -143,6 +160,7 @@ Examples
 ```
 
 Next steps
+
 - Insert these headers into agent and tool files (one PR per area).
 - Run a validation script to check presence and consistency.
 

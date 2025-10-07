@@ -68,8 +68,8 @@ graph TD
 
 - INT-001: Exported model.
 
-| Export | Model ID | Options | Notes |
-|--------|----------|---------|-------|
+| Export       | Model ID                | Options                                                        | Notes     |
+| ------------ | ----------------------- | -------------------------------------------------------------- | --------- |
 | `openGrokAI` | `x-ai/grok-4-fast:free` | `{includeReasoning, extraBody (reasoning 20k, stream), usage}` | Free tier |
 
 INT notes:
@@ -97,15 +97,15 @@ Edge cases and considerations:
 ### In Agent
 
 ```ts
-import { openGrokAI } from '../config/openrouter';
+import { openGrokAI } from '../config/openrouter'
 
-const agent = new Agent({model: openGrokAI});
+const agent = new Agent({ model: openGrokAI })
 ```
 
 ### Call with Options
 
 ```ts
-const result = await openGrokAI.generate('Query', {stream: true});
+const result = await openGrokAI.generate('Query', { stream: true })
 ```
 
 Best practices:

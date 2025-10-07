@@ -1,27 +1,28 @@
-
-import { Agent } from "@mastra/core/agent";
-import { copywriterOutputSchema } from "../schemas/agent-schemas";
+import { Agent } from '@mastra/core/agent'
+import { copywriterOutputSchema } from '../schemas/agent-schemas'
 //import { createGemini25Provider } from "../config/googleProvider";
 
-import { webScraperTool,
-//  batchWebScraperTool,
-//  siteMapExtractorTool,
-//  linkExtractorTool,
-  htmlToMarkdownTool,
-  contentCleanerTool
-} from "../tools/web-scraper-tool";
-import { google } from '@ai-sdk/google';
-import { log } from "../config/logger";
-import { pgMemory } from "../config/pg-storage";
-import { googleAI } from "../config/google";
+import {
+    webScraperTool,
+    //  batchWebScraperTool,
+    //  siteMapExtractorTool,
+    //  linkExtractorTool,
+    htmlToMarkdownTool,
+    contentCleanerTool,
+} from '../tools/web-scraper-tool'
+import { google } from '@ai-sdk/google'
+import { log } from '../config/logger'
+import { pgMemory } from '../config/pg-storage'
+import { googleAI } from '../config/google'
 
-log.info('Initializing Copywriter Agent...');
+log.info('Initializing Copywriter Agent...')
 
 export const copywriterAgent = new Agent({
-  id: "copywriter",
-  name: "copywriter-agent",
-  description: 'An expert copywriter agent that creates engaging, high-quality content across multiple formats including blog posts, marketing copy, social media content, technical writing, and business communications.',
-  instructions: `
+    id: 'copywriter',
+    name: 'copywriter-agent',
+    description:
+        'An expert copywriter agent that creates engaging, high-quality content across multiple formats including blog posts, marketing copy, social media content, technical writing, and business communications.',
+    instructions: `
 You are an expert copywriter agent specializing in creating engaging, high-quality content across multiple formats and purposes.
 
 <task>
@@ -99,18 +100,18 @@ Produce the final content in well-formatted Markdown with appropriate structure 
 Include relevant metadata such as title, summary, and key points when applicable.
 </output_format>
   `,
-  model: googleAI,
-  memory: pgMemory,
-  tools: {
-    webScraperTool,
-//    batchWebScraperTool,
- //   siteMapExtractorTool,
-//    linkExtractorTool,
-    htmlToMarkdownTool,
-    contentCleanerTool,
-  },
-  scorers: {},
-  workflows: {},
-});
+    model: googleAI,
+    memory: pgMemory,
+    tools: {
+        webScraperTool,
+        //    batchWebScraperTool,
+        //   siteMapExtractorTool,
+        //    linkExtractorTool,
+        htmlToMarkdownTool,
+        contentCleanerTool,
+    },
+    scorers: {},
+    workflows: {},
+})
 
-export { copywriterOutputSchema };
+export { copywriterOutputSchema }

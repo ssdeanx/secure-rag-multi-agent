@@ -7,8 +7,8 @@ The Mastra Governed RAG is built around Mastra's multi-agent orchestration frame
 - **Frontend (Next.js)**: UI for chat, auth, indexing panel. Routes: `/` (chat), `/api/chat`, `/api/index`.
 - **Backend (Mastra)**: Agents and workflows in `src/mastra/`. Services handle data processing/security.
 - **Storage**:
-  - Qdrant: Vector embeddings with security payloads (classification, roles, tags).
-  - LibSQL: Metadata/audit logs (via @mastra/libsql).
+    - Qdrant: Vector embeddings with security payloads (classification, roles, tags).
+    - LibSQL: Metadata/audit logs (via @mastra/libsql).
 - **External**: OpenAI API (embeddings: text-embedding-3-small, LLM: gpt-4o-mini).
 - **CLI**: `src/cli/index.ts` for indexing/querying/demo.
 
@@ -32,30 +32,31 @@ Handles secure queries: Auth → Retrieve → Rerank → Answer → Verify.
 **Steps**:
 
 1. **Authentication** (`authenticationStep`):
-   - Input: `{jwt, question}`.
-   - Uses `AuthenticationService` + `RoleService` to validate JWT, compute `accessFilter` (maxClassification, allowTags from role inheritance).
-   - Output: `{accessFilter, question}`.
+    - Input: `{jwt, question}`.
+    - Uses `AuthenticationService` + `RoleService` to validate JWT, compute `accessFilter` (maxClassification, allowTags from role inheritance).
+    - Output: `{accessFilter, question}`.
 
 2. **Retrieval and Rerank** (`retrievalStep`):
-   - Input: `{accessFilter, question}`.
-   - `retrieveAgent`: Generates query, calls `vector-query.tool` to search Qdrant (filters by accessFilter).
-   - Extracts contexts (chunks with docId, text, score, securityTags, classification).
-   - `rerankAgent`: Reorders contexts by relevance to question.
-   - Output: `{contexts: DocumentContext[], question}`.
+    - Input: `{accessFilter, question}`.
+    - `retrieveAgent`: Generates query, calls `vector-query.tool` to search Qdrant (filters by accessFilter).
+    - Extracts contexts (chunks with docId, text, score, securityTags, classification).
+    - `rerankAgent`: Reorders contexts by relevance to question.
+    - Output: `{contexts: DocumentContext[], question}`.
 
 3. **Answer Generation** (`answerStep`):
-   - Input: `{contexts, question}`.
-   - `answererAgent`: LLM generates answer from contexts, produces citations (docId, source).
-   - If no contexts: "No authorized documents found."
-   - Output: `{answer: {answer: string, citations: []}, contexts, question}`.
+    - Input: `{contexts, question}`.
+    - `answererAgent`: LLM generates answer from contexts, produces citations (docId, source).
+    - If no contexts: "No authorized documents found."
+    - Output: `{answer: {answer: string, citations: []}, contexts, question}`.
 
 4. **Answer Verification** (`verifyStep`):
-   - Input: `{answer, contexts, question}`.
-   - `verifierAgent`: Checks for policy violations (e.g., no unauthorized info leakage).
-   - If fails: Throws error; else passes answer/citations.
-   - Output: `{answer: string, citations: [{docId, source}]}`.
+    - Input: `{answer, contexts, question}`.
+    - `verifierAgent`: Checks for policy violations (e.g., no unauthorized info leakage).
+    - If fails: Throws error; else passes answer/citations.
+    - Output: `{answer: string, citations: [{docId, source}]}`.
 
 **Text Diagram**:
+
 ```
 User Query + JWT → [Auth Service] → accessFilter
                     ↓
@@ -77,16 +78,17 @@ Handles document ingestion: Process → Chunk → Embed → Store.
 **Steps**:
 
 1. **Index Documents** (`indexDocumentsStep`):
-   - Input: `{documents: [{filePath, docId, classification, allowedRoles, tenant, source?}]}`.
-   - Loops over docs:
-     - `DocumentProcessorService`: Read/parse MD (cheerio/marked).
-     - `ChunkingService`: Split into chunks (~500 tokens).
-     - `EmbeddingService`: Generate vectors (OpenAI text-embedding-3-small, dim=1536).
-     - `DocumentIndexingService`: Store in Qdrant with payload: `{docId, versionId, classification, allowedRoles, securityTags, tenant, source}`.
-   - Creates Qdrant collection if needed.
-   - Output: `{indexed: number, failed: number, documents: [{docId, status, chunks?, error?}]}`.
+    - Input: `{documents: [{filePath, docId, classification, allowedRoles, tenant, source?}]}`.
+    - Loops over docs:
+        - `DocumentProcessorService`: Read/parse MD (cheerio/marked).
+        - `ChunkingService`: Split into chunks (~500 tokens).
+        - `EmbeddingService`: Generate vectors (OpenAI text-embedding-3-small, dim=1536).
+        - `DocumentIndexingService`: Store in Qdrant with payload: `{docId, versionId, classification, allowedRoles, securityTags, tenant, source}`.
+    - Creates Qdrant collection if needed.
+    - Output: `{indexed: number, failed: number, documents: [{docId, status, chunks?, error?}]}`.
 
 **Text Diagram**:
+
 ```
 Documents (corpus/*.md) → [Processor Service] → parsed text
                             ↓

@@ -27,14 +27,13 @@ Client-side login/signup page for the application, handling form submission to /
 - ARC-001: Design patterns: Controlled form component with async submission.
 
 - ARC-002: Dependencies:
+    - React (useState for form/error/loading)
 
-  - React (useState for form/error/loading)
+    - Next.js (fetch for API)
 
-  - Next.js (fetch for API)
+    - shadcn/ui (Button)
 
-  - shadcn/ui (Button)
-
-  - Local: extractToken util
+    - Local: extractToken util
 
 - ARC-003: Interactions: Submits to /api/auth/login or /signup; stores token; dispatches 'auth:login' event.
 
@@ -81,17 +80,17 @@ graph TD
 
 - INT-001: Page component; no props.
 
-| Function | Purpose | Parameters | Return Type | Usage Notes |
-|----------|---------|------------|-------------|-------------|
+| Function     | Purpose            | Parameters        | Return Type     | Usage Notes                            |
+| ------------ | ------------------ | ----------------- | --------------- | -------------------------------------- |
 | `handleAuth` | Submit form to API | `React.FormEvent` | `Promise<void>` | Prevents default; handles login/signup |
 
 ### Internal Types
 
 ```tsx
 interface AuthBody {
-  email: string;
-  password: string;
-  role?: string;
+    email: string
+    password: string
+    role?: string
 }
 ```
 
@@ -121,10 +120,10 @@ Edge cases and considerations:
 
 ```tsx
 // app/login/page.tsx
-import LoginPage from './LoginPage'; // This is the component
+import LoginPage from './LoginPage' // This is the component
 
 export default function Login() {
-  return <LoginPage />;
+    return <LoginPage />
 }
 ```
 
@@ -132,13 +131,13 @@ export default function Login() {
 
 ```tsx
 useEffect(() => {
-  const handleAuth = (e) => {
-    console.log('Logged in:', e.detail);
-    // Redirect or update UI
-  };
-  window.addEventListener('auth:login', handleAuth);
-  return () => window.removeEventListener('auth:login', handleAuth);
-}, []);
+    const handleAuth = (e) => {
+        console.log('Logged in:', e.detail)
+        // Redirect or update UI
+    }
+    window.addEventListener('auth:login', handleAuth)
+    return () => window.removeEventListener('auth:login', handleAuth)
+}, [])
 ```
 
 Best practices:
@@ -169,6 +168,6 @@ Best practices:
 
 - REF-004: Troubleshooting: No token — check response structure.
 
-- REF-005: Related: /api/auth/* endpoints
+- REF-005: Related: /api/auth/\* endpoints
 
 - REF-006: Change history: 1.0 (2025-09-23)

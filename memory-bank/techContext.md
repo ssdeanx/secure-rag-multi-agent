@@ -362,16 +362,16 @@ This allows frontend and backend to run independently with separate hot reload.
 
 ```json
 {
-  "@mastra/core": "^0.17.0",
-  "@qdrant/js-client-rest": "^1.12.0",
-  "@ai-sdk/google": "^1.1.9",
-  "@ai-sdk/openai": "^1.0.15",
-  "ai": "^4.1.4",
-  "next": "15.5.3",
-  "react": "^19.1.1",
-  "react-dom": "^19.1.1",
-  "zod": "^3.24.2",
-  "jsonwebtoken": "^9.0.2"
+    "@mastra/core": "^0.17.0",
+    "@qdrant/js-client-rest": "^1.12.0",
+    "@ai-sdk/google": "^1.1.9",
+    "@ai-sdk/openai": "^1.0.15",
+    "ai": "^4.1.4",
+    "next": "15.5.3",
+    "react": "^19.1.1",
+    "react-dom": "^19.1.1",
+    "zod": "^3.24.2",
+    "jsonwebtoken": "^9.0.2"
 }
 ```
 
@@ -379,12 +379,12 @@ This allows frontend and backend to run independently with separate hot reload.
 
 ```json
 {
-  "typescript": "5.9.2",
-  "eslint": "^9.18.0",
-  "prettier": "^3.4.2",
-  "vitest": "^2.1.8",
-  "@types/node": "^22.10.5",
-  "@types/react": "^19.0.11"
+    "typescript": "5.9.2",
+    "eslint": "^9.18.0",
+    "prettier": "^3.4.2",
+    "vitest": "^2.1.8",
+    "@types/node": "^22.10.5",
+    "@types/react": "^19.0.11"
 }
 ```
 
@@ -400,10 +400,10 @@ This allows frontend and backend to run independently with separate hot reload.
 
 - **Git**: Source control
 - **Branches**:
-  - `main`: Production-ready code
-  - `develop`: Integration branch
-  - `feature/*`: Feature branches
-  - `fix/*`: Bug fix branches
+    - `main`: Production-ready code
+    - `develop`: Integration branch
+    - `feature/*`: Feature branches
+    - `fix/*`: Bug fix branches
 
 ### Release Process
 
@@ -420,18 +420,18 @@ This allows frontend and backend to run independently with separate hot reload.
 
 ```json
 {
-  "compilerOptions": {
-    "strict": true,
-    "target": "ES2022",
-    "lib": ["ES2022"],
-    "module": "ESNext",
-    "moduleResolution": "bundler",
-    "jsx": "preserve",
-    "incremental": true,
-    "esModuleInterop": true,
-    "skipLibCheck": true,
-    "forceConsistentCasingInFileNames": true
-  }
+    "compilerOptions": {
+        "strict": true,
+        "target": "ES2022",
+        "lib": ["ES2022"],
+        "module": "ESNext",
+        "moduleResolution": "bundler",
+        "jsx": "preserve",
+        "incremental": true,
+        "esModuleInterop": true,
+        "skipLibCheck": true,
+        "forceConsistentCasingInFileNames": true
+    }
 }
 ```
 
@@ -478,27 +478,27 @@ This allows frontend and backend to run independently with separate hot reload.
 
 ```yaml
 services:
-  qdrant:
-    image: qdrant/qdrant:latest
-    ports:
-      - '6333:6333'
-      - '6334:6334'
-    volumes:
-      - ./qdrant_storage:/qdrant/storage
-    environment:
-      - QDRANT__SERVICE__HTTP_PORT=6333
+    qdrant:
+        image: qdrant/qdrant:latest
+        ports:
+            - '6333:6333'
+            - '6334:6334'
+        volumes:
+            - ./qdrant_storage:/qdrant/storage
+        environment:
+            - QDRANT__SERVICE__HTTP_PORT=6333
 ```
 
 ### Redis Configuration
 
 ```yaml
 services:
-  redis:
-    image: redis:alpine
-    ports:
-      - '6379:6379'
-    volumes:
-      - ./redis_data:/data
+    redis:
+        image: redis:alpine
+        ports:
+            - '6379:6379'
+        volumes:
+            - ./redis_data:/data
 ```
 
 ## API Integrations

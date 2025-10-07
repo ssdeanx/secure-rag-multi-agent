@@ -23,13 +23,13 @@ Custom React Flow node used in the roadmap canvas. Supports rich presentation in
 ## 2. Public Types & Data
 
 - `FeatureNodeData` (core data shape):
-  - `title: string`
-  - `description: string`
-  - `upvotes: number`
-  - `comments: Comment[]` ({id, author, text, timestamp?})
-  - `status: 'done'|'planned'|'backlog'|'in progress'`
-  - `nodeType?: NodeType` (feature/bug/improvement/component/etc.)
-  - optional layout fields: `width`, `height`, `packageVersion`, `diff`
+    - `title: string`
+    - `description: string`
+    - `upvotes: number`
+    - `comments: Comment[]` ({id, author, text, timestamp?})
+    - `status: 'done'|'planned'|'backlog'|'in progress'`
+    - `nodeType?: NodeType` (feature/bug/improvement/component/etc.)
+    - optional layout fields: `width`, `height`, `packageVersion`, `diff`
 
 ## 3. Component Responsibilities & Behavior
 

@@ -1,17 +1,18 @@
-import { Agent } from "@mastra/core/agent";
-import { editorOutputSchema } from "../schemas/agent-schemas";
-import { google } from '@ai-sdk/google';
-import { log } from "../config/logger";
-import { pgMemory } from "../config/pg-storage";
-import { googleAI } from "../config/google";
+import { Agent } from '@mastra/core/agent'
+import { editorOutputSchema } from '../schemas/agent-schemas'
+import { google } from '@ai-sdk/google'
+import { log } from '../config/logger'
+import { pgMemory } from '../config/pg-storage'
+import { googleAI } from '../config/google'
 
-log.info('Initializing Editor Agent...');
+log.info('Initializing Editor Agent...')
 
 export const editorAgent = new Agent({
-  id: "editor",
-  name: "Editor",
-  description: 'A versatile content editor that improves clarity, coherence, and quality across various content types including technical writing, documentation, emails, reports, and creative content.',
-  instructions: `
+    id: 'editor',
+    name: 'Editor',
+    description:
+        'A versatile content editor that improves clarity, coherence, and quality across various content types including technical writing, documentation, emails, reports, and creative content.',
+    instructions: `
 <role>
 You are an expert content editor, tasked with refining and improving written content across multiple domains and formats.
 </role>
@@ -89,9 +90,9 @@ You must respond with a JSON object in the following format:
 }
 </output_format>
   `,
-  model: googleAI,
-  memory: pgMemory,
-  scorers: {},
-  workflows: {},
-});
-export { editorOutputSchema };
+    model: googleAI,
+    memory: pgMemory,
+    scorers: {},
+    workflows: {},
+})
+export { editorOutputSchema }

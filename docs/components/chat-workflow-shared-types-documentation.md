@@ -83,11 +83,11 @@ graph TD
 
 - INT-001: Exported schemas/types.
 
-| Schema/Type | Purpose | Key Fields | Notes |
-|-------------|---------|------------|-------|
-| `MessageSchema` | Chat message | `content, role` | Zod object |
-| `ActionSchema` | State action | `type, stateKey, setterKey, args` | Base for roadmap actions |
-| `ChatAgentResponseSchema` | Agent output | `content, action?` | Optional action |
+| Schema/Type               | Purpose      | Key Fields                        | Notes                    |
+| ------------------------- | ------------ | --------------------------------- | ------------------------ |
+| `MessageSchema`           | Chat message | `content, role`                   | Zod object               |
+| `ActionSchema`            | State action | `type, stateKey, setterKey, args` | Base for roadmap actions |
+| `ChatAgentResponseSchema` | Agent output | `content, action?`                | Optional action          |
 
 ### Roadmap Actions
 
@@ -122,17 +122,22 @@ Edge cases and considerations:
 ### Schema Validation
 
 ```ts
-const input = ChatInputSchema.parse({prompt: 'Hi'});
-const message: Message = {content: 'Hi', role: 'user'};
+const input = ChatInputSchema.parse({ prompt: 'Hi' })
+const message: Message = { content: 'Hi', role: 'user' }
 ```
 
 ### Agent Response Typing
 
 ```ts
 const response: ChatAgentResponse = {
-  content: 'Added',
-  action: {type: 'setState', stateKey: 'nodes', setterKey: 'addNode', args: [node]}
-};
+    content: 'Added',
+    action: {
+        type: 'setState',
+        stateKey: 'nodes',
+        setterKey: 'addNode',
+        args: [node],
+    },
+}
 ```
 
 Best practices:

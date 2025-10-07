@@ -27,9 +27,8 @@ Barrel export file for the Mastra source directory. Provides a single entry poin
 - ARC-001: Design patterns: Barrel export pattern. Single file that re-exports from multiple modules.
 
 - ARC-002: Dependencies:
-
-  - `./mastra/index`: Mastra runtime exports
-  - `./types`: Core type definitions
+    - `./mastra/index`: Mastra runtime exports
+    - `./types`: Core type definitions
 
 - ARC-003: Interactions: Pure re-exports with no additional logic.
 
@@ -62,10 +61,10 @@ graph TD
 
 - INT-001: Re-exports all public APIs from dependent modules.
 
-| Export | Source | Purpose | Usage Notes |
-|--------|--------|---------|-------------|
-| `*` | `./mastra/index` | Mastra runtime, agents, workflows | Complete Mastra API |
-| `*` | `./types` | Core type definitions | TypeScript interfaces |
+| Export | Source           | Purpose                           | Usage Notes           |
+| ------ | ---------------- | --------------------------------- | --------------------- |
+| `*`    | `./mastra/index` | Mastra runtime, agents, workflows | Complete Mastra API   |
+| `*`    | `./types`        | Core type definitions             | TypeScript interfaces |
 
 ## 4. Implementation Details
 
@@ -83,15 +82,15 @@ Corner cases and considerations:
 ### Importing from source index
 
 ```ts
-import { Mastra, Agent, createWorkflow } from '@/src';
+import { Mastra, Agent, createWorkflow } from '@/src'
 // or
-import * as Mastra from '@/src';
+import * as Mastra from '@/src'
 ```
 
 ### Type imports
 
 ```ts
-import type { Principal, AccessFilter } from '@/src';
+import type { Principal, AccessFilter } from '@/src'
 ```
 
 ## 6. Quality Attributes
@@ -105,23 +104,23 @@ import type { Principal, AccessFilter } from '@/src';
 ## 7. Reference Information
 
 - REF-001: Dependencies (approximate):
-  - `./mastra/index`
-  - `./types`
+    - `./mastra/index`
+    - `./types`
 
 - REF-002: Configuration
-  - No configuration required.
+    - No configuration required.
 
 - REF-003: Testing guidelines
-  - Import resolution testing.
-  - Type checking of re-exports.
+    - Import resolution testing.
+    - Type checking of re-exports.
 
 - REF-004: Troubleshooting
-  - Import errors indicate missing dependencies.
-  - Update exports when adding new modules.
+    - Import errors indicate missing dependencies.
+    - Update exports when adding new modules.
 
 - REF-005: Related docs
-  - `src/mastra/index.ts` - Mastra runtime exports
-  - `src/types.ts` - Core type definitions
+    - `src/mastra/index.ts` - Mastra runtime exports
+    - `src/types.ts` - Core type definitions
 
 - REF-006: Change history
-  - 1.0 (2025-09-23) - Initial documentation generated
+    - 1.0 (2025-09-23) - Initial documentation generated

@@ -27,8 +27,7 @@ Configuration module for Google Vertex AI Gemini models. Provides pre-configured
 - ARC-001: Design patterns: Configuration module pattern. Exports pre-configured model instances.
 
 - ARC-002: Dependencies:
-
-  - `@ai-sdk/google-vertex`: createVertex function
+    - `@ai-sdk/google-vertex`: createVertex function
 
 - ARC-003: Interactions: Validates environment on import, creates Vertex client, exports model instances.
 
@@ -63,12 +62,12 @@ graph TD
 
 - INT-001: Exports model instances and default client.
 
-| Export | Purpose | Type | Usage Notes |
-|--------|---------|------|-------------|
-| `vertexAIPro` | Gemini 2.5 Pro model | `VertexModel` | High-performance model |
-| `vertexAIFlash` | Gemini 2.5 Flash model | `VertexModel` | Balanced performance/cost |
-| `vertexAIFlashLite` | Gemini 2.5 Flash Lite model | `VertexModel` | Cost-optimized model |
-| `default` | Vertex client instance | `VertexClient` | For custom model creation |
+| Export              | Purpose                     | Type           | Usage Notes               |
+| ------------------- | --------------------------- | -------------- | ------------------------- |
+| `vertexAIPro`       | Gemini 2.5 Pro model        | `VertexModel`  | High-performance model    |
+| `vertexAIFlash`     | Gemini 2.5 Flash model      | `VertexModel`  | Balanced performance/cost |
+| `vertexAIFlashLite` | Gemini 2.5 Flash Lite model | `VertexModel`  | Cost-optimized model      |
+| `default`           | Vertex client instance      | `VertexClient` | For custom model creation |
 
 ## 4. Implementation Details
 
@@ -88,31 +87,31 @@ Corner cases and considerations:
 ### Using pre-configured models
 
 ```ts
-import { vertexAIPro, vertexAIFlash } from '@/src/mastra/config/vertex';
+import { vertexAIPro, vertexAIFlash } from '@/src/mastra/config/vertex'
 
 // Use in agent configuration
 const agent = createAgent({
-  name: 'ResearchAgent',
-  model: vertexAIPro, // High-quality responses
-  // ...
-});
+    name: 'ResearchAgent',
+    model: vertexAIPro, // High-quality responses
+    // ...
+})
 
 // Use for cost-effective tasks
 const summaryAgent = createAgent({
-  name: 'SummaryAgent', 
-  model: vertexAIFlash, // Balanced performance
-  // ...
-});
+    name: 'SummaryAgent',
+    model: vertexAIFlash, // Balanced performance
+    // ...
+})
 ```
 
 ### Custom model creation
 
 ```ts
-import vertex from '@/src/mastra/config/vertex';
+import vertex from '@/src/mastra/config/vertex'
 
 const customModel = vertex('gemini-2.5-pro', {
-  // custom options
-});
+    // custom options
+})
 ```
 
 ### Environment setup
@@ -137,24 +136,24 @@ GOOGLE_APPLICATION_CREDENTIALS=/path/to/service-account.json
 ## 7. Reference Information
 
 - REF-001: Dependencies (approximate):
-  - @ai-sdk/google-vertex (^1.0.0)
+    - @ai-sdk/google-vertex (^1.0.0)
 
 - REF-002: Configuration
-  - GOOGLE_CLOUD_PROJECT (required)
-  - GOOGLE_CLOUD_LOCATION (optional, default: us-central1)
-  - GOOGLE_APPLICATION_CREDENTIALS (optional, for service account)
+    - GOOGLE_CLOUD_PROJECT (required)
+    - GOOGLE_CLOUD_LOCATION (optional, default: us-central1)
+    - GOOGLE_APPLICATION_CREDENTIALS (optional, for service account)
 
 - REF-003: Testing guidelines
-  - Mock environment variables for unit tests.
-  - Test error handling for missing project ID.
+    - Mock environment variables for unit tests.
+    - Test error handling for missing project ID.
 
 - REF-004: Troubleshooting
-  - Issue: "GOOGLE_CLOUD_PROJECT is required" — set environment variable.
-  - Issue: Auth errors — verify credentials and permissions.
+    - Issue: "GOOGLE_CLOUD_PROJECT is required" — set environment variable.
+    - Issue: Auth errors — verify credentials and permissions.
 
 - REF-005: Related docs
-  - Google Cloud Vertex AI documentation
-  - Other AI config files (openai.ts, google.ts, etc.)
+    - Google Cloud Vertex AI documentation
+    - Other AI config files (openai.ts, google.ts, etc.)
 
 - REF-006: Change history
-  - 1.0 (2025-09-23) - Initial documentation generated
+    - 1.0 (2025-09-23) - Initial documentation generated

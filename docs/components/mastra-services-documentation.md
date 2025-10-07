@@ -1,11 +1,20 @@
 ---
-title: "Mastra Services - Technical Documentation"
-component_path: "src/mastra/services"
-version: "1.0"
-date_created: "2025-09-23"
-last_updated: "2025-09-23"
-owner: "AI Team"
-tags: ["service", "authentication", "validation", "role-management", "vector-query", "security", "infrastructure"]
+title: 'Mastra Services - Technical Documentation'
+component_path: 'src/mastra/services'
+version: '1.0'
+date_created: '2025-09-23'
+last_updated: '2025-09-23'
+owner: 'AI Team'
+tags:
+    [
+        'service',
+        'authentication',
+        'validation',
+        'role-management',
+        'vector-query',
+        'security',
+        'infrastructure',
+    ]
 ---
 
 # Mastra Services Documentation
@@ -101,21 +110,21 @@ graph TD
 - INT-002: TypeScript interfaces for data structures
 - INT-003: Promise-based async operations
 
-| Method/Property | Purpose | Parameters | Return Type | Usage Notes |
-|---|---|---|---|---|
-| `AuthenticationService.verifyJWT()` | Validate JWT token and extract claims | `token: string` | `Promise<JWTClaims>` | Throws on invalid/expired tokens |
-| `AuthenticationService.generateAccessPolicy()` | Generate access filter from claims | `claims: JWTClaims` | `AccessFilter` | Uses role hierarchy expansion |
-| `AuthenticationService.authenticateAndAuthorize()` | Complete auth flow | `token: string` | `Promise<{claims, accessFilter}>` | Combines verification and policy generation |
-| `ValidationService.validateEnvironmentVariable()` | Check env var presence | `name: string, value?: string` | `string` | Throws if missing |
-| `ValidationService.validateJWTToken()` | Validate JWT format | `jwt?: string` | `string` | Throws if invalid |
-| `ValidationService.validateQuestion()` | Check question validity | `question?: string` | `string` | Throws if empty |
-| `RoleService.expandRoles()` | Expand roles with inheritance | `userRoles: string[]` | `string[]` | Returns sorted by privilege level |
-| `RoleService.canAccessRole()` | Check role-based access | `userRoles: string[], requiredRole: string` | `boolean` | Uses role hierarchy |
-| `RoleService.generateAccessTags()` | Generate query filter tags | `userRoles: string[], tenant?: string` | `{allowTags, userRoles, expandedRoles}` | Includes tenant filtering |
-| `VectorQueryService.buildSecurityFilters()` | Create security filters | `allowTags: string[], maxClassification` | `SecurityFilters` | Maps classification to allowed classes |
-| `VectorQueryService.generateQueryEmbedding()` | Create text embedding | `question: string` | `Promise<number[]>` | Uses Google AI embeddings |
-| `VectorQueryService.searchWithFilters()` | Execute filtered search | `embedding, filters, vectorStore, indexName, topK, minSimilarity` | `Promise<QueryResult[]>` | Applies security and similarity filtering |
-| `VectorQueryService.query()` | Main query interface | `input: QueryInput, vectorStore, indexName` | `Promise<QueryResult[]>` | Orchestrates full query process |
+| Method/Property                                    | Purpose                               | Parameters                                                        | Return Type                             | Usage Notes                                 |
+| -------------------------------------------------- | ------------------------------------- | ----------------------------------------------------------------- | --------------------------------------- | ------------------------------------------- |
+| `AuthenticationService.verifyJWT()`                | Validate JWT token and extract claims | `token: string`                                                   | `Promise<JWTClaims>`                    | Throws on invalid/expired tokens            |
+| `AuthenticationService.generateAccessPolicy()`     | Generate access filter from claims    | `claims: JWTClaims`                                               | `AccessFilter`                          | Uses role hierarchy expansion               |
+| `AuthenticationService.authenticateAndAuthorize()` | Complete auth flow                    | `token: string`                                                   | `Promise<{claims, accessFilter}>`       | Combines verification and policy generation |
+| `ValidationService.validateEnvironmentVariable()`  | Check env var presence                | `name: string, value?: string`                                    | `string`                                | Throws if missing                           |
+| `ValidationService.validateJWTToken()`             | Validate JWT format                   | `jwt?: string`                                                    | `string`                                | Throws if invalid                           |
+| `ValidationService.validateQuestion()`             | Check question validity               | `question?: string`                                               | `string`                                | Throws if empty                             |
+| `RoleService.expandRoles()`                        | Expand roles with inheritance         | `userRoles: string[]`                                             | `string[]`                              | Returns sorted by privilege level           |
+| `RoleService.canAccessRole()`                      | Check role-based access               | `userRoles: string[], requiredRole: string`                       | `boolean`                               | Uses role hierarchy                         |
+| `RoleService.generateAccessTags()`                 | Generate query filter tags            | `userRoles: string[], tenant?: string`                            | `{allowTags, userRoles, expandedRoles}` | Includes tenant filtering                   |
+| `VectorQueryService.buildSecurityFilters()`        | Create security filters               | `allowTags: string[], maxClassification`                          | `SecurityFilters`                       | Maps classification to allowed classes      |
+| `VectorQueryService.generateQueryEmbedding()`      | Create text embedding                 | `question: string`                                                | `Promise<number[]>`                     | Uses Google AI embeddings                   |
+| `VectorQueryService.searchWithFilters()`           | Execute filtered search               | `embedding, filters, vectorStore, indexName, topK, minSimilarity` | `Promise<QueryResult[]>`                | Applies security and similarity filtering   |
+| `VectorQueryService.query()`                       | Main query interface                  | `input: QueryInput, vectorStore, indexName`                       | `Promise<QueryResult[]>`                | Orchestrates full query process             |
 
 ## 4. Implementation Details
 
@@ -131,33 +140,38 @@ graph TD
 
 ```typescript
 // JWT Authentication
-const { claims, accessFilter } = await AuthenticationService.authenticateAndAuthorize(token);
+const { claims, accessFilter } =
+    await AuthenticationService.authenticateAndAuthorize(token)
 
 // Role-based access check
-const canAccess = RoleService.canAccessRole(userRoles, 'admin');
+const canAccess = RoleService.canAccessRole(userRoles, 'admin')
 
 // Vector query with security
-const results = await VectorQueryService.query({
-  question: "What is the company policy?",
-  allowTags: ["hr", "policies"],
-  maxClassification: "internal"
-}, vectorStore, "documents");
+const results = await VectorQueryService.query(
+    {
+        question: 'What is the company policy?',
+        allowTags: ['hr', 'policies'],
+        maxClassification: 'internal',
+    },
+    vectorStore,
+    'documents'
+)
 ```
 
 ### Advanced Usage
 
 ```typescript
 // Custom validation
-ValidationService.validateEnvironmentVariable("API_KEY", process.env.API_KEY);
+ValidationService.validateEnvironmentVariable('API_KEY', process.env.API_KEY)
 
 // Role hierarchy expansion
-const expandedRoles = RoleService.expandRoles(['employee']); // Returns ['employee', 'user', 'public']
+const expandedRoles = RoleService.expandRoles(['employee']) // Returns ['employee', 'user', 'public']
 
 // Security filter building
 const filters = VectorQueryService.buildSecurityFilters(
-  ['role:hr', 'role:employee'], 
-  'internal'
-); // Returns allowed classes for internal and public
+    ['role:hr', 'role:employee'],
+    'internal'
+) // Returns allowed classes for internal and public
 ```
 
 - USE-001: Authentication and authorization workflows

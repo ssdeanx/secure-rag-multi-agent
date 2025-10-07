@@ -1,11 +1,11 @@
 ---
-title: "Learning Extraction Agent"
-description: "An expert agent that analyzes search results to extract key insights and generate follow-up questions for deeper research understanding"
-component_type: "Mastra Agent"
-framework: "Mastra"
-language: "TypeScript"
-platform: "Node.js"
-tags: ["agent", "learning", "insights", "research", "analysis", "follow-up"]
+title: 'Learning Extraction Agent'
+description: 'An expert agent that analyzes search results to extract key insights and generate follow-up questions for deeper research understanding'
+component_type: 'Mastra Agent'
+framework: 'Mastra'
+language: 'TypeScript'
+platform: 'Node.js'
+tags: ['agent', 'learning', 'insights', 'research', 'analysis', 'follow-up']
 ---
 
 # Learning Extraction Agent (`src/mastra/agents/learningExtractionAgent.ts`)
@@ -140,12 +140,15 @@ graph TB
 ### Agent Properties
 
 #### `id: "learning"`
+
 Unique identifier for the agent within the Mastra system.
 
 #### `name: "Learning Extraction Agent"`
+
 Human-readable name for the agent.
 
 #### `description`
+
 "An expert at analyzing search results and extracting key insights to deepen research understanding."
 
 ### Core Expertise
@@ -184,8 +187,8 @@ The agent operates under strict guidelines for insight extraction:
 
 ```json
 {
-  "learning": "The most critical factor for success is X, as it directly impacts Y.",
-  "followUpQuestion": "What are the specific metrics to measure the impact of X on Y?"
+    "learning": "The most critical factor for success is X, as it directly impacts Y.",
+    "followUpQuestion": "What are the specific metrics to measure the impact of X on Y?"
 }
 ```
 
@@ -297,7 +300,7 @@ The agent includes comprehensive evaluation metrics:
 ### Memory Configuration
 
 ```typescript
-const store = createResearchMemory();
+const store = createResearchMemory()
 // Uses LibSQL for persistent learning extraction conversation storage
 ```
 
@@ -327,36 +330,36 @@ GOOGLE_GENERATIVE_AI_API_KEY=your-api-key
 ### Extraction Quality Issues
 
 1. **Poor Insight Selection**
-   - Review extraction rules for actionable insights
-   - Ensure focus on most valuable information
-   - Validate research context consideration
+    - Review extraction rules for actionable insights
+    - Ensure focus on most valuable information
+    - Validate research context consideration
 
 2. **Irrelevant Questions**
-   - Check question focus and depth requirements
-   - Ensure alignment with extracted learning
-   - Verify research advancement potential
+    - Check question focus and depth requirements
+    - Ensure alignment with extracted learning
+    - Verify research advancement potential
 
 3. **Inconsistent Quality**
-   - Validate application of extraction criteria
-   - Check for rule adherence
-   - Review quality metric results
+    - Validate application of extraction criteria
+    - Check for rule adherence
+    - Review quality metric results
 
 ### Technical Issues
 
 1. **JSON Format Errors**
-   - Validate JSON structure compliance
-   - Ensure both required fields are present
-   - Check for proper string formatting
+    - Validate JSON structure compliance
+    - Ensure both required fields are present
+    - Check for proper string formatting
 
 2. **Model Response Issues**
-   - Verify API key configuration
-   - Check model availability and performance
-   - Monitor extraction quality consistency
+    - Verify API key configuration
+    - Check model availability and performance
+    - Monitor extraction quality consistency
 
 3. **Memory Storage Problems**
-   - Check LibSQL connectivity
-   - Verify storage configuration
-   - Ensure proper session management
+    - Check LibSQL connectivity
+    - Verify storage configuration
+    - Ensure proper session management
 
 ## References
 

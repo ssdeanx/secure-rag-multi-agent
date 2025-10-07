@@ -1,4 +1,3 @@
-
 # Dark Theme Explorations
 
 Here are 30 different cutting-edge dark theme explorations for the project, based on modern UI/UX design research. Each theme provides a unique aesthetic and uses the OKLCH color space for vibrant, consistent colors, following the full structure of the project's CSS variables.
@@ -11,25 +10,25 @@ Here are 30 different cutting-edge dark theme explorations for the project, base
 
 ```css
 .dark {
-  --background: oklch(10% 0.01 150);
-  --foreground: oklch(85% 0.18 145);
-  --card: oklch(15% 0.02 150);
-  --card-foreground: oklch(85% 0.18 145);
-  --popover: oklch(12% 0.015 150);
-  --popover-foreground: oklch(85% 0.18 145);
-  --primary: oklch(90% 0.2 145);
-  --primary-foreground: oklch(10% 0.01 150);
-  --secondary: oklch(60% 0.1 150);
-  --secondary-foreground: oklch(95% 0.18 145);
-  --muted: oklch(40% 0.05 150);
-  --muted-foreground: oklch(65% 0.1 150);
-  --accent: oklch(95% 0.15 140);
-  --accent-foreground: oklch(10% 0.01 150);
-  --destructive: oklch(60% 0.2 20);
-  --destructive-foreground: oklch(95% 0.05 20);
-  --border: oklch(30% 0.05 150);
-  --input: oklch(25% 0.04 150);
-  --ring: oklch(90% 0.2 145);
+    --background: oklch(10% 0.01 150);
+    --foreground: oklch(85% 0.18 145);
+    --card: oklch(15% 0.02 150);
+    --card-foreground: oklch(85% 0.18 145);
+    --popover: oklch(12% 0.015 150);
+    --popover-foreground: oklch(85% 0.18 145);
+    --primary: oklch(90% 0.2 145);
+    --primary-foreground: oklch(10% 0.01 150);
+    --secondary: oklch(60% 0.1 150);
+    --secondary-foreground: oklch(95% 0.18 145);
+    --muted: oklch(40% 0.05 150);
+    --muted-foreground: oklch(65% 0.1 150);
+    --accent: oklch(95% 0.15 140);
+    --accent-foreground: oklch(10% 0.01 150);
+    --destructive: oklch(60% 0.2 20);
+    --destructive-foreground: oklch(95% 0.05 20);
+    --border: oklch(30% 0.05 150);
+    --input: oklch(25% 0.04 150);
+    --ring: oklch(90% 0.2 145);
 }
 ```
 
@@ -41,25 +40,25 @@ Here are 30 different cutting-edge dark theme explorations for the project, base
 
 ```css
 .dark {
-  --background: oklch(15% 0.05 275);
-  --foreground: oklch(90% 0.02 270);
-  --card: oklch(20% 0.05 275);
-  --card-foreground: oklch(90% 0.02 270);
-  --popover: oklch(18% 0.05 275);
-  --popover-foreground: oklch(90% 0.02 270);
-  --primary: oklch(75% 0.15 280);
-  --primary-foreground: oklch(98% 0.01 280);
-  --secondary: oklch(40% 0.08 275);
-  --secondary-foreground: oklch(90% 0.02 270);
-  --muted: oklch(60% 0.04 270);
-  --muted-foreground: oklch(75% 0.03 270);
-  --accent: oklch(90% 0.15 90);
-  --accent-foreground: oklch(15% 0.05 90);
-  --destructive: oklch(65% 0.22 25);
-  --destructive-foreground: oklch(95% 0.05 25);
-  --border: oklch(25% 0.05 275);
-  --input: oklch(22% 0.05 275);
-  --ring: oklch(90% 0.15 90);
+    --background: oklch(15% 0.05 275);
+    --foreground: oklch(90% 0.02 270);
+    --card: oklch(20% 0.05 275);
+    --card-foreground: oklch(90% 0.02 270);
+    --popover: oklch(18% 0.05 275);
+    --popover-foreground: oklch(90% 0.02 270);
+    --primary: oklch(75% 0.15 280);
+    --primary-foreground: oklch(98% 0.01 280);
+    --secondary: oklch(40% 0.08 275);
+    --secondary-foreground: oklch(90% 0.02 270);
+    --muted: oklch(60% 0.04 270);
+    --muted-foreground: oklch(75% 0.03 270);
+    --accent: oklch(90% 0.15 90);
+    --accent-foreground: oklch(15% 0.05 90);
+    --destructive: oklch(65% 0.22 25);
+    --destructive-foreground: oklch(95% 0.05 25);
+    --border: oklch(25% 0.05 275);
+    --input: oklch(22% 0.05 275);
+    --ring: oklch(90% 0.15 90);
 }
 ```
 
@@ -71,25 +70,25 @@ Here are 30 different cutting-edge dark theme explorations for the project, base
 
 ```css
 .dark {
-  --background: oklch(12% 0.01 230);
-  --foreground: oklch(95% 0.005 230);
-  --card: oklch(18% 0.015 230);
-  --card-foreground: oklch(95% 0.005 230);
-  --popover: oklch(15% 0.01 230);
-  --popover-foreground: oklch(95% 0.005 230);
-  --primary: oklch(80% 0.2 220);
-  --primary-foreground: oklch(10% 0.02 220);
-  --secondary: oklch(50% 0.1 230);
-  --secondary-foreground: oklch(98% 0.01 230);
-  --muted: oklch(65% 0.02 230);
-  --muted-foreground: oklch(80% 0.01 230);
-  --accent: oklch(85% 0.15 180);
-  --accent-foreground: oklch(10% 0.02 180);
-  --destructive: oklch(60% 0.25 20);
-  --destructive-foreground: oklch(95% 0.05 20);
-  --border: oklch(30% 0.03 230);
-  --input: oklch(25% 0.02 230);
-  --ring: oklch(80% 0.2 220);
+    --background: oklch(12% 0.01 230);
+    --foreground: oklch(95% 0.005 230);
+    --card: oklch(18% 0.015 230);
+    --card-foreground: oklch(95% 0.005 230);
+    --popover: oklch(15% 0.01 230);
+    --popover-foreground: oklch(95% 0.005 230);
+    --primary: oklch(80% 0.2 220);
+    --primary-foreground: oklch(10% 0.02 220);
+    --secondary: oklch(50% 0.1 230);
+    --secondary-foreground: oklch(98% 0.01 230);
+    --muted: oklch(65% 0.02 230);
+    --muted-foreground: oklch(80% 0.01 230);
+    --accent: oklch(85% 0.15 180);
+    --accent-foreground: oklch(10% 0.02 180);
+    --destructive: oklch(60% 0.25 20);
+    --destructive-foreground: oklch(95% 0.05 20);
+    --border: oklch(30% 0.03 230);
+    --input: oklch(25% 0.02 230);
+    --ring: oklch(80% 0.2 220);
 }
 ```
 
@@ -101,25 +100,25 @@ Here are 30 different cutting-edge dark theme explorations for the project, base
 
 ```css
 .dark {
-  --background: oklch(15% 0.05 150);
-  --foreground: oklch(92% 0.03 110);
-  --card: oklch(20% 0.05 145);
-  --card-foreground: oklch(92% 0.03 110);
-  --popover: oklch(18% 0.05 145);
-  --popover-foreground: oklch(92% 0.03 110);
-  --primary: oklch(85% 0.15 100);
-  --primary-foreground: oklch(20% 0.05 100);
-  --secondary: oklch(45% 0.08 130);
-  --secondary-foreground: oklch(95% 0.04 110);
-  --muted: oklch(65% 0.05 120);
-  --muted-foreground: oklch(80% 0.04 115);
-  --accent: oklch(75% 0.18 80);
-  --accent-foreground: oklch(15% 0.05 80);
-  --destructive: oklch(65% 0.22 25);
-  --destructive-foreground: oklch(95% 0.05 25);
-  --border: oklch(25% 0.05 140);
-  --input: oklch(22% 0.05 140);
-  --ring: oklch(85% 0.15 100);
+    --background: oklch(15% 0.05 150);
+    --foreground: oklch(92% 0.03 110);
+    --card: oklch(20% 0.05 145);
+    --card-foreground: oklch(92% 0.03 110);
+    --popover: oklch(18% 0.05 145);
+    --popover-foreground: oklch(92% 0.03 110);
+    --primary: oklch(85% 0.15 100);
+    --primary-foreground: oklch(20% 0.05 100);
+    --secondary: oklch(45% 0.08 130);
+    --secondary-foreground: oklch(95% 0.04 110);
+    --muted: oklch(65% 0.05 120);
+    --muted-foreground: oklch(80% 0.04 115);
+    --accent: oklch(75% 0.18 80);
+    --accent-foreground: oklch(15% 0.05 80);
+    --destructive: oklch(65% 0.22 25);
+    --destructive-foreground: oklch(95% 0.05 25);
+    --border: oklch(25% 0.05 140);
+    --input: oklch(22% 0.05 140);
+    --ring: oklch(85% 0.15 100);
 }
 ```
 
@@ -131,25 +130,25 @@ Here are 30 different cutting-edge dark theme explorations for the project, base
 
 ```css
 .dark {
-  --background: oklch(10% 0.01 250);
-  --foreground: oklch(95% 0 0);
-  --card: oklch(15% 0.01 250);
-  --card-foreground: oklch(95% 0 0);
-  --popover: oklch(12% 0.01 250);
-  --popover-foreground: oklch(95% 0 0);
-  --primary: oklch(70% 0.25 20);
-  --primary-foreground: oklch(98% 0.02 20);
-  --secondary: oklch(40% 0.02 250);
-  --secondary-foreground: oklch(95% 0 0);
-  --muted: oklch(60% 0.01 250);
-  --muted-foreground: oklch(75% 0.005 250);
-  --accent: oklch(65% 0.28 30);
-  --accent-foreground: oklch(98% 0.02 30);
-  --destructive: oklch(70% 0.25 20);
-  --destructive-foreground: oklch(98% 0.02 20);
-  --border: oklch(25% 0.02 250);
-  --input: oklch(20% 0.015 250);
-  --ring: oklch(70% 0.25 20);
+    --background: oklch(10% 0.01 250);
+    --foreground: oklch(95% 0 0);
+    --card: oklch(15% 0.01 250);
+    --card-foreground: oklch(95% 0 0);
+    --popover: oklch(12% 0.01 250);
+    --popover-foreground: oklch(95% 0 0);
+    --primary: oklch(70% 0.25 20);
+    --primary-foreground: oklch(98% 0.02 20);
+    --secondary: oklch(40% 0.02 250);
+    --secondary-foreground: oklch(95% 0 0);
+    --muted: oklch(60% 0.01 250);
+    --muted-foreground: oklch(75% 0.005 250);
+    --accent: oklch(65% 0.28 30);
+    --accent-foreground: oklch(98% 0.02 30);
+    --destructive: oklch(70% 0.25 20);
+    --destructive-foreground: oklch(98% 0.02 20);
+    --border: oklch(25% 0.02 250);
+    --input: oklch(20% 0.015 250);
+    --ring: oklch(70% 0.25 20);
 }
 ```
 
@@ -161,25 +160,25 @@ Here are 30 different cutting-edge dark theme explorations for the project, base
 
 ```css
 .dark {
-  --background: oklch(5% 0 0);
-  --foreground: oklch(98% 0 0);
-  --card: oklch(10% 0 0);
-  --card-foreground: oklch(98% 0 0);
-  --popover: oklch(8% 0 0);
-  --popover-foreground: oklch(98% 0 0);
-  --primary: oklch(75% 0.3 320);
-  --primary-foreground: oklch(100% 0 0);
-  --secondary: oklch(80% 0 0);
-  --secondary-foreground: oklch(5% 0 0);
-  --muted: oklch(50% 0 0);
-  --muted-foreground: oklch(70% 0 0);
-  --accent: oklch(90% 0.25 120);
-  --accent-foreground: oklch(10% 0.05 120);
-  --destructive: oklch(65% 0.25 25);
-  --destructive-foreground: oklch(100% 0 0);
-  --border: oklch(40% 0 0);
-  --input: oklch(15% 0 0);
-  --ring: oklch(75% 0.3 320);
+    --background: oklch(5% 0 0);
+    --foreground: oklch(98% 0 0);
+    --card: oklch(10% 0 0);
+    --card-foreground: oklch(98% 0 0);
+    --popover: oklch(8% 0 0);
+    --popover-foreground: oklch(98% 0 0);
+    --primary: oklch(75% 0.3 320);
+    --primary-foreground: oklch(100% 0 0);
+    --secondary: oklch(80% 0 0);
+    --secondary-foreground: oklch(5% 0 0);
+    --muted: oklch(50% 0 0);
+    --muted-foreground: oklch(70% 0 0);
+    --accent: oklch(90% 0.25 120);
+    --accent-foreground: oklch(10% 0.05 120);
+    --destructive: oklch(65% 0.25 25);
+    --destructive-foreground: oklch(100% 0 0);
+    --border: oklch(40% 0 0);
+    --input: oklch(15% 0 0);
+    --ring: oklch(75% 0.3 320);
 }
 ```
 
@@ -191,25 +190,25 @@ Here are 30 different cutting-edge dark theme explorations for the project, base
 
 ```css
 .dark {
-  --background: oklch(20% 0.02 230);
-  --foreground: oklch(90% 0.01 220);
-  --card: oklch(25% 0.025 230);
-  --card-foreground: oklch(90% 0.01 220);
-  --popover: oklch(22% 0.02 230);
-  --popover-foreground: oklch(90% 0.01 220);
-  --primary: oklch(75% 0.12 210);
-  --primary-foreground: oklch(100% 0.01 210);
-  --secondary: oklch(50% 0.08 220);
-  --secondary-foreground: oklch(95% 0.01 220);
-  --muted: oklch(60% 0.04 220);
-  --muted-foreground: oklch(75% 0.03 220);
-  --accent: oklch(80% 0.1 180);
-  --accent-foreground: oklch(15% 0.02 180);
-  --destructive: oklch(60% 0.2 20);
-  --destructive-foreground: oklch(95% 0.05 20);
-  --border: oklch(30% 0.03 225);
-  --input: oklch(28% 0.025 225);
-  --ring: oklch(75% 0.12 210);
+    --background: oklch(20% 0.02 230);
+    --foreground: oklch(90% 0.01 220);
+    --card: oklch(25% 0.025 230);
+    --card-foreground: oklch(90% 0.01 220);
+    --popover: oklch(22% 0.02 230);
+    --popover-foreground: oklch(90% 0.01 220);
+    --primary: oklch(75% 0.12 210);
+    --primary-foreground: oklch(100% 0.01 210);
+    --secondary: oklch(50% 0.08 220);
+    --secondary-foreground: oklch(95% 0.01 220);
+    --muted: oklch(60% 0.04 220);
+    --muted-foreground: oklch(75% 0.03 220);
+    --accent: oklch(80% 0.1 180);
+    --accent-foreground: oklch(15% 0.02 180);
+    --destructive: oklch(60% 0.2 20);
+    --destructive-foreground: oklch(95% 0.05 20);
+    --border: oklch(30% 0.03 225);
+    --input: oklch(28% 0.025 225);
+    --ring: oklch(75% 0.12 210);
 }
 ```
 
@@ -221,25 +220,25 @@ Here are 30 different cutting-edge dark theme explorations for the project, base
 
 ```css
 .dark {
-  --background: oklch(15% 0.02 60);
-  --foreground: oklch(90% 0.03 80);
-  --card: oklch(20% 0.03 65);
-  --card-foreground: oklch(90% 0.03 80);
-  --popover: oklch(18% 0.03 65);
-  --popover-foreground: oklch(90% 0.03 80);
-  --primary: oklch(75% 0.18 70);
-  --primary-foreground: oklch(15% 0.02 70);
-  --secondary: oklch(40% 0.08 75);
-  --secondary-foreground: oklch(95% 0.04 80);
-  --muted: oklch(60% 0.05 70);
-  --muted-foreground: oklch(75% 0.04 75);
-  --accent: oklch(70% 0.25 40);
-  --accent-foreground: oklch(10% 0.05 40);
-  --destructive: oklch(65% 0.22 25);
-  --destructive-foreground: oklch(95% 0.05 25);
-  --border: oklch(25% 0.04 65);
-  --input: oklch(22% 0.04 65);
-  --ring: oklch(70% 0.25 40);
+    --background: oklch(15% 0.02 60);
+    --foreground: oklch(90% 0.03 80);
+    --card: oklch(20% 0.03 65);
+    --card-foreground: oklch(90% 0.03 80);
+    --popover: oklch(18% 0.03 65);
+    --popover-foreground: oklch(90% 0.03 80);
+    --primary: oklch(75% 0.18 70);
+    --primary-foreground: oklch(15% 0.02 70);
+    --secondary: oklch(40% 0.08 75);
+    --secondary-foreground: oklch(95% 0.04 80);
+    --muted: oklch(60% 0.05 70);
+    --muted-foreground: oklch(75% 0.04 75);
+    --accent: oklch(70% 0.25 40);
+    --accent-foreground: oklch(10% 0.05 40);
+    --destructive: oklch(65% 0.22 25);
+    --destructive-foreground: oklch(95% 0.05 25);
+    --border: oklch(25% 0.04 65);
+    --input: oklch(22% 0.04 65);
+    --ring: oklch(70% 0.25 40);
 }
 ```
 
@@ -251,25 +250,25 @@ Here are 30 different cutting-edge dark theme explorations for the project, base
 
 ```css
 .dark {
-  --background: oklch(8% 0 0);
-  --foreground: oklch(98% 0 0);
-  --card: oklch(14% 0 0);
-  --card-foreground: oklch(98% 0 0);
-  --popover: oklch(10% 0 0);
-  --popover-foreground: oklch(98% 0 0);
-  --primary: oklch(90% 0 0);
-  --primary-foreground: oklch(8% 0 0);
-  --secondary: oklch(65% 0 0);
-  --secondary-foreground: oklch(8% 0 0);
-  --muted: oklch(50% 0 0);
-  --muted-foreground: oklch(70% 0 0);
-  --accent: oklch(100% 0 0);
-  --accent-foreground: oklch(8% 0 0);
-  --destructive: oklch(70% 0.25 20);
-  --destructive-foreground: oklch(98% 0 0);
-  --border: oklch(35% 0 0);
-  --input: oklch(20% 0 0);
-  --ring: oklch(80% 0 0);
+    --background: oklch(8% 0 0);
+    --foreground: oklch(98% 0 0);
+    --card: oklch(14% 0 0);
+    --card-foreground: oklch(98% 0 0);
+    --popover: oklch(10% 0 0);
+    --popover-foreground: oklch(98% 0 0);
+    --primary: oklch(90% 0 0);
+    --primary-foreground: oklch(8% 0 0);
+    --secondary: oklch(65% 0 0);
+    --secondary-foreground: oklch(8% 0 0);
+    --muted: oklch(50% 0 0);
+    --muted-foreground: oklch(70% 0 0);
+    --accent: oklch(100% 0 0);
+    --accent-foreground: oklch(8% 0 0);
+    --destructive: oklch(70% 0.25 20);
+    --destructive-foreground: oklch(98% 0 0);
+    --border: oklch(35% 0 0);
+    --input: oklch(20% 0 0);
+    --ring: oklch(80% 0 0);
 }
 ```
 
@@ -281,25 +280,25 @@ Here are 30 different cutting-edge dark theme explorations for the project, base
 
 ```css
 .dark {
-  --background: oklch(10% 0.02 280);
-  --foreground: oklch(95% 0.01 280);
-  --card: oklch(15% 0.03 280);
-  --card-foreground: oklch(95% 0.01 280);
-  --popover: oklch(12% 0.03 280);
-  --popover-foreground: oklch(95% 0.01 280);
-  --primary: oklch(75% 0.25 290);
-  --primary-foreground: oklch(100% 0.05 290);
-  --secondary: oklch(70% 0.2 240);
-  --secondary-foreground: oklch(10% 0.05 240);
-  --muted: oklch(60% 0.05 280);
-  --muted-foreground: oklch(75% 0.03 280);
-  --accent: oklch(85% 0.22 320);
-  --accent-foreground: oklch(15% 0.05 320);
-  --destructive: oklch(65% 0.25 25);
-  --destructive-foreground: oklch(95% 0.05 25);
-  --border: oklch(25% 0.05 280);
-  --input: oklch(20% 0.04 280);
-  --ring: oklch(85% 0.22 320);
+    --background: oklch(10% 0.02 280);
+    --foreground: oklch(95% 0.01 280);
+    --card: oklch(15% 0.03 280);
+    --card-foreground: oklch(95% 0.01 280);
+    --popover: oklch(12% 0.03 280);
+    --popover-foreground: oklch(95% 0.01 280);
+    --primary: oklch(75% 0.25 290);
+    --primary-foreground: oklch(100% 0.05 290);
+    --secondary: oklch(70% 0.2 240);
+    --secondary-foreground: oklch(10% 0.05 240);
+    --muted: oklch(60% 0.05 280);
+    --muted-foreground: oklch(75% 0.03 280);
+    --accent: oklch(85% 0.22 320);
+    --accent-foreground: oklch(15% 0.05 320);
+    --destructive: oklch(65% 0.25 25);
+    --destructive-foreground: oklch(95% 0.05 25);
+    --border: oklch(25% 0.05 280);
+    --input: oklch(20% 0.04 280);
+    --ring: oklch(85% 0.22 320);
 }
 ```
 
@@ -311,25 +310,25 @@ Here are 30 different cutting-edge dark theme explorations for the project, base
 
 ```css
 .dark {
-  --background: oklch(18% 0.04 30);
-  --foreground: oklch(90% 0.02 70);
-  --card: oklch(22% 0.04 30);
-  --card-foreground: oklch(90% 0.02 70);
-  --popover: oklch(20% 0.04 30);
-  --popover-foreground: oklch(90% 0.02 70);
-  --primary: oklch(70% 0.15 40);
-  --primary-foreground: oklch(98% 0.02 40);
-  --secondary: oklch(45% 0.1 45);
-  --secondary-foreground: oklch(90% 0.02 70);
-  --muted: oklch(60% 0.05 50);
-  --muted-foreground: oklch(75% 0.04 60);
-  --accent: oklch(75% 0.18 60);
-  --accent-foreground: oklch(15% 0.03 60);
-  --destructive: oklch(60% 0.22 25);
-  --destructive-foreground: oklch(95% 0.05 25);
-  --border: oklch(30% 0.05 35);
-  --input: oklch(25% 0.05 35);
-  --ring: oklch(70% 0.15 40);
+    --background: oklch(18% 0.04 30);
+    --foreground: oklch(90% 0.02 70);
+    --card: oklch(22% 0.04 30);
+    --card-foreground: oklch(90% 0.02 70);
+    --popover: oklch(20% 0.04 30);
+    --popover-foreground: oklch(90% 0.02 70);
+    --primary: oklch(70% 0.15 40);
+    --primary-foreground: oklch(98% 0.02 40);
+    --secondary: oklch(45% 0.1 45);
+    --secondary-foreground: oklch(90% 0.02 70);
+    --muted: oklch(60% 0.05 50);
+    --muted-foreground: oklch(75% 0.04 60);
+    --accent: oklch(75% 0.18 60);
+    --accent-foreground: oklch(15% 0.03 60);
+    --destructive: oklch(60% 0.22 25);
+    --destructive-foreground: oklch(95% 0.05 25);
+    --border: oklch(30% 0.05 35);
+    --input: oklch(25% 0.05 35);
+    --ring: oklch(70% 0.15 40);
 }
 ```
 
@@ -341,25 +340,25 @@ Here are 30 different cutting-edge dark theme explorations for the project, base
 
 ```css
 .dark {
-  --background: oklch(25% 0.005 240);
-  --foreground: oklch(90% 0.005 240);
-  --card: oklch(30% 0.005 240);
-  --card-foreground: oklch(90% 0.005 240);
-  --popover: oklch(28% 0.005 240);
-  --popover-foreground: oklch(90% 0.005 240);
-  --primary: oklch(80% 0.05 250);
-  --primary-foreground: oklch(15% 0.01 250);
-  --secondary: oklch(50% 0.01 240);
-  --secondary-foreground: oklch(95% 0.005 240);
-  --muted: oklch(70% 0.005 240);
-  --muted-foreground: oklch(50% 0.005 240);
-  --accent: oklch(85% 0.1 200);
-  --accent-foreground: oklch(15% 0.02 200);
-  --destructive: oklch(65% 0.2 20);
-  --destructive-foreground: oklch(95% 0.05 20);
-  --border: oklch(40% 0.005 240);
-  --input: oklch(35% 0.005 240);
-  --ring: oklch(80% 0.05 250);
+    --background: oklch(25% 0.005 240);
+    --foreground: oklch(90% 0.005 240);
+    --card: oklch(30% 0.005 240);
+    --card-foreground: oklch(90% 0.005 240);
+    --popover: oklch(28% 0.005 240);
+    --popover-foreground: oklch(90% 0.005 240);
+    --primary: oklch(80% 0.05 250);
+    --primary-foreground: oklch(15% 0.01 250);
+    --secondary: oklch(50% 0.01 240);
+    --secondary-foreground: oklch(95% 0.005 240);
+    --muted: oklch(70% 0.005 240);
+    --muted-foreground: oklch(50% 0.005 240);
+    --accent: oklch(85% 0.1 200);
+    --accent-foreground: oklch(15% 0.02 200);
+    --destructive: oklch(65% 0.2 20);
+    --destructive-foreground: oklch(95% 0.05 20);
+    --border: oklch(40% 0.005 240);
+    --input: oklch(35% 0.005 240);
+    --ring: oklch(80% 0.05 250);
 }
 ```
 
@@ -371,25 +370,25 @@ Here are 30 different cutting-edge dark theme explorations for the project, base
 
 ```css
 .dark {
-  --background: oklch(18% 0.04 190);
-  --foreground: oklch(90% 0.02 180);
-  --card: oklch(22% 0.04 190);
-  --card-foreground: oklch(90% 0.02 180);
-  --popover: oklch(20% 0.04 190);
-  --popover-foreground: oklch(90% 0.02 180);
-  --primary: oklch(75% 0.15 200);
-  --primary-foreground: oklch(15% 0.03 200);
-  --secondary: oklch(50% 0.1 185);
-  --secondary-foreground: oklch(95% 0.02 180);
-  --muted: oklch(65% 0.05 185);
-  --muted-foreground: oklch(80% 0.03 185);
-  --accent: oklch(88% 0.2 150);
-  --accent-foreground: oklch(15% 0.04 150);
-  --destructive: oklch(60% 0.22 25);
-  --destructive-foreground: oklch(95% 0.05 25);
-  --border: oklch(30% 0.05 190);
-  --input: oklch(25% 0.05 190);
-  --ring: oklch(88% 0.2 150);
+    --background: oklch(18% 0.04 190);
+    --foreground: oklch(90% 0.02 180);
+    --card: oklch(22% 0.04 190);
+    --card-foreground: oklch(90% 0.02 180);
+    --popover: oklch(20% 0.04 190);
+    --popover-foreground: oklch(90% 0.02 180);
+    --primary: oklch(75% 0.15 200);
+    --primary-foreground: oklch(15% 0.03 200);
+    --secondary: oklch(50% 0.1 185);
+    --secondary-foreground: oklch(95% 0.02 180);
+    --muted: oklch(65% 0.05 185);
+    --muted-foreground: oklch(80% 0.03 185);
+    --accent: oklch(88% 0.2 150);
+    --accent-foreground: oklch(15% 0.04 150);
+    --destructive: oklch(60% 0.22 25);
+    --destructive-foreground: oklch(95% 0.05 25);
+    --border: oklch(30% 0.05 190);
+    --input: oklch(25% 0.05 190);
+    --ring: oklch(88% 0.2 150);
 }
 ```
 
@@ -401,25 +400,25 @@ Here are 30 different cutting-edge dark theme explorations for the project, base
 
 ```css
 .dark {
-  --background: oklch(10% 0.01 40);
-  --foreground: oklch(95% 0.01 60);
-  --card: oklch(15% 0.02 40);
-  --card-foreground: oklch(95% 0.01 60);
-  --popover: oklch(12% 0.02 40);
-  --popover-foreground: oklch(95% 0.01 60);
-  --primary: oklch(75% 0.25 50);
-  --primary-foreground: oklch(100% 0.05 50);
-  --secondary: oklch(40% 0.15 45);
-  --secondary-foreground: oklch(95% 0.02 60);
-  --muted: oklch(60% 0.1 55);
-  --muted-foreground: oklch(80% 0.05 55);
-  --accent: oklch(80% 0.28 40);
-  --accent-foreground: oklch(10% 0.05 40);
-  --destructive: oklch(70% 0.25 25);
-  --destructive-foreground: oklch(98% 0.05 25);
-  --border: oklch(25% 0.05 40);
-  --input: oklch(20% 0.04 40);
-  --ring: oklch(80% 0.28 40);
+    --background: oklch(10% 0.01 40);
+    --foreground: oklch(95% 0.01 60);
+    --card: oklch(15% 0.02 40);
+    --card-foreground: oklch(95% 0.01 60);
+    --popover: oklch(12% 0.02 40);
+    --popover-foreground: oklch(95% 0.01 60);
+    --primary: oklch(75% 0.25 50);
+    --primary-foreground: oklch(100% 0.05 50);
+    --secondary: oklch(40% 0.15 45);
+    --secondary-foreground: oklch(95% 0.02 60);
+    --muted: oklch(60% 0.1 55);
+    --muted-foreground: oklch(80% 0.05 55);
+    --accent: oklch(80% 0.28 40);
+    --accent-foreground: oklch(10% 0.05 40);
+    --destructive: oklch(70% 0.25 25);
+    --destructive-foreground: oklch(98% 0.05 25);
+    --border: oklch(25% 0.05 40);
+    --input: oklch(20% 0.04 40);
+    --ring: oklch(80% 0.28 40);
 }
 ```
 
@@ -431,25 +430,25 @@ Here are 30 different cutting-edge dark theme explorations for the project, base
 
 ```css
 .dark {
-  --background: oklch(22% 0.03 70);
-  --foreground: oklch(88% 0.02 80);
-  --card: oklch(26% 0.03 70);
-  --card-foreground: oklch(88% 0.02 80);
-  --popover: oklch(24% 0.03 70);
-  --popover-foreground: oklch(88% 0.02 80);
-  --primary: oklch(60% 0.18 30);
-  --primary-foreground: oklch(95% 0.03 30);
-  --secondary: oklch(45% 0.1 50);
-  --secondary-foreground: oklch(90% 0.02 80);
-  --muted: oklch(65% 0.05 70);
-  --muted-foreground: oklch(80% 0.03 75);
-  --accent: oklch(70% 0.15 50);
-  --accent-foreground: oklch(15% 0.03 50);
-  --destructive: oklch(60% 0.22 25);
-  --destructive-foreground: oklch(95% 0.05 25);
-  --border: oklch(35% 0.04 70);
-  --input: oklch(30% 0.04 70);
-  --ring: oklch(60% 0.18 30);
+    --background: oklch(22% 0.03 70);
+    --foreground: oklch(88% 0.02 80);
+    --card: oklch(26% 0.03 70);
+    --card-foreground: oklch(88% 0.02 80);
+    --popover: oklch(24% 0.03 70);
+    --popover-foreground: oklch(88% 0.02 80);
+    --primary: oklch(60% 0.18 30);
+    --primary-foreground: oklch(95% 0.03 30);
+    --secondary: oklch(45% 0.1 50);
+    --secondary-foreground: oklch(90% 0.02 80);
+    --muted: oklch(65% 0.05 70);
+    --muted-foreground: oklch(80% 0.03 75);
+    --accent: oklch(70% 0.15 50);
+    --accent-foreground: oklch(15% 0.03 50);
+    --destructive: oklch(60% 0.22 25);
+    --destructive-foreground: oklch(95% 0.05 25);
+    --border: oklch(35% 0.04 70);
+    --input: oklch(30% 0.04 70);
+    --ring: oklch(60% 0.18 30);
 }
 ```
 
@@ -461,25 +460,25 @@ Here are 30 different cutting-edge dark theme explorations for the project, base
 
 ```css
 .dark {
-  --background: oklch(12% 0.015 255);
-  --foreground: oklch(96% 0.01 255);
-  --card: oklch(18% 0.02 255);
-  --card-foreground: oklch(96% 0.01 255);
-  --popover: oklch(15% 0.015 255);
-  --popover-foreground: oklch(96% 0.01 255);
-  --primary: oklch(65% 0.15 265);
-  --primary-foreground: oklch(100% 0.02 265);
-  --secondary: oklch(40% 0.05 260);
-  --secondary-foreground: oklch(96% 0.01 255);
-  --muted: oklch(65% 0.03 255);
-  --muted-foreground: oklch(80% 0.02 255);
-  --accent: oklch(70% 0.12 250);
-  --accent-foreground: oklch(15% 0.03 250);
-  --destructive: oklch(60% 0.22 25);
-  --destructive-foreground: oklch(95% 0.05 25);
-  --border: oklch(28% 0.02 255);
-  --input: oklch(22% 0.02 255);
-  --ring: oklch(65% 0.15 265);
+    --background: oklch(12% 0.015 255);
+    --foreground: oklch(96% 0.01 255);
+    --card: oklch(18% 0.02 255);
+    --card-foreground: oklch(96% 0.01 255);
+    --popover: oklch(15% 0.015 255);
+    --popover-foreground: oklch(96% 0.01 255);
+    --primary: oklch(65% 0.15 265);
+    --primary-foreground: oklch(100% 0.02 265);
+    --secondary: oklch(40% 0.05 260);
+    --secondary-foreground: oklch(96% 0.01 255);
+    --muted: oklch(65% 0.03 255);
+    --muted-foreground: oklch(80% 0.02 255);
+    --accent: oklch(70% 0.12 250);
+    --accent-foreground: oklch(15% 0.03 250);
+    --destructive: oklch(60% 0.22 25);
+    --destructive-foreground: oklch(95% 0.05 25);
+    --border: oklch(28% 0.02 255);
+    --input: oklch(22% 0.02 255);
+    --ring: oklch(65% 0.15 265);
 }
 ```
 
@@ -491,25 +490,25 @@ Here are 30 different cutting-edge dark theme explorations for the project, base
 
 ```css
 .dark {
-  --background: oklch(18% 0.03 210);
-  --foreground: oklch(92% 0.01 200);
-  --card: oklch(23% 0.03 210);
-  --card-foreground: oklch(92% 0.01 200);
-  --popover: oklch(20% 0.03 210);
-  --popover-foreground: oklch(92% 0.01 200);
-  --primary: oklch(80% 0.15 205);
-  --primary-foreground: oklch(15% 0.03 205);
-  --secondary: oklch(60% 0.1 200);
-  --secondary-foreground: oklch(95% 0.01 200);
-  --muted: oklch(65% 0.04 205);
-  --muted-foreground: oklch(80% 0.02 205);
-  --accent: oklch(75% 0.2 290);
-  --accent-foreground: oklch(15% 0.05 290);
-  --destructive: oklch(65% 0.22 25);
-  --destructive-foreground: oklch(95% 0.05 25);
-  --border: oklch(30% 0.04 210);
-  --input: oklch(25% 0.04 210);
-  --ring: oklch(75% 0.2 290);
+    --background: oklch(18% 0.03 210);
+    --foreground: oklch(92% 0.01 200);
+    --card: oklch(23% 0.03 210);
+    --card-foreground: oklch(92% 0.01 200);
+    --popover: oklch(20% 0.03 210);
+    --popover-foreground: oklch(92% 0.01 200);
+    --primary: oklch(80% 0.15 205);
+    --primary-foreground: oklch(15% 0.03 205);
+    --secondary: oklch(60% 0.1 200);
+    --secondary-foreground: oklch(95% 0.01 200);
+    --muted: oklch(65% 0.04 205);
+    --muted-foreground: oklch(80% 0.02 205);
+    --accent: oklch(75% 0.2 290);
+    --accent-foreground: oklch(15% 0.05 290);
+    --destructive: oklch(65% 0.22 25);
+    --destructive-foreground: oklch(95% 0.05 25);
+    --border: oklch(30% 0.04 210);
+    --input: oklch(25% 0.04 210);
+    --ring: oklch(75% 0.2 290);
 }
 ```
 
@@ -521,25 +520,25 @@ Here are 30 different cutting-edge dark theme explorations for the project, base
 
 ```css
 .dark {
-  --background: oklch(30% 0.01 240);
-  --foreground: oklch(85% 0.005 240);
-  --card: oklch(35% 0.01 240);
-  --card-foreground: oklch(85% 0.005 240);
-  --popover: oklch(32% 0.01 240);
-  --popover-foreground: oklch(85% 0.005 240);
-  --primary: oklch(70% 0.08 230);
-  --primary-foreground: oklch(20% 0.01 230);
-  --secondary: oklch(55% 0.05 220);
-  --secondary-foreground: oklch(90% 0.005 220);
-  --muted: oklch(70% 0.01 240);
-  --muted-foreground: oklch(50% 0.01 240);
-  --accent: oklch(75% 0.07 180);
-  --accent-foreground: oklch(20% 0.02 180);
-  --destructive: oklch(60% 0.18 25);
-  --destructive-foreground: oklch(95% 0.05 25);
-  --border: oklch(45% 0.01 240);
-  --input: oklch(40% 0.01 240);
-  --ring: oklch(70% 0.08 230);
+    --background: oklch(30% 0.01 240);
+    --foreground: oklch(85% 0.005 240);
+    --card: oklch(35% 0.01 240);
+    --card-foreground: oklch(85% 0.005 240);
+    --popover: oklch(32% 0.01 240);
+    --popover-foreground: oklch(85% 0.005 240);
+    --primary: oklch(70% 0.08 230);
+    --primary-foreground: oklch(20% 0.01 230);
+    --secondary: oklch(55% 0.05 220);
+    --secondary-foreground: oklch(90% 0.005 220);
+    --muted: oklch(70% 0.01 240);
+    --muted-foreground: oklch(50% 0.01 240);
+    --accent: oklch(75% 0.07 180);
+    --accent-foreground: oklch(20% 0.02 180);
+    --destructive: oklch(60% 0.18 25);
+    --destructive-foreground: oklch(95% 0.05 25);
+    --border: oklch(45% 0.01 240);
+    --input: oklch(40% 0.01 240);
+    --ring: oklch(70% 0.08 230);
 }
 ```
 
@@ -551,25 +550,25 @@ Here are 30 different cutting-edge dark theme explorations for the project, base
 
 ```css
 .dark {
-  --background: oklch(25% 0.04 50);
-  --foreground: oklch(85% 0.03 70);
-  --card: oklch(30% 0.04 50);
-  --card-foreground: oklch(85% 0.03 70);
-  --popover: oklch(28% 0.04 50);
-  --popover-foreground: oklch(85% 0.03 70);
-  --primary: oklch(65% 0.15 40);
-  --primary-foreground: oklch(95% 0.03 40);
-  --secondary: oklch(50% 0.1 35);
-  --secondary-foreground: oklch(90% 0.02 70);
-  --muted: oklch(70% 0.05 60);
-  --muted-foreground: oklch(50% 0.04 60);
-  --accent: oklch(70% 0.2 30);
-  --accent-foreground: oklch(15% 0.04 30);
-  --destructive: oklch(60% 0.22 25);
-  --destructive-foreground: oklch(95% 0.05 25);
-  --border: oklch(40% 0.05 50);
-  --input: oklch(35% 0.05 50);
-  --ring: oklch(65% 0.15 40);
+    --background: oklch(25% 0.04 50);
+    --foreground: oklch(85% 0.03 70);
+    --card: oklch(30% 0.04 50);
+    --card-foreground: oklch(85% 0.03 70);
+    --popover: oklch(28% 0.04 50);
+    --popover-foreground: oklch(85% 0.03 70);
+    --primary: oklch(65% 0.15 40);
+    --primary-foreground: oklch(95% 0.03 40);
+    --secondary: oklch(50% 0.1 35);
+    --secondary-foreground: oklch(90% 0.02 70);
+    --muted: oklch(70% 0.05 60);
+    --muted-foreground: oklch(50% 0.04 60);
+    --accent: oklch(70% 0.2 30);
+    --accent-foreground: oklch(15% 0.04 30);
+    --destructive: oklch(60% 0.22 25);
+    --destructive-foreground: oklch(95% 0.05 25);
+    --border: oklch(40% 0.05 50);
+    --input: oklch(35% 0.05 50);
+    --ring: oklch(65% 0.15 40);
 }
 ```
 
@@ -581,25 +580,25 @@ Here are 30 different cutting-edge dark theme explorations for the project, base
 
 ```css
 .dark {
-  --background: oklch(25% 0.03 90);
-  --foreground: oklch(85% 0.01 90);
-  --card: oklch(30% 0.03 90);
-  --card-foreground: oklch(85% 0.01 90);
-  --popover: oklch(28% 0.03 90);
-  --popover-foreground: oklch(85% 0.01 90);
-  --primary: oklch(60% 0.15 250);
-  --primary-foreground: oklch(95% 0.02 250);
-  --secondary: oklch(50% 0.05 85);
-  --secondary-foreground: oklch(90% 0.01 90);
-  --muted: oklch(70% 0.02 90);
-  --muted-foreground: oklch(50% 0.02 90);
-  --accent: oklch(65% 0.18 240);
-  --accent-foreground: oklch(15% 0.04 240);
-  --destructive: oklch(65% 0.22 25);
-  --destructive-foreground: oklch(95% 0.05 25);
-  --border: oklch(40% 0.03 90);
-  --input: oklch(35% 0.03 90);
-  --ring: oklch(60% 0.15 250);
+    --background: oklch(25% 0.03 90);
+    --foreground: oklch(85% 0.01 90);
+    --card: oklch(30% 0.03 90);
+    --card-foreground: oklch(85% 0.01 90);
+    --popover: oklch(28% 0.03 90);
+    --popover-foreground: oklch(85% 0.01 90);
+    --primary: oklch(60% 0.15 250);
+    --primary-foreground: oklch(95% 0.02 250);
+    --secondary: oklch(50% 0.05 85);
+    --secondary-foreground: oklch(90% 0.01 90);
+    --muted: oklch(70% 0.02 90);
+    --muted-foreground: oklch(50% 0.02 90);
+    --accent: oklch(65% 0.18 240);
+    --accent-foreground: oklch(15% 0.04 240);
+    --destructive: oklch(65% 0.22 25);
+    --destructive-foreground: oklch(95% 0.05 25);
+    --border: oklch(40% 0.03 90);
+    --input: oklch(35% 0.03 90);
+    --ring: oklch(60% 0.15 250);
 }
 ```
 
@@ -611,25 +610,25 @@ Here are 30 different cutting-edge dark theme explorations for the project, base
 
 ```css
 .dark {
-  --background: oklch(20% 0.03 20);
-  --foreground: oklch(90% 0.02 40);
-  --card: oklch(25% 0.03 20);
-  --card-foreground: oklch(90% 0.02 40);
-  --popover: oklch(22% 0.03 20);
-  --popover-foreground: oklch(90% 0.02 40);
-  --primary: oklch(75% 0.1 25);
-  --primary-foreground: oklch(15% 0.02 25);
-  --secondary: oklch(50% 0.08 20);
-  --secondary-foreground: oklch(95% 0.02 40);
-  --muted: oklch(65% 0.05 30);
-  --muted-foreground: oklch(80% 0.03 35);
-  --accent: oklch(80% 0.12 15);
-  --accent-foreground: oklch(15% 0.02 15);
-  --destructive: oklch(60% 0.22 25);
-  --destructive-foreground: oklch(95% 0.05 25);
-  --border: oklch(35% 0.04 20);
-  --input: oklch(30% 0.04 20);
-  --ring: oklch(80% 0.12 15);
+    --background: oklch(20% 0.03 20);
+    --foreground: oklch(90% 0.02 40);
+    --card: oklch(25% 0.03 20);
+    --card-foreground: oklch(90% 0.02 40);
+    --popover: oklch(22% 0.03 20);
+    --popover-foreground: oklch(90% 0.02 40);
+    --primary: oklch(75% 0.1 25);
+    --primary-foreground: oklch(15% 0.02 25);
+    --secondary: oklch(50% 0.08 20);
+    --secondary-foreground: oklch(95% 0.02 40);
+    --muted: oklch(65% 0.05 30);
+    --muted-foreground: oklch(80% 0.03 35);
+    --accent: oklch(80% 0.12 15);
+    --accent-foreground: oklch(15% 0.02 15);
+    --destructive: oklch(60% 0.22 25);
+    --destructive-foreground: oklch(95% 0.05 25);
+    --border: oklch(35% 0.04 20);
+    --input: oklch(30% 0.04 20);
+    --ring: oklch(80% 0.12 15);
 }
 ```
 
@@ -641,25 +640,25 @@ Here are 30 different cutting-edge dark theme explorations for the project, base
 
 ```css
 .dark {
-  --background: oklch(20% 0.05 130);
-  --foreground: oklch(90% 0.08 120);
-  --card: oklch(25% 0.05 130);
-  --card-foreground: oklch(90% 0.08 120);
-  --popover: oklch(22% 0.05 130);
-  --popover-foreground: oklch(90% 0.08 120);
-  --primary: oklch(85% 0.18 125);
-  --primary-foreground: oklch(15% 0.04 125);
-  --secondary: oklch(50% 0.12 130);
-  --secondary-foreground: oklch(95% 0.08 120);
-  --muted: oklch(65% 0.08 125);
-  --muted-foreground: oklch(80% 0.06 125);
-  --accent: oklch(90% 0.2 115);
-  --accent-foreground: oklch(15% 0.05 115);
-  --destructive: oklch(65% 0.22 25);
-  --destructive-foreground: oklch(95% 0.05 25);
-  --border: oklch(35% 0.06 130);
-  --input: oklch(30% 0.06 130);
-  --ring: oklch(85% 0.18 125);
+    --background: oklch(20% 0.05 130);
+    --foreground: oklch(90% 0.08 120);
+    --card: oklch(25% 0.05 130);
+    --card-foreground: oklch(90% 0.08 120);
+    --popover: oklch(22% 0.05 130);
+    --popover-foreground: oklch(90% 0.08 120);
+    --primary: oklch(85% 0.18 125);
+    --primary-foreground: oklch(15% 0.04 125);
+    --secondary: oklch(50% 0.12 130);
+    --secondary-foreground: oklch(95% 0.08 120);
+    --muted: oklch(65% 0.08 125);
+    --muted-foreground: oklch(80% 0.06 125);
+    --accent: oklch(90% 0.2 115);
+    --accent-foreground: oklch(15% 0.05 115);
+    --destructive: oklch(65% 0.22 25);
+    --destructive-foreground: oklch(95% 0.05 25);
+    --border: oklch(35% 0.06 130);
+    --input: oklch(30% 0.06 130);
+    --ring: oklch(85% 0.18 125);
 }
 ```
 
@@ -671,25 +670,25 @@ Here are 30 different cutting-edge dark theme explorations for the project, base
 
 ```css
 .dark {
-  --background: oklch(15% 0.01 240);
-  --foreground: oklch(95% 0.005 240);
-  --card: oklch(20% 0.01 240);
-  --card-foreground: oklch(95% 0.005 240);
-  --popover: oklch(18% 0.01 240);
-  --popover-foreground: oklch(95% 0.005 240);
-  --primary: oklch(80% 0.2 150);
-  --primary-foreground: oklch(15% 0.04 150);
-  --secondary: oklch(90% 0.2 90);
-  --secondary-foreground: oklch(15% 0.05 90);
-  --muted: oklch(60% 0.01 240);
-  --muted-foreground: oklch(75% 0.005 240);
-  --accent: oklch(70% 0.25 25);
-  --accent-foreground: oklch(98% 0.05 25);
-  --destructive: oklch(70% 0.25 25);
-  --destructive-foreground: oklch(98% 0.05 25);
-  --border: oklch(30% 0.01 240);
-  --input: oklch(25% 0.01 240);
-  --ring: oklch(80% 0.2 150);
+    --background: oklch(15% 0.01 240);
+    --foreground: oklch(95% 0.005 240);
+    --card: oklch(20% 0.01 240);
+    --card-foreground: oklch(95% 0.005 240);
+    --popover: oklch(18% 0.01 240);
+    --popover-foreground: oklch(95% 0.005 240);
+    --primary: oklch(80% 0.2 150);
+    --primary-foreground: oklch(15% 0.04 150);
+    --secondary: oklch(90% 0.2 90);
+    --secondary-foreground: oklch(15% 0.05 90);
+    --muted: oklch(60% 0.01 240);
+    --muted-foreground: oklch(75% 0.005 240);
+    --accent: oklch(70% 0.25 25);
+    --accent-foreground: oklch(98% 0.05 25);
+    --destructive: oklch(70% 0.25 25);
+    --destructive-foreground: oklch(98% 0.05 25);
+    --border: oklch(30% 0.01 240);
+    --input: oklch(25% 0.01 240);
+    --ring: oklch(80% 0.2 150);
 }
 ```
 
@@ -701,25 +700,25 @@ Here are 30 different cutting-edge dark theme explorations for the project, base
 
 ```css
 .dark {
-  --background: oklch(25% 0.02 280);
-  --foreground: oklch(85% 0.01 280);
-  --card: oklch(30% 0.02 280);
-  --card-foreground: oklch(85% 0.01 280);
-  --popover: oklch(28% 0.02 280);
-  --popover-foreground: oklch(85% 0.01 280);
-  --primary: oklch(70% 0.1 290);
-  --primary-foreground: oklch(95% 0.02 290);
-  --secondary: oklch(55% 0.08 310);
-  --secondary-foreground: oklch(90% 0.01 310);
-  --muted: oklch(70% 0.02 280);
-  --muted-foreground: oklch(50% 0.01 280);
-  --accent: oklch(75% 0.12 340);
-  --accent-foreground: oklch(15% 0.03 340);
-  --destructive: oklch(60% 0.18 25);
-  --destructive-foreground: oklch(95% 0.05 25);
-  --border: oklch(40% 0.02 280);
-  --input: oklch(35% 0.02 280);
-  --ring: oklch(70% 0.1 290);
+    --background: oklch(25% 0.02 280);
+    --foreground: oklch(85% 0.01 280);
+    --card: oklch(30% 0.02 280);
+    --card-foreground: oklch(85% 0.01 280);
+    --popover: oklch(28% 0.02 280);
+    --popover-foreground: oklch(85% 0.01 280);
+    --primary: oklch(70% 0.1 290);
+    --primary-foreground: oklch(95% 0.02 290);
+    --secondary: oklch(55% 0.08 310);
+    --secondary-foreground: oklch(90% 0.01 310);
+    --muted: oklch(70% 0.02 280);
+    --muted-foreground: oklch(50% 0.01 280);
+    --accent: oklch(75% 0.12 340);
+    --accent-foreground: oklch(15% 0.03 340);
+    --destructive: oklch(60% 0.18 25);
+    --destructive-foreground: oklch(95% 0.05 25);
+    --border: oklch(40% 0.02 280);
+    --input: oklch(35% 0.02 280);
+    --ring: oklch(70% 0.1 290);
 }
 ```
 
@@ -731,25 +730,25 @@ Here are 30 different cutting-edge dark theme explorations for the project, base
 
 ```css
 .dark {
-  --background: oklch(12% 0.005 240);
-  --foreground: oklch(95% 0.005 240);
-  --card: oklch(18% 0.005 240);
-  --card-foreground: oklch(95% 0.005 240);
-  --popover: oklch(15% 0.005 240);
-  --popover-foreground: oklch(95% 0.005 240);
-  --primary: oklch(70% 0.01 240);
-  --primary-foreground: oklch(10% 0.005 240);
-  --secondary: oklch(50% 0.005 240);
-  --secondary-foreground: oklch(98% 0.005 240);
-  --muted: oklch(65% 0.005 240);
-  --muted-foreground: oklch(80% 0.005 240);
-  --accent: oklch(70% 0.25 50);
-  --accent-foreground: oklch(10% 0.05 50);
-  --destructive: oklch(65% 0.22 25);
-  --destructive-foreground: oklch(95% 0.05 25);
-  --border: oklch(30% 0.005 240);
-  --input: oklch(25% 0.005 240);
-  --ring: oklch(70% 0.25 50);
+    --background: oklch(12% 0.005 240);
+    --foreground: oklch(95% 0.005 240);
+    --card: oklch(18% 0.005 240);
+    --card-foreground: oklch(95% 0.005 240);
+    --popover: oklch(15% 0.005 240);
+    --popover-foreground: oklch(95% 0.005 240);
+    --primary: oklch(70% 0.01 240);
+    --primary-foreground: oklch(10% 0.005 240);
+    --secondary: oklch(50% 0.005 240);
+    --secondary-foreground: oklch(98% 0.005 240);
+    --muted: oklch(65% 0.005 240);
+    --muted-foreground: oklch(80% 0.005 240);
+    --accent: oklch(70% 0.25 50);
+    --accent-foreground: oklch(10% 0.05 50);
+    --destructive: oklch(65% 0.22 25);
+    --destructive-foreground: oklch(95% 0.05 25);
+    --border: oklch(30% 0.005 240);
+    --input: oklch(25% 0.005 240);
+    --ring: oklch(70% 0.25 50);
 }
 ```
 
@@ -761,25 +760,25 @@ Here are 30 different cutting-edge dark theme explorations for the project, base
 
 ```css
 .dark {
-  --background: oklch(18% 0.05 300);
-  --foreground: oklch(90% 0.02 300);
-  --card: oklch(23% 0.05 300);
-  --card-foreground: oklch(90% 0.02 300);
-  --popover: oklch(20% 0.05 300);
-  --popover-foreground: oklch(90% 0.02 300);
-  --primary: oklch(75% 0.2 310);
-  --primary-foreground: oklch(98% 0.04 310);
-  --secondary: oklch(55% 0.15 300);
-  --secondary-foreground: oklch(95% 0.02 300);
-  --muted: oklch(65% 0.08 300);
-  --muted-foreground: oklch(80% 0.05 300);
-  --accent: oklch(90% 0.25 140);
-  --accent-foreground: oklch(15% 0.05 140);
-  --destructive: oklch(65% 0.22 25);
-  --destructive-foreground: oklch(95% 0.05 25);
-  --border: oklch(30% 0.06 300);
-  --input: oklch(25% 0.06 300);
-  --ring: oklch(90% 0.25 140);
+    --background: oklch(18% 0.05 300);
+    --foreground: oklch(90% 0.02 300);
+    --card: oklch(23% 0.05 300);
+    --card-foreground: oklch(90% 0.02 300);
+    --popover: oklch(20% 0.05 300);
+    --popover-foreground: oklch(90% 0.02 300);
+    --primary: oklch(75% 0.2 310);
+    --primary-foreground: oklch(98% 0.04 310);
+    --secondary: oklch(55% 0.15 300);
+    --secondary-foreground: oklch(95% 0.02 300);
+    --muted: oklch(65% 0.08 300);
+    --muted-foreground: oklch(80% 0.05 300);
+    --accent: oklch(90% 0.25 140);
+    --accent-foreground: oklch(15% 0.05 140);
+    --destructive: oklch(65% 0.22 25);
+    --destructive-foreground: oklch(95% 0.05 25);
+    --border: oklch(30% 0.06 300);
+    --input: oklch(25% 0.06 300);
+    --ring: oklch(90% 0.25 140);
 }
 ```
 
@@ -791,25 +790,25 @@ Here are 30 different cutting-edge dark theme explorations for the project, base
 
 ```css
 .dark {
-  --background: oklch(22% 0.03 120);
-  --foreground: oklch(85% 0.02 100);
-  --card: oklch(26% 0.03 120);
-  --card-foreground: oklch(85% 0.02 100);
-  --popover: oklch(24% 0.03 120);
-  --popover-foreground: oklch(85% 0.02 100);
-  --primary: oklch(65% 0.1 110);
-  --primary-foreground: oklch(15% 0.02 110);
-  --secondary: oklch(45% 0.08 100);
-  --secondary-foreground: oklch(90% 0.02 100);
-  --muted: oklch(70% 0.05 110);
-  --muted-foreground: oklch(50% 0.03 110);
-  --accent: oklch(75% 0.12 90);
-  --accent-foreground: oklch(15% 0.03 90);
-  --destructive: oklch(60% 0.2 25);
-  --destructive-foreground: oklch(95% 0.05 25);
-  --border: oklch(35% 0.04 120);
-  --input: oklch(30% 0.04 120);
-  --ring: oklch(65% 0.1 110);
+    --background: oklch(22% 0.03 120);
+    --foreground: oklch(85% 0.02 100);
+    --card: oklch(26% 0.03 120);
+    --card-foreground: oklch(85% 0.02 100);
+    --popover: oklch(24% 0.03 120);
+    --popover-foreground: oklch(85% 0.02 100);
+    --primary: oklch(65% 0.1 110);
+    --primary-foreground: oklch(15% 0.02 110);
+    --secondary: oklch(45% 0.08 100);
+    --secondary-foreground: oklch(90% 0.02 100);
+    --muted: oklch(70% 0.05 110);
+    --muted-foreground: oklch(50% 0.03 110);
+    --accent: oklch(75% 0.12 90);
+    --accent-foreground: oklch(15% 0.03 90);
+    --destructive: oklch(60% 0.2 25);
+    --destructive-foreground: oklch(95% 0.05 25);
+    --border: oklch(35% 0.04 120);
+    --input: oklch(30% 0.04 120);
+    --ring: oklch(65% 0.1 110);
 }
 ```
 
@@ -821,25 +820,25 @@ Here are 30 different cutting-edge dark theme explorations for the project, base
 
 ```css
 .dark {
-  --background: oklch(15% 0.08 250);
-  --foreground: oklch(90% 0.03 240);
-  --card: oklch(20% 0.08 250);
-  --card-foreground: oklch(90% 0.03 240);
-  --popover: oklch(18% 0.08 250);
-  --popover-foreground: oklch(90% 0.03 240);
-  --primary: oklch(75% 0.18 230);
-  --primary-foreground: oklch(98% 0.03 230);
-  --secondary: oklch(55% 0.12 240);
-  --secondary-foreground: oklch(95% 0.03 240);
-  --muted: oklch(65% 0.06 245);
-  --muted-foreground: oklch(80% 0.04 245);
-  --accent: oklch(85% 0.2 220);
-  --accent-foreground: oklch(15% 0.05 220);
-  --destructive: oklch(65% 0.22 25);
-  --destructive-foreground: oklch(95% 0.05 25);
-  --border: oklch(30% 0.09 250);
-  --input: oklch(25% 0.09 250);
-  --ring: oklch(85% 0.2 220);
+    --background: oklch(15% 0.08 250);
+    --foreground: oklch(90% 0.03 240);
+    --card: oklch(20% 0.08 250);
+    --card-foreground: oklch(90% 0.03 240);
+    --popover: oklch(18% 0.08 250);
+    --popover-foreground: oklch(90% 0.03 240);
+    --primary: oklch(75% 0.18 230);
+    --primary-foreground: oklch(98% 0.03 230);
+    --secondary: oklch(55% 0.12 240);
+    --secondary-foreground: oklch(95% 0.03 240);
+    --muted: oklch(65% 0.06 245);
+    --muted-foreground: oklch(80% 0.04 245);
+    --accent: oklch(85% 0.2 220);
+    --accent-foreground: oklch(15% 0.05 220);
+    --destructive: oklch(65% 0.22 25);
+    --destructive-foreground: oklch(95% 0.05 25);
+    --border: oklch(30% 0.09 250);
+    --input: oklch(25% 0.09 250);
+    --ring: oklch(85% 0.2 220);
 }
 ```
 
@@ -851,25 +850,25 @@ Here are 30 different cutting-edge dark theme explorations for the project, base
 
 ```css
 .dark {
-  --background: oklch(5% 0 0);
-  --foreground: oklch(98% 0 0);
-  --card: oklch(12% 0 0);
-  --card-foreground: oklch(98% 0 0);
-  --popover: oklch(10% 0 0);
-  --popover-foreground: oklch(98% 0 0);
-  --primary: oklch(85% 0.22 80);
-  --primary-foreground: oklch(10% 0.05 80);
-  --secondary: oklch(60% 0 0);
-  --secondary-foreground: oklch(98% 0 0);
-  --muted: oklch(75% 0 0);
-  --muted-foreground: oklch(50% 0 0);
-  --accent: oklch(90% 0.25 70);
-  --accent-foreground: oklch(10% 0.05 70);
-  --destructive: oklch(65% 0.25 25);
-  --destructive-foreground: oklch(98% 0 0);
-  --border: oklch(30% 0 0);
-  --input: oklch(18% 0 0);
-  --ring: oklch(85% 0.22 80);
+    --background: oklch(5% 0 0);
+    --foreground: oklch(98% 0 0);
+    --card: oklch(12% 0 0);
+    --card-foreground: oklch(98% 0 0);
+    --popover: oklch(10% 0 0);
+    --popover-foreground: oklch(98% 0 0);
+    --primary: oklch(85% 0.22 80);
+    --primary-foreground: oklch(10% 0.05 80);
+    --secondary: oklch(60% 0 0);
+    --secondary-foreground: oklch(98% 0 0);
+    --muted: oklch(75% 0 0);
+    --muted-foreground: oklch(50% 0 0);
+    --accent: oklch(90% 0.25 70);
+    --accent-foreground: oklch(10% 0.05 70);
+    --destructive: oklch(65% 0.25 25);
+    --destructive-foreground: oklch(98% 0 0);
+    --border: oklch(30% 0 0);
+    --input: oklch(18% 0 0);
+    --ring: oklch(85% 0.22 80);
 }
 ```
 
@@ -881,24 +880,24 @@ Here are 30 different cutting-edge dark theme explorations for the project, base
 
 ```css
 .dark {
-  --background: oklch(20% 0.01 240);
-  --foreground: oklch(90% 0.005 240);
-  --card: oklch(25% 0.01 240);
-  --card-foreground: oklch(90% 0.005 240);
-  --popover: oklch(22% 0.01 240);
-  --popover-foreground: oklch(90% 0.005 240);
-  --primary: oklch(70% 0.1 230);
-  --primary-foreground: oklch(15% 0.02 230);
-  --secondary: oklch(50% 0.05 240);
-  --secondary-foreground: oklch(95% 0.005 240);
-  --muted: oklch(65% 0.01 240);
-  --muted-foreground: oklch(80% 0.005 240);
-  --accent: oklch(75% 0.12 220);
-  --accent-foreground: oklch(15% 0.02 220);
-  --destructive: oklch(65% 0.2 25);
-  --destructive-foreground: oklch(95% 0.05 25);
-  --border: oklch(35% 0.01 240);
-  --input: oklch(30% 0.01 240);
-  --ring: oklch(70% 0.1 230);
+    --background: oklch(20% 0.01 240);
+    --foreground: oklch(90% 0.005 240);
+    --card: oklch(25% 0.01 240);
+    --card-foreground: oklch(90% 0.005 240);
+    --popover: oklch(22% 0.01 240);
+    --popover-foreground: oklch(90% 0.005 240);
+    --primary: oklch(70% 0.1 230);
+    --primary-foreground: oklch(15% 0.02 230);
+    --secondary: oklch(50% 0.05 240);
+    --secondary-foreground: oklch(95% 0.005 240);
+    --muted: oklch(65% 0.01 240);
+    --muted-foreground: oklch(80% 0.005 240);
+    --accent: oklch(75% 0.12 220);
+    --accent-foreground: oklch(15% 0.02 220);
+    --destructive: oklch(65% 0.2 25);
+    --destructive-foreground: oklch(95% 0.05 25);
+    --border: oklch(35% 0.01 240);
+    --input: oklch(30% 0.01 240);
+    --ring: oklch(70% 0.1 230);
 }
 ```

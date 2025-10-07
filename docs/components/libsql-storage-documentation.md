@@ -27,16 +27,15 @@ Configuration module for LibSQL-based storage and vector operations in Mastra, i
 - ARC-001: Design patterns: Factory with tracing; adapter for vector ops.
 
 - ARC-002: Dependencies:
+    - @mastra/libsql (LibSQLStore, LibSQLVector)
 
-  - @mastra/libsql (LibSQLStore, LibSQLVector)
+    - @mastra/core (Memory, tracing types)
 
-  - @mastra/core (Memory, tracing types)
+    - ai-sdk/google (embedder)
 
-  - ai-sdk/google (embedder)
+    - node:fs/path (logs/dir)
 
-  - node:fs/path (logs/dir)
-
-  - Local: logger, utils
+    - Local: logger, utils
 
 - ARC-003: Interactions: Creates stores; embeds/queries vectors; subscribes memory.
 
@@ -94,13 +93,13 @@ graph TD
 
 - INT-001: Exported functions/configs.
 
-| Function | Purpose | Parameters | Return Type | Notes |
-|----------|---------|------------|-------------|-------|
-| `createLibSQLStore` | Create metadata store | `tracingContext?` | `LibSQLStore` | Env URL/auth |
-| `createLibSQLVectorStore` | Create vector store | `tracingContext?` | `LibSQLVector` | Separate DB |
-| `searchSimilarContent` | Embed + query | `query, index, topK` | `QueryResult[]` | With tracing |
-| `upsertVectors` | Insert vectors | `index, vectors, metadata, ids` | `{success, count?}` | Mutable arrays |
-| `queryVectors` | Similarity search | `index, queryVector, topK, filter?` | `QueryResult[]` | Optional vector |
+| Function                  | Purpose               | Parameters                          | Return Type         | Notes           |
+| ------------------------- | --------------------- | ----------------------------------- | ------------------- | --------------- |
+| `createLibSQLStore`       | Create metadata store | `tracingContext?`                   | `LibSQLStore`       | Env URL/auth    |
+| `createLibSQLVectorStore` | Create vector store   | `tracingContext?`                   | `LibSQLVector`      | Separate DB     |
+| `searchSimilarContent`    | Embed + query         | `query, index, topK`                | `QueryResult[]`     | With tracing    |
+| `upsertVectors`           | Insert vectors        | `index, vectors, metadata, ids`     | `{success, count?}` | Mutable arrays  |
+| `queryVectors`            | Similarity search     | `index, queryVector, topK, filter?` | `QueryResult[]`     | Optional vector |
 
 ### Memory Configs
 
@@ -133,20 +132,20 @@ Edge cases and considerations:
 ### Store Creation
 
 ```ts
-const store = createLibSQLStore(tracing);
-const vector = createLibSQLVectorStore(tracing);
+const store = createLibSQLStore(tracing)
+const vector = createLibSQLVectorStore(tracing)
 ```
 
 ### Vector Search
 
 ```ts
-const results = await searchSimilarContent('query', 'index', 5, tracing);
+const results = await searchSimilarContent('query', 'index', 5, tracing)
 ```
 
 ### Memory Setup
 
 ```ts
-const memory = createResearchMemory();
+const memory = createResearchMemory()
 ```
 
 Best practices:

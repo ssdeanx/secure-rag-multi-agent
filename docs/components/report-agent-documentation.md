@@ -1,11 +1,11 @@
 ---
-title: "Report Agent - Technical Documentation"
-component_path: "src/mastra/agents/reportAgent.ts"
-version: "1.0"
-date_created: "2025-09-23"
-last_updated: "2025-09-23"
-owner: "AI Team"
-tags: ["agent", "reporting", "research-synthesis", "documentation", "markdown"]
+title: 'Report Agent - Technical Documentation'
+component_path: 'src/mastra/agents/reportAgent.ts'
+version: '1.0'
+date_created: '2025-09-23'
+last_updated: '2025-09-23'
+owner: 'AI Team'
+tags: ['agent', 'reporting', 'research-synthesis', 'documentation', 'markdown']
 ---
 
 # Report Agent Documentation
@@ -80,11 +80,11 @@ graph TD
 - INT-002: Generates structured Markdown reports
 - INT-003: Includes evaluation metrics for quality assessment
 
-| Method/Property | Purpose | Parameters | Return Type | Usage Notes |
-|---|---|---|---|---|
-| `execute()` | Generate research report | `researchData: object` | `Promise<string>` | Returns markdown report |
-| `memory` | Persistent conversation storage | - | `LibSQLStore` | Research context retention |
-| `evals` | Quality evaluation metrics | - | `EvaluationMetrics[]` | Content quality assessment |
+| Method/Property | Purpose                         | Parameters             | Return Type           | Usage Notes                |
+| --------------- | ------------------------------- | ---------------------- | --------------------- | -------------------------- |
+| `execute()`     | Generate research report        | `researchData: object` | `Promise<string>`     | Returns markdown report    |
+| `memory`        | Persistent conversation storage | -                      | `LibSQLStore`         | Research context retention |
+| `evals`         | Quality evaluation metrics      | -                      | `EvaluationMetrics[]` | Content quality assessment |
 
 ## 4. Implementation Details
 
@@ -99,12 +99,17 @@ graph TD
 
 ```typescript
 const report = await reportAgent.generate({
-  queries: ["What are renewable energy benefits?"],
-  searchResults: [{ url: "example.com", title: "Energy Guide" }],
-  learnings: [{ insight: "Solar power reduces emissions", followUp: "What about costs?" }],
-  completedQueries: ["What are renewable energy benefits?"],
-  phase: "research_complete"
-});
+    queries: ['What are renewable energy benefits?'],
+    searchResults: [{ url: 'example.com', title: 'Energy Guide' }],
+    learnings: [
+        {
+            insight: 'Solar power reduces emissions',
+            followUp: 'What about costs?',
+        },
+    ],
+    completedQueries: ['What are renewable energy benefits?'],
+    phase: 'research_complete',
+})
 ```
 
 ### Advanced Usage
@@ -112,10 +117,10 @@ const report = await reportAgent.generate({
 ```typescript
 // With custom evaluation
 const result = await reportAgent.generate(input, {
-  evals: {
-    customMetric: new CustomEvaluationMetric()
-  }
-});
+    evals: {
+        customMetric: new CustomEvaluationMetric(),
+    },
+})
 ```
 
 - USE-001: Research report generation from agent outputs

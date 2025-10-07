@@ -27,8 +27,7 @@ Configuration module for Gemini AI models using CLI provider with OAuth authenti
 - ARC-001: Design patterns: Configuration module with environment-aware authentication.
 
 - ARC-002: Dependencies:
-
-  - `ai-sdk-provider-gemini-cli`: createGeminiProvider
+    - `ai-sdk-provider-gemini-cli`: createGeminiProvider
 
 - ARC-003: Interactions: Detects auth type from environment, creates provider with appropriate auth, exports model instances.
 
@@ -71,15 +70,15 @@ graph TD
 
 - INT-001: Exports model instances and default provider.
 
-| Export | Purpose | Type | Usage Notes |
-|--------|---------|------|-------------|
-| `geminiAI` | Gemini 2.5 Pro | `GeminiModel` | Standard high-performance |
-| `geminiAIFlash` | Gemini 2.5 Flash | `GeminiModel` | Balanced performance |
-| `geminiAIFlashLite` | Gemini 2.5 Flash Lite | `GeminiModel` | Cost-optimized |
-| `geminiAIFlashimg` | Flash with image preview | `GeminiModel` | Image processing |
-| `geminiAIv` | Native audio dialog | `GeminiModel` | Audio conversation |
-| `geminiAIv2` | Text-to-speech preview | `GeminiModel` | TTS capabilities |
-| `geminiAIv3` | Audio thinking dialog | `GeminiModel` | Advanced audio |
+| Export              | Purpose                  | Type          | Usage Notes               |
+| ------------------- | ------------------------ | ------------- | ------------------------- |
+| `geminiAI`          | Gemini 2.5 Pro           | `GeminiModel` | Standard high-performance |
+| `geminiAIFlash`     | Gemini 2.5 Flash         | `GeminiModel` | Balanced performance      |
+| `geminiAIFlashLite` | Gemini 2.5 Flash Lite    | `GeminiModel` | Cost-optimized            |
+| `geminiAIFlashimg`  | Flash with image preview | `GeminiModel` | Image processing          |
+| `geminiAIv`         | Native audio dialog      | `GeminiModel` | Audio conversation        |
+| `geminiAIv2`        | Text-to-speech preview   | `GeminiModel` | TTS capabilities          |
+| `geminiAIv3`        | Audio thinking dialog    | `GeminiModel` | Advanced audio            |
 
 ## 4. Implementation Details
 
@@ -99,24 +98,24 @@ Corner cases and considerations:
 ### Using in CLI tools
 
 ```ts
-import { geminiAI } from '@/src/mastra/config/gemini-cli';
+import { geminiAI } from '@/src/mastra/config/gemini-cli'
 
 // CLI agent for development
 const cliAgent = createAgent({
-  name: 'CLIAssistant',
-  model: geminiAI,
-  // ...
-});
+    name: 'CLIAssistant',
+    model: geminiAI,
+    // ...
+})
 ```
 
 ### Custom model creation
 
 ```ts
-import gemini from '@/src/mastra/config/gemini-cli';
+import gemini from '@/src/mastra/config/gemini-cli'
 
 const customModel = gemini('gemini-2.5-pro', {
-  // custom options
-});
+    // custom options
+})
 ```
 
 ### Environment setup
@@ -143,23 +142,23 @@ NODE_ENV=development
 ## 7. Reference Information
 
 - REF-001: Dependencies (approximate):
-  - ai-sdk-provider-gemini-cli (^1.0.0)
+    - ai-sdk-provider-gemini-cli (^1.0.0)
 
 - REF-002: Configuration
-  - GOOGLE_GENERATIVE_AI_API_KEY (for API key auth)
-  - NODE_ENV (determines auth type)
-  - GEMINI_OAUTH_CACHE (optional cache directory)
+    - GOOGLE_GENERATIVE_AI_API_KEY (for API key auth)
+    - NODE_ENV (determines auth type)
+    - GEMINI_OAUTH_CACHE (optional cache directory)
 
 - REF-003: Testing guidelines
-  - Mock auth environment. Test both auth types.
+    - Mock auth environment. Test both auth types.
 
 - REF-004: Troubleshooting
-  - Issue: OAuth login required — run in interactive terminal.
-  - Issue: Cache permission errors — check cache directory access.
+    - Issue: OAuth login required — run in interactive terminal.
+    - Issue: Cache permission errors — check cache directory access.
 
 - REF-005: Related docs
-  - Gemini AI documentation
-  - Other AI config files
+    - Gemini AI documentation
+    - Other AI config files
 
 - REF-006: Change history
-  - 1.0 (2025-09-23) - Initial documentation generated
+    - 1.0 (2025-09-23) - Initial documentation generated

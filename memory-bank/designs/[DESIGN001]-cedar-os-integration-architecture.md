@@ -30,6 +30,7 @@ This design defines a three-layer integration between Cedar OS (frontend), Next.
 ## Progress Log
 
 ### 2025-10-06 14:55
+
 - Design approved and added to `designs/_index.md`. Types and TASK004 documented and completed.
 
 # [DESIGN001] - Cedar OS Frontend-Backend Integration Architecture
@@ -102,18 +103,18 @@ graph TB
     UI --> Cedar
     Cedar --> Hooks
     UI --> Renderers
-    
+
     Cedar -->|additionalContext| ChatRoute
     ChatRoute -->|SSE Stream| Cedar
-    
+
     ChatRoute --> Workflows
     Workflows --> Agents
     Agents --> Tools
     Tools --> Schemas
-    
+
     Workflows --> Qdrant
     Workflows --> LibSQL
-    
+
     Renderers -->|Display| UI
 ```
 
@@ -126,16 +127,16 @@ graph TB
 ```typescript
 // Register roadmap state in Cedar OS
 const [nodes, setNodes] = useCedarState(
-  'nodes',
-  initialNodes,
-  'Roadmap feature nodes'
-);
+    'nodes',
+    initialNodes,
+    'Roadmap feature nodes'
+)
 
 const [selectedNodes, setSelectedNodes] = useCedarState(
-  'selectedNodes',
-  [],
-  'Currently selected nodes'
-);
+    'selectedNodes',
+    [],
+    'Currently selected nodes'
+)
 ```
 
 **State Subscription:**
@@ -164,15 +165,15 @@ useSubscribeStateToAgentContext(
 
 ```typescript
 // Send message with automatic context inclusion
-const { sendMessage, compileAdditionalContext } = useCedarStore();
+const { sendMessage, compileAdditionalContext } = useCedarStore()
 
 await sendMessage({
-  content: 'Add a new feature to Q2 2025',
-  // additionalContext automatically includes:
-  // - selectedNodes (from subscription)
-  // - mentions (from @references)
-  // - manual context entries
-});
+    content: 'Add a new feature to Q2 2025',
+    // additionalContext automatically includes:
+    // - selectedNodes (from subscription)
+    // - mentions (from @references)
+    // - manual context entries
+})
 ```
 
 **Custom Message Rendering:**
@@ -219,54 +220,57 @@ const RoadmapActionRenderer = createMessageRenderer<RoadmapActionMessage>({
 
 ```typescript
 // app/api/chat/route.ts
-import { cedarChatWorkflow } from '@/src/mastra';
-import type { AgentContext } from '@/src/mastra/workflows/chatWorkflowSharedTypes';
+import { cedarChatWorkflow } from '@/src/mastra'
+import type { AgentContext } from '@/src/mastra/workflows/chatWorkflowSharedTypes'
 
 export async function POST(req: Request) {
-  const { prompt, additionalContext, stream = true } = await req.json();
+    const { prompt, additionalContext, stream = true } = await req.json()
 
-  if (stream) {
-    // SSE Streaming response
-    return new Response(
-      new ReadableStream({
-        async start(controller) {
-          try {
-            const run = await cedarChatWorkflow.createRun({
-              message: prompt,
-              cedarContext: additionalContext as AgentContext
-            });
+    if (stream) {
+        // SSE Streaming response
+        return new Response(
+            new ReadableStream({
+                async start(controller) {
+                    try {
+                        const run = await cedarChatWorkflow.createRun({
+                            message: prompt,
+                            cedarContext: additionalContext as AgentContext,
+                        })
 
-            for await (const event of run.streamVNext()) {
-              // Send data-only SSE events
-              const data = JSON.stringify(event);
-              controller.enqueue(`data: ${data}\n\n`);
+                        for await (const event of run.streamVNext()) {
+                            // Send data-only SSE events
+                            const data = JSON.stringify(event)
+                            controller.enqueue(`data: ${data}\n\n`)
+                        }
+
+                        controller.close()
+                    } catch (error) {
+                        const errorData = JSON.stringify({
+                            type: 'error',
+                            error: error.message,
+                        })
+                        controller.enqueue(`data: ${errorData}\n\n`)
+                        controller.close()
+                    }
+                },
+            }),
+            {
+                headers: {
+                    'Content-Type': 'text/event-stream',
+                    'Cache-Control': 'no-cache',
+                    Connection: 'keep-alive',
+                },
             }
+        )
+    }
 
-            controller.close();
-          } catch (error) {
-            const errorData = JSON.stringify({ type: 'error', error: error.message });
-            controller.enqueue(`data: ${errorData}\n\n`);
-            controller.close();
-          }
-        }
-      }),
-      {
-        headers: {
-          'Content-Type': 'text/event-stream',
-          'Cache-Control': 'no-cache',
-          'Connection': 'keep-alive'
-        }
-      }
-    );
-  }
+    // Non-streaming response
+    const result = await cedarChatWorkflow.execute({
+        message: prompt,
+        cedarContext: additionalContext,
+    })
 
-  // Non-streaming response
-  const result = await cedarChatWorkflow.execute({
-    message: prompt,
-    cedarContext: additionalContext
-  });
-
-  return Response.json(result);
+    return Response.json(result)
 }
 ```
 
@@ -276,81 +280,81 @@ export async function POST(req: Request) {
 
 ```typescript
 // src/mastra/workflows/chatWorkflow.ts
-import { createWorkflow } from '@mastra/core';
-import type { AgentContext, SetStateResponse } from './chatWorkflowSharedTypes';
+import { createWorkflow } from '@mastra/core'
+import type { AgentContext, SetStateResponse } from './chatWorkflowSharedTypes'
 
 const CedarContextSchema = z.object({
-  selectedNodes: z.array(z.any()).optional(),
-  nodes: z.array(z.any()).optional(),
-  currentDate: z.string().optional()
-});
+    selectedNodes: z.array(z.any()).optional(),
+    nodes: z.array(z.any()).optional(),
+    currentDate: z.string().optional(),
+})
 
 export const cedarChatWorkflow = createWorkflow({
-  id: 'cedar-chat-workflow',
-  inputSchema: z.object({
-    message: z.string(),
-    cedarContext: CedarContextSchema.optional()
-  }),
-  outputSchema: z.union([
-    MessageResponseSchema,
-    SetStateResponseSchema,
-    FrontendToolResponseSchema
-  ]),
-  steps: [
-    createStep({
-      id: 'process-with-context',
-      inputSchema: z.object({
+    id: 'cedar-chat-workflow',
+    inputSchema: z.object({
         message: z.string(),
-        cedarContext: CedarContextSchema.optional()
-      }),
-      outputSchema: z.union([
+        cedarContext: CedarContextSchema.optional(),
+    }),
+    outputSchema: z.union([
         MessageResponseSchema,
-        SetStateResponseSchema
-      ]),
-      execute: async ({ inputData }) => {
-        const { message, cedarContext } = inputData;
+        SetStateResponseSchema,
+        FrontendToolResponseSchema,
+    ]),
+    steps: [
+        createStep({
+            id: 'process-with-context',
+            inputSchema: z.object({
+                message: z.string(),
+                cedarContext: CedarContextSchema.optional(),
+            }),
+            outputSchema: z.union([
+                MessageResponseSchema,
+                SetStateResponseSchema,
+            ]),
+            execute: async ({ inputData }) => {
+                const { message, cedarContext } = inputData
 
-        // Build agent context from Cedar state
-        const contextPrompt = buildContextPrompt(cedarContext);
+                // Build agent context from Cedar state
+                const contextPrompt = buildContextPrompt(cedarContext)
 
-        // Generate response with structured output
-        const result = await starterAgent.generate({
-          prompt: `${contextPrompt}\n\nUser: ${message}`,
-          maxSteps: 3,
-          structuredOutput: {
-            schema: z.union([
-              MessageResponseSchema,
-              SetStateResponseSchema
-            ])
-          }
-        });
+                // Generate response with structured output
+                const result = await starterAgent.generate({
+                    prompt: `${contextPrompt}\n\nUser: ${message}`,
+                    maxSteps: 3,
+                    structuredOutput: {
+                        schema: z.union([
+                            MessageResponseSchema,
+                            SetStateResponseSchema,
+                        ]),
+                    },
+                })
 
-        return result.object || { type: 'message', content: result.text };
-      }
-    })
-  ]
-});
+                return (
+                    result.object || { type: 'message', content: result.text }
+                )
+            },
+        }),
+    ],
+})
 
 // Helper function to build context prompt
 function buildContextPrompt(cedarContext?: AgentContext): string {
-  if (!cedarContext) return '';
+    if (!cedarContext) return ''
 
-  let contextParts: string[] = [];
+    let contextParts: string[] = []
 
-  if (cedarContext.selectedNodes?.length) {
-    const selectedTitles = cedarContext.selectedNodes
-      .map((node: any) => node.data?.title)
-      .filter(Boolean);
-    contextParts.push(`Selected nodes: ${selectedTitles.join(', ')}`);
-  }
+    if (cedarContext.selectedNodes?.length) {
+        const selectedTitles = cedarContext.selectedNodes
+            .map((node: any) => node.data?.title)
+            .filter(Boolean)
+        contextParts.push(`Selected nodes: ${selectedTitles.join(', ')}`)
+    }
 
-  if (cedarContext.nodes?.length) {
-    contextParts.push(`Total nodes: ${cedarContext.nodes.length}`);
-  }
+    if (cedarContext.nodes?.length) {
+        contextParts.push(`Total nodes: ${cedarContext.nodes.length}`)
+    }
 
-  return contextParts.length 
-    ? `Context:\n${contextParts.join('\n')}\n\n`
-    : '';
+    return contextParts.length ? `Context:\n${contextParts.join('\n')}\n\n` : ''
 }
 ```
 
@@ -358,20 +362,20 @@ function buildContextPrompt(cedarContext?: AgentContext): string {
 
 ```typescript
 // src/mastra/agents/roadmap-agent.ts
-import { Agent } from '@mastra/core/agent';
-import { z } from 'zod';
+import { Agent } from '@mastra/core/agent'
+import { z } from 'zod'
 
 const SetStateResponseSchema = z.object({
-  type: z.literal('setState'),
-  stateKey: z.string(),
-  setterKey: z.string(),
-  args: z.record(z.unknown())
-});
+    type: z.literal('setState'),
+    stateKey: z.string(),
+    setterKey: z.string(),
+    args: z.record(z.unknown()),
+})
 
 export const roadmapAgent = new Agent({
-  id: 'roadmap-agent',
-  name: 'Roadmap Assistant',
-  instructions: `
+    id: 'roadmap-agent',
+    name: 'Roadmap Assistant',
+    instructions: `
 You are a product roadmap assistant. When users want to add, modify, or remove roadmap features, respond with setState actions.
 
 Available actions:
@@ -392,13 +396,13 @@ Response format:
   }
 }
   `,
-  model: {
-    provider: 'GOOGLE',
-    name: 'gemini-2.0-flash-exp',
-    toolChoice: 'auto'
-  },
-  enableTrace: true
-});
+    model: {
+        provider: 'GOOGLE',
+        name: 'gemini-2.0-flash-exp',
+        toolChoice: 'auto',
+    },
+    enableTrace: true,
+})
 ```
 
 ### Data Flow Diagrams
@@ -446,7 +450,7 @@ sequenceDiagram
     Client->>API: POST /api/chat<br/>{stream: true}
     API->>Run: createRun({...})
     API->>SSE: Start SSE stream
-    
+
     loop For each event
         Agent->>Run: Generate chunk
         Run->>API: yield event
@@ -454,7 +458,7 @@ sequenceDiagram
         SSE->>Client: Stream chunk
         Client->>Client: Append to message
     end
-    
+
     Run->>API: Complete
     API->>SSE: Close stream
     SSE->>Client: Connection closed
@@ -472,7 +476,7 @@ sequenceDiagram
     Component->>Cedar: useCedarState('selectedNodes', [])
     Component->>Subscription: useSubscribeStateToAgentContext()
     Note over Subscription: Config:<br/>- labelField<br/>- icon, color<br/>- showInChat<br/>- collapse
-    
+
     loop On state change
         Component->>Cedar: setSelectedNodes(newSelection)
         Cedar->>Subscription: State changed
@@ -481,7 +485,7 @@ sequenceDiagram
         Context->>Context: Apply filters
         Context->>Context: Generate badges
     end
-    
+
     Note over Cedar,Context: Context automatically<br/>included in next<br/>sendMessage()
 ```
 
@@ -550,18 +554,18 @@ sequenceDiagram
 
 ### Sub-components
 
-| ID | Description | Status | Updated | Notes |
-|----|-------------|--------|---------|-------|
-| 1.1 | Type system in chatWorkflowSharedTypes.ts | Complete | 2025-10-06, 14:45 EST | All Cedar types defined |
-| 1.2 | Frontend Cedar hooks integration | Not Started | - | useCedarState, useSubscribeStateToAgentContext |
-| 1.3 | Custom message renderers | Not Started | - | setState, frontendTool, roadmap-action |
-| 1.4 | API route context handling | Not Started | - | additionalContext parsing |
-| 1.5 | SSE streaming implementation | Not Started | - | Data-only SSE format |
-| 1.6 | Workflow Cedar context support | In Progress | 2025-10-06, 14:00 EST | Basic context parsing done |
-| 1.7 | Agent structured responses | Not Started | - | setState and frontendTool |
-| 1.8 | Message storage adapter | Not Started | - | LibSQL persistence |
-| 1.9 | Thread management UI | Not Started | - | Thread switching, creation |
-| 1.10 | Integration testing | Not Started | - | End-to-end tests |
+| ID   | Description                               | Status      | Updated               | Notes                                          |
+| ---- | ----------------------------------------- | ----------- | --------------------- | ---------------------------------------------- |
+| 1.1  | Type system in chatWorkflowSharedTypes.ts | Complete    | 2025-10-06, 14:45 EST | All Cedar types defined                        |
+| 1.2  | Frontend Cedar hooks integration          | Not Started | -                     | useCedarState, useSubscribeStateToAgentContext |
+| 1.3  | Custom message renderers                  | Not Started | -                     | setState, frontendTool, roadmap-action         |
+| 1.4  | API route context handling                | Not Started | -                     | additionalContext parsing                      |
+| 1.5  | SSE streaming implementation              | Not Started | -                     | Data-only SSE format                           |
+| 1.6  | Workflow Cedar context support            | In Progress | 2025-10-06, 14:00 EST | Basic context parsing done                     |
+| 1.7  | Agent structured responses                | Not Started | -                     | setState and frontendTool                      |
+| 1.8  | Message storage adapter                   | Not Started | -                     | LibSQL persistence                             |
+| 1.9  | Thread management UI                      | Not Started | -                     | Thread switching, creation                     |
+| 1.10 | Integration testing                       | Not Started | -                     | End-to-end tests                               |
 
 ## Design Log
 

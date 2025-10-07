@@ -1,11 +1,11 @@
 ---
-title: "MDX Processing Plugins"
-description: "Remark and Rehype plugins configuration for MDX content processing with GitHub Flavored Markdown, frontmatter, table of contents, and Mermaid diagram support"
-component_type: "Configuration Module"
-framework: "Next.js"
-language: "TypeScript"
-platform: "Node.js"
-tags: ["mdx", "remark", "rehype", "markdown", "plugins", "documentation"]
+title: 'MDX Processing Plugins'
+description: 'Remark and Rehype plugins configuration for MDX content processing with GitHub Flavored Markdown, frontmatter, table of contents, and Mermaid diagram support'
+component_type: 'Configuration Module'
+framework: 'Next.js'
+language: 'TypeScript'
+platform: 'Node.js'
+tags: ['mdx', 'remark', 'rehype', 'markdown', 'plugins', 'documentation']
 ---
 
 # MDX Processing Plugins (`lib/mdx-plugins.ts`)
@@ -143,13 +143,13 @@ Default export containing both plugin arrays.
 ### Basic MDX Configuration
 
 ```typescript
-import { remarkPlugins, rehypePlugins } from '@/lib/mdx-plugins';
+import { remarkPlugins, rehypePlugins } from '@/lib/mdx-plugins'
 
 // Use in Next.js MDX configuration
 const mdxOptions = {
-  remarkPlugins: remarkPlugins,
-  rehypePlugins: rehypePlugins,
-};
+    remarkPlugins: remarkPlugins,
+    rehypePlugins: rehypePlugins,
+}
 ```
 
 ### Next.js MDX Remote Integration
@@ -177,19 +177,16 @@ export default function MDXPage({ source }) {
 ### Custom Plugin Extension
 
 ```typescript
-import { remarkPlugins, rehypePlugins } from '@/lib/mdx-plugins';
-import remarkCustom from 'remark-custom-plugin';
+import { remarkPlugins, rehypePlugins } from '@/lib/mdx-plugins'
+import remarkCustom from 'remark-custom-plugin'
 
 // Extend with additional plugins
-const extendedRemarkPlugins = [
-  ...remarkPlugins,
-  remarkCustom,
-];
+const extendedRemarkPlugins = [...remarkPlugins, remarkCustom]
 
 const extendedRehypePlugins = [
-  ...rehypePlugins,
-  // Add more rehype plugins
-];
+    ...rehypePlugins,
+    // Add more rehype plugins
+]
 ```
 
 ## Plugin Details
@@ -261,11 +258,11 @@ const extendedRehypePlugins = [
 
 ```json
 {
-  "remark-gfm": "^4.x.x",
-  "remark-mdx-frontmatter": "^4.x.x",
-  "remark-toc": "^9.x.x",
-  "remark-rehype": "^11.x.x",
-  "rehype-mermaid": "^2.x.x"
+    "remark-gfm": "^4.x.x",
+    "remark-mdx-frontmatter": "^4.x.x",
+    "remark-toc": "^9.x.x",
+    "remark-rehype": "^11.x.x",
+    "rehype-mermaid": "^2.x.x"
 }
 ```
 
@@ -274,20 +271,20 @@ const extendedRehypePlugins = [
 Add to `next.config.mjs`:
 
 ```javascript
-import { remarkPlugins, rehypePlugins } from './lib/mdx-plugins.js';
+import { remarkPlugins, rehypePlugins } from './lib/mdx-plugins.js'
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  // ... other config
-  experimental: {
-    mdxRs: {
-      remarkPlugins: remarkPlugins,
-      rehypePlugins: rehypePlugins,
+    // ... other config
+    experimental: {
+        mdxRs: {
+            remarkPlugins: remarkPlugins,
+            rehypePlugins: rehypePlugins,
+        },
     },
-  },
-};
+}
 
-export default nextConfig;
+export default nextConfig
 ```
 
 ## Troubleshooting
@@ -295,24 +292,24 @@ export default nextConfig;
 ### Common Issues
 
 1. **Plugin Loading Errors**
-   - Ensure all dependencies are installed
-   - Check plugin version compatibility
-   - Verify import paths are correct
+    - Ensure all dependencies are installed
+    - Check plugin version compatibility
+    - Verify import paths are correct
 
 2. **Mermaid Rendering Issues**
-   - Ensure `rehype-mermaid` is properly configured
-   - Check for valid Mermaid syntax in markdown
-   - Verify CSS styles are loaded for diagrams
+    - Ensure `rehype-mermaid` is properly configured
+    - Check for valid Mermaid syntax in markdown
+    - Verify CSS styles are loaded for diagrams
 
 3. **Frontmatter Parsing Problems**
-   - Use valid YAML/TOML syntax
-   - Ensure frontmatter is at the top of the file
-   - Check for syntax errors in metadata
+    - Use valid YAML/TOML syntax
+    - Ensure frontmatter is at the top of the file
+    - Check for syntax errors in metadata
 
 4. **TOC Generation Issues**
-   - Ensure headings have proper hierarchy
-   - Check for duplicate heading IDs
-   - Verify TOC placement in document
+    - Ensure headings have proper hierarchy
+    - Check for duplicate heading IDs
+    - Verify TOC placement in document
 
 ## References
 

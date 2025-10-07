@@ -20,10 +20,10 @@ Small presentational badge component with variants powered by `class-variance-au
 
 - Props: extends `React.ComponentProps<'span'>` and CVA `VariantProps`.
 
-| Prop | Purpose | Type | Default |
-|------|---------|------|---------|
+| Prop      | Purpose                                                   | Type           | Default   |
+| --------- | --------------------------------------------------------- | -------------- | --------- |
 | `variant` | Visual variant (default, secondary, destructive, outline) | `string` (CVA) | `default` |
-| `asChild` | Render underlying element as provided child (Radix Slot) | `boolean` | `false` |
+| `asChild` | Render underlying element as provided child (Radix Slot)  | `boolean`      | `false`   |
 
 ## 3. Implementation notes
 

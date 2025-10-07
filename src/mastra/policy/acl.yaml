@@ -1,12 +1,12 @@
 docs:
-  - path: "./corpus/finance-policy.md"
-    allow:
-      roles: ["finance.viewer", "finance.admin"]
-    tenant: "acme"
-    classification: "internal"
+    - path: './corpus/finance-policy.md'
+      allow:
+          roles: ['finance.viewer', 'finance.admin']
+      tenant: 'acme'
+      classification: 'internal'
 
-  - path: "./corpus/engineering-handbook.md"
-    allow:
-      roles: ["engineering.viewer","engineering.admin"]
-    tenant: "acme"
-    classification: "public"
+    - path: './corpus/engineering-handbook.md'
+      allow:
+          roles: ['engineering.viewer', 'engineering.admin']
+      tenant: 'acme'
+      classification: 'public'

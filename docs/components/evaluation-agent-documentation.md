@@ -1,11 +1,12 @@
 ---
-title: "Evaluation Agent"
-description: "An expert evaluation agent that assesses the relevance of search results to research queries using structured evaluation criteria"
-component_type: "Mastra Agent"
-framework: "Mastra"
-language: "TypeScript"
-platform: "Node.js"
-tags: ["agent", "evaluation", "relevance", "search-assessment", "quality-control"]
+title: 'Evaluation Agent'
+description: 'An expert evaluation agent that assesses the relevance of search results to research queries using structured evaluation criteria'
+component_type: 'Mastra Agent'
+framework: 'Mastra'
+language: 'TypeScript'
+platform: 'Node.js'
+tags:
+    ['agent', 'evaluation', 'relevance', 'search-assessment', 'quality-control']
 ---
 
 # Evaluation Agent (`src/mastra/agents/evaluationAgent.ts`)
@@ -161,12 +162,15 @@ graph TB
 ### Agent Properties
 
 #### `id: "evaluation"`
+
 Unique identifier for the agent within the Mastra system.
 
 #### `name: "Evaluation Agent"`
+
 Human-readable name for the agent.
 
 #### `description`
+
 "An expert evaluation agent. Your task is to evaluate whether search results are relevant to a research query."
 
 ### Evaluation Role
@@ -231,8 +235,8 @@ The agent follows a systematic 5-step evaluation process:
 
 ```json
 {
-  "isRelevant": true,
-  "reason": "The article directly discusses the core concepts of the query and provides detailed examples."
+    "isRelevant": true,
+    "reason": "The article directly discusses the core concepts of the query and provides detailed examples."
 }
 ```
 
@@ -344,7 +348,7 @@ The agent includes comprehensive evaluation metrics:
 ### Memory Configuration
 
 ```typescript
-const store = createResearchMemory();
+const store = createResearchMemory()
 // Uses LibSQL for persistent evaluation conversation storage
 ```
 
@@ -374,40 +378,40 @@ GOOGLE_GENERATIVE_AI_API_KEY=your-api-key
 ### Evaluation Quality Issues
 
 1. **False Positives**
-   - Review relevance criteria application
-   - Ensure strict interpretation of "direct relevance"
-   - Validate reasoning specificity
+    - Review relevance criteria application
+    - Ensure strict interpretation of "direct relevance"
+    - Validate reasoning specificity
 
 2. **False Negatives**
-   - Check for overly restrictive criteria application
-   - Consider edge cases in relevance determination
-   - Balance strictness with fairness
+    - Check for overly restrictive criteria application
+    - Consider edge cases in relevance determination
+    - Balance strictness with fairness
 
 3. **Inconsistent Decisions**
-   - Verify criteria application uniformity
-   - Ensure consistent query interpretation
-   - Review decision reasoning clarity
+    - Verify criteria application uniformity
+    - Ensure consistent query interpretation
+    - Review decision reasoning clarity
 
 ### Technical Issues
 
 1. **JSON Format Errors**
-   - Validate JSON structure compliance
-   - Ensure all required fields are present
-   - Check for proper boolean and string formatting
+    - Validate JSON structure compliance
+    - Ensure all required fields are present
+    - Check for proper boolean and string formatting
 
 2. **Model Response Issues**
-   - Verify API key configuration
-   - Check model availability and rate limits
-   - Monitor response consistency
+    - Verify API key configuration
+    - Check model availability and rate limits
+    - Monitor response consistency
 
 3. **Memory Storage Problems**
-   - Check LibSQL connectivity
-   - Verify storage configuration
-   - Ensure proper session management
+    - Check LibSQL connectivity
+    - Verify storage configuration
+    - Ensure proper session management
 
 ## References
 
 - [Google Gemini Models](https://ai.google.dev/models/gemini)
-- [Information Retrieval Evaluation](https://en.wikipedia.org/wiki/Evaluation_measures_(information_retrieval))
+- [Information Retrieval Evaluation](<https://en.wikipedia.org/wiki/Evaluation_measures_(information_retrieval)>)
 - [Relevance Assessment Standards](https://www.nist.gov)
 - [Quality Assurance in Research](https://www.apa.org/research)

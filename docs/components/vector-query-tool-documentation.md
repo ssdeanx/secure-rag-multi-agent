@@ -1,11 +1,19 @@
 ---
-title: "Vector Query Tool - Technical Documentation"
-component_path: "src/mastra/tools/vector-query.tool.ts"
-version: "1.0"
-date_created: "2025-09-23"
-last_updated: "2025-09-23"
-owner: "AI Team"
-tags: ["tool", "vector-search", "qdrant", "similarity", "classification", "security"]
+title: 'Vector Query Tool - Technical Documentation'
+component_path: 'src/mastra/tools/vector-query.tool.ts'
+version: '1.0'
+date_created: '2025-09-23'
+last_updated: '2025-09-23'
+owner: 'AI Team'
+tags:
+    [
+        'tool',
+        'vector-search',
+        'qdrant',
+        'similarity',
+        'classification',
+        'security',
+    ]
 ---
 
 # Vector Query Tool Documentation
@@ -125,35 +133,35 @@ graph TB
 
 ### Input Schema
 
-| Property | Type | Required | Description |
-|----------|------|----------|-------------|
-| `question` | `string` | Yes | Search query for similarity matching |
-| `allowTags` | `string[]` | Yes | Array of allowed security tags |
-| `maxClassification` | `enum` | Yes | Maximum classification level (public/internal/confidential) |
-| `topK` | `number` | Yes | Number of results to return |
+| Property            | Type       | Required | Description                                                 |
+| ------------------- | ---------- | -------- | ----------------------------------------------------------- |
+| `question`          | `string`   | Yes      | Search query for similarity matching                        |
+| `allowTags`         | `string[]` | Yes      | Array of allowed security tags                              |
+| `maxClassification` | `enum`     | Yes      | Maximum classification level (public/internal/confidential) |
+| `topK`              | `number`   | Yes      | Number of results to return                                 |
 
 ### Output Schema
 
-| Property | Type | Description |
-|----------|------|-------------|
+| Property   | Type              | Description                         |
+| ---------- | ----------------- | ----------------------------------- |
 | `contexts` | `ContextObject[]` | Array of matching document contexts |
 
 ### Context Object Schema
 
-| Property | Type | Description |
-|----------|------|-------------|
-| `text` | `string` | Document text content |
-| `docId` | `string` | Unique document identifier |
-| `versionId` | `string` | Document version identifier |
-| `source` | `string` | Document source description |
-| `score` | `number` | Similarity score |
-| `securityTags` | `string[]` | Document security tags |
-| `classification` | `enum` | Document classification level |
+| Property         | Type       | Description                   |
+| ---------------- | ---------- | ----------------------------- |
+| `text`           | `string`   | Document text content         |
+| `docId`          | `string`   | Unique document identifier    |
+| `versionId`      | `string`   | Document version identifier   |
+| `source`         | `string`   | Document source description   |
+| `score`          | `number`   | Similarity score              |
+| `securityTags`   | `string[]` | Document security tags        |
+| `classification` | `enum`     | Document classification level |
 
 ### Public Methods
 
-| Method | Parameters | Return Type | Description |
-|--------|------------|-------------|-------------|
+| Method      | Parameters             | Return Type             | Description                                   |
+| ----------- | ---------------------- | ----------------------- | --------------------------------------------- |
 | `execute()` | `context: SearchInput` | `Promise<SearchOutput>` | Execute vector search with security filtering |
 
 ## 4. Usage Examples
@@ -161,18 +169,18 @@ graph TB
 ### Basic Vector Search
 
 ```typescript
-import { vectorQueryTool } from './src/mastra/tools/vector-query.tool';
+import { vectorQueryTool } from './src/mastra/tools/vector-query.tool'
 
 const result = await vectorQueryTool.execute({
-  context: {
-    question: "What are the company policies on remote work?",
-    allowTags: ["hr", "policies"],
-    maxClassification: "internal",
-    topK: 5
-  },
-  mastra: mastraInstance,
-  tracingContext: tracingContext
-});
+    context: {
+        question: 'What are the company policies on remote work?',
+        allowTags: ['hr', 'policies'],
+        maxClassification: 'internal',
+        topK: 5,
+    },
+    mastra: mastraInstance,
+    tracingContext: tracingContext,
+})
 
 // Result:
 // {
@@ -194,15 +202,15 @@ const result = await vectorQueryTool.execute({
 
 ```typescript
 const result = await vectorQueryTool.execute({
-  context: {
-    question: "Financial projections for Q4",
-    allowTags: ["finance", "executive"],
-    maxClassification: "confidential",
-    topK: 3
-  },
-  mastra: mastraInstance,
-  tracingContext: tracingContext
-});
+    context: {
+        question: 'Financial projections for Q4',
+        allowTags: ['finance', 'executive'],
+        maxClassification: 'confidential',
+        topK: 3,
+    },
+    mastra: mastraInstance,
+    tracingContext: tracingContext,
+})
 
 // Only returns documents user has access to based on tags and classification
 ```
@@ -212,18 +220,18 @@ const result = await vectorQueryTool.execute({
 ```typescript
 // Within a Mastra agent
 const searchResults = await vectorQueryTool.execute({
-  context: {
-    question: userQuestion,
-    allowTags: userAllowedTags,
-    maxClassification: userMaxClassification,
-    topK: 8
-  },
-  mastra: this.mastra,
-  tracingContext: this.tracingContext
-});
+    context: {
+        question: userQuestion,
+        allowTags: userAllowedTags,
+        maxClassification: userMaxClassification,
+        topK: 8,
+    },
+    mastra: this.mastra,
+    tracingContext: this.tracingContext,
+})
 
 // Use results for answer generation
-const contexts = searchResults.contexts;
+const contexts = searchResults.contexts
 ```
 
 ## 5. Quality Attributes
@@ -267,19 +275,19 @@ const contexts = searchResults.contexts;
 
 ### Dependencies
 
-| Package | Version | Purpose |
-|---------|---------|---------|
-| `@mastra/core/tools` | ^0.1.0 | Tool framework |
-| `@mastra/core/ai-tracing` | ^0.1.0 | AI tracing integration |
-| `zod` | ^3.22.4 | Schema validation |
+| Package                   | Version | Purpose                |
+| ------------------------- | ------- | ---------------------- |
+| `@mastra/core/tools`      | ^0.1.0  | Tool framework         |
+| `@mastra/core/ai-tracing` | ^0.1.0  | AI tracing integration |
+| `zod`                     | ^3.22.4 | Schema validation      |
 
 ### Environment Variables
 
-| Variable | Required | Default | Description |
-|----------|----------|---------|-------------|
-| `QDRANT_URL` | Yes | - | Qdrant database URL |
-| `QDRANT_COLLECTION` | No | governed_rag | Qdrant collection name |
-| `VECTOR_SIMILARITY_THRESHOLD` | No | 0.4 | Minimum similarity score |
+| Variable                      | Required | Default      | Description              |
+| ----------------------------- | -------- | ------------ | ------------------------ |
+| `QDRANT_URL`                  | Yes      | -            | Qdrant database URL      |
+| `QDRANT_COLLECTION`           | No       | governed_rag | Qdrant collection name   |
+| `VECTOR_SIMILARITY_THRESHOLD` | No       | 0.4          | Minimum similarity score |
 
 ### Testing
 
@@ -317,8 +325,8 @@ curl http://localhost:3000/api/health/vector-query
 
 ### Change History
 
-| Version | Date | Changes |
-|---------|------|---------|
-| 1.0 | 2025-09-23 | Initial implementation with security filtering |
-| 0.9 | 2025-09-20 | Added request tracking and tracing |
-| 0.8 | 2025-09-15 | Basic vector search functionality |
+| Version | Date       | Changes                                        |
+| ------- | ---------- | ---------------------------------------------- |
+| 1.0     | 2025-09-23 | Initial implementation with security filtering |
+| 0.9     | 2025-09-20 | Added request tracking and tracing             |
+| 0.8     | 2025-09-15 | Basic vector search functionality              |

@@ -71,12 +71,12 @@ graph TD
 
 - INT-001: Exported models.
 
-| Export | Purpose | Model ID | Notes |
-|--------|---------|----------|-------|
-| `googleAIPro` | Advanced generation | `gemini-2.5-pro` | High capability |
-| `googleAIFlash` | Fast generation | `gemini-2.5-flash` | Balanced |
-| `googleAIFlashLite` | Lightweight | `gemini-2.5-flash-lite` | Speed-focused |
-| `googleAIEmbedding` | Embeddings | `gemini-embedding-001` | Dim=1536? |
+| Export              | Purpose             | Model ID                | Notes           |
+| ------------------- | ------------------- | ----------------------- | --------------- |
+| `googleAIPro`       | Advanced generation | `gemini-2.5-pro`        | High capability |
+| `googleAIFlash`     | Fast generation     | `gemini-2.5-flash`      | Balanced        |
+| `googleAIFlashLite` | Lightweight         | `gemini-2.5-flash-lite` | Speed-focused   |
+| `googleAIEmbedding` | Embeddings          | `gemini-embedding-001`  | Dim=1536?       |
 
 INT notes:
 
@@ -103,16 +103,16 @@ Edge cases and considerations:
 ### In Agent
 
 ```ts
-import { googleAIPro } from '../config/google';
+import { googleAIPro } from '../config/google'
 
-const agent = new Agent({model: googleAIPro});
+const agent = new Agent({ model: googleAIPro })
 ```
 
 ### Embedding
 
 ```ts
-const embedder = googleAIEmbedding;
-const vectors = await embedMany([{text: 'query'}], {model: embedder});
+const embedder = googleAIEmbedding
+const vectors = await embedMany([{ text: 'query' }], { model: embedder })
 ```
 
 Best practices:

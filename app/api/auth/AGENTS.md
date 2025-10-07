@@ -3,6 +3,7 @@
 # Auth API Routes (`/app/api/auth`)
 
 ## Persona
+
 **Name:** Auth API Specialist  
 **Objective:** Provide minimal, secure endpoints for authentication lifecycle (signup, login, signout) and role token provisioning for demos.  
 **Prompt Template:**
@@ -25,6 +26,7 @@ Variables:
 - `{persona_name}` = "Auth API Specialist"
 
 ## Directory Purpose
+
 Implements authentication lifecycle endpoints used in demos or future expansion: login, signup, signout. Serves as a boundary layer—NOT a full auth provider.
 
 ## Scope
@@ -43,11 +45,11 @@ Implements authentication lifecycle endpoints used in demos or future expansion:
 
 ## Key Endpoints
 
-| Route | Method | Purpose | Notes |
-|-------|--------|---------|-------|
-| `/api/auth/login` | POST | Issue demo JWT / session | Validates credentials (mock) |
-| `/api/auth/signup` | POST | Provision demo account stub | Placeholder for extensibility |
-| `/api/auth/signout` | POST | Clear client session hints | Stateless token discard |
+| Route               | Method | Purpose                     | Notes                         |
+| ------------------- | ------ | --------------------------- | ----------------------------- |
+| `/api/auth/login`   | POST   | Issue demo JWT / session    | Validates credentials (mock)  |
+| `/api/auth/signup`  | POST   | Provision demo account stub | Placeholder for extensibility |
+| `/api/auth/signout` | POST   | Clear client session hints  | Stateless token discard       |
 
 ## Responsibilities
 
@@ -63,11 +65,11 @@ Implements authentication lifecycle endpoints used in demos or future expansion:
 
 ## Validation Checklist
 
-| Field | Requirement | Failure Code |
-|-------|-------------|--------------|
-| `email` | Must be present & valid format | 400 |
-| `password` | Present (no strength check in demo) | 400 |
-| `role` | Matches allowed demo roles | 400 |
+| Field      | Requirement                         | Failure Code |
+| ---------- | ----------------------------------- | ------------ |
+| `email`    | Must be present & valid format      | 400          |
+| `password` | Present (no strength check in demo) | 400          |
+| `role`     | Matches allowed demo roles          | 400          |
 
 ## Error Handling Pattern
 
@@ -91,15 +93,15 @@ HTTP Codes:
 ## Common Tasks
 
 1. Add New Auth Endpoint
-   - Create folder `app/api/auth/<action>/route.ts`
-   - Implement `POST` with validation & response shape
+    - Create folder `app/api/auth/<action>/route.ts`
+    - Implement `POST` with validation & response shape
 2. Introduce Real Auth (future)
-   - Add persistent user store (external DB)
-   - Hash passwords (bcrypt/argon2) in service layer
-   - Replace demo JWT issuance with secure signing pipeline
+    - Add persistent user store (external DB)
+    - Hash passwords (bcrypt/argon2) in service layer
+    - Replace demo JWT issuance with secure signing pipeline
 3. Enforce Allowed Roles
-   - Centralize role enumeration in a const shared module
-   - Validate `role` against enum before token creation
+    - Centralize role enumeration in a const shared module
+    - Validate `role` against enum before token creation
 
 ## Performance Considerations
 
@@ -108,7 +110,7 @@ HTTP Codes:
 
 ## Change Log
 
-| Version | Date (UTC) | Change |
-|---------|------------|--------|
-| 1.0.1 | 2025-09-24 | Lint formatting fixes (lists, code fences, tables) |
-| 1.0.0 | 2025-09-24 | Initial standardized auth API documentation |
+| Version | Date (UTC) | Change                                             |
+| ------- | ---------- | -------------------------------------------------- |
+| 1.0.1   | 2025-09-24 | Lint formatting fixes (lists, code fences, tables) |
+| 1.0.0   | 2025-09-24 | Initial standardized auth API documentation        |

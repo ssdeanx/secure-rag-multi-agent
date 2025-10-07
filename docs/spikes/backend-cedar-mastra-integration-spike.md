@@ -1,13 +1,13 @@
 ---
-title: "Cedar-OS & Mastra Backend Integration Analysis"
-category: "Architecture"
-status: "🟡 In Progress"
-priority: "High"
-timebox: "3 days"
+title: 'Cedar-OS & Mastra Backend Integration Analysis'
+category: 'Architecture'
+status: '🟡 In Progress'
+priority: 'High'
+timebox: '3 days'
 created: 2025-09-30
 updated: 2025-09-30
-owner: "Backend Team"
-tags: ["technical-spike", "architecture", "cedar-mastra", "integration"]
+owner: 'Backend Team'
+tags: ['technical-spike', 'architecture', 'cedar-mastra', 'integration']
 ---
 
 # Cedar-OS & Mastra Backend Integration Analysis
@@ -85,38 +85,38 @@ tags: ["technical-spike", "architecture", "cedar-mastra", "integration"]
 #### ✅ **STRENGTHS - What's Working Well**
 
 1. **Mastra Client Factory Pattern** (`/lib/mastra/mastra-client.ts`)
-   - ✅ Proper factory pattern for creating authenticated clients
-   - ✅ Environment-based base URL configuration
-   - ✅ Support for both service-level and user-level tokens
-   - ✅ Centralized client configuration
+    - ✅ Proper factory pattern for creating authenticated clients
+    - ✅ Environment-based base URL configuration
+    - ✅ Support for both service-level and user-level tokens
+    - ✅ Centralized client configuration
 
 ```typescript
 // Good: Centralized client factory
 export function createMastraClient(token?: string) {
-  const headers: Record<string, string> = {};
-  if (token) {
-    headers.Authorization = `Bearer ${token}`;
-  }
-  return new MastraClient({
-    baseUrl: getMastraBaseUrl(),
-    headers,
-  });
+    const headers: Record<string, string> = {}
+    if (token) {
+        headers.Authorization = `Bearer ${token}`
+    }
+    return new MastraClient({
+        baseUrl: getMastraBaseUrl(),
+        headers,
+    })
 }
 ```
 
 2. **Mastra Instance Configuration** (`/src/mastra/index.ts`)
-   - ✅ Comprehensive agent registry (15+ agents)
-   - ✅ Workflow orchestration configured
-   - ✅ JWT authentication enabled via `MastraJwtAuth`
-   - ✅ Observability with Langfuse configured
-   - ✅ Vector store (Qdrant) integration
-   - ✅ Storage backends (LibSQL, PostgreSQL)
+    - ✅ Comprehensive agent registry (15+ agents)
+    - ✅ Workflow orchestration configured
+    - ✅ JWT authentication enabled via `MastraJwtAuth`
+    - ✅ Observability with Langfuse configured
+    - ✅ Vector store (Qdrant) integration
+    - ✅ Storage backends (LibSQL, PostgreSQL)
 
 3. **Workflow Structure**
-   - ✅ Modular step-based workflows
-   - ✅ Schema validation with Zod
-   - ✅ Streaming support in workflows
-   - ✅ Proper error handling patterns
+    - ✅ Modular step-based workflows
+    - ✅ Schema validation with Zod
+    - ✅ Streaming support in workflows
+    - ✅ Proper error handling patterns
 
 #### ⚠️ **GAPS - Issues Requiring Attention**
 
@@ -140,6 +140,7 @@ providerConfig={{
 ```
 
 **Current State:**
+
 - ✅ `/api/chat/route.ts` exists for main chat
 - ❌ `/api/chat/resume` endpoint missing (required for human-in-the-loop)
 - ❌ No `/api/chat/resume/stream` endpoint
@@ -155,17 +156,21 @@ providerConfig={{
 In `/app/cedar-os/page.tsx`, the client is created but not properly integrated with Cedar:
 
 ```typescript
-const [client] = React.useState(() => createMastraClient());
+const [client] = React.useState(() => createMastraClient())
 
 useEffect(() => {
-  // ⚠️ This pattern is incorrect for newer Mastra clients
-  if ('chat' in client && typeof client.chat === 'function') {
-    await client.chat({ message: 'Initialize roadmap context', context: { type: 'roadmap_init' } });
-  }
-}, [client]);
+    // ⚠️ This pattern is incorrect for newer Mastra clients
+    if ('chat' in client && typeof client.chat === 'function') {
+        await client.chat({
+            message: 'Initialize roadmap context',
+            context: { type: 'roadmap_init' },
+        })
+    }
+}, [client])
 ```
 
 **Issues:**
+
 - Client is created without user token (should pass from auth context)
 - Direct client.chat() call not aligned with Cedar's expected integration
 - Cedar should manage agent communication via API routes, not direct client calls
@@ -177,16 +182,19 @@ useEffect(() => {
 **Severity:** 🟡 **MEDIUM**
 
 Two similar but different chat workflows exist:
+
 - `/src/mastra/workflows/chatWorkflow.ts` - Complex with Mastra event emission
 - `/src/mastra/workflows/chatWorkflow1.ts` - Simpler with action schema
 
 **Issues:**
+
 - Unclear which workflow to use for Cedar integration
 - `chatWorkflow1.ts` has structured output (`ActionSchema`) for UI state updates
 - `chatWorkflow.ts` emits Mastra-specific events that Cedar may not expect
 - Neither workflow is registered in `/src/mastra/index.ts`
 
 **Current Workflows Registered:**
+
 ```typescript
 workflows: {
   'governed-rag-index': governedRagIndex,
@@ -204,6 +212,7 @@ workflows: {
 **Severity:** 🟡 **MEDIUM**
 
 `/app/api/chat/route.ts` uses `governed-rag-answer` workflow, but:
+
 - Cedar integration typically expects a generic chat workflow
 - Current workflow is RAG-specific with security features
 - No fallback to simpler chat workflow for Cedar demos
@@ -239,6 +248,7 @@ import { CedarCopilot } from 'cedar-os';
 **Severity:** 🟢 **LOW**
 
 Missing Cedar-specific environment variables:
+
 - `NEXT_PUBLIC_MASTRA_URL` for frontend
 - Clear separation of frontend vs backend env vars
 
@@ -293,65 +303,67 @@ graph LR
 **Phase 1: Critical Fixes (1-2 days)**
 
 1. **Create Resume Endpoint** ⚡ HIGH PRIORITY
-   ```typescript
-   // File: /app/api/chat/resume/route.ts
-   export async function POST(request: NextRequest) {
-     const body = await request.json();
-     const { runId, stepPath, resumeData, stream } = body;
-     
-     const workflow = mastra.getWorkflows()['governed-rag-answer'];
-     const run = await workflow.getRunAsync(runId);
-     
-     if (stream) {
-       // Return streaming response
-     } else {
-       // Return JSON response
-     }
-   }
-   ```
+
+    ```typescript
+    // File: /app/api/chat/resume/route.ts
+    export async function POST(request: NextRequest) {
+        const body = await request.json()
+        const { runId, stepPath, resumeData, stream } = body
+
+        const workflow = mastra.getWorkflows()['governed-rag-answer']
+        const run = await workflow.getRunAsync(runId)
+
+        if (stream) {
+            // Return streaming response
+        } else {
+            // Return JSON response
+        }
+    }
+    ```
 
 2. **Add Cedar Provider Wrapper**
-   ```typescript
-   // File: /app/layout.tsx or /app/cedar-os/layout.tsx
-   <CedarCopilot
-     providerConfig={{
-       provider: 'mastra',
-       baseURL: process.env.NEXT_PUBLIC_MASTRA_URL || 'http://localhost:3000',
-       chatPath: '/api/chat',
-       resumePath: '/api/chat/resume',
-     }}
-   >
-     {children}
-   </CedarCopilot>
-   ```
+
+    ```typescript
+    // File: /app/layout.tsx or /app/cedar-os/layout.tsx
+    <CedarCopilot
+      providerConfig={{
+        provider: 'mastra',
+        baseURL: process.env.NEXT_PUBLIC_MASTRA_URL || 'http://localhost:3000',
+        chatPath: '/api/chat',
+        resumePath: '/api/chat/resume',
+      }}
+    >
+      {children}
+    </CedarCopilot>
+    ```
 
 3. **Remove Direct Client Usage**
-   - Remove client instantiation from `/app/cedar-os/page.tsx`
-   - Let Cedar provider handle all API communication
+    - Remove client instantiation from `/app/cedar-os/page.tsx`
+    - Let Cedar provider handle all API communication
 
 **Phase 2: Workflow Consolidation (2-3 days)**
 
 4. **Consolidate Chat Workflows**
-   - Choose `chatWorkflow1.ts` as the base (simpler, has ActionSchema)
-   - Add streaming event support from `chatWorkflow.ts`
-   - Register as `chat-workflow` in Mastra instance
+    - Choose `chatWorkflow1.ts` as the base (simpler, has ActionSchema)
+    - Add streaming event support from `chatWorkflow.ts`
+    - Register as `chat-workflow` in Mastra instance
 
 5. **Make Workflows Cedar-Aware**
-   - Add Cedar-specific input handling
-   - Support structured output for UI state updates
-   - Proper streaming event format
+    - Add Cedar-specific input handling
+    - Support structured output for UI state updates
+    - Proper streaming event format
 
 **Phase 3: Enhancement (3-5 days)**
 
 6. **Environment Configuration**
-   - Add `NEXT_PUBLIC_MASTRA_URL`
-   - Document required Cedar environment variables
-   - Separate dev/prod configurations
+    - Add `NEXT_PUBLIC_MASTRA_URL`
+    - Document required Cedar environment variables
+    - Separate dev/prod configurations
 
 7. **Testing & Validation**
-   - Test human-in-the-loop flows
-   - Validate streaming responses
-   - Test authentication flow end-to-end
+    - Test human-in-the-loop flows
+    - Validate streaming responses
+    - Test authentication flow end-to-end
 
 ### Rationale
 
@@ -373,24 +385,24 @@ graph LR
 **Key Considerations:**
 
 1. **Authentication Flow:**
-   - JWT must pass from Cedar → API Route → Mastra
-   - Use `createMastraClient(token)` in API routes
-   - Cedar provider should accept auth configuration
+    - JWT must pass from Cedar → API Route → Mastra
+    - Use `createMastraClient(token)` in API routes
+    - Cedar provider should accept auth configuration
 
 2. **Streaming Format:**
-   - Mastra uses custom event format
-   - Cedar expects SSE (Server-Sent Events)
-   - API route bridges between formats
+    - Mastra uses custom event format
+    - Cedar expects SSE (Server-Sent Events)
+    - API route bridges between formats
 
 3. **State Management:**
-   - Cedar components handle UI state
-   - Mastra workflows handle agent orchestration
-   - Use `ActionSchema` for UI state updates
+    - Cedar components handle UI state
+    - Mastra workflows handle agent orchestration
+    - Use `ActionSchema` for UI state updates
 
 4. **Error Handling:**
-   - API routes catch Mastra errors
-   - Return Cedar-friendly error format
-   - Maintain audit trail for security workflows
+    - API routes catch Mastra errors
+    - Return Cedar-friendly error format
+    - Maintain audit trail for security workflows
 
 ### Follow-up Actions
 
@@ -431,73 +443,75 @@ export default function CedarLayout({ children }: { children: React.ReactNode })
 
 ```typescript
 // File: /app/api/chat/resume/route.ts
-import { mastra } from '@/src/mastra';
-import type { NextRequest } from 'next/server';
-import { NextResponse } from 'next/server';
-import { z } from 'zod';
+import { mastra } from '@/src/mastra'
+import type { NextRequest } from 'next/server'
+import { NextResponse } from 'next/server'
+import { z } from 'zod'
 
-export const maxDuration = 60;
-export const dynamic = 'force-dynamic';
+export const maxDuration = 60
+export const dynamic = 'force-dynamic'
 
 const ResumeSchema = z.object({
-  runId: z.string(),
-  stepPath: z.array(z.array(z.string())),
-  resumeData: z.record(z.unknown()),
-  stream: z.boolean().optional(),
-});
+    runId: z.string(),
+    stepPath: z.array(z.array(z.string())),
+    resumeData: z.record(z.unknown()),
+    stream: z.boolean().optional(),
+})
 
 export async function POST(request: NextRequest) {
-  try {
-    const body = await request.json();
-    const parsed = ResumeSchema.safeParse(body);
-    
-    if (!parsed.success) {
-      return NextResponse.json(
-        { error: 'Invalid input', details: parsed.error.issues },
-        { status: 400 }
-      );
+    try {
+        const body = await request.json()
+        const parsed = ResumeSchema.safeParse(body)
+
+        if (!parsed.success) {
+            return NextResponse.json(
+                { error: 'Invalid input', details: parsed.error.issues },
+                { status: 400 }
+            )
+        }
+
+        const { runId, stepPath, resumeData, stream } = parsed.data
+
+        const workflow = mastra.getWorkflows()['governed-rag-answer']
+        const run = await workflow.getRunAsync(runId)
+
+        if (stream) {
+            const encoder = new TextEncoder()
+            const readableStream = new ReadableStream({
+                async start(controller) {
+                    // Resume workflow and stream results
+                    const result = await run.resume({
+                        stepPath,
+                        resumeData,
+                    })
+
+                    controller.enqueue(
+                        encoder.encode(
+                            `data: ${JSON.stringify({ result })}\n\n`
+                        )
+                    )
+                    controller.close()
+                },
+            })
+
+            return new Response(readableStream, {
+                headers: {
+                    'Content-Type': 'text/event-stream',
+                    'Cache-Control': 'no-cache',
+                    Connection: 'keep-alive',
+                },
+            })
+        } else {
+            const result = await run.resume({ stepPath, resumeData })
+            return NextResponse.json({ result })
+        }
+    } catch (error) {
+        console.error('Resume endpoint error:', error)
+        return NextResponse.json(
+            { error: 'Failed to resume workflow' },
+            { status: 500 }
+        )
     }
-
-    const { runId, stepPath, resumeData, stream } = parsed.data;
-
-    const workflow = mastra.getWorkflows()['governed-rag-answer'];
-    const run = await workflow.getRunAsync(runId);
-    
-    if (stream) {
-      const encoder = new TextEncoder();
-      const readableStream = new ReadableStream({
-        async start(controller) {
-          // Resume workflow and stream results
-          const result = await run.resume({
-            stepPath,
-            resumeData,
-          });
-          
-          controller.enqueue(
-            encoder.encode(`data: ${JSON.stringify({ result })}\n\n`)
-          );
-          controller.close();
-        },
-      });
-
-      return new Response(readableStream, {
-        headers: {
-          'Content-Type': 'text/event-stream',
-          'Cache-Control': 'no-cache',
-          Connection: 'keep-alive',
-        },
-      });
-    } else {
-      const result = await run.resume({ stepPath, resumeData });
-      return NextResponse.json({ result });
-    }
-  } catch (error) {
-    console.error('Resume endpoint error:', error);
-    return NextResponse.json(
-      { error: 'Failed to resume workflow' },
-      { status: 500 }
-    );
-  }
 }
 ```
 
@@ -505,68 +519,73 @@ export async function POST(request: NextRequest) {
 
 ```typescript
 // File: /src/mastra/workflows/cedar-chat.workflow.ts
-import { createWorkflow, createStep } from '@mastra/core/workflows';
-import { z } from 'zod';
-import { starterAgent } from '../agents/starterAgent';
+import { createWorkflow, createStep } from '@mastra/core/workflows'
+import { z } from 'zod'
+import { starterAgent } from '../agents/starterAgent'
 
 const CedarChatInputSchema = z.object({
-  prompt: z.string(),
-  context: z.any().optional(),
-  temperature: z.number().optional(),
-  maxTokens: z.number().optional(),
-  streamController: z.any().optional(),
-});
+    prompt: z.string(),
+    context: z.any().optional(),
+    temperature: z.number().optional(),
+    maxTokens: z.number().optional(),
+    streamController: z.any().optional(),
+})
 
 const CedarChatOutputSchema = z.object({
-  content: z.string(),
-  action: z.object({
-    type: z.literal('action'),
-    stateKey: z.string(),
-    setterKey: z.string(),
-    args: z.array(z.any()),
-  }).optional(),
-});
+    content: z.string(),
+    action: z
+        .object({
+            type: z.literal('action'),
+            stateKey: z.string(),
+            setterKey: z.string(),
+            args: z.array(z.any()),
+        })
+        .optional(),
+})
 
 const processMessage = createStep({
-  id: 'processMessage',
-  inputSchema: CedarChatInputSchema,
-  outputSchema: CedarChatOutputSchema,
-  execute: async ({ inputData }) => {
-    const { prompt, context, temperature, maxTokens, streamController } = inputData;
-    
-    const response = await starterAgent.generate([prompt], {
-      temperature,
-      maxTokens,
-      experimental_output: CedarChatOutputSchema,
-    });
+    id: 'processMessage',
+    inputSchema: CedarChatInputSchema,
+    outputSchema: CedarChatOutputSchema,
+    execute: async ({ inputData }) => {
+        const { prompt, context, temperature, maxTokens, streamController } =
+            inputData
 
-    if (streamController) {
-      streamController.enqueue(
-        new TextEncoder().encode(`data: ${JSON.stringify(response.object)}\n\n`)
-      );
-    }
+        const response = await starterAgent.generate([prompt], {
+            temperature,
+            maxTokens,
+            experimental_output: CedarChatOutputSchema,
+        })
 
-    return response.object;
-  },
-});
+        if (streamController) {
+            streamController.enqueue(
+                new TextEncoder().encode(
+                    `data: ${JSON.stringify(response.object)}\n\n`
+                )
+            )
+        }
+
+        return response.object
+    },
+})
 
 export const cedarChatWorkflow = createWorkflow({
-  id: 'cedar-chat',
-  description: 'Cedar-compatible chat workflow with structured output',
-  inputSchema: CedarChatInputSchema,
-  outputSchema: CedarChatOutputSchema,
+    id: 'cedar-chat',
+    description: 'Cedar-compatible chat workflow with structured output',
+    inputSchema: CedarChatInputSchema,
+    outputSchema: CedarChatOutputSchema,
 })
-  .then(processMessage)
-  .commit();
+    .then(processMessage)
+    .commit()
 ```
 
 ## Status History
 
-| Date       | Status          | Notes                                                          |
-| ---------- | --------------- | -------------------------------------------------------------- |
-| 2025-09-30 | 🟡 In Progress  | Spike created, initial analysis complete                       |
-| 2025-09-30 | 🟡 In Progress  | Identified critical gaps and created recommendations           |
-| TBD        | 🟢 Complete     | All implementation tasks completed and validated               |
+| Date       | Status         | Notes                                                |
+| ---------- | -------------- | ---------------------------------------------------- |
+| 2025-09-30 | 🟡 In Progress | Spike created, initial analysis complete             |
+| 2025-09-30 | 🟡 In Progress | Identified critical gaps and created recommendations |
+| TBD        | 🟢 Complete    | All implementation tasks completed and validated     |
 
 ---
 

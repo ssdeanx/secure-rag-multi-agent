@@ -3,7 +3,13 @@ title: Onboarding to Cedar Component Development with Mastra Integration
 description: Guide for developers to build interactive UI components in Cedar-OS and integrate with Mastra backend.
 ---
 
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
+import {
+    Card,
+    CardContent,
+    CardDescription,
+    CardHeader,
+    CardTitle,
+} from '@/components/ui/card'
 
 # Onboarding to Cedar Component Development with Mastra Integration
 
@@ -16,16 +22,16 @@ At a high level, the system consists of a frontend built with `cedar-os` (a Reac
 ### Architectural Components
 
 - **Cedar-OS (Frontend)**:
-  - **Purpose**: Provides the interactive user interface, often leveraging `ReactFlow` for canvas-based interactions.
-  - **Cedar Components**: Standard React components whose visual representation and behavior are driven by `data` props. Located in `src/components/` and `cedar/components/`.
-  - **`cedar-os` Hooks/Context**: A bridge (`app/cedar-os/context.ts`, `app/cedar-os/state.ts`) that exposes UI state to AI agents and allows AI agents to manipulate UI state.
-  - **`MastraClient`**: A client-side utility (`lib/mastra/mastra-client.ts`) for making authenticated requests to the `mastra-governed-rag` backend.
+    - **Purpose**: Provides the interactive user interface, often leveraging `ReactFlow` for canvas-based interactions.
+    - **Cedar Components**: Standard React components whose visual representation and behavior are driven by `data` props. Located in `src/components/` and `cedar/components/`.
+    - **`cedar-os` Hooks/Context**: A bridge (`app/cedar-os/context.ts`, `app/cedar-os/state.ts`) that exposes UI state to AI agents and allows AI agents to manipulate UI state.
+    - **`MastraClient`**: A client-side utility (`lib/mastra/mastra-client.ts`) for making authenticated requests to the `mastra-governed-rag` backend.
 
 - **Mastra-Governed-RAG (Backend)**:
-  - **Purpose**: Securely processes natural language queries, retrieves relevant information, generates responses, and enforces access control.
-  - **Next.js API Routes**: Entry points (`/app/api/`) for frontend communication (e.g., `/api/chat`, `/api/index`, `/api/auth`).
-  - **Mastra Workflow Engine**: Orchestrates complex sequences of operations using specialized agents and tools (`src/mastra/workflows/`).
-  - **Mastra Agents**: Specialized AI components (`src/mastra/agents/`) performing distinct tasks (e.g., Identity, Policy, Retrieve, Answerer, Verifier), ensuring governance, security, and traceability in all interactions.
+    - **Purpose**: Securely processes natural language queries, retrieves relevant information, generates responses, and enforces access control.
+    - **Next.js API Routes**: Entry points (`/app/api/`) for frontend communication (e.g., `/api/chat`, `/api/index`, `/api/auth`).
+    - **Mastra Workflow Engine**: Orchestrates complex sequences of operations using specialized agents and tools (`src/mastra/workflows/`).
+    - **Mastra Agents**: Specialized AI components (`src/mastra/agents/`) performing distinct tasks (e.g., Identity, Policy, Retrieve, Answerer, Verifier), ensuring governance, security, and traceability in all interactions.
 
 ### High-Level System Diagram
 
@@ -123,87 +129,100 @@ graph TD
 ## 2. Setting Up Your Development Environment
 
 ### Prerequisites
+
 - Node.js (v18+)
 - Yarn or pnpm for package management
 - Docker for vector DB and other services
 - VS Code with recommended extensions (ESLint, Prettier, TypeScript)
 
 ### Installation Steps
+
 1. Clone the repository:
-   ```
-   git clone https://github.com/your-org/mastra-governed-rag.git
-   cd mastra-governed-rag
-   ```
+
+    ```
+    git clone https://github.com/your-org/mastra-governed-rag.git
+    cd mastra-governed-rag
+    ```
 
 2. Install dependencies:
-   ```
-   pnpm install
-   ```
+
+    ```
+    pnpm install
+    ```
 
 3. Set up environment variables:
-   - Copy `.env.example` to `.env.local`
-   - Fill in required secrets (API keys for LLMs, vector store credentials)
-   - Generate JWT secrets using `scripts/make-jwt.js`
+    - Copy `.env.example` to `.env.local`
+    - Fill in required secrets (API keys for LLMs, vector store credentials)
+    - Generate JWT secrets using `scripts/make-jwt.js`
 
 4. Start services:
-   ```
-   docker-compose up -d  # Starts vector DB, etc.
-   pnpm dev
-   ```
+
+    ```
+    docker-compose up -d  # Starts vector DB, etc.
+    pnpm dev
+    ```
 
 5. Verify setup:
-   - Visit `http://localhost:3000`
-   - Test authentication at `/login`
-   - Check chat interface at `/cedar-os/chat`
+    - Visit `http://localhost:3000`
+    - Test authentication at `/login`
+    - Check chat interface at `/cedar-os/chat`
 
 ## 3. Building Cedar Components
 
 Cedar components are React-based UI elements that integrate seamlessly with the Mastra backend. Focus on declarative props and state management via hooks.
 
 ### Key Principles
+
 - **Data-Driven**: Components render based on `data` props; AI agents update these props.
 - **State Exposure**: Use `cedar-os` context to share state with agents.
 - **Event Handling**: Trigger API calls via `MastraClient` on user interactions.
 
 ### Example: Creating a Simple Canvas Component
+
 Create `cedar/components/custom/CanvasNode.tsx`:
 
 ```tsx
-import React from 'react';
-import { Handle, Position } from 'reactflow';
+import React from 'react'
+import { Handle, Position } from 'reactflow'
 
 interface CanvasNodeProps {
-  data: { label: string; color: string };
+    data: { label: string; color: string }
 }
 
 export const CanvasNode: React.FC<CanvasNodeProps> = ({ data }) => {
-  return (
-    <div style={{ background: data.color, padding: 10, borderRadius: 5 }}>
-      <Handle type="target" position={Position.Top} />
-      <div>{data.label}</div>
-      <Handle type="source" position={Position.Bottom} />
-    </div>
-  );
-};
+    return (
+        <div style={{ background: data.color, padding: 10, borderRadius: 5 }}>
+            <Handle type="target" position={Position.Top} />
+            <div>{data.label}</div>
+            <Handle type="source" position={Position.Bottom} />
+        </div>
+    )
+}
 ```
 
 ### Integrating with cedar-os Hooks
+
 In `app/cedar-os/state.ts`, expose node data:
 
 ```ts
-import { create } from 'zustand';
+import { create } from 'zustand'
 
 interface CedarState {
-  nodes: Array<{ id: string; data: { label: string; color: string } }>;
-  updateNode: (id: string, updates: Partial<any>) => void;
+    nodes: Array<{ id: string; data: { label: string; color: string } }>
+    updateNode: (id: string, updates: Partial<any>) => void
 }
 
 export const useCedarStore = create<CedarState>((set) => ({
-  nodes: [],
-  updateNode: (id, updates) => set((state) => ({
-    nodes: state.nodes.map(node => node.id === id ? { ...node, data: { ...node.data, ...updates } } : node)
-  }))
-}));
+    nodes: [],
+    updateNode: (id, updates) =>
+        set((state) => ({
+            nodes: state.nodes.map((node) =>
+                node.id === id
+                    ? { ...node, data: { ...node.data, ...updates } }
+                    : node
+            ),
+        })),
+}))
 ```
 
 Agents can now manipulate nodes via API responses that call `updateNode`.
@@ -211,20 +230,22 @@ Agents can now manipulate nodes via API responses that call `updateNode`.
 ## 4. Integrating with Mastra Backend
 
 ### Using MastraClient
+
 All API interactions go through `lib/mastra/mastra-client.ts`. Example chat request:
 
 ```ts
-import { MastraClient } from '@/lib/mastra/mastra-client';
+import { MastraClient } from '@/lib/mastra/mastra-client'
 
-const client = new MastraClient({ token: getJwtToken() });
+const client = new MastraClient({ token: getJwtToken() })
 
 const response = await client.chat({
-  message: 'Update canvas node',
-  context: { component: 'CanvasNode', action: 'update' }
-});
+    message: 'Update canvas node',
+    context: { component: 'CanvasNode', action: 'update' },
+})
 ```
 
 ### Workflow Orchestration
+
 Backend workflows (`src/mastra/workflows/chatWorkflow.ts`) route requests to agents. For example, a "Canvas Update" workflow:
 
 1. **Identity Agent**: Verifies user permissions.
@@ -236,6 +257,7 @@ Backend workflows (`src/mastra/workflows/chatWorkflow.ts`) route requests to age
 Responses include structured updates for UI state.
 
 ### Security Considerations
+
 - All requests include JWT with role/tenant claims.
 - Agents enforce ACL from `src/mastra/policy/acl.yaml`.
 - Sensitive data is filtered by `RoleService`.
@@ -243,6 +265,7 @@ Responses include structured updates for UI state.
 ## 5. Testing and Debugging
 
 ### Unit Testing Components
+
 Use Vitest for Cedar components:
 
 ```ts
@@ -256,10 +279,12 @@ test('renders node label', () => {
 ```
 
 ### E2E Testing with Mastra
+
 - Mock API responses in Cypress/Playwright.
 - Test full flow: User interaction → API call → Agent response → UI update.
 
 ### Debugging Tools
+
 - Use `cedar/components/debugger/DebuggerPanel.tsx` for state inspection.
 - Monitor backend traces in `logs/mastra.log`.
 - Vector queries logged via `src/mastra/ai-tracing.ts`.
@@ -273,6 +298,7 @@ test('renders node label', () => {
 - **Version Control**: Update ACL for new components if they access classified data.
 
 ## Next Steps
+
 1. Build a sample component and integrate it into `/cedar-os/research`.
 2. Test the full flow with a simple agent task.
 3. Review the [Mastra Docs](/docs/mastra) for advanced workflows.
@@ -281,4 +307,5 @@ test('renders node label', () => {
 For questions, refer to [Quick Start](/docs/quick-start) or open an issue.
 
 ---
-*Updated: September 23, 2025*
+
+_Updated: September 23, 2025_

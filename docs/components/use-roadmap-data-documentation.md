@@ -27,7 +27,7 @@ Lightweight hook that provides initial `nodes` and `edges` arrays for a React Fl
 ## 3. Data Shape
 
 - `Node<FeatureNodeData>` fields include: `id`, `type` (e.g., `featureNode`), `position`, and `data` where `data` contains:
-  - `title`, `description`, `status`, `upvotes`, `comments` (array of `{id,author,text,timestamp}`), optional `nodeType`.
+    - `title`, `description`, `status`, `upvotes`, `comments` (array of `{id,author,text,timestamp}`), optional `nodeType`.
 
 - `Edge` sample fields: `id`, `source`, `target`, `type`, `animated`, `label`.
 

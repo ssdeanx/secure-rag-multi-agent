@@ -16,8 +16,8 @@ All endpoints are under `/api/` and use JSON for requests/responses. Authenticat
 
 ```json
 {
-  "jwt": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...",  // JWT token with role claims
-  "question": "What is the expense reimbursement policy?"  // User query
+    "jwt": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...", // JWT token with role claims
+    "question": "What is the expense reimbursement policy?" // User query
 }
 ```
 
@@ -57,15 +57,15 @@ data: {"done": true, "citations": [
 
 - **400 Bad Request**: Missing `jwt` or `question`.
 
-  ```json
-  {"error": "Missing required fields"}
-  ```
+    ```json
+    { "error": "Missing required fields" }
+    ```
 
 - **500 Internal Server Error**: Workflow failure (e.g., auth error, no contexts).
 
-  ```json
-  {"error": "Internal server error", "message": "Authentication failed"}
-  ```
+    ```json
+    { "error": "Internal server error", "message": "Authentication failed" }
+    ```
 
 - Stream errors: `data: {"content": "⚠️ Error message", "done": true}\n\n`
 
@@ -91,7 +91,7 @@ data: {"done": true, "citations": [
 
 ```json
 {
-  "jwt": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."  // Optional for admin users
+    "jwt": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..." // Optional for admin users
 }
 ```
 
@@ -101,21 +101,21 @@ data: {"done": true, "citations": [
 
 ```json
 {
-  "success": true,
-  "indexed": 3,
-  "failed": 0,
-  "documents": [
-    {
-      "docId": "finance-policy-001",
-      "status": "success",
-      "chunks": 12
-    },
-    {
-      "docId": "hr-conf-001",
-      "status": "failed",
-      "error": "Indexing error message"
-    }
-  ]
+    "success": true,
+    "indexed": 3,
+    "failed": 0,
+    "documents": [
+        {
+            "docId": "finance-policy-001",
+            "status": "success",
+            "chunks": 12
+        },
+        {
+            "docId": "hr-conf-001",
+            "status": "failed",
+            "error": "Indexing error message"
+        }
+    ]
 }
 ```
 
@@ -131,9 +131,9 @@ curl -X POST http://localhost:3000/api/index \
 
 - Indexes all `.md` files in `./corpus/`.
 - Auto-classifies:
-  - `finance-policy.md`: internal, allowedRoles: ["finance.viewer", "finance.admin", "employee"]
-  - `engineering-handbook.md`: internal, ["engineering.admin", "engineering.viewer", "employee"]
-  - `hr-confidential.md`: confidential, ["hr.admin"]
+    - `finance-policy.md`: internal, allowedRoles: ["finance.viewer", "finance.admin", "employee"]
+    - `engineering-handbook.md`: internal, ["engineering.admin", "engineering.viewer", "employee"]
+    - `hr-confidential.md`: confidential, ["hr.admin"]
 - Tenant: "acme" (from .env).
 - Source: Filename-based.
 
@@ -141,11 +141,11 @@ curl -X POST http://localhost:3000/api/index \
 
 - **500 Internal Server Error**: No docs or workflow failure.
 
-  ```json
-  {"error": "No documents found to index"}
-  ```
+    ```json
+    { "error": "No documents found to index" }
+    ```
 
-  Or: `{"error": "Indexing workflow failed"}`
+    Or: `{"error": "Indexing workflow failed"}`
 
 **Status Codes**:
 

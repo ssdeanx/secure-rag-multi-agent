@@ -1,18 +1,25 @@
-import { Agent } from '@mastra/core/agent';
-import { reportOutputSchema } from "../schemas/agent-schemas";
-import { ContentSimilarityMetric, CompletenessMetric, TextualDifferenceMetric, KeywordCoverageMetric, ToneConsistencyMetric } from "@mastra/evals/nlp";
-import { log } from "../config/logger";
-import { google } from '@ai-sdk/google';
-import { pgMemory } from '../config/pg-storage';
-import { googleAI } from '../config/google';
+import { Agent } from '@mastra/core/agent'
+import { reportOutputSchema } from '../schemas/agent-schemas'
+import {
+    ContentSimilarityMetric,
+    CompletenessMetric,
+    TextualDifferenceMetric,
+    KeywordCoverageMetric,
+    ToneConsistencyMetric,
+} from '@mastra/evals/nlp'
+import { log } from '../config/logger'
+import { google } from '@ai-sdk/google'
+import { pgMemory } from '../config/pg-storage'
+import { googleAI } from '../config/google'
 
-log.info("Initializing Report Agent...");
+log.info('Initializing Report Agent...')
 
 export const reportAgent = new Agent({
-  id: 'report',
-  name: 'Report Agent',
-  description: 'An expert researcher agent that generates comprehensive reports based on research data.',
-  instructions: `
+    id: 'report',
+    name: 'Report Agent',
+    description:
+        'An expert researcher agent that generates comprehensive reports based on research data.',
+    instructions: `
 <role>
 You are an expert report generator. Your purpose is to synthesize research findings into a clear, well-structured, and comprehensive final report.
 </role>
@@ -61,18 +68,21 @@ Include a summary of the research process.
   - [Follow-up 2]
 </output_format>
   `,
-  evals: {
-    contentSimilarity: new ContentSimilarityMetric({ ignoreCase: true, ignoreWhitespace: true }),
-    completeness: new CompletenessMetric(),
-    textualDifference: new TextualDifferenceMetric(),
-    keywordCoverage: new KeywordCoverageMetric(), // Keywords will be provided at runtime for evaluation
-    toneConsistency: new ToneConsistencyMetric(),
-  },
-  model: googleAI,
-  memory: pgMemory,
-  scorers: {},
-  workflows: {},
-});
+    evals: {
+        contentSimilarity: new ContentSimilarityMetric({
+            ignoreCase: true,
+            ignoreWhitespace: true,
+        }),
+        completeness: new CompletenessMetric(),
+        textualDifference: new TextualDifferenceMetric(),
+        keywordCoverage: new KeywordCoverageMetric(), // Keywords will be provided at runtime for evaluation
+        toneConsistency: new ToneConsistencyMetric(),
+    },
+    model: googleAI,
+    memory: pgMemory,
+    scorers: {},
+    workflows: {},
+})
 export { reportOutputSchema }
 // --- IGNORE ---
 // defaultGenerateOptions: {

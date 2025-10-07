@@ -43,9 +43,9 @@ step crypto jwt sign \
   --sub "user-id-123"
 ```
 
-* `--iss` (Issuer): Identifies who created the token.
-* `--aud` (Audience): Identifies the intended recipient of the token.
-* `--sub` (Subject): Identifies the principal that is the subject of the token (e.g., the user).
+- `--iss` (Issuer): Identifies who created the token.
+- `--aud` (Audience): Identifies the intended recipient of the token.
+- `--sub` (Subject): Identifies the principal that is the subject of the token (e.g., the user).
 
 **Example 2: Adding an Expiration Claim**
 This creates a token that expires in 1 hour. The `--exp` flag requires a Unix timestamp.
@@ -72,9 +72,9 @@ For complex payloads, it's easier to use a file.
 
     ```json
     {
-      "scope": "read:data write:data",
-      "roles": ["admin", "auditor"],
-      "premium_user": true
+        "scope": "read:data write:data",
+        "roles": ["admin", "auditor"],
+        "premium_user": true
     }
     ```
 
@@ -136,8 +136,8 @@ step crypto jwk create public.jwk private.jwk
 step crypto jwk create public.jwk private.jwk --no-password --insecure
 ```
 
-* `public.jwk`: Use this file for `step crypto jwt verify`.
-* `private.jwk`: Use this file for `step crypto jwt sign`.
+- `public.jwk`: Use this file for `step crypto jwt verify`.
+- `private.jwk`: Use this file for `step crypto jwt sign`.
 
 **Example 2: Creating a Symmetric Key (Shared Secret)**
 This is used when the same service both issues and validates tokens. It creates a single file containing a shared secret.
@@ -147,4 +147,4 @@ This is used when the same service both issues and validates tokens. It creates 
 step crypto jwk create secret.jwk --kty oct --no-password --insecure
 ```
 
-* `secret.jwk`: Use this single file for both signing and verifying.
+- `secret.jwk`: Use this single file for both signing and verifying.

@@ -99,9 +99,9 @@ JWT_TOKEN=your-jwt-token-here
 
 ```typescript
 // Structured logging pattern
-logStepStart('step-name', { key: value });
-logStepEnd('step-name', result, duration);
-logError('step-name', error, context);
+logStepStart('step-name', { key: value })
+logStepEnd('step-name', result, duration)
+logError('step-name', error, context)
 ```
 
 ### File Organization
@@ -189,17 +189,17 @@ logError('step-name', error, context);
 - mcp_cedar-mcp_mastraSpecialist
 - Cedar-MCP tools
 - Lotus Wisdom tools
-  *Iterate until the tool is satified*
+  _Iterate until the tool is satified_
 - mcp_mcp-deepwiki_deepwiki_fetch
 - mcp_mastra_mastraBlog
 - mcp_mastra_mastraChanges
 - mcp_mastra_mastraDocs
-- vscode-websearchforcopilot_webSearch
-  *Iterate until the user is satified*
-- mcp_multi-agent-d_multiagentdebate
-  *Iterate until the tool is satified*
-- mcp_clear-thought_visualreasoning
-  *Iterate until the tool is satified*
+- vscode-websearchforcopilot*webSearch
+  \_Iterate until the user is satified*
+- mcp*multi-agent-d_multiagentdebate
+  \_Iterate until the tool is satified*
+- mcp*clear-thought_visualreasoning
+  \_Iterate until the tool is satified*
 - mcp_clear-thought_metacognitivemonitoring
 
 **Reviewer**: sam (primary maintainer)

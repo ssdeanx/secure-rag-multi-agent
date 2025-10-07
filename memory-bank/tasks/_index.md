@@ -15,9 +15,9 @@ This index tracks all tasks in the system. Tasks represent specific implementati
 ## In Progress
 
 1. **[TASK002] - Final Validation & Documentation** - In Progress
-   - Status: In Progress
-   - Added: 2025-10-02
-   - Focus: Verify counts (agents, workflows, tools), reconcile documentation with codebase
+    - Status: In Progress
+    - Added: 2025-10-02
+    - Focus: Verify counts (agents, workflows, tools), reconcile documentation with codebase
 
 ## Recently Completed
 
@@ -60,7 +60,7 @@ Examples:
 
 When creating a new task document, use this structure:
 
-```markdown
+````markdown
 ```markdown
 # [TASK###] - [Task Name]
 
@@ -94,13 +94,13 @@ When creating a new task document, use this structure:
 
 ### Subtasks
 
-| ID | Description | Status | Updated | Notes |
-|----|-------------|--------|---------|-------|
-| 1.1 | [Subtask] | [Status] | [Date], [Time] | [Notes] |
-| 1.2 | [Subtask] | [Status] | [Date], [Time] | [Notes] |
-| 1.3 | [Subtask] | [Status] | [Date], [Time] | [Notes] |
-| 1.4 | [Subtask] | [Status] | [Date], [Time] | [Notes] |
-| 1.5 | [Subtask] | [Status] | [Date], [Time] | [Notes] |
+| ID  | Description | Status   | Updated        | Notes   |
+| --- | ----------- | -------- | -------------- | ------- |
+| 1.1 | [Subtask]   | [Status] | [Date], [Time] | [Notes] |
+| 1.2 | [Subtask]   | [Status] | [Date], [Time] | [Notes] |
+| 1.3 | [Subtask]   | [Status] | [Date], [Time] | [Notes] |
+| 1.4 | [Subtask]   | [Status] | [Date], [Time] | [Notes] |
+| 1.5 | [Subtask]   | [Status] | [Date], [Time] | [Notes] |
 
 ## Progress Log
 
@@ -111,12 +111,13 @@ When creating a new task document, use this structure:
 - Encountered issue with [problem]
 - Made decision to [approach]
 - Updated overall task status to In Progress - 20%
-- Updated _index.md to reflect current status
+- Updated \_index.md to reflect current status
 
 ### [Date] [Time]
 
 - [Additional updates as work progresses]
 ```
+````
 
 ## Adding a New Task
 
@@ -167,22 +168,22 @@ To add a new task:
 
 ## Task Status Summary
 
-| Status | Count |
-|--------|-------|
-| Not Started | 0 |
-| In Progress | 1 |
-| Blocked | 0 |
-| Completed | 0 |
-| Abandoned | 0 |
-| **Total** | **1** |
+| Status      | Count |
+| ----------- | ----- |
+| Not Started | 0     |
+| In Progress | 1     |
+| Blocked     | 0     |
+| Completed   | 0     |
+| Abandoned   | 0     |
+| **Total**   | **1** |
 
 ## Task Priority Distribution
 
-| Priority | Count |
-|----------|-------|
-| High | 1 |
-| Medium | 0 |
-| Low | 0 |
+| Priority  | Count |
+| --------- | ----- |
+| High      | 1     |
+| Medium    | 0     |
+| Low       | 0     |
 | **Total** | **1** |
 
 ## Upcoming Work
@@ -192,48 +193,48 @@ Based on `progress.md` and `activeContext.md`, the following tasks should be cre
 ### High Priority
 
 1. **Document Security Pipeline Design**
-   - Create design document for multi-agent security pipeline
-   - Link to security requirements
-   - Capture architectural decisions
+    - Create design document for multi-agent security pipeline
+    - Link to security requirements
+    - Capture architectural decisions
 
 2. **Document RBAC System Design**
-   - Create design document for role-based access control
-   - Define role hierarchy and inheritance
-   - Document JWT validation process
+    - Create design document for role-based access control
+    - Define role hierarchy and inheritance
+    - Document JWT validation process
 
 3. **Create Security Requirements**
-   - Document JWT authentication requirements
-   - Document RBAC requirements
-   - Use EARS format for clarity
+    - Document JWT authentication requirements
+    - Document RBAC requirements
+    - Use EARS format for clarity
 
 ### Medium Priority
 
 4. **Implement Step-Up Authentication**
-   - Design elevated access flow
-   - Implement additional auth prompt
-   - Update security pipeline
+    - Design elevated access flow
+    - Implement additional auth prompt
+    - Update security pipeline
 
 5. **Add Audit Log Export**
-   - Design export format (CSV/JSON)
-   - Implement export API
-   - Add UI for log download
+    - Design export format (CSV/JSON)
+    - Implement export API
+    - Add UI for log download
 
 6. **Optimize Performance**
-   - Implement caching layer
-   - Optimize vector search
-   - Batch processing improvements
+    - Implement caching layer
+    - Optimize vector search
+    - Batch processing improvements
 
 ### Low Priority
 
 7. **Enhance Error Messages**
-   - Review error scenarios
-   - Create user-friendly messages
-   - Implement in UI
+    - Review error scenarios
+    - Create user-friendly messages
+    - Implement in UI
 
 8. **Real-Time Indexing API**
-   - Design API endpoint
-   - Implement document update flow
-   - Add to API documentation
+    - Design API endpoint
+    - Implement document update flow
+    - Add to API documentation
 
 ## Task Dependencies
 
@@ -241,9 +242,9 @@ No task dependencies yet. As tasks are created, dependency relationships will be
 
 ## Traceability Matrix
 
-| Task | Requirement | Design | Status |
-|------|-------------|--------|--------|
-| TASK001 | - | - | In Progress |
+| Task    | Requirement | Design | Status      |
+| ------- | ----------- | ------ | ----------- |
+| TASK001 | -           | -      | In Progress |
 
 This matrix will track relationships between tasks, requirements, and designs as more work is added.
 

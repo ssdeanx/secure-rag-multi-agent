@@ -27,8 +27,7 @@ Utility functions for JWT token generation and demo token management. Provides s
 - ARC-001: Design patterns: Utility module with async token generation.
 
 - ARC-002: Dependencies:
-
-  - `jose`: JWT signing and verification library
+    - `jose`: JWT signing and verification library
 
 - ARC-003: Interactions: Generates signed JWTs using environment secrets. No external service calls.
 
@@ -58,19 +57,19 @@ graph TD
 
 - INT-001: Token generation function and demo token presets.
 
-| Export | Purpose | Parameters | Return Type | Usage Notes |
-|--------|---------|------------|-------------|-------------|
-| `generateDemoToken` | Generate signed JWT | `claims: TokenClaims` | `Promise<string>` | Creates HS256 signed token |
-| `DEMO_TOKENS` | Predefined demo tokens | none | `Record<string, () => Promise<string>>` | Finance, HR, engineering, executive |
+| Export              | Purpose                | Parameters            | Return Type                             | Usage Notes                         |
+| ------------------- | ---------------------- | --------------------- | --------------------------------------- | ----------------------------------- |
+| `generateDemoToken` | Generate signed JWT    | `claims: TokenClaims` | `Promise<string>`                       | Creates HS256 signed token          |
+| `DEMO_TOKENS`       | Predefined demo tokens | none                  | `Record<string, () => Promise<string>>` | Finance, HR, engineering, executive |
 
 ### TokenClaims Interface
 
 ```ts
 interface TokenClaims {
-  sub: string;        // Subject (user identifier)
-  roles: string[];    // User roles
-  tenant: string;     // Tenant identifier
-  stepUp?: boolean;   // Optional step-up authentication flag
+    sub: string // Subject (user identifier)
+    roles: string[] // User roles
+    tenant: string // Tenant identifier
+    stepUp?: boolean // Optional step-up authentication flag
 }
 ```
 
@@ -103,28 +102,28 @@ Corner cases and considerations:
 ### Generating custom token
 
 ```ts
-import { generateDemoToken } from '@/lib/jwt-utils';
+import { generateDemoToken } from '@/lib/jwt-utils'
 
 const token = await generateDemoToken({
-  sub: 'user@acme.com',
-  roles: ['employee'],
-  tenant: 'acme',
-  stepUp: false
-});
+    sub: 'user@acme.com',
+    roles: ['employee'],
+    tenant: 'acme',
+    stepUp: false,
+})
 ```
 
 ### Using demo tokens
 
 ```ts
-import { DEMO_TOKENS } from '@/lib/jwt-utils';
+import { DEMO_TOKENS } from '@/lib/jwt-utils'
 
 // Get HR admin token with step-up
-const hrToken = await DEMO_TOKENS.hr();
+const hrToken = await DEMO_TOKENS.hr()
 
 // Use in API calls
 const response = await fetch('/api/chat', {
-  headers: { Authorization: `Bearer ${hrToken}` }
-});
+    headers: { Authorization: `Bearer ${hrToken}` },
+})
 ```
 
 ### Environment setup
@@ -148,22 +147,22 @@ NEXT_PUBLIC_JWT_SECRET=dev-secret
 ## 7. Reference Information
 
 - REF-001: Dependencies (approximate):
-  - jose (^4.0.0)
+    - jose (^4.0.0)
 
 - REF-002: Configuration
-  - JWT_SECRET or NEXT_PUBLIC_JWT_SECRET environment variables
+    - JWT_SECRET or NEXT_PUBLIC_JWT_SECRET environment variables
 
 - REF-003: Testing guidelines
-  - Test token generation and verification.
-  - Validate demo token claims.
+    - Test token generation and verification.
+    - Validate demo token claims.
 
 - REF-004: Troubleshooting
-  - Invalid tokens may indicate secret mismatch.
-  - Expiration errors suggest time sync issues.
+    - Invalid tokens may indicate secret mismatch.
+    - Expiration errors suggest time sync issues.
 
 - REF-005: Related docs
-  - Authentication service documentation
-  - JWT auth tool documentation
+    - Authentication service documentation
+    - JWT auth tool documentation
 
 - REF-006: Change history
-  - 1.0 (2025-09-23) - Initial documentation generated
+    - 1.0 (2025-09-23) - Initial documentation generated
