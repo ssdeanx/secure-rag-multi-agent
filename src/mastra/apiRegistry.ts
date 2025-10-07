@@ -40,7 +40,13 @@ export const apiRoutes = [
 
         const run = await chatWorkflow.createRunAsync();
         const result = await run.start({
-          inputData: { prompt, temperature, maxTokens, systemPrompt },
+          inputData: {
+            currentDate: new Date().toISOString(),
+            prompt,
+            temperature,
+            maxTokens,
+            systemPrompt
+          },
         });
 
         if (result.status === 'success') {
@@ -77,6 +83,7 @@ export const apiRoutes = [
           const run = await chatWorkflow.createRunAsync();
           const result = await run.start({
             inputData: {
+              currentDate: new Date().toISOString(),
               prompt,
               temperature,
               maxTokens,
@@ -96,7 +103,7 @@ export const apiRoutes = [
       }
     },
   }),
-  
+
   // Content Generation Workflow Routes
   registerApiRoute('/content/generate', {
     method: 'POST',
@@ -129,7 +136,7 @@ export const apiRoutes = [
       }
     },
   }),
-  
+
   registerApiRoute('/content/generate/stream', {
     method: 'POST',
     openapi: {
@@ -151,20 +158,20 @@ export const apiRoutes = [
           streamProgressUpdate(controller, 'Starting content generation...', 'in_progress');
 
           const run = await contentGenerationWorkflow.createRunAsync();
-          
+
           // Use standard workflow execution (not streamVNext for now)
           streamProgressUpdate(controller, 'Validating request...', 'in_progress');
           const result = await run.start({ inputData });
 
           if (result.status === 'success') {
             log.info('Content generation stream completed', { contentType: inputData.contentType });
-            
+
             // Stream the final result as JSON
             streamJSONEvent(controller, {
               type: 'content_generation_complete',
               data: result.result,
             });
-            
+
             streamProgressUpdate(controller, 'Content generation complete', 'complete');
           } else {
             throw new Error(`Workflow failed with status: ${result.status}`);
