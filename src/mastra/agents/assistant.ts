@@ -12,32 +12,43 @@
 // approvedBy: samm
 // approvalDate: 9/22
 
-import { Agent } from "@mastra/core/agent";
-import { assistantOutputSchema } from "../schemas/agent-schemas";
-import { createOpenRouter } from "@openrouter/ai-sdk-provider";
-import { ContentSimilarityMetric, CompletenessMetric, TextualDifferenceMetric, KeywordCoverageMetric, ToneConsistencyMetric } from "@mastra/evals/nlp";
-import { UnicodeNormalizer } from "@mastra/core/processors"
-import { BatchPartsProcessor } from "@mastra/core/processors";
-import { readDataFileTool, writeDataFileTool, deleteDataFileTool, listDataDirTool } from '../tools/data-file-manager';
+import { Agent } from '@mastra/core/agent'
+import { assistantOutputSchema } from '../schemas/agent-schemas'
+import { createOpenRouter } from '@openrouter/ai-sdk-provider'
+import {
+    ContentSimilarityMetric,
+    CompletenessMetric,
+    TextualDifferenceMetric,
+    KeywordCoverageMetric,
+    ToneConsistencyMetric,
+} from '@mastra/evals/nlp'
+import { UnicodeNormalizer } from '@mastra/core/processors'
+import { BatchPartsProcessor } from '@mastra/core/processors'
+import {
+    readDataFileTool,
+    writeDataFileTool,
+    deleteDataFileTool,
+    listDataDirTool,
+} from '../tools/data-file-manager'
 //import { evaluateResultTool } from '../tools/evaluateResultTool';
 //import { extractLearningsTool } from '../tools/extractLearningsTool';
-;
-import { webScraperTool,
-  linkExtractorTool,
-  htmlToMarkdownTool,
-  contentCleanerTool
-} from "../tools/web-scraper-tool";
-import { log } from "../config/logger";
-import { editorTool } from "../tools/editor-agent-tool";
-import { weatherTool } from "../tools/weather-tool";
-import { pgMemory } from "../config/pg-storage";
-import { googleAI } from "../config/google";
+import {
+    webScraperTool,
+    linkExtractorTool,
+    htmlToMarkdownTool,
+    contentCleanerTool,
+} from '../tools/web-scraper-tool'
+import { log } from '../config/logger'
+import { editorTool } from '../tools/editor-agent-tool'
+import { weatherTool } from '../tools/weather-tool'
+import { pgMemory } from '../config/pg-storage'
+import { googleAI } from '../config/google'
 
-log.info('Initializing OpenRouter Assistant Agent...');
+log.info('Initializing OpenRouter Assistant Agent...')
 
 export const assistantAgent = new Agent({
-    id: "assistant",
-    name: "assistantAgent",
+    id: 'assistant',
+    name: 'assistantAgent',
     description: 'A helpful assistant.',
     instructions: `
 <role>
@@ -80,40 +91,44 @@ For complex research tasks that generate data, you MUST respond with a valid JSO
     model: googleAI,
     memory: pgMemory,
     evals: {
-    contentSimilarity: new ContentSimilarityMetric({ ignoreCase: true, ignoreWhitespace: true }),
-    completeness: new CompletenessMetric(),
-    textualDifference: new TextualDifferenceMetric(),
-    keywordCoverage: new KeywordCoverageMetric(), // Keywords will be provided at runtime for evaluation
-    toneConsistency: new ToneConsistencyMetric(),
+        contentSimilarity: new ContentSimilarityMetric({
+            ignoreCase: true,
+            ignoreWhitespace: true,
+        }),
+        completeness: new CompletenessMetric(),
+        textualDifference: new TextualDifferenceMetric(),
+        keywordCoverage: new KeywordCoverageMetric(), // Keywords will be provided at runtime for evaluation
+        toneConsistency: new ToneConsistencyMetric(),
     },
-    tools: { // Corrected indentation for the 'tools' object
-    readDataFileTool,
-    writeDataFileTool,
-    deleteDataFileTool,
-    listDataDirTool,
-    linkExtractorTool,
-    htmlToMarkdownTool,
-    contentCleanerTool,
-    webScraperTool,
-    editorTool,
-    weatherTool
+    tools: {
+        // Corrected indentation for the 'tools' object
+        readDataFileTool,
+        writeDataFileTool,
+        deleteDataFileTool,
+        listDataDirTool,
+        linkExtractorTool,
+        htmlToMarkdownTool,
+        contentCleanerTool,
+        webScraperTool,
+        editorTool,
+        weatherTool,
     },
     inputProcessors: [
-    new UnicodeNormalizer({
-      stripControlChars: true,
-      collapseWhitespace: true,
-      preserveEmojis: true,
-      trim: true,
-    }),
+        new UnicodeNormalizer({
+            stripControlChars: true,
+            collapseWhitespace: true,
+            preserveEmojis: true,
+            trim: true,
+        }),
     ],
     outputProcessors: [
-    new BatchPartsProcessor({
-      batchSize: 10, // Maximum parts to batch together
-      maxWaitTime: 50, // Maximum time to wait before emitting (ms)
-      emitOnNonText: true, // Emit immediately on non-text parts
-    }),
+        new BatchPartsProcessor({
+            batchSize: 10, // Maximum parts to batch together
+            maxWaitTime: 50, // Maximum time to wait before emitting (ms)
+            emitOnNonText: true, // Emit immediately on non-text parts
+        }),
     ],
     workflows: {}, // This is where workflows will be defined
 })
-log.info('OpenRouter Assistant Agent Working...');
-export { assistantOutputSchema };
+log.info('OpenRouter Assistant Agent Working...')
+export { assistantOutputSchema }

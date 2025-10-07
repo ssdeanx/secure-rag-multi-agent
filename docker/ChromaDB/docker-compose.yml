@@ -1,56 +1,56 @@
 version: '3.8'
 
 services:
-  chroma:
-    image: chromadb/chroma:latest
-    container_name: governed-rag-chroma
-    ports:
-      - "8000:8000"
-    volumes:
-      - chroma_data:/data
-    restart: unless-stopped
-    healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:8000/api/v1/heartbeat"]
-      interval: 30s
-      timeout: 10s
-      retries: 3
-    environment:
-      - CHROMA_DB_IMPL=duckdb+parquet
-      - CHROMA_SERVER_HOST=localhost
-      - CHROMA_SERVER_HTTP_PORT=8000
-      - CHROMA_PERSIST_DIRECTORY=/data
-      - CHROMA_ALLOW_RESET=True
-      - CHROMA_LOG_LEVEL=INFO
-    command: ["chroma", "server", "--host", "0.0.0.0", "--port", "8000"]
-    networks:
-      - default
+    chroma:
+        image: chromadb/chroma:latest
+        container_name: governed-rag-chroma
+        ports:
+            - '8000:8000'
+        volumes:
+            - chroma_data:/data
+        restart: unless-stopped
+        healthcheck:
+            test:
+                ['CMD', 'curl', '-f', 'http://localhost:8000/api/v1/heartbeat']
+            interval: 30s
+            timeout: 10s
+            retries: 3
+        environment:
+            - CHROMA_DB_IMPL=duckdb+parquet
+            - CHROMA_SERVER_HOST=localhost
+            - CHROMA_SERVER_HTTP_PORT=8000
+            - CHROMA_PERSIST_DIRECTORY=/data
+            - CHROMA_ALLOW_RESET=True
+            - CHROMA_LOG_LEVEL=INFO
+        command: ['chroma', 'server', '--host', '0.0.0.0', '--port', '8000']
+        networks:
+            - default
 
-        # The Redis Caching Layer
-  redis-cache:
-    image: redis:7-alpine
-    container_name: governed-rag-redis-cache
-    ports:
-      - "6380:6379" # Use a different port to avoid conflicts
-    volumes:
-      - redis_cache_data:/data
-    command: redis-server --appendonly yes
-    restart: unless-stopped
-    healthcheck:
-      test: ["CMD", "redis-cli", "ping"]
-      interval: 30s
-      timeout: 10s
-      retries: 3
-    networks:
-      - default
+              # The Redis Caching Layer
+    redis-cache:
+        image: redis:7-alpine
+        container_name: governed-rag-redis-cache
+        ports:
+            - '6380:6379' # Use a different port to avoid conflicts
+        volumes:
+            - redis_cache_data:/data
+        command: redis-server --appendonly yes
+        restart: unless-stopped
+        healthcheck:
+            test: ['CMD', 'redis-cli', 'ping']
+            interval: 30s
+            timeout: 10s
+            retries: 3
+        networks:
+            - default
 
 volumes:
-  chroma_data:
-    driver: local
-  redis_cache_data:
-    driver: local
-
+    chroma_data:
+        driver: local
+    redis_cache_data:
+        driver: local
 
 networks:
-  default:
-    name: governed-rag-network
-    driver: bridge
+    default:
+        name: governed-rag-network
+        driver: bridge

@@ -1,11 +1,11 @@
 ---
-title: "Supabase Authentication Utility"
-description: "Authentication utility for obtaining Supabase access tokens using email/password credentials"
-component_type: "Utility Module"
-framework: "Next.js"
-language: "TypeScript"
-platform: "Node.js"
-tags: ["authentication", "supabase", "token", "utility"]
+title: 'Supabase Authentication Utility'
+description: 'Authentication utility for obtaining Supabase access tokens using email/password credentials'
+component_type: 'Utility Module'
+framework: 'Next.js'
+language: 'TypeScript'
+platform: 'Node.js'
+tags: ['authentication', 'supabase', 'token', 'utility']
 ---
 
 # Supabase Authentication Utility (`lib/auth.ts`)
@@ -97,16 +97,16 @@ Retrieves an access token from Supabase using email/password authentication.
 ### Basic Authentication
 
 ```typescript
-import { getSupabaseAuthToken } from '@/lib/auth';
+import { getSupabaseAuthToken } from '@/lib/auth'
 
 // Get authentication token
-const token = await getSupabaseAuthToken();
+const token = await getSupabaseAuthToken()
 
 if (token) {
-  console.log('Authentication successful');
-  // Use token for API calls
+    console.log('Authentication successful')
+    // Use token for API calls
 } else {
-  console.error('Authentication failed');
+    console.error('Authentication failed')
 }
 ```
 
@@ -114,17 +114,20 @@ if (token) {
 
 ```typescript
 // In Next.js API route
-import { getSupabaseAuthToken } from '@/lib/auth';
+import { getSupabaseAuthToken } from '@/lib/auth'
 
 export async function GET() {
-  const token = await getSupabaseAuthToken();
+    const token = await getSupabaseAuthToken()
 
-  if (!token) {
-    return Response.json({ error: 'Authentication failed' }, { status: 401 });
-  }
+    if (!token) {
+        return Response.json(
+            { error: 'Authentication failed' },
+            { status: 401 }
+        )
+    }
 
-  // Use token for authenticated requests
-  return Response.json({ token });
+    // Use token for authenticated requests
+    return Response.json({ token })
 }
 ```
 
@@ -169,7 +172,7 @@ USER_PASSWORD=secure-password
 
 ```json
 {
-  "@supabase/supabase-js": "^2.x.x"
+    "@supabase/supabase-js": "^2.x.x"
 }
 ```
 
@@ -178,17 +181,17 @@ USER_PASSWORD=secure-password
 ### Common Issues
 
 1. **Authentication Failure**
-   - Check environment variables are set correctly
-   - Verify Supabase project credentials
-   - Ensure user account exists and is active
+    - Check environment variables are set correctly
+    - Verify Supabase project credentials
+    - Ensure user account exists and is active
 
 2. **Missing Dependencies**
-   - Install `@supabase/supabase-js` package
-   - Update package.json with correct version
+    - Install `@supabase/supabase-js` package
+    - Update package.json with correct version
 
 3. **Environment Variable Issues**
-   - Ensure variables are prefixed correctly (`NEXT_PUBLIC_` for client-side)
-   - Check variable loading in deployment environment
+    - Ensure variables are prefixed correctly (`NEXT_PUBLIC_` for client-side)
+    - Check variable loading in deployment environment
 
 ## References
 

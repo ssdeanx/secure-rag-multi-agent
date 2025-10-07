@@ -1,11 +1,18 @@
 ---
-title: "Editor Agent Tool - Technical Documentation"
-component_path: "src/mastra/tools/editor-agent-tool.ts"
-version: "1.0"
-date_created: "2025-09-23"
-last_updated: "2025-09-23"
-owner: "AI Team"
-tags: ["tool", "content-editing", "proofreading", "content-improvement", "writing-assistance"]
+title: 'Editor Agent Tool - Technical Documentation'
+component_path: 'src/mastra/tools/editor-agent-tool.ts'
+version: '1.0'
+date_created: '2025-09-23'
+last_updated: '2025-09-23'
+owner: 'AI Team'
+tags:
+    [
+        'tool',
+        'content-editing',
+        'proofreading',
+        'content-improvement',
+        'writing-assistance',
+    ]
 ---
 
 # Editor Agent Tool Documentation
@@ -126,26 +133,26 @@ graph TB
 
 ### Input Schema
 
-| Property | Type | Required | Description |
-|----------|------|----------|-------------|
-| `content` | `string` | Yes | The content to be edited |
-| `contentType` | `enum?` | No | Content type (blog/technical/business/creative/general) |
-| `instructions` | `string?` | No | Specific editing instructions or focus areas |
-| `tone` | `enum?` | No | Desired tone (professional/casual/formal/engaging/technical) |
+| Property       | Type      | Required | Description                                                  |
+| -------------- | --------- | -------- | ------------------------------------------------------------ |
+| `content`      | `string`  | Yes      | The content to be edited                                     |
+| `contentType`  | `enum?`   | No       | Content type (blog/technical/business/creative/general)      |
+| `instructions` | `string?` | No       | Specific editing instructions or focus areas                 |
+| `tone`         | `enum?`   | No       | Desired tone (professional/casual/formal/engaging/technical) |
 
 ### Output Schema
 
-| Property | Type | Description |
-|----------|------|-------------|
-| `editedContent` | `string` | The edited and improved content |
-| `contentType` | `string` | The identified content type |
-| `changes` | `string[]` | List of key changes made |
-| `suggestions` | `string[]?` | Additional suggestions for improvement |
+| Property        | Type        | Description                            |
+| --------------- | ----------- | -------------------------------------- |
+| `editedContent` | `string`    | The edited and improved content        |
+| `contentType`   | `string`    | The identified content type            |
+| `changes`       | `string[]`  | List of key changes made               |
+| `suggestions`   | `string[]?` | Additional suggestions for improvement |
 
 ### Public Methods
 
-| Method | Parameters | Return Type | Description |
-|--------|------------|-------------|-------------|
+| Method      | Parameters           | Return Type           | Description                     |
+| ----------- | -------------------- | --------------------- | ------------------------------- |
 | `execute()` | `context: EditInput` | `Promise<EditOutput>` | Edit content using editor agent |
 
 ## 4. Usage Examples
@@ -153,18 +160,19 @@ graph TB
 ### Blog Post Editing
 
 ```typescript
-import { editorTool } from './src/mastra/tools/editor-agent-tool';
+import { editorTool } from './src/mastra/tools/editor-agent-tool'
 
 const result = await editorTool.execute({
-  context: {
-    content: "This is a rough draft of my blog post about AI trends...",
-    contentType: "blog",
-    instructions: "Improve clarity, add transitions, and strengthen the conclusion",
-    tone: "engaging"
-  },
-  mastra: mastraInstance,
-  tracingContext: tracingContext
-});
+    context: {
+        content: 'This is a rough draft of my blog post about AI trends...',
+        contentType: 'blog',
+        instructions:
+            'Improve clarity, add transitions, and strengthen the conclusion',
+        tone: 'engaging',
+    },
+    mastra: mastraInstance,
+    tracingContext: tracingContext,
+})
 
 // Result:
 // {
@@ -179,15 +187,15 @@ const result = await editorTool.execute({
 
 ```typescript
 const result = await editorTool.execute({
-  context: {
-    content: "This API documentation needs better clarity and examples...",
-    contentType: "technical",
-    instructions: "Add code examples and improve technical accuracy",
-    tone: "professional"
-  },
-  mastra: mastraInstance,
-  tracingContext: tracingContext
-});
+    context: {
+        content: 'This API documentation needs better clarity and examples...',
+        contentType: 'technical',
+        instructions: 'Add code examples and improve technical accuracy',
+        tone: 'professional',
+    },
+    mastra: mastraInstance,
+    tracingContext: tracingContext,
+})
 
 // Enhances technical documentation with better structure and examples
 ```
@@ -196,15 +204,15 @@ const result = await editorTool.execute({
 
 ```typescript
 const result = await editorTool.execute({
-  context: {
-    content: "Dear team, we need to discuss the project timeline...",
-    contentType: "business",
-    instructions: "Make it more concise and action-oriented",
-    tone: "professional"
-  },
-  mastra: mastraInstance,
-  tracingContext: tracingContext
-});
+    context: {
+        content: 'Dear team, we need to discuss the project timeline...',
+        contentType: 'business',
+        instructions: 'Make it more concise and action-oriented',
+        tone: 'professional',
+    },
+    mastra: mastraInstance,
+    tracingContext: tracingContext,
+})
 
 // Refines business communication for clarity and impact
 ```
@@ -213,15 +221,15 @@ const result = await editorTool.execute({
 
 ```typescript
 const result = await editorTool.execute({
-  context: {
-    content: "The story begins with a mysterious figure in the fog...",
-    contentType: "creative",
-    instructions: "Enhance descriptive language and build suspense",
-    tone: "engaging"
-  },
-  mastra: mastraInstance,
-  tracingContext: tracingContext
-});
+    context: {
+        content: 'The story begins with a mysterious figure in the fog...',
+        contentType: 'creative',
+        instructions: 'Enhance descriptive language and build suspense',
+        tone: 'engaging',
+    },
+    mastra: mastraInstance,
+    tracingContext: tracingContext,
+})
 
 // Improves creative writing with better imagery and pacing
 ```
@@ -262,17 +270,17 @@ const result = await editorTool.execute({
 
 ### Dependencies
 
-| Package | Version | Purpose |
-|---------|---------|---------|
-| `@mastra/core/tools` | ^0.1.0 | Tool framework |
-| `@mastra/core/ai-tracing` | ^0.1.0 | AI tracing integration |
-| `zod` | ^3.22.4 | Schema validation |
+| Package                   | Version | Purpose                |
+| ------------------------- | ------- | ---------------------- |
+| `@mastra/core/tools`      | ^0.1.0  | Tool framework         |
+| `@mastra/core/ai-tracing` | ^0.1.0  | AI tracing integration |
+| `zod`                     | ^3.22.4 | Schema validation      |
 
 ### Environment Variables
 
-| Variable | Required | Default | Description |
-|----------|----------|---------|-------------|
-| None | - | - | Uses Mastra agent configuration |
+| Variable | Required | Default | Description                     |
+| -------- | -------- | ------- | ------------------------------- |
+| None     | -        | -       | Uses Mastra agent configuration |
 
 ### Testing
 
@@ -310,8 +318,8 @@ curl http://localhost:3000/api/health/editor
 
 ### Change History
 
-| Version | Date | Changes |
-|---------|------|---------|
-| 1.0 | 2025-09-23 | Initial implementation with multi-format editing |
-| 0.9 | 2025-09-20 | Added structured feedback and change tracking |
-| 0.8 | 2025-09-15 | Basic content editing functionality |
+| Version | Date       | Changes                                          |
+| ------- | ---------- | ------------------------------------------------ |
+| 1.0     | 2025-09-23 | Initial implementation with multi-format editing |
+| 0.9     | 2025-09-20 | Added structured feedback and change tracking    |
+| 0.8     | 2025-09-15 | Basic content editing functionality              |

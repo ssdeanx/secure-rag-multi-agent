@@ -1,18 +1,25 @@
-import { Agent } from '@mastra/core/agent';
-import { learningExtractionOutputSchema } from "../schemas/agent-schemas";
-import { google } from '@ai-sdk/google';
-import { ContentSimilarityMetric, CompletenessMetric, TextualDifferenceMetric, KeywordCoverageMetric, ToneConsistencyMetric } from "@mastra/evals/nlp";
-import { log } from "../config/logger";
-import { pgMemory } from '../config/pg-storage';
-import { googleAI } from '../config/google';
+import { Agent } from '@mastra/core/agent'
+import { learningExtractionOutputSchema } from '../schemas/agent-schemas'
+import { google } from '@ai-sdk/google'
+import {
+    ContentSimilarityMetric,
+    CompletenessMetric,
+    TextualDifferenceMetric,
+    KeywordCoverageMetric,
+    ToneConsistencyMetric,
+} from '@mastra/evals/nlp'
+import { log } from '../config/logger'
+import { pgMemory } from '../config/pg-storage'
+import { googleAI } from '../config/google'
 
-log.info("Initializing Learning Extraction Agent...");
+log.info('Initializing Learning Extraction Agent...')
 
 export const learningExtractionAgent = new Agent({
-  id: 'learning',
-  name: 'Learning Extraction Agent',
-  description: 'An expert at analyzing search results and extracting key insights to deepen research understanding.',
-  instructions: `
+    id: 'learning',
+    name: 'Learning Extraction Agent',
+    description:
+        'An expert at analyzing search results and extracting key insights to deepen research understanding.',
+    instructions: `
 <role>
 You are an expert at analyzing search results to extract key insights and generate follow-up questions for deeper research.
 </role>
@@ -39,17 +46,20 @@ Example:
 </output_format>
   `,
 
-  evals: {
-    contentSimilarity: new ContentSimilarityMetric({ ignoreCase: true, ignoreWhitespace: true }),
-    completeness: new CompletenessMetric(),
-    textualDifference: new TextualDifferenceMetric(),
-    keywordCoverage: new KeywordCoverageMetric(), // Keywords will be provided at runtime for evaluation
-    toneConsistency: new ToneConsistencyMetric(),
-  },
-  model: googleAI,
-  memory: pgMemory,
-  scorers: {},
-  workflows: {},
-});
+    evals: {
+        contentSimilarity: new ContentSimilarityMetric({
+            ignoreCase: true,
+            ignoreWhitespace: true,
+        }),
+        completeness: new CompletenessMetric(),
+        textualDifference: new TextualDifferenceMetric(),
+        keywordCoverage: new KeywordCoverageMetric(), // Keywords will be provided at runtime for evaluation
+        toneConsistency: new ToneConsistencyMetric(),
+    },
+    model: googleAI,
+    memory: pgMemory,
+    scorers: {},
+    workflows: {},
+})
 
-export { learningExtractionOutputSchema };
+export { learningExtractionOutputSchema }

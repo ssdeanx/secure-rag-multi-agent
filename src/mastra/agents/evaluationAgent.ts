@@ -1,18 +1,25 @@
-import { Agent } from '@mastra/core/agent';
-import { evaluationOutputSchema } from "../schemas/agent-schemas";
-import { ContentSimilarityMetric, CompletenessMetric, TextualDifferenceMetric, KeywordCoverageMetric, ToneConsistencyMetric } from "@mastra/evals/nlp"; // Non-LLM evals
-import { log } from "../config/logger";
-import { google } from '@ai-sdk/google';
-import { pgMemory } from '../config/pg-storage';
-import { googleAIFlashLite } from '../config/google';
+import { Agent } from '@mastra/core/agent'
+import { evaluationOutputSchema } from '../schemas/agent-schemas'
+import {
+    ContentSimilarityMetric,
+    CompletenessMetric,
+    TextualDifferenceMetric,
+    KeywordCoverageMetric,
+    ToneConsistencyMetric,
+} from '@mastra/evals/nlp' // Non-LLM evals
+import { log } from '../config/logger'
+import { google } from '@ai-sdk/google'
+import { pgMemory } from '../config/pg-storage'
+import { googleAIFlashLite } from '../config/google'
 
-log.info("Initializing Evaluation Agent...");
+log.info('Initializing Evaluation Agent...')
 
 export const evaluationAgent = new Agent({
-  id: 'evaluation',
-  name: 'Evaluation Agent',
-  description: 'An expert evaluation agent. Your task is to evaluate whether search results are relevant to a research query.',
-  instructions: `
+    id: 'evaluation',
+    name: 'Evaluation Agent',
+    description:
+        'An expert evaluation agent. Your task is to evaluate whether search results are relevant to a research query.',
+    instructions: `
 <role>
 You are an expert evaluation agent. Your task is to evaluate whether a given search result is relevant to a specific research query.
 </role>
@@ -45,17 +52,20 @@ CRITICAL: You must always respond with a valid JSON object in the following form
 }
 </output_format>
   `,
-  model: googleAIFlashLite,
-  memory: pgMemory,
-  evals: {
-    contentSimilarity: new ContentSimilarityMetric({ ignoreCase: true, ignoreWhitespace: true }),
-    completeness: new CompletenessMetric(),
-    textualDifference: new TextualDifferenceMetric(),
-    keywordCoverage: new KeywordCoverageMetric(), // Keywords will be provided at runtime for evaluation
-    toneConsistency: new ToneConsistencyMetric(),
-  },
-  scorers: {},
-  workflows: {},
-});
+    model: googleAIFlashLite,
+    memory: pgMemory,
+    evals: {
+        contentSimilarity: new ContentSimilarityMetric({
+            ignoreCase: true,
+            ignoreWhitespace: true,
+        }),
+        completeness: new CompletenessMetric(),
+        textualDifference: new TextualDifferenceMetric(),
+        keywordCoverage: new KeywordCoverageMetric(), // Keywords will be provided at runtime for evaluation
+        toneConsistency: new ToneConsistencyMetric(),
+    },
+    scorers: {},
+    workflows: {},
+})
 
-export { evaluationOutputSchema };
+export { evaluationOutputSchema }

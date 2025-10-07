@@ -1,19 +1,20 @@
-import { Agent } from "@mastra/core";
-import { verifierOutputSchema } from "../schemas/agent-schemas";
-import { google } from "@ai-sdk/google";
-import { log } from "../config/logger";
-import { pgMemory } from "../config/pg-storage";
-import { googleAI } from "../config/google";
+import { Agent } from '@mastra/core'
+import { verifierOutputSchema } from '../schemas/agent-schemas'
+import { google } from '@ai-sdk/google'
+import { log } from '../config/logger'
+import { pgMemory } from '../config/pg-storage'
+import { googleAI } from '../config/google'
 
-log.info('Initializing Verifier Agent...');
+log.info('Initializing Verifier Agent...')
 
 export const verifierAgent = new Agent({
-  id: "verifier",
-  name: "verifier",
-  model: googleAI,
-  //model: openAIModel, --- IGNORE ---
-  description: "A strict answer verification agent that ensures the provided answer is fully supported by the given contexts and relevant to the question.",
-  instructions: `You are a strict answer verification agent. Your task is to:
+    id: 'verifier',
+    name: 'verifier',
+    model: googleAI,
+    //model: openAIModel, --- IGNORE ---
+    description:
+        'A strict answer verification agent that ensures the provided answer is fully supported by the given contexts and relevant to the question.',
+    instructions: `You are a strict answer verification agent. Your task is to:
 
 1. Verify that every claim in the answer is supported by the provided contexts
 2. Check that citations are correctly attributed
@@ -54,11 +55,11 @@ Common failure reasons:
 - "Context is not relevant to the question - answer should indicate no information found"
 
 Always return valid JSON matching this exact structure.`,
-  memory: pgMemory,
-  evals: {
-    // Add any evaluation metrics if needed
-  },
-  scorers: {},
-  workflows: {},
-});
-export { verifierOutputSchema };
+    memory: pgMemory,
+    evals: {
+        // Add any evaluation metrics if needed
+    },
+    scorers: {},
+    workflows: {},
+})
+export { verifierOutputSchema }

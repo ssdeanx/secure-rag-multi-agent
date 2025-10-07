@@ -27,14 +27,13 @@ A small, focused React UI component that displays the current human-in-the-loop 
 - ARC-001: Design patterns: Presentational/functional component pattern. Small single-responsibility component following React functional component best-practices.
 
 - ARC-002: Dependencies:
+    - React (functional component, JSX)
 
-  - React (functional component, JSX)
+    - motion/react (AnimatePresence & motion for enter/exit animations)
 
-  - motion/react (AnimatePresence & motion for enter/exit animations)
+    - lucide-react (icon components: Pause, Play, X, Clock)
 
-  - lucide-react (icon components: Pause, Play, X, Clock)
-
-  - Tailwind CSS utility classes (color and layout classes like `text-orange-500`, `flex`, etc.) — implied by class names used in the component.
+    - Tailwind CSS utility classes (color and layout classes like `text-orange-500`, `flex`, etc.) — implied by class names used in the component.
 
 - ARC-003: Interactions: Stateless consumer component. Parent components supply the `state` prop; this component renders and animates accordingly.
 
@@ -74,17 +73,17 @@ graph TD
 
 ## 3. Interface Documentation
 
- - INT-001: Public interface is the component's props.
+- INT-001: Public interface is the component's props.
 
-| Method/Property | Purpose | Parameters | Return Type | Usage Notes |
-|-----------------|---------|------------|-------------|-------------|
-| `state` (prop) | Determines visible indicator and styling | `"suspended" \| "resumed" \| "cancelled" \| "timeout"` | `JSX.Element \| null` | Required. If falsy, component returns `null` and renders nothing. |
+| Method/Property | Purpose                                  | Parameters                                             | Return Type           | Usage Notes                                                       |
+| --------------- | ---------------------------------------- | ------------------------------------------------------ | --------------------- | ----------------------------------------------------------------- |
+| `state` (prop)  | Determines visible indicator and styling | `"suspended" \| "resumed" \| "cancelled" \| "timeout"` | `JSX.Element \| null` | Required. If falsy, component returns `null` and renders nothing. |
 
 ### Prop Types
 
 ```ts
 interface HumanInTheLoopIndicatorProps {
-  state: 'suspended' | 'resumed' | 'cancelled' | 'timeout';
+    state: 'suspended' | 'resumed' | 'cancelled' | 'timeout'
 }
 ```
 
@@ -110,17 +109,17 @@ Corner cases and considerations:
 ### Basic Usage
 
 ```tsx
-import { HumanInTheLoopIndicator } from 'cedar/components/chatInput/HumanInTheLoopIndicator';
+import { HumanInTheLoopIndicator } from 'cedar/components/chatInput/HumanInTheLoopIndicator'
 
 function ChatStatus({ workflowState }: { workflowState: string }) {
-  // Ensure type-safety at usage site
-  const state = (['suspended','resumed','cancelled','timeout'] as const).includes(
-    workflowState as any
-  )
-    ? (workflowState as 'suspended'|'resumed'|'cancelled'|'timeout')
-    : undefined;
+    // Ensure type-safety at usage site
+    const state = (
+        ['suspended', 'resumed', 'cancelled', 'timeout'] as const
+    ).includes(workflowState as any)
+        ? (workflowState as 'suspended' | 'resumed' | 'cancelled' | 'timeout')
+        : undefined
 
-  return <HumanInTheLoopIndicator state={state} />;
+    return <HumanInTheLoopIndicator state={state} />
 }
 ```
 
@@ -139,26 +138,26 @@ sequenceDiagram
 
 ```tsx
 function ChatInputWithState({ state }: { state?: string }) {
-  return (
-    <div className="chat-input-panel">
-      <HumanInTheLoopIndicator state={state as any} />
-      {/* ...other chat input UI... */}
-    </div>
-  );
+    return (
+        <div className="chat-input-panel">
+            <HumanInTheLoopIndicator state={state as any} />
+            {/* ...other chat input UI... */}
+        </div>
+    )
 }
 ```
 
 ### Advanced Usage (with conditional rendering and memoization)
 
 ```tsx
-import React from 'react';
-import { HumanInTheLoopIndicator } from 'cedar/components/chatInput/HumanInTheLoopIndicator';
+import React from 'react'
+import { HumanInTheLoopIndicator } from 'cedar/components/chatInput/HumanInTheLoopIndicator'
 
-const MemoHumanIndicator = React.memo(HumanInTheLoopIndicator);
+const MemoHumanIndicator = React.memo(HumanInTheLoopIndicator)
 
 function WorkflowHeader({ state }: { state?: string }) {
-  if (!state) return null;
-  return <MemoHumanIndicator state={state as any} />;
+    if (!state) return null
+    return <MemoHumanIndicator state={state as any} />
 }
 ```
 
@@ -179,26 +178,26 @@ Best practices:
 ## 7. Reference Information
 
 - REF-001: Dependencies (approximate):
-  - react (>=17 / 18) - runtime
-  - motion/react - animation utilities
-  - lucide-react - icons
-  - tailwindcss - utility classes for styling (project-level)
+    - react (>=17 / 18) - runtime
+    - motion/react - animation utilities
+    - lucide-react - icons
+    - tailwindcss - utility classes for styling (project-level)
 
 - REF-002: Configuration
-  - Ensure `motion/react` is installed and imported correctly. No explicit initialization required.
-  - Tailwind classes used; ensure Tailwind is configured or adapt classes to project CSS methodology.
+    - Ensure `motion/react` is installed and imported correctly. No explicit initialization required.
+    - Tailwind classes used; ensure Tailwind is configured or adapt classes to project CSS methodology.
 
 - REF-003: Testing guidelines
-  - Unit test: shallow render the component with each state and assert the label and icon presence.
-  - Snapshot tests are useful for catching visual regressions when changing icon or layout.
+    - Unit test: shallow render the component with each state and assert the label and icon presence.
+    - Snapshot tests are useful for catching visual regressions when changing icon or layout.
 
 - REF-004: Troubleshooting
-  - Issue: component renders nothing — ensure `state` prop is passed and not falsy.
-  - Issue: icons not found — verify `lucide-react` is installed and icons imported correctly.
-  - Issue: animation not working — ensure `motion/react` is present and compatible with React version.
+    - Issue: component renders nothing — ensure `state` prop is passed and not falsy.
+    - Issue: icons not found — verify `lucide-react` is installed and icons imported correctly.
+    - Issue: animation not working — ensure `motion/react` is present and compatible with React version.
 
 - REF-005: Related docs
-  - `cedar/components/chatInput/` directory for related input and status components.
+    - `cedar/components/chatInput/` directory for related input and status components.
 
 - REF-006: Change history
-  - 1.0 (2025-09-23) - Initial documentation generated
+    - 1.0 (2025-09-23) - Initial documentation generated

@@ -1,7 +1,7 @@
-export { CommandBar } from './CommandBar';
+export { CommandBar } from './CommandBar'
 export type {
-	CommandBarItem,
-	CommandBarGroup,
-	CommandBarContents,
-} from './CommandBar';
-export { getShortcutDisplay } from './getShortcutDisplay';
+    CommandBarItem,
+    CommandBarGroup,
+    CommandBarContents,
+} from './CommandBar'
+export { getShortcutDisplay } from './getShortcutDisplay'

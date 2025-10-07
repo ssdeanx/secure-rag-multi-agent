@@ -1,21 +1,27 @@
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
+import {
+    Card,
+    CardContent,
+    CardDescription,
+    CardHeader,
+    CardTitle,
+} from '@/components/ui/card'
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import { Mermaid } from '@/components/Mermaid'
 import {
-  Users,
-  Shield,
-  Eye,
-  EyeOff,
-  Lock,
-  CheckCircle,
-  XCircle,
-  Terminal,
-  Play,
-  FileText,
-  ArrowRight
+    Users,
+    Shield,
+    Eye,
+    EyeOff,
+    Lock,
+    CheckCircle,
+    XCircle,
+    Terminal,
+    Play,
+    FileText,
+    ArrowRight,
 } from 'lucide-react'
 
 # Demo Roles & Access Control
@@ -23,11 +29,12 @@ import {
 This page demonstrates role-based access control in the Mastra Governed RAG system using sample queries against the corpus documents. Use the UI's AuthPanel or `scripts/make-jwt.js` to generate JWTs for testing different access scenarios.
 
 <Alert className="mb-6">
-  <Users className="h-4 w-4" />
-  <AlertTitle>Interactive Role Testing</AlertTitle>
-  <AlertDescription>
-    Try different roles to see how the system enforces access control and provides appropriate responses based on user permissions.
-  </AlertDescription>
+    <Users className="h-4 w-4" />
+    <AlertTitle>Interactive Role Testing</AlertTitle>
+    <AlertDescription>
+        Try different roles to see how the system enforces access control and
+        provides appropriate responses based on user permissions.
+    </AlertDescription>
 </Alert>
 
 <!-- toc -->
@@ -52,56 +59,74 @@ This page demonstrates role-based access control in the Mastra Governed RAG syst
     </CardContent>
   </Card>
 
-  <Card>
+<Card>
     <CardHeader className="pb-3">
-      <CardTitle className="text-lg flex items-center">
-        <Users className="h-5 w-5 mr-2 text-blue-500" />
-        Employee (Level 40)
-      </CardTitle>
-      <CardDescription>General staff access</CardDescription>
+        <CardTitle className="text-lg flex items-center">
+            <Users className="h-5 w-5 mr-2 text-blue-500" />
+            Employee (Level 40)
+        </CardTitle>
+        <CardDescription>General staff access</CardDescription>
     </CardHeader>
     <CardContent>
-      <div className="space-y-2 text-sm">
-        <div><strong>Max Classification:</strong> internal</div>
-        <div><strong>Allowed Tags:</strong> General</div>
-        <div><strong>Access:</strong> Internal policies</div>
-      </div>
+        <div className="space-y-2 text-sm">
+            <div>
+                <strong>Max Classification:</strong> internal
+            </div>
+            <div>
+                <strong>Allowed Tags:</strong> General
+            </div>
+            <div>
+                <strong>Access:</strong> Internal policies
+            </div>
+        </div>
     </CardContent>
-  </Card>
+</Card>
 
-  <Card>
+<Card>
     <CardHeader className="pb-3">
-      <CardTitle className="text-lg flex items-center">
-        <Shield className="h-5 w-5 mr-2 text-orange-500" />
-        Department Viewer (Level 60)
-      </CardTitle>
-      <CardDescription>Department-specific read access</CardDescription>
+        <CardTitle className="text-lg flex items-center">
+            <Shield className="h-5 w-5 mr-2 text-orange-500" />
+            Department Viewer (Level 60)
+        </CardTitle>
+        <CardDescription>Department-specific read access</CardDescription>
     </CardHeader>
     <CardContent>
-      <div className="space-y-2 text-sm">
-        <div><strong>Max Classification:</strong> internal</div>
-        <div><strong>Allowed Tags:</strong> Department-specific</div>
-        <div><strong>Access:</strong> Dept docs + general</div>
-      </div>
+        <div className="space-y-2 text-sm">
+            <div>
+                <strong>Max Classification:</strong> internal
+            </div>
+            <div>
+                <strong>Allowed Tags:</strong> Department-specific
+            </div>
+            <div>
+                <strong>Access:</strong> Dept docs + general
+            </div>
+        </div>
     </CardContent>
-  </Card>
+</Card>
 
-  <Card>
+<Card>
     <CardHeader className="pb-3">
-      <CardTitle className="text-lg flex items-center">
-        <Lock className="h-5 w-5 mr-2 text-purple-500" />
-        Department Admin (Level 80)
-      </CardTitle>
-      <CardDescription>Full department control</CardDescription>
+        <CardTitle className="text-lg flex items-center">
+            <Lock className="h-5 w-5 mr-2 text-purple-500" />
+            Department Admin (Level 80)
+        </CardTitle>
+        <CardDescription>Full department control</CardDescription>
     </CardHeader>
     <CardContent>
-      <div className="space-y-2 text-sm">
-        <div><strong>Max Classification:</strong> confidential</div>
-        <div><strong>Allowed Tags:</strong> Department + confidential</div>
-        <div><strong>Access:</strong> All dept content</div>
-      </div>
+        <div className="space-y-2 text-sm">
+            <div>
+                <strong>Max Classification:</strong> confidential
+            </div>
+            <div>
+                <strong>Allowed Tags:</strong> Department + confidential
+            </div>
+            <div>
+                <strong>Access:</strong> All dept content
+            </div>
+        </div>
     </CardContent>
-  </Card>
+</Card>
 
   <Card className="md:col-span-2 lg:col-span-1">
     <CardHeader className="pb-3">
@@ -124,7 +149,8 @@ This page demonstrates role-based access control in the Mastra Governed RAG syst
 ## Interactive Role Testing
 
 <div className="bg-slate-50 dark:bg-slate-900 p-6 rounded-lg border mb-8">
-  <Mermaid chart={`flowchart TD
+    <Mermaid
+        chart={`flowchart TD
     A[User Query] --> B{JWT Authentication}
     B -->|Valid| C[Extract Role & Permissions]
     B -->|Invalid| D[Access Denied]
@@ -145,11 +171,14 @@ This page demonstrates role-based access control in the Mastra Governed RAG syst
     style A fill:#e3f2fd
     style C fill:#f3e5f5
     style M fill:#e8f5e8
-    style N fill:#ffebee`} />
-  
-  <div className="mt-4 text-sm text-muted-foreground">
-    <strong>Access Control Flow:</strong> Each query goes through multi-stage security checks before returning results.
-  </div>
+    style N fill:#ffebee`}
+    />
+
+    <div className="mt-4 text-sm text-muted-foreground">
+        <strong>Access Control Flow:</strong> Each query goes through
+        multi-stage security checks before returning results.
+    </div>
+
 </div>
 
 <Tabs defaultValue="public" className="mb-8">
@@ -209,6 +238,7 @@ This page demonstrates role-based access control in the Mastra Governed RAG syst
         </div>
       </CardContent>
     </Card>
+
   </TabsContent>
 
   <TabsContent value="employee">
@@ -273,6 +303,7 @@ This page demonstrates role-based access control in the Mastra Governed RAG syst
         </div>
       </CardContent>
     </Card>
+
   </TabsContent>
 
   <TabsContent value="finance">
@@ -351,6 +382,7 @@ This page demonstrates role-based access control in the Mastra Governed RAG syst
         </div>
       </CardContent>
     </Card>
+
   </TabsContent>
 
   <TabsContent value="hr">
@@ -415,6 +447,7 @@ This page demonstrates role-based access control in the Mastra Governed RAG syst
         </div>
       </CardContent>
     </Card>
+
   </TabsContent>
 
   <TabsContent value="admin">
@@ -465,6 +498,7 @@ This page demonstrates role-based access control in the Mastra Governed RAG syst
         </div>
       </CardContent>
     </Card>
+
   </TabsContent>
 </Tabs>
 
@@ -532,13 +566,14 @@ This page demonstrates role-based access control in the Mastra Governed RAG syst
     </AlertDescription>
   </Alert>
 
-  <Alert>
+<Alert>
     <XCircle className="h-4 w-4" />
     <AlertTitle>Unauthorized Access</AlertTitle>
     <AlertDescription>
-      When users lack permissions, they receive polite denials with "No authorized documents found" messages, preventing information leakage.
+        When users lack permissions, they receive polite denials with "No
+        authorized documents found" messages, preventing information leakage.
     </AlertDescription>
-  </Alert>
+</Alert>
 
   <Alert>
     <Shield className="h-4 w-4" />
@@ -550,17 +585,17 @@ This page demonstrates role-based access control in the Mastra Governed RAG syst
 </div>
 
 <div className="flex gap-4">
-  <Button asChild>
-    <a href="/docs/security">
-      <Shield className="h-4 w-4 mr-2" />
-      Security Guide
-      <ArrowRight className="h-4 w-4 ml-2" />
-    </a>
-  </Button>
-  <Button variant="outline" asChild>
-    <a href="/docs/api-reference">
-      <FileText className="h-4 w-4 mr-2" />
-      API Reference
-    </a>
-  </Button>
+    <Button asChild>
+        <a href="/docs/security">
+            <Shield className="h-4 w-4 mr-2" />
+            Security Guide
+            <ArrowRight className="h-4 w-4 ml-2" />
+        </a>
+    </Button>
+    <Button variant="outline" asChild>
+        <a href="/docs/api-reference">
+            <FileText className="h-4 w-4 mr-2" />
+            API Reference
+        </a>
+    </Button>
 </div>

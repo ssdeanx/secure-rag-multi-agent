@@ -10,31 +10,31 @@ vi.mock('../config/logger', () => ({
         info: vi.fn(),
         error: vi.fn(),
         warn: vi.fn(),
-        debug: vi.fn()
-    }
+        debug: vi.fn(),
+    },
 }))
 
 vi.mock('../../services/ValidationService', () => ({
     ValidationService: {
         validateEnvironmentVariable: vi.fn(),
         validateMastraInstance: vi.fn(),
-        validateVectorStore: vi.fn()
-    }
+        validateVectorStore: vi.fn(),
+    },
 }))
 
 vi.mock('../../services/VectorQueryService', () => ({
     VectorQueryService: {
-        query: vi.fn()
-    }
+        query: vi.fn(),
+    },
 }))
 
 vi.mock('../config/pg-storage', () => ({
-    graphQueryTool: vi.fn()
+    graphQueryTool: vi.fn(),
 }))
 
 describe('Graph RAG Query Tool', () => {
     const mockRuntimeContext = {
-        get: vi.fn()
+        get: vi.fn(),
     } as any
 
     let mockSpan: any
@@ -43,11 +43,11 @@ describe('Graph RAG Query Tool', () => {
             createChildSpan: vi.fn().mockImplementation(() => {
                 mockSpan = {
                     end: vi.fn(),
-                    error: vi.fn()
+                    error: vi.fn(),
                 }
                 return mockSpan
-            })
-        }
+            }),
+        },
     } as any
 
     let mockStore: any
@@ -58,13 +58,15 @@ describe('Graph RAG Query Tool', () => {
         mockSpan = undefined
 
         // Reset the mock implementation after clearing
-        mockTracingContext.currentSpan.createChildSpan.mockImplementation(() => {
-            mockSpan = {
-                end: vi.fn(),
-                error: vi.fn()
+        mockTracingContext.currentSpan.createChildSpan.mockImplementation(
+            () => {
+                mockSpan = {
+                    end: vi.fn(),
+                    error: vi.fn(),
+                }
+                return mockSpan
             }
-            return mockSpan
-        })
+        )
 
         // Mock the vector store
         mockStore = {
@@ -73,7 +75,7 @@ describe('Graph RAG Query Tool', () => {
 
         // Mock mastra
         mockMastra = {
-            getVector: vi.fn().mockReturnValue(mockStore)
+            getVector: vi.fn().mockReturnValue(mockStore),
         }
 
         // Reset runtime context mock
@@ -93,7 +95,7 @@ describe('Graph RAG Query Tool', () => {
         it('should execute graph query successfully with default parameters', async () => {
             const accessFilter = {
                 allowTags: ['public', 'engineering'],
-                maxClassification: 'internal' as const
+                maxClassification: 'internal' as const,
             }
 
             const mockResults = [
@@ -104,7 +106,7 @@ describe('Graph RAG Query Tool', () => {
                     source: 'test.pdf',
                     score: 0.85,
                     securityTags: ['public'],
-                    classification: 'public' as const
+                    classification: 'public' as const,
                 },
                 {
                     text: 'Sample context 2',
@@ -113,20 +115,20 @@ describe('Graph RAG Query Tool', () => {
                     source: 'docs.md',
                     score: 0.75,
                     securityTags: ['engineering'],
-                    classification: 'internal' as const
-                }
+                    classification: 'internal' as const,
+                },
             ]
 
-            mockRuntimeContext.get.mockImplementation(() => accessFilter);
-            (VectorQueryService.query as any).mockResolvedValue(mockResults);
+            mockRuntimeContext.get.mockImplementation(() => accessFilter)
+            ;(VectorQueryService.query as any).mockResolvedValue(mockResults)
 
             const result = await (graphRagQueryTool as any).execute({
                 context: {
-                    question: 'How does the system work?'
+                    question: 'How does the system work?',
                 },
                 runtimeContext: mockRuntimeContext,
                 mastra: mockMastra,
-                tracingContext: mockTracingContext
+                tracingContext: mockTracingContext,
             })
 
             expect(result).toEqual({
@@ -140,7 +142,7 @@ describe('Graph RAG Query Tool', () => {
                         securityTags: ['public'],
                         classification: 'public',
                         relationshipScore: 0.85,
-                        relatedNodes: []
+                        relatedNodes: [],
                     },
                     {
                         text: 'Sample context 2',
@@ -151,9 +153,9 @@ describe('Graph RAG Query Tool', () => {
                         securityTags: ['engineering'],
                         classification: 'internal',
                         relationshipScore: 0.75,
-                        relatedNodes: []
-                    }
-                ]
+                        relatedNodes: [],
+                    },
+                ],
             })
 
             expect(VectorQueryService.query).toHaveBeenCalledWith(
@@ -162,7 +164,7 @@ describe('Graph RAG Query Tool', () => {
                     allowTags: ['public', 'engineering'],
                     maxClassification: 'internal',
                     topK: 8,
-                    minSimilarity: 0.4
+                    minSimilarity: 0.4,
                 },
                 mockStore,
                 'governed_rag'
@@ -172,7 +174,7 @@ describe('Graph RAG Query Tool', () => {
         it('should execute graph query with custom parameters', async () => {
             const accessFilter = {
                 allowTags: ['confidential'],
-                maxClassification: 'confidential' as const
+                maxClassification: 'confidential' as const,
             }
             mockRuntimeContext.get.mockReturnValue(accessFilter)
 
@@ -184,22 +186,22 @@ describe('Graph RAG Query Tool', () => {
                     source: 'secret.pdf',
                     score: 0.95,
                     securityTags: ['confidential'],
-                    classification: 'confidential'
-                }
-            ];
+                    classification: 'confidential',
+                },
+            ]
 
-            (VectorQueryService.query as any).mockResolvedValue(mockResults);
+            ;(VectorQueryService.query as any).mockResolvedValue(mockResults)
 
             const result = await (graphRagQueryTool as any).execute({
                 context: {
                     question: 'What are the security protocols?',
                     topK: 5,
                     includeRelated: false,
-                    maxHops: 3
+                    maxHops: 3,
                 },
                 runtimeContext: mockRuntimeContext,
                 mastra: mockMastra,
-                tracingContext: mockTracingContext
+                tracingContext: mockTracingContext,
             })
 
             expect(result.contexts).toHaveLength(1)
@@ -211,7 +213,7 @@ describe('Graph RAG Query Tool', () => {
                     allowTags: ['confidential'],
                     maxClassification: 'confidential',
                     topK: 5,
-                    minSimilarity: 0.4
+                    minSimilarity: 0.4,
                 },
                 mockStore,
                 'governed_rag'
@@ -221,20 +223,20 @@ describe('Graph RAG Query Tool', () => {
         it('should handle empty results', async () => {
             const accessFilter = {
                 allowTags: ['public'],
-                maxClassification: 'public' as const
+                maxClassification: 'public' as const,
             }
-            mockRuntimeContext.get.mockReturnValue(accessFilter)
-
-            (VectorQueryService.query as any).mockResolvedValue([])
+            mockRuntimeContext.get
+                .mockReturnValue(accessFilter)(VectorQueryService.query as any)
+                .mockResolvedValue([])
 
             const result = await (graphRagQueryTool as any).execute({
                 context: {
                     question: 'Non-existent topic',
-                    includeRelated: true
+                    includeRelated: true,
                 },
                 runtimeContext: mockRuntimeContext,
                 mastra: mockMastra,
-                tracingContext: mockTracingContext
+                tracingContext: mockTracingContext,
             })
 
             expect(result).toEqual({ contexts: [] })
@@ -243,7 +245,7 @@ describe('Graph RAG Query Tool', () => {
         it('should disable graph traversal when includeRelated is false', async () => {
             const accessFilter = {
                 allowTags: ['engineering'],
-                maxClassification: 'internal' as const
+                maxClassification: 'internal' as const,
             }
             mockRuntimeContext.get.mockReturnValue(accessFilter)
 
@@ -255,20 +257,20 @@ describe('Graph RAG Query Tool', () => {
                     source: 'docs.md',
                     score: 0.8,
                     securityTags: ['engineering'],
-                    classification: 'internal' as const
-                }
-            ];
+                    classification: 'internal' as const,
+                },
+            ]
 
-            (VectorQueryService.query as any).mockResolvedValue(mockResults2);
+            ;(VectorQueryService.query as any).mockResolvedValue(mockResults2)
 
             const result = await (graphRagQueryTool as any).execute({
                 context: {
                     question: 'Engineering question',
-                    includeRelated: false
+                    includeRelated: false,
                 },
                 runtimeContext: mockRuntimeContext,
                 mastra: mockMastra,
-                tracingContext: mockTracingContext
+                tracingContext: mockTracingContext,
             })
 
             expect(result.contexts[0]).toHaveProperty('relationshipScore', 0.8)
@@ -280,46 +282,52 @@ describe('Graph RAG Query Tool', () => {
         it('should throw error when access filter is missing', async () => {
             mockRuntimeContext.get.mockReturnValue(null)
 
-            await expect((graphRagQueryTool as any).execute({
-                context: { question: 'Test question' },
-                runtimeContext: mockRuntimeContext,
-                mastra: mockMastra,
-                tracingContext: mockTracingContext
-            })).rejects.toThrow('Access filter not found in runtime context')
+            await expect(
+                (graphRagQueryTool as any).execute({
+                    context: { question: 'Test question' },
+                    runtimeContext: mockRuntimeContext,
+                    mastra: mockMastra,
+                    tracingContext: mockTracingContext,
+                })
+            ).rejects.toThrow('Access filter not found in runtime context')
         })
 
         it('should handle vector query service errors', async () => {
             const accessFilter = {
                 allowTags: ['public'],
-                maxClassification: 'public' as const
+                maxClassification: 'public' as const,
             }
-            mockRuntimeContext.get.mockReturnValue(accessFilter)
+            mockRuntimeContext.get
+                .mockReturnValue(accessFilter)(VectorQueryService.query as any)
+                .mockRejectedValue(new Error('Vector query failed'))
 
-            (VectorQueryService.query as any).mockRejectedValue(new Error('Vector query failed'))
-
-            await expect((graphRagQueryTool as any).execute({
-                context: { question: 'Failing question' },
-                runtimeContext: mockRuntimeContext,
-                mastra: mockMastra,
-                tracingContext: mockTracingContext
-            })).rejects.toThrow('Graph RAG query failed: Vector query failed')
+            await expect(
+                (graphRagQueryTool as any).execute({
+                    context: { question: 'Failing question' },
+                    runtimeContext: mockRuntimeContext,
+                    mastra: mockMastra,
+                    tracingContext: mockTracingContext,
+                })
+            ).rejects.toThrow('Graph RAG query failed: Vector query failed')
         })
 
         it('should handle non-Error exceptions', async () => {
             const accessFilter = {
                 allowTags: ['public'],
-                maxClassification: 'public' as const
+                maxClassification: 'public' as const,
             }
-            mockRuntimeContext.get.mockReturnValue(accessFilter)
+            mockRuntimeContext.get
+                .mockReturnValue(accessFilter)(VectorQueryService.query as any)
+                .mockRejectedValue('String error')
 
-            (VectorQueryService.query as any).mockRejectedValue('String error')
-
-            await expect((graphRagQueryTool as any).execute({
-                context: { question: 'Error question' },
-                runtimeContext: mockRuntimeContext,
-                mastra: mockMastra,
-                tracingContext: mockTracingContext
-            })).rejects.toThrow('Graph RAG query failed: Unknown error')
+            await expect(
+                (graphRagQueryTool as any).execute({
+                    context: { question: 'Error question' },
+                    runtimeContext: mockRuntimeContext,
+                    mastra: mockMastra,
+                    tracingContext: mockTracingContext,
+                })
+            ).rejects.toThrow('Graph RAG query failed: Unknown error')
         })
     })
 
@@ -327,7 +335,7 @@ describe('Graph RAG Query Tool', () => {
         it('should create and end tracing spans correctly', async () => {
             const accessFilter = {
                 allowTags: ['public', 'internal'],
-                maxClassification: 'internal' as const
+                maxClassification: 'internal' as const,
             }
             mockRuntimeContext.get.mockReturnValue(accessFilter)
 
@@ -339,25 +347,29 @@ describe('Graph RAG Query Tool', () => {
                     source: 'trace.pdf',
                     score: 0.9,
                     securityTags: ['public'],
-                    classification: 'public' as const
-                }
+                    classification: 'public' as const,
+                },
             ] as any[]
 
-            (VectorQueryService.query as any).mockImplementation(() => Promise.resolve(tracedMockResults))
+            ;(VectorQueryService.query as any).mockImplementation(() =>
+                Promise.resolve(tracedMockResults)
+            )
 
             await (graphRagQueryTool as any).execute({
                 context: {
                     question: 'Tracing question',
                     topK: 10,
                     includeRelated: true,
-                    maxHops: 2
+                    maxHops: 2,
                 },
                 runtimeContext: mockRuntimeContext,
                 mastra: mockMastra,
-                tracingContext: mockTracingContext
+                tracingContext: mockTracingContext,
             })
 
-            expect(mockTracingContext.currentSpan.createChildSpan).toHaveBeenCalledWith({
+            expect(
+                mockTracingContext.currentSpan.createChildSpan
+            ).toHaveBeenCalledWith({
                 type: expect.any(String),
                 name: 'graph-rag-query-tool',
                 input: {
@@ -366,8 +378,8 @@ describe('Graph RAG Query Tool', () => {
                     maxClassification: 'internal',
                     topK: 10,
                     includeRelated: true,
-                    maxHops: 2
-                }
+                    maxHops: 2,
+                },
             })
 
             expect(mockSpan.end).toHaveBeenCalledWith({
@@ -375,34 +387,36 @@ describe('Graph RAG Query Tool', () => {
                     success: true,
                     resultCount: 1,
                     topK: 10,
-                    graphTraversalEnabled: true
-                }
+                    graphTraversalEnabled: true,
+                },
             })
         })
 
         it('should handle tracing on error', async () => {
             const accessFilter = {
                 allowTags: ['public'],
-                maxClassification: 'public' as const
+                maxClassification: 'public' as const,
             }
-            mockRuntimeContext.get.mockReturnValue(accessFilter)
+            mockRuntimeContext.get
+                .mockReturnValue(accessFilter)(VectorQueryService.query as any)
+                .mockRejectedValue(new Error('Query failed'))
 
-            (VectorQueryService.query as any).mockRejectedValue(new Error('Query failed'))
-
-            await expect((graphRagQueryTool as any).execute({
-                context: { question: 'Error question' },
-                runtimeContext: mockRuntimeContext,
-                mastra: mockMastra,
-                tracingContext: mockTracingContext
-            })).rejects.toThrow()
+            await expect(
+                (graphRagQueryTool as any).execute({
+                    context: { question: 'Error question' },
+                    runtimeContext: mockRuntimeContext,
+                    mastra: mockMastra,
+                    tracingContext: mockTracingContext,
+                })
+            ).rejects.toThrow()
 
             expect(mockSpan.error).toHaveBeenCalledWith({
                 error: expect.any(Error),
                 metadata: {
                     operation: 'graph-rag-query',
                     topK: 8,
-                    includeRelated: true
-                }
+                    includeRelated: true,
+                },
             })
         })
     })
@@ -411,22 +425,28 @@ describe('Graph RAG Query Tool', () => {
         it('should validate environment variables', async () => {
             const accessFilter = {
                 allowTags: ['public'],
-                maxClassification: 'public' as const
+                maxClassification: 'public' as const,
             }
-            mockRuntimeContext.get.mockReturnValue(accessFilter)
-
-            (VectorQueryService.query as any).mockResolvedValue([])
+            mockRuntimeContext.get
+                .mockReturnValue(accessFilter)(VectorQueryService.query as any)
+                .mockResolvedValue([])
 
             await (graphRagQueryTool as any).execute({
                 context: { question: 'Validation question' },
                 runtimeContext: mockRuntimeContext,
                 mastra: mockMastra,
-                tracingContext: mockTracingContext
+                tracingContext: mockTracingContext,
             })
 
-            expect(ValidationService.validateEnvironmentVariable).toHaveBeenCalledWith('DATABASE_URL', 'test-db-url')
-            expect(ValidationService.validateMastraInstance).toHaveBeenCalledWith(mockMastra)
-            expect(ValidationService.validateVectorStore).toHaveBeenCalledWith(mockStore)
+            expect(
+                ValidationService.validateEnvironmentVariable
+            ).toHaveBeenCalledWith('DATABASE_URL', 'test-db-url')
+            expect(
+                ValidationService.validateMastraInstance
+            ).toHaveBeenCalledWith(mockMastra)
+            expect(ValidationService.validateVectorStore).toHaveBeenCalledWith(
+                mockStore
+            )
         })
     })
 
@@ -434,17 +454,17 @@ describe('Graph RAG Query Tool', () => {
         it('should generate request ID when not in context', async () => {
             const accessFilter = {
                 allowTags: ['public'],
-                maxClassification: 'public' as const
+                maxClassification: 'public' as const,
             }
-            mockRuntimeContext.get.mockReturnValue(accessFilter)
-
-            (VectorQueryService.query as any).mockResolvedValue([])
+            mockRuntimeContext.get
+                .mockReturnValue(accessFilter)(VectorQueryService.query as any)
+                .mockResolvedValue([])
 
             await (graphRagQueryTool as any).execute({
                 context: { question: 'Request tracking question' },
                 runtimeContext: mockRuntimeContext,
                 mastra: mockMastra,
-                tracingContext: mockTracingContext
+                tracingContext: mockTracingContext,
             })
 
             // Should generate a request ID that starts with GRAPH-
@@ -454,17 +474,17 @@ describe('Graph RAG Query Tool', () => {
         it('should extract request ID from context', async () => {
             const accessFilter = {
                 allowTags: ['public'],
-                maxClassification: 'public' as const
+                maxClassification: 'public' as const,
             }
-            mockRuntimeContext.get.mockReturnValue(accessFilter)
-
-            (VectorQueryService.query as any).mockResolvedValue([])
+            mockRuntimeContext.get
+                .mockReturnValue(accessFilter)(VectorQueryService.query as any)
+                .mockResolvedValue([])
 
             await (graphRagQueryTool as any).execute({
                 context: { question: 'REQ-123-abc request tracking question' },
                 runtimeContext: mockRuntimeContext,
                 mastra: mockMastra,
-                tracingContext: mockTracingContext
+                tracingContext: mockTracingContext,
             })
 
             // Note: log assertions removed as log is mocked at module level

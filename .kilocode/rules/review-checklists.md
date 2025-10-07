@@ -3,6 +3,7 @@
 ## Consolidated Reviewer Checklists
 
 ### Mastra Rules (mastra.md)
+
 - [ ] Kilocode header present in agent files
 - [ ] tool calls documented in agent contracts
 - [ ] output schema referenced in agent contracts
@@ -18,6 +19,7 @@
 - [ ] verifier in workflow
 
 ### Data Governance Rules (data.md)
+
 - [ ] ACL updates include rationale and affected doc list
 - [ ] Corpus docs include valid frontmatter with docId and classification
 - [ ] DocumentIndexingService uses ACL for final classification
@@ -25,6 +27,7 @@
 - [ ] Audit entries added to change log
 
 ### Tools Rules (tools.md)
+
 - [ ] Kilocode approval header present in tool files
 - [ ] allowedDomains or allowedDataPaths populated
 - [ ] domain whitelist enforced in network calls
@@ -40,6 +43,7 @@
 - [ ] errors lead to rollback or clean failure state
 
 ### Security Rules (security.md)
+
 - [ ] no secrets in repo
 - [ ] .env.example has placeholders only
 - [ ] startup config validation present
@@ -51,6 +55,7 @@
 - [ ] logs scrub secrets
 
 ### Frontend Rules (frontend.md)
+
 - [ ] Client code free of secrets
 - [ ] API routes validate JWT and inputs
 - [ ] Error handling safe and user-friendly
@@ -60,113 +65,129 @@
 ## Non-Invasive CI Enforcement Templates
 
 ### Validation Script Template (validate-rules.js)
+
 ```javascript
 // Run locally: node validate-rules.js
 // Or in CI: add to workflow without committing
 
-const fs = require('fs');
-const path = require('path');
-const yaml = require('js-yaml'); // npm install js-yaml
+const fs = require('fs')
+const path = require('path')
+const yaml = require('js-yaml') // npm install js-yaml
 
 function validateCorpusFrontmatter() {
-  const corpusDir = './corpus';
-  const files = fs.readdirSync(corpusDir).filter(f => f.endsWith('.md'));
+    const corpusDir = './corpus'
+    const files = fs.readdirSync(corpusDir).filter((f) => f.endsWith('.md'))
 
-  for (const file of files) {
-    const content = fs.readFileSync(path.join(corpusDir, file), 'utf8');
-    const frontmatterMatch = content.match(/^---\n([\s\S]*?)\n---/);
+    for (const file of files) {
+        const content = fs.readFileSync(path.join(corpusDir, file), 'utf8')
+        const frontmatterMatch = content.match(/^---\n([\s\S]*?)\n---/)
 
-    if (!frontmatterMatch) {
-      console.error(`Missing frontmatter in ${file}`);
-      process.exit(1);
+        if (!frontmatterMatch) {
+            console.error(`Missing frontmatter in ${file}`)
+            process.exit(1)
+        }
+
+        const frontmatter = yaml.load(frontmatterMatch[1])
+        const required = [
+            'docId',
+            'classification',
+            'tenant',
+            'roles',
+            'source',
+            'lastReviewed',
+        ]
+
+        for (const field of required) {
+            if (!frontmatter[field]) {
+                console.error(`Missing ${field} in ${file}`)
+                process.exit(1)
+            }
+        }
     }
-
-    const frontmatter = yaml.load(frontmatterMatch[1]);
-    const required = ['docId', 'classification', 'tenant', 'roles', 'source', 'lastReviewed'];
-
-    for (const field of required) {
-      if (!frontmatter[field]) {
-        console.error(`Missing ${field} in ${file}`);
-        process.exit(1);
-      }
-    }
-  }
-  console.log('Corpus frontmatter validation passed');
+    console.log('Corpus frontmatter validation passed')
 }
 
 function validateAclConsistency() {
-  const aclPath = './src/mastra/policy/acl.yaml';
-  const acl = yaml.load(fs.readFileSync(aclPath, 'utf8'));
+    const aclPath = './src/mastra/policy/acl.yaml'
+    const acl = yaml.load(fs.readFileSync(aclPath, 'utf8'))
 
-  // Add ACL validation logic here
-  console.log('ACL validation passed');
+    // Add ACL validation logic here
+    console.log('ACL validation passed')
 }
 
-validateCorpusFrontmatter();
-validateAclConsistency();
+validateCorpusFrontmatter()
+validateAclConsistency()
 ```
 
 ### Secret Scanner Template (scan-secrets.js)
+
 ```javascript
 // Run locally: node scan-secrets.js
 // Or in CI: add to workflow without committing
 
-const fs = require('fs');
-const path = require('path');
+const fs = require('fs')
+const path = require('path')
 
 const SECRET_PATTERNS = [
-  /API_KEY\s*=\s*['"][^'"]*['"]/i,
-  /SECRET\s*=\s*['"][^'"]*['"]/i,
-  /PASSWORD\s*=\s*['"][^'"]*['"]/i,
-  /TOKEN\s*=\s*['"][^'"]*['"]/i
-];
+    /API_KEY\s*=\s*['"][^'"]*['"]/i,
+    /SECRET\s*=\s*['"][^'"]*['"]/i,
+    /PASSWORD\s*=\s*['"][^'"]*['"]/i,
+    /TOKEN\s*=\s*['"][^'"]*['"]/i,
+]
 
 function scanFile(filePath) {
-  const content = fs.readFileSync(filePath, 'utf8');
+    const content = fs.readFileSync(filePath, 'utf8')
 
-  for (const pattern of SECRET_PATTERNS) {
-    if (pattern.test(content)) {
-      console.error(`Potential secret found in ${filePath}`);
-      process.exit(1);
+    for (const pattern of SECRET_PATTERNS) {
+        if (pattern.test(content)) {
+            console.error(`Potential secret found in ${filePath}`)
+            process.exit(1)
+        }
     }
-  }
 }
 
 function scanDirectory(dir) {
-  const items = fs.readdirSync(dir);
+    const items = fs.readdirSync(dir)
 
-  for (const item of items) {
-    const fullPath = path.join(dir, item);
-    const stat = fs.statSync(fullPath);
+    for (const item of items) {
+        const fullPath = path.join(dir, item)
+        const stat = fs.statSync(fullPath)
 
-    if (stat.isDirectory() && !item.startsWith('.') && item !== 'node_modules') {
-      scanDirectory(fullPath);
-    } else if (stat.isFile() && !item.includes('.env')) {
-      scanFile(fullPath);
+        if (
+            stat.isDirectory() &&
+            !item.startsWith('.') &&
+            item !== 'node_modules'
+        ) {
+            scanDirectory(fullPath)
+        } else if (stat.isFile() && !item.includes('.env')) {
+            scanFile(fullPath)
+        }
     }
-  }
 }
 
-scanDirectory('.');
-console.log('Secret scan passed');
+scanDirectory('.')
+console.log('Secret scan passed')
 ```
 
 ### Embedding Dimension Validator Template (validate-embeddings.js)
+
 ```javascript
 // Run locally: node validate-embeddings.js
 // Or in CI: add to workflow without committing
 
-const EXPECTED_DIM = 3072; // From config
+const EXPECTED_DIM = 3072 // From config
 
 function validateEmbeddingDimension(embedding) {
-  if (embedding.length !== EXPECTED_DIM) {
-    console.error(`Embedding dimension mismatch: got ${embedding.length}, expected ${EXPECTED_DIM}`);
-    process.exit(1);
-  }
+    if (embedding.length !== EXPECTED_DIM) {
+        console.error(
+            `Embedding dimension mismatch: got ${embedding.length}, expected ${EXPECTED_DIM}`
+        )
+        process.exit(1)
+    }
 }
 
 // Mock validation - integrate with actual vector store calls
-console.log('Embedding dimension validation passed');
+console.log('Embedding dimension validation passed')
 ```
 
 ## PR Template Snippet
@@ -177,26 +198,31 @@ Add this to your PR template:
 ## Kilocode Rule Compliance
 
 ### Mastra Rules
+
 - [ ] Agent contracts include Kilocode headers
 - [ ] Tool approvals have whitelists
 - [ ] Vector operations include securityTags
 
 ### Data Governance
+
 - [ ] ACL changes include rationale
 - [ ] Corpus docs have valid frontmatter
 - [ ] Sensitive data access restricted
 
 ### Security
+
 - [ ] No secrets committed
 - [ ] Config validation present
 - [ ] TLS used for external services
 
 ### Tools
+
 - [ ] Network/fs tools have approvals
 - [ ] validateUrl/validateDataPath used
 - [ ] Tracing implemented
 
 ### Frontend
+
 - [ ] Client code secure
 - [ ] API routes validate inputs
 - [ ] Error handling safe

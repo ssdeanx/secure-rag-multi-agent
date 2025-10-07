@@ -11,6 +11,7 @@
 ## Progress Log
 
 ### 2025-10-03, 10:40 EST
+
 - ✅ COMPLETE: Phase 3 - Workflow Testing & VNext Migration
 - Migrated chatWorkflow1.ts to generateVNext with structuredOutput
 - Verified chatWorkflow.ts already using streamVNext (no changes needed)
@@ -25,6 +26,7 @@
 - Updated task completion to 95%
 
 ### 2025-10-03, 10:15 EST
+
 - Started Phase 3: Workflow Testing
 - Deferred CSS alignment issue for later session
 - Reviewed Mastra testing patterns from ThemeToggle.test.tsx
@@ -34,7 +36,8 @@
 - Next: Migrate generateReportWorkflow & researchWorkflow to streamVNext
 - Updated task completion to 60%
 
-### 2025-10-02, 16:45 EST 60%  
+### 2025-10-02, 16:45 EST 60%
+
 **Notes:** Testing phase - creating workflow tests and migrating to streamVNext
 
 ## Original Request
@@ -55,6 +58,7 @@ Follow-up with attached files: index.ts, apiRegistry.ts, mastra-client.ts, types
 ### Cedar MCP Insights
 
 **Cedar Installation Status**:
+
 - Cedar is NOT installed (detected empty directory)
 - Recommendation: `npx cedar-os-cli plant-seed --yes`
 - This explains why Cedar is listed as "planned" in memory bank
@@ -62,47 +66,50 @@ Follow-up with attached files: index.ts, apiRegistry.ts, mastra-client.ts, types
 **Cedar ↔ Mastra Integration Pattern** (from Cedar MCP Server):
 
 1. **Provider Configuration**:
-   ```typescript
-   <CedarCopilot
-     providerConfig={{
-       provider: 'mastra',
-       baseURL: 'http://localhost:3001',  // Mastra backend port
-       chatPath: '/chat',
-       resumePath: '/chat/resume',
-       apiKey: process.env.MASTRA_API_KEY
-     }}
-   >
-   ```
+
+    ```typescript
+    <CedarCopilot
+      providerConfig={{
+        provider: 'mastra',
+        baseURL: 'http://localhost:3001',  // Mastra backend port
+        chatPath: '/chat',
+        resumePath: '/chat/resume',
+        apiKey: process.env.MASTRA_API_KEY
+      }}
+    >
+    ```
 
 2. **Request Flow**:
-   - Cedar calls `stringifyEditor()` to extract text prompt
-   - Cedar calls `compileAdditionalContext()` to gather state
-   - Cedar sends to Mastra backend at configured paths
-   - Mastra agent receives: `{ prompt: string, additionalContext?: any }`
+    - Cedar calls `stringifyEditor()` to extract text prompt
+    - Cedar calls `compileAdditionalContext()` to gather state
+    - Cedar sends to Mastra backend at configured paths
+    - Mastra agent receives: `{ prompt: string, additionalContext?: any }`
 
 3. **Additional Context Structure**:
-   ```typescript
-   {
-     "todos": [{ id: "1", title: "Fix login bug", completed: false }],
-     "setters": {
-       "addTodo": {
-         "name": "addTodo",
-         "stateKey": "todos",
-         "description": "Add a new todo item",
-         "schema": { /* Zod schema */ }
-       }
-     }
-   }
-   ```
+
+    ```typescript
+    {
+      "todos": [{ id: "1", title: "Fix login bug", completed: false }],
+      "setters": {
+        "addTodo": {
+          "name": "addTodo",
+          "stateKey": "todos",
+          "description": "Add a new todo item",
+          "schema": { /* Zod schema */ }
+        }
+      }
+    }
+    ```
 
 4. **Human-in-Loop (Suspend/Resume)**:
-   - Resume requires: `{ runId, stepPath, resumeData, route: "/chat/resume" }`
-   - Cedar sends to `/chat/resume` or `/chat/resume/stream`
-   - Mastra resumes workflow with `resumeStreamVNext()`
+    - Resume requires: `{ runId, stepPath, resumeData, route: "/chat/resume" }`
+    - Cedar sends to `/chat/resume` or `/chat/resume/stream`
+    - Mastra resumes workflow with `resumeStreamVNext()`
 
 ### Key Files Analysis
 
 **src/mastra/index.ts**:
+
 - 16 agents registered (retrieve, rerank, answerer, verifier, starter, research, etc.)
 - 5 workflows registered (governed-rag-index, governed-rag-answer, research-workflow, generate-report-workflow, chat-workflow)
 - Note: Only 5 workflows in Mastra config, not 9 (discrepancy from earlier count)
@@ -113,18 +120,21 @@ Follow-up with attached files: index.ts, apiRegistry.ts, mastra-client.ts, types
 - JWT auth configured via MastraJwtAuth
 
 **lib/mastra/mastra-client.ts**:
+
 - MANDATORY bridge between Next.js and Mastra backend
 - Factory pattern: `createMastraClient(token)` for user-specific clients
 - Service headers include JWT_TOKEN if available
 - Default: http://localhost:4111
 
 **src/mastra/apiRegistry.ts**:
+
 - Registers 2 routes: `/chat` and `/chat/stream`
 - Uses chatWorkflow (actually chatWorkflow1.ts based on import)
 - SSE streaming via `createSSEStream()`
 - Missing: `/chat/resume` and `/chat/resume/stream` needed for Cedar human-in-loop
 
 **src/types.ts**:
+
 - Principal: JWT claims (sub, roles, tenant, attrs)
 - AccessFilter: Security tags and classification levels
 - Document: Metadata with security tags
@@ -134,25 +144,25 @@ Follow-up with attached files: index.ts, apiRegistry.ts, mastra-client.ts, types
 ### Critical Discoveries
 
 1. **Workflow Count Discrepancy**:
-   - Memory bank says 9 workflows
-   - index.ts only registers 5 workflows
-   - File system shows 9 workflow files
-   - **Action**: Verify actual count and update memory bank
+    - Memory bank says 9 workflows
+    - index.ts only registers 5 workflows
+    - File system shows 9 workflow files
+    - **Action**: Verify actual count and update memory bank
 
 2. **Cedar Not Installed**:
-   - Cedar OS planned but not integrated
-   - No Cedar types in codebase
-   - chatWorkflow.ts mentions Cedar but integration incomplete
+    - Cedar OS planned but not integrated
+    - No Cedar types in codebase
+    - chatWorkflow.ts mentions Cedar but integration incomplete
 
 3. **Missing Resume Routes**:
-   - apiRegistry.ts lacks `/chat/resume` routes
-   - Needed for Cedar human-in-loop workflows
-   - researchWorkflow.ts has suspend/resume but no API route
+    - apiRegistry.ts lacks `/chat/resume` routes
+    - Needed for Cedar human-in-loop workflows
+    - researchWorkflow.ts has suspend/resume but no API route
 
 4. **streamVNext Not Used**:
-   - All workflows use old streaming API
-   - Need migration path to streamVNext
-   - Critical for future-proofing
+    - All workflows use old streaming API
+    - Need migration path to streamVNext
+    - Critical for future-proofing
 
 ## Implementation Plan
 
@@ -172,7 +182,7 @@ Follow-up with attached files: index.ts, apiRegistry.ts, mastra-client.ts, types
 9. ✅ Create TASK003 file with proper structure
 10. ✅ Document all findings in task (this file)
 11. ✅ Move WORKFLOW_SYSTEM_ANALYSIS.md content to task subtasks
-12. ✅ Update tasks/_index.md with TASK003
+12. ✅ Update tasks/\_index.md with TASK003
 13. ✅ Update activeContext.md with current task status
 
 ### Phase 2.5: Content Generation Workflow ✅ (COMPLETE - 100%)
@@ -237,37 +247,38 @@ Follow-up with attached files: index.ts, apiRegistry.ts, mastra-client.ts, types
 
 ### Subtasks
 
-| ID | Description | Status | Updated | Notes |
-|----|-------------|--------|---------|-------|
-| 1.1 | Read memory bank files | Complete | 2025-10-02, 14:15 | All core files reviewed |
-| 1.2 | Fetch streamVNext documentation | Complete | 2025-10-02, 14:20 | API signatures and event types documented |
-| 1.3 | Fetch resumeStreamVNext docs | Complete | 2025-10-02, 14:20 | Suspend/resume patterns documented |
-| 1.4 | Analyze workflow templates | Complete | 2025-10-02, 14:25 | chatWorkflow.ts and chatWorkflow1.ts patterns identified |
-| 1.5 | Check Cedar MCP status | Complete | 2025-10-02, 14:30 | Cedar NOT installed, integration patterns documented |
-| 1.6 | Consult Mastra specialist | Complete | 2025-10-02, 14:30 | Cedar ↔ Mastra integration flow understood |
-| 1.7 | Review integration files | Complete | 2025-10-02, 14:35 | index.ts, apiRegistry.ts, mastra-client.ts, types.ts analyzed |
-| 1.8 | Create TASK003 file | Complete | 2025-10-02, 14:40 | Proper task structure created |
-| 2.1 | Audit workflow count | Not Started | - | Discrepancy: memory bank says 9, index.ts has 5 |
-| 2.2 | Design Cedar type bridge | Not Started | - | Need Principal → Cedar context mapping |
-| 2.3 | Plan /chat/resume routes | Not Started | - | Required for human-in-loop with Cedar |
-| 2.4 | Create streamVNext migration guide | Not Started | - | Per-workflow checklist needed |
-| 2.5 | Design content generation workflows | Complete | 2025-10-02, 16:30 | contentGenerationWorkflow.ts with 5-step pipeline |
-| 2.6 | Register content workflow in backend | Complete | 2025-10-02, 16:35 | Registered in index.ts + apiRegistry.ts |
-| 2.7 | Implement proper SSE streaming | Complete | 2025-10-02, 16:45 | Using createSSEStream, streamProgressUpdate, streamJSONEvent |
-| 2.8 | Update memory bank | Complete | 2025-10-02, 16:50 | Synced task progress |
-| 3.1 | Create contentGenerationWorkflow tests | Complete | 2025-10-03, 10:15 | 7 test cases, all passing |
-| 3.2 | Migrate chatWorkflow1.ts to VNext | Complete | 2025-10-03, 10:30 | generate → generateVNext with structuredOutput |
-| 3.3 | Verify chatWorkflow.ts VNext usage | Complete | 2025-10-03, 10:30 | Already using streamVNext, no changes needed |
-| 3.4 | Create chatWorkflow1.test.ts | Complete | 2025-10-03, 10:35 | 8 test cases with proper patterns |
-| 3.5 | Create chatWorkflow.test.ts | Complete | 2025-10-03, 10:35 | 8 test cases with proper patterns |
-| 3.6 | Fix test execution patterns | Complete | 2025-10-03, 10:37 | createRunAsync() + streamVNext() pattern |
-| 3.7 | Fix test assertions and mocks | Complete | 2025-10-03, 10:38 | output.content, structured output mocks |
-| 3.8 | Achieve 100% test success | Complete | 2025-10-03, 10:39 | 23/23 tests passing, 1.18s duration |
-| 3.9 | Document workflow testing patterns | Complete | 2025-10-03, 10:40 | Added to progress.md and activeContext.md |
+| ID  | Description                            | Status      | Updated           | Notes                                                         |
+| --- | -------------------------------------- | ----------- | ----------------- | ------------------------------------------------------------- |
+| 1.1 | Read memory bank files                 | Complete    | 2025-10-02, 14:15 | All core files reviewed                                       |
+| 1.2 | Fetch streamVNext documentation        | Complete    | 2025-10-02, 14:20 | API signatures and event types documented                     |
+| 1.3 | Fetch resumeStreamVNext docs           | Complete    | 2025-10-02, 14:20 | Suspend/resume patterns documented                            |
+| 1.4 | Analyze workflow templates             | Complete    | 2025-10-02, 14:25 | chatWorkflow.ts and chatWorkflow1.ts patterns identified      |
+| 1.5 | Check Cedar MCP status                 | Complete    | 2025-10-02, 14:30 | Cedar NOT installed, integration patterns documented          |
+| 1.6 | Consult Mastra specialist              | Complete    | 2025-10-02, 14:30 | Cedar ↔ Mastra integration flow understood                   |
+| 1.7 | Review integration files               | Complete    | 2025-10-02, 14:35 | index.ts, apiRegistry.ts, mastra-client.ts, types.ts analyzed |
+| 1.8 | Create TASK003 file                    | Complete    | 2025-10-02, 14:40 | Proper task structure created                                 |
+| 2.1 | Audit workflow count                   | Not Started | -                 | Discrepancy: memory bank says 9, index.ts has 5               |
+| 2.2 | Design Cedar type bridge               | Not Started | -                 | Need Principal → Cedar context mapping                        |
+| 2.3 | Plan /chat/resume routes               | Not Started | -                 | Required for human-in-loop with Cedar                         |
+| 2.4 | Create streamVNext migration guide     | Not Started | -                 | Per-workflow checklist needed                                 |
+| 2.5 | Design content generation workflows    | Complete    | 2025-10-02, 16:30 | contentGenerationWorkflow.ts with 5-step pipeline             |
+| 2.6 | Register content workflow in backend   | Complete    | 2025-10-02, 16:35 | Registered in index.ts + apiRegistry.ts                       |
+| 2.7 | Implement proper SSE streaming         | Complete    | 2025-10-02, 16:45 | Using createSSEStream, streamProgressUpdate, streamJSONEvent  |
+| 2.8 | Update memory bank                     | Complete    | 2025-10-02, 16:50 | Synced task progress                                          |
+| 3.1 | Create contentGenerationWorkflow tests | Complete    | 2025-10-03, 10:15 | 7 test cases, all passing                                     |
+| 3.2 | Migrate chatWorkflow1.ts to VNext      | Complete    | 2025-10-03, 10:30 | generate → generateVNext with structuredOutput                |
+| 3.3 | Verify chatWorkflow.ts VNext usage     | Complete    | 2025-10-03, 10:30 | Already using streamVNext, no changes needed                  |
+| 3.4 | Create chatWorkflow1.test.ts           | Complete    | 2025-10-03, 10:35 | 8 test cases with proper patterns                             |
+| 3.5 | Create chatWorkflow.test.ts            | Complete    | 2025-10-03, 10:35 | 8 test cases with proper patterns                             |
+| 3.6 | Fix test execution patterns            | Complete    | 2025-10-03, 10:37 | createRunAsync() + streamVNext() pattern                      |
+| 3.7 | Fix test assertions and mocks          | Complete    | 2025-10-03, 10:38 | output.content, structured output mocks                       |
+| 3.8 | Achieve 100% test success              | Complete    | 2025-10-03, 10:39 | 23/23 tests passing, 1.18s duration                           |
+| 3.9 | Document workflow testing patterns     | Complete    | 2025-10-03, 10:40 | Added to progress.md and activeContext.md                     |
 
 ## Progress Log
 
 ### 2025-10-02, 16:50 EST
+
 - Updated memory bank with Phase 2.5 completion
 - Content generation workflow fully implemented and registered
 - Proper SSE streaming working with progress updates and JSON events
@@ -276,6 +287,7 @@ Follow-up with attached files: index.ts, apiRegistry.ts, mastra-client.ts, types
 - Next actions: Test workflow execution, then continue with testing phase
 
 ### 2025-10-02, 16:45 EST
+
 - Implemented proper SSE streaming for /content/generate/stream endpoint
 - Added imports: streamProgressUpdate, streamJSONEvent from streamUtils.ts
 - Stream now sends: progress updates, JSON events, completion signals
@@ -283,21 +295,24 @@ Follow-up with attached files: index.ts, apiRegistry.ts, mastra-client.ts, types
 - All files verified error-free
 
 ### 2025-10-02, 16:35 EST
+
 - Registered contentGenerationWorkflow in src/mastra/index.ts (7th workflow)
 - Created API routes in src/mastra/apiRegistry.ts:
-  - POST /content/generate (standard request-response)
-  - POST /content/generate/stream (SSE streaming)
+    - POST /content/generate (standard request-response)
+    - POST /content/generate/stream (SSE streaming)
 - Used Cedar MCP tools (searchDocs, mastraSpecialist) to verify patterns
 - Examined lib/mastra-client.ts for frontend bridge understanding
 - Backend registration complete ✅
 
 ### 2025-10-02, 16:20 EST
+
 - Fixed schema export naming: AgentOutputSchemas → agentOutputSchemas (camelCase)
 - Verified actual codebase patterns by reading agent files
 - All agent exports use camelCase regardless of filename convention
 - Created VERIFIED_PATTERNS.md to prevent future guessing
 
 ### 2025-10-02, 15:45 EST
+
 - Rewrote contentGenerationWorkflow.ts with VERIFIED patterns from official docs
 - Fixed all execute parameters (removed non-existent 'writer', 'context')
 - Used correct .map() pattern to combine step results
@@ -305,6 +320,7 @@ Follow-up with attached files: index.ts, apiRegistry.ts, mastra-client.ts, types
 - All 278 lines compile without errors ✅
 
 ### 2025-10-02, 15:15 EST
+
 - User intervention: "i can tell ur guessing & this wont work"
 - Fetched ALL official Mastra documentation (14 URLs total)
 - Learned correct workflow API patterns
@@ -313,45 +329,51 @@ Follow-up with attached files: index.ts, apiRegistry.ts, mastra-client.ts, types
 - Lesson learned: NEVER guess APIs, always verify against official docs
 
 ### 2025-10-02, 14:50 EST
+
 - Started implementing contentGenerationWorkflow.ts (FAILED - was guessing)
 - User corrected approach: need to verify against actual documentation
 - Fetched streamVNext documentation to understand proper API
 
 ### 2025-10-02, 14:40 EST
+
 - Created TASK003 file with proper structure
 - Documented all Phase 1 findings (system understanding complete)
 - Identified 4 critical discoveries:
-  1. Workflow count discrepancy (9 vs 5 registered)
-  2. Cedar not installed (planned only)
-  3. Missing resume routes for human-in-loop
-  4. All workflows on old streaming API
+    1. Workflow count discrepancy (9 vs 5 registered)
+    2. Cedar not installed (planned only)
+    3. Missing resume routes for human-in-loop
+    4. All workflows on old streaming API
 - Cedar integration pattern fully documented from MCP specialist
 - streamVNext and resumeStreamVNext API documented
 - Ready to proceed with Phase 2: Task structure completion
-- Next immediate action: Update tasks/_index.md
+- Next immediate action: Update tasks/\_index.md
 
 ### 2025-10-02, 14:30 EST
+
 - Consulted Cedar MCP specialist via mcp_cedar-mcp_mastraSpecialist
 - Learned Cedar → Mastra integration flow:
-  - Cedar: stringifyEditor() + compileAdditionalContext()
-  - Mastra: receives { prompt, additionalContext }
-  - Additional context includes: state, setters, mention data
+    - Cedar: stringifyEditor() + compileAdditionalContext()
+    - Mastra: receives { prompt, additionalContext }
+    - Additional context includes: state, setters, mention data
 - Documented human-in-loop requirements: /chat/resume routes needed
 - Identified missing resume routes in apiRegistry.ts
 
 ### 2025-10-02, 14:25 EST
+
 - Checked Cedar installation status via mcp_cedar-mcp_checkInstall
 - Result: Cedar NOT installed (empty directory detected)
 - Recommendation: npx cedar-os-cli plant-seed --yes
 - Confirms memory bank status: Cedar is "planned" not "integrated"
 
 ### 2025-10-02, 14:15 EST
+
 - Reviewed key integration files (index.ts, apiRegistry.ts, mastra-client.ts, types.ts)
 - Discovered workflow registration discrepancy
 - Identified missing Cedar types
 - Documented lib/mastra-client.ts bridge pattern
 
 ### 2025-10-02, 14:00 EST
+
 - Started TASK003 after user feedback
 - Converted documentation effort into proper task tracking
 - Fetched streamVNext and resumeStreamVNext documentation
@@ -362,64 +384,69 @@ Follow-up with attached files: index.ts, apiRegistry.ts, mastra-client.ts, types
 
 ### Architectural Insights
 
-1. **lib/mastra-client.ts is Critical**: 
-   - MANDATORY bridge layer between Next.js API routes and Mastra backend
-   - Factory pattern enables user-specific JWT tokens
-   - All API routes must use this client
+1. **lib/mastra-client.ts is Critical**:
+    - MANDATORY bridge layer between Next.js API routes and Mastra backend
+    - Factory pattern enables user-specific JWT tokens
+    - All API routes must use this client
 
 2. **Workflow Registration Pattern**:
-   ```typescript
-   // In src/mastra/index.ts
-   export const mastra = new Mastra({
-     agents: { /* 16 agents */ },
-     workflows: { /* only 5 registered */ },
-     vectors: { qdrant: qdrantVector }
-   });
-   ```
+
+    ```typescript
+    // In src/mastra/index.ts
+    export const mastra = new Mastra({
+        agents: {
+            /* 16 agents */
+        },
+        workflows: {
+            /* only 5 registered */
+        },
+        vectors: { qdrant: qdrantVector },
+    })
+    ```
 
 3. **Cedar Integration Requirements**:
-   - Provider config points to Mastra backend (port 4111)
-   - Cedar automatically extracts prompt via stringifyEditor()
-   - Cedar compiles state via compileAdditionalContext()
-   - Mastra agent receives structured input: { prompt, additionalContext }
+    - Provider config points to Mastra backend (port 4111)
+    - Cedar automatically extracts prompt via stringifyEditor()
+    - Cedar compiles state via compileAdditionalContext()
+    - Mastra agent receives structured input: { prompt, additionalContext }
 
 4. **streamVNext Benefits**:
-   - Replaces old `.stream()` API
-   - AI SDK v5 compatible
-   - Better event granularity (workflow-start, step-start, step-output, step-result, finish)
-   - Built-in trace IDs for observability
-   - Token usage tracking
-   - Enhanced suspend/resume with resumeStreamVNext()
+    - Replaces old `.stream()` API
+    - AI SDK v5 compatible
+    - Better event granularity (workflow-start, step-start, step-output, step-result, finish)
+    - Built-in trace IDs for observability
+    - Token usage tracking
+    - Enhanced suspend/resume with resumeStreamVNext()
 
 ### Technical Debt Identified
 
 1. **Workflow Registration**:
-   - Only 5 workflows registered despite 9 workflow files existing
-   - Missing: chatWorkflow.ts (productRoadmapAgent version)
-   - Missing: 3 other workflow files
+    - Only 5 workflows registered despite 9 workflow files existing
+    - Missing: chatWorkflow.ts (productRoadmapAgent version)
+    - Missing: 3 other workflow files
 
 2. **Cedar Integration**:
-   - No Cedar types defined
-   - No Cedar state bridge
-   - chatWorkflow.ts has Cedar comments but incomplete integration
-   - Missing /chat/resume routes for human-in-loop
+    - No Cedar types defined
+    - No Cedar state bridge
+    - chatWorkflow.ts has Cedar comments but incomplete integration
+    - Missing /chat/resume routes for human-in-loop
 
 3. **Streaming**:
-   - All workflows use old streaming API
-   - Need migration to streamVNext
-   - Event handling needs updates
+    - All workflows use old streaming API
+    - Need migration to streamVNext
+    - Event handling needs updates
 
 4. **Type System**:
-   - types.ts has security types (Principal, AccessFilter, Document, Chunk)
-   - Missing Cedar types
-   - No type bridge for Cedar → Mastra data flow
+    - types.ts has security types (Principal, AccessFilter, Document, Chunk)
+    - Missing Cedar types
+    - No type bridge for Cedar → Mastra data flow
 
 ## Recommendations
 
 ### Immediate Actions (This Session)
 
 1. ✅ Complete TASK003 creation with all findings
-2. ⏭️ Update tasks/_index.md to include TASK003
+2. ⏭️ Update tasks/\_index.md to include TASK003
 3. ⏭️ Update activeContext.md with task progress
 4. ⏭️ Audit workflow count and update memory bank
 5. ⏭️ Move WORKFLOW_SYSTEM_ANALYSIS.md to reference docs (not memory bank)
@@ -427,59 +454,61 @@ Follow-up with attached files: index.ts, apiRegistry.ts, mastra-client.ts, types
 ### Next Session Priorities
 
 1. **Workflow Audit and Registration** (Priority: Critical)
-   - Count all workflow files
-   - Register missing workflows in index.ts
-   - Test all registered workflows
+    - Count all workflow files
+    - Register missing workflows in index.ts
+    - Test all registered workflows
 
 2. **Cedar Integration** (Priority: High)
-   - Install Cedar OS: `npx cedar-os-cli plant-seed --yes`
-   - Define Cedar types in types.ts
-   - Create Cedar ↔ Mastra bridge
-   - Implement /chat/resume routes
+    - Install Cedar OS: `npx cedar-os-cli plant-seed --yes`
+    - Define Cedar types in types.ts
+    - Create Cedar ↔ Mastra bridge
+    - Implement /chat/resume routes
 
 3. **streamVNext Migration** (Priority: High)
-   - Start with chatWorkflow1.ts (simplest)
-   - Document migration pattern
-   - Update event handling
-   - Test with real streaming
+    - Start with chatWorkflow1.ts (simplest)
+    - Document migration pattern
+    - Update event handling
+    - Test with real streaming
 
 4. **Workflow Expansion** (Priority: Medium)
-   - Create copywriterWorkflow.ts
-   - Create editorWorkflow.ts
-   - Create evaluationWorkflow.ts
-   - Create contentPipelineWorkflow.ts
+    - Create copywriterWorkflow.ts
+    - Create editorWorkflow.ts
+    - Create evaluationWorkflow.ts
+    - Create contentPipelineWorkflow.ts
 
 ### Strategic Recommendations
 
 1. **Use chatWorkflow1.ts as Template**:
-   - Simpler than chatWorkflow.ts
-   - Perfect for single-agent workflows
-   - Clear 3-step pattern: fetchContext → buildAgentContext → callAgent
+    - Simpler than chatWorkflow.ts
+    - Perfect for single-agent workflows
+    - Clear 3-step pattern: fetchContext → buildAgentContext → callAgent
 
 2. **Prioritize Cedar Integration**:
-   - Critical for frontend state management
-   - Enables rich context passing to agents
-   - Human-in-loop workflows need it
+    - Critical for frontend state management
+    - Enables rich context passing to agents
+    - Human-in-loop workflows need it
 
 3. **Migrate to streamVNext Incrementally**:
-   - One workflow at a time
-   - Document each migration
-   - Build reusable patterns
+    - One workflow at a time
+    - Document each migration
+    - Build reusable patterns
 
 4. **Document as You Go**:
-   - Each workflow gets its own documentation
-   - Update memory bank after each completion
-   - Maintain AGENTS.md files in each directory
+    - Each workflow gets its own documentation
+    - Update memory bank after each completion
+    - Maintain AGENTS.md files in each directory
 
 ## Related Files
 
 **Memory Bank**:
+
 - `memory-bank/activeContext.md` - Current work focus
 - `memory-bank/progress.md` - What works, what's needed
 - `memory-bank/NEXT_SESSION_PRIORITIES.md` - Roadmap
 - `memory-bank/WORKFLOW_SYSTEM_ANALYSIS.md` - Detailed analysis (move to docs/)
 
 **Source Code**:
+
 - `src/mastra/index.ts` - Mastra configuration and registration
 - `src/mastra/apiRegistry.ts` - API routes (/chat, /chat/stream)
 - `lib/mastra/mastra-client.ts` - Bridge layer (MANDATORY)
@@ -490,12 +519,13 @@ Follow-up with attached files: index.ts, apiRegistry.ts, mastra-client.ts, types
 - `src/mastra/workflows/researchWorkflow.ts` - Suspend/resume example
 
 **Documentation**:
+
 - `docs/mastra-cedar.md` - Integration URLs
 - `AGENTS.md` - Project root documentation
 
 ## Next Steps
 
-1. Update tasks/_index.md to include TASK003 in "In Progress" section
+1. Update tasks/\_index.md to include TASK003 in "In Progress" section
 2. Update activeContext.md with current task focus
 3. Count workflow files and resolve discrepancy
 4. Plan Cedar installation strategy

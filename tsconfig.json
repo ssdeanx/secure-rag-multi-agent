@@ -1,49 +1,43 @@
 {
-  "compilerOptions": {
-    "target": "ES2022",
-    "module": "esnext",
-    "moduleResolution": "bundler",
-    "esModuleInterop": true,
-    "forceConsistentCasingInFileNames": true,
-    "strict": true,
-    "skipLibCheck": true,
-    "noEmit": false,
-    "outDir": "dist",
-    "lib": [
-      "dom",
-      "dom.iterable",
-      "esnext"
+    "compilerOptions": {
+        "target": "ES2022",
+        "module": "esnext",
+        "moduleResolution": "bundler",
+        "esModuleInterop": true,
+        "forceConsistentCasingInFileNames": true,
+        "strict": true,
+        "skipLibCheck": true,
+        "noEmit": false,
+        "outDir": "dist",
+        "lib": ["dom", "dom.iterable", "esnext"],
+        "allowJs": true,
+        "incremental": true,
+        "resolveJsonModule": true,
+        "isolatedModules": true,
+        "jsx": "preserve",
+        "plugins": [
+            {
+                "name": "next"
+            }
+        ],
+        "paths": {
+            "@/*": ["./*"]
+        }
+    },
+    "include": [
+        "src/**/*",
+        "app/**/*",
+        "components/**/*",
+        "lib/**/*",
+        ".next/types/**/*.ts",
+        "next-env.d.ts",
+        "vitest.config.ts",
+        "tests/**/*",
+        "testsSetup.ts",
+        "eslint.config.js",
+        "prettier.config.js",
+        "cedar/**/*",
+        "next-sitemap.config.js"
     ],
-    "allowJs": true,
-    "incremental": true,
-    "resolveJsonModule": true,
-    "isolatedModules": true,
-    "jsx": "preserve",
-    "plugins": [
-      {
-        "name": "next"
-      }
-    ],
-    "paths": {
-      "@/*": ["./*"]
-    }
-  },
-  "include": [
-    "src/**/*",
-    "app/**/*",
-    "components/**/*",
-    "lib/**/*",
-    ".next/types/**/*.ts",
-    "next-env.d.ts",
-    "vitest.config.ts",
-    "tests/**/*",
-    "testsSetup.ts",
-    "eslint.config.js",
-    "prettier.config.js",
-    "cedar/**/*",
-    "next-sitemap.config.js"
-  ],
-  "exclude": [
-    "node_modules"
-  ]
+    "exclude": ["node_modules"]
 }

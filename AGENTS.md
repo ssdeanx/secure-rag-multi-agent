@@ -25,47 +25,48 @@
 
 ## Change Log
 
-| Version | Date (UTC) | Change |
-|---------|------------|--------|
-| 1.5.0 | 2025-09-24 | Added auto-generated subdirectory AGENTS.md index section |
-| 1.4.0 | 2025-09-24 | Added persona & change log sections; finalized doc validation pass |
-| 1.3.0 | 2025-09-24 | Added /lib/mastra and /lib/actions entries |
-| 1.2.0 | 2025-09-24 | Added /cedar directory entry |
-| 1.1.0 | 2025-09-24 | Canonical index established |
-| 1.0.0 | 2025-09-24 | Initial standardized root documentation |
+| Version | Date (UTC) | Change                                                             |
+| ------- | ---------- | ------------------------------------------------------------------ |
+| 1.5.0   | 2025-09-24 | Added auto-generated subdirectory AGENTS.md index section          |
+| 1.4.0   | 2025-09-24 | Added persona & change log sections; finalized doc validation pass |
+| 1.3.0   | 2025-09-24 | Added /lib/mastra and /lib/actions entries                         |
+| 1.2.0   | 2025-09-24 | Added /cedar directory entry                                       |
+| 1.1.0   | 2025-09-24 | Canonical index established                                        |
+| 1.0.0   | 2025-09-24 | Initial standardized root documentation                            |
 
 ## Directory Index (Canonical)
 
-| Path | Title / Focus | Layer | Domain | Key Notes |
-|------|---------------|-------|--------|-----------|
-| `/` | Project Root | root | rag | Global setup, testing, security, workflows overview |
-| `/app` | Next.js App Router | frontend | ui | Pages, layouts, route structure |
-| `/app/api` | API Route Handlers | backend | rag | Chat & indexing endpoints; streaming |
-| `/app/cedar-os` | Cedar OS Showcase | frontend | ui | Product roadmap / Cedar integration |
-| `/cedar` | Cedar Core Components | frontend | ui | Low-level Cedar UI primitives (roadmap, chat, buttons) |
-| `/components` | App-Level Components | frontend | ui | High-level composed UI (Chat, Auth, Indexing) |
-| `/docs` | Documentation System | docs | docs | MD/MDX architecture & publishing |
-| `/lib` | Shared Libraries | backend | shared | Auth, JWT utilities, MDX plugins |
-| `/lib/mastra` | Mastra Browser Client | frontend | rag | Frontend Mastra client factory |
-| `/lib/actions` | Frontend Server Actions | frontend | auth | Minimal privileged server actions |
-| `/src` | Backend Source Root | backend | rag | Entry point, types, utils, mastra integration |
-| `/src/mastra` | Mastra Core | ai | rag | Orchestration, registration, tracing |
-| `/src/mastra/agents` | Agents | ai | rag | Single-responsibility reasoning units |
-| `/src/mastra/workflows` | Workflows | ai | rag | Multi-step orchestration definitions |
-| `/src/mastra/networks` | vNext Networks | ai | rag | Non-deterministic LLM-based multi-agent orchestration |
-| `/src/mastra/tools` | Tools | ai | rag | Safe callable functions for agents |
-| `/src/mastra/services` | Services | backend | rag | Business/domain logic modules |
-| `/src/mastra/schemas` | Schemas | backend | validation | Zod contracts & data validation |
-| `/src/mastra/config` | Configuration | backend | infra | External service setup (Qdrant, models) |
-| `/src/mastra/policy` | Policy / ACL | backend | policy | Access control rule sources |
-| `/src/utils` | Utilities | backend | shared | Stream & helper abstractions |
-| `/src/cli` | CLI Layer | backend | ops | Indexing & workflow invocation CLI |
-| `/corpus` | Sample Corpus | content | rag | Source docs for indexing w/ classification |
-| `/hooks` | React Hooks | frontend | ui | Reusable client-side logic |
+| Path                    | Title / Focus           | Layer    | Domain     | Key Notes                                              |
+| ----------------------- | ----------------------- | -------- | ---------- | ------------------------------------------------------ |
+| `/`                     | Project Root            | root     | rag        | Global setup, testing, security, workflows overview    |
+| `/app`                  | Next.js App Router      | frontend | ui         | Pages, layouts, route structure                        |
+| `/app/api`              | API Route Handlers      | backend  | rag        | Chat & indexing endpoints; streaming                   |
+| `/app/cedar-os`         | Cedar OS Showcase       | frontend | ui         | Product roadmap / Cedar integration                    |
+| `/cedar`                | Cedar Core Components   | frontend | ui         | Low-level Cedar UI primitives (roadmap, chat, buttons) |
+| `/components`           | App-Level Components    | frontend | ui         | High-level composed UI (Chat, Auth, Indexing)          |
+| `/docs`                 | Documentation System    | docs     | docs       | MD/MDX architecture & publishing                       |
+| `/lib`                  | Shared Libraries        | backend  | shared     | Auth, JWT utilities, MDX plugins                       |
+| `/lib/mastra`           | Mastra Browser Client   | frontend | rag        | Frontend Mastra client factory                         |
+| `/lib/actions`          | Frontend Server Actions | frontend | auth       | Minimal privileged server actions                      |
+| `/src`                  | Backend Source Root     | backend  | rag        | Entry point, types, utils, mastra integration          |
+| `/src/mastra`           | Mastra Core             | ai       | rag        | Orchestration, registration, tracing                   |
+| `/src/mastra/agents`    | Agents                  | ai       | rag        | Single-responsibility reasoning units                  |
+| `/src/mastra/workflows` | Workflows               | ai       | rag        | Multi-step orchestration definitions                   |
+| `/src/mastra/networks`  | vNext Networks          | ai       | rag        | Non-deterministic LLM-based multi-agent orchestration  |
+| `/src/mastra/tools`     | Tools                   | ai       | rag        | Safe callable functions for agents                     |
+| `/src/mastra/services`  | Services                | backend  | rag        | Business/domain logic modules                          |
+| `/src/mastra/schemas`   | Schemas                 | backend  | validation | Zod contracts & data validation                        |
+| `/src/mastra/config`    | Configuration           | backend  | infra      | External service setup (Qdrant, models)                |
+| `/src/mastra/policy`    | Policy / ACL            | backend  | policy     | Access control rule sources                            |
+| `/src/utils`            | Utilities               | backend  | shared     | Stream & helper abstractions                           |
+| `/src/cli`              | CLI Layer               | backend  | ops        | Indexing & workflow invocation CLI                     |
+| `/corpus`               | Sample Corpus           | content  | rag        | Source docs for indexing w/ classification             |
+| `/hooks`                | React Hooks             | frontend | ui         | Reusable client-side logic                             |
 
 To update: when adding a new `AGENTS.md`, append a row and ensure consistent tags.
 
 ---
+
 ## Original Overview
 
 ## Project Overview
@@ -443,7 +444,7 @@ Iterate until tools are satisfied with results.
 
 - Single package structure with clear module separation
 - Shared utilities in `${file://~/mastra-governed-rag/src/utils/}` `src/utils/`
-- Type definitions in  `${file://~/mastra-governed-rag/src/types/}` `src/types/`
+- Type definitions in `${file://~/mastra-governed-rag/src/types/}` `src/types/`
 - Environment-specific configurations
 
 ### Development Tips
@@ -466,40 +467,41 @@ This AGENTS.md file provides the technical context needed for coding agents to e
 
 > This section enumerates every other `AGENTS.md` in the repository for quick navigation. Regenerate after structural changes (or integrate into a future automation step).
 
-| Title | Path | Layer | Domain(s) | Status |
-|-------|------|-------|-----------|--------|
-| Next.js App Router | [app/AGENTS.md](app/AGENTS.md) | frontend | ui | stable |
-| Next.js API Routes | [app/api/AGENTS.md](app/api/AGENTS.md) | backend | rag | stable |
-| Auth API Routes | [app/api/auth/AGENTS.md](app/api/auth/AGENTS.md) | backend | auth | beta |
-| Chat API Route | [app/api/chat/AGENTS.md](app/api/chat/AGENTS.md) | backend | rag | stable |
-| Indexing API Route | [app/api/index/AGENTS.md](app/api/index/AGENTS.md) | backend | rag | stable |
-| Cedar OS Integration | [app/cedar-os/AGENTS.md](app/cedar-os/AGENTS.md) | frontend | ui | stable |
-| Cedar UI Components | [cedar/AGENTS.md](cedar/AGENTS.md) | frontend | ui | stable |
-| Application Components | [components/AGENTS.md](components/AGENTS.md) | frontend | ui | stable |
-| Documentation System | [docs/AGENTS.md](docs/AGENTS.md) | docs | docs | stable |
-| Shared Frontend Library | [lib/AGENTS.md](lib/AGENTS.md) | frontend | shared | stable |
-| Mastra Browser Client | [lib/mastra/AGENTS.md](lib/mastra/AGENTS.md) | frontend | rag | stable |
-| Frontend Actions Layer | [lib/actions/AGENTS.md](lib/actions/AGENTS.md) | frontend | auth | stable |
-| Backend Source Root | [src/AGENTS.md](src/AGENTS.md) | backend | rag | stable |
-| Mastra Core Orchestration | [src/mastra/AGENTS.md](src/mastra/AGENTS.md) | backend | rag | stable |
-| Mastra Agents | [src/mastra/agents/AGENTS.md](src/mastra/agents/AGENTS.md) | backend | rag | stable |
-| Mastra Workflows | [src/mastra/workflows/AGENTS.md](src/mastra/workflows/AGENTS.md) | backend | rag | stable |
-| Mastra vNext Networks | [src/mastra/networks/AGENTS.md](src/mastra/networks/AGENTS.md) | ai | rag | stable |
-| Mastra Tools | [src/mastra/tools/AGENTS.md](src/mastra/tools/AGENTS.md) | backend | rag | stable |
-| Mastra Services | [src/mastra/services/AGENTS.md](src/mastra/services/AGENTS.md) | backend | rag | stable |
-| Mastra Schemas | [src/mastra/schemas/AGENTS.md](src/mastra/schemas/AGENTS.md) | backend | validation | stable |
-| Mastra Config | [src/mastra/config/AGENTS.md](src/mastra/config/AGENTS.md) | backend | infra | stable |
-| Mastra Policy | [src/mastra/policy/AGENTS.md](src/mastra/policy/AGENTS.md) | backend | policy | stable |
-| Backend Utility Layer | [src/utils/AGENTS.md](src/utils/AGENTS.md) | backend | shared | stable |
-| Operations CLI | [src/cli/AGENTS.md](src/cli/AGENTS.md) | backend | ops | stable |
-| Corpus Source Documents | [corpus/AGENTS.md](corpus/AGENTS.md) | content | rag | stable |
-| React Hooks Directory | [hooks/AGENTS.md](hooks/AGENTS.md) | frontend | ui | stable |
+| Title                     | Path                                                             | Layer    | Domain(s)  | Status |
+| ------------------------- | ---------------------------------------------------------------- | -------- | ---------- | ------ |
+| Next.js App Router        | [app/AGENTS.md](app/AGENTS.md)                                   | frontend | ui         | stable |
+| Next.js API Routes        | [app/api/AGENTS.md](app/api/AGENTS.md)                           | backend  | rag        | stable |
+| Auth API Routes           | [app/api/auth/AGENTS.md](app/api/auth/AGENTS.md)                 | backend  | auth       | beta   |
+| Chat API Route            | [app/api/chat/AGENTS.md](app/api/chat/AGENTS.md)                 | backend  | rag        | stable |
+| Indexing API Route        | [app/api/index/AGENTS.md](app/api/index/AGENTS.md)               | backend  | rag        | stable |
+| Cedar OS Integration      | [app/cedar-os/AGENTS.md](app/cedar-os/AGENTS.md)                 | frontend | ui         | stable |
+| Cedar UI Components       | [cedar/AGENTS.md](cedar/AGENTS.md)                               | frontend | ui         | stable |
+| Application Components    | [components/AGENTS.md](components/AGENTS.md)                     | frontend | ui         | stable |
+| Documentation System      | [docs/AGENTS.md](docs/AGENTS.md)                                 | docs     | docs       | stable |
+| Shared Frontend Library   | [lib/AGENTS.md](lib/AGENTS.md)                                   | frontend | shared     | stable |
+| Mastra Browser Client     | [lib/mastra/AGENTS.md](lib/mastra/AGENTS.md)                     | frontend | rag        | stable |
+| Frontend Actions Layer    | [lib/actions/AGENTS.md](lib/actions/AGENTS.md)                   | frontend | auth       | stable |
+| Backend Source Root       | [src/AGENTS.md](src/AGENTS.md)                                   | backend  | rag        | stable |
+| Mastra Core Orchestration | [src/mastra/AGENTS.md](src/mastra/AGENTS.md)                     | backend  | rag        | stable |
+| Mastra Agents             | [src/mastra/agents/AGENTS.md](src/mastra/agents/AGENTS.md)       | backend  | rag        | stable |
+| Mastra Workflows          | [src/mastra/workflows/AGENTS.md](src/mastra/workflows/AGENTS.md) | backend  | rag        | stable |
+| Mastra vNext Networks     | [src/mastra/networks/AGENTS.md](src/mastra/networks/AGENTS.md)   | ai       | rag        | stable |
+| Mastra Tools              | [src/mastra/tools/AGENTS.md](src/mastra/tools/AGENTS.md)         | backend  | rag        | stable |
+| Mastra Services           | [src/mastra/services/AGENTS.md](src/mastra/services/AGENTS.md)   | backend  | rag        | stable |
+| Mastra Schemas            | [src/mastra/schemas/AGENTS.md](src/mastra/schemas/AGENTS.md)     | backend  | validation | stable |
+| Mastra Config             | [src/mastra/config/AGENTS.md](src/mastra/config/AGENTS.md)       | backend  | infra      | stable |
+| Mastra Policy             | [src/mastra/policy/AGENTS.md](src/mastra/policy/AGENTS.md)       | backend  | policy     | stable |
+| Backend Utility Layer     | [src/utils/AGENTS.md](src/utils/AGENTS.md)                       | backend  | shared     | stable |
+| Operations CLI            | [src/cli/AGENTS.md](src/cli/AGENTS.md)                           | backend  | ops        | stable |
+| Corpus Source Documents   | [corpus/AGENTS.md](corpus/AGENTS.md)                             | content  | rag        | stable |
+| React Hooks Directory     | [hooks/AGENTS.md](hooks/AGENTS.md)                               | frontend | ui         | stable |
 
 _Total:_ 26 subordinate documentation files indexed.
 
-@/**/AGENTS.md
+@/\*\*/AGENTS.md
 
 ---
+
 Any `${input:folder}` that contains an `AGENTS.md` file can be referenced using the following glob pattern:
 
 ```bash

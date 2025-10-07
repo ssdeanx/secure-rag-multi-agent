@@ -1,30 +1,30 @@
-'use client';
+'use client'
 
-import React from 'react';
-import { useTheme } from 'next-themes';
-import { useEffect, useState } from 'react';
-import { Switch } from '@/components/ui/switch';
+import React from 'react'
+import { useTheme } from 'next-themes'
+import { useEffect, useState } from 'react'
+import { Switch } from '@/components/ui/switch'
 
 export function ThemeToggle() {
-	const [mounted, setMounted] = useState(false);
-	const { theme, setTheme } = useTheme();
+    const [mounted, setMounted] = useState(false)
+    const { theme, setTheme } = useTheme()
 
-	useEffect(() => {
-		setMounted(true);
-	}, []);
+    useEffect(() => {
+        setMounted(true)
+    }, [])
 
-	if (!mounted) {
-		return <div className="h-6 w-10" aria-hidden="true" />; // Invisible sized placeholder
-	}
+    if (!mounted) {
+        return <div className="h-6 w-10" aria-hidden="true" /> // Invisible sized placeholder
+    }
 
-	const isDark = theme === 'dark';
+    const isDark = theme === 'dark'
 
-	return (
-		<Switch
-			checked={isDark}
-			onCheckedChange={(checked) => setTheme(checked ? 'dark' : 'light')}
-			className="data-[state=checked]:bg-primary"
-			aria-label="Toggle theme"
-		/>
-	);
+    return (
+        <Switch
+            checked={isDark}
+            onCheckedChange={(checked) => setTheme(checked ? 'dark' : 'light')}
+            className="data-[state=checked]:bg-primary"
+            aria-label="Toggle theme"
+        />
+    )
 }

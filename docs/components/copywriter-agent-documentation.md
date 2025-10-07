@@ -1,11 +1,19 @@
 ---
-title: "Copywriter Agent"
-description: "An expert copywriter agent that creates engaging, high-quality content across multiple formats including blog posts, marketing copy, social media content, technical writing, and business communications"
-component_type: "Mastra Agent"
-framework: "Mastra"
-language: "TypeScript"
-platform: "Node.js"
-tags: ["agent", "copywriting", "content-creation", "marketing", "blog", "social-media"]
+title: 'Copywriter Agent'
+description: 'An expert copywriter agent that creates engaging, high-quality content across multiple formats including blog posts, marketing copy, social media content, technical writing, and business communications'
+component_type: 'Mastra Agent'
+framework: 'Mastra'
+language: 'TypeScript'
+platform: 'Node.js'
+tags:
+    [
+        'agent',
+        'copywriting',
+        'content-creation',
+        'marketing',
+        'blog',
+        'social-media',
+    ]
 ---
 
 # Copywriter Agent (`src/mastra/agents/copywriterAgent.ts`)
@@ -163,12 +171,15 @@ graph TB
 ### Agent Properties
 
 #### `id: "copywriter"`
+
 Unique identifier for the agent within the Mastra system.
 
 #### `name: "copywriter-agent"`
+
 Human-readable name for the agent.
 
 #### `description`
+
 "An expert copywriter agent that creates engaging, high-quality content across multiple formats including blog posts, marketing copy, social media content, technical writing, and business communications."
 
 ### Content Types Supported
@@ -235,12 +246,13 @@ The agent specializes in creating content for multiple categories:
 
 ```typescript
 const queryTool = createVectorQueryTool({
-  vectorStoreName: "vectorStore",
-  indexName: STORAGE_CONFIG.VECTOR_INDEXES.RESEARCH_DOCUMENTS,
-  model: google.textEmbedding("gemini-embedding-001"),
-  enableFilter: true,
-  description: "Search for semantically similar content in the LibSQL vector store using embeddings. Supports filtering, ranking, and context retrieval."
-});
+    vectorStoreName: 'vectorStore',
+    indexName: STORAGE_CONFIG.VECTOR_INDEXES.RESEARCH_DOCUMENTS,
+    model: google.textEmbedding('gemini-embedding-001'),
+    enableFilter: true,
+    description:
+        'Search for semantically similar content in the LibSQL vector store using embeddings. Supports filtering, ranking, and context retrieval.',
+})
 ```
 
 ### Graph RAG Tool
@@ -249,29 +261,33 @@ const queryTool = createVectorQueryTool({
 
 ```typescript
 const graphQueryTool = createGraphRAGTool({
-  vectorStoreName: "vectorStore",
-  indexName: STORAGE_CONFIG.VECTOR_INDEXES.RESEARCH_DOCUMENTS,
-  model: google.textEmbedding("gemini-embedding-001"),
-  graphOptions: {
-    threshold: 0.7,
-    dimension: 3072,
-    randomWalkSteps: 15,
-    restartProb: 0.3
-  },
-  enableFilter: true,
-  description: "Graph-based search for semantically similar content in the LibSQL vector store using embeddings. Supports filtering, ranking, and context retrieval."
-});
+    vectorStoreName: 'vectorStore',
+    indexName: STORAGE_CONFIG.VECTOR_INDEXES.RESEARCH_DOCUMENTS,
+    model: google.textEmbedding('gemini-embedding-001'),
+    graphOptions: {
+        threshold: 0.7,
+        dimension: 3072,
+        randomWalkSteps: 15,
+        restartProb: 0.3,
+    },
+    enableFilter: true,
+    description:
+        'Graph-based search for semantically similar content in the LibSQL vector store using embeddings. Supports filtering, ranking, and context retrieval.',
+})
 ```
 
 ### Web Scraping Tools
 
 #### `webScraperTool`
+
 Gathers initial information and context from URLs.
 
 #### `htmlToMarkdownTool`
+
 Converts HTML content to clean Markdown format.
 
 #### `contentCleanerTool`
+
 Processes and formats scraped web content.
 
 ## Operational Rules
@@ -372,7 +388,7 @@ Processes and formats scraped web content.
 ### Vector Store Configuration
 
 ```typescript
-vectorStoreName: "vectorStore"
+vectorStoreName: 'vectorStore'
 indexName: STORAGE_CONFIG.VECTOR_INDEXES.RESEARCH_DOCUMENTS
 dimension: 3072
 ```
@@ -399,36 +415,36 @@ GOOGLE_GENERATIVE_AI_API_KEY=your-api-key
 ### Content Quality Issues
 
 1. **Lack of Engagement**
-   - Review content type guidelines
-   - Ensure audience-appropriate language
-   - Add compelling hooks and narratives
+    - Review content type guidelines
+    - Ensure audience-appropriate language
+    - Add compelling hooks and narratives
 
 2. **Factual Inaccuracies**
-   - Verify research sources
-   - Cross-reference information
-   - Use multiple research tools
+    - Verify research sources
+    - Cross-reference information
+    - Use multiple research tools
 
 3. **Formatting Problems**
-   - Check Markdown syntax
-   - Ensure proper heading hierarchy
-   - Validate metadata inclusion
+    - Check Markdown syntax
+    - Ensure proper heading hierarchy
+    - Validate metadata inclusion
 
 ### Research Tool Issues
 
 1. **Search Failures**
-   - Check vector store connectivity
-   - Verify embedding model configuration
-   - Ensure proper index names
+    - Check vector store connectivity
+    - Verify embedding model configuration
+    - Ensure proper index names
 
 2. **Web Scraping Errors**
-   - Validate URLs and accessibility
-   - Check content processing tools
-   - Handle different content formats
+    - Validate URLs and accessibility
+    - Check content processing tools
+    - Handle different content formats
 
 3. **Content Processing Issues**
-   - Verify HTML structure
-   - Check Markdown conversion
-   - Ensure content cleaning parameters
+    - Verify HTML structure
+    - Check Markdown conversion
+    - Ensure content cleaning parameters
 
 ## References
 

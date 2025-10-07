@@ -27,12 +27,11 @@ Mastra workflow for indexing documents into Qdrant with security tags/classifica
 - ARC-001: Design patterns: Batch processing workflow.
 
 - ARC-002: Dependencies:
+    - @mastra/core (createWorkflow, createStep)
 
-  - @mastra/core (createWorkflow, createStep)
+    - zod (schemas)
 
-  - zod (schemas)
-
-  - Local: DocumentIndexingService, qdrantVector, logger
+    - Local: DocumentIndexingService, qdrantVector, logger
 
 - ARC-003: Interactions: Input docs array → output stats (indexed/failed).
 
@@ -79,14 +78,14 @@ graph TD
 
 - INT-001: Schemas for docs/stats.
 
-| Input Doc | Fields | Notes |
-|-----------|--------|-------|
-| `filePath` | `string` | Source file |
-| `docId` | `string` | Unique ID |
-| `classification` | `enum` | public/internal/confidential |
-| `allowedRoles` | `string[]` | Access roles |
-| `tenant` | `string` | Org |
-| `source` | `string?` | Optional |
+| Input Doc        | Fields     | Notes                        |
+| ---------------- | ---------- | ---------------------------- |
+| `filePath`       | `string`   | Source file                  |
+| `docId`          | `string`   | Unique ID                    |
+| `classification` | `enum`     | public/internal/confidential |
+| `allowedRoles`   | `string[]` | Access roles                 |
+| `tenant`         | `string`   | Org                          |
+| `source`         | `string?`  | Optional                     |
 
 Output: `{indexed: number, failed: number, documents: [{docId, status, chunks?, error?}]}`
 
@@ -116,8 +115,16 @@ Edge cases and considerations:
 
 ```ts
 const result = await governedRagIndex.execute({
-  documents: [{filePath: 'doc.md', docId: '1', classification: 'public', allowedRoles: ['public'], tenant: 'acme'}]
-});
+    documents: [
+        {
+            filePath: 'doc.md',
+            docId: '1',
+            classification: 'public',
+            allowedRoles: ['public'],
+            tenant: 'acme',
+        },
+    ],
+})
 ```
 
 ### CLI Integration

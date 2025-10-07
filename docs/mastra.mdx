@@ -10,19 +10,31 @@ import { Button } from '@/components/ui/button'
 import { Alert, AlertTitle, AlertDescription } from '@/components/ui/alert'
 import { Separator } from '@/components/ui/separator'
 import { Mermaid } from '@/components/Mermaid'
-import { Terminal, Shield, Database, Users, Zap, Brain, FileText, Search, CheckCircle } from 'lucide-react'
+import {
+    Terminal,
+    Shield,
+    Database,
+    Users,
+    Zap,
+    Brain,
+    FileText,
+    Search,
+    CheckCircle,
+} from 'lucide-react'
 
 <!-- Title is set in frontmatter (avoid duplicate H1) -->
 
 <!-- toc -->
 
 <Card>
-  <CardHeader>
-    <CardTitle>Overview</CardTitle>
-  </CardHeader>
-  <CardContent>
-    This document describes the Mastra backend that powers the Governed RAG system in this repository. It covers architecture, security, API endpoints, deployment notes, and quick operational examples.
-  </CardContent>
+    <CardHeader>
+        <CardTitle>Overview</CardTitle>
+    </CardHeader>
+    <CardContent>
+        This document describes the Mastra backend that powers the Governed RAG
+        system in this repository. It covers architecture, security, API
+        endpoints, deployment notes, and quick operational examples.
+    </CardContent>
 </Card>
 
 <Separator className="my-4" />
@@ -71,8 +83,11 @@ import { Terminal, Shield, Database, Users, Zap, Brain, FileText, Search, CheckC
         class C,D,H,I backend
         class F,G,J,K storage
         class E ai
+
 `} />
-    </div>
+
+</div>
+
   </TabsContent>
 
   <TabsContent value="agents">
@@ -113,6 +128,7 @@ import { Terminal, Shield, Database, Users, Zap, Brain, FileText, Search, CheckC
 
     <h4 className="text-md font-semibold mt-4">Real Agent Example: Retrieve Agent</h4>
     <pre className="bg-slate-100 dark:bg-slate-800 p-4 rounded text-sm overflow-x-auto">
+
 {`import { Agent } from "@mastra/core";
 import { google } from "@ai-sdk/google";
 import { vectorQueryTool } from "../tools/vector-query.tool";
@@ -129,22 +145,23 @@ export const retrieveAgent = new Agent({
 
 **MANDATORY STEPS:**
 
-1. Parse input JSON for 'question' and 'access' fields
-2. Call vectorQueryTool EXACTLY ONCE with these exact parameters:
-   - question: the question from input
-   - allowTags: from access.allowTags array
-   - maxClassification: from access.maxClassification (NEVER change this value)
-   - topK: 8
-3. Return ONLY what the tool returns - never add your own content\`,
-  memory,
-  tools: { vectorQueryTool }
-});`}
+1.  Parse input JSON for 'question' and 'access' fields
+2.  Call vectorQueryTool EXACTLY ONCE with these exact parameters:
+    - question: the question from input
+    - allowTags: from access.allowTags array
+    - maxClassification: from access.maxClassification (NEVER change this value)
+    - topK: 8
+3.  Return ONLY what the tool returns - never add your own content\`,
+    memory,
+    tools: { vectorQueryTool }
+    });`}
+
     </pre>
 
-    <h4 className="text-md font-semibold mt-4">Real Tool Example: Vector Query Tool</h4>
+        <h4 className="text-md font-semibold mt-4">Real Tool Example: Vector Query Tool</h4>
 
 
-    <pre className="bg-slate-100 dark:bg-slate-800 p-4 rounded text-sm overflow-x-auto">
+        <pre className="bg-slate-100 dark:bg-slate-800 p-4 rounded text-sm overflow-x-auto">
 
 {`import { createTool } from "@mastra/core/tools";
 import { z } from "zod";
@@ -198,8 +215,10 @@ export const vectorQueryTool = createTool({
         class A,B,C,D,E,F,G core
         class C1,D1,E1 advanced
         class B1 error
+
 `} />
-    </div>
+
+</div>
 
     <Alert variant="default" className="mt-4">
       <Shield className="h-4 w-4" />
@@ -208,6 +227,7 @@ export const vectorQueryTool = createTool({
         All agents include security checks and access control. Secrets are managed via environment variables and never committed to code.
       </AlertDescription>
     </Alert>
+
   </TabsContent>
 
   <TabsContent value="storage">
@@ -271,8 +291,11 @@ export const vectorQueryTool = createTool({
         class A,B,C process
         class D,E,F storage
         class G,H,I,J retrieval
+
 `} />
-    </div>
+
+</div>
+
   </TabsContent>
 
   <TabsContent value="observability">
@@ -302,6 +325,7 @@ export const vectorQueryTool = createTool({
         </AlertDescription>
       </Alert>
     </div>
+
   </TabsContent>
 </Tabs>
       <CardContent>
@@ -340,12 +364,14 @@ docker run -d -p 6333:6333 -p 6334:6334 \\
 
 \\# Start development environment
 npm run dev`}
-        </pre>
-      </div>
+
+</pre>
+</div>
 
       <div>
         <h4 className="font-medium">2. Environment Variables</h4>
         <pre className="bg-slate-100 dark:bg-slate-800 p-3 rounded text-sm">
+
 {`# .env.local
 MASTRA_BASE_URL=http://localhost:3001
 OPENAI_API_KEY=your-key-here
@@ -354,8 +380,9 @@ QDRANT_URL=http://localhost:6333
 DATABASE_URL='file:./data/mastra.db'
 JWT_SECRET='dev-secret'
 NODE_ENV='development'`}
-        </pre>
-      </div>
+
+</pre>
+</div>
 
       <div>
         <h4 className="font-medium">3. Available Models</h4>
@@ -387,6 +414,7 @@ NODE_ENV='development'`}
         </div>
       </div>
     </div>
+
   </TabsContent>
 
   <TabsContent value="query">
@@ -404,7 +432,9 @@ const response = await fetch('/api/mastra/query', {
 
 const result = await response.json()
 console.log(result.answer, result.sources)`}
-    </pre>
+
+</pre>
+
   </TabsContent>
 
   <TabsContent value="index">
@@ -472,6 +502,7 @@ const response = await fetch('/api/mastra/index', {
         <span className="text-sm text-muted-foreground">— Trigger agent workflows (admin-only)</span>
       </div>
     </div>
+
   </CardContent>
 </Card>
 
@@ -486,20 +517,29 @@ const response = await fetch('/api/mastra/index', {
     <TabsTrigger value="auditing">Auditing</TabsTrigger>
   </TabsList>
 
-  <TabsContent value="auth">
+<TabsContent value="auth">
     <p>
-      The app uses JWTs issued by the Mastra auth provider. Tokens are set in HttpOnly cookies by server-side proxy routes (see <code>lib/mastra/mastra-client.ts</code>). Scopes and claims control access to endpoints.
+        The app uses JWTs issued by the Mastra auth provider. Tokens are set in
+        HttpOnly cookies by server-side proxy routes (see{' '}
+        <code>lib/mastra/mastra-client.ts</code>). Scopes and claims control
+        access to endpoints.
     </p>
-  </TabsContent>
+</TabsContent>
 
-  <TabsContent value="rbac">
+<TabsContent value="rbac">
     <p>Roles in the system:</p>
     <ul className="list-disc ml-6">
-      <li><b>reader</b> — Query-only access.</li>
-      <li><b>editor</b> — Can submit documents for indexing.</li>
-      <li><b>admin</b> — Manage agents and configuration.</li>
+        <li>
+            <b>reader</b> — Query-only access.
+        </li>
+        <li>
+            <b>editor</b> — Can submit documents for indexing.
+        </li>
+        <li>
+            <b>admin</b> — Manage agents and configuration.
+        </li>
     </ul>
-  </TabsContent>
+</TabsContent>
 
   <TabsContent value="auditing">
     <p>All agent runs and query responses are stored with provenance metadata. Configure retention and export via the Mastra server settings.</p>
@@ -540,6 +580,7 @@ const response = await fetch('/api/mastra/index', {
         </Alert>
       </CardContent>
     </Card>
+
   </TabsContent>
 
   <TabsContent value="production">
@@ -562,6 +603,7 @@ const response = await fetch('/api/mastra/index', {
           <div>
             <h4 className="font-medium">Environment Variables</h4>
             <pre className="bg-slate-100 dark:bg-slate-800 p-3 rounded text-sm">
+
 {`# Production Configuration
 NODE_ENV=production
 MASTRA_BASE_URL=https://your-domain.com
@@ -573,23 +615,28 @@ DATABASE_URL=libsql://your-database.turso.io
 JWT_SECRET=your-secure-random-jwt-secret
 LANGFUSE_PUBLIC_KEY=your-langfuse-key
 LANGFUSE_SECRET_KEY=your-langfuse-secret`}
-            </pre>
-          </div>
+
+</pre>
+</div>
 
           <div>
             <h4 className="font-medium">Deployment Steps</h4>
             <pre className="bg-slate-100 dark:bg-slate-800 p-3 rounded text-sm">
+
 {`# Build the application
 npm run build
 
 # Start production server
+
 npm start
 
 # Or use PM2 for process management
+
 npm install -g pm2
 pm2 start npm --name "mastra-rag" -- start`}
-            </pre>
-          </div>
+
+</pre>
+</div>
 
           <div>
             <h4 className="font-medium">Monitoring Setup</h4>
@@ -603,6 +650,7 @@ pm2 start npm --name "mastra-rag" -- start`}
         </div>
       </CardContent>
     </Card>
+
   </TabsContent>
 
   <TabsContent value="troubleshooting">
@@ -630,6 +678,7 @@ pm2 start npm --name "mastra-rag" -- start`}
         </div>
       </CardContent>
     </Card>
+
   </TabsContent>
 </Tabs>
 
@@ -663,10 +712,13 @@ export async function POST(req: Request) {
 ## Security Checklist
 
 <ul className="list-disc ml-6">
-  <li>Require TLS for all Mastra endpoints.</li>
-  <li>Rotate the OpenSearch password from the docker compose example.</li>
-  <li>Use least-privilege for agents and storage credentials.</li>
-  <li>Enable audit logging and store logs in a write-once medium if required by policy.</li>
+    <li>Require TLS for all Mastra endpoints.</li>
+    <li>Rotate the OpenSearch password from the docker compose example.</li>
+    <li>Use least-privilege for agents and storage credentials.</li>
+    <li>
+        Enable audit logging and store logs in a write-once medium if required
+        by policy.
+    </li>
 </ul>
 
 <Separator className="my-6" />
@@ -698,18 +750,22 @@ export async function POST(req: Request) {
         </ul>
       </div>
     </div>
+
   </CardContent>
 </Card>
 
 <div className="mt-8 p-4 bg-blue-50 dark:bg-blue-900/20 rounded-lg border border-blue-200 dark:border-blue-800">
-  <div className="flex items-center gap-2 mb-2">
-    <Terminal className="h-5 w-5 text-blue-600" />
-    <span className="font-medium text-blue-900 dark:text-blue-100">Ready to Get Started?</span>
-  </div>
-  <p className="text-blue-800 dark:text-blue-200 mb-4">
-    Follow the Quick Start guide above to set up your development environment and start building with Mastra.
-  </p>
-  <Button variant="default" className="bg-blue-600 hover:bg-blue-700">
-    Start Development
-  </Button>
+    <div className="flex items-center gap-2 mb-2">
+        <Terminal className="h-5 w-5 text-blue-600" />
+        <span className="font-medium text-blue-900 dark:text-blue-100">
+            Ready to Get Started?
+        </span>
+    </div>
+    <p className="text-blue-800 dark:text-blue-200 mb-4">
+        Follow the Quick Start guide above to set up your development
+        environment and start building with Mastra.
+    </p>
+    <Button variant="default" className="bg-blue-600 hover:bg-blue-700">
+        Start Development
+    </Button>
 </div>

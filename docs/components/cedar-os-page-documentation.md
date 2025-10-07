@@ -27,11 +27,10 @@ Client-side Next.js page that integrates the interactive roadmap canvas with Ced
 - ARC-001: Design patterns: Client component composition with state-driven UI modes.
 
 - ARC-002: Dependencies:
-
-  - Roadmap components: `RoadmapCanvas`
-  - Chat components: `CedarCaptionChat`, `FloatingCedarChat`, `SidePanelCedarChat`
-  - UI controls: `ChatModeSelector`
-  - Mastra client: `createMastraClient`
+    - Roadmap components: `RoadmapCanvas`
+    - Chat components: `CedarCaptionChat`, `FloatingCedarChat`, `SidePanelCedarChat`
+    - UI controls: `ChatModeSelector`
+    - Mastra client: `createMastraClient`
 
 - ARC-003: Interactions: Initializes Mastra client on mount, allows mode switching, renders different layouts based on chat mode.
 
@@ -66,10 +65,10 @@ graph TD
 
 - INT-001: Component props and state.
 
-| Property | Purpose | Type | Usage Notes |
-|----------|---------|------|-------------|
-| `chatMode` | Current chat UI mode | `'caption' \| 'floating' \| 'sidepanel'` | Controls layout and chat component |
-| `client` | Mastra client instance | `MastraClient` | For agent communication |
+| Property   | Purpose                | Type                                     | Usage Notes                        |
+| ---------- | ---------------------- | ---------------------------------------- | ---------------------------------- |
+| `chatMode` | Current chat UI mode   | `'caption' \| 'floating' \| 'sidepanel'` | Controls layout and chat component |
+| `client`   | Mastra client instance | `MastraClient`                           | For agent communication            |
 
 ### Chat Modes
 
@@ -108,13 +107,13 @@ This is a Next.js page component; accessed via `/cedar-os` route.
 ```tsx
 // On mount, send roadmap context
 useEffect(() => {
-  if (client.chat) {
-    await client.chat({ 
-      message: 'Initialize roadmap context',
-      context: { type: 'roadmap_init' }
-    });
-  }
-}, [client]);
+    if (client.chat) {
+        await client.chat({
+            message: 'Initialize roadmap context',
+            context: { type: 'roadmap_init' },
+        })
+    }
+}, [client])
 ```
 
 ## 6. Quality Attributes
@@ -128,26 +127,26 @@ useEffect(() => {
 ## 7. Reference Information
 
 - REF-001: Dependencies (approximate):
-  - react (^18.0.0)
-  - next (^14.0.0)
-  - @mastra/client (^1.0.0)
+    - react (^18.0.0)
+    - next (^14.0.0)
+    - @mastra/client (^1.0.0)
 
 - REF-002: Configuration
-  - Requires Mastra server running
-  - Environment variables for Mastra client
+    - Requires Mastra server running
+    - Environment variables for Mastra client
 
 - REF-003: Testing guidelines
-  - Test mode switching and layout changes.
-  - Mock Mastra client for initialization.
+    - Test mode switching and layout changes.
+    - Mock Mastra client for initialization.
 
 - REF-004: Troubleshooting
-  - Issue: Mastra errors — check server connection.
-  - Issue: Layout issues — verify chat component imports.
+    - Issue: Mastra errors — check server connection.
+    - Issue: Layout issues — verify chat component imports.
 
 - REF-005: Related docs
-  - `cedar/RoadmapCanvas.tsx`
-  - `cedar/ChatModeSelector.tsx`
-  - Chat component documentations
+    - `cedar/RoadmapCanvas.tsx`
+    - `cedar/ChatModeSelector.tsx`
+    - Chat component documentations
 
 - REF-006: Change history
-  - 1.0 (2025-09-23) - Initial documentation generated
+    - 1.0 (2025-09-23) - Initial documentation generated

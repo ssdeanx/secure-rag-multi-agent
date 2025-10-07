@@ -27,12 +27,11 @@ A Mastra workflow for handling chat interactions, including context fetching, me
 - ARC-001: Design patterns: Sequential workflow with streaming composition.
 
 - ARC-002: Dependencies:
+    - @mastra/core (createWorkflow, createStep)
 
-  - @mastra/core (createWorkflow, createStep)
+    - zod (schemas: ChatInput/Output)
 
-  - zod (schemas: ChatInput/Output)
-
-  - Local: productRoadmapAgent, streamUtils (streamJSONEvent, handleTextStream)
+    - Local: productRoadmapAgent, streamUtils (streamJSONEvent, handleTextStream)
 
 - ARC-003: Interactions: Steps chain input; callAgent streams to controller.
 
@@ -85,15 +84,15 @@ graph TD
 
 - INT-001: Workflow with schemas.
 
-| Schema | Purpose | Fields | Notes |
-|--------|---------|--------|-------|
-| Input | Chat request | `prompt, temperature, maxTokens, systemPrompt, resourceId, threadId, streamController` | Optional memory/stream |
-| Output | Response | `content: string, usage?: any` | From agent |
+| Schema | Purpose      | Fields                                                                                 | Notes                  |
+| ------ | ------------ | -------------------------------------------------------------------------------------- | ---------------------- |
+| Input  | Chat request | `prompt, temperature, maxTokens, systemPrompt, resourceId, threadId, streamController` | Optional memory/stream |
+| Output | Response     | `content: string, usage?: any`                                                         | From agent             |
 
 ### Usage
 
 ```ts
-const result = await chatWorkflow.execute({prompt: 'Hello'});
+const result = await chatWorkflow.execute({ prompt: 'Hello' })
 ```
 
 INT notes:
@@ -122,20 +121,20 @@ Edge cases and considerations:
 
 ```ts
 // /api/chat
-import { chatWorkflow } from '../mastra/workflows/chatWorkflow';
+import { chatWorkflow } from '../mastra/workflows/chatWorkflow'
 
 export async function POST(req) {
-  const input = await req.json();
-  const result = await chatWorkflow.execute(input);
-  return Response.json(result);
+    const input = await req.json()
+    const result = await chatWorkflow.execute(input)
+    return Response.json(result)
 }
 ```
 
 ### With Streaming
 
 ```ts
-const input = {prompt: 'Query', streamController};
-const streamResult = await chatWorkflow.execute(input); // Handles via callAgent
+const input = { prompt: 'Query', streamController }
+const streamResult = await chatWorkflow.execute(input) // Handles via callAgent
 ```
 
 Best practices:

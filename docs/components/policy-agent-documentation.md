@@ -1,11 +1,11 @@
 ---
-title: "Policy Agent"
-description: "A policy enforcement agent that generates access filters based on user claims and role-based access control rules"
-component_type: "Mastra Agent"
-framework: "Mastra"
-language: "TypeScript"
-platform: "Node.js"
-tags: ["agent", "policy", "access-control", "rbac", "security", "claims"]
+title: 'Policy Agent'
+description: 'A policy enforcement agent that generates access filters based on user claims and role-based access control rules'
+component_type: 'Mastra Agent'
+framework: 'Mastra'
+language: 'TypeScript'
+platform: 'Node.js'
+tags: ['agent', 'policy', 'access-control', 'rbac', 'security', 'claims']
 ---
 
 # Policy Agent (`src/mastra/agents/policy.agent.ts`)
@@ -142,12 +142,15 @@ graph TB
 ### Agent Properties
 
 #### `id: "policy"`
+
 Unique identifier for the agent within the Mastra system.
 
 #### `name: "policy"`
+
 Human-readable name for the agent.
 
 #### `description`
+
 "A policy enforcement agent that generates access filters based on user claims."
 
 ### Core Functionality
@@ -171,6 +174,7 @@ The agent operates under strict security rules:
 ### Classification Determination
 
 **Maximum Classification Levels:**
+
 - **stepUp == true**: Allow up to "confidential"
 - **HR roles** (hr.admin, hr.viewer): Allow up to "confidential"
 - **Other sensitive roles** without stepUp: Cap at "internal"
@@ -188,7 +192,7 @@ The agent operates under strict security rules:
 
 ```typescript
 accessFilterSchema.extend({
-  maxClassification: z.enum(["public", "internal", "confidential"])
+    maxClassification: z.enum(['public', 'internal', 'confidential']),
 })
 ```
 
@@ -196,8 +200,8 @@ accessFilterSchema.extend({
 
 ```json
 {
-  "allowTags": ["role:finance.viewer", "tenant:acme"],
-  "maxClassification": "internal"
+    "allowTags": ["role:finance.viewer", "tenant:acme"],
+    "maxClassification": "internal"
 }
 ```
 
@@ -235,9 +239,9 @@ accessFilterSchema.extend({
 
 ```json
 {
-  "roles": ["finance.viewer"],
-  "tenant": "acme",
-  "stepUp": false
+    "roles": ["finance.viewer"],
+    "tenant": "acme",
+    "stepUp": false
 }
 ```
 
@@ -245,8 +249,8 @@ accessFilterSchema.extend({
 
 ```json
 {
-  "allowTags": ["role:finance.viewer", "tenant:acme"],
-  "maxClassification": "internal"
+    "allowTags": ["role:finance.viewer", "tenant:acme"],
+    "maxClassification": "internal"
 }
 ```
 
@@ -256,9 +260,9 @@ accessFilterSchema.extend({
 
 ```json
 {
-  "roles": ["hr.viewer"],
-  "tenant": "acme",
-  "stepUp": false
+    "roles": ["hr.viewer"],
+    "tenant": "acme",
+    "stepUp": false
 }
 ```
 
@@ -266,8 +270,8 @@ accessFilterSchema.extend({
 
 ```json
 {
-  "allowTags": ["role:hr.viewer", "tenant:acme"],
-  "maxClassification": "confidential"
+    "allowTags": ["role:hr.viewer", "tenant:acme"],
+    "maxClassification": "confidential"
 }
 ```
 
@@ -330,7 +334,7 @@ accessFilterSchema.extend({
 ### Memory Configuration
 
 ```typescript
-const store = createResearchMemory();
+const store = createResearchMemory()
 // Uses LibSQL for persistent policy conversation storage
 ```
 
@@ -345,43 +349,43 @@ GOOGLE_GENERATIVE_AI_API_KEY=your-api-key
 ### Policy Generation Issues
 
 1. **Incorrect Classification Levels**
-   - Verify role definitions and stepUp status
-   - Check classification matrix application
-   - Validate HR role identification
+    - Verify role definitions and stepUp status
+    - Check classification matrix application
+    - Validate HR role identification
 
 2. **Missing Tags**
-   - Ensure all roles are extracted from claims
-   - Verify tenant inclusion when provided
-   - Check tag format compliance
+    - Ensure all roles are extracted from claims
+    - Verify tenant inclusion when provided
+    - Check tag format compliance
 
 3. **Access Filter Errors**
-   - Validate schema compliance
-   - Check enum value restrictions
-   - Ensure proper JSON formatting
+    - Validate schema compliance
+    - Check enum value restrictions
+    - Ensure proper JSON formatting
 
 ### Security Issues
 
 1. **Over-Permissive Access**
-   - Review classification determination logic
-   - Verify conservative default application
-   - Check role privilege escalation prevention
+    - Review classification determination logic
+    - Verify conservative default application
+    - Check role privilege escalation prevention
 
 2. **Under-Restrictive Access**
-   - Validate classification caps for non-sensitive roles
-   - Ensure stepUp requirement enforcement
-   - Check tenant isolation implementation
+    - Validate classification caps for non-sensitive roles
+    - Ensure stepUp requirement enforcement
+    - Check tenant isolation implementation
 
 ### Technical Issues
 
 1. **Schema Validation Errors**
-   - Verify input claims structure
-   - Check output schema compliance
-   - Validate enum restrictions
+    - Verify input claims structure
+    - Check output schema compliance
+    - Validate enum restrictions
 
 2. **Model Response Problems**
-   - Verify API key configuration
-   - Check model availability
-   - Monitor policy generation consistency
+    - Verify API key configuration
+    - Check model availability
+    - Monitor policy generation consistency
 
 ## References
 

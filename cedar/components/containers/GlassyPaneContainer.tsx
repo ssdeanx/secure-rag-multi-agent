@@ -1,73 +1,74 @@
-import { cn, useStyling } from 'cedar-os';
-import type { HTMLMotionProps} from 'motion/react';
-import { motion } from 'motion/react';
-import React from 'react';
+import { cn, useStyling } from 'cedar-os'
+import type { HTMLMotionProps } from 'motion/react'
+import { motion } from 'motion/react'
+import React from 'react'
 
 interface GlassyPaneContainerProps
-	extends Omit<HTMLMotionProps<'div'>, 'onDrag'> {
-	children: React.ReactNode;
-	/**
-	 * Whether to force dark theme styling. Otherwise derives from Cedar styling store when available.
-	 */
-	isDarkTheme?: boolean;
-	className?: string;
-	layoutId?: string;
+    extends Omit<HTMLMotionProps<'div'>, 'onDrag'> {
+    children: React.ReactNode
+    /**
+     * Whether to force dark theme styling. Otherwise derives from Cedar styling store when available.
+     */
+    isDarkTheme?: boolean
+    className?: string
+    layoutId?: string
 }
 
 const GlassyPaneContainer: React.FC<GlassyPaneContainerProps> = ({
-	children,
-	isDarkTheme = false,
-	className = '',
-	layoutId,
-	style,
-	...props
+    children,
+    isDarkTheme = false,
+    className = '',
+    layoutId,
+    style,
+    ...props
 }) => {
-	/* ------------------------------------------------------------------ */
-	/* Theme resolution                                                   */
-	/* ------------------------------------------------------------------ */
+    /* ------------------------------------------------------------------ */
+    /* Theme resolution                                                   */
+    /* ------------------------------------------------------------------ */
 
-	// Pull dark mode preference from Cedar styling slice
-	const { styling } = useStyling();
+    // Pull dark mode preference from Cedar styling slice
+    const { styling } = useStyling()
 
-	// Resolve whether dark theme should be applied
-	const darkThemeEnabled = isDarkTheme || styling.darkMode;
+    // Resolve whether dark theme should be applied
+    const darkThemeEnabled = isDarkTheme || styling.darkMode
 
-	/* ------------------------------------------------------------------ */
-	/* Styling                                                            */
-	/* ------------------------------------------------------------------ */
+    /* ------------------------------------------------------------------ */
+    /* Styling                                                            */
+    /* ------------------------------------------------------------------ */
 
-	// Base translucent background + blur for glass effect
-	const backgroundStyle = darkThemeEnabled
-		? {
-				background: 'rgba(23, 23, 23, 0.55)',
-				backdropFilter: 'blur(12px)',
-				WebkitBackdropFilter: 'blur(12px)', // Safari
-		  }
-		: {
-				background: 'rgba(255, 255, 255, 0.65)',
-				backdropFilter: 'blur(8px)',
-				WebkitBackdropFilter: 'blur(8px)',
-		  };
+    // Base translucent background + blur for glass effect
+    const backgroundStyle = darkThemeEnabled
+        ? {
+              background: 'rgba(23, 23, 23, 0.55)',
+              backdropFilter: 'blur(12px)',
+              WebkitBackdropFilter: 'blur(12px)', // Safari
+          }
+        : {
+              background: 'rgba(255, 255, 255, 0.65)',
+              backdropFilter: 'blur(8px)',
+              WebkitBackdropFilter: 'blur(8px)',
+          }
 
-	// Subtle 3D-style shadows/highlights to lift the pane
-	const boxShadow = darkThemeEnabled
-		? '0 1px 0 rgba(255, 255, 255, 0.05) inset, 0 4px 8px rgba(0, 0, 0, 0.55)'
-		: '0 1px 0 rgba(255, 255, 255, 0.6) inset, 0 4px 8px rgba(0, 0, 0, 0.25)';
+    // Subtle 3D-style shadows/highlights to lift the pane
+    const boxShadow = darkThemeEnabled
+        ? '0 1px 0 rgba(255, 255, 255, 0.05) inset, 0 4px 8px rgba(0, 0, 0, 0.55)'
+        : '0 1px 0 rgba(255, 255, 255, 0.6) inset, 0 4px 8px rgba(0, 0, 0, 0.25)'
 
-	return (
-		<motion.div
-			layoutId={layoutId}
-			className={cn('rounded-lg w-full', className)}
-			style={{
-				boxShadow,
-				willChange: 'box-shadow, filter, background',
-				...backgroundStyle,
-				...style,
-			}}
-			{...props}>
-			{children}
-		</motion.div>
-	);
-};
+    return (
+        <motion.div
+            layoutId={layoutId}
+            className={cn('rounded-lg w-full', className)}
+            style={{
+                boxShadow,
+                willChange: 'box-shadow, filter, background',
+                ...backgroundStyle,
+                ...style,
+            }}
+            {...props}
+        >
+            {children}
+        </motion.div>
+    )
+}
 
-export default GlassyPaneContainer;
+export default GlassyPaneContainer

@@ -97,18 +97,21 @@ graph TB
 ## 🏢 Use Cases
 
 ### Corporate Knowledge Management
+
 - **Secure Employee Assistants** with department-specific access
 - **Compliance Chatbots** that respect data classification policies
 - **Executive Dashboards** with cross-department insights
 - **HR Support Systems** with confidential data protection
 
 ### Industry Applications
+
 - **Financial Services**: Secure access to trading policies and compliance documents
 - **Healthcare**: HIPAA-compliant medical knowledge bases
 - **Legal Firms**: Privilege-aware document retrieval
 - **Government**: Classified information management
 
 ### Technical Scenarios
+
 - **Multi-Tenant SaaS**: Isolated knowledge bases per organization
 - **Regulatory Compliance**: Audit trails and access logging
 - **Content Moderation**: Automated security classification
@@ -144,32 +147,37 @@ npm run cli index
 ## 📚 Documentation Structure
 
 ### 🏁 Getting Started
+
 - **[Quick Start](./quick-start.md)**: Installation, configuration, and first run
 - **[Demo Roles](./demo-roles.md)**: Interactive examples with different user roles
 
 ### 🔐 Security & Governance
+
 - **[Security Model](./security.md)**: Roles, classifications, and access policies
 - **[Architecture](./architecture.md)**: System design and agent workflows
 
 ### 🛠️ Developer Resources
+
 - **[API Reference](./api-reference.md)**: Complete endpoint documentation
 - **[Advanced Configuration](./advanced.md)**: Multi-LLM setup and custom agents
 - **[Deployment](./deployment.md)**: Production deployment guides
 
 ### 🐛 Troubleshooting
+
 - **[Troubleshooting](./troubleshooting.md)**: Common issues and solutions
 - **[Contributing](../README.md#contributing)**: Development guidelines
 
 ## 🔧 System Requirements
 
-| Component | Minimum | Recommended |
-|-----------|---------|-------------|
-| **Node.js** | 20.9.0 | 20.15.0+ |
-| **Memory** | 4GB RAM | 8GB RAM |
-| **Storage** | 10GB | 50GB SSD |
-| **Docker** | 24.0+ | 25.0+ |
+| Component   | Minimum | Recommended |
+| ----------- | ------- | ----------- |
+| **Node.js** | 20.9.0  | 20.15.0+    |
+| **Memory**  | 4GB RAM | 8GB RAM     |
+| **Storage** | 10GB    | 50GB SSD    |
+| **Docker**  | 24.0+   | 25.0+       |
 
 ### Supported Platforms
+
 - ✅ **Linux** (Ubuntu 20.04+, CentOS 8+)
 - ✅ **macOS** (12.0+ with Apple Silicon/Intel)
 - ✅ **Windows** (WSL2 recommended)
@@ -178,6 +186,7 @@ npm run cli index
 ## 🌟 Sample Interactions
 
 ### Finance Team Member
+
 ```bash
 User: "What's our expense reimbursement policy?"
 
@@ -188,6 +197,7 @@ System: [Authenticates as finance.viewer]
 ```
 
 ### HR Administrator
+
 ```bash
 User: "Show me the salary ranges for senior engineers"
 

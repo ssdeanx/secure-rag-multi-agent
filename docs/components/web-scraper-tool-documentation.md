@@ -1,11 +1,19 @@
 ---
-title: "Web Scraper Tool - Technical Documentation"
-component_path: "src/mastra/tools/web-scraper-tool.ts"
-version: "1.0"
-date_created: "2025-09-23"
-last_updated: "2025-09-23"
-owner: "AI Team"
-tags: ["tool", "web-scraping", "html-processing", "content-extraction", "security", "crawler"]
+title: 'Web Scraper Tool - Technical Documentation'
+component_path: 'src/mastra/tools/web-scraper-tool.ts'
+version: '1.0'
+date_created: '2025-09-23'
+last_updated: '2025-09-23'
+owner: 'AI Team'
+tags:
+    [
+        'tool',
+        'web-scraping',
+        'html-processing',
+        'content-extraction',
+        'security',
+        'crawler',
+    ]
 ---
 
 # Web Scraper Tool Documentation
@@ -131,30 +139,30 @@ graph TB
 
 ### Input Schema
 
-| Property | Type | Required | Description |
-|----------|------|----------|-------------|
-| `url` | `string` | Yes | Target URL to scrape (must be valid URL) |
-| `selector` | `string?` | No | CSS selector for content extraction |
-| `extractAttributes` | `string[]?` | No | HTML attributes to extract from elements |
-| `saveMarkdown` | `boolean?` | No | Save content as markdown file |
-| `markdownFileName` | `string?` | No | Custom filename for markdown output |
+| Property            | Type        | Required | Description                              |
+| ------------------- | ----------- | -------- | ---------------------------------------- |
+| `url`               | `string`    | Yes      | Target URL to scrape (must be valid URL) |
+| `selector`          | `string?`   | No       | CSS selector for content extraction      |
+| `extractAttributes` | `string[]?` | No       | HTML attributes to extract from elements |
+| `saveMarkdown`      | `boolean?`  | No       | Save content as markdown file            |
+| `markdownFileName`  | `string?`   | No       | Custom filename for markdown output      |
 
 ### Output Schema
 
-| Property | Type | Description |
-|----------|------|-------------|
-| `url` | `string` | Scraped URL |
-| `extractedData` | `Record[]` | Array of extracted element data |
-| `rawContent` | `string?` | Full HTML content (if no selector) |
-| `markdownContent` | `string?` | Converted markdown content |
-| `savedFilePath` | `string?` | Path to saved markdown file |
-| `status` | `string` | Operation status (success/failed) |
-| `errorMessage` | `string?` | Error details if failed |
+| Property          | Type       | Description                        |
+| ----------------- | ---------- | ---------------------------------- |
+| `url`             | `string`   | Scraped URL                        |
+| `extractedData`   | `Record[]` | Array of extracted element data    |
+| `rawContent`      | `string?`  | Full HTML content (if no selector) |
+| `markdownContent` | `string?`  | Converted markdown content         |
+| `savedFilePath`   | `string?`  | Path to saved markdown file        |
+| `status`          | `string`   | Operation status (success/failed)  |
+| `errorMessage`    | `string?`  | Error details if failed            |
 
 ### Public Methods
 
-| Method | Parameters | Return Type | Description |
-|--------|------------|-------------|-------------|
+| Method      | Parameters              | Return Type              | Description                    |
+| ----------- | ----------------------- | ------------------------ | ------------------------------ |
 | `execute()` | `context: ScraperInput` | `Promise<ScraperOutput>` | Execute web scraping operation |
 
 ## 4. Usage Examples
@@ -162,17 +170,17 @@ graph TB
 ### Basic Content Extraction
 
 ```typescript
-import { webScraperTool } from './src/mastra/tools/web-scraper-tool';
+import { webScraperTool } from './src/mastra/tools/web-scraper-tool'
 
 const result = await webScraperTool.execute({
-  context: {
-    url: "https://example.com/article",
-    selector: "article h1, article p",
-    extractAttributes: ["href", "src"]
-  },
-  mastra: mastraInstance,
-  tracingContext: tracingContext
-});
+    context: {
+        url: 'https://example.com/article',
+        selector: 'article h1, article p',
+        extractAttributes: ['href', 'src'],
+    },
+    mastra: mastraInstance,
+    tracingContext: tracingContext,
+})
 
 // Result:
 // {
@@ -189,14 +197,14 @@ const result = await webScraperTool.execute({
 
 ```typescript
 const result = await webScraperTool.execute({
-  context: {
-    url: "https://example.com/docs",
-    saveMarkdown: true,
-    markdownFileName: "documentation.md"
-  },
-  mastra: mastraInstance,
-  tracingContext: tracingContext
-});
+    context: {
+        url: 'https://example.com/docs',
+        saveMarkdown: true,
+        markdownFileName: 'documentation.md',
+    },
+    mastra: mastraInstance,
+    tracingContext: tracingContext,
+})
 
 // Saves full page as markdown and returns structured data
 ```
@@ -204,19 +212,16 @@ const result = await webScraperTool.execute({
 ### Batch Scraping
 
 ```typescript
-import { batchWebScraperTool } from './src/mastra/tools/web-scraper-tool';
+import { batchWebScraperTool } from './src/mastra/tools/web-scraper-tool'
 
 const result = await batchWebScraperTool.execute({
-  context: {
-    urls: [
-      "https://example.com/page1",
-      "https://example.com/page2"
-    ],
-    selector: "h1, h2, p"
-  },
-  mastra: mastraInstance,
-  tracingContext: tracingContext
-});
+    context: {
+        urls: ['https://example.com/page1', 'https://example.com/page2'],
+        selector: 'h1, h2, p',
+    },
+    mastra: mastraInstance,
+    tracingContext: tracingContext,
+})
 
 // Scrapes multiple URLs in batch
 ```
@@ -278,21 +283,21 @@ const cleanContent = await contentCleanerTool.execute({...});
 
 ### Dependencies
 
-| Package | Version | Purpose |
-|---------|---------|---------|
-| `@mastra/core/tools` | ^0.1.0 | Tool framework |
-| `@mastra/core/ai-tracing` | ^0.1.0 | AI tracing integration |
-| `cheerio` | ^1.0.0 | HTML parsing and manipulation |
-| `crawlee` | ^3.8.0 | Web crawling framework |
-| `jsdom` | ^23.0.0 | DOM implementation for Node.js |
-| `marked` | ^12.0.0 | Markdown parsing and conversion |
-| `zod` | ^3.22.4 | Schema validation |
+| Package                   | Version | Purpose                         |
+| ------------------------- | ------- | ------------------------------- |
+| `@mastra/core/tools`      | ^0.1.0  | Tool framework                  |
+| `@mastra/core/ai-tracing` | ^0.1.0  | AI tracing integration          |
+| `cheerio`                 | ^1.0.0  | HTML parsing and manipulation   |
+| `crawlee`                 | ^3.8.0  | Web crawling framework          |
+| `jsdom`                   | ^23.0.0 | DOM implementation for Node.js  |
+| `marked`                  | ^12.0.0 | Markdown parsing and conversion |
+| `zod`                     | ^3.22.4 | Schema validation               |
 
 ### Environment Variables
 
-| Variable | Required | Default | Description |
-|----------|----------|---------|-------------|
-| None | - | - | No environment variables required |
+| Variable | Required | Default | Description                       |
+| -------- | -------- | ------- | --------------------------------- |
+| None     | -        | -       | No environment variables required |
 
 ### Testing
 
@@ -334,8 +339,8 @@ curl http://localhost:3000/api/health/web-scraper
 
 ### Change History
 
-| Version | Date | Changes |
-|---------|------|---------|
-| 1.0 | 2025-09-23 | Initial implementation with comprehensive scraping tools |
-| 0.9 | 2025-09-20 | Added HTML sanitization and security features |
-| 0.8 | 2025-09-15 | Basic web scraping functionality |
+| Version | Date       | Changes                                                  |
+| ------- | ---------- | -------------------------------------------------------- |
+| 1.0     | 2025-09-23 | Initial implementation with comprehensive scraping tools |
+| 0.9     | 2025-09-20 | Added HTML sanitization and security features            |
+| 0.8     | 2025-09-15 | Basic web scraping functionality                         |

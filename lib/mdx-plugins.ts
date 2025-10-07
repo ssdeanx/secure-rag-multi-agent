@@ -11,32 +11,37 @@ import type { PluggableList } from 'unified'
 
 // Export typed arrays for TypeScript consumers
 export const remarkPlugins = [
-  remarkGfm,
-  remarkMdxFrontmatter,
-  remarkToc,
-  remarkRehype,
-  remarkSmartypants,
+    remarkGfm,
+    remarkMdxFrontmatter,
+    remarkToc,
+    remarkRehype,
+    remarkSmartypants,
 ]
 
 // Cast through a helper to satisfy Pluggable[] typing when tuples are present
-function asPluggables(arr: unknown[]): PluggableList { return arr as PluggableList }
+function asPluggables(arr: unknown[]): PluggableList {
+    return arr as PluggableList
+}
 
 export const rehypePlugins = asPluggables([
-  rehypeMermaid,
-  rehypePrism,
-  rehypeSlug,
-  [rehypeAutolinkHeadings, {
-    behavior: 'append',
-    properties: {
-      className: ['heading-anchor']
-    },
-    content: {
-      type: 'element',
-      tagName: 'span',
-      properties: { className: ['anchor-icon'], ariaHidden: 'true' },
-      children: [{ type: 'text', value: '#' }]
-    }
-  }],
+    rehypeMermaid,
+    rehypePrism,
+    rehypeSlug,
+    [
+        rehypeAutolinkHeadings,
+        {
+            behavior: 'append',
+            properties: {
+                className: ['heading-anchor'],
+            },
+            content: {
+                type: 'element',
+                tagName: 'span',
+                properties: { className: ['anchor-icon'], ariaHidden: 'true' },
+                children: [{ type: 'text', value: '#' }],
+            },
+        },
+    ],
 ])
 
 export default { remarkPlugins, rehypePlugins }

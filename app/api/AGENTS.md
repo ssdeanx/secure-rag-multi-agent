@@ -3,6 +3,7 @@
 # API Routes Directory (`/app/api`)
 
 ## Persona
+
 **Name:** Backend API Developer  
 **Role Objective:** Provide thin, reliable HTTP boundaries that validate input, invoke Mastra workflows, and stream structured outputs to the frontend.  
 **Prompt Guidance Template:**
@@ -21,10 +22,12 @@ Return only the minimal diff or code snippet required.
 ```
 
 Where:
+
 - `{persona_role}` = "Backend API Developer"
 - `{responsibility_summary}` = "exposing secure, streaming endpoints for governed RAG and indexing"
 
 ## Directory Purpose
+
 Bridge frontend interactions (chat, indexing, auth flows) to backend Mastra workflows with secure validation, response shaping, and streaming capabilities.
 
 ## Scope
@@ -44,25 +47,25 @@ Bridge frontend interactions (chat, indexing, auth flows) to backend Mastra work
 
 ## Key Routes
 
-| Route | Method(s) | Workflow / Action | Output Mode | Notes |
-|-------|-----------|-------------------|-------------|-------|
-| `/api/chat` | POST | `governed-rag-answer` | Streaming SSE | Secure RAG answer pipeline |
-| `/api/index` | POST | `governed-rag-index` | JSON (progress optional) | Triggers corpus ingestion |
-| (future) `/api/research` | POST | `researchWorkflow` | Streaming / staged | Multi-phase research pattern |
+| Route                    | Method(s) | Workflow / Action     | Output Mode              | Notes                        |
+| ------------------------ | --------- | --------------------- | ------------------------ | ---------------------------- |
+| `/api/chat`              | POST      | `governed-rag-answer` | Streaming SSE            | Secure RAG answer pipeline   |
+| `/api/index`             | POST      | `governed-rag-index`  | JSON (progress optional) | Triggers corpus ingestion    |
+| (future) `/api/research` | POST      | `researchWorkflow`    | Streaming / staged       | Multi-phase research pattern |
 
 ## Handler Pattern
 
 ```ts
 export async function POST(req: NextRequest) {
-  try {
-    const body = await req.json();
-    // 1. validate body (zod.parse)
-    // 2. auth / jwt presence check
-    // 3. invoke mastra workflow
-    // 4. stream or return structured response
-  } catch (err) {
-    return NextResponse.json({ error: 'Internal Error' }, { status: 500 });
-  }
+    try {
+        const body = await req.json()
+        // 1. validate body (zod.parse)
+        // 2. auth / jwt presence check
+        // 3. invoke mastra workflow
+        // 4. stream or return structured response
+    } catch (err) {
+        return NextResponse.json({ error: 'Internal Error' }, { status: 500 })
+    }
 }
 ```
 
@@ -75,12 +78,12 @@ export async function POST(req: NextRequest) {
 
 ## Validation Checklist
 
-| Concern | Enforcement |
-|---------|------------|
-| JWT present | 400 if missing |
-| Role claims | Provided to identity/policy agents upstream |
-| Required fields (`question` for chat) | 400 if absent |
-| Body size | (Optional) reject large payloads early |
+| Concern                               | Enforcement                                 |
+| ------------------------------------- | ------------------------------------------- |
+| JWT present                           | 400 if missing                              |
+| Role claims                           | Provided to identity/policy agents upstream |
+| Required fields (`question` for chat) | 400 if absent                               |
+| Body size                             | (Optional) reject large payloads early      |
 
 ## Error Handling Strategy
 
@@ -103,16 +106,16 @@ export async function POST(req: NextRequest) {
 ## Common Tasks
 
 1. Add New Route:
-   - Create `app/api/<name>/route.ts`
-   - Define `POST` (and others if needed)
-   - Validate payload with Zod
-   - Invoke appropriate workflow (`mastra.getWorkflow(...)`)
+    - Create `app/api/<name>/route.ts`
+    - Define `POST` (and others if needed)
+    - Validate payload with Zod
+    - Invoke appropriate workflow (`mastra.getWorkflow(...)`)
 2. Add Streaming Support:
-   - Wrap workflow stream in `ReadableStream`
-   - Forward incremental tokens/events
+    - Wrap workflow stream in `ReadableStream`
+    - Forward incremental tokens/events
 3. Add Input Field:
-   - Extend Zod schema
-   - Pass through to workflow invocation object
+    - Extend Zod schema
+    - Pass through to workflow invocation object
 
 ## Performance Considerations
 
@@ -128,10 +131,10 @@ export async function POST(req: NextRequest) {
 
 ## Change Log
 
-| Version | Date (UTC) | Change |
-|---------|------------|--------|
-| 1.0.1 | 2025-09-24 | Formatting fixes & fenced code languages added |
-| 1.0.0 | 2025-09-24 | Standardized template applied; legacy content preserved |
+| Version | Date (UTC) | Change                                                  |
+| ------- | ---------- | ------------------------------------------------------- |
+| 1.0.1   | 2025-09-24 | Formatting fixes & fenced code languages added          |
+| 1.0.0   | 2025-09-24 | Standardized template applied; legacy content preserved |
 
 ## Legacy Content (Preserved)
 
@@ -155,4 +158,7 @@ This directory contains the backend API endpoints for the Next.js application. F
 - **Input Validation:** Always validate the incoming request body to ensure it contains the required fields. The `/api/chat/route.ts` file demonstrates this by checking for the presence of `jwt` and `question`. For more complex validation, use a library like Zod.
 - **Keep Handlers Lean:** Route handlers should be lightweight. Their primary job is to receive a request, call the appropriate service or workflow, and format the response. Complex business logic should be delegated to the `/src/mastra/services` or `/src/mastra/workflows` directories.
 ```
+
+```
+
 ```

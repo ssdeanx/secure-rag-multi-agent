@@ -1,23 +1,29 @@
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
+import {
+    Card,
+    CardContent,
+    CardDescription,
+    CardHeader,
+    CardTitle,
+} from '@/components/ui/card'
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import { Mermaid } from '@/components/Mermaid'
 import {
-  Layers,
-  Workflow,
-  Database,
-  Brain,
-  Shield,
-  Settings,
-  ArrowRight,
-  GitBranch,
-  Zap,
-  Server,
-  FileText,
-  Users,
-  CheckCircle
+    Layers,
+    Workflow,
+    Database,
+    Brain,
+    Shield,
+    Settings,
+    ArrowRight,
+    GitBranch,
+    Zap,
+    Server,
+    FileText,
+    Users,
+    CheckCircle,
 } from 'lucide-react'
 
 # System Architecture
@@ -25,11 +31,12 @@ import {
 The Mastra Governed RAG is built around Mastra's multi-agent orchestration framework, integrating Next.js for the frontend/API, Qdrant for vector storage, and OpenAI for embeddings/LLM. The core logic resides in `src/mastra/`, with workflows coordinating agents, tools, and services for secure RAG operations.
 
 <Alert className="mb-6">
-  <Layers className="h-4 w-4" />
-  <AlertTitle>Multi-Agent Architecture</AlertTitle>
-  <AlertDescription>
-    Specialized AI agents work together in orchestrated workflows to ensure security, accuracy, and compliance at every step of the RAG pipeline.
-  </AlertDescription>
+    <Layers className="h-4 w-4" />
+    <AlertTitle>Multi-Agent Architecture</AlertTitle>
+    <AlertDescription>
+        Specialized AI agents work together in orchestrated workflows to ensure
+        security, accuracy, and compliance at every step of the RAG pipeline.
+    </AlertDescription>
 </Alert>
 
 <!-- toc -->
@@ -54,39 +61,39 @@ The Mastra Governed RAG is built around Mastra's multi-agent orchestration frame
     </CardContent>
   </Card>
 
-  <Card>
+<Card>
     <CardHeader className="pb-3">
-      <CardTitle className="text-lg flex items-center">
-        <Brain className="h-5 w-5 mr-2 text-purple-500" />
-        Backend (Mastra)
-      </CardTitle>
+        <CardTitle className="text-lg flex items-center">
+            <Brain className="h-5 w-5 mr-2 text-purple-500" />
+            Backend (Mastra)
+        </CardTitle>
     </CardHeader>
     <CardContent>
-      <ul className="space-y-1 text-sm">
-        <li>• Agent orchestration</li>
-        <li>• Workflow management</li>
-        <li>• Security enforcement</li>
-        <li>• Business logic services</li>
-      </ul>
+        <ul className="space-y-1 text-sm">
+            <li>• Agent orchestration</li>
+            <li>• Workflow management</li>
+            <li>• Security enforcement</li>
+            <li>• Business logic services</li>
+        </ul>
     </CardContent>
-  </Card>
+</Card>
 
-  <Card>
+<Card>
     <CardHeader className="pb-3">
-      <CardTitle className="text-lg flex items-center">
-        <Database className="h-5 w-5 mr-2 text-green-500" />
-        Storage Layer
-      </CardTitle>
+        <CardTitle className="text-lg flex items-center">
+            <Database className="h-5 w-5 mr-2 text-green-500" />
+            Storage Layer
+        </CardTitle>
     </CardHeader>
     <CardContent>
-      <ul className="space-y-1 text-sm">
-        <li>• Qdrant vector database</li>
-        <li>• LibSQL metadata store</li>
-        <li>• Security payloads</li>
-        <li>• Audit logging</li>
-      </ul>
+        <ul className="space-y-1 text-sm">
+            <li>• Qdrant vector database</li>
+            <li>• LibSQL metadata store</li>
+            <li>• Security payloads</li>
+            <li>• Audit logging</li>
+        </ul>
     </CardContent>
-  </Card>
+</Card>
 
   <Card>
     <CardHeader className="pb-3">
@@ -109,7 +116,8 @@ The Mastra Governed RAG is built around Mastra's multi-agent orchestration frame
 ## System Architecture Overview
 
 <div className="bg-slate-50 dark:bg-slate-900 p-6 rounded-lg border mb-8">
-  <Mermaid chart={`graph TB
+    <Mermaid
+        chart={`graph TB
     subgraph "Frontend Layer"
         A[Next.js App]
         B[Chat Interface]
@@ -172,7 +180,8 @@ The Mastra Governed RAG is built around Mastra's multi-agent orchestration frame
     style A fill:#e3f2fd
     style I fill:#fff3e0
     style M fill:#f3e5f5
-    style Q fill:#e8f5e8`} />
+    style Q fill:#e8f5e8`}
+    />
 </div>
 
 ## Core Directory Structure
@@ -229,6 +238,7 @@ The Mastra Governed RAG is built around Mastra's multi-agent orchestration frame
         </div>
       </div>
     </CardContent>
+
   </Card>
 </div>
 
@@ -329,24 +339,24 @@ Mastra workflows define sequential steps combining agents, tools, and services. 
     B --> C{Access Check}
     C -->|Authorized| D[Retrieve Agent]
     C -->|Denied| E[Access Error]
-    
+
     D --> F[Vector Search Tool]
     F --> G[Qdrant DB]
     G --> H[Filtered Contexts]
-    
+
     H --> I[Rerank Agent]
     I --> J[Relevance Scored]
-    
+
     J --> K[Answerer Agent]
     K --> L[Generated Answer + Citations]
-    
+
     L --> M[Verifier Agent]
     M --> N[Security Verified]
-    
+
     N --> O[Stream Response]
     O --> P[Answer Chunks]
     O --> Q[Citations]
-    
+
     style A fill:#e3f2fd
     style D fill:#f3e5f5
     style K fill:#fff3e0
@@ -355,6 +365,7 @@ Mastra workflows define sequential steps combining agents, tools, and services. 
         </div>
       </CardContent>
     </Card>
+
   </TabsContent>
 
   <TabsContent value="index">
@@ -422,6 +433,7 @@ Mastra workflows define sequential steps combining agents, tools, and services. 
             <div className="text-sm space-y-2">
               <div><strong>Qdrant Payload:</strong></div>
               <code className="block bg-background p-2 rounded text-xs">
+
 {`{
   docId: string,
   versionId: string,
@@ -431,29 +443,30 @@ Mastra workflows define sequential steps combining agents, tools, and services. 
   tenant: string,
   source: string
 }`}
-              </code>
-            </div>
-          </div>
+
+</code>
+</div>
+</div>
 
           <div className="bg-slate-50 dark:bg-slate-900 p-4 rounded-lg border">
             <h4 className="font-semibold mb-3">Indexing Workflow Diagram</h4>
             <Mermaid chart={`flowchart TD
     A[Documents<br/>corpus/*.md] --> B[Processor Service]
     B --> C[Parsed Text]
-    
+
     C --> D[Chunking Service]
     D --> E[Text Chunks<br/>~500 tokens]
-    
+
     E --> F[Embedding Service]
     F --> G[Vectors<br/>OpenAI text-embedding-3-small]
-    
+
     G --> H[Indexing Service]
     H --> I[Vector Storage]
     I --> J[(Qdrant DB<br/>with Security Payload)]
-    
+
     J --> K[Index Summary]
     K --> L[{indexed, failed, details}]
-    
+
     style A fill:#e3f2fd
     style D fill:#f3e5f5
     style H fill:#fff3e0
@@ -463,6 +476,7 @@ Mastra workflows define sequential steps combining agents, tools, and services. 
         </div>
       </CardContent>
     </Card>
+
   </TabsContent>
 </Tabs>
 
@@ -550,6 +564,7 @@ Mastra workflows define sequential steps combining agents, tools, and services. 
         </div>
       </div>
     </CardContent>
+
   </Card>
 </div>
 
@@ -664,33 +679,38 @@ Mastra workflows define sequential steps combining agents, tools, and services. 
 ## Logging & Monitoring
 
 <div className="space-y-4 mb-8">
-  <Card>
-    <CardHeader>
-      <CardTitle className="text-lg">Comprehensive Logging</CardTitle>
-      <CardDescription>All workflow steps logged for audit and debugging</CardDescription>
-    </CardHeader>
-    <CardContent>
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-        <div>
-          <h4 className="font-semibold mb-2">Application Logs</h4>
-          <div className="bg-muted p-3 rounded text-sm">
-            <code>logs/mastra.log</code><br/>
-            General application logging
-          </div>
-        </div>
-        <div>
-          <h4 className="font-semibold mb-2">Workflow Logs</h4>
-          <div className="bg-muted p-3 rounded text-sm">
-            <code>logs/workflow.log</code><br/>
-            Detailed workflow execution logs
-          </div>
-        </div>
-      </div>
-      <p className="text-sm text-muted-foreground mt-4">
-        All steps are logged using @mastra/loggers for complete audit trails, debugging, and compliance monitoring.
-      </p>
-    </CardContent>
-  </Card>
+    <Card>
+        <CardHeader>
+            <CardTitle className="text-lg">Comprehensive Logging</CardTitle>
+            <CardDescription>
+                All workflow steps logged for audit and debugging
+            </CardDescription>
+        </CardHeader>
+        <CardContent>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div>
+                    <h4 className="font-semibold mb-2">Application Logs</h4>
+                    <div className="bg-muted p-3 rounded text-sm">
+                        <code>logs/mastra.log</code>
+                        <br />
+                        General application logging
+                    </div>
+                </div>
+                <div>
+                    <h4 className="font-semibold mb-2">Workflow Logs</h4>
+                    <div className="bg-muted p-3 rounded text-sm">
+                        <code>logs/workflow.log</code>
+                        <br />
+                        Detailed workflow execution logs
+                    </div>
+                </div>
+            </div>
+            <p className="text-sm text-muted-foreground mt-4">
+                All steps are logged using @mastra/loggers for complete audit
+                trails, debugging, and compliance monitoring.
+            </p>
+        </CardContent>
+    </Card>
 </div>
 
 ## Extensibility
@@ -707,16 +727,17 @@ Mastra workflows define sequential steps combining agents, tools, and services. 
     </CardContent>
   </Card>
 
-  <Card>
+<Card>
     <CardHeader>
-      <CardTitle className="text-sm">Custom Workflows</CardTitle>
+        <CardTitle className="text-sm">Custom Workflows</CardTitle>
     </CardHeader>
     <CardContent>
-      <p className="text-sm text-muted-foreground">
-        Create new <code>.workflow.ts</code> files to define custom processing pipelines and business logic.
-      </p>
+        <p className="text-sm text-muted-foreground">
+            Create new <code>.workflow.ts</code> files to define custom
+            processing pipelines and business logic.
+        </p>
     </CardContent>
-  </Card>
+</Card>
 
   <Card>
     <CardHeader>
@@ -731,17 +752,17 @@ Mastra workflows define sequential steps combining agents, tools, and services. 
 </div>
 
 <div className="flex gap-4">
-  <Button asChild>
-    <a href="/docs/demo-roles">
-      <Users className="h-4 w-4 mr-2" />
-      Demo Roles
-      <ArrowRight className="h-4 w-4 ml-2" />
-    </a>
-  </Button>
-  <Button variant="outline" asChild>
-    <a href="/docs/api-reference">
-      <FileText className="h-4 w-4 mr-2" />
-      API Reference
-    </a>
-  </Button>
+    <Button asChild>
+        <a href="/docs/demo-roles">
+            <Users className="h-4 w-4 mr-2" />
+            Demo Roles
+            <ArrowRight className="h-4 w-4 ml-2" />
+        </a>
+    </Button>
+    <Button variant="outline" asChild>
+        <a href="/docs/api-reference">
+            <FileText className="h-4 w-4 mr-2" />
+            API Reference
+        </a>
+    </Button>
 </div>

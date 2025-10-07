@@ -27,9 +27,8 @@ Common utility functions for the application, primarily focused on UI class name
 - ARC-001: Design patterns: Utility module pattern. Pure functions with no side effects.
 
 - ARC-002: Dependencies:
-
-  - `clsx`: Conditional class name joining
-  - `tailwind-merge`: Tailwind class conflict resolution
+    - `clsx`: Conditional class name joining
+    - `tailwind-merge`: Tailwind class conflict resolution
 
 - ARC-003: Interactions: Pure functions that transform inputs to outputs.
 
@@ -58,9 +57,9 @@ graph TD
 
 - INT-001: Single utility function for class name manipulation.
 
-| Function | Purpose | Parameters | Return Type | Usage Notes |
-|----------|---------|------------|-------------|-------------|
-| `cn` | Merge and deduplicate CSS classes | `...inputs: ClassValue[]` | `string` | Tailwind class merging |
+| Function | Purpose                           | Parameters                | Return Type | Usage Notes            |
+| -------- | --------------------------------- | ------------------------- | ----------- | ---------------------- |
+| `cn`     | Merge and deduplicate CSS classes | `...inputs: ClassValue[]` | `string`    | Tailwind class merging |
 
 ### Function Signature
 
@@ -71,7 +70,14 @@ export function cn(...inputs: ClassValue[]): string
 Where `ClassValue` is:
 
 ```ts
-type ClassValue = ClassArray | ClassDictionary | string | number | null | boolean | undefined
+type ClassValue =
+    | ClassArray
+    | ClassDictionary
+    | string
+    | number
+    | null
+    | boolean
+    | undefined
 type ClassArray = ClassValue[]
 type ClassDictionary = Record<string, any>
 ```
@@ -93,9 +99,9 @@ Corner cases and considerations:
 ### Basic class merging
 
 ```ts
-import { cn } from '@/lib/utils';
+import { cn } from '@/lib/utils'
 
-const classes = cn('bg-blue-500', 'text-white', 'p-4');
+const classes = cn('bg-blue-500', 'text-white', 'p-4')
 // Returns: "bg-blue-500 text-white p-4"
 ```
 
@@ -103,26 +109,26 @@ const classes = cn('bg-blue-500', 'text-white', 'p-4');
 
 ```ts
 const buttonClasses = cn(
-  'btn',
-  isPrimary && 'btn-primary',
-  isDisabled && 'btn-disabled'
-);
+    'btn',
+    isPrimary && 'btn-primary',
+    isDisabled && 'btn-disabled'
+)
 ```
 
 ### Object syntax
 
 ```ts
 const classes = cn({
-  'bg-red-500': hasError,
-  'bg-green-500': isSuccess,
-  'text-white': true
-});
+    'bg-red-500': hasError,
+    'bg-green-500': isSuccess,
+    'text-white': true,
+})
 ```
 
 ### Tailwind conflict resolution
 
 ```ts
-const classes = cn('text-red-500', 'text-blue-500');
+const classes = cn('text-red-500', 'text-blue-500')
 // Returns: "text-blue-500" (last conflicting class wins)
 ```
 
@@ -137,23 +143,23 @@ const classes = cn('text-red-500', 'text-blue-500');
 ## 7. Reference Information
 
 - REF-001: Dependencies (approximate):
-  - clsx (^2.0.0)
-  - tailwind-merge (^2.0.0)
+    - clsx (^2.0.0)
+    - tailwind-merge (^2.0.0)
 
 - REF-002: Configuration
-  - No configuration required.
+    - No configuration required.
 
 - REF-003: Testing guidelines
-  - Test class merging and conflict resolution.
-  - Test with various input types.
+    - Test class merging and conflict resolution.
+    - Test with various input types.
 
 - REF-004: Troubleshooting
-  - Unexpected classes may indicate merge conflicts.
-  - Check Tailwind configuration for custom classes.
+    - Unexpected classes may indicate merge conflicts.
+    - Check Tailwind configuration for custom classes.
 
 - REF-005: Related docs
-  - Tailwind CSS documentation
-  - Component styling patterns
+    - Tailwind CSS documentation
+    - Component styling patterns
 
 - REF-006: Change history
-  - 1.0 (2025-09-23) - Initial documentation generated
+    - 1.0 (2025-09-23) - Initial documentation generated

@@ -1,46 +1,46 @@
 name: Validate AGENTS Documentation
 
 on:
-  push:
-    paths:
-    - '**/AGENTS.md'
-    - 'scripts/validate-agents-docs.mjs'
-    - '.github/workflows/validate-agents-docs.yml'
-  pull_request:
-    paths:
-    - '**/AGENTS.md'
-    - 'scripts/validate-agents-docs.mjs'
+    push:
+        paths:
+            - '**/AGENTS.md'
+            - 'scripts/validate-agents-docs.mjs'
+            - '.github/workflows/validate-agents-docs.yml'
+    pull_request:
+        paths:
+            - '**/AGENTS.md'
+            - 'scripts/validate-agents-docs.mjs'
 
 jobs:
-  validate:
-    runs-on: ubuntu-latest
-    steps:
-    - name: Checkout
-      uses: actions/checkout@v4
-      with:
-        fetch-depth: 0
-    - name: Setup Node
-      uses: actions/setup-node@v4
-      with:
-        node-version: 20
-        cache: 'npm'
-    - name: Install deps
-      run: npm install
-    - name: Determine base ref
-      id: base
-      run: |
-        if [ "${{ github.event.pull_request.base.sha }}" != "" ]; then
-          echo "base_ref=${{ github.event.pull_request.base.sha }}" >> $GITHUB_OUTPUT
-        else
-          echo "base_ref=origin/main" >> $GITHUB_OUTPUT
-        fi
-    - name: Check AGENTS sync status (dry-run)
-      run: |
-        OUT=$(node scripts/sync-agents-docs.mjs --base ${{ steps.base.outputs.base_ref }})
-        echo "$OUT"
-        if echo "$OUT" | grep -q 'updated'; then
-          echo '::error::AGENTS.md metadata out of sync. Run locally: npm run sync:agents:write'
-          exit 1
-        fi
-    - name: Validate AGENTS docs
-      run: npm run validate:agents
+    validate:
+        runs-on: ubuntu-latest
+        steps:
+            - name: Checkout
+              uses: actions/checkout@v4
+              with:
+                  fetch-depth: 0
+            - name: Setup Node
+              uses: actions/setup-node@v4
+              with:
+                  node-version: 20
+                  cache: 'npm'
+            - name: Install deps
+              run: npm install
+            - name: Determine base ref
+              id: base
+              run: |
+                  if [ "${{ github.event.pull_request.base.sha }}" != "" ]; then
+                    echo "base_ref=${{ github.event.pull_request.base.sha }}" >> $GITHUB_OUTPUT
+                  else
+                    echo "base_ref=origin/main" >> $GITHUB_OUTPUT
+                  fi
+            - name: Check AGENTS sync status (dry-run)
+              run: |
+                  OUT=$(node scripts/sync-agents-docs.mjs --base ${{ steps.base.outputs.base_ref }})
+                  echo "$OUT"
+                  if echo "$OUT" | grep -q 'updated'; then
+                    echo '::error::AGENTS.md metadata out of sync. Run locally: npm run sync:agents:write'
+                    exit 1
+                  fi
+            - name: Validate AGENTS docs
+              run: npm run validate:agents

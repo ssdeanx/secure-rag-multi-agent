@@ -27,16 +27,15 @@ Top-level navigation header used across the application layout. It provides bran
 - ARC-001: Design patterns: Presentational container component, composition via children, and use of small UI primitives (Menubar, MenubarMenu, MenubarTrigger).
 
 - ARC-002: Dependencies:
+    - React (Function component, JSX)
 
-  - React (Function component, JSX)
+    - Next.js navigation helpers (`usePathname`, `next/link`) for active-link highlighting
 
-  - Next.js navigation helpers (`usePathname`, `next/link`) for active-link highlighting
+    - Local utilities: `cn` (class name helper)
 
-  - Local utilities: `cn` (class name helper)
+    - UI primitives: `Menubar`, `MenubarMenu`, `MenubarTrigger` (project's ui/menubar)
 
-  - UI primitives: `Menubar`, `MenubarMenu`, `MenubarTrigger` (project's ui/menubar)
-
-  - `ThemeToggle` component
+    - `ThemeToggle` component
 
 - ARC-003: Interactions: Stateless UI — uses `usePathname()` to determine the active route and style links accordingly. Renders `Login` link when `currentRole` is not provided.
 
@@ -72,17 +71,17 @@ graph TD
 
 - INT-001: Public props and usage patterns.
 
-| Prop | Purpose | Type | Required | Usage Notes |
-|------|---------|------|----------|-------------|
-| `children` | Extra controls to render at the right side of header | `React.ReactNode` | No | Useful for user menus or badges |
-| `currentRole` | Used to determine whether to show Login link | `string (optional)` | No | If falsy or empty, Login link is shown |
+| Prop          | Purpose                                              | Type                | Required | Usage Notes                            |
+| ------------- | ---------------------------------------------------- | ------------------- | -------- | -------------------------------------- |
+| `children`    | Extra controls to render at the right side of header | `React.ReactNode`   | No       | Useful for user menus or badges        |
+| `currentRole` | Used to determine whether to show Login link         | `string (optional)` | No       | If falsy or empty, Login link is shown |
 
 ### Prop Types (excerpt)
 
 ```ts
 interface TopNavigationProps {
-  children?: React.ReactNode;
-  currentRole?: string;
+    children?: React.ReactNode
+    currentRole?: string
 }
 ```
 
@@ -106,17 +105,21 @@ Edge cases and considerations:
 ### Basic usage (in `app/layout.tsx`)
 
 ```tsx
-import { TopNavigation } from '@/components/TopNavigation';
+import { TopNavigation } from '@/components/TopNavigation'
 
-export default function RootLayout({ children }: { children: React.ReactNode }) {
-  return (
-    <html>
-      <body>
-        <TopNavigation />
-        <main>{children}</main>
-      </body>
-    </html>
-  );
+export default function RootLayout({
+    children,
+}: {
+    children: React.ReactNode
+}) {
+    return (
+        <html>
+            <body>
+                <TopNavigation />
+                <main>{children}</main>
+            </body>
+        </html>
+    )
 }
 ```
 
@@ -124,7 +127,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
 
 ```tsx
 <TopNavigation currentRole={user?.role}>
-  <UserMenu />
+    <UserMenu />
 </TopNavigation>
 ```
 
@@ -139,19 +142,19 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
 ## 7. Reference Information
 
 - REF-001: Dependencies
-  - next (Link, usePathname)
-  - React
-  - ThemeToggle (local component)
-  - Menubar UI primitives (project `components/ui/menubar`)
+    - next (Link, usePathname)
+    - React
+    - ThemeToggle (local component)
+    - Menubar UI primitives (project `components/ui/menubar`)
 
 - REF-002: Testing guidelines
-  - Render in Jest/React Testing Library as a client component (use RTL's `render` with client environment). Test link presence and active styling by mocking `usePathname`.
+    - Render in Jest/React Testing Library as a client component (use RTL's `render` with client environment). Test link presence and active styling by mocking `usePathname`.
 
 - REF-003: Troubleshooting
-  - Issue: Active link not highlighted — ensure `usePathname()` returns the expected path and component runs client-side.
+    - Issue: Active link not highlighted — ensure `usePathname()` returns the expected path and component runs client-side.
 
 - REF-004: Related docs
-  - `app/layout.tsx` — root layout that places `TopNavigation` in the application shell
+    - `app/layout.tsx` — root layout that places `TopNavigation` in the application shell
 
 - REF-005: Change history
-  - 1.0 (2025-09-23) - Initial documentation
+    - 1.0 (2025-09-23) - Initial documentation

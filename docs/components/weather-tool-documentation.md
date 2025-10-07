@@ -1,11 +1,11 @@
 ---
-title: "Weather Tool - Technical Documentation"
-component_path: "src/mastra/tools/weather-tool.ts"
-version: "1.0"
-date_created: "2025-09-23"
-last_updated: "2025-09-23"
-owner: "AI Team"
-tags: ["tool", "weather", "api-integration", "geocoding", "forecast"]
+title: 'Weather Tool - Technical Documentation'
+component_path: 'src/mastra/tools/weather-tool.ts'
+version: '1.0'
+date_created: '2025-09-23'
+last_updated: '2025-09-23'
+owner: 'AI Team'
+tags: ['tool', 'weather', 'api-integration', 'geocoding', 'forecast']
 ---
 
 # Weather Tool Documentation
@@ -128,26 +128,26 @@ graph TB
 
 ### Input Schema
 
-| Property | Type | Required | Description |
-|----------|------|----------|-------------|
-| `location` | `string` | Yes | City name or location identifier |
+| Property   | Type     | Required | Description                      |
+| ---------- | -------- | -------- | -------------------------------- |
+| `location` | `string` | Yes      | City name or location identifier |
 
 ### Output Schema
 
-| Property | Type | Description |
-|----------|------|-------------|
-| `temperature` | `number` | Current temperature in Celsius |
-| `feelsLike` | `number` | Apparent temperature (wind chill effect) |
-| `humidity` | `number` | Relative humidity percentage |
-| `windSpeed` | `number` | Wind speed in km/h |
-| `windGust` | `number` | Wind gust speed in km/h |
-| `conditions` | `string` | Human-readable weather condition |
-| `location` | `string` | Resolved location name |
+| Property      | Type     | Description                              |
+| ------------- | -------- | ---------------------------------------- |
+| `temperature` | `number` | Current temperature in Celsius           |
+| `feelsLike`   | `number` | Apparent temperature (wind chill effect) |
+| `humidity`    | `number` | Relative humidity percentage             |
+| `windSpeed`   | `number` | Wind speed in km/h                       |
+| `windGust`    | `number` | Wind gust speed in km/h                  |
+| `conditions`  | `string` | Human-readable weather condition         |
+| `location`    | `string` | Resolved location name                   |
 
 ### Public Methods
 
-| Method | Parameters | Return Type | Description |
-|--------|------------|-------------|-------------|
+| Method      | Parameters                      | Return Type            | Description                           |
+| ----------- | ------------------------------- | ---------------------- | ------------------------------------- |
 | `execute()` | `context: { location: string }` | `Promise<WeatherData>` | Retrieve current weather for location |
 
 ## 4. Usage Examples
@@ -155,13 +155,13 @@ graph TB
 ### Basic Weather Query
 
 ```typescript
-import { weatherTool } from './src/mastra/tools/weather-tool';
+import { weatherTool } from './src/mastra/tools/weather-tool'
 
 const result = await weatherTool.execute({
-  context: { location: "New York" },
-  mastra: mastraInstance,
-  tracingContext: tracingContext
-});
+    context: { location: 'New York' },
+    mastra: mastraInstance,
+    tracingContext: tracingContext,
+})
 
 // Result:
 // {
@@ -180,28 +180,28 @@ const result = await weatherTool.execute({
 ```typescript
 // Within a research workflow
 const weather = await weatherTool.execute({
-  context: { location: "Tokyo" },
-  mastra: mastraInstance,
-  tracingContext: tracingContext
-});
+    context: { location: 'Tokyo' },
+    mastra: mastraInstance,
+    tracingContext: tracingContext,
+})
 
 // Use weather data in research analysis
-const report = `Weather conditions in ${weather.location}: ${weather.conditions} with ${weather.temperature}°C`;
+const report = `Weather conditions in ${weather.location}: ${weather.conditions} with ${weather.temperature}°C`
 ```
 
 ### Travel Planning
 
 ```typescript
-const destinations = ["Paris", "London", "Berlin"];
+const destinations = ['Paris', 'London', 'Berlin']
 
 for (const city of destinations) {
-  const weather = await weatherTool.execute({
-    context: { location: city },
-    mastra: mastraInstance,
-    tracingContext: tracingContext
-  });
+    const weather = await weatherTool.execute({
+        context: { location: city },
+        mastra: mastraInstance,
+        tracingContext: tracingContext,
+    })
 
-  console.log(`${city}: ${weather.conditions}, ${weather.temperature}°C`);
+    console.log(`${city}: ${weather.conditions}, ${weather.temperature}°C`)
 }
 ```
 
@@ -209,14 +209,14 @@ for (const city of destinations) {
 
 ```typescript
 try {
-  const weather = await weatherTool.execute({
-    context: { location: "InvalidCity123" },
-    mastra: mastraInstance,
-    tracingContext: tracingContext
-  });
+    const weather = await weatherTool.execute({
+        context: { location: 'InvalidCity123' },
+        mastra: mastraInstance,
+        tracingContext: tracingContext,
+    })
 } catch (error) {
-  // Handle location not found
-  console.error('Weather lookup failed:', error.message);
+    // Handle location not found
+    console.error('Weather lookup failed:', error.message)
 }
 ```
 
@@ -260,17 +260,17 @@ try {
 
 ### Dependencies
 
-| Package | Version | Purpose |
-|---------|---------|---------|
-| `@mastra/core/tools` | ^0.1.0 | Tool framework |
-| `@mastra/core/ai-tracing` | ^0.1.0 | AI tracing integration |
-| `zod` | ^3.22.4 | Schema validation |
+| Package                   | Version | Purpose                |
+| ------------------------- | ------- | ---------------------- |
+| `@mastra/core/tools`      | ^0.1.0  | Tool framework         |
+| `@mastra/core/ai-tracing` | ^0.1.0  | AI tracing integration |
+| `zod`                     | ^3.22.4 | Schema validation      |
 
 ### Environment Variables
 
-| Variable | Required | Default | Description |
-|----------|----------|---------|-------------|
-| None | - | - | Uses hardcoded Open-Meteo API endpoints |
+| Variable | Required | Default | Description                             |
+| -------- | -------- | ------- | --------------------------------------- |
+| None     | -        | -       | Uses hardcoded Open-Meteo API endpoints |
 
 ### Testing
 
@@ -308,8 +308,8 @@ curl http://localhost:3000/api/health/weather
 
 ### Change History
 
-| Version | Date | Changes |
-|---------|------|---------|
-| 1.0 | 2025-09-23 | Initial implementation with Open-Meteo integration |
-| 0.9 | 2025-09-20 | Added comprehensive weather condition mapping |
-| 0.8 | 2025-09-15 | Basic weather retrieval functionality |
+| Version | Date       | Changes                                            |
+| ------- | ---------- | -------------------------------------------------- |
+| 1.0     | 2025-09-23 | Initial implementation with Open-Meteo integration |
+| 0.9     | 2025-09-20 | Added comprehensive weather condition mapping      |
+| 0.8     | 2025-09-15 | Basic weather retrieval functionality              |

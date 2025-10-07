@@ -1,11 +1,19 @@
 ---
-title: "Retrieve Agent"
-description: "A secure document retrieval agent that fetches relevant documents from vector storage based on user questions and access control policies"
-component_type: "Mastra Agent"
-framework: "Mastra"
-language: "TypeScript"
-platform: "Node.js"
-tags: ["agent", "retrieval", "vector-search", "access-control", "security", "rbac"]
+title: 'Retrieve Agent'
+description: 'A secure document retrieval agent that fetches relevant documents from vector storage based on user questions and access control policies'
+component_type: 'Mastra Agent'
+framework: 'Mastra'
+language: 'TypeScript'
+platform: 'Node.js'
+tags:
+    [
+        'agent',
+        'retrieval',
+        'vector-search',
+        'access-control',
+        'security',
+        'rbac',
+    ]
 ---
 
 # Retrieve Agent (`src/mastra/agents/retrieve.agent.ts`)
@@ -156,12 +164,15 @@ graph TB
 ### Agent Properties
 
 #### `id: "retrieve"`
+
 Unique identifier for the agent within the Mastra system.
 
 #### `name: "retrieve"`
+
 Human-readable name for the agent.
 
 #### `description`
+
 "A document retrieval agent that retrieves relevant documents based on a user's question and access level."
 
 ### Core Expertise
@@ -188,8 +199,8 @@ The agent enforces strict security policies:
 
 ```json
 {
-  "allowTags": ["tag1", "tag2"],
-  "maxClassification": "confidential"
+    "allowTags": ["tag1", "tag2"],
+    "maxClassification": "confidential"
 }
 ```
 
@@ -206,11 +217,11 @@ The agent processes secure retrieval requests with the following structure:
 
 ```json
 {
-  "question": "What are the company policies on remote work?",
-  "access": {
-    "allowTags": ["hr", "policies"],
-    "maxClassification": "internal"
-  }
+    "question": "What are the company policies on remote work?",
+    "access": {
+        "allowTags": ["hr", "policies"],
+        "maxClassification": "internal"
+    }
 }
 ```
 
@@ -271,10 +282,10 @@ The agent processes secure retrieval requests with the following structure:
 
 ```typescript
 vectorQueryTool({
-  question: input.question,
-  allowTags: input.access.allowTags,
-  maxClassification: input.access.maxClassification,
-  topK: 8
+    question: input.question,
+    allowTags: input.access.allowTags,
+    maxClassification: input.access.maxClassification,
+    topK: 8,
 })
 ```
 
@@ -306,18 +317,18 @@ The agent returns an array of filtered document contexts:
 
 ```json
 {
-  "contexts": [
-    {
-      "id": "doc-123",
-      "content": "Remote work policy states that employees may work from home up to 3 days per week...",
-      "metadata": {
-        "source": "hr-policies.pdf",
-        "classification": "internal",
-        "tags": ["hr", "policies"],
-        "score": 0.92
-      }
-    }
-  ]
+    "contexts": [
+        {
+            "id": "doc-123",
+            "content": "Remote work policy states that employees may work from home up to 3 days per week...",
+            "metadata": {
+                "source": "hr-policies.pdf",
+                "classification": "internal",
+                "tags": ["hr", "policies"],
+                "score": 0.92
+            }
+        }
+    ]
 }
 ```
 
@@ -325,8 +336,8 @@ The agent returns an array of filtered document contexts:
 
 ```typescript
 export const retrieveOutputSchema = z.object({
-  contexts: z.array(documentContextSchema)
-});
+    contexts: z.array(documentContextSchema),
+})
 ```
 
 ### Context Object Properties
@@ -425,14 +436,16 @@ export const retrieveOutputSchema = z.object({
 ### Memory Configuration
 
 ```typescript
-const memory = createResearchMemory();
+const memory = createResearchMemory()
 // Uses LibSQL for persistent retrieval conversation storage
 ```
 
 ### Tool Configuration
 
 ```typescript
-tools: { vectorQueryTool }
+tools: {
+    vectorQueryTool
+}
 ```
 
 ### Required Environment Variables
@@ -449,12 +462,12 @@ DATABASE_URL=file:deep-research.db
 
 ```typescript
 const result = await retrieveAgent.generate({
-  question: "What is the company vacation policy?",
-  access: {
-    allowTags: ["hr", "policies"],
-    maxClassification: "internal"
-  }
-});
+    question: 'What is the company vacation policy?',
+    access: {
+        allowTags: ['hr', 'policies'],
+        maxClassification: 'internal',
+    },
+})
 
 // Returns: Array of relevant HR policy contexts
 ```
@@ -463,12 +476,12 @@ const result = await retrieveAgent.generate({
 
 ```typescript
 const result = await retrieveAgent.generate({
-  question: "What are the executive compensation details?",
-  access: {
-    allowTags: ["finance"],
-    maxClassification: "confidential"
-  }
-});
+    question: 'What are the executive compensation details?',
+    access: {
+        allowTags: ['finance'],
+        maxClassification: 'confidential',
+    },
+})
 
 // Returns: Only confidential finance documents user is authorized to access
 ```
@@ -477,12 +490,12 @@ const result = await retrieveAgent.generate({
 
 ```typescript
 const result = await retrieveAgent.generate({
-  question: "How do I submit expense reports?",
-  access: {
-    allowTags: ["finance", "procedures"],
-    maxClassification: "internal"
-  }
-});
+    question: 'How do I submit expense reports?',
+    access: {
+        allowTags: ['finance', 'procedures'],
+        maxClassification: 'internal',
+    },
+})
 
 // Returns: Documents tagged with finance or procedures
 ```
@@ -492,53 +505,53 @@ const result = await retrieveAgent.generate({
 ### Security & Access Issues
 
 1. **Access Denied Errors**
-   - Verify user has required `role:reader` claim
-   - Check tenant is set to `global`
-   - Validate access policy structure
+    - Verify user has required `role:reader` claim
+    - Check tenant is set to `global`
+    - Validate access policy structure
 
 2. **Empty Results**
-   - Confirm allowTags array is not empty or properly configured
-   - Check maxClassification level permissions
-   - Verify documents exist with matching tags and classification
+    - Confirm allowTags array is not empty or properly configured
+    - Check maxClassification level permissions
+    - Verify documents exist with matching tags and classification
 
 3. **Classification Level Problems**
-   - Ensure maxClassification is never modified by agent
-   - Check user has appropriate clearance level
-   - Validate classification hierarchy (public < internal < confidential)
+    - Ensure maxClassification is never modified by agent
+    - Check user has appropriate clearance level
+    - Validate classification hierarchy (public < internal < confidential)
 
 ### Retrieval Performance Issues
 
 1. **Slow Query Response**
-   - Check Qdrant database connectivity
-   - Monitor vector index performance
-   - Verify network latency to vector database
+    - Check Qdrant database connectivity
+    - Monitor vector index performance
+    - Verify network latency to vector database
 
 2. **Low Relevance Results**
-   - Review question clarity and specificity
-   - Check document content quality in vector store
-   - Validate embedding model consistency
+    - Review question clarity and specificity
+    - Check document content quality in vector store
+    - Validate embedding model consistency
 
 3. **Missing Expected Documents**
-   - Confirm documents are properly indexed in Qdrant
-   - Check document classification and tagging
-   - Verify access policy allows document retrieval
+    - Confirm documents are properly indexed in Qdrant
+    - Check document classification and tagging
+    - Verify access policy allows document retrieval
 
 ### Tool Integration Issues
 
 1. **Tool Call Failures**
-   - Verify vectorQueryTool is properly configured
-   - Check tool dependencies and imports
-   - Validate tool call parameters
+    - Verify vectorQueryTool is properly configured
+    - Check tool dependencies and imports
+    - Validate tool call parameters
 
 2. **Schema Validation Errors**
-   - Ensure input JSON matches expected structure
-   - Check required fields are present
-   - Validate data types and formats
+    - Ensure input JSON matches expected structure
+    - Check required fields are present
+    - Validate data types and formats
 
 3. **Memory Storage Problems**
-   - Verify LibSQL database connection
-   - Check memory store initialization
-   - Monitor storage space and performance
+    - Verify LibSQL database connection
+    - Check memory store initialization
+    - Monitor storage space and performance
 
 ## References
 

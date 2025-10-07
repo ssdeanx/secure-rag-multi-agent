@@ -226,7 +226,7 @@ export const mastra = new Mastra({
 **Decision**: 10-level role hierarchy with numeric weights and inheritance
 
 ```text
-admin (100) > exec_viewer (90) > dept_admin (80) > dept_viewer (60) > 
+admin (100) > exec_viewer (90) > dept_admin (80) > dept_viewer (60) >
 employee (40) > contractor (30) > partner (20) > public (10)
 ```
 

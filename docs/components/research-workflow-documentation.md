@@ -27,12 +27,11 @@ Mastra workflow for interactive research: get query → agent research → user 
 - ARC-001: Design patterns: Human-in-loop workflow with suspend/resume.
 
 - ARC-002: Dependencies:
+    - @mastra/core (createWorkflow, createStep)
 
-  - @mastra/core (createWorkflow, createStep)
+    - zod (schemas)
 
-  - zod (schemas)
-
-  - Local: researchAgent, logger
+    - Local: researchAgent, logger
 
 - ARC-003: Interactions: Suspends for query/approval; agent.generate with maxSteps/output schema.
 
@@ -86,11 +85,11 @@ graph TD
 
 - INT-001: Schemas for steps.
 
-| Step | Input | Output | Notes |
-|------|-------|--------|-------|
-| getUserQuery | `{}` | `{query: string}` | Suspends with prompt |
-| research | `{query}` | `{researchData, summary}` | Agent call; JSON output |
-| approval | `{researchData, summary}` | `{approved: bool, researchData}` | Suspends for y/n |
+| Step         | Input                     | Output                           | Notes                   |
+| ------------ | ------------------------- | -------------------------------- | ----------------------- |
+| getUserQuery | `{}`                      | `{query: string}`                | Suspends with prompt    |
+| research     | `{query}`                 | `{researchData, summary}`        | Agent call; JSON output |
+| approval     | `{researchData, summary}` | `{approved: bool, researchData}` | Suspends for y/n        |
 
 Overall: `{}` → `{approved: bool, researchData}`
 
@@ -119,7 +118,7 @@ Edge cases and considerations:
 ### Workflow Run
 
 ```ts
-const result = await researchWorkflow.execute({});
+const result = await researchWorkflow.execute({})
 // Suspends; resume with {query: 'AI ethics'}
 // Suspends approval; resume {approved: true}
 ```
@@ -127,7 +126,7 @@ const result = await researchWorkflow.execute({});
 ### Agent Prompt in Research
 
 ```ts
-const prompt = `Research "${query}": Phase 1 initial queries, Phase 2 follow-ups. JSON: queries, searchResults, learnings...`;
+const prompt = `Research "${query}": Phase 1 initial queries, Phase 2 follow-ups. JSON: queries, searchResults, learnings...`
 ```
 
 Best practices:

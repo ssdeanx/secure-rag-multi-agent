@@ -77,13 +77,13 @@ graph TD
 
 - INT-001: Exported configs/providers.
 
-| Export | Purpose | Config | Notes |
-|--------|---------|--------|-------|
-| `openAIConfig` | Main settings | `{apiKey, baseURL, model}` | gpt-4o-mini default |
-| `openAIProvider` | Main provider | `createOpenAI(...)` | Custom fetch/headers |
-| `openAIModel` | Default model | `provider(model)` | For generation |
-| `openAIEmbeddingConfig` | Embedding | `{apiKey, baseURL}` | Real OpenAI |
-| `openAIEmbeddingProvider` | Embedding provider | `createOpenAI(...)` | Separate key |
+| Export                    | Purpose            | Config                     | Notes                |
+| ------------------------- | ------------------ | -------------------------- | -------------------- |
+| `openAIConfig`            | Main settings      | `{apiKey, baseURL, model}` | gpt-4o-mini default  |
+| `openAIProvider`          | Main provider      | `createOpenAI(...)`        | Custom fetch/headers |
+| `openAIModel`             | Default model      | `provider(model)`          | For generation       |
+| `openAIEmbeddingConfig`   | Embedding          | `{apiKey, baseURL}`        | Real OpenAI          |
+| `openAIEmbeddingProvider` | Embedding provider | `createOpenAI(...)`        | Separate key         |
 
 INT notes:
 
@@ -110,9 +110,9 @@ Edge cases and considerations:
 ### Provider Use
 
 ```ts
-import { openAIModel } from '../config/openai';
+import { openAIModel } from '../config/openai'
 
-const agent = new Agent({model: openAIModel});
+const agent = new Agent({ model: openAIModel })
 ```
 
 ### Custom Call
@@ -146,7 +146,7 @@ Best practices:
 
 - REF-001: Dependencies: @ai-sdk/openai, dotenv
 
-- REF-002: Env: OPENAI_API_KEY, BASE_URL, MODEL, EMBEDDING_*
+- REF-002: Env: OPENAI*API_KEY, BASE_URL, MODEL, EMBEDDING*\*
 
 - REF-003: Testing: Mock fetch.
 

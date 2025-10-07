@@ -1,11 +1,19 @@
 ---
-title: "Product Roadmap Agent"
-description: "Manages the product roadmap for the Cedar project, including features, priorities, and requests with enhanced content generation capabilities"
-component_type: "Mastra Agent"
-framework: "Mastra"
-language: "TypeScript"
-platform: "Node.js"
-tags: ["agent", "product-management", "roadmap", "features", "content-generation", "cedar"]
+title: 'Product Roadmap Agent'
+description: 'Manages the product roadmap for the Cedar project, including features, priorities, and requests with enhanced content generation capabilities'
+component_type: 'Mastra Agent'
+framework: 'Mastra'
+language: 'TypeScript'
+platform: 'Node.js'
+tags:
+    [
+        'agent',
+        'product-management',
+        'roadmap',
+        'features',
+        'content-generation',
+        'cedar',
+    ]
 ---
 
 # Product Roadmap Agent (`src/mastra/agents/productRoadmapAgent.ts`)
@@ -160,12 +168,15 @@ graph TB
 ### Agent Properties
 
 #### `id: "productRoadmap"`
+
 Unique identifier for the agent within the Mastra system.
 
 #### `name: "Product Roadmap Agent"`
+
 Human-readable name for the agent.
 
 #### `description`
+
 "Manages the product roadmap for the Cedar project, including features, priorities, and requests with enhanced content generation capabilities."
 
 ### Project Context
@@ -253,21 +264,25 @@ Priorities are assigned based on business value, user impact, and strategic impo
 ### Content Types
 
 #### Technical Content
+
 - API documentation and technical specifications
 - Implementation guides and developer resources
 - Code examples and integration instructions
 
 #### Marketing Content
+
 - Feature announcements and promotional materials
 - User-facing descriptions and value propositions
 - Release notes and product updates
 
 #### Business Communications
+
 - Status updates and progress reports
 - Stakeholder communications and presentations
 - Professional correspondence and documentation
 
 #### Social Media Content
+
 - Platform-optimized posts and updates
 - Community engagement content
 - Shareable feature highlights
@@ -291,23 +306,29 @@ Priorities are assigned based on business value, user impact, and strategic impo
 ### Research Tools
 
 #### Vector Query Tool
+
 Semantic search for relevant information in the knowledge base.
 
 #### Graph RAG Tool
+
 Graph-based search for complex relationships and context.
 
 ### Content Tools
 
 #### Extract Learning Tool
+
 Analyzes content to extract key insights and learnings.
 
 #### Copywriter Tool
+
 Generates content across multiple formats and purposes.
 
 #### Editor Tool
+
 Refines and improves written content quality.
 
 #### Evaluate Result Tool
+
 Assesses content quality and relevance.
 
 ## Action Handling
@@ -320,11 +341,22 @@ The agent can perform roadmap modifications through structured actions:
 
 ```json
 {
-  "type": "setState",
-  "stateKey": "nodes",
-  "setterKey": "addNode",
-  "args": [{"data": {"title": "...", "description": "...", "status": "...", "nodeType": "feature", "upvotes": 0, "comments": []}}],
-  "content": "Added new feature to roadmap"
+    "type": "setState",
+    "stateKey": "nodes",
+    "setterKey": "addNode",
+    "args": [
+        {
+            "data": {
+                "title": "...",
+                "description": "...",
+                "status": "...",
+                "nodeType": "feature",
+                "upvotes": 0,
+                "comments": []
+            }
+        }
+    ],
+    "content": "Added new feature to roadmap"
 }
 ```
 
@@ -332,11 +364,11 @@ The agent can perform roadmap modifications through structured actions:
 
 ```json
 {
-  "type": "setState",
-  "stateKey": "nodes",
-  "setterKey": "removeNode",
-  "args": ["nodeId"],
-  "content": "Removed feature from roadmap"
+    "type": "setState",
+    "stateKey": "nodes",
+    "setterKey": "removeNode",
+    "args": ["nodeId"],
+    "content": "Removed feature from roadmap"
 }
 ```
 
@@ -344,11 +376,11 @@ The agent can perform roadmap modifications through structured actions:
 
 ```json
 {
-  "type": "setState",
-  "stateKey": "nodes",
-  "setterKey": "changeNode",
-  "args": [{"id": "nodeId", "data": {"status": "completed"}}],
-  "content": "Updated feature status"
+    "type": "setState",
+    "stateKey": "nodes",
+    "setterKey": "changeNode",
+    "args": [{ "id": "nodeId", "data": { "status": "completed" } }],
+    "content": "Updated feature status"
 }
 ```
 
@@ -358,7 +390,7 @@ The agent can perform roadmap modifications through structured actions:
 
 ```json
 {
-  "content": "Your informative response"
+    "content": "Your informative response"
 }
 ```
 
@@ -443,7 +475,7 @@ The agent can perform roadmap modifications through structured actions:
 ### Vector Store Configuration
 
 ```typescript
-vectorStoreName: "vectorStore"
+vectorStoreName: 'vectorStore'
 indexName: STORAGE_CONFIG.VECTOR_INDEXES.RESEARCH_DOCUMENTS
 dimension: 3072
 ```
@@ -462,7 +494,7 @@ graphOptions: {
 ### Memory Configuration
 
 ```typescript
-const store = createResearchMemory();
+const store = createResearchMemory()
 // Uses LibSQL for persistent product roadmap conversation storage
 ```
 
@@ -477,36 +509,36 @@ GOOGLE_GENERATIVE_AI_API_KEY=your-api-key
 ### Feature Management Issues
 
 1. **Action Format Errors**
-   - Ensure correct JSON structure for state modifications
-   - Validate action types and required fields
-   - Check argument formatting for each action type
+    - Ensure correct JSON structure for state modifications
+    - Validate action types and required fields
+    - Check argument formatting for each action type
 
 2. **Feature Relationship Problems**
-   - Verify parent/child relationship specifications
-   - Check feature ID consistency
-   - Validate hierarchy constraints
+    - Verify parent/child relationship specifications
+    - Check feature ID consistency
+    - Validate hierarchy constraints
 
 3. **Status Transition Issues**
-   - Ensure valid status transitions
-   - Check workflow compliance
-   - Verify permission requirements
+    - Ensure valid status transitions
+    - Check workflow compliance
+    - Verify permission requirements
 
 ### Content Generation Issues
 
 1. **Content Type Mismatches**
-   - Specify correct contentType for intended audience
-   - Match tone with content purpose
-   - Verify tool selection appropriateness
+    - Specify correct contentType for intended audience
+    - Match tone with content purpose
+    - Verify tool selection appropriateness
 
 2. **Quality Issues**
-   - Use editor tool for content improvement
-   - Apply evaluation tools for quality assessment
-   - Review content against style guidelines
+    - Use editor tool for content improvement
+    - Apply evaluation tools for quality assessment
+    - Review content against style guidelines
 
 3. **Tool Integration Problems**
-   - Check tool availability and configuration
-   - Verify tool parameter specifications
-   - Ensure proper tool chaining
+    - Check tool availability and configuration
+    - Verify tool parameter specifications
+    - Ensure proper tool chaining
 
 ## References
 

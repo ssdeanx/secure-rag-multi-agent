@@ -1,11 +1,12 @@
 ---
-title: "Evaluate Result Tool - Technical Documentation"
-component_path: "src/mastra/tools/evaluateResultTool.ts"
-version: "1.0"
-date_created: "2025-09-23"
-last_updated: "2025-09-23"
-owner: "AI Team"
-tags: ["tool", "evaluation", "relevance", "search-results", "quality-assessment"]
+title: 'Evaluate Result Tool - Technical Documentation'
+component_path: 'src/mastra/tools/evaluateResultTool.ts'
+version: '1.0'
+date_created: '2025-09-23'
+last_updated: '2025-09-23'
+owner: 'AI Team'
+tags:
+    ['tool', 'evaluation', 'relevance', 'search-results', 'quality-assessment']
 ---
 
 # Evaluate Result Tool Documentation
@@ -120,31 +121,31 @@ graph TB
 
 ### Input Schema
 
-| Property | Type | Required | Description |
-|----------|------|----------|-------------|
-| `query` | `string` | Yes | The original research query |
-| `result` | `ResultObject` | Yes | Search result to evaluate |
-| `existingUrls` | `string[]?` | No | URLs already processed |
+| Property       | Type           | Required | Description                 |
+| -------------- | -------------- | -------- | --------------------------- |
+| `query`        | `string`       | Yes      | The original research query |
+| `result`       | `ResultObject` | Yes      | Search result to evaluate   |
+| `existingUrls` | `string[]?`    | No       | URLs already processed      |
 
 ### Result Object Schema
 
-| Property | Type | Description |
-|----------|------|-------------|
-| `title` | `string` | Result title |
-| `url` | `string` | Result URL |
+| Property  | Type     | Description            |
+| --------- | -------- | ---------------------- |
+| `title`   | `string` | Result title           |
+| `url`     | `string` | Result URL             |
 | `content` | `string` | Result content snippet |
 
 ### Output Schema
 
-| Property | Type | Description |
-|----------|------|-------------|
-| `isRelevant` | `boolean` | Relevance decision |
-| `reason` | `string` | Explanation for the decision |
+| Property     | Type      | Description                  |
+| ------------ | --------- | ---------------------------- |
+| `isRelevant` | `boolean` | Relevance decision           |
+| `reason`     | `string`  | Explanation for the decision |
 
 ### Public Methods
 
-| Method | Parameters | Return Type | Description |
-|--------|------------|-------------|-------------|
+| Method      | Parameters                 | Return Type                 | Description               |
+| ----------- | -------------------------- | --------------------------- | ------------------------- |
 | `execute()` | `context: EvaluationInput` | `Promise<EvaluationOutput>` | Evaluate result relevance |
 
 ## 4. Usage Examples
@@ -152,21 +153,21 @@ graph TB
 ### Basic Relevance Evaluation
 
 ```typescript
-import { evaluateResultTool } from './src/mastra/tools/evaluateResultTool';
+import { evaluateResultTool } from './src/mastra/tools/evaluateResultTool'
 
 const result = await evaluateResultTool.execute({
-  context: {
-    query: "What are the benefits of renewable energy?",
-    result: {
-      title: "Solar Power Advantages",
-      url: "https://example.com/solar-benefits",
-      content: "Solar energy provides clean, renewable power..."
+    context: {
+        query: 'What are the benefits of renewable energy?',
+        result: {
+            title: 'Solar Power Advantages',
+            url: 'https://example.com/solar-benefits',
+            content: 'Solar energy provides clean, renewable power...',
+        },
+        existingUrls: ['https://example.com/wind-power'],
     },
-    existingUrls: ["https://example.com/wind-power"]
-  },
-  mastra: mastraInstance,
-  tracingContext: tracingContext
-});
+    mastra: mastraInstance,
+    tracingContext: tracingContext,
+})
 
 // Result:
 // {
@@ -179,18 +180,18 @@ const result = await evaluateResultTool.execute({
 
 ```typescript
 const result = await evaluateResultTool.execute({
-  context: {
-    query: "Machine learning applications",
-    result: {
-      title: "ML in Healthcare",
-      url: "https://example.com/ml-healthcare",
-      content: "Machine learning applications in medical diagnosis..."
+    context: {
+        query: 'Machine learning applications',
+        result: {
+            title: 'ML in Healthcare',
+            url: 'https://example.com/ml-healthcare',
+            content: 'Machine learning applications in medical diagnosis...',
+        },
+        existingUrls: ['https://example.com/ml-healthcare'], // Already processed
     },
-    existingUrls: ["https://example.com/ml-healthcare"] // Already processed
-  },
-  mastra: mastraInstance,
-  tracingContext: tracingContext
-});
+    mastra: mastraInstance,
+    tracingContext: tracingContext,
+})
 
 // Result:
 // {
@@ -203,24 +204,24 @@ const result = await evaluateResultTool.execute({
 
 ```typescript
 // Within a research workflow
-const searchResults = await performSearch(query);
+const searchResults = await performSearch(query)
 
 for (const searchResult of searchResults) {
-  const evaluation = await evaluateResultTool.execute({
-    context: {
-      query,
-      result: searchResult,
-      existingUrls: processedUrls
-    },
-    mastra: mastraInstance,
-    tracingContext: tracingContext
-  });
+    const evaluation = await evaluateResultTool.execute({
+        context: {
+            query,
+            result: searchResult,
+            existingUrls: processedUrls,
+        },
+        mastra: mastraInstance,
+        tracingContext: tracingContext,
+    })
 
-  if (evaluation.isRelevant) {
-    // Process relevant result
-    await processResult(searchResult);
-    processedUrls.push(searchResult.url);
-  }
+    if (evaluation.isRelevant) {
+        // Process relevant result
+        await processResult(searchResult)
+        processedUrls.push(searchResult.url)
+    }
 }
 ```
 
@@ -228,18 +229,18 @@ for (const searchResult of searchResults) {
 
 ```typescript
 try {
-  const evaluation = await evaluateResultTool.execute({
-    context: {
-      query: "Complex research topic",
-      result: searchResult
-    },
-    mastra: mastraInstance,
-    tracingContext: tracingContext
-  });
+    const evaluation = await evaluateResultTool.execute({
+        context: {
+            query: 'Complex research topic',
+            result: searchResult,
+        },
+        mastra: mastraInstance,
+        tracingContext: tracingContext,
+    })
 } catch (error) {
-  // Handle evaluation failure
-  console.log('Using fallback evaluation logic');
-  const isRelevant = fallbackEvaluation(searchResult);
+    // Handle evaluation failure
+    console.log('Using fallback evaluation logic')
+    const isRelevant = fallbackEvaluation(searchResult)
 }
 ```
 
@@ -279,17 +280,17 @@ try {
 
 ### Dependencies
 
-| Package | Version | Purpose |
-|---------|---------|---------|
-| `@mastra/core/tools` | ^0.1.0 | Tool framework |
-| `@mastra/core/ai-tracing` | ^0.1.0 | AI tracing integration |
-| `zod` | ^3.22.4 | Schema validation |
+| Package                   | Version | Purpose                |
+| ------------------------- | ------- | ---------------------- |
+| `@mastra/core/tools`      | ^0.1.0  | Tool framework         |
+| `@mastra/core/ai-tracing` | ^0.1.0  | AI tracing integration |
+| `zod`                     | ^3.22.4 | Schema validation      |
 
 ### Environment Variables
 
-| Variable | Required | Default | Description |
-|----------|----------|---------|-------------|
-| None | - | - | Uses Mastra agent configuration |
+| Variable | Required | Default | Description                     |
+| -------- | -------- | ------- | ------------------------------- |
+| None     | -        | -       | Uses Mastra agent configuration |
 
 ### Testing
 
@@ -327,8 +328,8 @@ curl http://localhost:3000/api/health/evaluate
 
 ### Change History
 
-| Version | Date | Changes |
-|---------|------|---------|
-| 1.0 | 2025-09-23 | Initial implementation with AI-powered evaluation |
-| 0.9 | 2025-09-20 | Added duplicate URL detection |
-| 0.8 | 2025-09-15 | Basic relevance evaluation functionality |
+| Version | Date       | Changes                                           |
+| ------- | ---------- | ------------------------------------------------- |
+| 1.0     | 2025-09-23 | Initial implementation with AI-powered evaluation |
+| 0.9     | 2025-09-20 | Added duplicate URL detection                     |
+| 0.8     | 2025-09-15 | Basic relevance evaluation functionality          |

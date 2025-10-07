@@ -17,23 +17,23 @@ Created comprehensive architecture specification for integrating Cedar OS v0.1.1
 #### Key Design Components
 
 1. **Frontend Layer (React + Cedar OS)**
-   - State Registration: useCedarState for registering UI state
-   - State Subscription: useSubscribeStateToAgentContext for automatic context
-   - Message Sending: sendMessage with automatic context compilation
-   - Custom Message Rendering: createMessageRenderer for specialized types
-   - Example: roadmap-action message type with apply button
+    - State Registration: useCedarState for registering UI state
+    - State Subscription: useSubscribeStateToAgentContext for automatic context
+    - Message Sending: sendMessage with automatic context compilation
+    - Custom Message Rendering: createMessageRenderer for specialized types
+    - Example: roadmap-action message type with apply button
 
 2. **API Layer (Next.js Route Handlers)**
-   - SSE Streaming: Data-only SSE format with ReadableStream
-   - Context Handling: Parse additionalContext from request body
-   - Error Handling: Structured error events in stream
-   - Type Safety: Import Cedar types from chatWorkflowSharedTypes
+    - SSE Streaming: Data-only SSE format with ReadableStream
+    - Context Handling: Parse additionalContext from request body
+    - Error Handling: Structured error events in stream
+    - Type Safety: Import Cedar types from chatWorkflowSharedTypes
 
 3. **Backend Layer (Mastra Workflows)**
-   - Cedar Context: Parse cedarContext from workflow input
-   - Context Prompts: Build agent prompts from Cedar state
-   - Structured Responses: setState and frontendTool response types
-   - Agent Integration: Use structuredOutput for type-safe responses
+    - Cedar Context: Parse cedarContext from workflow input
+    - Context Prompts: Build agent prompts from Cedar state
+    - Structured Responses: setState and frontendTool response types
+    - Agent Integration: Use structuredOutput for type-safe responses
 
 #### Architecture Diagrams
 

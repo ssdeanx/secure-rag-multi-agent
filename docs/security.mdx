@@ -1,22 +1,28 @@
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
+import {
+    Card,
+    CardContent,
+    CardDescription,
+    CardHeader,
+    CardTitle,
+} from '@/components/ui/card'
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import { Mermaid } from '@/components/Mermaid'
 import {
-  Shield,
-  Users,
-  Lock,
-  Eye,
-  EyeOff,
-  AlertTriangle,
-  CheckCircle,
-  ArrowRight,
-  FileText,
-  Database,
-  Settings,
-  Key
+    Shield,
+    Users,
+    Lock,
+    Eye,
+    EyeOff,
+    AlertTriangle,
+    CheckCircle,
+    ArrowRight,
+    FileText,
+    Database,
+    Settings,
+    Key,
 } from 'lucide-react'
 
 # Security Model
@@ -24,11 +30,12 @@ import {
 The Mastra Governed RAG implements a robust security framework using role-based access control (RBAC) with hierarchical inheritance, document classifications, and policy enforcement at each stage of the RAG pipeline. Security is integrated into the Mastra workflows to ensure users only access authorized content.
 
 <Alert className="mb-6">
-  <Shield className="h-4 w-4" />
-  <AlertTitle>Zero-Trust Architecture</AlertTitle>
-  <AlertDescription>
-    Every query is authenticated and authorized at multiple pipeline stages with document access filtered based on user roles and classifications.
-  </AlertDescription>
+    <Shield className="h-4 w-4" />
+    <AlertTitle>Zero-Trust Architecture</AlertTitle>
+    <AlertDescription>
+        Every query is authenticated and authorized at multiple pipeline stages
+        with document access filtered based on user roles and classifications.
+    </AlertDescription>
 </Alert>
 
 <!-- toc -->
@@ -57,56 +64,56 @@ Roles are defined in `src/mastra/config/role-hierarchy.ts`. Higher-level roles i
     </CardContent>
   </Card>
 
-  <Card>
+<Card>
     <CardHeader className="pb-3">
-      <CardTitle className="text-lg flex items-center">
-        <Users className="h-5 w-5 mr-2 text-blue-500" />
-        Employee (Level 40)
-      </CardTitle>
-      <CardDescription>Inherits public access</CardDescription>
+        <CardTitle className="text-lg flex items-center">
+            <Users className="h-5 w-5 mr-2 text-blue-500" />
+            Employee (Level 40)
+        </CardTitle>
+        <CardDescription>Inherits public access</CardDescription>
     </CardHeader>
     <CardContent>
-      <ul className="space-y-1 text-sm">
-        <li>• General company documents</li>
-        <li>• Internal policies</li>
-        <li>• Department overviews</li>
-      </ul>
+        <ul className="space-y-1 text-sm">
+            <li>• General company documents</li>
+            <li>• Internal policies</li>
+            <li>• Department overviews</li>
+        </ul>
     </CardContent>
-  </Card>
+</Card>
 
-  <Card>
+<Card>
     <CardHeader className="pb-3">
-      <CardTitle className="text-lg flex items-center">
-        <Eye className="h-5 w-5 mr-2 text-orange-500" />
-        Department Viewer (Level 60)
-      </CardTitle>
-      <CardDescription>Read access to department content</CardDescription>
+        <CardTitle className="text-lg flex items-center">
+            <Eye className="h-5 w-5 mr-2 text-orange-500" />
+            Department Viewer (Level 60)
+        </CardTitle>
+        <CardDescription>Read access to department content</CardDescription>
     </CardHeader>
     <CardContent>
-      <ul className="space-y-1 text-sm">
-        <li>• Department-specific content</li>
-        <li>• Internal documents</li>
-        <li>• Read-only access</li>
-      </ul>
+        <ul className="space-y-1 text-sm">
+            <li>• Department-specific content</li>
+            <li>• Internal documents</li>
+            <li>• Read-only access</li>
+        </ul>
     </CardContent>
-  </Card>
+</Card>
 
-  <Card>
+<Card>
     <CardHeader className="pb-3">
-      <CardTitle className="text-lg flex items-center">
-        <Settings className="h-5 w-5 mr-2 text-purple-500" />
-        Department Admin (Level 80)
-      </CardTitle>
-      <CardDescription>Full department access</CardDescription>
+        <CardTitle className="text-lg flex items-center">
+            <Settings className="h-5 w-5 mr-2 text-purple-500" />
+            Department Admin (Level 80)
+        </CardTitle>
+        <CardDescription>Full department access</CardDescription>
     </CardHeader>
     <CardContent>
-      <ul className="space-y-1 text-sm">
-        <li>• Full department access</li>
-        <li>• Confidential documents</li>
-        <li>• Administrative controls</li>
-      </ul>
+        <ul className="space-y-1 text-sm">
+            <li>• Full department access</li>
+            <li>• Confidential documents</li>
+            <li>• Administrative controls</li>
+        </ul>
     </CardContent>
-  </Card>
+</Card>
 
   <Card>
     <CardHeader className="pb-3">
@@ -161,48 +168,70 @@ Roles are defined in `src/mastra/config/role-hierarchy.ts`. Higher-level roles i
 ### Specific Role Examples
 
 <div className="overflow-x-auto mb-6">
-  <table className="w-full border-collapse border border-border">
-    <thead>
-      <tr className="bg-muted">
-        <th className="border border-border p-3 text-left">Role</th>
-        <th className="border border-border p-3 text-left">Level</th>
-        <th className="border border-border p-3 text-left">Inherits From</th>
-        <th className="border border-border p-3 text-left">Access Scope</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td className="border border-border p-3 font-medium">hr.viewer</td>
-        <td className="border border-border p-3">60</td>
-        <td className="border border-border p-3">employee, public</td>
-        <td className="border border-border p-3">HR internal docs</td>
-      </tr>
-      <tr>
-        <td className="border border-border p-3 font-medium">finance.viewer</td>
-        <td className="border border-border p-3">60</td>
-        <td className="border border-border p-3">employee, public</td>
-        <td className="border border-border p-3">Finance internal docs</td>
-      </tr>
-      <tr>
-        <td className="border border-border p-3 font-medium">engineering.viewer</td>
-        <td className="border border-border p-3">60</td>
-        <td className="border border-border p-3">employee, public</td>
-        <td className="border border-border p-3">Engineering internal docs</td>
-      </tr>
-      <tr>
-        <td className="border border-border p-3 font-medium">hr.admin</td>
-        <td className="border border-border p-3">80</td>
-        <td className="border border-border p-3">hr.viewer, employee, public</td>
-        <td className="border border-border p-3">All HR docs including confidential</td>
-      </tr>
-      <tr>
-        <td className="border border-border p-3 font-medium">admin</td>
-        <td className="border border-border p-3">100</td>
-        <td className="border border-border p-3">All roles</td>
-        <td className="border border-border p-3">Complete system access</td>
-      </tr>
-    </tbody>
-  </table>
+    <table className="w-full border-collapse border border-border">
+        <thead>
+            <tr className="bg-muted">
+                <th className="border border-border p-3 text-left">Role</th>
+                <th className="border border-border p-3 text-left">Level</th>
+                <th className="border border-border p-3 text-left">
+                    Inherits From
+                </th>
+                <th className="border border-border p-3 text-left">
+                    Access Scope
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td className="border border-border p-3 font-medium">
+                    hr.viewer
+                </td>
+                <td className="border border-border p-3">60</td>
+                <td className="border border-border p-3">employee, public</td>
+                <td className="border border-border p-3">HR internal docs</td>
+            </tr>
+            <tr>
+                <td className="border border-border p-3 font-medium">
+                    finance.viewer
+                </td>
+                <td className="border border-border p-3">60</td>
+                <td className="border border-border p-3">employee, public</td>
+                <td className="border border-border p-3">
+                    Finance internal docs
+                </td>
+            </tr>
+            <tr>
+                <td className="border border-border p-3 font-medium">
+                    engineering.viewer
+                </td>
+                <td className="border border-border p-3">60</td>
+                <td className="border border-border p-3">employee, public</td>
+                <td className="border border-border p-3">
+                    Engineering internal docs
+                </td>
+            </tr>
+            <tr>
+                <td className="border border-border p-3 font-medium">
+                    hr.admin
+                </td>
+                <td className="border border-border p-3">80</td>
+                <td className="border border-border p-3">
+                    hr.viewer, employee, public
+                </td>
+                <td className="border border-border p-3">
+                    All HR docs including confidential
+                </td>
+            </tr>
+            <tr>
+                <td className="border border-border p-3 font-medium">admin</td>
+                <td className="border border-border p-3">100</td>
+                <td className="border border-border p-3">All roles</td>
+                <td className="border border-border p-3">
+                    Complete system access
+                </td>
+            </tr>
+        </tbody>
+    </table>
 </div>
 
 ## Document Classifications
@@ -272,6 +301,7 @@ Documents are classified during indexing with metadata enforced in storage and r
         </CardContent>
       </Card>
     </div>
+
   </TabsContent>
 
   <TabsContent value="examples">
@@ -333,6 +363,7 @@ Documents are classified during indexing with metadata enforced in storage and r
         </CardContent>
       </Card>
     </div>
+
   </TabsContent>
 
   <TabsContent value="tags">
@@ -372,6 +403,7 @@ Documents are classified during indexing with metadata enforced in storage and r
         </div>
       </CardContent>
     </Card>
+
   </TabsContent>
 </Tabs>
 
@@ -425,41 +457,51 @@ Security is enforced end-to-end via the Mastra query workflow:
     </Card>
   </div>
 
-  <div className="flex items-center space-x-4">
-    <div className="flex-shrink-0 w-8 h-8 bg-primary rounded-full flex items-center justify-center text-white font-bold">2</div>
+<div className="flex items-center space-x-4">
+    <div className="flex-shrink-0 w-8 h-8 bg-primary rounded-full flex items-center justify-center text-white font-bold">
+        2
+    </div>
     <Card className="flex-1">
-      <CardHeader className="pb-3">
-        <CardTitle className="text-lg">Retrieval Step</CardTitle>
-        <CardDescription>Filtered vector search with security constraints</CardDescription>
-      </CardHeader>
-      <CardContent>
-        <ul className="space-y-1 text-sm">
-          <li>• Query Qdrant with accessFilter applied</li>
-          <li>• Filter by classification ≤ maxClassification</li>
-          <li>• Match security tags with allowTags</li>
-          <li>• Return only authorized document chunks</li>
-        </ul>
-      </CardContent>
+        <CardHeader className="pb-3">
+            <CardTitle className="text-lg">Retrieval Step</CardTitle>
+            <CardDescription>
+                Filtered vector search with security constraints
+            </CardDescription>
+        </CardHeader>
+        <CardContent>
+            <ul className="space-y-1 text-sm">
+                <li>• Query Qdrant with accessFilter applied</li>
+                <li>• Filter by classification ≤ maxClassification</li>
+                <li>• Match security tags with allowTags</li>
+                <li>• Return only authorized document chunks</li>
+            </ul>
+        </CardContent>
     </Card>
-  </div>
+</div>
 
-  <div className="flex items-center space-x-4">
-    <div className="flex-shrink-0 w-8 h-8 bg-primary rounded-full flex items-center justify-center text-white font-bold">3</div>
+<div className="flex items-center space-x-4">
+    <div className="flex-shrink-0 w-8 h-8 bg-primary rounded-full flex items-center justify-center text-white font-bold">
+        3
+    </div>
     <Card className="flex-1">
-      <CardHeader className="pb-3">
-        <CardTitle className="text-lg">Processing Steps</CardTitle>
-        <CardDescription>Reranking and answer generation with authorized content</CardDescription>
-      </CardHeader>
-      <CardContent>
-        <ul className="space-y-1 text-sm">
-          <li>• Rerank agent processes only authorized contexts</li>
-          <li>• Answer agent generates responses from filtered content</li>
-          <li>• Citations limited to accessible documents</li>
-          <li>• No information leakage from unauthorized sources</li>
-        </ul>
-      </CardContent>
+        <CardHeader className="pb-3">
+            <CardTitle className="text-lg">Processing Steps</CardTitle>
+            <CardDescription>
+                Reranking and answer generation with authorized content
+            </CardDescription>
+        </CardHeader>
+        <CardContent>
+            <ul className="space-y-1 text-sm">
+                <li>• Rerank agent processes only authorized contexts</li>
+                <li>
+                    • Answer agent generates responses from filtered content
+                </li>
+                <li>• Citations limited to accessible documents</li>
+                <li>• No information leakage from unauthorized sources</li>
+            </ul>
+        </CardContent>
     </Card>
-  </div>
+</div>
 
   <div className="flex items-center space-x-4">
     <div className="flex-shrink-0 w-8 h-8 bg-primary rounded-full flex items-center justify-center text-white font-bold">4</div>
@@ -497,33 +539,37 @@ Security is enforced end-to-end via the Mastra query workflow:
     </CardContent>
   </Card>
 
-  <Card>
+<Card>
     <CardHeader>
-      <CardTitle className="flex items-center">
-        <FileText className="h-5 w-5 mr-2" />
-        Audit Logging
-      </CardTitle>
+        <CardTitle className="flex items-center">
+            <FileText className="h-5 w-5 mr-2" />
+            Audit Logging
+        </CardTitle>
     </CardHeader>
     <CardContent>
-      <p className="text-sm text-muted-foreground">
-        All workflow steps are logged to mastra.log and workflow.log. This provides complete audit trails for compliance, monitoring, and forensic analysis.
-      </p>
+        <p className="text-sm text-muted-foreground">
+            All workflow steps are logged to mastra.log and workflow.log. This
+            provides complete audit trails for compliance, monitoring, and
+            forensic analysis.
+        </p>
     </CardContent>
-  </Card>
+</Card>
 
-  <Card>
+<Card>
     <CardHeader>
-      <CardTitle className="flex items-center">
-        <Shield className="h-5 w-5 mr-2" />
-        ACL Configuration
-      </CardTitle>
+        <CardTitle className="flex items-center">
+            <Shield className="h-5 w-5 mr-2" />
+            ACL Configuration
+        </CardTitle>
     </CardHeader>
     <CardContent>
-      <p className="text-sm text-muted-foreground">
-        Base access control policies are defined in src/mastra/policy/acl.yaml. This can be extended for custom security rules and organizational requirements.
-      </p>
+        <p className="text-sm text-muted-foreground">
+            Base access control policies are defined in
+            src/mastra/policy/acl.yaml. This can be extended for custom security
+            rules and organizational requirements.
+        </p>
     </CardContent>
-  </Card>
+</Card>
 
   <Card>
     <CardHeader>
@@ -579,6 +625,7 @@ Security is enforced end-to-end via the Mastra query workflow:
         </ul>
       </CardContent>
     </Card>
+
   </div>
 
   <Card>
@@ -609,17 +656,17 @@ Security is enforced end-to-end via the Mastra query workflow:
 </div>
 
 <div className="flex gap-4">
-  <Button asChild>
-    <a href="/docs/demo-roles">
-      <Users className="h-4 w-4 mr-2" />
-      Try Demo Roles
-      <ArrowRight className="h-4 w-4 ml-2" />
-    </a>
-  </Button>
-  <Button variant="outline" asChild>
-    <a href="/docs/api-reference">
-      <FileText className="h-4 w-4 mr-2" />
-      API Reference
-    </a>
-  </Button>
+    <Button asChild>
+        <a href="/docs/demo-roles">
+            <Users className="h-4 w-4 mr-2" />
+            Try Demo Roles
+            <ArrowRight className="h-4 w-4 ml-2" />
+        </a>
+    </Button>
+    <Button variant="outline" asChild>
+        <a href="/docs/api-reference">
+            <FileText className="h-4 w-4 mr-2" />
+            API Reference
+        </a>
+    </Button>
 </div>

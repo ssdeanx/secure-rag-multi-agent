@@ -1,16 +1,16 @@
-'use client'; // REQUIRED: Cedar chat components use React hooks (useState, useEffect, etc.)
+'use client' // REQUIRED: Cedar chat components use React hooks (useState, useEffect, etc.)
 
-import React from 'react';
+import React from 'react'
 
-import { ChatModeSelector } from '../../cedar/ChatModeSelector';
-import { CedarCaptionChat } from '@/cedar/components/chatComponents/CedarCaptionChat';
-import { FloatingCedarChat } from '@/cedar/components/chatComponents/FloatingCedarChat';
-import { SidePanelCedarChat } from '@/cedar/components/chatComponents/SidePanelCedarChat';
-import { RoadmapCanvas } from '../../cedar/RoadmapCanvas';
+import { ChatModeSelector } from '../../cedar/ChatModeSelector'
+import { CedarCaptionChat } from '@/cedar/components/chatComponents/CedarCaptionChat'
+import { FloatingCedarChat } from '@/cedar/components/chatComponents/FloatingCedarChat'
+import { SidePanelCedarChat } from '@/cedar/components/chatComponents/SidePanelCedarChat'
+import { RoadmapCanvas } from '../../cedar/RoadmapCanvas'
 
 export const experimental_ppr = true
 
-type ChatMode = 'floating' | 'sidepanel' | 'caption';
+type ChatMode = 'floating' | 'sidepanel' | 'caption'
 
 /**
  * Cedar-OS Page Component (Client Component)
@@ -73,40 +73,46 @@ type ChatMode = 'floating' | 'sidepanel' | 'caption';
  * Agents can read/modify roadmap nodes through setState actions.
  */
 export default function HomePage() {
+    // Cedar-OS chat components with mode selector
+    // Choose between caption, floating, or side panel chat modes
+    const [chatMode, setChatMode] = React.useState<ChatMode>('caption')
 
-  // Cedar-OS chat components with mode selector
-  // Choose between caption, floating, or side panel chat modes
-  const [chatMode, setChatMode] = React.useState<ChatMode>('caption');
+    const renderContent = () => (
+        <div className="relative h-screen w-full flex">
+            <div className="flex-1">
+                <RoadmapCanvas />
+            </div>
+            <div className="w-80 border-l">
+                <ChatModeSelector
+                    currentMode={chatMode}
+                    onModeChange={setChatMode}
+                />
 
-  const renderContent = () => (
-    <div className="relative h-screen w-full flex">
-      <div className="flex-1">
-        <RoadmapCanvas />
-      </div>
-      <div className="w-80 border-l">
-        <ChatModeSelector currentMode={chatMode} onModeChange={setChatMode} />
+                {chatMode === 'caption' && <CedarCaptionChat />}
 
-        {chatMode === 'caption' && <CedarCaptionChat />}
+                {chatMode === 'floating' && (
+                    <FloatingCedarChat
+                        side="right"
+                        title="Cedarling Chat"
+                        collapsedLabel="Chat with Cedar"
+                    />
+                )}
+            </div>
+        </div>
+    )
 
-        {chatMode === 'floating' && (
-          <FloatingCedarChat side="right" title="Cedarling Chat" collapsedLabel="Chat with Cedar" />
-        )}
-      </div>
-    </div>
-  );
+    if (chatMode === 'sidepanel') {
+        return (
+            <SidePanelCedarChat
+                side="right"
+                title="Cedarling Chat"
+                collapsedLabel="Chat with Cedar"
+                showCollapsedButton={true}
+            >
+                {renderContent()}
+            </SidePanelCedarChat>
+        )
+    }
 
-  if (chatMode === 'sidepanel') {
-    return (
-      <SidePanelCedarChat
-        side="right"
-        title="Cedarling Chat"
-        collapsedLabel="Chat with Cedar"
-        showCollapsedButton={true}
-      >
-        {renderContent()}
-      </SidePanelCedarChat>
-    );
-  }
-
-  return renderContent();
+    return renderContent()
 }

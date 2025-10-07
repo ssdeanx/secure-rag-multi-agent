@@ -27,8 +27,7 @@ Configuration module for OpenRouter API providing access to various AI models in
 - ARC-001: Design patterns: Configuration module pattern. Exports pre-configured model instances.
 
 - ARC-002: Dependencies:
-
-  - `@openrouter/ai-sdk-provider`: createOpenRouter
+    - `@openrouter/ai-sdk-provider`: createOpenRouter
 
 - ARC-003: Interactions: Creates OpenRouter client with API key, configures models with reasoning and streaming options.
 
@@ -57,10 +56,10 @@ graph TD
 
 - INT-001: Exports model instances and default client.
 
-| Export | Purpose | Type | Usage Notes |
-|--------|---------|------|-------------|
-| `openGrokAI` | Grok 4 Fast model | `OpenRouterModel` | Free tier with reasoning |
-| `default` | OpenRouter client | `OpenRouterClient` | For custom model creation |
+| Export       | Purpose           | Type               | Usage Notes               |
+| ------------ | ----------------- | ------------------ | ------------------------- |
+| `openGrokAI` | Grok 4 Fast model | `OpenRouterModel`  | Free tier with reasoning  |
+| `default`    | OpenRouter client | `OpenRouterClient` | For custom model creation |
 
 ## 4. Implementation Details
 
@@ -79,24 +78,24 @@ Corner cases and considerations:
 ### Using Grok model
 
 ```ts
-import { openGrokAI } from '@/src/mastra/config/openrouter';
+import { openGrokAI } from '@/src/mastra/config/openrouter'
 
 // Agent with reasoning capabilities
 const reasoningAgent = createAgent({
-  name: 'ReasoningAgent',
-  model: openGrokAI,
-  // ...
-});
+    name: 'ReasoningAgent',
+    model: openGrokAI,
+    // ...
+})
 ```
 
 ### Custom model creation
 
 ```ts
-import openrouter from '@/src/mastra/config/openrouter';
+import openrouter from '@/src/mastra/config/openrouter'
 
 const customModel = openrouter('anthropic/claude-3-haiku', {
-  // custom options
-});
+    // custom options
+})
 ```
 
 ### Environment setup
@@ -117,21 +116,21 @@ OPENROUTER_API_KEY=your-openrouter-key
 ## 7. Reference Information
 
 - REF-001: Dependencies (approximate):
-  - @openrouter/ai-sdk-provider (^1.0.0)
+    - @openrouter/ai-sdk-provider (^1.0.0)
 
 - REF-002: Configuration
-  - OPENROUTER_API_KEY (required)
+    - OPENROUTER_API_KEY (required)
 
 - REF-003: Testing guidelines
-  - Mock API key. Test reasoning output.
+    - Mock API key. Test reasoning output.
 
 - REF-004: Troubleshooting
-  - Issue: Auth errors — verify OpenRouter API key.
-  - Issue: Rate limits — monitor usage tracking.
+    - Issue: Auth errors — verify OpenRouter API key.
+    - Issue: Rate limits — monitor usage tracking.
 
 - REF-005: Related docs
-  - OpenRouter documentation
-  - Grok AI documentation
+    - OpenRouter documentation
+    - Grok AI documentation
 
 - REF-006: Change history
-  - 1.0 (2025-09-23) - Initial documentation generated
+    - 1.0 (2025-09-23) - Initial documentation generated

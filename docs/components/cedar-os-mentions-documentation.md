@@ -27,16 +27,15 @@ A React hook that configures @mention providers for roadmap elements (nodes and 
 - ARC-001: Design patterns: Provider registration pattern. Leverages Cedar OS's state-driven mentions for dynamic, searchable references.
 
 - ARC-002: Dependencies:
+    - React (hook)
 
-  - React (hook)
+    - reactflow (Node, Edge types)
 
-  - reactflow (Node, Edge types)
+    - cedar-os (useStateBasedMentionProvider, getCedarState)
 
-  - cedar-os (useStateBasedMentionProvider, getCedarState)
+    - lucide-react (Box, ArrowRight icons)
 
-  - lucide-react (Box, ArrowRight icons)
-
-  - Local: cedar/FeatureNode (FeatureNodeData)
+    - Local: cedar/FeatureNode (FeatureNodeData)
 
 - ARC-003: Interactions: Registers providers reactively; mentions trigger on @ in chat input. Agents receive resolved mentions as context.
 
@@ -88,19 +87,19 @@ graph TD
 
 - INT-001: Public interface: Hook with no params/return.
 
-| Hook | Purpose | Parameters | Return Type | Usage Notes |
-|------|---------|------------|-------------|-------------|
-| `useRoadmapMentions()` | Registers @mention providers for nodes/edges | None | `void` | Call in Cedar OS component; requires registered state (useRoadmapState). |
+| Hook                   | Purpose                                      | Parameters | Return Type | Usage Notes                                                              |
+| ---------------------- | -------------------------------------------- | ---------- | ----------- | ------------------------------------------------------------------------ |
+| `useRoadmapMentions()` | Registers @mention providers for nodes/edges | None       | `void`      | Call in Cedar OS component; requires registered state (useRoadmapState). |
 
 ### Hook Usage
 
 ```tsx
-import { useRoadmapMentions } from './mentions';
+import { useRoadmapMentions } from './mentions'
 
 function CedarChat() {
-  useRoadmapMentions(); // Enable @node and @edge mentions
+    useRoadmapMentions() // Enable @node and @edge mentions
 
-  return <ChatInput /* ... */ />;
+    return <ChatInput /* ... */ />
 }
 ```
 
@@ -129,18 +128,18 @@ Corner cases and considerations:
 ### Basic Usage
 
 ```tsx
-import { useRoadmapMentions } from './mentions';
+import { useRoadmapMentions } from './mentions'
 
 export default function CedarOSPage() {
-  // Other hooks...
-  useRoadmapMentions();
+    // Other hooks...
+    useRoadmapMentions()
 
-  return (
-    <>
-      <RoadmapCanvas />
-      <ChatInterface /> {/* @mentions work here */}
-    </>
-  );
+    return (
+        <>
+            <RoadmapCanvas />
+            <ChatInterface /> {/* @mentions work here */}
+        </>
+    )
 }
 ```
 
@@ -167,13 +166,13 @@ sequenceDiagram
 ```tsx
 // Extend for custom mentions (e.g., priorities)
 useStateBasedMentionProvider({
-  stateKey: 'priorities',
-  trigger: '@',
-  labelField: (p) => p.name,
-  description: 'Roadmap priorities',
-  icon: PriorityIcon,
-  color: '#EF4444'
-});
+    stateKey: 'priorities',
+    trigger: '@',
+    labelField: (p) => p.name,
+    description: 'Roadmap priorities',
+    icon: PriorityIcon,
+    color: '#EF4444',
+})
 ```
 
 Best practices:
@@ -199,31 +198,27 @@ Best practices:
 ## 7. Reference Information
 
 - REF-001: Dependencies:
+    - react (^18)
 
-  - react (^18)
+    - cedar-os (latest) - mention provider
 
-  - cedar-os (latest) - mention provider
+    - reactflow (^11) - types
 
-  - reactflow (^11) - types
-
-  - lucide-react (^0.300) - icons
+    - lucide-react (^0.300) - icons
 
 - REF-002: Configuration: Requires state registration. Trigger '@' fixed.
 
 - REF-003: Testing: Mock provider; assert search returns expected items.
 
 - REF-004: Troubleshooting
+    - No suggestions: Verify state registered and searchFields correct.
 
-  - No suggestions: Verify state registered and searchFields correct.
-
-  - Edge labels wrong: Check getCedarState fetches current nodes.
+    - Edge labels wrong: Check getCedarState fetches current nodes.
 
 - REF-005: Related docs
+    - `app/cedar-os/state.ts` - State setup
 
-  - `app/cedar-os/state.ts` - State setup
-
-  - `app/cedar-os/context.ts` - Context subscription
+    - `app/cedar-os/context.ts` - Context subscription
 
 - REF-006: Change history
-
-  - 1.0 (2025-09-23) - Initial documentation
+    - 1.0 (2025-09-23) - Initial documentation

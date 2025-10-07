@@ -1,11 +1,11 @@
 ---
-title: "Answerer Agent - Technical Documentation"
-component_path: "src/mastra/agents/answerer.agent.ts"
-version: "1.0"
-date_created: "2025-09-23"
-last_updated: "2025-09-23"
-owner: "AI Team"
-tags: ["agent", "rag", "citations", "governance", "answer-composition"]
+title: 'Answerer Agent - Technical Documentation'
+component_path: 'src/mastra/agents/answerer.agent.ts'
+version: '1.0'
+date_created: '2025-09-23'
+last_updated: '2025-09-23'
+owner: 'AI Team'
+tags: ['agent', 'rag', 'citations', 'governance', 'answer-composition']
 ---
 
 # Answerer Agent Documentation
@@ -124,23 +124,23 @@ graph TB
 
 ### Input Schema
 
-| Property | Type | Required | Description |
-|----------|------|----------|-------------|
-| `question` | `string` | Yes | The question to answer |
-| `contexts` | `array` | Yes | Array of context documents |
-| `metadata` | `object` | No | Additional document metadata |
+| Property   | Type     | Required | Description                  |
+| ---------- | -------- | -------- | ---------------------------- |
+| `question` | `string` | Yes      | The question to answer       |
+| `contexts` | `array`  | Yes      | Array of context documents   |
+| `metadata` | `object` | No       | Additional document metadata |
 
 ### Output Schema
 
-| Property | Type | Description |
-|----------|------|-------------|
-| `answer` | `string` | Complete answer with inline citations |
-| `citations` | `array` | Array of citation objects with docId and source |
+| Property    | Type     | Description                                     |
+| ----------- | -------- | ----------------------------------------------- |
+| `answer`    | `string` | Complete answer with inline citations           |
+| `citations` | `array`  | Array of citation objects with docId and source |
 
 ### Public Methods
 
-| Method | Parameters | Return Type | Description |
-|--------|------------|-------------|-------------|
+| Method       | Parameters           | Return Type             | Description                         |
+| ------------ | -------------------- | ----------------------- | ----------------------------------- |
 | `generate()` | `input: AnswerInput` | `Promise<AnswerOutput>` | Generate cited answer from contexts |
 
 ## 4. Usage Examples
@@ -148,17 +148,18 @@ graph TB
 ### Basic Answer Composition
 
 ```typescript
-import { answererAgent } from './src/mastra/agents/answerer.agent';
+import { answererAgent } from './src/mastra/agents/answerer.agent'
 
 const result = await answererAgent.generate({
-  question: "What are the expense reporting requirements?",
-  contexts: [
-    {
-      id: "finance-policy-001",
-      content: "Expense reports must be submitted within 30 days of the expense date..."
-    }
-  ]
-});
+    question: 'What are the expense reporting requirements?',
+    contexts: [
+        {
+            id: 'finance-policy-001',
+            content:
+                'Expense reports must be submitted within 30 days of the expense date...',
+        },
+    ],
+})
 
 // Result:
 // {
@@ -171,18 +172,18 @@ const result = await answererAgent.generate({
 
 ```typescript
 const result = await answererAgent.generate({
-  question: "What are approval requirements for expenses?",
-  contexts: [
-    {
-      id: "finance-policy-001",
-      content: "Expenses over $1000 require manager approval..."
-    },
-    {
-      id: "hr-policy-002",
-      content: "All expense approvals must be documented..."
-    }
-  ]
-});
+    question: 'What are approval requirements for expenses?',
+    contexts: [
+        {
+            id: 'finance-policy-001',
+            content: 'Expenses over $1000 require manager approval...',
+        },
+        {
+            id: 'hr-policy-002',
+            content: 'All expense approvals must be documented...',
+        },
+    ],
+})
 
 // Result:
 // {
@@ -198,14 +199,14 @@ const result = await answererAgent.generate({
 
 ```typescript
 const result = await answererAgent.generate({
-  question: "What are the parking regulations?",
-  contexts: [
-    {
-      id: "finance-policy-001",
-      content: "Expense reports must be submitted within 30 days..."
-    }
-  ]
-});
+    question: 'What are the parking regulations?',
+    contexts: [
+        {
+            id: 'finance-policy-001',
+            content: 'Expense reports must be submitted within 30 days...',
+        },
+    ],
+})
 
 // Result:
 // {
@@ -250,17 +251,17 @@ const result = await answererAgent.generate({
 
 ### Dependencies
 
-| Package | Version | Purpose |
-|---------|---------|---------|
-| `@mastra/core` | ^0.1.0 | Agent framework |
+| Package          | Version | Purpose                   |
+| ---------------- | ------- | ------------------------- |
+| `@mastra/core`   | ^0.1.0  | Agent framework           |
 | `@ai-sdk/google` | ^0.0.50 | Google Gemini integration |
-| `zod` | ^3.22.4 | Schema validation |
+| `zod`            | ^3.22.4 | Schema validation         |
 
 ### Environment Variables
 
-| Variable | Required | Default | Description |
-|----------|----------|---------|-------------|
-| `GOOGLE_GENERATIVE_AI_API_KEY` | Yes | - | Google AI API key |
+| Variable                       | Required | Default | Description       |
+| ------------------------------ | -------- | ------- | ----------------- |
+| `GOOGLE_GENERATIVE_AI_API_KEY` | Yes      | -       | Google AI API key |
 
 ### Testing
 
@@ -298,8 +299,8 @@ curl http://localhost:3000/api/health/answerer
 
 ### Change History
 
-| Version | Date | Changes |
-|---------|------|---------|
-| 1.0 | 2025-09-23 | Initial implementation with strict governance rules |
-| 0.9 | 2025-09-20 | Added context relevance validation |
-| 0.8 | 2025-09-15 | Basic answer composition functionality |
+| Version | Date       | Changes                                             |
+| ------- | ---------- | --------------------------------------------------- |
+| 1.0     | 2025-09-23 | Initial implementation with strict governance rules |
+| 0.9     | 2025-09-20 | Added context relevance validation                  |
+| 0.8     | 2025-09-15 | Basic answer composition functionality              |

@@ -8,21 +8,22 @@
 //  - tenant: global
 // approvedBy: sam
 // approvalDate: 2025-09-24
-import { Agent } from "@mastra/core";
-import { answererOutputSchema } from "../schemas/agent-schemas";
-import { google } from "@ai-sdk/google";
-import { log } from "../config/logger";
-import { pgMemory } from "../config/pg-storage";
-import { googleAI } from "../config/google";
+import { Agent } from '@mastra/core'
+import { answererOutputSchema } from '../schemas/agent-schemas'
+import { google } from '@ai-sdk/google'
+import { log } from '../config/logger'
+import { pgMemory } from '../config/pg-storage'
+import { googleAI } from '../config/google'
 
-log.info('Initializing Answerer Agent...');
+log.info('Initializing Answerer Agent...')
 
 export const answererAgent = new Agent({
-  id: "answerer",
-  name: "answerer",
-  model: googleAI,
-  description: "A STRICT governed RAG answer composer that crafts answers using ONLY the provided contexts, ensuring all statements are backed by citations.",
-  instructions: `You are a STRICT governed RAG answer composer. Follow these rules EXACTLY:
+    id: 'answerer',
+    name: 'answerer',
+    model: googleAI,
+    description:
+        'A STRICT governed RAG answer composer that crafts answers using ONLY the provided contexts, ensuring all statements are backed by citations.',
+    instructions: `You are a STRICT governed RAG answer composer. Follow these rules EXACTLY:
 
 1. NEVER use external knowledge - ONLY use provided contexts
 2. FIRST check if contexts actually address the specific question asked
@@ -43,9 +44,9 @@ IMPORTANT: Respond with valid JSON:
   "answer": "Your complete answer with inline citations",
   "citations": [{"docId": "document-id", "source": "source description"}]
 }`,
-  memory: pgMemory,
-  evals: {},
-  scorers: {},
-  workflows: {},
-});
-export { answererOutputSchema };
+    memory: pgMemory,
+    evals: {},
+    scorers: {},
+    workflows: {},
+})
+export { answererOutputSchema }

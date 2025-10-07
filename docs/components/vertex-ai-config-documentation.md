@@ -71,11 +71,11 @@ graph TD
 
 - INT-001: Exported models.
 
-| Export | Model ID | Notes |
-|--------|----------|-------|
-| `vertexAIPro` | `gemini-2.5-pro` | Advanced |
-| `vertexAIFlash` | `gemini-2.5-flash` | Fast |
-| `vertexAIFlashLite` | `gemini-2.5-flash-lite` | Lite |
+| Export              | Model ID                | Notes    |
+| ------------------- | ----------------------- | -------- |
+| `vertexAIPro`       | `gemini-2.5-pro`        | Advanced |
+| `vertexAIFlash`     | `gemini-2.5-flash`      | Fast     |
+| `vertexAIFlashLite` | `gemini-2.5-flash-lite` | Lite     |
 
 INT notes:
 
@@ -102,9 +102,9 @@ Edge cases and considerations:
 ### In Agent
 
 ```ts
-import { vertexAIPro } from '../config/vertex';
+import { vertexAIPro } from '../config/vertex'
 
-const agent = new Agent({model: vertexAIPro});
+const agent = new Agent({ model: vertexAIPro })
 ```
 
 Best practices:

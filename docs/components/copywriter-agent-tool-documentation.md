@@ -1,11 +1,19 @@
 ---
-title: "Copywriter Agent Tool - Technical Documentation"
-component_path: "src/mastra/tools/copywriter-agent-tool.ts"
-version: "1.0"
-date_created: "2025-09-23"
-last_updated: "2025-09-23"
-owner: "AI Team"
-tags: ["tool", "content-creation", "copywriting", "marketing", "blog", "social-media"]
+title: 'Copywriter Agent Tool - Technical Documentation'
+component_path: 'src/mastra/tools/copywriter-agent-tool.ts'
+version: '1.0'
+date_created: '2025-09-23'
+last_updated: '2025-09-23'
+owner: 'AI Team'
+tags:
+    [
+        'tool',
+        'content-creation',
+        'copywriting',
+        'marketing',
+        'blog',
+        'social-media',
+    ]
 ---
 
 # Copywriter Agent Tool Documentation
@@ -124,30 +132,30 @@ graph TB
 
 ### Input Schema
 
-| Property | Type | Required | Description |
-|----------|------|----------|-------------|
-| `topic` | `string` | Yes | Main topic or subject for content |
-| `contentType` | `enum?` | No | Content type (blog/marketing/social/technical/business/creative/general) |
-| `targetAudience` | `string?` | No | Intended audience for the content |
-| `tone` | `enum?` | No | Desired tone (professional/casual/formal/engaging/persuasive/educational) |
-| `length` | `enum?` | No | Content length (short/medium/long) |
-| `specificRequirements` | `string?` | No | Additional guidelines or focus areas |
+| Property               | Type      | Required | Description                                                               |
+| ---------------------- | --------- | -------- | ------------------------------------------------------------------------- |
+| `topic`                | `string`  | Yes      | Main topic or subject for content                                         |
+| `contentType`          | `enum?`   | No       | Content type (blog/marketing/social/technical/business/creative/general)  |
+| `targetAudience`       | `string?` | No       | Intended audience for the content                                         |
+| `tone`                 | `enum?`   | No       | Desired tone (professional/casual/formal/engaging/persuasive/educational) |
+| `length`               | `enum?`   | No       | Content length (short/medium/long)                                        |
+| `specificRequirements` | `string?` | No       | Additional guidelines or focus areas                                      |
 
 ### Output Schema
 
-| Property | Type | Description |
-|----------|------|-------------|
-| `content` | `string` | Generated content in markdown format |
-| `contentType` | `string` | Type of content created |
-| `title` | `string?` | Suggested title for the content |
-| `summary` | `string?` | Brief content summary |
-| `keyPoints` | `string[]?` | Key points or takeaways |
-| `wordCount` | `number?` | Approximate word count |
+| Property      | Type        | Description                          |
+| ------------- | ----------- | ------------------------------------ |
+| `content`     | `string`    | Generated content in markdown format |
+| `contentType` | `string`    | Type of content created              |
+| `title`       | `string?`   | Suggested title for the content      |
+| `summary`     | `string?`   | Brief content summary                |
+| `keyPoints`   | `string[]?` | Key points or takeaways              |
+| `wordCount`   | `number?`   | Approximate word count               |
 
 ### Public Methods
 
-| Method | Parameters | Return Type | Description |
-|--------|------------|-------------|-------------|
+| Method      | Parameters              | Return Type              | Description                             |
+| ----------- | ----------------------- | ------------------------ | --------------------------------------- |
 | `execute()` | `context: ContentInput` | `Promise<ContentOutput>` | Generate content using copywriter agent |
 
 ## 4. Usage Examples
@@ -155,20 +163,21 @@ graph TB
 ### Blog Post Creation
 
 ```typescript
-import { copywriterTool } from './src/mastra/tools/copywriter-agent-tool';
+import { copywriterTool } from './src/mastra/tools/copywriter-agent-tool'
 
 const result = await copywriterTool.execute({
-  context: {
-    topic: "The Future of AI in Healthcare",
-    contentType: "blog",
-    targetAudience: "healthcare professionals",
-    tone: "educational",
-    length: "long",
-    specificRequirements: "Include real-world examples and future predictions"
-  },
-  mastra: mastraInstance,
-  tracingContext: tracingContext
-});
+    context: {
+        topic: 'The Future of AI in Healthcare',
+        contentType: 'blog',
+        targetAudience: 'healthcare professionals',
+        tone: 'educational',
+        length: 'long',
+        specificRequirements:
+            'Include real-world examples and future predictions',
+    },
+    mastra: mastraInstance,
+    tracingContext: tracingContext,
+})
 
 // Result:
 // {
@@ -185,17 +194,17 @@ const result = await copywriterTool.execute({
 
 ```typescript
 const result = await copywriterTool.execute({
-  context: {
-    topic: "New SaaS Product Launch",
-    contentType: "marketing",
-    targetAudience: "small business owners",
-    tone: "persuasive",
-    length: "medium",
-    specificRequirements: "Focus on ROI and ease of use"
-  },
-  mastra: mastraInstance,
-  tracingContext: tracingContext
-});
+    context: {
+        topic: 'New SaaS Product Launch',
+        contentType: 'marketing',
+        targetAudience: 'small business owners',
+        tone: 'persuasive',
+        length: 'medium',
+        specificRequirements: 'Focus on ROI and ease of use',
+    },
+    mastra: mastraInstance,
+    tracingContext: tracingContext,
+})
 
 // Generates persuasive marketing copy with calls-to-action
 ```
@@ -204,16 +213,16 @@ const result = await copywriterTool.execute({
 
 ```typescript
 const result = await copywriterTool.execute({
-  context: {
-    topic: "Company Culture Update",
-    contentType: "social",
-    targetAudience: "employees and followers",
-    tone: "engaging",
-    length: "short"
-  },
-  mastra: mastraInstance,
-  tracingContext: tracingContext
-});
+    context: {
+        topic: 'Company Culture Update',
+        contentType: 'social',
+        targetAudience: 'employees and followers',
+        tone: 'engaging',
+        length: 'short',
+    },
+    mastra: mastraInstance,
+    tracingContext: tracingContext,
+})
 
 // Creates concise, shareable social media content
 ```
@@ -222,17 +231,17 @@ const result = await copywriterTool.execute({
 
 ```typescript
 const result = await copywriterTool.execute({
-  context: {
-    topic: "API Integration Guide",
-    contentType: "technical",
-    targetAudience: "developers",
-    tone: "professional",
-    length: "long",
-    specificRequirements: "Include code examples and troubleshooting"
-  },
-  mastra: mastraInstance,
-  tracingContext: tracingContext
-});
+    context: {
+        topic: 'API Integration Guide',
+        contentType: 'technical',
+        targetAudience: 'developers',
+        tone: 'professional',
+        length: 'long',
+        specificRequirements: 'Include code examples and troubleshooting',
+    },
+    mastra: mastraInstance,
+    tracingContext: tracingContext,
+})
 
 // Generates clear technical documentation with examples
 ```
@@ -273,17 +282,17 @@ const result = await copywriterTool.execute({
 
 ### Dependencies
 
-| Package | Version | Purpose |
-|---------|---------|---------|
-| `@mastra/core/tools` | ^0.1.0 | Tool framework |
-| `@mastra/core/ai-tracing` | ^0.1.0 | AI tracing integration |
-| `zod` | ^3.22.4 | Schema validation |
+| Package                   | Version | Purpose                |
+| ------------------------- | ------- | ---------------------- |
+| `@mastra/core/tools`      | ^0.1.0  | Tool framework         |
+| `@mastra/core/ai-tracing` | ^0.1.0  | AI tracing integration |
+| `zod`                     | ^3.22.4 | Schema validation      |
 
 ### Environment Variables
 
-| Variable | Required | Default | Description |
-|----------|----------|---------|-------------|
-| None | - | - | Uses Mastra agent configuration |
+| Variable | Required | Default | Description                     |
+| -------- | -------- | ------- | ------------------------------- |
+| None     | -        | -       | Uses Mastra agent configuration |
 
 ### Testing
 
@@ -321,8 +330,8 @@ curl http://localhost:3000/api/health/copywriter
 
 ### Change History
 
-| Version | Date | Changes |
-|---------|------|---------|
-| 1.0 | 2025-09-23 | Initial implementation with multi-format support |
-| 0.9 | 2025-09-20 | Added content analysis and metadata extraction |
-| 0.8 | 2025-09-15 | Basic content generation functionality |
+| Version | Date       | Changes                                          |
+| ------- | ---------- | ------------------------------------------------ |
+| 1.0     | 2025-09-23 | Initial implementation with multi-format support |
+| 0.9     | 2025-09-20 | Added content analysis and metadata extraction   |
+| 0.8     | 2025-09-15 | Basic content generation functionality           |

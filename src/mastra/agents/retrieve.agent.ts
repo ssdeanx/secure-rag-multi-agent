@@ -11,21 +11,22 @@
 // approvedBy: TODO
 // approvalDate: TODO
 
-import { Agent } from "@mastra/core";
-import { retrieveOutputSchema } from "../schemas/agent-schemas";
-import { vectorQueryTool } from "../tools/vector-query.tool";
-import { log } from "../config/logger";
-import { pgMemory } from "../config/pg-storage";
-import { googleAIFlashLite } from "../config/google";
+import { Agent } from '@mastra/core'
+import { retrieveOutputSchema } from '../schemas/agent-schemas'
+import { vectorQueryTool } from '../tools/vector-query.tool'
+import { log } from '../config/logger'
+import { pgMemory } from '../config/pg-storage'
+import { googleAIFlashLite } from '../config/google'
 
-log.info('Initializing Retrieve Agent...');
+log.info('Initializing Retrieve Agent...')
 
 export const retrieveAgent = new Agent({
-  id: "retrieve",
-  name: "retrieve",
-  model: googleAIFlashLite,
-  description: "A document retrieval agent that retrieves relevant documents based on a user's question and access level.",
-  instructions: `You are a document retrieval agent. You MUST call vectorQueryTool EXACTLY ONCE and ONLY return its results.
+    id: 'retrieve',
+    name: 'retrieve',
+    model: googleAIFlashLite,
+    description:
+        "A document retrieval agent that retrieves relevant documents based on a user's question and access level.",
+    instructions: `You are a document retrieval agent. You MUST call vectorQueryTool EXACTLY ONCE and ONLY return its results.
 
 **MANDATORY STEPS:**
 1. Parse input JSON for 'question' and 'access' fields
@@ -55,9 +56,9 @@ export const retrieveAgent = new Agent({
 
 
 `,
-  memory: pgMemory,
-  tools: { vectorQueryTool },
-  scorers: {},
-  workflows: {}, // This is where workflows will be defined
-});
-export { retrieveOutputSchema };
+    memory: pgMemory,
+    tools: { vectorQueryTool },
+    scorers: {},
+    workflows: {}, // This is where workflows will be defined
+})
+export { retrieveOutputSchema }

@@ -70,19 +70,19 @@ graph TD
 
 - INT-001: Exported Zod objects.
 
-| Schema | Purpose | Key Fields | Notes |
-|--------|---------|------------|-------|
-| `jwtClaimsSchema` | JWT payload | `sub, roles[], tenant?` | Optional exp/iat/iss |
-| `accessFilterSchema` | Query filters | `allowTags[], maxClassification` | Enum: public/internal/confidential |
-| `documentContextSchema` | RAG context | `text, docId, score, securityTags[], classification` | From vector query |
-| `ragAnswerSchema` | Generated answer | `answer, citations[]` | Citations: docId/source |
-| `verificationResultSchema` | Security check | `ok, reason, answer` | Answer: string or {text, citations} |
+| Schema                     | Purpose          | Key Fields                                           | Notes                               |
+| -------------------------- | ---------------- | ---------------------------------------------------- | ----------------------------------- |
+| `jwtClaimsSchema`          | JWT payload      | `sub, roles[], tenant?`                              | Optional exp/iat/iss                |
+| `accessFilterSchema`       | Query filters    | `allowTags[], maxClassification`                     | Enum: public/internal/confidential  |
+| `documentContextSchema`    | RAG context      | `text, docId, score, securityTags[], classification` | From vector query                   |
+| `ragAnswerSchema`          | Generated answer | `answer, citations[]`                                | Citations: docId/source             |
+| `verificationResultSchema` | Security check   | `ok, reason, answer`                                 | Answer: string or {text, citations} |
 
 ### Usage
 
 ```ts
-type Claims = z.infer<typeof jwtClaimsSchema>;
-const validated = jwtClaimsSchema.parse(tokenPayload);
+type Claims = z.infer<typeof jwtClaimsSchema>
+const validated = jwtClaimsSchema.parse(tokenPayload)
 ```
 
 INT notes:
@@ -111,18 +111,18 @@ Edge cases and considerations:
 
 ```ts
 const filter = accessFilterSchema.parse({
-  allowTags: ['role:admin'],
-  maxClassification: 'internal'
-});
+    allowTags: ['role:admin'],
+    maxClassification: 'internal',
+})
 ```
 
 ### Type Inference
 
 ```ts
 const answer: RagAnswer = {
-  answer: 'Response',
-  citations: [{docId: '1', source: 'doc.md'}]
-};
+    answer: 'Response',
+    citations: [{ docId: '1', source: 'doc.md' }],
+}
 ```
 
 Best practices:

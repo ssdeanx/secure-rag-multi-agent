@@ -1,5 +1,5 @@
-import { globalSetup } from "@mastra/evals";
+import { globalSetup } from '@mastra/evals'
 
 export default function setup() {
-  globalSetup();
+    globalSetup()
 }

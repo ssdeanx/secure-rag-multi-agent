@@ -16,7 +16,7 @@ When starting any task, read files in this order:
 
 Then check:
 
-- **tasks/_index.md** - See what's active
+- **tasks/\_index.md** - See what's active
 - Specific task files for work in progress
 - Related design and requirement docs
 
@@ -58,14 +58,14 @@ memory-bank/
 
 ## Core Files
 
-| File | Purpose | Read When |
-|------|---------|-----------|
-| projectbrief.md | Project goals, scope, constraints | Starting any work |
+| File              | Purpose                             | Read When                  |
+| ----------------- | ----------------------------------- | -------------------------- |
+| projectbrief.md   | Project goals, scope, constraints   | Starting any work          |
 | productContext.md | User experience, personas, features | Understanding requirements |
-| systemPatterns.md | Architecture, design decisions | Technical implementation |
-| techContext.md | Technology stack, setup, tools | Development setup |
-| activeContext.md | Current focus, recent changes | Every task |
-| progress.md | Status, lessons learned, roadmap | Planning work |
+| systemPatterns.md | Architecture, design decisions      | Technical implementation   |
+| techContext.md    | Technology stack, setup, tools      | Development setup          |
+| activeContext.md  | Current focus, recent changes       | Every task                 |
+| progress.md       | Status, lessons learned, roadmap    | Planning work              |
 
 ## Using the Memory Bank
 

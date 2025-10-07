@@ -5,6 +5,7 @@
 Kilocode headers are specialized comment blocks in TypeScript files within the Mastra framework. They serve as metadata to enforce governance, security, and auditability in the Retrieval-Augmented Generation (RAG) system. These headers document explicit contracts for agents and tools, ensuring least privilege access, predictable behavior, and traceability for sensitive operations involving data classification, vector stores, and external I/O.
 
 ### Purpose
+
 - **Security and Governance**: Prevent ad-hoc tool usage or unauthorized access to sensitive data (e.g., confidential documents). Headers specify required permissions, whitelists, and side effects to align with ACL-based access control.
 - **Auditability**: Enable tracing of operations (network, filesystem, vector upserts/queries) and support PR reviews via checklists.
 - **Fail-Safe Design**: Mandate validation (e.g., embedding dimensions, domains) and sanitization to avoid runtime errors or data leaks.
@@ -17,9 +18,11 @@ Headers are enforced through manual PR checklists and optional linting rules, no
 There are two primary types: **Agent Contract** for Mastra agents and **Tool Approval** for tools. Both start with `// Kilocode: [Type]` and use key-value lines.
 
 ### 1. Agent Contract
+
 **Applies to**: Files in `src/mastra/agents/` (e.g., answerer.agent.ts, assistant.ts).
 
 **Required Fields**:
+
 - `owner`: Team or individual responsible (e.g., team-ai).
 - `category`: Type (e.g., mastra-agent).
 - `approvalRequired`: Boolean (true for agents accessing sensitive data).
@@ -28,6 +31,7 @@ There are two primary types: **Agent Contract** for Mastra agents and **Tool App
 - `requiredCallerClaims`: JWT requirements (e.g., roles: [role:engineering], tenant: engineering).
 
 **Template**:
+
 ```
 // Kilocode: Agent Contract
 // owner: team-ai
@@ -43,6 +47,7 @@ There are two primary types: **Agent Contract** for Mastra agents and **Tool App
 ```
 
 **Example** (from src/mastra/agents/assistant.ts):
+
 ```
 // Kilocode: Agent Contract
 // owner: team-ai
@@ -57,14 +62,17 @@ There are two primary types: **Agent Contract** for Mastra agents and **Tool App
 ```
 
 **Rationale**:
+
 - Prevents over-permissive tool calls in RAG agents handling retrieval/answering.
 - Ensures outputs conform to schemas for structured responses with citations.
 - Enforces role/tenant checks to protect classified data per ACL.
 
 ### 2. Tool Approval
+
 **Applies to**: Files in `src/mastra/tools/` (e.g., web-scraper-tool.ts, data-file-manager.ts) with network I/O or filesystem writes.
 
 **Required Fields**:
+
 - `owner`: Team or individual (e.g., team-data).
 - `justification`: Brief reason and scope (e.g., fetch public docs for RAG indexing).
 - `allowedDomains`: Array of permitted domains (e.g., - example.com) or [].
@@ -74,6 +82,7 @@ There are two primary types: **Agent Contract** for Mastra agents and **Tool App
 - `approvalDate`: ISO date (e.g., 2025-09-23).
 
 **Template**:
+
 ```
 // Kilocode: Tool Approval
 // owner: team-data
@@ -90,6 +99,7 @@ There are two primary types: **Agent Contract** for Mastra agents and **Tool App
 ```
 
 **Example** (from src/mastra/tools/web-scraper-tool.ts):
+
 ```
 // Kilocode: Tool Approval
 // owner: team-data
@@ -107,11 +117,13 @@ There are two primary types: **Agent Contract** for Mastra agents and **Tool App
 ```
 
 **Rationale**:
+
 - High-risk tools (e.g., fetch, write) require explicit whitelists to prevent exfiltration or corruption.
 - Documents side effects for auditing; mandates validation (e.g., validateUrl, validateDataPath).
 - Ensures reversibility and sanitization (e.g., HTML to Markdown) for safe integration.
 
 ## Enforcement and Best Practices
+
 - **Placement**: Headers at the top of the file, before exports.
 - **PR Checklists**: Include verification (e.g., [ ] Header present, [ ] Whitelist populated) from review-checklists.md.
 - **Validation**: Use suggested scripts (e.g., validate-rules.js) in CI for header presence.

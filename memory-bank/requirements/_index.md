@@ -15,14 +15,14 @@ This index tracks all requirement specifications in the system. Requirements tra
 ## Active Requirements
 
 1. **[REQ001] - JWT Authentication** (High Priority)
-   - **Status:** Proposed
-   - **Added:** 2025-10-06
-   - **Summary:** Server-side JWT authentication for all API routes with role claim extraction, validation, and expiration enforcement.
+    - **Status:** Proposed
+    - **Added:** 2025-10-06
+    - **Summary:** Server-side JWT authentication for all API routes with role claim extraction, validation, and expiration enforcement.
 
 2. **[REQ002] - Role-Based Access Control (RBAC) Validation** (High Priority)
-   - **Status:** Proposed
-   - **Added:** 2025-10-06
-   - **Summary:** Hierarchical role validation with inheritance and access filters applied at the vector-query layer.
+    - **Status:** Proposed
+    - **Added:** 2025-10-06
+    - **Summary:** Hierarchical role validation with inheritance and access filters applied at the vector-query layer.
 
 ## Critical Priority Requirements
 
@@ -47,53 +47,53 @@ The following features are implemented but need formal requirement specification
 ### Security Requirements
 
 1. **JWT Authentication**
-   - User authentication via JWT tokens
-   - Role claim extraction and validation
-   - Token expiration enforcement
+    - User authentication via JWT tokens
+    - Role claim extraction and validation
+    - Token expiration enforcement
 
 2. **Role-Based Access Control**
-   - Hierarchical role system
-   - Access inheritance
-   - Permission validation
+    - Hierarchical role system
+    - Access inheritance
+    - Permission validation
 
 3. **Document Classification**
-   - Three-level classification (public, internal, confidential)
-   - Metadata tagging
-   - Access filtering
+    - Three-level classification (public, internal, confidential)
+    - Metadata tagging
+    - Access filtering
 
 4. **Audit Logging**
-   - Security event logging
-   - Access decision tracking
-   - Compliance reporting
+    - Security event logging
+    - Access decision tracking
+    - Compliance reporting
 
 ### Functional Requirements
 
 5. **Document Retrieval**
-   - Vector search with semantic matching
-   - Security-aware filtering
-   - Relevance ranking
+    - Vector search with semantic matching
+    - Security-aware filtering
+    - Relevance ranking
 
 6. **Answer Generation**
-   - AI-powered response generation
-   - Source citation
-   - Streaming responses
+    - AI-powered response generation
+    - Source citation
+    - Streaming responses
 
 7. **Document Indexing**
-   - Batch document processing
-   - Embedding generation
-   - Metadata extraction
+    - Batch document processing
+    - Embedding generation
+    - Metadata extraction
 
 ### Non-Functional Requirements
 
 8. **Performance**
-   - Response time targets
-   - Concurrent user support
-   - Scalability limits
+    - Response time targets
+    - Concurrent user support
+    - Scalability limits
 
 9. **Reliability**
-   - Error handling
-   - Fault tolerance
-   - Recovery mechanisms
+    - Error handling
+    - Fault tolerance
+    - Recovery mechanisms
 
 10. **Usability**
     - User interface design
@@ -194,9 +194,9 @@ When creating a new requirement document, use this structure:
 
 ### Validation Steps
 
-| ID | Description | Status | Updated | Notes |
-|----|-------------|--------|---------|-------|
-| 1.1 | [Step] | [Status] | [Date], [Time] | [Notes] |
+| ID  | Description | Status   | Updated        | Notes   |
+| --- | ----------- | -------- | -------------- | ------- |
+| 1.1 | [Step]      | [Status] | [Date], [Time] | [Notes] |
 
 ## Requirement Log
 
@@ -226,8 +226,8 @@ To add a new requirement:
 ## Traceability Matrix
 
 | Requirement | Design | Task | Status |
-|-------------|--------|------|--------|
-| _None yet_ | - | - | - |
+| ----------- | ------ | ---- | ------ |
+| _None yet_  | -      | -    | -      |
 
 This matrix will track relationships between requirements, designs, and tasks as they are created.
 

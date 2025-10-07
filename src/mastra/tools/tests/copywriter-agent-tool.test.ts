@@ -6,8 +6,8 @@ vi.mock('../config/logger', () => ({
     log: {
         info: vi.fn(),
         error: vi.fn(),
-        warn: vi.fn()
-    }
+        warn: vi.fn(),
+    },
 }))
 
 describe('Copywriter Agent Tool', () => {
@@ -18,8 +18,8 @@ describe('Copywriter Agent Tool', () => {
             createChildSpan: vi.fn().mockImplementation(() => {
                 mockSpan = { end: vi.fn() }
                 return mockSpan
-            })
-        }
+            }),
+        },
     } as any
 
     let mockAgent: any
@@ -30,19 +30,21 @@ describe('Copywriter Agent Tool', () => {
         mockSpan = undefined
 
         // Reset the mock implementation after clearing
-        mockTracingContext.currentSpan.createChildSpan.mockImplementation(() => {
-            mockSpan = { end: vi.fn() }
-            return mockSpan
-        })
+        mockTracingContext.currentSpan.createChildSpan.mockImplementation(
+            () => {
+                mockSpan = { end: vi.fn() }
+                return mockSpan
+            }
+        )
 
         // Mock the agent
         mockAgent = {
-            generate: vi.fn()
+            generate: vi.fn(),
         }
 
         // Mock mastra
         mockMastra = {
-            getAgent: vi.fn().mockReturnValue(mockAgent)
+            getAgent: vi.fn().mockReturnValue(mockAgent),
         }
     })
 
@@ -65,14 +67,14 @@ AI is transforming our world in many ways.
 The future of AI is bright.`
 
             mockAgent.generate.mockResolvedValue({
-                text: mockContent
+                text: mockContent,
             })
 
             const result = await copywriterTool.execute({
                 context: { topic: 'artificial intelligence' },
                 mastra: mockMastra,
                 runtimeContext: mockRuntimeContext,
-                tracingContext: mockTracingContext
+                tracingContext: mockTracingContext,
             })
 
             expect(result).toEqual({
@@ -81,7 +83,7 @@ The future of AI is bright.`
                 title: 'Sample Blog Post',
                 summary: '# Sample Blog Post',
                 keyPoints: [],
-                wordCount: 31
+                wordCount: 31,
             })
 
             expect(mockMastra.getAgent).toHaveBeenCalledWith('copywriterAgent')
@@ -103,7 +105,7 @@ Are you ready to revolutionize your operations? Our cutting-edge AI solutions de
 Contact us today to get started!`
 
             mockAgent.generate.mockResolvedValue({
-                text: mockContent
+                text: mockContent,
             })
 
             const result = await copywriterTool.execute({
@@ -113,11 +115,12 @@ Contact us today to get started!`
                     targetAudience: 'business executives',
                     tone: 'persuasive',
                     length: 'short',
-                    specificRequirements: 'Include call-to-action and statistics'
+                    specificRequirements:
+                        'Include call-to-action and statistics',
                 },
                 mastra: mockMastra,
                 runtimeContext: mockRuntimeContext,
-                tracingContext: mockTracingContext
+                tracingContext: mockTracingContext,
             })
 
             expect(result.contentType).toBe('marketing')
@@ -137,7 +140,7 @@ What's your take on AI in healthcare? Share below! 👇
 #AI #Healthcare #Innovation #FutureOfMedicine`
 
             mockAgent.generate.mockResolvedValue({
-                text: mockContent
+                text: mockContent,
             })
 
             const result = await copywriterTool.execute({
@@ -145,11 +148,11 @@ What's your take on AI in healthcare? Share below! 👇
                     topic: 'AI in healthcare',
                     contentType: 'social',
                     tone: 'engaging',
-                    length: 'short'
+                    length: 'short',
                 },
                 mastra: mockMastra,
                 runtimeContext: mockRuntimeContext,
-                tracingContext: mockTracingContext
+                tracingContext: mockTracingContext,
             })
 
             expect(result.contentType).toBe('social')
@@ -187,7 +190,7 @@ model = tf.keras.Sequential([
 \`\`\``
 
             mockAgent.generate.mockResolvedValue({
-                text: mockContent
+                text: mockContent,
             })
 
             const result = await copywriterTool.execute({
@@ -195,11 +198,11 @@ model = tf.keras.Sequential([
                     topic: 'neural networks',
                     contentType: 'technical',
                     targetAudience: 'developers',
-                    length: 'long'
+                    length: 'long',
                 },
                 mastra: mockMastra,
                 runtimeContext: mockRuntimeContext,
-                tracingContext: mockTracingContext
+                tracingContext: mockTracingContext,
             })
 
             expect(result.contentType).toBe('technical')
@@ -215,18 +218,20 @@ It discusses various topics and provides insights into the subject matter.
 The conclusion wraps up the main points discussed.`
 
             mockAgent.generate.mockResolvedValue({
-                text: mockContent
+                text: mockContent,
             })
 
             const result = await copywriterTool.execute({
                 context: { topic: 'general discussion' },
                 mastra: mockMastra,
                 runtimeContext: mockRuntimeContext,
-                tracingContext: mockTracingContext
+                tracingContext: mockTracingContext,
             })
 
             expect(result.title).toBeUndefined()
-            expect(result.summary).toBe('This is content without a markdown title.')
+            expect(result.summary).toBe(
+                'This is content without a markdown title.'
+            )
         })
 
         it('should truncate long summaries', async () => {
@@ -234,14 +239,14 @@ The conclusion wraps up the main points discussed.`
             const mockContent = `${longParagraph}\n\nThis is the second paragraph.`
 
             mockAgent.generate.mockResolvedValue({
-                text: mockContent
+                text: mockContent,
             })
 
             const result = await copywriterTool.execute({
                 context: { topic: 'long content' },
                 mastra: mockMastra,
                 runtimeContext: mockRuntimeContext,
-                tracingContext: mockTracingContext
+                tracingContext: mockTracingContext,
             })
 
             expect(result.summary!.length).toBeLessThanOrEqual(203) // 200 + '...'
@@ -251,38 +256,44 @@ The conclusion wraps up the main points discussed.`
 
     describe('error handling', () => {
         it('should throw error for unsupported content type', async () => {
-            await expect(copywriterTool.execute({
-                context: {
-                    topic: 'test',
-                    contentType: 'general' as any
-                },
-                mastra: mockMastra,
-                runtimeContext: mockRuntimeContext,
-                tracingContext: mockTracingContext
-            })).rejects.toThrow('Not implemented yet: "general" case')
+            await expect(
+                copywriterTool.execute({
+                    context: {
+                        topic: 'test',
+                        contentType: 'general' as any,
+                    },
+                    mastra: mockMastra,
+                    runtimeContext: mockRuntimeContext,
+                    tracingContext: mockTracingContext,
+                })
+            ).rejects.toThrow('Not implemented yet: "general" case')
         })
 
         it('should handle agent generation errors', async () => {
             const error = new Error('Agent failed to generate content')
             mockAgent.generate.mockRejectedValue(error)
 
-            await expect(copywriterTool.execute({
-                context: { topic: 'failing topic' },
-                mastra: mockMastra,
-                runtimeContext: mockRuntimeContext,
-                tracingContext: mockTracingContext
-            })).rejects.toThrow('Agent failed to generate content')
+            await expect(
+                copywriterTool.execute({
+                    context: { topic: 'failing topic' },
+                    mastra: mockMastra,
+                    runtimeContext: mockRuntimeContext,
+                    tracingContext: mockTracingContext,
+                })
+            ).rejects.toThrow('Agent failed to generate content')
         })
 
         it('should handle non-Error exceptions', async () => {
             mockAgent.generate.mockRejectedValue('String error')
 
-            await expect(copywriterTool.execute({
-                context: { topic: 'failing topic' },
-                mastra: mockMastra,
-                runtimeContext: mockRuntimeContext,
-                tracingContext: mockTracingContext
-            })).rejects.toThrow('Unknown error')
+            await expect(
+                copywriterTool.execute({
+                    context: { topic: 'failing topic' },
+                    mastra: mockMastra,
+                    runtimeContext: mockRuntimeContext,
+                    tracingContext: mockTracingContext,
+                })
+            ).rejects.toThrow('Unknown error')
         })
     })
 
@@ -290,7 +301,7 @@ The conclusion wraps up the main points discussed.`
         it('should create and end tracing spans correctly', async () => {
             const mockContent = 'Simple content'
             mockAgent.generate.mockResolvedValue({
-                text: mockContent
+                text: mockContent,
             })
 
             await copywriterTool.execute({
@@ -300,14 +311,16 @@ The conclusion wraps up the main points discussed.`
                     targetAudience: 'testers',
                     tone: 'professional',
                     length: 'short',
-                    specificRequirements: 'test requirements'
+                    specificRequirements: 'test requirements',
                 },
                 mastra: mockMastra,
                 runtimeContext: mockRuntimeContext,
-                tracingContext: mockTracingContext
+                tracingContext: mockTracingContext,
             })
 
-            expect(mockTracingContext.currentSpan.createChildSpan).toHaveBeenCalledWith({
+            expect(
+                mockTracingContext.currentSpan.createChildSpan
+            ).toHaveBeenCalledWith({
                 type: expect.any(String),
                 name: 'copywriter-agent-tool',
                 input: {
@@ -316,8 +329,8 @@ The conclusion wraps up the main points discussed.`
                     targetAudience: 'testers',
                     tone: 'professional',
                     length: 'short',
-                    hasRequirements: true
-                }
+                    hasRequirements: true,
+                },
             })
 
             expect(mockSpan.end).toHaveBeenCalledWith({
@@ -326,8 +339,8 @@ The conclusion wraps up the main points discussed.`
                     contentType: 'marketing',
                     wordCount: 2,
                     hasTitle: false,
-                    contentLength: mockContent.length
-                }
+                    contentLength: mockContent.length,
+                },
             })
         })
 
@@ -335,20 +348,22 @@ The conclusion wraps up the main points discussed.`
             const error = new Error('Generation failed')
             mockAgent.generate.mockRejectedValue(error)
 
-            await expect(copywriterTool.execute({
-                context: { topic: 'error topic' },
-                mastra: mockMastra,
-                runtimeContext: mockRuntimeContext,
-                tracingContext: mockTracingContext
-            })).rejects.toThrow()
+            await expect(
+                copywriterTool.execute({
+                    context: { topic: 'error topic' },
+                    mastra: mockMastra,
+                    runtimeContext: mockRuntimeContext,
+                    tracingContext: mockTracingContext,
+                })
+            ).rejects.toThrow()
 
             expect(mockSpan.end).toHaveBeenCalledWith({
                 metadata: {
                     success: false,
                     error: 'Generation failed',
                     topic: 'error topic',
-                    contentType: 'blog'
-                }
+                    contentType: 'blog',
+                },
             })
         })
     })
@@ -357,14 +372,14 @@ The conclusion wraps up the main points discussed.`
         it('should extract title from H1 headers', async () => {
             const mockContent = `# Main Title\n\nContent here.`
             mockAgent.generate.mockResolvedValue({
-                text: mockContent
+                text: mockContent,
             })
 
             const result = await copywriterTool.execute({
                 context: { topic: 'title test' },
                 mastra: mockMastra,
                 runtimeContext: mockRuntimeContext,
-                tracingContext: mockTracingContext
+                tracingContext: mockTracingContext,
             })
 
             expect(result.title).toBe('Main Title')
@@ -373,30 +388,31 @@ The conclusion wraps up the main points discussed.`
         it('should extract title from H2 headers', async () => {
             const mockContent = `## Secondary Title\n\nContent here.`
             mockAgent.generate.mockResolvedValue({
-                text: mockContent
+                text: mockContent,
             })
 
             const result = await copywriterTool.execute({
                 context: { topic: 'title test' },
                 mastra: mockMastra,
                 runtimeContext: mockRuntimeContext,
-                tracingContext: mockTracingContext
+                tracingContext: mockTracingContext,
             })
 
             expect(result.title).toBe('Secondary Title')
         })
 
         it('should calculate word count correctly', async () => {
-            const mockContent = 'This is a test. It has multiple sentences.\n\nAnd paragraphs too!'
+            const mockContent =
+                'This is a test. It has multiple sentences.\n\nAnd paragraphs too!'
             mockAgent.generate.mockResolvedValue({
-                text: mockContent
+                text: mockContent,
             })
 
             const result = await copywriterTool.execute({
                 context: { topic: 'word count test' },
                 mastra: mockMastra,
                 runtimeContext: mockRuntimeContext,
-                tracingContext: mockTracingContext
+                tracingContext: mockTracingContext,
             })
 
             expect(result.wordCount).toBe(11) // This(1) is(2) a(3) test(4). It(5) has(6) multiple(7) sentences(8).\n\nAnd(9) paragraphs(10) too(11)!(12)

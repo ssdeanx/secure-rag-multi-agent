@@ -1,11 +1,13 @@
 # Repository file map for Kilocode rules
 
 Purpose
+
 - Single-source mapping of repository areas to guide Kilocode rule creation and reviews.
 
 Mapping by category
 
-1) Mastra - Agents
+1. Mastra - Agents
+
 - [`src/mastra/agents/answerer.agent.ts`](src/mastra/agents/answerer.agent.ts:1)
 - [`src/mastra/agents/assistant.ts`](src/mastra/agents/assistant.ts:1)
 - [`src/mastra/agents/copywriterAgent.ts`](src/mastra/agents/copywriterAgent.ts:1)
@@ -23,7 +25,8 @@ Mapping by category
 - [`src/mastra/agents/starterAgent.ts`](src/mastra/agents/starterAgent.ts:1)
 - [`src/mastra/agents/verifier.agent.ts`](src/mastra/agents/verifier.agent.ts:1)
 
-2) Mastra - Tools
+2. Mastra - Tools
+
 - [`src/mastra/tools/copywriter-agent-tool.ts`](src/mastra/tools/copywriter-agent-tool.ts:1)
 - [`src/mastra/tools/data-file-manager.ts`](src/mastra/tools/data-file-manager.ts:1)
 - [`src/mastra/tools/editor-agent-tool.ts`](src/mastra/tools/editor-agent-tool.ts:1)
@@ -36,7 +39,8 @@ Mapping by category
 - [`src/mastra/tools/weather-tool.ts`](src/mastra/tools/weather-tool.ts:1)
 - [`src/mastra/tools/web-scraper-tool.ts`](src/mastra/tools/web-scraper-tool.ts:1)
 
-3) Mastra - Services
+3. Mastra - Services
+
 - [`src/mastra/services/AuthenticationService.ts`](src/mastra/services/AuthenticationService.ts:1)
 - [`src/mastra/services/ChunkingService.ts`](src/mastra/services/ChunkingService.ts:1)
 - [`src/mastra/services/DocumentIndexingService.ts`](src/mastra/services/DocumentIndexingService.ts:1)
@@ -48,7 +52,8 @@ Mapping by category
 - [`src/mastra/services/VectorStorageService.ts`](src/mastra/services/VectorStorageService.ts:1)
 - [`src/mastra/services/WorkflowDecorators.ts`](src/mastra/services/WorkflowDecorators.ts:1)
 
-4) Mastra - Configs and Policy
+4. Mastra - Configs and Policy
+
 - [`src/mastra/config/anthropic.ts`](src/mastra/config/anthropic.ts:1)
 - [`src/mastra/config/gemini-cli.ts`](src/mastra/config/gemini-cli.ts:1)
 - [`src/mastra/config/google.ts`](src/mastra/config/google.ts:1)
@@ -63,7 +68,8 @@ Mapping by category
 - [`src/mastra/config/vertex.ts`](src/mastra/config/vertex.ts:1)
 - [`src/mastra/policy/acl.yaml`](src/mastra/policy/acl.yaml:1)
 
-5) Mastra - Workflows
+5. Mastra - Workflows
+
 - [`src/mastra/workflows/chatWorkflow.ts`](src/mastra/workflows/chatWorkflow.ts:1)
 - [`src/mastra/workflows/chatWorkflow1.ts`](src/mastra/workflows/chatWorkflow1.ts:1)
 - [`src/mastra/workflows/chatWorkflowTypes.ts`](src/mastra/workflows/chatWorkflowTypes.ts:1)
@@ -73,7 +79,8 @@ Mapping by category
 - [`src/mastra/workflows/governed-rag-index.workflow.ts`](src/mastra/workflows/governed-rag-index.workflow.ts:1)
 - [`src/mastra/workflows/researchWorkflow.ts`](src/mastra/workflows/researchWorkflow.ts:1)
 
-6) Frontend - App and API
+6. Frontend - App and API
+
 - [`app/GEMINI.md`](app/GEMINI.md:1)
 - [`app/global.css`](app/global.css:1)
 - [`app/layout.tsx`](app/layout.tsx:1)
@@ -127,8 +134,8 @@ Mapping by category
 - [`src/mastra/utils/streamUtils.ts`](src/mastra/utils/streamUtils.ts:1)
 - [`src/index.ts`](src/index.ts:1)
 
+7. Cedar and UI components
 
-7) Cedar and UI components
 - [`cedar/ChatModeSelector.tsx`](cedar/ChatModeSelector.tsx:1)
 - [`cedar/FeatureNode.tsx`](cedar/FeatureNode.tsx:1)
 - [`cedar/GEMINI.md`](cedar/GEMINI.md:1)
@@ -201,7 +208,8 @@ Mapping by category
 - [`cedar/components/ui/tabs.tsx`](cedar/components/ui/tabs.tsx:1)
 - [`cedar/components/voice/VoiceIndicator.tsx`](cedar/components/voice/VoiceIndicator.tsx:1)
 
-8) Corpus and Docs
+8. Corpus and Docs
+
 - [`corpus/engineering-handbook.md`](corpus/engineering-handbook.md:1)
 - [`corpus/finance-policy.md`](corpus/finance-policy.md:1)
 - [`corpus/hr-confidential.md`](corpus/hr-confidential.md:1)
@@ -221,7 +229,8 @@ Mapping by category
 - [`docs/security.mdx`](docs/security.mdx:1)
 - [`docs/theme-choices.md`](docs/theme-choices.md:1)
 
-9) Infrastructure and Docker
+9. Infrastructure and Docker
+
 - [`docker/docker-compose.yml`](docker/docker-compose.yml:1)
 - [`docker/ChromaDB/docker-compose.yml`](docker/ChromaDB/docker-compose.yml:1)
 - [`docker/Couchbase/docker-compose.yml`](docker/Couchbase/docker-compose.yml:1)
@@ -231,18 +240,22 @@ Mapping by category
 - [`docker/Pinecone/docker-compose.yml`](docker/Pinecone/docker-compose.yml:1)
 - [`docker/Weaviate/docker-compose.yml`](docker/Weaviate/docker-compose.yml:1)
 
-10) Scripts and tooling
+10. Scripts and tooling
+
 - [`scripts/make-jwt.js`](scripts/make-jwt.js:1)
 - [`scripts/smoke-run.js`](scripts/smoke-run.js:1)
 
-11) Tests and CI artifacts
+11. Tests and CI artifacts
+
 - [`vitest.config.ts`](vitest.config.ts:1)
 - [`tests/`](tests:1)
 
 How to use
+
 - Use this file to guide rule creation; update as files change.
 
 Next action
+
 - File updated with complete repository mapping.
 
 End of file

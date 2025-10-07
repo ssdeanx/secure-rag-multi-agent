@@ -9,6 +9,7 @@ The implementation will use the existing shadcn/ui component library (Sidebar, B
 ## Architecture
 
 ### Current Application Structure
+
 - **Framework**: Next.js 15.4+ with App Router
 - **Styling**: Tailwind CSS v4 with enhanced design tokens
 - **Components**: React components with TypeScript
@@ -17,6 +18,7 @@ The implementation will use the existing shadcn/ui component library (Sidebar, B
 - **State Management**: React hooks and local state
 
 ### Target Layout Architecture
+
 ```
 ┌─────────────────────────────────────────────────────────────┐
 │                    Top Navigation Bar                       │
@@ -37,6 +39,7 @@ The implementation will use the existing shadcn/ui component library (Sidebar, B
 ```
 
 ### Component Hierarchy
+
 ```
 RootLayout
 ├── TopNavigation
@@ -70,20 +73,22 @@ RootLayout
 ### 1. TopNavigation Component
 
 #### Interface Definition
+
 ```typescript
 interface TopNavigationProps {
-  className?: string;
+    className?: string
 }
 
 interface NavigationItem {
-  label: string;
-  href: string;
-  icon?: React.ComponentType<{ className?: string }>;
-  badge?: string;
+    label: string
+    href: string
+    icon?: React.ComponentType<{ className?: string }>
+    badge?: string
 }
 ```
 
 #### Implementation Approach
+
 ```typescript
 // components/layout/TopNavigation.tsx
 import { Button } from "@/components/ui/button";
@@ -146,22 +151,24 @@ export function TopNavigation({ className }: TopNavigationProps) {
 ### 2. Collapsible Sidebar Component
 
 #### Interface Definition
+
 ```typescript
 interface SidebarLayoutProps {
-  children: React.ReactNode;
+    children: React.ReactNode
 }
 
 interface SidebarNavigationItem {
-  title: string;
-  url: string;
-  icon: React.ComponentType<{ className?: string }>;
-  isActive?: boolean;
-  badge?: string;
-  items?: SidebarNavigationItem[];
+    title: string
+    url: string
+    icon: React.ComponentType<{ className?: string }>
+    isActive?: boolean
+    badge?: string
+    items?: SidebarNavigationItem[]
 }
 ```
 
 #### Implementation Approach
+
 ```typescript
 // components/layout/AppSidebar.tsx
 import {
@@ -179,10 +186,10 @@ import {
   SidebarMenuSubButton,
   SidebarMenuSubItem,
 } from "@/components/ui/sidebar";
-import { 
-  MessageSquare, 
-  Shield, 
-  Database, 
+import {
+  MessageSquare,
+  Shield,
+  Database,
   Settings,
   Home,
   FileText
@@ -312,15 +319,17 @@ export function AppSidebar() {
 ### 3. Theme Toggle Component
 
 #### Interface Definition
+
 ```typescript
 interface ThemeToggleProps {
-  className?: string;
-  variant?: "default" | "ghost" | "outline";
-  size?: "default" | "sm" | "lg" | "icon";
+    className?: string
+    variant?: 'default' | 'ghost' | 'outline'
+    size?: 'default' | 'sm' | 'lg' | 'icon'
 }
 ```
 
 #### Implementation Approach
+
 ```typescript
 // components/layout/ThemeToggle.tsx
 "use client";
@@ -335,10 +344,10 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 
-export function ThemeToggle({ 
-  className, 
-  variant = "ghost", 
-  size = "icon" 
+export function ThemeToggle({
+  className,
+  variant = "ghost",
+  size = "icon"
 }: ThemeToggleProps) {
   const { setTheme, theme } = useTheme();
 
@@ -373,19 +382,21 @@ export function ThemeToggle({
 ### 4. Footer Component
 
 #### Interface Definition
+
 ```typescript
 interface FooterProps {
-  className?: string;
+    className?: string
 }
 
 interface FooterLink {
-  label: string;
-  href: string;
-  external?: boolean;
+    label: string
+    href: string
+    external?: boolean
 }
 ```
 
 #### Implementation Approach
+
 ```typescript
 // components/layout/Footer.tsx
 import Link from "next/link";
@@ -419,7 +430,7 @@ export function Footer({ className }: FooterProps) {
             .
           </p>
         </div>
-        
+
         <div className="flex items-center space-x-4">
           {footerLinks.map((link, index) => (
             <React.Fragment key={link.href}>
@@ -437,7 +448,7 @@ export function Footer({ className }: FooterProps) {
             </React.Fragment>
           ))}
         </div>
-        
+
         <div className="text-sm text-muted-foreground">
           v{process.env.npm_package_version || "1.0.0"}
         </div>
@@ -450,6 +461,7 @@ export function Footer({ className }: FooterProps) {
 ### 5. Root Layout Integration
 
 #### Implementation Approach
+
 ```typescript
 // app/layout.tsx (enhanced)
 import { Inter } from "next/font/google";
@@ -479,7 +491,7 @@ export default function RootLayout({
         >
           <div className="min-h-screen flex flex-col">
             <TopNavigation />
-            
+
             <div className="flex-1 flex">
               <SidebarProvider>
                 <AppSidebar />
@@ -490,7 +502,7 @@ export default function RootLayout({
                 </main>
               </SidebarProvider>
             </div>
-            
+
             <Footer />
           </div>
           <Toaster />
@@ -504,141 +516,148 @@ export default function RootLayout({
 ## Data Models
 
 ### Theme Configuration
+
 ```typescript
 interface ThemeConfig {
-  defaultTheme: "light" | "dark" | "system";
-  enableSystem: boolean;
-  storageKey: string;
-  themes: string[];
+    defaultTheme: 'light' | 'dark' | 'system'
+    enableSystem: boolean
+    storageKey: string
+    themes: string[]
 }
 
 interface ThemeContextType {
-  theme: string | undefined;
-  setTheme: (theme: string) => void;
-  systemTheme: string | undefined;
+    theme: string | undefined
+    setTheme: (theme: string) => void
+    systemTheme: string | undefined
 }
 ```
 
 ### Navigation State
+
 ```typescript
 interface NavigationState {
-  sidebarOpen: boolean;
-  sidebarCollapsed: boolean;
-  activeRoute: string;
-  breadcrumbs: BreadcrumbItem[];
+    sidebarOpen: boolean
+    sidebarCollapsed: boolean
+    activeRoute: string
+    breadcrumbs: BreadcrumbItem[]
 }
 
 interface BreadcrumbItem {
-  label: string;
-  href?: string;
-  isCurrentPage?: boolean;
+    label: string
+    href?: string
+    isCurrentPage?: boolean
 }
 ```
 
 ### Layout Configuration
+
 ```typescript
 interface LayoutConfig {
-  sidebar: {
-    defaultOpen: boolean;
-    collapsible: "offcanvas" | "icon" | "none";
-    variant: "sidebar" | "floating" | "inset";
-  };
-  navigation: {
-    showBreadcrumbs: boolean;
-    showSearch: boolean;
-    showNotifications: boolean;
-  };
-  footer: {
-    show: boolean;
-    links: FooterLink[];
-  };
+    sidebar: {
+        defaultOpen: boolean
+        collapsible: 'offcanvas' | 'icon' | 'none'
+        variant: 'sidebar' | 'floating' | 'inset'
+    }
+    navigation: {
+        showBreadcrumbs: boolean
+        showSearch: boolean
+        showNotifications: boolean
+    }
+    footer: {
+        show: boolean
+        links: FooterLink[]
+    }
 }
 ```
 
 ## Error Handling
 
 ### Theme Switching Errors
+
 ```typescript
 // Handle theme switching failures gracefully
 const handleThemeChange = (newTheme: string) => {
-  try {
-    setTheme(newTheme);
-    localStorage.setItem('theme-preference', newTheme);
-  } catch (error) {
-    console.warn('Failed to save theme preference:', error);
-    // Continue with theme change even if storage fails
-    setTheme(newTheme);
-  }
-};
+    try {
+        setTheme(newTheme)
+        localStorage.setItem('theme-preference', newTheme)
+    } catch (error) {
+        console.warn('Failed to save theme preference:', error)
+        // Continue with theme change even if storage fails
+        setTheme(newTheme)
+    }
+}
 ```
 
 ### Sidebar State Persistence
+
 ```typescript
 // Handle sidebar state persistence
 const useSidebarState = () => {
-  const [isOpen, setIsOpen] = useState(true);
-  
-  useEffect(() => {
-    try {
-      const saved = localStorage.getItem('sidebar-state');
-      if (saved) {
-        setIsOpen(JSON.parse(saved));
-      }
-    } catch (error) {
-      console.warn('Failed to load sidebar state:', error);
-    }
-  }, []);
-  
-  const toggleSidebar = useCallback(() => {
-    setIsOpen(prev => {
-      const newState = !prev;
-      try {
-        localStorage.setItem('sidebar-state', JSON.stringify(newState));
-      } catch (error) {
-        console.warn('Failed to save sidebar state:', error);
-      }
-      return newState;
-    });
-  }, []);
-  
-  return { isOpen, toggleSidebar };
-};
+    const [isOpen, setIsOpen] = useState(true)
+
+    useEffect(() => {
+        try {
+            const saved = localStorage.getItem('sidebar-state')
+            if (saved) {
+                setIsOpen(JSON.parse(saved))
+            }
+        } catch (error) {
+            console.warn('Failed to load sidebar state:', error)
+        }
+    }, [])
+
+    const toggleSidebar = useCallback(() => {
+        setIsOpen((prev) => {
+            const newState = !prev
+            try {
+                localStorage.setItem('sidebar-state', JSON.stringify(newState))
+            } catch (error) {
+                console.warn('Failed to save sidebar state:', error)
+            }
+            return newState
+        })
+    }, [])
+
+    return { isOpen, toggleSidebar }
+}
 ```
 
 ### Responsive Layout Handling
+
 ```typescript
 // Handle responsive breakpoint changes
 const useResponsiveLayout = () => {
-  const [isMobile, setIsMobile] = useState(false);
-  
-  useEffect(() => {
-    const checkScreenSize = () => {
-      setIsMobile(window.innerWidth < 768);
-    };
-    
-    checkScreenSize();
-    window.addEventListener('resize', checkScreenSize);
-    
-    return () => window.removeEventListener('resize', checkScreenSize);
-  }, []);
-  
-  return { isMobile };
-};
+    const [isMobile, setIsMobile] = useState(false)
+
+    useEffect(() => {
+        const checkScreenSize = () => {
+            setIsMobile(window.innerWidth < 768)
+        }
+
+        checkScreenSize()
+        window.addEventListener('resize', checkScreenSize)
+
+        return () => window.removeEventListener('resize', checkScreenSize)
+    }, [])
+
+    return { isMobile }
+}
 ```
 
 ## Testing Strategy
 
 ### Component Testing
+
 ```typescript
 // Example test for TopNavigation component
 describe('TopNavigation', () => {
   test('renders navigation items correctly', () => {
     render(<TopNavigation />);
-    
+
     expect(screen.getByText('Mastra Governed RAG')).toBeInTheDocument();
     expect(screen.getByRole('button', { name: /toggle theme/i })).toBeInTheDocument();
   });
-  
+
   test('shows mobile menu on small screens', () => {
     // Mock mobile viewport
     Object.defineProperty(window, 'innerWidth', {
@@ -646,50 +665,52 @@ describe('TopNavigation', () => {
       configurable: true,
       value: 640,
     });
-    
+
     render(<TopNavigation />);
-    
+
     expect(screen.getByRole('button', { name: /menu/i })).toBeInTheDocument();
   });
 });
 ```
 
 ### Theme Testing
+
 ```typescript
 describe('ThemeToggle', () => {
   test('switches theme correctly', async () => {
     const user = userEvent.setup();
     render(<ThemeToggle />);
-    
+
     const themeButton = screen.getByRole('button', { name: /toggle theme/i });
     await user.click(themeButton);
-    
+
     const darkOption = screen.getByText('Dark');
     await user.click(darkOption);
-    
+
     expect(document.documentElement).toHaveClass('dark');
   });
 });
 ```
 
 ### Accessibility Testing
+
 ```typescript
 describe('Accessibility', () => {
   test('sidebar navigation is keyboard accessible', async () => {
     const user = userEvent.setup();
     render(<AppSidebar />);
-    
+
     // Test keyboard navigation
     await user.tab();
     expect(screen.getByRole('link', { name: /dashboard/i })).toHaveFocus();
-    
+
     await user.keyboard('{ArrowDown}');
     expect(screen.getByRole('link', { name: /chat interface/i })).toHaveFocus();
   });
-  
+
   test('meets WCAG color contrast requirements', async () => {
     render(<TopNavigation />);
-    
+
     const results = await axe(document.body);
     expect(results).toHaveNoViolations();
   });
@@ -699,6 +720,7 @@ describe('Accessibility', () => {
 ## Performance Considerations
 
 ### Code Splitting
+
 ```typescript
 // Lazy load heavy components
 const HeavyComponent = lazy(() => import('./HeavyComponent'));
@@ -710,52 +732,56 @@ const HeavyComponent = lazy(() => import('./HeavyComponent'));
 ```
 
 ### CSS Optimization
+
 ```css
 /* Use CSS containment for performance */
 .sidebar {
-  contain: layout style paint;
+    contain: layout style paint;
 }
 
 .main-content {
-  contain: layout style;
+    contain: layout style;
 }
 
 /* Optimize animations */
 .sidebar-transition {
-  transform: translateX(-100%);
-  transition: transform 0.2s ease-in-out;
-  will-change: transform;
+    transform: translateX(-100%);
+    transition: transform 0.2s ease-in-out;
+    will-change: transform;
 }
 
 .sidebar-transition.open {
-  transform: translateX(0);
+    transform: translateX(0);
 }
 ```
 
 ### Memory Management
+
 ```typescript
 // Clean up event listeners and subscriptions
 useEffect(() => {
-  const handleResize = () => {
-    // Handle resize
-  };
-  
-  window.addEventListener('resize', handleResize);
-  
-  return () => {
-    window.removeEventListener('resize', handleResize);
-  };
-}, []);
+    const handleResize = () => {
+        // Handle resize
+    }
+
+    window.addEventListener('resize', handleResize)
+
+    return () => {
+        window.removeEventListener('resize', handleResize)
+    }
+}, [])
 ```
 
 ## Security Considerations
 
 ### XSS Prevention
+
 - All user-generated content properly escaped
 - CSP headers configured for inline styles
 - Theme preferences validated before storage
 
 ### Data Privacy
+
 - Theme preferences stored locally only
 - No sensitive data in localStorage
 - Proper cleanup of stored preferences
@@ -763,24 +789,27 @@ useEffect(() => {
 ## Deployment Strategy
 
 ### Build Optimization
+
 ```javascript
 // next.config.js enhancements
 const nextConfig = {
-  experimental: {
-    optimizeCss: true,
-  },
-  compiler: {
-    removeConsole: process.env.NODE_ENV === 'production',
-  },
-};
+    experimental: {
+        optimizeCss: true,
+    },
+    compiler: {
+        removeConsole: process.env.NODE_ENV === 'production',
+    },
+}
 ```
 
 ### Progressive Enhancement
+
 - Core functionality works without JavaScript
 - Enhanced interactions with JavaScript enabled
 - Graceful degradation for older browsers
 
 ### Performance Monitoring
+
 - Core Web Vitals tracking
 - Layout shift monitoring
 - Theme switching performance metrics

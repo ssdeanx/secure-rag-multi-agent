@@ -1,11 +1,19 @@
 ---
-title: "Data File Manager Tool - Technical Documentation"
-component_path: "src/mastra/tools/data-file-manager.ts"
-version: "1.0"
-date_created: "2025-09-23"
-last_updated: "2025-09-23"
-owner: "AI Team"
-tags: ["tool", "file-management", "data-operations", "security", "backup", "archive"]
+title: 'Data File Manager Tool - Technical Documentation'
+component_path: 'src/mastra/tools/data-file-manager.ts'
+version: '1.0'
+date_created: '2025-09-23'
+last_updated: '2025-09-23'
+owner: 'AI Team'
+tags:
+    [
+        'tool',
+        'file-management',
+        'data-operations',
+        'security',
+        'backup',
+        'archive',
+    ]
 ---
 
 # Data File Manager Tool Documentation
@@ -133,99 +141,105 @@ graph TB
 
 ### Available Tools
 
-| Tool | Purpose | Input | Output |
-|------|---------|-------|--------|
-| `readDataFileTool` | Read file content | `{fileName: string}` | `string` |
-| `writeDataFileTool` | Write/create files | `{fileName: string, content: string}` | `{success: boolean, message: string}` |
-| `deleteDataFileTool` | Delete files | `{fileName: string}` | `{success: boolean, message: string}` |
-| `listDataDirTool` | List directory contents | `{dirPath?: string}` | `FileInfo[]` |
-| `copyDataFileTool` | Copy files | `{sourceFile: string, destFile: string}` | `{success: boolean, message: string}` |
-| `moveDataFileTool` | Move/rename files | `{sourceFile: string, destFile: string}` | `{success: boolean, message: string}` |
-| `searchDataFilesTool` | Search file contents | `{query: string, filePattern?: string}` | `SearchResult[]` |
-| `getDataFileInfoTool` | Get file metadata | `{fileName: string}` | `FileInfo` |
-| `createDataDirTool` | Create directories | `{dirPath: string}` | `{success: boolean, message: string}` |
-| `removeDataDirTool` | Remove directories | `{dirPath: string}` | `{success: boolean, message: string}` |
-| `archiveDataTool` | Create archives | `{sourcePath: string, archiveName: string}` | `{success: boolean, archivePath: string}` |
-| `backupDataTool` | Create backups | `{sourcePath: string, backupName: string}` | `{success: boolean, backupPath: string}` |
+| Tool                  | Purpose                 | Input                                       | Output                                    |
+| --------------------- | ----------------------- | ------------------------------------------- | ----------------------------------------- |
+| `readDataFileTool`    | Read file content       | `{fileName: string}`                        | `string`                                  |
+| `writeDataFileTool`   | Write/create files      | `{fileName: string, content: string}`       | `{success: boolean, message: string}`     |
+| `deleteDataFileTool`  | Delete files            | `{fileName: string}`                        | `{success: boolean, message: string}`     |
+| `listDataDirTool`     | List directory contents | `{dirPath?: string}`                        | `FileInfo[]`                              |
+| `copyDataFileTool`    | Copy files              | `{sourceFile: string, destFile: string}`    | `{success: boolean, message: string}`     |
+| `moveDataFileTool`    | Move/rename files       | `{sourceFile: string, destFile: string}`    | `{success: boolean, message: string}`     |
+| `searchDataFilesTool` | Search file contents    | `{query: string, filePattern?: string}`     | `SearchResult[]`                          |
+| `getDataFileInfoTool` | Get file metadata       | `{fileName: string}`                        | `FileInfo`                                |
+| `createDataDirTool`   | Create directories      | `{dirPath: string}`                         | `{success: boolean, message: string}`     |
+| `removeDataDirTool`   | Remove directories      | `{dirPath: string}`                         | `{success: boolean, message: string}`     |
+| `archiveDataTool`     | Create archives         | `{sourcePath: string, archiveName: string}` | `{success: boolean, archivePath: string}` |
+| `backupDataTool`      | Create backups          | `{sourcePath: string, backupName: string}`  | `{success: boolean, backupPath: string}`  |
 
 ### FileInfo Schema
 
-| Property | Type | Description |
-|----------|------|-------------|
-| `name` | `string` | File or directory name |
-| `path` | `string` | Relative path from data directory |
-| `type` | `string` | 'file' or 'directory' |
-| `size` | `number?` | File size in bytes |
-| `modified` | `Date?` | Last modification date |
-| `created` | `Date?` | Creation date |
+| Property   | Type      | Description                       |
+| ---------- | --------- | --------------------------------- |
+| `name`     | `string`  | File or directory name            |
+| `path`     | `string`  | Relative path from data directory |
+| `type`     | `string`  | 'file' or 'directory'             |
+| `size`     | `number?` | File size in bytes                |
+| `modified` | `Date?`   | Last modification date            |
+| `created`  | `Date?`   | Creation date                     |
 
 ### SearchResult Schema
 
-| Property | Type | Description |
-|----------|------|-------------|
-| `fileName` | `string` | Name of the file containing matches |
-| `matches` | `string[]` | Array of matching text snippets |
-| `lineNumbers` | `number[]` | Line numbers where matches occur |
+| Property      | Type       | Description                         |
+| ------------- | ---------- | ----------------------------------- |
+| `fileName`    | `string`   | Name of the file containing matches |
+| `matches`     | `string[]` | Array of matching text snippets     |
+| `lineNumbers` | `number[]` | Line numbers where matches occur    |
 
 ## 4. Usage Examples
 
 ### File Operations
 
 ```typescript
-import { readDataFileTool, writeDataFileTool } from './src/mastra/tools/data-file-manager';
+import {
+    readDataFileTool,
+    writeDataFileTool,
+} from './src/mastra/tools/data-file-manager'
 
 // Read a file
 const content = await readDataFileTool.execute({
-  context: { fileName: "research/notes.md" },
-  mastra: mastraInstance,
-  tracingContext: tracingContext
-});
+    context: { fileName: 'research/notes.md' },
+    mastra: mastraInstance,
+    tracingContext: tracingContext,
+})
 
 // Write a file
 const result = await writeDataFileTool.execute({
-  context: {
-    fileName: "research/summary.md",
-    content: "# Research Summary\n\nKey findings..."
-  },
-  mastra: mastraInstance,
-  tracingContext: tracingContext
-});
+    context: {
+        fileName: 'research/summary.md',
+        content: '# Research Summary\n\nKey findings...',
+    },
+    mastra: mastraInstance,
+    tracingContext: tracingContext,
+})
 ```
 
 ### Directory Management
 
 ```typescript
-import { listDataDirTool, createDataDirTool } from './src/mastra/tools/data-file-manager';
+import {
+    listDataDirTool,
+    createDataDirTool,
+} from './src/mastra/tools/data-file-manager'
 
 // List directory contents
 const files = await listDataDirTool.execute({
-  context: { dirPath: "research" },
-  mastra: mastraInstance,
-  tracingContext: tracingContext
-});
+    context: { dirPath: 'research' },
+    mastra: mastraInstance,
+    tracingContext: tracingContext,
+})
 
 // Create a new directory
 const result = await createDataDirTool.execute({
-  context: { dirPath: "research/2025" },
-  mastra: mastraInstance,
-  tracingContext: tracingContext
-});
+    context: { dirPath: 'research/2025' },
+    mastra: mastraInstance,
+    tracingContext: tracingContext,
+})
 ```
 
 ### Search Operations
 
 ```typescript
-import { searchDataFilesTool } from './src/mastra/tools/data-file-manager';
+import { searchDataFilesTool } from './src/mastra/tools/data-file-manager'
 
 // Search for content
 const results = await searchDataFilesTool.execute({
-  context: {
-    query: "machine learning",
-    filePattern: "*.md"
-  },
-  mastra: mastraInstance,
-  tracingContext: tracingContext
-});
+    context: {
+        query: 'machine learning',
+        filePattern: '*.md',
+    },
+    mastra: mastraInstance,
+    tracingContext: tracingContext,
+})
 
 // Results contain file names, matching snippets, and line numbers
 ```
@@ -233,27 +247,30 @@ const results = await searchDataFilesTool.execute({
 ### Backup and Archive
 
 ```typescript
-import { backupDataTool, archiveDataTool } from './src/mastra/tools/data-file-manager';
+import {
+    backupDataTool,
+    archiveDataTool,
+} from './src/mastra/tools/data-file-manager'
 
 // Create a backup
 const backup = await backupDataTool.execute({
-  context: {
-    sourcePath: "research",
-    backupName: "research-backup-2025"
-  },
-  mastra: mastraInstance,
-  tracingContext: tracingContext
-});
+    context: {
+        sourcePath: 'research',
+        backupName: 'research-backup-2025',
+    },
+    mastra: mastraInstance,
+    tracingContext: tracingContext,
+})
 
 // Create a compressed archive
 const archive = await archiveDataTool.execute({
-  context: {
-    sourcePath: "research",
-    archiveName: "research-archive"
-  },
-  mastra: mastraInstance,
-  tracingContext: tracingContext
-});
+    context: {
+        sourcePath: 'research',
+        archiveName: 'research-archive',
+    },
+    mastra: mastraInstance,
+    tracingContext: tracingContext,
+})
 ```
 
 ## 5. Quality Attributes
@@ -297,17 +314,17 @@ const archive = await archiveDataTool.execute({
 
 ### Dependencies
 
-| Package | Version | Purpose |
-|---------|---------|---------|
-| `@mastra/core/tools` | ^0.1.0 | Tool framework |
-| `@mastra/core/ai-tracing` | ^0.1.0 | AI tracing integration |
-| `zod` | ^3.22.4 | Schema validation |
+| Package                   | Version | Purpose                |
+| ------------------------- | ------- | ---------------------- |
+| `@mastra/core/tools`      | ^0.1.0  | Tool framework         |
+| `@mastra/core/ai-tracing` | ^0.1.0  | AI tracing integration |
+| `zod`                     | ^3.22.4 | Schema validation      |
 
 ### Environment Variables
 
-| Variable | Required | Default | Description |
-|----------|----------|---------|-------------|
-| None | - | - | Uses hardcoded DATA_DIR path |
+| Variable | Required | Default | Description                  |
+| -------- | -------- | ------- | ---------------------------- |
+| None     | -        | -       | Uses hardcoded DATA_DIR path |
 
 ### Testing
 
@@ -349,8 +366,8 @@ curl http://localhost:3000/api/health/data-file-manager
 
 ### Change History
 
-| Version | Date | Changes |
-|---------|------|---------|
-| 1.0 | 2025-09-23 | Initial implementation with comprehensive file operations |
-| 0.9 | 2025-09-20 | Added backup and archive functionality |
-| 0.8 | 2025-09-15 | Basic file CRUD operations |
+| Version | Date       | Changes                                                   |
+| ------- | ---------- | --------------------------------------------------------- |
+| 1.0     | 2025-09-23 | Initial implementation with comprehensive file operations |
+| 0.9     | 2025-09-20 | Added backup and archive functionality                    |
+| 0.8     | 2025-09-15 | Basic file CRUD operations                                |

@@ -27,8 +27,7 @@ TypeScript interface definitions for the Mastra governed RAG system. Defines cor
 - ARC-001: Design patterns: Type definition module pattern. Pure type declarations with no runtime behavior.
 
 - ARC-002: Dependencies:
-
-  - None (pure TypeScript types)
+    - None (pure TypeScript types)
 
 - ARC-003: Interactions: Used by TypeScript compiler for type checking and IntelliSense. No runtime interactions.
 
@@ -90,21 +89,21 @@ graph TD
 
 - INT-001: TypeScript interface definitions for core entities.
 
-| Interface | Purpose | Key Properties | Usage Notes |
-|-----------|---------|----------------|-------------|
-| `Principal` | User identity and permissions | `sub`, `roles`, `tenant`, `attrs` | Authentication context |
-| `AccessFilter` | Security filtering rules | `allowTags`, `maxClassification` | Vector query filtering |
-| `Document` | Document metadata | `docId`, `securityTags`, `hash` | Document storage |
-| `Chunk` | Text chunk with metadata | `text`, `span`, `securityTags` | Vector embeddings |
+| Interface      | Purpose                       | Key Properties                    | Usage Notes            |
+| -------------- | ----------------------------- | --------------------------------- | ---------------------- |
+| `Principal`    | User identity and permissions | `sub`, `roles`, `tenant`, `attrs` | Authentication context |
+| `AccessFilter` | Security filtering rules      | `allowTags`, `maxClassification`  | Vector query filtering |
+| `Document`     | Document metadata             | `docId`, `securityTags`, `hash`   | Document storage       |
+| `Chunk`        | Text chunk with metadata      | `text`, `span`, `securityTags`    | Vector embeddings      |
 
 ### Principal Interface
 
 ```ts
 interface Principal {
-  sub: string;                    // Subject identifier (user ID)
-  roles: string[];               // User roles for access control
-  tenant?: string;               // Optional tenant identifier
-  attrs?: Record<string, unknown>; // Additional attributes (e.g., stepUp)
+    sub: string // Subject identifier (user ID)
+    roles: string[] // User roles for access control
+    tenant?: string // Optional tenant identifier
+    attrs?: Record<string, unknown> // Additional attributes (e.g., stepUp)
 }
 ```
 
@@ -112,8 +111,8 @@ interface Principal {
 
 ```ts
 interface AccessFilter {
-  allowTags: string[];           // Security tags for filtering
-  maxClassification: "public" | "internal" | "confidential"; // Max allowed classification
+    allowTags: string[] // Security tags for filtering
+    maxClassification: 'public' | 'internal' | 'confidential' // Max allowed classification
 }
 ```
 
@@ -121,14 +120,14 @@ interface AccessFilter {
 
 ```ts
 interface Document {
-  docId: string;                 // Unique document identifier
-  versionId: string;             // Version identifier
-  uri: string;                   // Document location
-  owner?: string;                // Optional owner identifier
-  labels?: string[];             // Optional labels
-  securityTags: string[];        // Denormalized ACL tags
-  hash: string;                  // Content hash for integrity
-  createdAt: string;             // ISO timestamp
+    docId: string // Unique document identifier
+    versionId: string // Version identifier
+    uri: string // Document location
+    owner?: string // Optional owner identifier
+    labels?: string[] // Optional labels
+    securityTags: string[] // Denormalized ACL tags
+    hash: string // Content hash for integrity
+    createdAt: string // ISO timestamp
 }
 ```
 
@@ -136,13 +135,13 @@ interface Document {
 
 ```ts
 interface Chunk {
-  chunkId: string;               // Unique chunk identifier
-  docId: string;                 // Parent document ID
-  versionId: string;             // Parent document version
-  text: string;                  // Chunk text content
-  span: { start: number; end: number }; // Text span in document
-  meta?: { page?: number; section?: string }; // Optional metadata
-  securityTags: string[];        // Inherited security tags
+    chunkId: string // Unique chunk identifier
+    docId: string // Parent document ID
+    versionId: string // Parent document version
+    text: string // Chunk text content
+    span: { start: number; end: number } // Text span in document
+    meta?: { page?: number; section?: string } // Optional metadata
+    securityTags: string[] // Inherited security tags
 }
 ```
 
@@ -164,58 +163,58 @@ Corner cases and considerations:
 ### Using Principal in authentication
 
 ```ts
-import { Principal } from '@/src/types';
+import { Principal } from '@/src/types'
 
 function authenticateUser(token: string): Principal {
-  // Decode JWT and return typed principal
-  return {
-    sub: 'user@acme.com',
-    roles: ['employee'],
-    tenant: 'acme',
-    attrs: { stepUp: false }
-  };
+    // Decode JWT and return typed principal
+    return {
+        sub: 'user@acme.com',
+        roles: ['employee'],
+        tenant: 'acme',
+        attrs: { stepUp: false },
+    }
 }
 ```
 
 ### AccessFilter for queries
 
 ```ts
-import { AccessFilter } from '@/src/types';
+import { AccessFilter } from '@/src/types'
 
 const filter: AccessFilter = {
-  allowTags: ['role:employee', 'tenant:acme'],
-  maxClassification: 'internal'
-};
+    allowTags: ['role:employee', 'tenant:acme'],
+    maxClassification: 'internal',
+}
 ```
 
 ### Document metadata
 
 ```ts
-import { Document } from '@/src/types';
+import { Document } from '@/src/types'
 
 const doc: Document = {
-  docId: 'doc-123',
-  versionId: 'v1.0',
-  uri: '/docs/policy.pdf',
-  securityTags: ['role:hr.viewer'],
-  hash: 'sha256:...',
-  createdAt: '2025-09-23T10:00:00Z'
-};
+    docId: 'doc-123',
+    versionId: 'v1.0',
+    uri: '/docs/policy.pdf',
+    securityTags: ['role:hr.viewer'],
+    hash: 'sha256:...',
+    createdAt: '2025-09-23T10:00:00Z',
+}
 ```
 
 ### Text chunk structure
 
 ```ts
-import { Chunk } from '@/src/types';
+import { Chunk } from '@/src/types'
 
 const chunk: Chunk = {
-  chunkId: 'chunk-456',
-  docId: 'doc-123',
-  versionId: 'v1.0',
-  text: 'Company vacation policy...',
-  span: { start: 100, end: 200 },
-  securityTags: ['role:hr.viewer']
-};
+    chunkId: 'chunk-456',
+    docId: 'doc-123',
+    versionId: 'v1.0',
+    text: 'Company vacation policy...',
+    span: { start: 100, end: 200 },
+    securityTags: ['role:hr.viewer'],
+}
 ```
 
 ## 6. Quality Attributes
@@ -229,22 +228,22 @@ const chunk: Chunk = {
 ## 7. Reference Information
 
 - REF-001: Dependencies (approximate):
-  - None
+    - None
 
 - REF-002: Configuration
-  - No configuration; types are static.
+    - No configuration; types are static.
 
 - REF-003: Testing guidelines
-  - Type checking via TypeScript compiler.
-  - Runtime validation with Zod schemas.
+    - Type checking via TypeScript compiler.
+    - Runtime validation with Zod schemas.
 
 - REF-004: Troubleshooting
-  - Type errors indicate interface mismatches.
-  - Update types when domain model changes.
+    - Type errors indicate interface mismatches.
+    - Update types when domain model changes.
 
 - REF-005: Related docs
-  - Agent schemas in `src/mastra/schemas/agent-schemas.ts`
-  - Service interfaces using these types
+    - Agent schemas in `src/mastra/schemas/agent-schemas.ts`
+    - Service interfaces using these types
 
 - REF-006: Change history
-  - 1.0 (2025-09-23) - Initial documentation generated
+    - 1.0 (2025-09-23) - Initial documentation generated

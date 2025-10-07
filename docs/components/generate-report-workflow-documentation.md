@@ -27,12 +27,11 @@ Mastra workflow for report generation: Runs researchWorkflow in doWhile until ap
 - ARC-001: Design patterns: Composite workflow with loop and conditional.
 
 - ARC-002: Dependencies:
+    - @mastra/core (createWorkflow, createStep, doWhile, then)
 
-  - @mastra/core (createWorkflow, createStep, doWhile, then)
+    - zod (schemas)
 
-  - zod (schemas)
-
-  - Local: researchWorkflow, reportAgent, logger
+    - Local: researchWorkflow, reportAgent, logger
 
 - ARC-003: Interactions: Loops research until approved; generates report if true.
 
@@ -78,10 +77,10 @@ graph TD
 
 - INT-001: Empty input; bool/completed output.
 
-| Output | Fields | Notes |
-|--------|--------|-------|
-| `report` | `string?` | Generated if approved |
-| `completed` | `bool` | True if report or !approved |
+| Output      | Fields    | Notes                       |
+| ----------- | --------- | --------------------------- |
+| `report`    | `string?` | Generated if approved       |
+| `completed` | `bool`    | True if report or !approved |
 
 INT notes:
 
@@ -108,7 +107,7 @@ Edge cases and considerations:
 ### Run Workflow
 
 ```ts
-const result = await generateReportWorkflow.execute({});
+const result = await generateReportWorkflow.execute({})
 // Loops: research → approve (suspend) → repeat until y
 // Then generates report
 ```
@@ -117,7 +116,7 @@ const result = await generateReportWorkflow.execute({});
 
 ```ts
 if (!inputData.approved || !inputData.researchData) {
-  return {completed: false};
+    return { completed: false }
 }
 // Agent call...
 ```

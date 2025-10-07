@@ -3,6 +3,7 @@
 # Config Directory (`/src/mastra/config`)
 
 ## Persona
+
 **Name:** DevOps & Cloud Engineer  
 **Role Objective:** Centralize secure initialization of external services (models, vector store, databases, logging, role hierarchy) with environment-driven configuration.  
 **Prompt Guidance Template:**
@@ -27,29 +28,30 @@ Where:
 - `{responsibility_summary}` = "secure, observable service/client initialization"
 
 ## Purpose
+
 Establish consistent, testable, and secure entry points for all external dependencies consumed by Mastra agents, tools, and workflows.
 
 ## Key Files
 
-| File | Responsibility | Notes |
-|------|----------------|-------|
-| `openai.ts` / `google.ts` | Model provider client setup | API keys pulled from env |
-| `vector-store.ts` | Qdrant vector client config | Host/port/collection naming |
-| `libsql.ts` / `pg-storage.ts` | SQL connectivity abstraction | Future: connection pooling tuning |
-| `libsql-storage.ts` | Vector + memory support over LibSQL | Higher-level helper functions |
-| `logger.ts` | Structured logging (Pino) | Standard log helpers & transports |
-| `role-hierarchy.ts` | RBAC inheritance model | Drives policy & access filters |
+| File                          | Responsibility                      | Notes                             |
+| ----------------------------- | ----------------------------------- | --------------------------------- |
+| `openai.ts` / `google.ts`     | Model provider client setup         | API keys pulled from env          |
+| `vector-store.ts`             | Qdrant vector client config         | Host/port/collection naming       |
+| `libsql.ts` / `pg-storage.ts` | SQL connectivity abstraction        | Future: connection pooling tuning |
+| `libsql-storage.ts`           | Vector + memory support over LibSQL | Higher-level helper functions     |
+| `logger.ts`                   | Structured logging (Pino)           | Standard log helpers & transports |
+| `role-hierarchy.ts`           | RBAC inheritance model              | Drives policy & access filters    |
 
 ## Initialization Pattern
 
 ```ts
 const required = (name: string) => {
-  const v = process.env[name];
-  if (!v) throw new Error(`Missing required env: ${name}`);
-  return v;
-};
+    const v = process.env[name]
+    if (!v) throw new Error(`Missing required env: ${name}`)
+    return v
+}
 
-export const OPENAI_API_KEY = required('OPENAI_API_KEY');
+export const OPENAI_API_KEY = required('OPENAI_API_KEY')
 ```
 
 ## Best Practices
@@ -68,12 +70,12 @@ export const OPENAI_API_KEY = required('OPENAI_API_KEY');
 
 ## Common Tasks
 
-| Task | Steps |
-|------|-------|
+| Task             | Steps                                                              |
+| ---------------- | ------------------------------------------------------------------ |
 | Add new provider | Create `<provider>.ts` → read env → init client → export singleton |
-| Add role | Update `ROLE_HIERARCHY` + adjust `ROLE_LEVELS` → review policies |
-| Add logging sink | Extend `logger.ts` transports → validate performance impact |
-| Harden startup | Add validation for new env → integrate into required() guard |
+| Add role         | Update `ROLE_HIERARCHY` + adjust `ROLE_LEVELS` → review policies   |
+| Add logging sink | Extend `logger.ts` transports → validate performance impact        |
+| Harden startup   | Add validation for new env → integrate into required() guard       |
 
 ## Security Notes
 
@@ -83,14 +85,15 @@ export const OPENAI_API_KEY = required('OPENAI_API_KEY');
 
 ## Change Log
 
-| Version | Date (UTC) | Change |
-|---------|------------|--------|
-| 1.0.0 | 2025-09-24 | Standardized template applied; legacy content preserved |
+| Version | Date (UTC) | Change                                                  |
+| ------- | ---------- | ------------------------------------------------------- |
+| 1.0.0   | 2025-09-24 | Standardized template applied; legacy content preserved |
 
 ## Legacy Content (Preserved)
 
 ```markdown
 <-- Begin Legacy -->
+
 # Mastra Config
 
 ## Persona: DevOps & Cloud Engineer
@@ -113,5 +116,5 @@ This directory is responsible for the configuration and initialization of extern
 - **Centralize Configuration:** Any new external service or shared configuration should be added here. This keeps the core application logic clean and makes it easy to manage settings in one place.
 - **Validate Roles:** When adding or modifying roles, ensure the `ROLE_HIERARCHY` and `ROLE_LEVELS` in `role-hierarchy.ts` are consistent. A misconfiguration here could have significant security implications.
 - **Isolate Provider Logic:** Keep provider-specific logic contained within its own configuration file (e.g., all OpenAI setup is in `openai.ts`).
-<-- End Legacy -->
+  <-- End Legacy -->
 ```

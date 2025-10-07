@@ -1,11 +1,19 @@
 ---
-title: "Mastra Tools - Technical Documentation"
-component_path: "src/mastra/tools"
-version: "1.0"
-date_created: "2025-09-23"
-last_updated: "2025-09-23"
-owner: "AI Team"
-tags: ["tool", "authentication", "vector-query", "web-scraping", "content-creation", "infrastructure"]
+title: 'Mastra Tools - Technical Documentation'
+component_path: 'src/mastra/tools'
+version: '1.0'
+date_created: '2025-09-23'
+last_updated: '2025-09-23'
+owner: 'AI Team'
+tags:
+    [
+        'tool',
+        'authentication',
+        'vector-query',
+        'web-scraping',
+        'content-creation',
+        'infrastructure',
+    ]
 ---
 
 # Mastra Tools Documentation
@@ -113,15 +121,15 @@ graph TD
 - INT-002: Async execute methods with tracing context
 - INT-003: Structured error handling and logging
 
-| Method/Property | Purpose | Parameters | Return Type | Usage Notes |
-|---|---|---|---|---|
-| `jwtAuthTool.execute()` | Verify JWT token | `{jwt: string}` | `Promise<JWTClaims>` | Returns parsed claims |
-| `vectorQueryTool.execute()` | Query vector database | `{question, allowTags, maxClassification, topK}` | `Promise<{contexts: QueryResult[]}>` | Applies security filtering |
-| `webScraperTool.execute()` | Scrape web content | `{url, options}` | `Promise<{content, metadata}>` | Handles dynamic content |
-| `copywriterTool.execute()` | Create content | `{topic, contentType, targetAudience, tone, length}` | `Promise<{content, title, summary}>` | Multiple content formats |
-| `editorTool.execute()` | Edit content | `{content, instructions}` | `Promise<{editedContent}>` | Grammar and clarity improvements |
-| `evaluateResultTool.execute()` | Evaluate results | `{results, criteria}` | `Promise<{scores, feedback}>` | Quality assessment |
-| `extractLearningsTool.execute()` | Extract insights | `{content, context}` | `Promise<{learnings, questions}>` | Knowledge synthesis |
+| Method/Property                  | Purpose               | Parameters                                           | Return Type                          | Usage Notes                      |
+| -------------------------------- | --------------------- | ---------------------------------------------------- | ------------------------------------ | -------------------------------- |
+| `jwtAuthTool.execute()`          | Verify JWT token      | `{jwt: string}`                                      | `Promise<JWTClaims>`                 | Returns parsed claims            |
+| `vectorQueryTool.execute()`      | Query vector database | `{question, allowTags, maxClassification, topK}`     | `Promise<{contexts: QueryResult[]}>` | Applies security filtering       |
+| `webScraperTool.execute()`       | Scrape web content    | `{url, options}`                                     | `Promise<{content, metadata}>`       | Handles dynamic content          |
+| `copywriterTool.execute()`       | Create content        | `{topic, contentType, targetAudience, tone, length}` | `Promise<{content, title, summary}>` | Multiple content formats         |
+| `editorTool.execute()`           | Edit content          | `{content, instructions}`                            | `Promise<{editedContent}>`           | Grammar and clarity improvements |
+| `evaluateResultTool.execute()`   | Evaluate results      | `{results, criteria}`                                | `Promise<{scores, feedback}>`        | Quality assessment               |
+| `extractLearningsTool.execute()` | Extract insights      | `{content, context}`                                 | `Promise<{learnings, questions}>`    | Knowledge synthesis              |
 
 ## 4. Implementation Details
 
@@ -137,22 +145,22 @@ graph TD
 
 ```typescript
 // JWT Authentication
-const claims = await jwtAuthTool.execute({ jwt: "eyJ..." });
+const claims = await jwtAuthTool.execute({ jwt: 'eyJ...' })
 
 // Vector Query
 const results = await vectorQueryTool.execute({
-  question: "What is the policy?",
-  allowTags: ["hr", "policies"],
-  maxClassification: "internal",
-  topK: 5
-});
+    question: 'What is the policy?',
+    allowTags: ['hr', 'policies'],
+    maxClassification: 'internal',
+    topK: 5,
+})
 
 // Content Creation
 const content = await copywriterTool.execute({
-  topic: "AI in Healthcare",
-  contentType: "blog",
-  tone: "educational"
-});
+    topic: 'AI in Healthcare',
+    contentType: 'blog',
+    tone: 'educational',
+})
 ```
 
 ### Advanced Usage
@@ -160,19 +168,19 @@ const content = await copywriterTool.execute({
 ```typescript
 // Web Scraping with options
 const scraped = await webScraperTool.execute({
-  url: "https://example.com",
-  options: {
-    includeImages: false,
-    maxDepth: 2,
-    followLinks: true
-  }
-});
+    url: 'https://example.com',
+    options: {
+        includeImages: false,
+        maxDepth: 2,
+        followLinks: true,
+    },
+})
 
 // Content Editing
 const edited = await editorTool.execute({
-  content: "Original text...",
-  instructions: "Make it more formal and add examples"
-});
+    content: 'Original text...',
+    instructions: 'Make it more formal and add examples',
+})
 ```
 
 - USE-001: Authentication and security operations

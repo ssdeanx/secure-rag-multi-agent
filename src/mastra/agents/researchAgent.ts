@@ -1,28 +1,35 @@
-import { Agent } from '@mastra/core/agent';
-import { researchOutputSchema } from "../schemas/agent-schemas";
-import { evaluateResultTool } from '../tools/evaluateResultTool';
-import { extractLearningsTool } from '../tools/extractLearningsTool';
-import { webScraperTool,
-  batchWebScraperTool,
-  siteMapExtractorTool,
-  linkExtractorTool,
-  htmlToMarkdownTool,
-  contentCleanerTool
-} from "../tools/web-scraper-tool";
-import { ContentSimilarityMetric, CompletenessMetric, TextualDifferenceMetric, KeywordCoverageMetric, ToneConsistencyMetric } from "@mastra/evals/nlp";
-import { log } from "../config/logger";
-import { google } from '@ai-sdk/google';
-import { pgMemory } from '../config/pg-storage';
-import { googleAI } from '../config/google';
+import { Agent } from '@mastra/core/agent'
+import { researchOutputSchema } from '../schemas/agent-schemas'
+import { evaluateResultTool } from '../tools/evaluateResultTool'
+import { extractLearningsTool } from '../tools/extractLearningsTool'
+import {
+    webScraperTool,
+    batchWebScraperTool,
+    siteMapExtractorTool,
+    linkExtractorTool,
+    htmlToMarkdownTool,
+    contentCleanerTool,
+} from '../tools/web-scraper-tool'
+import {
+    ContentSimilarityMetric,
+    CompletenessMetric,
+    TextualDifferenceMetric,
+    KeywordCoverageMetric,
+    ToneConsistencyMetric,
+} from '@mastra/evals/nlp'
+import { log } from '../config/logger'
+import { google } from '@ai-sdk/google'
+import { pgMemory } from '../config/pg-storage'
+import { googleAI } from '../config/google'
 
-log.info("Initializing Research Agent...");
-
+log.info('Initializing Research Agent...')
 
 export const researchAgent = new Agent({
-  id: 'research',
-  name: 'Research Agent',
-  description: 'An expert research agent that conducts thorough research using web search and analysis tools.',
-  instructions: `
+    id: 'research',
+    name: 'Research Agent',
+    description:
+        'An expert research agent that conducts thorough research using web search and analysis tools.',
+    instructions: `
 <role>
 You are an expert research agent. Your goal is to research topics thoroughly by following a precise, multi-phase process.
 </role>
@@ -62,24 +69,27 @@ Example:
 }
 </output_format>
   `,
- evals: {
-   contentSimilarity: new ContentSimilarityMetric({ ignoreCase: true, ignoreWhitespace: true }),
-   completeness: new CompletenessMetric(),
-   textualDifference: new TextualDifferenceMetric(),
-   keywordCoverage: new KeywordCoverageMetric(), // Keywords will be provided at runtime for evaluation
-   toneConsistency: new ToneConsistencyMetric(),
- },
- model: googleAI,
- tools: {
-    webScraperTool,
-    batchWebScraperTool,
-    siteMapExtractorTool,
-    linkExtractorTool,
-    htmlToMarkdownTool,
-    contentCleanerTool,
-    evaluateResultTool,
-    extractLearningsTool,
- },
- memory: pgMemory
-});
+    evals: {
+        contentSimilarity: new ContentSimilarityMetric({
+            ignoreCase: true,
+            ignoreWhitespace: true,
+        }),
+        completeness: new CompletenessMetric(),
+        textualDifference: new TextualDifferenceMetric(),
+        keywordCoverage: new KeywordCoverageMetric(), // Keywords will be provided at runtime for evaluation
+        toneConsistency: new ToneConsistencyMetric(),
+    },
+    model: googleAI,
+    tools: {
+        webScraperTool,
+        batchWebScraperTool,
+        siteMapExtractorTool,
+        linkExtractorTool,
+        htmlToMarkdownTool,
+        contentCleanerTool,
+        evaluateResultTool,
+        extractLearningsTool,
+    },
+    memory: pgMemory,
+})
 export { researchOutputSchema }

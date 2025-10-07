@@ -39,7 +39,7 @@ graph TD
     PF[Policy Folder] --> ACL[acl.yaml]
     ACL --> D1[Doc: finance-policy.md]
     ACL --> D2[Doc: engineering-handbook.md]
-    
+
     subgraph "Policy Rule"
         PR[path] --> PRR[allow.roles[]]
         PR --> PRT[tenant]
@@ -67,22 +67,22 @@ graph TD
 
 - INT-001: YAML array of rules.
 
-| Field | Purpose | Type | Example |
-|-------|---------|------|---------|
-| `path` | Document file | `string` | `./corpus/finance-policy.md` |
-| `allow.roles` | Permitted roles | `string[]` | `["finance.viewer", "finance.admin"]` |
-| `tenant` | Organization | `string` | `"acme"` |
-| `classification` | Sensitivity | `enum` | `"internal"` |
+| Field            | Purpose         | Type       | Example                               |
+| ---------------- | --------------- | ---------- | ------------------------------------- |
+| `path`           | Document file   | `string`   | `./corpus/finance-policy.md`          |
+| `allow.roles`    | Permitted roles | `string[]` | `["finance.viewer", "finance.admin"]` |
+| `tenant`         | Organization    | `string`   | `"acme"`                              |
+| `classification` | Sensitivity     | `enum`     | `"internal"`                          |
 
 ### Schema (implied Zod)
 
 ```yaml
 docs:
-  - path: string
-    allow:
-      roles: string[]
-    tenant: string
-    classification: enum
+    - path: string
+      allow:
+          roles: string[]
+      tenant: string
+      classification: enum
 ```
 
 INT notes:
@@ -110,19 +110,19 @@ Edge cases and considerations:
 ### Policy Rule Addition
 
 ```yaml
-- path: "./corpus/hr-confidential.md"
+- path: './corpus/hr-confidential.md'
   allow:
-    roles: ["hr.admin"]
-  tenant: "acme"
-  classification: "confidential"
+      roles: ['hr.admin']
+  tenant: 'acme'
+  classification: 'confidential'
 ```
 
 ### Loading in Service
 
 ```ts
 // Pseudo: AuthenticationService.loadPolicies()
-const policies = yaml.load(aclPath);
-policies.docs.forEach(rule => generateTags(rule));
+const policies = yaml.load(aclPath)
+policies.docs.forEach((rule) => generateTags(rule))
 ```
 
 Best practices:

@@ -1,14 +1,14 @@
 ---
-title: "Introducing Governed RAG: Secure Retrieval-Augmented Generation for the Enterprise"
+title: 'Introducing Governed RAG: Secure Retrieval-Augmented Generation for the Enterprise'
 date: 2025-09-25T12:00:00.000Z
-excerpt: "Announcing our governed RAG template—a production-grade, zero-trust architecture for secure AI knowledge access with hierarchical RBAC and auditability."
+excerpt: 'Announcing our governed RAG template—a production-grade, zero-trust architecture for secure AI knowledge access with hierarchical RBAC and auditability.'
 tags: [announcement, security, architecture]
-author: "Core Team"
+author: 'Core Team'
 ---
 
 Welcome to the first official post on the Governed RAG project. This template was born from a simple tension:
 
-> Enterprises want the creativity and acceleration of AI—but *must not* leak sensitive knowledge or weaken compliance posture.
+> Enterprises want the creativity and acceleration of AI—but _must not_ leak sensitive knowledge or weaken compliance posture.
 
 ## Why Another RAG Template?
 
@@ -26,7 +26,7 @@ If you are building internal copilots, policy assistants, analytics explainers, 
 
 1. **Hierarchical RBAC** — `admin > dept_admin > dept_viewer > employee > public` with inheritance and claim reduction.
 2. **Document Classification** — `public | internal | confidential` preserved through indexing → retrieval → answer synthesis.
-3. **Security-Enforced Retrieval** — Access filters *applied at vector search time* (not just post filtering).
+3. **Security-Enforced Retrieval** — Access filters _applied at vector search time_ (not just post filtering).
 4. **Multi-Agent Governance** — Identity → Policy → Retrieve → Rerank → Answer → Verify pipeline.
 5. **Step-Up Authentication** — Confidential contexts can trigger elevated verification before answer continuation.
 6. **Transparent Answers** — Citations + structured logs for every answer path.
@@ -43,25 +43,28 @@ If you are building internal copilots, policy assistants, analytics explainers, 
 ## Example: Role-Constrained Vector Query (Conceptual)
 
 ```ts
-const allowed = derivePermissions(userClaims);
+const allowed = derivePermissions(userClaims)
 const results = await vectorStore.query({
-  embedding,
-  filter: { classification: { $in: allowed.classifications }, dept: { $in: allowed.departments } },
-  topK: 12,
-});
+    embedding,
+    filter: {
+        classification: { $in: allowed.classifications },
+        dept: { $in: allowed.departments },
+    },
+    topK: 12,
+})
 ```
 
-Enforce *before* model context expansion—never after.
+Enforce _before_ model context expansion—never after.
 
 ## Roadmap Snapshot
 
-| Area | Upcoming |
-|------|----------|
-| Observability | Langfuse spans for each agent stage |
-| Search | Hybrid sparse+dense retrieval option |
-| Policies | Cedar policy engine integration experiment |
-| UI | Dark-mode adaptive syntax highlighting |
-| Evals | Automated red-team prompts for leakage detection |
+| Area          | Upcoming                                         |
+| ------------- | ------------------------------------------------ |
+| Observability | Langfuse spans for each agent stage              |
+| Search        | Hybrid sparse+dense retrieval option             |
+| Policies      | Cedar policy engine integration experiment       |
+| UI            | Dark-mode adaptive syntax highlighting           |
+| Evals         | Automated red-team prompts for leakage detection |
 
 ## How to Contribute
 
@@ -73,7 +76,7 @@ Enforce *before* model context expansion—never after.
 
 ## Closing
 
-Secure AI augmentation is an *architecture problem*, not just a prompt problem. This project gives you the scaffolding to build responsibly from day zero.
+Secure AI augmentation is an _architecture problem_, not just a prompt problem. This project gives you the scaffolding to build responsibly from day zero.
 
 Follow along—more deep dives coming soon.
 

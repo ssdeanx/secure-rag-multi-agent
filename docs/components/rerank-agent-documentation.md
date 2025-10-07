@@ -1,11 +1,18 @@
 ---
-title: "Rerank Agent"
-description: "A context reranking agent that reorders provided contexts based on their relevance to the question, ensuring optimal information prioritization"
-component_type: "Mastra Agent"
-framework: "Mastra"
-language: "TypeScript"
-platform: "Node.js"
-tags: ["agent", "reranking", "context-analysis", "relevance-ranking", "information-prioritization"]
+title: 'Rerank Agent'
+description: 'A context reranking agent that reorders provided contexts based on their relevance to the question, ensuring optimal information prioritization'
+component_type: 'Mastra Agent'
+framework: 'Mastra'
+language: 'TypeScript'
+platform: 'Node.js'
+tags:
+    [
+        'agent',
+        'reranking',
+        'context-analysis',
+        'relevance-ranking',
+        'information-prioritization',
+    ]
 ---
 
 # Rerank Agent (`src/mastra/agents/rerank.agent.ts`)
@@ -153,12 +160,15 @@ graph TB
 ### Agent Properties
 
 #### `id: "rerank"`
+
 Unique identifier for the agent within the Mastra system.
 
 #### `name: "rerank"`
+
 Human-readable name for the agent.
 
 #### `description`
+
 "A context reranking agent that reorders provided contexts based on their relevance to the question."
 
 ### Core Expertise
@@ -183,24 +193,24 @@ The agent processes question-context pairs in the following format:
 
 ```json
 [
-  {
-    "id": "context-1",
-    "content": "Document content text...",
-    "metadata": {
-      "source": "document.pdf",
-      "page": 1,
-      "score": 0.85
+    {
+        "id": "context-1",
+        "content": "Document content text...",
+        "metadata": {
+            "source": "document.pdf",
+            "page": 1,
+            "score": 0.85
+        }
+    },
+    {
+        "id": "context-2",
+        "content": "Another document content...",
+        "metadata": {
+            "source": "article.html",
+            "author": "John Doe",
+            "score": 0.72
+        }
     }
-  },
-  {
-    "id": "context-2",
-    "content": "Another document content...",
-    "metadata": {
-      "source": "article.html",
-      "author": "John Doe",
-      "score": 0.72
-    }
-  }
 ]
 ```
 
@@ -282,24 +292,24 @@ The agent returns a JSON object with the following structure:
 
 ```json
 {
-  "contexts": [
-    {
-      "id": "most-relevant-context",
-      "content": "Most relevant content...",
-      "metadata": {
-        "source": "primary-source.pdf",
-        "relevance_score": 0.95
-      }
-    },
-    {
-      "id": "second-relevant-context",
-      "content": "Second most relevant content...",
-      "metadata": {
-        "source": "secondary-source.html",
-        "relevance_score": 0.87
-      }
-    }
-  ]
+    "contexts": [
+        {
+            "id": "most-relevant-context",
+            "content": "Most relevant content...",
+            "metadata": {
+                "source": "primary-source.pdf",
+                "relevance_score": 0.95
+            }
+        },
+        {
+            "id": "second-relevant-context",
+            "content": "Second most relevant content...",
+            "metadata": {
+                "source": "secondary-source.html",
+                "relevance_score": 0.87
+            }
+        }
+    ]
 }
 ```
 
@@ -307,8 +317,8 @@ The agent returns a JSON object with the following structure:
 
 ```typescript
 export const rerankOutputSchema = z.object({
-  contexts: z.array(documentContextSchema)
-});
+    contexts: z.array(documentContextSchema),
+})
 ```
 
 ### Key Output Properties
@@ -384,7 +394,7 @@ export const rerankOutputSchema = z.object({
 ### Memory Configuration
 
 ```typescript
-const store = createResearchMemory();
+const store = createResearchMemory()
 // Uses LibSQL for persistent reranking conversation storage
 ```
 
@@ -392,7 +402,7 @@ const store = createResearchMemory();
 
 ```typescript
 evals: {
-  // Add any evaluation metrics if needed
+    // Add any evaluation metrics if needed
 }
 ```
 
@@ -408,20 +418,22 @@ GOOGLE_GENERATIVE_AI_API_KEY=your-api-key
 
 ```typescript
 const result = await rerankAgent.generate({
-  question: "What are the benefits of renewable energy?",
-  contexts: [
-    {
-      id: "ctx-1",
-      content: "Solar power reduces carbon emissions by 95% compared to coal.",
-      metadata: { source: "energy-report.pdf" }
-    },
-    {
-      id: "ctx-2",
-      content: "The weather today is sunny with temperatures around 75°F.",
-      metadata: { source: "weather-forecast.html" }
-    }
-  ]
-});
+    question: 'What are the benefits of renewable energy?',
+    contexts: [
+        {
+            id: 'ctx-1',
+            content:
+                'Solar power reduces carbon emissions by 95% compared to coal.',
+            metadata: { source: 'energy-report.pdf' },
+        },
+        {
+            id: 'ctx-2',
+            content:
+                'The weather today is sunny with temperatures around 75°F.',
+            metadata: { source: 'weather-forecast.html' },
+        },
+    ],
+})
 
 // Result: contexts reordered with energy content first
 ```
@@ -430,25 +442,27 @@ const result = await rerankAgent.generate({
 
 ```typescript
 const result = await rerankAgent.generate({
-  question: "How does machine learning work?",
-  contexts: [
-    {
-      id: "ctx-1",
-      content: "Machine learning algorithms learn patterns from data through training.",
-      metadata: { source: "ml-basics.pdf", page: 1 }
-    },
-    {
-      id: "ctx-2",
-      content: "Neural networks consist of interconnected nodes called neurons.",
-      metadata: { source: "neural-nets.pdf", page: 15 }
-    },
-    {
-      id: "ctx-3",
-      content: "The best restaurants in downtown serve Italian cuisine.",
-      metadata: { source: "restaurant-guide.html" }
-    }
-  ]
-});
+    question: 'How does machine learning work?',
+    contexts: [
+        {
+            id: 'ctx-1',
+            content:
+                'Machine learning algorithms learn patterns from data through training.',
+            metadata: { source: 'ml-basics.pdf', page: 1 },
+        },
+        {
+            id: 'ctx-2',
+            content:
+                'Neural networks consist of interconnected nodes called neurons.',
+            metadata: { source: 'neural-nets.pdf', page: 15 },
+        },
+        {
+            id: 'ctx-3',
+            content: 'The best restaurants in downtown serve Italian cuisine.',
+            metadata: { source: 'restaurant-guide.html' },
+        },
+    ],
+})
 
 // Result: ML contexts prioritized over unrelated restaurant content
 ```
@@ -458,48 +472,48 @@ const result = await rerankAgent.generate({
 ### Relevance Ranking Issues
 
 1. **Poor Ranking Quality**
-   - Review question clarity and specificity
-   - Check context content quality and relevance
-   - Validate ranking criteria application
+    - Review question clarity and specificity
+    - Check context content quality and relevance
+    - Validate ranking criteria application
 
 2. **Inconsistent Results**
-   - Ensure stable sorting implementation
-   - Check for equal relevance score handling
-   - Verify context content consistency
+    - Ensure stable sorting implementation
+    - Check for equal relevance score handling
+    - Verify context content consistency
 
 3. **Missing Contexts**
-   - Confirm all input contexts are processed
-   - Check for processing errors or timeouts
-   - Validate output array completeness
+    - Confirm all input contexts are processed
+    - Check for processing errors or timeouts
+    - Validate output array completeness
 
 ### Data Processing Issues
 
 1. **Schema Validation Errors**
-   - Verify input JSON structure compliance
-   - Check required field presence
-   - Ensure proper data type formatting
+    - Verify input JSON structure compliance
+    - Check required field presence
+    - Ensure proper data type formatting
 
 2. **Context Property Loss**
-   - Review property preservation logic
-   - Check for metadata handling issues
-   - Validate output structure integrity
+    - Review property preservation logic
+    - Check for metadata handling issues
+    - Validate output structure integrity
 
 3. **Performance Problems**
-   - Monitor context array size limits
-   - Check processing time for large inputs
-   - Optimize relevance evaluation logic
+    - Monitor context array size limits
+    - Check processing time for large inputs
+    - Optimize relevance evaluation logic
 
 ### Model and Configuration Issues
 
 1. **Model Response Errors**
-   - Verify API key configuration
-   - Check model availability and quotas
-   - Review error handling for API failures
+    - Verify API key configuration
+    - Check model availability and quotas
+    - Review error handling for API failures
 
 2. **Memory Storage Problems**
-   - Validate LibSQL connection configuration
-   - Check memory store initialization
-   - Monitor storage performance
+    - Validate LibSQL connection configuration
+    - Check memory store initialization
+    - Monitor storage performance
 
 ## References
 

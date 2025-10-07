@@ -10,7 +10,7 @@ tags: [page, docs, dynamic, mdx, nextjs]
 
 # DynamicDocsPage Documentation
 
-Server-side dynamic page for /docs/* routes, compiling and rendering MDX/MD files from /docs directory. Supports static params generation for build-time optimization and fallback to 404.
+Server-side dynamic page for /docs/\* routes, compiling and rendering MDX/MD files from /docs directory. Supports static params generation for build-time optimization and fallback to 404.
 
 ## 1. Component Overview
 
@@ -27,16 +27,15 @@ Server-side dynamic page for /docs/* routes, compiling and rendering MDX/MD file
 - ARC-001: Design patterns: Dynamic route with async compilation.
 
 - ARC-002: Dependencies:
+    - Next.js (generateStaticParams, notFound)
 
-  - Next.js (generateStaticParams, notFound)
+    - next-mdx-remote (compileMDX)
 
-  - next-mdx-remote (compileMDX)
+    - fs/path (file resolution)
 
-  - fs/path (file resolution)
+    - Local: mdx-plugins, DocsLayout, components (Badge, etc.)
 
-  - Local: mdx-plugins, DocsLayout, components (Badge, etc.)
-
-  - lucide-react (icons)
+    - lucide-react (icons)
 
 - ARC-003: Interactions: Resolves file paths; compiles; renders via DocsLayout.
 
@@ -84,16 +83,16 @@ graph TD
 
 - INT-001: Page component with params.
 
-| Param | Purpose | Type | Notes |
-|-------|---------|------|-------|
+| Param    | Purpose    | Type                 | Notes                      |
+| -------- | ---------- | -------------------- | -------------------------- |
 | `params` | Slug array | `{ slug: string[] }` | From Next.js dynamic route |
 
 ### Static Params Generation
 
 ```ts
 export async function generateStaticParams() {
-  // Scans /docs for .md/.mdx files
-  // Returns [{slug: ['quick-start']}, ...]
+    // Scans /docs for .md/.mdx files
+    // Returns [{slug: ['quick-start']}, ...]
 }
 ```
 
@@ -132,9 +131,9 @@ Edge cases and considerations:
 
 ```tsx
 const components = {
-  // Existing...
-  CustomChart // Add for docs
-};
+    // Existing...
+    CustomChart, // Add for docs
+}
 ```
 
 Best practices:
