@@ -68,7 +68,7 @@ export const mastra = new Mastra({
   server: {
     apiRoutes,
     experimental_auth: new MastraJwtAuth({
-        secret: process.env.JWT_TOKEN!
+        secret: process.env.NEXT_PUBLIC_MASTRA_API_KEY!
     }),
   },
   observability: {

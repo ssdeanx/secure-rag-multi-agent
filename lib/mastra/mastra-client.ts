@@ -3,13 +3,13 @@ import { MastraClient } from "@mastra/client-js";
 // Return the configured Mastra base URL. Prefer env var, fall back to localhost for dev.
 export function getMastraBaseUrl(): string {
   // prefer an explicit env var; allow http in local dev so local dev with no TLS works
-  return process.env.MASTRA_BASE_URL ?? 'http://localhost:4111';
+  return process.env.NEXT_PUBLIC_MASTRA_URL ?? 'http://localhost:4111';
 }
 
-// only include Authorization when a service-level JWT_TOKEN exists in the environment
+// only include Authorization when a service-level NEXT_PUBLIC_MASTRA_API_KEY exists in the environment
 const serviceHeaders: Record<string,string> = {};
-if (process.env.JWT_TOKEN) {
-  serviceHeaders.Authorization = `Bearer ${process.env.JWT_TOKEN}`;
+if (process.env.NEXT_PUBLIC_MASTRA_API_KEY) {
+  serviceHeaders.Authorization = `Bearer ${process.env.NEXT_PUBLIC_MASTRA_API_KEY}`;
 }
 
 export const mastraClient = new MastraClient({
