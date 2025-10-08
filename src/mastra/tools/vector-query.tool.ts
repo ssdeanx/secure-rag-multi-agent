@@ -21,6 +21,7 @@ import { ValidationService } from '../services/ValidationService'
 import { VectorQueryService } from '../services/VectorQueryService'
 import { log } from '../config/logger'
 import type { RuntimeContext } from '@mastra/core/runtime-context'
+import type { PgVector } from '@mastra/pg'
 
 // Define the expected shape of the runtime context for this tool
 export interface VectorQueryContext {
@@ -111,6 +112,8 @@ export const vectorQueryTool = createTool({
             ValidationService.validateMastraInstance(mastra)
 
             const store = mastra!.getVector('pgVector')
+            // Ensure the store is treated as a PgVector for compile-time compatibility
+            const pgStore = store as unknown as PgVector
             ValidationService.validateVectorStore(store)
 
             const indexName = 'governed_rag'
@@ -129,7 +132,7 @@ export const vectorQueryTool = createTool({
 
             const results = await VectorQueryService.query(
                 { question, allowTags, maxClassification, topK, minSimilarity },
-                store,
+                pgStore,
                 indexName
             )
 

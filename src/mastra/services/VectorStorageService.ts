@@ -1,16 +1,14 @@
 import { log, logProgress } from '../config/logger'
 import { pgVector } from '../config/pg-storage'
 
-const MAX_MAX_RETRIES = 3
 export interface VectorMetadata {
+    [key: string]: unknown
     text: string
     docId: string
     chunkIndex: number
     securityTags: string[] // Changed to string array for proper Qdrant filtering
     versionId: string
     timestamp: string
-    // eslint-disable-next-line @typescript-eslint/member-ordering
-    [key: string]: unknown
 }
 
 export interface StorageBatch {
@@ -142,12 +140,13 @@ export class VectorStorageService {
         securityTags: string[],
         versionId: string,
         timestamp: string,
-        vectorStore: unknown
+        vectorStore: unknown,
+        indexName?: string
     ): Promise<StorageResult> {
         log.info(`Storing ${embeddings.length} vectors as single batch`)
 
         try {
-            //FIXME
+            // Use deterministic ids for each chunk so vectors can be referenced/overwritten later
             const ids = chunks.map((_: unknown, i: number) =>
                 this.generateVectorId(docId, i)
             )
@@ -159,19 +158,39 @@ export class VectorStorageService {
                 timestamp
             )
 
-            log.info(`Upserting ${embeddings.length} vectors for ${docId}`)
-
-            // Store vectors in vector database using pgVector
-            const result = await pgVector.upsert({
-                indexName: process.env.QDRANT_COLLECTION ?? 'governed_rag',
-                vectors: embeddings,
-                metadata,
+            log.info(`Upserting ${embeddings.length} vectors for ${docId}`, {
+                idsCount: ids.length,
             })
 
-            log.info(
-                `Successfully stored ${embeddings.length} chunks for document ${docId} to ${result}`
-            )
+            // Prefer the provided vectorStore if it exposes an upsert API,
+            // otherwise fall back to pgVector (pg-storage).
+            const targetIndex = indexName ?? 'governed_rag'
 
+            if (hasUpsert(vectorStore)) {
+                await vectorStore.upsert({
+                    indexName: targetIndex,
+                    ids,
+                    vectors: embeddings,
+                    metadata,
+                })
+            } else if (hasUpsert(pgVector)) {
+                const result = await pgVector.upsert({
+                    indexName: targetIndex,
+                    ids,
+                    vectors: embeddings,
+                    metadata,
+                })
+
+                log.info(
+                    `Successfully stored ${embeddings.length} chunks for document ${docId} to ${result}`
+                )
+            } else {
+                const msg = 'No supported upsert API found on provided vector store or pgVector fallback'
+                log.error(msg)
+                throw new Error(msg)
+            }
+
+            // Keep return consistent when using a custom vector store
             return {
                 success: true,
                 totalVectors: embeddings.length,
@@ -209,6 +228,7 @@ export class VectorStorageService {
         // For smaller documents, store all at once
         // For larger documents, use batching
         if (embeddings.length <= 500) {
+            // pass indexName through so storeVectorsAll can use it when calling the target store
             return this.storeVectorsAll(
                 chunks,
                 embeddings,
@@ -216,7 +236,8 @@ export class VectorStorageService {
                 securityTags,
                 versionId,
                 timestamp,
-                vectorStore
+                vectorStore,
+                indexName
             )
         } else {
             return this.storeVectorsBatched(
@@ -254,13 +275,27 @@ export class VectorStorageService {
 
         for (let attempt = 1; attempt <= maxRetries; attempt++) {
             try {
-                // Store batch with proper format
-                await (vectorStore as any).upsert({
-                    indexName,
-                    vectors: batch.vectors,
-                    metadata: batch.metadata,
-                })
-                return // Success
+                // Prefer provided vector store if it supports upsert, otherwise fallback to pgVector
+                if (hasUpsert(vectorStore)) {
+                    await vectorStore.upsert({
+                        indexName,
+                        vectors: batch.vectors,
+                        metadata: batch.metadata,
+                    })
+                    return // Success
+                }
+
+                if (hasUpsert(pgVector)) {
+                    await pgVector.upsert({
+                        indexName,
+                        vectors: batch.vectors,
+                        metadata: batch.metadata,
+                    })
+                    return // Success
+                }
+
+                // No upsert API found — raise immediately
+                throw new Error('No supported upsert API available on provided vector store or pgVector')
             } catch (error) {
                 lastError =
                     error instanceof Error ? error : new Error(String(error))
@@ -298,12 +333,76 @@ export class VectorStorageService {
         vectorStore: unknown,
         indexName: string
     ): Promise<{ deleted: number; success: boolean; error?: string }> {
-        // Mastra QdrantVector doesn't support vector deletion by ID
-        // Upsert will handle overwriting existing vectors with same metadata
-        log.info(
-            `🗑️ Skipping vector deletion for ${docId} (not supported by Mastra QdrantVector)`
-        )
-        return { deleted: 0, success: true }
+		// Try to use the provided vector store to remove vectors for the docId.
+		// Support a few common API shapes: deleteByFilter, delete(ids), or query+delete.
+		const targetIndex = indexName ?? process.env.QDRANT_COLLECTION ?? 'governed_rag'
+		try {
+			if (hasDeleteByFilter(vectorStore)) {
+				await vectorStore.deleteByFilter({
+					indexName: targetIndex,
+					filter: {
+						must: [
+							{
+								key: 'docId',
+								match: { any: [docId] },
+							},
+						],
+					},
+				})
+				return { deleted: -1, success: true } // -1 indicates unknown count but success
+			}
+
+			if (hasQueryAndDelete(vectorStore)) {
+				const results = await vectorStore.query({
+					indexName: targetIndex,
+					filter: {
+						must: [
+							{
+								key: 'docId',
+								match: { any: [docId] },
+							},
+						],
+					},
+					topK: 100000,
+					includeVector: false,
+				})
+
+				const ids = (results ?? []).map((r: { id: string }) => r.id).filter(Boolean)
+				if (ids.length > 0) {
+					await vectorStore.delete({
+						indexName: targetIndex,
+						ids,
+					})
+					return { deleted: ids.length, success: true }
+				}
+				return { deleted: 0, success: true }
+			}
+
+			if (hasDeleteByFilter(pgVector)) {
+				await pgVector.deleteByFilter({
+					indexName: targetIndex,
+					filter: {
+						must: [
+							{
+								key: 'docId',
+								match: { any: [docId] },
+							},
+						],
+					},
+				})
+				return { deleted: -1, success: true }
+			}
+
+			// Nothing to do - log and return success (no-op)
+			log.info(
+				`🗑️ Skipping vector deletion for ${docId} - no supported deletion API found on provided store`
+			)
+			return { deleted: 0, success: true }
+		} catch (error) {
+			const msg = error instanceof Error ? error.message : String(error)
+			log.error(`Failed to delete vectors for ${docId}: ${msg}`)
+			return { deleted: 0, success: false, error: msg }
+		}
     }
 
     /**
@@ -366,11 +465,11 @@ export class VectorStorageService {
         versionId: string,
         timestamp: string
     ): void {
-        if (!chunks || chunks.length === 0) {
+        if (chunks.length === 0) {
             throw new Error('Chunks array cannot be empty')
         }
 
-        if (!embeddings || embeddings.length === 0) {
+        if (embeddings.length === 0) {
             throw new Error('Embeddings array cannot be empty')
         }
 
@@ -392,7 +491,7 @@ export class VectorStorageService {
             throw new Error('Timestamp cannot be empty')
         }
 
-        if (!securityTags || securityTags.length === 0) {
+        if (securityTags.length === 0) {
             throw new Error('Security tags cannot be empty')
         }
     }
@@ -429,4 +528,28 @@ export class VectorStorageService {
             recommendation,
         }
     }
+}
+
+
+function isObject(v: unknown): v is Record<string, unknown> {
+	return typeof v === 'object' && v !== null
+}
+
+function hasUpsert(v: unknown): v is { upsert: Function } {
+	return isObject(v) && typeof (v)['upsert'] === 'function'
+}
+
+function hasDeleteByFilter(v: unknown): v is { deleteByFilter: Function } {
+	return isObject(v) && typeof (v)['deleteByFilter'] === 'function'
+}
+
+function hasQueryAndDelete(v: unknown): v is {
+	query: Function
+	delete: Function
+} {
+	return (
+		isObject(v) &&
+		typeof (v)['query'] === 'function' &&
+		typeof (v)['delete'] === 'function'
+	)
 }

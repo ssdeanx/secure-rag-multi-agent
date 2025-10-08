@@ -11,7 +11,32 @@ import { PGVECTOR_PROMPT } from '@mastra/pg'
 import { mdocumentChunker } from '../tools/document-chunking.tool'
 import { htmlToMarkdownTool, webScraperTool } from '../tools/web-scraper-tool'
 import { vectorQueryTool } from '../tools/vector-query.tool'
+import { promises as fs } from 'fs'
+import path from 'path'
 import { BatchPartsProcessor, UnicodeNormalizer } from '@mastra/core/processors'
+import { GeminiLiveVoice } from "@mastra/voice-google-gemini-live";
+import { playAudio, getMicrophoneStream } from "@mastra/node-audio";
+
+
+const voiceConfig = new GeminiLiveVoice({
+    speechModel: {
+        name: "gemini-2.5.flash-preview-tts",
+        apiKey: process.env.GOOGLE_GENERATIVE_AI_API_KEY,
+    },
+    speaker: "Orus",
+    realtimeConfig: {
+        model: "gemini-live-2.5-flash-preview",
+        apiKey: process.env.GOOGLE_GENERATIVE_AI_API_KEY,
+        options: {
+            debug: true,
+        sessionConfig: {
+            interrupts: { enabled: true },
+            enableResumption: true,
+            maxDuration: "1h",
+            },
+        },
+    },
+});
 
 log.info('Initializing productRoadmap Agent...')
 
@@ -113,11 +138,11 @@ Available actions:
 
 When returning an action, use this exact structure:
 {
-  "type": "setState",
-  "stateKey": "nodes",
-  "setterKey": "addNode" | "removeNode" | "changeNode",
-  "args": [appropriate arguments],
-  "content": "A human-readable description of what you did"
+    "type": "setState",
+    "stateKey": "nodes",
+    "setterKey": "addNode" | "removeNode" | "changeNode",
+    "args": [appropriate arguments],
+    "content": "A human-readable description of what you did"
 }
 
 For addNode, args should be: [{data: { title, description, status, nodeType: "feature", upvotes: 0, comments: [] }}]
@@ -128,8 +153,8 @@ For changeNode, args should be: [{ id: "nodeId", data: { ...updated fields } }]
 <return_format>
 You should always return a JSON object with the following structure:
 {
-  "content": "Your response",
-  "object": { ... } // action schema from above (optional, omit if not modifying the roadmap)
+    "content": "Your response",
+    "object": { ... } // action schema from above (optional, omit if not modifying the roadmap)
 }
 
 When generating content, include the generated content in your response and indicate which tools were used.
@@ -140,10 +165,10 @@ When generating content, include the generated content in your response and indi
 - If the user is asking a question or making a comment, return a message.
 - If the user is just asking a question or making a comment, return only the content and omit the action, like this:
 {
-  "content": "Your response"
+    "content": "Your response"
 }
 </decision_logic>
-  `,
+    `,
     model: googleAI,
     memory: pgMemory,
     tools: {
@@ -178,5 +203,107 @@ When generating content, include the generated content in your response and indi
     },
     scorers: {},
     workflows: {},
+    voice: voiceConfig
 })
 export { productRoadmapOutputSchema }
+
+// Establish connection (required before using other methods)
+await voiceConfig.connect();
+// Set up event listeners
+voiceConfig.on("speaker", (audioStream) => {
+  // Handle audio stream (NodeJS.ReadableStream)
+  playAudio(audioStream);
+});
+
+voiceConfig.on("writing", ({ text, role }) => {
+  // Handle transcribed text
+  log.info(`${role}: ${text}`);
+});
+
+voiceConfig.on("turnComplete", ({ timestamp }) => {
+  // Handle turn completion
+  log.info("Turn completed at:", { timestamp });
+});
+
+// Convert text to speech
+await voiceConfig.speak("Hello, how can I help you today?", {
+//  speaker: "Charon", // Override default voice
+  responseModalities: ["AUDIO", "TEXT"],
+});
+
+// Process audio input
+const microphoneStream = getMicrophoneStream();
+await voiceConfig.send(microphoneStream);
+
+// Update session configuration
+await voiceConfig.updateSessionConfig({
+  speaker: "Kore",
+  instructions: "Be more concise in your responses",
+});
+// Save session handle for resumption
+voiceConfig.on("sessionHandle", ({ handle, expiresAt }) => {
+  // Store session handle for resumption
+    saveSessionHandle(handle, expiresAt);
+});
+// When done, disconnect
+await voiceConfig.disconnect();
+// Or use the synchronous wrapper
+voiceConfig.close();
+
+// Ensure a small .mastra directory exists in the project root.
+// Reads the existing session-handles file (if any), prunes expired handles, adds/updates the incoming handle with ISO expiration, and writes the file back.
+// Logs success or error using the existing log utility.
+// Keeps the API simple (Promise<void>) so existing callers that don't await the result continue to work.
+async function saveSessionHandle(handle: string, expiresAt: Date): Promise<void> {
+    const dataDir = path.join(process.cwd(), '.mastra')
+    const filePath = path.join(dataDir, 'session-handles.json')
+
+    // Helper type-guard for Node-style errors that may have a `code` property.
+    function isErrnoLike(e: unknown): e is { code?: unknown } {
+        return typeof e === 'object' && e !== null && 'code' in e
+    }
+
+    try {
+        // Ensure storage directory exists
+        await fs.mkdir(dataDir, { recursive: true })
+
+        // Load existing handles (if present)
+        let existing: Record<string, string> = {}
+        try {
+            const raw = await fs.readFile(filePath, 'utf8')
+            existing = JSON.parse(raw) as Record<string, string>
+        } catch (err: unknown) {
+            // Only ignore "file not found" (ENOENT). Re-throw other errors.
+            if (isErrnoLike(err) && (err.code as string) === 'ENOENT') {
+                // ENOENT is fine — we'll create the file below
+            } else {
+                throw err
+            }
+        }
+
+        const now = new Date()
+        // Prune expired handles
+        for (const [h, iso] of Object.entries(existing)) {
+            try {
+                if (new Date(iso) <= now) {
+                    delete existing[h]
+                }
+            } catch {
+                delete existing[h] // malformed entry: remove it
+            }
+        }
+
+        // Add/update the incoming handle
+        existing[handle] = expiresAt.toISOString()
+
+        // Persist back to disk
+        await fs.writeFile(filePath, JSON.stringify(existing, null, 2), 'utf8')
+
+        log.info('Saved voice session handle', { handle, expiresAt: expiresAt.toISOString(), file: filePath })
+    } catch (error) {
+        // Safely extract error message without using `any`
+        const message = error instanceof Error ? error.message : String(error)
+        log.error('Failed to save session handle', { error: message, handle, expiresAt })
+    }
+}
+

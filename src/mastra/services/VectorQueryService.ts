@@ -3,6 +3,7 @@ import { google } from '@ai-sdk/google'
 import { ValidationService } from './ValidationService'
 import { RoleService } from './RoleService'
 import { log } from '../config/logger'
+import type { PgVector } from '@mastra/pg'
 
 export interface QueryInput {
     question: string
@@ -25,6 +26,93 @@ export interface QueryResult {
 export interface SecurityFilters {
     allowedClasses: string[]
     allowTags: string[]
+}
+
+// Define interface for vector store to replace 'any' usage
+interface VectorStoreQueryResult {
+    score: number
+    metadata: {
+        text: string
+        docId: string
+        versionId: string
+        source: string
+        securityTags: string[]
+        classification: string
+    }
+}
+
+// VectorStore implementations vary between providers (pgvector, qdrant, etc.).
+// Provide a narrow, explicit type instead of `any` to satisfy linting rules
+// while still describing common operations used by this service.
+// Note: we intentionally avoid a strict compile-time interface here so the
+// service can work with multiple concrete vector store implementations
+// (pgVector, Qdrant, custom adapters). We accept `unknown` at the call-site
+// and adapt to the store's expected payload shape at runtime.
+
+function normalizePgVectorResults(raw: unknown): VectorStoreQueryResult[] {
+    // Helper to normalize multiple common response shapes into our VectorStoreQueryResult[]
+    const mapItem = (item: any): VectorStoreQueryResult => {
+        // Score: several libs use "score", "similarity", or "distance" (distance -> convert to similarity if needed)
+        let score = 0
+        if (typeof item?.score === 'number') {score = item.score}
+        else if (typeof item?.similarity === 'number') {score = item.similarity}
+        else if (typeof item?.distance === 'number') {
+            // heuristic: if distance in [0, +inf), convert to similarity in [0,1]
+            // this is conservative — caller can tune minSimilarity
+            const d = item.distance
+            score = d >= 1 ? 0 : 1 - d // simplistic fallback
+        }
+
+        // Metadata extraction - handle different keys used by store implementations
+        const meta = item?.metadata ?? item?.payload ?? item?.doc ?? item
+
+        // Normalize securityTags to string[]
+        let securityTags: string[] = []
+        if (Array.isArray(meta?.securityTags)) {
+            securityTags = meta.securityTags as string[]
+        } else if (typeof meta?.securityTags === 'string') {
+            securityTags = (meta.securityTags as string).split(',').map((s) => s.trim())
+        }
+
+        const classification =
+            typeof meta?.classification === 'string'
+                ? meta.classification
+                : securityTags.find((t) => t.startsWith('classification:'))?.split(':')[1] ?? 'public'
+
+        return {
+            score: Number(score ?? 0),
+            metadata: {
+                text: String(meta?.text ?? meta?.content ?? ''),
+                docId: String(meta?.docId ?? meta?.id ?? 'unknown'),
+                versionId: String(meta?.versionId ?? meta?.version ?? 'unknown'),
+                source: String(meta?.source ?? meta?.origin ?? 'unknown'),
+                securityTags,
+                classification,
+            },
+        }
+    }
+
+    if (Array.isArray(raw)) {
+        return raw.map(mapItem)
+    }
+
+    // Common wrapper fields
+    const arr = (raw as any)?.results ?? (raw as any)?.hits ?? (raw as any)?.items ?? (raw as any)?.rows
+    if (Array.isArray(arr)) {
+        return arr.map(mapItem)
+    }
+
+    // If it's an object with numeric keys or single item, attempt to map as single-entry array
+    if ((raw as any) && typeof raw === 'object') {
+        // try to find nested array values
+        for (const k of Object.keys(raw as Record<string, unknown>)) {
+            const v = (raw as any)[k]
+            if (Array.isArray(v)) {return v.map(mapItem)}
+        }
+    }
+
+    // Unknown shape -> return empty
+    return []
 }
 
 export class VectorQueryService {
@@ -70,7 +158,7 @@ export class VectorQueryService {
     static async searchWithFilters(
         embedding: number[],
         filters: SecurityFilters,
-        vectorStore: unknown,
+        vectorStore: PgVector,
         indexName: string,
         topK: number,
         minSimilarity = 0.4
@@ -161,19 +249,30 @@ export class VectorQueryService {
             minSimilarity,
         })
 
-        const results = await (vectorStore as any).query({
-            indexName,
-            queryVector: embedding,
-            topK,
-            filter: qdrantFilter,
-            includeVector: false,
-        })
+        // For this project we only support PgVector. Call the PgVector query
+        // with the shaped payload PgVector expects.
+        let results: VectorStoreQueryResult[] = []
+
+        try {
+            const raw: unknown = await (vectorStore as unknown as { query: Function }).query({
+                indexName,
+                queryVector: embedding,
+                topK,
+                filter: qdrantFilter,
+                includeVector: false,
+            })
+            results = normalizePgVectorResults(raw)
+        } catch (err) {
+            const message = err instanceof Error ? err.message : String(err)
+            log.error('PgVector query failed', { message })
+            throw new Error('Vector store query failed: ' + message)
+        }
 
         log.info(
             `🔍 Query returned ${results?.length ?? 0} results before similarity filtering`
         )
 
-        if (!results || results.length === 0) {
+        if (results.length === 0) {
             log.info(
                 '🔍 Access Control Summary - No accessible documents found (properly restricted)',
                 {
@@ -186,7 +285,7 @@ export class VectorQueryService {
         }
 
         // Apply similarity threshold filtering
-        const similarityFilteredResults = results.filter((r: any) => {
+        const similarityFilteredResults = results.filter((r: VectorStoreQueryResult) => {
             const score = r.score ?? 0
             log.debug(
                 `🔍 Document ${r.metadata?.docId}: score=${score.toFixed(3)}, threshold=${minSimilarity}, ${score >= minSimilarity ? 'KEEP' : 'FILTER_OUT'}`
@@ -205,7 +304,7 @@ export class VectorQueryService {
                     securityPassed: results.length,
                     similarityThreshold: minSimilarity,
                     highestScore: Math.max(
-                        ...results.map((r: any) => r.score ?? 0)
+                        ...results.map((r: VectorStoreQueryResult) => r.score ?? 0)
                     ).toFixed(3),
                 }
             )
@@ -225,13 +324,13 @@ export class VectorQueryService {
             userTenant: userTenantTags,
         })
 
-        return similarityFilteredResults.map((r: any, index: number) => {
+        return similarityFilteredResults.map((r: VectorStoreQueryResult, index: number) => {
             let securityTags: string[] = []
 
             if (Array.isArray(r.metadata?.securityTags)) {
                 securityTags = r.metadata.securityTags
             } else if (typeof r.metadata?.securityTags === 'string') {
-                securityTags = r.metadata.securityTags
+                securityTags = (r.metadata.securityTags as string)
                     .split(',')
                     .map((tag: string) => tag.trim())
             }
@@ -298,7 +397,7 @@ export class VectorQueryService {
 
     static async query(
         input: QueryInput,
-        vectorStore: unknown,
+        vectorStore: PgVector,
         indexName: string
     ): Promise<QueryResult[]> {
         ValidationService.validateQuestion(input.question)

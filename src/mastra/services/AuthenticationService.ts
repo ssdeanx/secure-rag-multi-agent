@@ -2,6 +2,7 @@ import { jwtVerify } from 'jose'
 
 import { ValidationService } from './ValidationService'
 import { RoleService } from './RoleService'
+import { log } from '../config/logger'
 
 export interface JWTClaims {
     sub: string
@@ -32,19 +33,40 @@ export class AuthenticationService {
             clockTolerance: 5,
         })
 
+        // Cast payload to a safe record to avoid implicit 'any' usage in conditionals
+        const payloadRecord = payload as Record<string, unknown>
+        // Explicitly check for undefined/null to satisfy lint rules that forbid
+        // using an 'any' value directly in a conditional.
+        const tenantResult =
+            payloadRecord.tenant !== undefined && payloadRecord.tenant !== null
+                ? String(payloadRecord.tenant)
+                : process.env.TENANT/* It looks like there is a typo in the code snippet. The line
+                `process.env.TENANT` should actually be `process.env.TENANT`. */
+
         const now = Math.floor(Date.now() / 1000)
         ValidationService.validateTokenExpiry(payload.exp, now)
         ValidationService.validateTokenNotBefore(payload.nbf, now)
 
+        // Convert numeric claims with explicit nullish checks and NaN/Infinity protection
+        let expNum: number | undefined = undefined
+        if (payloadRecord.exp !== undefined && payloadRecord.exp !== null) {
+            const candidate = Number(payloadRecord.exp)
+            expNum = Number.isFinite(candidate) ? candidate : undefined
+        }
+
+        let iatNum: number | undefined = undefined
+        if (payloadRecord.iat !== undefined && payloadRecord.iat !== null) {
+            const candidate = Number(payloadRecord.iat)
+            iatNum = Number.isFinite(candidate) ? candidate : undefined
+        }
+
         return {
             sub: String(payload.sub ?? 'unknown'),
             roles: Array.isArray(payload.roles) ? payload.roles : [],
-            tenant: payload.tenant
-                ? String(payload.tenant)
-                : process.env.TENANT,
+            tenant: tenantResult,
             stepUp: Boolean(payload.stepUp),
-            exp: payload.exp ? Number(payload.exp) : undefined,
-            iat: payload.iat ? Number(payload.iat) : undefined,
+            exp: expNum,
+            iat: iatNum,
         }
     }
 
@@ -55,12 +77,12 @@ export class AuthenticationService {
             claims.tenant
         )
 
-        console.log('AUTH_SERVICE: Generating access policy with hierarchy:')
-        console.log(`  - Original roles: [${claims.roles.join(', ')}]`)
-        console.log(
+        log.info('AUTH_SERVICE: Generating access policy with hierarchy:')
+        log.info(`  - Original roles: [${claims.roles.join(', ')}]`)
+        log.info(
             `  - Expanded roles: [${accessInfo.expandedRoles.join(', ')}]`
         )
-        console.log(`  - StepUp: ${claims.stepUp}`)
+        log.info(`  - StepUp: ${claims.stepUp}`)
 
         // Determine maximum classification based on stepUp status and role hierarchy
         let maxClassification: 'public' | 'internal' | 'confidential'
@@ -76,8 +98,8 @@ export class AuthenticationService {
             maxClassification = 'public'
         }
 
-        console.log(`  - Max classification: ${maxClassification}`)
-        console.log(`  - Allow tags: [${accessInfo.allowTags.join(', ')}]`)
+        log.info(`  - Max classification: ${maxClassification}`)
+        log.info(`  - Allow tags: [${accessInfo.allowTags.join(', ')}]`)
 
         return {
             allowTags: accessInfo.allowTags,

@@ -1,3 +1,4 @@
+import { log } from '../config/logger'
 import {
     ROLE_HIERARCHY,
     getRoleLevel,
@@ -23,12 +24,14 @@ export class RoleService {
                 expandedRoles.add(role)
 
                 // Add all roles this role inherits from
-                const inheritedRoles = ROLE_HIERARCHY[role] || []
+                // Use nullish coalescing to avoid treating empty arrays as falsy
+                // and to satisfy linters that warn about object values in boolean conditionals.
+                const inheritedRoles: string[] = ROLE_HIERARCHY[role] ?? []
                 for (const inheritedRole of inheritedRoles) {
                     expandedRoles.add(inheritedRole)
                 }
             } else {
-                console.warn(
+                log.warn(
                     `RoleService: Unknown role "${role}" - skipping inheritance`
                 )
                 expandedRoles.add(role) // Keep unknown roles for backward compatibility
@@ -96,9 +99,16 @@ export class RoleService {
 
         const allowTags: string[] = [...roleTags]
 
-        // Add tenant tag if provided
-        if (tenant) {
-            allowTags.push(`tenant:${tenant}`)
+        // Add tenant tag if provided - explicit null/empty check to satisfy linters
+        if (typeof tenant === 'string') {
+            const trimmed = tenant.trim()
+            if (trimmed.length > 0) {
+                allowTags.push(`tenant:${trimmed}`)
+            } else {
+                log.warn(
+                    'RoleService: Ignoring tenant value because it is an empty string'
+                )
+            }
         }
 
         return {

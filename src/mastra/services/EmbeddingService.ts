@@ -29,6 +29,15 @@ export interface EmbeddingResult {
     dimension: number
 }
 
+// Add a typed normalized error shape to avoid `any`
+interface NormalizedError {
+    [key: string]: unknown
+    message?: string
+    name?: string
+    stack?: string
+    // allow carrying through other fields safely
+}
+
 export class EmbeddingService {
     private readonly memory: Memory
     private readonly defaultOptions: Required<EmbeddingOptions>
@@ -53,9 +62,9 @@ export class EmbeddingService {
      * This is the recommended method as it uses the shared pg-storage configuration
      */
     async generateEmbeddings(chunks: string[]): Promise<EmbeddingResult> {
-        console.log(
-            'EMBEDDING_SERVICE',
-            `Using pg-storage generateEmbeddings for ${chunks.length} chunks`
+        log.info(
+            `Using pg-storage generateEmbeddings for ${chunks.length} chunks`,
+            { service: 'EMBEDDING_SERVICE', chunkCount: chunks.length }
         )
 
         const chunkData = chunks.map((text, i) => ({ text, id: `chunk-${i}` }))
@@ -81,9 +90,9 @@ export class EmbeddingService {
      */
 
     async generateEmbeddingsNative(chunks: string[]): Promise<EmbeddingResult> {
-        console.log(
-            'EMBEDDING_SERVICE',
-            `Generating embeddings using Mastra native implementation for ${chunks.length} chunks`
+        log.info(
+            `Generating embeddings using Mastra native implementation for ${chunks.length} chunks`,
+            { service: 'EMBEDDING_SERVICE', chunkCount: chunks.length }
         )
 
         // Use the standard AI SDK embedMany function since Memory might not be properly configured
@@ -118,12 +127,9 @@ export class EmbeddingService {
     ): Promise<EmbeddingResult> {
         const opts = { ...this.defaultOptions, ...options }
         const { batchSize, maxRetries, model } = opts
-        console.log(
-            'EMBEDDING_SERVICE',
-            `Generating embeddings in batches of ${batchSize} for ${chunks.length} chunks`
-        )
-        console.log(
-            `Generating embeddings in batches of ${batchSize} for ${chunks.length} chunks`
+        log.info(
+            `Generating embeddings in batches of ${batchSize} for ${chunks.length} chunks`,
+            { service: 'EMBEDDING_SERVICE', batchSize, totalChunks: chunks.length }
         )
 
         const allEmbeddings: number[][] = []
@@ -132,11 +138,9 @@ export class EmbeddingService {
 
         for (let i = 0; i < batches.length; i++) {
             const batch = batches[i]
-            console.log(
-                `Processing batch ${i + 1}/${batches.length} (${batch.length} chunks)`
-            )
-            console.log(
-                `Processing batch ${i + 1}/${batches.length} (${batch.length} chunks)`
+            log.info(
+                `Processing batch ${i + 1}/${batches.length} (${batch.length} chunks)`,
+                { service: 'EMBEDDING_SERVICE', batchIndex: i + 1 }
             )
 
             try {
@@ -158,9 +162,10 @@ export class EmbeddingService {
                     await new Promise((resolve) => setTimeout(resolve, 100))
                 }
             } catch (error) {
-                console.error(`Error processing batch ${i + 1}:`, error)
+                const normalized = this.formatError(error)
+                log.error(`Error processing batch ${i + 1}:`, normalized)
                 throw new Error(
-                    `Failed to process embedding batch ${i + 1}: ${error instanceof Error ? error.message : String(error)}`
+                    `Failed to process embedding batch ${i + 1}: ${normalized.message ?? String(normalized)}`
                 )
             }
         }
@@ -207,6 +212,40 @@ export class EmbeddingService {
         return batches
     }
 
+    // Normalize unknown errors caught from external libraries or runtimes
+    private formatError(err: unknown): NormalizedError {
+        // Start with an empty normalized error object
+        const result: NormalizedError = {}
+
+        if (err instanceof Error) {
+            result.message = err.message
+            result.name = err.name
+            result.stack = err.stack
+            return result
+        }
+
+        if (typeof err === 'string') {
+            result.message = err
+            return result
+        }
+
+        if (typeof err === 'object' && err !== null) {
+            // Copy enumerable properties safely into the normalized shape
+            for (const [k, v] of Object.entries(err as Record<string, unknown>)) {
+                result[k] = v
+            }
+            // Ensure message is a string if present
+            if (typeof result.message !== 'string') {
+                result.message = result.message !== undefined ? String(result.message) : undefined
+            }
+            return result
+        }
+
+        // Fallback: coerce to string
+        result.message = String(err)
+        return result
+    }
+
     /**
      * Estimate memory usage for embedding generation
      */
@@ -241,7 +280,7 @@ export class EmbeddingService {
      * Validate chunks before embedding
      */
 
-    validateChunks(chunks: string[]): void {
+    validateChunks(chunks?: string[]): void {
         if (!chunks || chunks.length === 0) {
             throw new Error('Chunks array cannot be empty')
         }
@@ -260,14 +299,14 @@ export class EmbeddingService {
                 chunks.length
             const usage: { estimatedMB: number; recommendation: string } =
                 this.estimateMemoryUsage(chunks.length, avgLength)
-            console.log(
+            log.info(
                 `Large embedding batch: ${chunks.length} chunks, avg ${Math.round(avgLength)} chars, ~${Math.round(usage.estimatedMB)}MB`
             )
-            console.log(
-                'EMBEDDING_SERVICE',
-                `Recommendation: ${usage.recommendation}`
+            log.info(
+                `Recommendation: ${usage.recommendation}`,
+                { service: 'EMBEDDING_SERVICE', recommendation: usage.recommendation }
             )
-            console.log(`Recommendation: ${usage.recommendation}`)
+            log.info(`Recommendation: ${usage.recommendation}`)
         }
     }
 }
