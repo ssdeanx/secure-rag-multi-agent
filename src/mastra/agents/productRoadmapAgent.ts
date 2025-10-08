@@ -159,20 +159,20 @@ When generating content, include the generated content in your response and indi
         vectorQueryTool
     },
     inputProcessors: [
-            new UnicodeNormalizer({
-                stripControlChars: true,
-                collapseWhitespace: true,
-                preserveEmojis: true,
-                trim: true,
-            }),
-        ],
-        outputProcessors: [
-            new BatchPartsProcessor({
-                batchSize: 10, // Maximum parts to batch together
-                maxWaitTime: 50, // Maximum time to wait before emitting (ms)
-                emitOnNonText: true, // Emit immediately on non-text parts
-            }),
-        ],
+        new UnicodeNormalizer({
+            stripControlChars: true,
+            collapseWhitespace: true,
+            preserveEmojis: true,
+            trim: true,
+        }),
+    ],
+    outputProcessors: [
+        new BatchPartsProcessor({
+            batchSize: 30, // Maximum parts to batch together
+            maxWaitTime: 50, // Maximum time to wait before emitting (ms)
+            emitOnNonText: true, // Emit immediately on non-text parts
+        }),
+    ],
     evals: {
         // Add any evaluation metrics if needed
     },
