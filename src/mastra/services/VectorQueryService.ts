@@ -54,9 +54,11 @@ function normalizePgVectorResults(raw: unknown): VectorStoreQueryResult[] {
     const mapItem = (item: any): VectorStoreQueryResult => {
         // Score: several libs use "score", "similarity", or "distance" (distance -> convert to similarity if needed)
         let score = 0
-        if (typeof item?.score === 'number') {score = item.score}
-        else if (typeof item?.similarity === 'number') {score = item.similarity}
-        else if (typeof item?.distance === 'number') {
+        if (typeof item?.score === 'number') {
+            score = item.score
+        } else if (typeof item?.similarity === 'number') {
+            score = item.similarity
+        } else if (typeof item?.distance === 'number') {
             // heuristic: if distance in [0, +inf), convert to similarity in [0,1]
             // this is conservative — caller can tune minSimilarity
             const d = item.distance
@@ -71,20 +73,26 @@ function normalizePgVectorResults(raw: unknown): VectorStoreQueryResult[] {
         if (Array.isArray(meta?.securityTags)) {
             securityTags = meta.securityTags as string[]
         } else if (typeof meta?.securityTags === 'string') {
-            securityTags = (meta.securityTags as string).split(',').map((s) => s.trim())
+            securityTags = (meta.securityTags as string)
+                .split(',')
+                .map((s) => s.trim())
         }
 
         const classification =
             typeof meta?.classification === 'string'
                 ? meta.classification
-                : securityTags.find((t) => t.startsWith('classification:'))?.split(':')[1] ?? 'public'
+                : (securityTags
+                      .find((t) => t.startsWith('classification:'))
+                      ?.split(':')[1] ?? 'public')
 
         return {
             score: Number(score ?? 0),
             metadata: {
                 text: String(meta?.text ?? meta?.content ?? ''),
                 docId: String(meta?.docId ?? meta?.id ?? 'unknown'),
-                versionId: String(meta?.versionId ?? meta?.version ?? 'unknown'),
+                versionId: String(
+                    meta?.versionId ?? meta?.version ?? 'unknown'
+                ),
                 source: String(meta?.source ?? meta?.origin ?? 'unknown'),
                 securityTags,
                 classification,
@@ -97,7 +105,11 @@ function normalizePgVectorResults(raw: unknown): VectorStoreQueryResult[] {
     }
 
     // Common wrapper fields
-    const arr = (raw as any)?.results ?? (raw as any)?.hits ?? (raw as any)?.items ?? (raw as any)?.rows
+    const arr =
+        (raw as any)?.results ??
+        (raw as any)?.hits ??
+        (raw as any)?.items ??
+        (raw as any)?.rows
     if (Array.isArray(arr)) {
         return arr.map(mapItem)
     }
@@ -107,7 +119,9 @@ function normalizePgVectorResults(raw: unknown): VectorStoreQueryResult[] {
         // try to find nested array values
         for (const k of Object.keys(raw as Record<string, unknown>)) {
             const v = (raw as any)[k]
-            if (Array.isArray(v)) {return v.map(mapItem)}
+            if (Array.isArray(v)) {
+                return v.map(mapItem)
+            }
         }
     }
 
@@ -254,7 +268,9 @@ export class VectorQueryService {
         let results: VectorStoreQueryResult[] = []
 
         try {
-            const raw: unknown = await (vectorStore as unknown as { query: Function }).query({
+            const raw: unknown = await (
+                vectorStore as unknown as { query: Function }
+            ).query({
                 indexName,
                 queryVector: embedding,
                 topK,
@@ -285,13 +301,15 @@ export class VectorQueryService {
         }
 
         // Apply similarity threshold filtering
-        const similarityFilteredResults = results.filter((r: VectorStoreQueryResult) => {
-            const score = r.score ?? 0
-            log.debug(
-                `🔍 Document ${r.metadata?.docId}: score=${score.toFixed(3)}, threshold=${minSimilarity}, ${score >= minSimilarity ? 'KEEP' : 'FILTER_OUT'}`
-            )
-            return score >= minSimilarity
-        })
+        const similarityFilteredResults = results.filter(
+            (r: VectorStoreQueryResult) => {
+                const score = r.score ?? 0
+                log.debug(
+                    `🔍 Document ${r.metadata?.docId}: score=${score.toFixed(3)}, threshold=${minSimilarity}, ${score >= minSimilarity ? 'KEEP' : 'FILTER_OUT'}`
+                )
+                return score >= minSimilarity
+            }
+        )
 
         log.info(
             `🔍 After similarity filtering (>=${minSimilarity}): ${similarityFilteredResults.length}/${results.length} documents kept`
@@ -304,7 +322,9 @@ export class VectorQueryService {
                     securityPassed: results.length,
                     similarityThreshold: minSimilarity,
                     highestScore: Math.max(
-                        ...results.map((r: VectorStoreQueryResult) => r.score ?? 0)
+                        ...results.map(
+                            (r: VectorStoreQueryResult) => r.score ?? 0
+                        )
                     ).toFixed(3),
                 }
             )
@@ -324,75 +344,77 @@ export class VectorQueryService {
             userTenant: userTenantTags,
         })
 
-        return similarityFilteredResults.map((r: VectorStoreQueryResult, index: number) => {
-            let securityTags: string[] = []
+        return similarityFilteredResults.map(
+            (r: VectorStoreQueryResult, index: number) => {
+                let securityTags: string[] = []
 
-            if (Array.isArray(r.metadata?.securityTags)) {
-                securityTags = r.metadata.securityTags
-            } else if (typeof r.metadata?.securityTags === 'string') {
-                securityTags = (r.metadata.securityTags as string)
-                    .split(',')
-                    .map((tag: string) => tag.trim())
-            }
-
-            // Extract document roles and validate user access using hierarchy
-            const docRoles = securityTags
-                .filter((tag) => tag.startsWith('role:'))
-                .map((tag) => tag.replace('role:', ''))
-            const docClassification = securityTags.find((tag) =>
-                tag.startsWith('classification:')
-            )
-            const hasValidRoleAccess = RoleService.canAccessDocument(
-                userRoles,
-                securityTags.filter((tag) => tag.startsWith('role:'))
-            )
-
-            log.debug(
-                `🔍 HIERARCHICAL ACCESS CHECK - Doc ${index + 1} (${r.metadata?.docId})`,
-                {
-                    documentRoles: docRoles,
-                    classification: docClassification,
-                    userAccess: hasValidRoleAccess ? 'GRANTED' : 'DENIED',
-                    score: r.score,
+                if (Array.isArray(r.metadata?.securityTags)) {
+                    securityTags = r.metadata.securityTags
+                } else if (typeof r.metadata?.securityTags === 'string') {
+                    securityTags = (r.metadata.securityTags as string)
+                        .split(',')
+                        .map((tag: string) => tag.trim())
                 }
-            )
 
-            // Enhanced security validation using role hierarchy
-            if (!hasValidRoleAccess && docRoles.length > 0) {
-                log.warn(
-                    `⚠️ SECURITY WARNING: Document ${r.metadata?.docId} was retrieved but user lacks access!`,
+                // Extract document roles and validate user access using hierarchy
+                const docRoles = securityTags
+                    .filter((tag) => tag.startsWith('role:'))
+                    .map((tag) => tag.replace('role:', ''))
+                const docClassification = securityTags.find((tag) =>
+                    tag.startsWith('classification:')
+                )
+                const hasValidRoleAccess = RoleService.canAccessDocument(
+                    userRoles,
+                    securityTags.filter((tag) => tag.startsWith('role:'))
+                )
+
+                log.debug(
+                    `🔍 HIERARCHICAL ACCESS CHECK - Doc ${index + 1} (${r.metadata?.docId})`,
                     {
-                        documentRequiredRoles: docRoles,
-                        userEffectiveRoles: accessInfo.expandedRoles,
+                        documentRoles: docRoles,
+                        classification: docClassification,
+                        userAccess: hasValidRoleAccess ? 'GRANTED' : 'DENIED',
+                        score: r.score,
                     }
                 )
 
-                // Additional debugging - show what roles could access this document
-                const accessibleRoles =
-                    RoleService.getDocumentAccessibleRoles(docRoles)
-                log.warn(
-                    `Roles that CAN access this doc: [${accessibleRoles.join(', ')}]`
-                )
-            }
+                // Enhanced security validation using role hierarchy
+                if (!hasValidRoleAccess && docRoles.length > 0) {
+                    log.warn(
+                        `⚠️ SECURITY WARNING: Document ${r.metadata?.docId} was retrieved but user lacks access!`,
+                        {
+                            documentRequiredRoles: docRoles,
+                            userEffectiveRoles: accessInfo.expandedRoles,
+                        }
+                    )
 
-            return {
-                text: String(r.metadata?.text ?? ''),
-                docId: String(r.metadata?.docId ?? 'unknown'),
-                versionId: r.metadata?.versionId
-                    ? String(r.metadata.versionId)
-                    : 'unknown',
-                source: r.metadata?.source
-                    ? String(r.metadata.source)
-                    : 'unknown',
-                score: r.score ?? 0,
-                securityTags,
-                classification:
-                    (r.metadata?.classification as
-                        | 'public'
-                        | 'internal'
-                        | 'confidential') || 'public',
+                    // Additional debugging - show what roles could access this document
+                    const accessibleRoles =
+                        RoleService.getDocumentAccessibleRoles(docRoles)
+                    log.warn(
+                        `Roles that CAN access this doc: [${accessibleRoles.join(', ')}]`
+                    )
+                }
+
+                return {
+                    text: String(r.metadata?.text ?? ''),
+                    docId: String(r.metadata?.docId ?? 'unknown'),
+                    versionId: r.metadata?.versionId
+                        ? String(r.metadata.versionId)
+                        : 'unknown',
+                    source: r.metadata?.source
+                        ? String(r.metadata.source)
+                        : 'unknown',
+                    score: r.score ?? 0,
+                    securityTags,
+                    classification:
+                        (r.metadata?.classification as
+                            | 'public'
+                            | 'internal'
+                            | 'confidential') || 'public',
+                }
             }
-        })
+        )
     }
 
     static async query(

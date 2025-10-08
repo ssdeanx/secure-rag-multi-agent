@@ -3,20 +3,20 @@
 // Integrates with Cedar OS state management and roadmap functionality
 // ---------------------------------------------
 
-import { createWorkflow, createStep } from '@mastra/core/workflows';
-import { z } from 'zod';
-import { productRoadmapAgent } from '../agents/productRoadmapAgent';
-import { researchAgent } from '../agents/researchAgent';
-import { streamJSONEvent, handleTextStream } from '../../utils/streamUtils';
+import { createWorkflow, createStep } from '@mastra/core/workflows'
+import { z } from 'zod'
+import { productRoadmapAgent } from '../agents/productRoadmapAgent'
+import { researchAgent } from '../agents/researchAgent'
+import { streamJSONEvent, handleTextStream } from '../../utils/streamUtils'
 import type {
-  // New Cedar OS Integration Types
-  BaseMessage,
-  MessageRenderer,
-  MessageThread,
-  MessageStorageBaseAdapter,
-  AgentContext,
-  DiffState,
-} from './chatWorkflowSharedTypes';
+    // New Cedar OS Integration Types
+    BaseMessage,
+    MessageRenderer,
+    MessageThread,
+    MessageStorageBaseAdapter,
+    AgentContext,
+    DiffState,
+} from './chatWorkflowSharedTypes'
 import {
     MessageSchema,
     ExecuteFunctionResponseSchema,
@@ -438,7 +438,7 @@ const emitWorkflowEvents = createStep({
             typeof (streamController as Record<string, unknown> | null)
                 ?.enqueue === 'function'
                 ? (streamController as ReadableStreamDefaultController<Uint8Array>)
-                : undefined;
+                : undefined
 
         if (emitController) {
             // Emit workflow start
@@ -537,9 +537,8 @@ const callAgent = createStep({
 
         // Simple intent routing: if the prompt contains research cues, call researchAgent
         // Routing: prefer agentId provided by earlier step if present (backwards compatible)
-        const providedAgentId = (
-            inputData as Record<string, unknown>
-        ).agentId as 'productRoadmap' | 'research' | undefined;
+        const providedAgentId = (inputData as Record<string, unknown>)
+            .agentId as 'productRoadmap' | 'research' | undefined
         const lowerPrompt = messageContents.join(' ').toLowerCase()
         const researchSignals = [
             'research',
@@ -566,7 +565,7 @@ const callAgent = createStep({
 
         // Handle streaming response
         if (controller) {
-            finalText = await handleTextStream(streamResult, controller);
+            finalText = await handleTextStream(streamResult, controller)
 
             // Emit completion events for Cedar UI
             streamJSONEvent(controller, {

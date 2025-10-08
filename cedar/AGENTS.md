@@ -15,28 +15,28 @@ This directory contains the core UI components for the interactive "Cedar OS" pr
 
 ### In-Scope
 
--   The main `ReactFlow` canvas orchestration (`RoadmapCanvas.tsx`).
--   Definitions for custom, interactive node components (`FeatureNode.tsx`, `RoadmapNode.tsx`).
--   A UI for visualizing AI-analyzed relationships between nodes (`SmartRelationshipRoadmap.tsx`).
--   A hook for providing initial static data for the roadmap demo (`useRoadmapData.ts`).
--   UI primitive components like `Badge`, `Button`, and `DropdownMenu` that are styled for this specific showcase.
+- The main `ReactFlow` canvas orchestration (`RoadmapCanvas.tsx`).
+- Definitions for custom, interactive node components (`FeatureNode.tsx`, `RoadmapNode.tsx`).
+- A UI for visualizing AI-analyzed relationships between nodes (`SmartRelationshipRoadmap.tsx`).
+- A hook for providing initial static data for the roadmap demo (`useRoadmapData.ts`).
+- UI primitive components like `Badge`, `Button`, and `DropdownMenu` that are styled for this specific showcase.
 
 ### Out-of-Scope
 
--   The logic for connecting the UI state to the AI agent (which lives in `/app/cedar-os`).
--   The backend services that power features like the smart relationship analysis.
+- The logic for connecting the UI state to the AI agent (which lives in `/app/cedar-os`).
+- The backend services that power features like the smart relationship analysis.
 
 ## Key Files
 
-| File | Responsibility | Notes |
-| --- | --- | --- |
-| `RoadmapCanvas.tsx` | The main ReactFlow canvas. | Manages the state of nodes and edges and orchestrates the overall roadmap UI. |
-| `FeatureNode.tsx` | The primary, feature-rich custom node. | Provides inline editing, status changes, upvoting, comments, and resizing. This is the main node type used in the canvas. |
-| `SmartRelationshipRoadmap.tsx` | AI Relationship Visualizer | A UI that displays AI-analyzed relationships (e.g., dependencies, blockers) between selected roadmap nodes. |
-| `useRoadmapData.ts` | Provides Initial Data | A hook that returns the static, initial set of nodes and edges for the roadmap demo. |
-| `ChatModeSelector.tsx` | UI for Switching Chat Modes | A simple component that allows the user to toggle between different Cedar OS chat interfaces. |
-| `RoadmapNode.tsx` | A simpler custom node. | An alternative, less feature-rich custom node. `FeatureNode` is the one primarily used. |
-| `badge.tsx`, `button.tsx`, `dropdown-menu.tsx` | UI Primitives | Local, styled versions of common UI components used within the roadmap showcase. |
+| File                                           | Responsibility                         | Notes                                                                                                                     |
+| ---------------------------------------------- | -------------------------------------- | ------------------------------------------------------------------------------------------------------------------------- |
+| `RoadmapCanvas.tsx`                            | The main ReactFlow canvas.             | Manages the state of nodes and edges and orchestrates the overall roadmap UI.                                             |
+| `FeatureNode.tsx`                              | The primary, feature-rich custom node. | Provides inline editing, status changes, upvoting, comments, and resizing. This is the main node type used in the canvas. |
+| `SmartRelationshipRoadmap.tsx`                 | AI Relationship Visualizer             | A UI that displays AI-analyzed relationships (e.g., dependencies, blockers) between selected roadmap nodes.               |
+| `useRoadmapData.ts`                            | Provides Initial Data                  | A hook that returns the static, initial set of nodes and edges for the roadmap demo.                                      |
+| `ChatModeSelector.tsx`                         | UI for Switching Chat Modes            | A simple component that allows the user to toggle between different Cedar OS chat interfaces.                             |
+| `RoadmapNode.tsx`                              | A simpler custom node.                 | An alternative, less feature-rich custom node. `FeatureNode` is the one primarily used.                                   |
+| `badge.tsx`, `button.tsx`, `dropdown-menu.tsx` | UI Primitives                          | Local, styled versions of common UI components used within the roadmap showcase.                                          |
 
 ## Data Flow
 
@@ -47,7 +47,7 @@ This directory contains the core UI components for the interactive "Cedar OS" pr
 
 ## Change Log
 
-| Version | Date (UTC) | Change |
-| --- | --- | --- |
-| 1.1.0 | 2025-10-08 | Rewrote documentation to be more specific and accurate, including details on all components like `SmartRelationshipRoadmap.tsx`. |
-| 1.0.0 | 2025-09-24 | Initial standardized documentation. |
+| Version | Date (UTC) | Change                                                                                                                           |
+| ------- | ---------- | -------------------------------------------------------------------------------------------------------------------------------- |
+| 1.1.0   | 2025-10-08 | Rewrote documentation to be more specific and accurate, including details on all components like `SmartRelationshipRoadmap.tsx`. |
+| 1.0.0   | 2025-09-24 | Initial standardized documentation.                                                                                              |

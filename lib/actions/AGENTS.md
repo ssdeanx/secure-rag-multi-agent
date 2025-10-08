@@ -63,7 +63,7 @@ Secret Source: `process.env.JWT_SECRET` fallback `'dev-secret'` in local dev onl
 
 ## Change Log
 
-| Version | Date (UTC) | Change                                   |
-| ------- | ---------- | ---------------------------------------- |
+| Version | Date (UTC) | Change                                          |
+| ------- | ---------- | ----------------------------------------------- |
 | 1.1.0   | 2025-10-08 | Verified content accuracy and updated metadata. |
-| 1.0.0   | 2025-09-24 | Initial standardized documentation added |
+| 1.0.0   | 2025-09-24 | Initial standardized documentation added        |

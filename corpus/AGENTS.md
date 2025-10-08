@@ -13,11 +13,11 @@ This directory contains the authoritative raw content (source documents) for the
 
 ## Current Files
 
-| File | Classification Heuristics | Expected Access | Notes |
-| --- | --- | --- | --- |
-| `engineering-handbook.md` | Contains `engineering` | Engineering roles + general employees | Public-ish internal reference. |
-| `finance-policy.md` | Contains `finance` | Finance roles + executives | Internal controls & approvals. |
-| `hr-confidential.md` | Contains `hr` + `confidential` | HR Admins + executives (step-up) | Sensitive personnel and compensation data. |
+| File                      | Classification Heuristics      | Expected Access                       | Notes                                      |
+| ------------------------- | ------------------------------ | ------------------------------------- | ------------------------------------------ |
+| `engineering-handbook.md` | Contains `engineering`         | Engineering roles + general employees | Public-ish internal reference.             |
+| `finance-policy.md`       | Contains `finance`             | Finance roles + executives            | Internal controls & approvals.             |
+| `hr-confidential.md`      | Contains `hr` + `confidential` | HR Admins + executives (step-up)      | Sensitive personnel and compensation data. |
 
 ## Indexing Flow
 
@@ -28,13 +28,13 @@ This directory contains the authoritative raw content (source documents) for the
 
 ## Best Practices
 
--   **Naming is Security:** Filenames are the primary mechanism for classification. Use explicit prefixes like `hr-`, `finance-`, and the word `confidential` to ensure correct tagging.
--   **Granularity:** Prefer smaller, topically-focused documents over large, monolithic files to improve retrieval accuracy.
--   **Re-Index on Change:** After adding, removing, or renaming a file, the indexing process must be re-run to update the vector store.
+- **Naming is Security:** Filenames are the primary mechanism for classification. Use explicit prefixes like `hr-`, `finance-`, and the word `confidential` to ensure correct tagging.
+- **Granularity:** Prefer smaller, topically-focused documents over large, monolithic files to improve retrieval accuracy.
+- **Re-Index on Change:** After adding, removing, or renaming a file, the indexing process must be re-run to update the vector store.
 
 ## Change Log
 
-| Version | Date (UTC) | Change |
-| --- | --- | --- |
-| 1.1.0 | 2025-10-08 | Verified content accuracy and updated metadata. |
-| 1.0.0 | 2025-09-24 | Initial standardized corpus documentation. |
+| Version | Date (UTC) | Change                                          |
+| ------- | ---------- | ----------------------------------------------- |
+| 1.1.0   | 2025-10-08 | Verified content accuracy and updated metadata. |
+| 1.0.0   | 2025-09-24 | Initial standardized corpus documentation.      |

@@ -24,18 +24,18 @@ Houses user-facing and internal technical documentation (Markdown / MDX) describ
 
 ## Key Files
 
-| File | Role | Notes |
-| --- | --- | --- |
-| `architecture.md` / `.mdx` | System architecture overview | Diagrams + high-level flows |
-| `security.md` / `.mdx` | Security model & RBAC | Data classification + enforcement |
-| `api-reference.md` / `.mdx` | Endpoint docs | Chat / Index APIs + parameters |
-| `demo-roles.md` / `.mdx` | Role explanations | Sample JWT roles for demos |
-| `quick-start.md` / `.mdx` | Fast setup guide | Mirrors root instructions with brevity |
-| `index.md` / `.mdx` | Landing documentation index | Entry point for docs UI |
-| `mastra.mdx` | Mastra integration notes | Orchestration & agents summary |
-| `onboarding-cedar-mastra.mdx` | Cedar + Mastra onboarding | Cross-product narrative |
-| `theme-choices.md` | Styling/theming rationale | UI design decisions |
-| `kilocode-headers.md` | Header guidance | Formatting conventions |
+| File                          | Role                         | Notes                                  |
+| ----------------------------- | ---------------------------- | -------------------------------------- |
+| `architecture.md` / `.mdx`    | System architecture overview | Diagrams + high-level flows            |
+| `security.md` / `.mdx`        | Security model & RBAC        | Data classification + enforcement      |
+| `api-reference.md` / `.mdx`   | Endpoint docs                | Chat / Index APIs + parameters         |
+| `demo-roles.md` / `.mdx`      | Role explanations            | Sample JWT roles for demos             |
+| `quick-start.md` / `.mdx`     | Fast setup guide             | Mirrors root instructions with brevity |
+| `index.md` / `.mdx`           | Landing documentation index  | Entry point for docs UI                |
+| `mastra.mdx`                  | Mastra integration notes     | Orchestration & agents summary         |
+| `onboarding-cedar-mastra.mdx` | Cedar + Mastra onboarding    | Cross-product narrative                |
+| `theme-choices.md`            | Styling/theming rationale    | UI design decisions                    |
+| `kilocode-headers.md`         | Header guidance              | Formatting conventions                 |
 
 ## Responsibilities
 
@@ -51,16 +51,16 @@ Houses user-facing and internal technical documentation (Markdown / MDX) describ
 
 ## Integration Points
 
-| Consumer | Interaction |
-| --- | --- |
-| `app/docs` | Renders markdown/MDX content into UI |
-| `mdx-plugins.ts` (in `lib`) | Adds custom remark/rehype transforms |
-| Agents / RAG indexing | Content optionally ingested into vector store |
-| Root README / AGENTS.md | Cross-links into deeper sections |
+| Consumer                    | Interaction                                   |
+| --------------------------- | --------------------------------------------- |
+| `app/docs`                  | Renders markdown/MDX content into UI          |
+| `mdx-plugins.ts` (in `lib`) | Adds custom remark/rehype transforms          |
+| Agents / RAG indexing       | Content optionally ingested into vector store |
+| Root README / AGENTS.md     | Cross-links into deeper sections              |
 
 ## Change Log
 
-| Version | Date (UTC) | Change |
-| --- | --- | --- |
-| 1.1.0 | 2025-10-08 | Verified content accuracy and updated metadata. |
-| 1.0.0 | 2025-09-24 | Initial standardized documentation. |
+| Version | Date (UTC) | Change                                          |
+| ------- | ---------- | ----------------------------------------------- |
+| 1.1.0   | 2025-10-08 | Verified content accuracy and updated metadata. |
+| 1.0.0   | 2025-09-24 | Initial standardized documentation.             |

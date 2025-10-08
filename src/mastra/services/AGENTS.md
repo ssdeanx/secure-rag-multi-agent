@@ -5,7 +5,7 @@
 ## Persona
 
 **Name:** Senior Backend Engineer  
-**Role Objective:** Encapsulate stateless, reusable domain and infrastructure logic consumed by tools and workflow steps.  
+**Role Objective:** Encapsulate stateless, reusable domain and infrastructure logic consumed by tools and workflow steps.
 
 ## Purpose
 
@@ -27,7 +27,7 @@ Provide single-responsibility functional units (auth, role expansion, vector ret
 
 ## Change Log
 
-| Version | Date (UTC) | Change                                   |
-| ------- | ---------- | ---------------------------------------- |
-| 1.1.0   | 2025-10-08 | Verified content accuracy and updated metadata. |
+| Version | Date (UTC) | Change                                                  |
+| ------- | ---------- | ------------------------------------------------------- |
+| 1.1.0   | 2025-10-08 | Verified content accuracy and updated metadata.         |
 | 1.0.0   | 2025-09-24 | Standardized template applied; legacy content preserved |

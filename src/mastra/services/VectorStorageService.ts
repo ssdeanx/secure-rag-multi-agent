@@ -185,7 +185,8 @@ export class VectorStorageService {
                     `Successfully stored ${embeddings.length} chunks for document ${docId} to ${result}`
                 )
             } else {
-                const msg = 'No supported upsert API found on provided vector store or pgVector fallback'
+                const msg =
+                    'No supported upsert API found on provided vector store or pgVector fallback'
                 log.error(msg)
                 throw new Error(msg)
             }
@@ -295,7 +296,9 @@ export class VectorStorageService {
                 }
 
                 // No upsert API found — raise immediately
-                throw new Error('No supported upsert API available on provided vector store or pgVector')
+                throw new Error(
+                    'No supported upsert API available on provided vector store or pgVector'
+                )
             } catch (error) {
                 lastError =
                     error instanceof Error ? error : new Error(String(error))
@@ -333,76 +336,79 @@ export class VectorStorageService {
         vectorStore: unknown,
         indexName: string
     ): Promise<{ deleted: number; success: boolean; error?: string }> {
-		// Try to use the provided vector store to remove vectors for the docId.
-		// Support a few common API shapes: deleteByFilter, delete(ids), or query+delete.
-		const targetIndex = indexName ?? process.env.QDRANT_COLLECTION ?? 'governed_rag'
-		try {
-			if (hasDeleteByFilter(vectorStore)) {
-				await vectorStore.deleteByFilter({
-					indexName: targetIndex,
-					filter: {
-						must: [
-							{
-								key: 'docId',
-								match: { any: [docId] },
-							},
-						],
-					},
-				})
-				return { deleted: -1, success: true } // -1 indicates unknown count but success
-			}
+        // Try to use the provided vector store to remove vectors for the docId.
+        // Support a few common API shapes: deleteByFilter, delete(ids), or query+delete.
+        const targetIndex =
+            indexName ?? process.env.QDRANT_COLLECTION ?? 'governed_rag'
+        try {
+            if (hasDeleteByFilter(vectorStore)) {
+                await vectorStore.deleteByFilter({
+                    indexName: targetIndex,
+                    filter: {
+                        must: [
+                            {
+                                key: 'docId',
+                                match: { any: [docId] },
+                            },
+                        ],
+                    },
+                })
+                return { deleted: -1, success: true } // -1 indicates unknown count but success
+            }
 
-			if (hasQueryAndDelete(vectorStore)) {
-				const results = await vectorStore.query({
-					indexName: targetIndex,
-					filter: {
-						must: [
-							{
-								key: 'docId',
-								match: { any: [docId] },
-							},
-						],
-					},
-					topK: 100000,
-					includeVector: false,
-				})
+            if (hasQueryAndDelete(vectorStore)) {
+                const results = await vectorStore.query({
+                    indexName: targetIndex,
+                    filter: {
+                        must: [
+                            {
+                                key: 'docId',
+                                match: { any: [docId] },
+                            },
+                        ],
+                    },
+                    topK: 100000,
+                    includeVector: false,
+                })
 
-				const ids = (results ?? []).map((r: { id: string }) => r.id).filter(Boolean)
-				if (ids.length > 0) {
-					await vectorStore.delete({
-						indexName: targetIndex,
-						ids,
-					})
-					return { deleted: ids.length, success: true }
-				}
-				return { deleted: 0, success: true }
-			}
+                const ids = (results ?? [])
+                    .map((r: { id: string }) => r.id)
+                    .filter(Boolean)
+                if (ids.length > 0) {
+                    await vectorStore.delete({
+                        indexName: targetIndex,
+                        ids,
+                    })
+                    return { deleted: ids.length, success: true }
+                }
+                return { deleted: 0, success: true }
+            }
 
-			if (hasDeleteByFilter(pgVector)) {
-				await pgVector.deleteByFilter({
-					indexName: targetIndex,
-					filter: {
-						must: [
-							{
-								key: 'docId',
-								match: { any: [docId] },
-							},
-						],
-					},
-				})
-				return { deleted: -1, success: true }
-			}
+            if (hasDeleteByFilter(pgVector)) {
+                await pgVector.deleteByFilter({
+                    indexName: targetIndex,
+                    filter: {
+                        must: [
+                            {
+                                key: 'docId',
+                                match: { any: [docId] },
+                            },
+                        ],
+                    },
+                })
+                return { deleted: -1, success: true }
+            }
 
-			// Nothing to do - log and return success (no-op)
-			log.info(
-				`🗑️ Skipping vector deletion for ${docId} - no supported deletion API found on provided store`
-			)
-			return { deleted: 0, success: true }
-		} catch (error) {
-			const msg = error instanceof Error ? error.message : String(error)
-			log.error(`Failed to delete vectors for ${docId}: ${msg}`)
-			return { deleted: 0, success: false, error: msg }
-		}
+            // Nothing to do - log and return success (no-op)
+            log.info(
+                `🗑️ Skipping vector deletion for ${docId} - no supported deletion API found on provided store`
+            )
+            return { deleted: 0, success: true }
+        } catch (error) {
+            const msg = error instanceof Error ? error.message : String(error)
+            log.error(`Failed to delete vectors for ${docId}: ${msg}`)
+            return { deleted: 0, success: false, error: msg }
+        }
     }
 
     /**
@@ -530,26 +536,25 @@ export class VectorStorageService {
     }
 }
 
-
 function isObject(v: unknown): v is Record<string, unknown> {
-	return typeof v === 'object' && v !== null
+    return typeof v === 'object' && v !== null
 }
 
 function hasUpsert(v: unknown): v is { upsert: Function } {
-	return isObject(v) && typeof (v)['upsert'] === 'function'
+    return isObject(v) && typeof v['upsert'] === 'function'
 }
 
 function hasDeleteByFilter(v: unknown): v is { deleteByFilter: Function } {
-	return isObject(v) && typeof (v)['deleteByFilter'] === 'function'
+    return isObject(v) && typeof v['deleteByFilter'] === 'function'
 }
 
 function hasQueryAndDelete(v: unknown): v is {
-	query: Function
-	delete: Function
+    query: Function
+    delete: Function
 } {
-	return (
-		isObject(v) &&
-		typeof (v)['query'] === 'function' &&
-		typeof (v)['delete'] === 'function'
-	)
+    return (
+        isObject(v) &&
+        typeof v['query'] === 'function' &&
+        typeof v['delete'] === 'function'
+    )
 }

@@ -15,31 +15,31 @@ This API route triggers the governed bulk ingestion of documents from the local 
 
 ### In-Scope
 
--   Scanning the `/corpus` directory for markdown files.
--   Applying heuristic-based security metadata (classification and roles) to each document.
--   Invoking the `governed-rag-index` workflow.
--   Returning a JSON summary of the indexing operation.
+- Scanning the `/corpus` directory for markdown files.
+- Applying heuristic-based security metadata (classification and roles) to each document.
+- Invoking the `governed-rag-index` workflow.
+- Returning a JSON summary of the indexing operation.
 
 ### Out-of-Scope
 
--   The embedding process itself (handled by the workflow and services).
--   Vector store persistence logic (handled by services).
--   Background job orchestration.
+- The embedding process itself (handled by the workflow and services).
+- Vector store persistence logic (handled by services).
+- Background job orchestration.
 
 ## Key File
 
-| File | Responsibility | Notes |
-| --- | --- | --- |
+| File       | Responsibility                                                               | Notes                                                         |
+| ---------- | ---------------------------------------------------------------------------- | ------------------------------------------------------------- |
 | `route.ts` | Reads corpus, classifies documents, invokes workflow, and returns a summary. | Uses Node.js `fs` and `path` to interact with the filesystem. |
 
 ## Classification Rules (Current Heuristics)
 
-| Pattern Match in Filename | Classification | `allowedRoles` | Rationale |
-| --- | --- | --- | --- |
-| `confidential` or `hr` | `confidential` | `hr.admin` | Highest sensitivity for HR data. |
-| `finance` or `policy` | `internal` | `finance.viewer`, `finance.admin`, `employee` | Finance-restricted information. |
-| `engineering` | `internal` | `engineering.admin`, `engineering.viewer`, `employee` | Engineering-specific internal documents. |
-| _default_ | `public` | `employee` | General content accessible by all employees. |
+| Pattern Match in Filename | Classification | `allowedRoles`                                        | Rationale                                    |
+| ------------------------- | -------------- | ----------------------------------------------------- | -------------------------------------------- |
+| `confidential` or `hr`    | `confidential` | `hr.admin`                                            | Highest sensitivity for HR data.             |
+| `finance` or `policy`     | `internal`     | `finance.viewer`, `finance.admin`, `employee`         | Finance-restricted information.              |
+| `engineering`             | `internal`     | `engineering.admin`, `engineering.viewer`, `employee` | Engineering-specific internal documents.     |
+| _default_                 | `public`       | `employee`                                            | General content accessible by all employees. |
 
 ## Data Flow
 
@@ -52,7 +52,7 @@ This API route triggers the governed bulk ingestion of documents from the local 
 
 ## Change Log
 
-| Version | Date (UTC) | Change |
-| --- | --- | --- |
-| 1.1.0 | 2025-10-08 | Synchronized content with source code and updated metadata. |
-| 1.0.0 | 2025-09-24 | Initial standardized documentation. |
+| Version | Date (UTC) | Change                                                      |
+| ------- | ---------- | ----------------------------------------------------------- |
+| 1.1.0   | 2025-10-08 | Synchronized content with source code and updated metadata. |
+| 1.0.0   | 2025-09-24 | Initial standardized documentation.                         |

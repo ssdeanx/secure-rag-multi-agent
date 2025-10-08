@@ -94,7 +94,7 @@ export const pgMemory = new Memory({
 - **Action Items**: [To be learned]
 - **Follow-ups Needed**: [To be learned]
         `,
-        version: "vnext", // Enable the improved/experimental tool
+            version: 'vnext', // Enable the improved/experimental tool
         },
         // Thread management with supported options
         threads: {

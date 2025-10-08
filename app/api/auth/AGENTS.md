@@ -15,34 +15,34 @@ Implements the authentication lifecycle endpoints for the application. These rou
 
 ### In-Scope
 
--   Proxying credential payloads to the Mastra backend.
--   Setting secure, HttpOnly session cookies upon successful login/signup.
--   Providing a stateless signout endpoint.
+- Proxying credential payloads to the Mastra backend.
+- Setting secure, HttpOnly session cookies upon successful login/signup.
+- Providing a stateless signout endpoint.
 
 ### Out-of-Scope
 
--   Directly handling password storage or hashing.
--   Implementing multi-factor auth, OAuth, or SSO integrations.
--   Managing user data beyond the proxying of requests.
+- Directly handling password storage or hashing.
+- Implementing multi-factor auth, OAuth, or SSO integrations.
+- Managing user data beyond the proxying of requests.
 
 ## Key Endpoints
 
-| Route | Method | Purpose | Notes |
-| --- | --- | --- | --- |
-| `/api/auth/login` | POST | Issues a session token via cookie. | Proxies credentials to the Mastra backend and sets an HttpOnly session cookie. |
-| `/api/auth/signup` | POST | Provisions a new account. | Proxies signup data to the Mastra backend and sets an HttpOnly session cookie. |
-| `/api/auth/signout` | POST | Clears client session hints. | Responds with success; client is expected to clear any local session state. |
+| Route               | Method | Purpose                            | Notes                                                                          |
+| ------------------- | ------ | ---------------------------------- | ------------------------------------------------------------------------------ |
+| `/api/auth/login`   | POST   | Issues a session token via cookie. | Proxies credentials to the Mastra backend and sets an HttpOnly session cookie. |
+| `/api/auth/signup`  | POST   | Provisions a new account.          | Proxies signup data to the Mastra backend and sets an HttpOnly session cookie. |
+| `/api/auth/signout` | POST   | Clears client session hints.       | Responds with success; client is expected to clear any local session state.    |
 
 ## Responsibilities
 
--   Normalize auth request/response shapes between the client and the Mastra backend.
--   Securely handle session tokens using HttpOnly cookies.
--   Delegate all authentication and user management logic to the Mastra service.
+- Normalize auth request/response shapes between the client and the Mastra backend.
+- Securely handle session tokens using HttpOnly cookies.
+- Delegate all authentication and user management logic to the Mastra service.
 
 ## Change Log
 
-| Version | Date (UTC) | Change |
-| --- | --- | --- |
-| 1.1.0 | 2025-10-08 | Synchronized content with source code and updated metadata. |
-| 1.0.1 | 2025-09-24 | Lint formatting fixes. |
-| 1.0.0 | 2025-09-24 | Initial standardized auth API documentation. |
+| Version | Date (UTC) | Change                                                      |
+| ------- | ---------- | ----------------------------------------------------------- |
+| 1.1.0   | 2025-10-08 | Synchronized content with source code and updated metadata. |
+| 1.0.1   | 2025-09-24 | Lint formatting fixes.                                      |
+| 1.0.0   | 2025-09-24 | Initial standardized auth API documentation.                |

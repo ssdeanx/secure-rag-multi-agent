@@ -15,22 +15,22 @@ This directory contains the primary public chat interfaces for the application. 
 
 ### In-Scope
 
--   POST handler implementations for starting and resuming chat workflows.
--   Input shape validation (`jwt`, `question`, `runId`, etc.).
--   Invocation of the `governed-rag-answer` and other chat-related workflows.
--   SSE framing for streaming responses to the client.
+- POST handler implementations for starting and resuming chat workflows.
+- Input shape validation (`jwt`, `question`, `runId`, etc.).
+- Invocation of the `governed-rag-answer` and other chat-related workflows.
+- SSE framing for streaming responses to the client.
 
 ### Out-of-Scope
 
--   Core retrieval and reasoning logic (handled by Mastra agents and services).
--   The internal state management of suspended workflows.
+- Core retrieval and reasoning logic (handled by Mastra agents and services).
+- The internal state management of suspended workflows.
 
 ## Key Routes
 
-| File | Responsibility | Notes |
-| --- | --- | --- |
-| `route.ts` | Handles new chat sessions. | Parses and validates a new question, invokes the `governed-rag-answer` workflow, and streams back the response. |
-| `resume/route.ts` | Resumes a suspended chat workflow. | Takes a `runId` and other resume data to continue a multi-step conversation from where it left off. |
+| File              | Responsibility                     | Notes                                                                                                           |
+| ----------------- | ---------------------------------- | --------------------------------------------------------------------------------------------------------------- |
+| `route.ts`        | Handles new chat sessions.         | Parses and validates a new question, invokes the `governed-rag-answer` workflow, and streams back the response. |
+| `resume/route.ts` | Resumes a suspended chat workflow. | Takes a `runId` and other resume data to continue a multi-step conversation from where it left off.             |
 
 ## Data Flow
 
@@ -42,7 +42,7 @@ This directory contains the primary public chat interfaces for the application. 
 
 ## Change Log
 
-| Version | Date (UTC) | Change |
-| --- | --- | --- |
-| 1.1.0 | 2025-10-08 | Added documentation for the `resume/route.ts` endpoint and updated metadata. |
-| 1.0.0 | 2025-09-24 | Initial standardized documentation. |
+| Version | Date (UTC) | Change                                                                       |
+| ------- | ---------- | ---------------------------------------------------------------------------- |
+| 1.1.0   | 2025-10-08 | Added documentation for the `resume/route.ts` endpoint and updated metadata. |
+| 1.0.0   | 2025-09-24 | Initial standardized documentation.                                          |

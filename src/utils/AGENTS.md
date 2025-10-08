@@ -5,7 +5,7 @@
 ## Persona
 
 **Name:** `{utils_persona_name}` = "Core Library Developer"  
-**Role:** "I create pure, dependency-light building blocks that any backend or API module can import without triggering circular references or side-effects."  
+**Role:** "I create pure, dependency-light building blocks that any backend or API module can import without triggering circular references or side-effects."
 
 ## Purpose
 
@@ -29,7 +29,7 @@ return stream // Returned by route for incremental client consumption
 
 ## Change Log
 
-| Version | Date (UTC) | Change                                   |
-| ------- | ---------- | ---------------------------------------- |
-| 1.1.0   | 2025-10-08 | Verified content accuracy and updated metadata. |
+| Version | Date (UTC) | Change                                                 |
+| ------- | ---------- | ------------------------------------------------------ |
+| 1.1.0   | 2025-10-08 | Verified content accuracy and updated metadata.        |
 | 1.0.0   | 2025-09-24 | Standardized utilities documentation; legacy preserved |

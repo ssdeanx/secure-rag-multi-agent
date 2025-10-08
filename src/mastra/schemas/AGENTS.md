@@ -5,7 +5,7 @@
 ## Persona
 
 **Name:** Data Modeler / API Designer  
-**Role Objective:** Maintain a single, versioned source of truth for all cross-layer data contracts using strict, composable Zod schemas.  
+**Role Objective:** Maintain a single, versioned source of truth for all cross-layer data contracts using strict, composable Zod schemas.
 
 ## Purpose
 
@@ -27,7 +27,7 @@ Provide canonical runtime + development-time enforcement of shapes for identity,
 
 ## Change Log
 
-| Version | Date (UTC) | Change                                   |
-| ------- | ---------- | ---------------------------------------- |
-| 1.1.0   | 2025-10-08 | Verified content accuracy and updated metadata. |
+| Version | Date (UTC) | Change                                                  |
+| ------- | ---------- | ------------------------------------------------------- |
+| 1.1.0   | 2025-10-08 | Verified content accuracy and updated metadata.         |
 | 1.0.0   | 2025-09-24 | Standardized template applied; legacy content preserved |

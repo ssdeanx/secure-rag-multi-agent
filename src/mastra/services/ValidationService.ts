@@ -1,6 +1,8 @@
 export class ValidationService {
     // Add helper to avoid loose equality and satisfy linter
-    private static isNullOrUndefined(value: unknown): value is null | undefined {
+    private static isNullOrUndefined(
+        value: unknown
+    ): value is null | undefined {
         return value === null || value === undefined
     }
 

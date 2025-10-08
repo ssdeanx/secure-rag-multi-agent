@@ -26,22 +26,22 @@ Provides browser-safe shared utilities, lightweight client helpers, auth/JWT hel
 
 ## Key Files
 
-| File             | Role                          | Notes                                                        |
-| ---------------- | ----------------------------- | ------------------------------------------------------------ |
-| `utils.ts`       | Class name & misc utils       | Exports `cn` combinator for Tailwind CSS class merging.      |
-| `jwt-utils.ts`   | Demo token generators         | Creates role-scoped JWTs for UI demos.                       |
-| `auth.ts`        | Auth helper / role resolution | Contains Supabase client and auth token retrieval logic.     |
+| File             | Role                          | Notes                                                             |
+| ---------------- | ----------------------------- | ----------------------------------------------------------------- |
+| `utils.ts`       | Class name & misc utils       | Exports `cn` combinator for Tailwind CSS class merging.           |
+| `jwt-utils.ts`   | Demo token generators         | Creates role-scoped JWTs for UI demos.                            |
+| `auth.ts`        | Auth helper / role resolution | Contains Supabase client and auth token retrieval logic.          |
 | `blog.ts`        | Blog Post Utilities           | Functions for reading and parsing blog posts from the filesystem. |
-| `metadata.ts`    | Metadata Helpers              | Functions for building Next.js metadata for pages.           |
-| `mdx-plugins.ts` | MDX config (TS)               | Type-safe remark and rehype plugin exports for MDX processing. |
-| `mdx-plugins.js` | MDX config (JS)               | Legacy/interop variant for MDX configuration.                |
-| `mastra/`        | Client integration            | Browser client pattern (see `/lib/mastra/AGENTS.md`).        |
-| `actions/`       | Action helpers                | Server actions & JWT issuance (see `/lib/actions/AGENTS.md`).|
+| `metadata.ts`    | Metadata Helpers              | Functions for building Next.js metadata for pages.                |
+| `mdx-plugins.ts` | MDX config (TS)               | Type-safe remark and rehype plugin exports for MDX processing.    |
+| `mdx-plugins.js` | MDX config (JS)               | Legacy/interop variant for MDX configuration.                     |
+| `mastra/`        | Client integration            | Browser client pattern (see `/lib/mastra/AGENTS.md`).             |
+| `actions/`       | Action helpers                | Server actions & JWT issuance (see `/lib/actions/AGENTS.md`).     |
 
 ## Change Log
 
-| Version | Date (UTC) | Change                                                        |
-| ------- | ---------- | ------------------------------------------------------------- |
+| Version | Date (UTC) | Change                                                           |
+| ------- | ---------- | ---------------------------------------------------------------- |
 | 1.2.0   | 2025-10-08 | Synchronized file list and descriptions with actual source code. |
-| 1.1.0   | 2025-09-24 | Added cross-links to `/lib/mastra` and `/lib/actions` subdocs |
-| 1.0.0   | 2025-09-24 | Standardized template applied; legacy content preserved       |
+| 1.1.0   | 2025-09-24 | Added cross-links to `/lib/mastra` and `/lib/actions` subdocs    |
+| 1.0.0   | 2025-09-24 | Standardized template applied; legacy content preserved          |

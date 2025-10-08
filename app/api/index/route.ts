@@ -105,7 +105,11 @@ export async function POST(request: NextRequest) {
             )
 
             // Log individual document results for debugging
-            if (result.result && (Boolean(result.result.documents)) && Array.isArray(result.result.documents)) {
+            if (
+                result.result &&
+                Boolean(result.result.documents) &&
+                Array.isArray(result.result.documents)
+            ) {
                 result.result.documents.forEach((doc: IndexedDocument) => {
                     if (doc.status === 'failed' && Boolean(doc.error)) {
                         log.error(`Document ${doc.docId} failed`, {

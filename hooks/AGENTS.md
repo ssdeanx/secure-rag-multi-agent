@@ -13,8 +13,8 @@ This directory contains shared, reusable React hooks that encapsulate client-sid
 
 ## Key Files
 
-| File | Description |
-| --- | --- |
+| File            | Description                                                                                                 |
+| --------------- | ----------------------------------------------------------------------------------------------------------- |
 | `use-mobile.ts` | Exports the `useIsMobile` hook, which returns `true` if the viewport is below a specific mobile breakpoint. |
 
 ## Example Pattern (`use-mobile.ts`)
@@ -47,7 +47,7 @@ export function useIsMobile() {
 
 ## Change Log
 
-| Version | Date (UTC) | Change |
-| --- | --- | --- |
-| 1.1.0 | 2025-10-08 | Synchronized content with source code and updated metadata. |
-| 1.0.0 | 2025-09-24 | Initial standardized hook directory documentation. |
+| Version | Date (UTC) | Change                                                      |
+| ------- | ---------- | ----------------------------------------------------------- |
+| 1.1.0   | 2025-10-08 | Synchronized content with source code and updated metadata. |
+| 1.0.0   | 2025-09-24 | Initial standardized hook directory documentation.          |

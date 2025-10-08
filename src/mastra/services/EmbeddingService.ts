@@ -129,7 +129,11 @@ export class EmbeddingService {
         const { batchSize, maxRetries, model } = opts
         log.info(
             `Generating embeddings in batches of ${batchSize} for ${chunks.length} chunks`,
-            { service: 'EMBEDDING_SERVICE', batchSize, totalChunks: chunks.length }
+            {
+                service: 'EMBEDDING_SERVICE',
+                batchSize,
+                totalChunks: chunks.length,
+            }
         )
 
         const allEmbeddings: number[][] = []
@@ -231,12 +235,17 @@ export class EmbeddingService {
 
         if (typeof err === 'object' && err !== null) {
             // Copy enumerable properties safely into the normalized shape
-            for (const [k, v] of Object.entries(err as Record<string, unknown>)) {
+            for (const [k, v] of Object.entries(
+                err as Record<string, unknown>
+            )) {
                 result[k] = v
             }
             // Ensure message is a string if present
             if (typeof result.message !== 'string') {
-                result.message = result.message !== undefined ? String(result.message) : undefined
+                result.message =
+                    result.message !== undefined
+                        ? String(result.message)
+                        : undefined
             }
             return result
         }
@@ -302,10 +311,10 @@ export class EmbeddingService {
             log.info(
                 `Large embedding batch: ${chunks.length} chunks, avg ${Math.round(avgLength)} chars, ~${Math.round(usage.estimatedMB)}MB`
             )
-            log.info(
-                `Recommendation: ${usage.recommendation}`,
-                { service: 'EMBEDDING_SERVICE', recommendation: usage.recommendation }
-            )
+            log.info(`Recommendation: ${usage.recommendation}`, {
+                service: 'EMBEDDING_SERVICE',
+                recommendation: usage.recommendation,
+            })
             log.info(`Recommendation: ${usage.recommendation}`)
         }
     }
