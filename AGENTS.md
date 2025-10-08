@@ -1,4 +1,4 @@
-<!-- AGENTS-META {"title":"Project Root","version":"1.5.0","last_updated":"2025-09-24T13:30:00Z","applies_to":"/","tags":["layer:root","domain:rag","domain:auth","type:overview","status:stable"],"status":"stable"} -->
+<!-- AGENTS-META {"title":"Project Root","version":"1.6.0","last_updated":"2025-10-08T08:00:26Z","applies_to":"/","tags":["layer:root","domain:rag","domain:auth","type:overview","status":"stable"],"status":"stable"} -->
 
 # AGENTS.md
 
