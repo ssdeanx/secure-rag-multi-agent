@@ -38,12 +38,6 @@ const voiceConfig = new GeminiLiveVoice({
     },
 });
 
-voiceConfig.on("sessionHandle", ({ handle, expiresAt }) => {
-  // Store session handle for resumption
-  saveSessionHandle(handle, expiresAt);
-});
-
-
 log.info('Initializing productRoadmap Agent...')
 
 // Create RAG tools for interacting with the product roadmap graph database
@@ -221,11 +215,6 @@ voiceConfig.on("speaker", (audioStream) => {
   playAudio(audioStream);
 });
 
-//voiceConfig.on("sessionHandle", ({ handle, expiresAt }) => {
-//  // Store session handle for resumption
-//  saveSessionHandle(handle, expiresAt);
-//});
-
 voiceConfig.on("writing", ({ text, role }) => {
   // Handle transcribed text
   log.info(`${role}: ${text}`);
@@ -251,7 +240,11 @@ await voiceConfig.updateSessionConfig({
   speaker: "Kore",
   instructions: "Be more concise in your responses",
 });
-
+// Save session handle for resumption
+voiceConfig.on("sessionHandle", ({ handle, expiresAt }) => {
+  // Store session handle for resumption
+    saveSessionHandle(handle, expiresAt);
+});
 // When done, disconnect
 await voiceConfig.disconnect();
 // Or use the synchronous wrapper
