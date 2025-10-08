@@ -4,7 +4,7 @@ import { metadataFromFrontmatter } from '@/lib/metadata'
 import { compileMDX } from 'next-mdx-remote/rsc'
 import mdxPlugins from '@/lib/mdx-plugins'
 import { getPostBySlug, getAllPosts } from '@/lib/blog'
-import { Badge } from '@/components/ui/badge'
+import { Badge } from '@/components/ui/shadnui/badge'
 import Link from 'next/link'
 import { ArrowLeft } from 'lucide-react'
 

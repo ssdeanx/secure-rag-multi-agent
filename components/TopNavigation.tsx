@@ -6,14 +6,14 @@ import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import { cn } from '@/lib/utils'
 import { ThemeToggle } from './ThemeToggle'
-import { Menubar, MenubarMenu, MenubarTrigger } from '@/components/ui/menubar'
+import { Menubar, MenubarMenu, MenubarTrigger } from '@/components/ui/shadnui/menubar'
 import {
     Sheet,
     SheetTrigger,
     SheetContent,
     SheetTitle,
-} from '@/components/ui/sheet'
-import { Button } from '@/components/ui/button'
+} from '@/components/ui/shadnui/sheet'
+import { Button } from '@/components/ui/shadnui/button'
 import { Menu } from 'lucide-react'
 
 interface TopNavigationProps {

@@ -2,8 +2,8 @@
 
 import React, { useState } from 'react'
 import { motion, useReducedMotion } from 'framer-motion'
-import { Input } from '@/components/ui/input'
-import { Button } from '@/components/ui/button'
+import { Input } from '@/components/ui/shadnui/input'
+import { Button } from '@/components/ui/shadnui/button'
 
 export function NewsletterForm() {
     const [email, setEmail] = useState('')

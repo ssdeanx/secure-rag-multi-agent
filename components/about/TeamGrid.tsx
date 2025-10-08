@@ -1,13 +1,13 @@
 'use client'
 import React from 'react'
 import { motion, useReducedMotion } from 'framer-motion'
-import { Avatar, AvatarFallback } from '@/components/ui/avatar'
+import { Avatar, AvatarFallback } from '@/components/ui/shadnui/avatar'
 import {
     Card,
     CardHeader,
     CardTitle,
     CardDescription,
-} from '@/components/ui/card'
+} from '@/components/ui/shadnui/card'
 
 interface TeamMember {
     name: string

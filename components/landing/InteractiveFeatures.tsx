@@ -7,7 +7,7 @@ import {
     CardHeader,
     CardTitle,
     CardDescription,
-} from '@/components/ui/card'
+} from '@/components/ui/shadnui/card'
 import { BarChart, ShieldCheck, Zap } from 'lucide-react'
 
 const features = [

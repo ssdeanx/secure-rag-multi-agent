@@ -2,7 +2,7 @@
 
 import React from 'react'
 import { motion, useReducedMotion } from 'framer-motion'
-import { Button } from '@/components/ui/button'
+import { Button } from '@/components/ui/shadnui/button'
 import { ArrowRight, Sparkles } from 'lucide-react'
 
 export function Hero() {

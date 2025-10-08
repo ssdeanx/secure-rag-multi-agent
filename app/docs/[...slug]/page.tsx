@@ -7,18 +7,18 @@ import type { Metadata } from 'next'
 import { metadataFromFrontmatter } from '@/lib/metadata'
 import { DocsLayout } from '@/components/docs/DocsLayout'
 import { Mermaid } from '@/components/Mermaid'
-import { Badge } from '@/components/ui/badge'
-import { Button } from '@/components/ui/button'
+import { Badge } from '@/components/ui/shadnui/badge'
+import { Button } from '@/components/ui/shadnui/button'
 import {
     Card,
     CardContent,
     CardDescription,
     CardHeader,
     CardTitle,
-} from '@/components/ui/card'
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
-import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'
-import { Separator } from '@/components/ui/separator'
+} from '@/components/ui/shadnui/card'
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/shadnui/tabs'
+import { Alert, AlertDescription, AlertTitle } from '@/components/ui/shadnui/alert'
+import { Separator } from '@/components/ui/shadnui/separator'
 import {
     Shield,
     Zap,

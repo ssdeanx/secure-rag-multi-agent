@@ -2,17 +2,17 @@
 
 import React, { useCallback } from 'react'
 import { Lock, Shield, Eye, Crown } from 'lucide-react'
-import { Alert, AlertDescription } from '@/components/ui/alert'
-import { Badge } from '@/components/ui/badge'
-import { Progress } from '@/components/ui/progress'
-import { Avatar, AvatarFallback } from '@/components/ui/avatar'
+import { Alert, AlertDescription } from '@/components/ui/shadnui/alert'
+import { Badge } from '@/components/ui/shadnui/badge'
+import { Progress } from '@/components/ui/shadnui/progress'
+import { Avatar, AvatarFallback } from '@/components/ui/shadnui/avatar'
 import {
     Tooltip,
     TooltipContent,
     TooltipProvider,
     TooltipTrigger,
-} from '@/components/ui/tooltip'
-import { Separator } from '@/components/ui/separator'
+} from '@/components/ui/shadnui/tooltip'
+import { Separator } from '@/components/ui/shadnui/separator'
 import { cn } from '@/lib/utils'
 
 interface SecurityIndicatorProps {

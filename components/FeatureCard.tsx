@@ -1,22 +1,22 @@
 'use client'
 
-import { Card, CardContent, CardTitle } from '@/components/ui/card'
-import { Badge } from '@/components/ui/badge'
-import { Alert, AlertDescription } from '@/components/ui/alert'
-import { Separator } from '@/components/ui/separator'
+import { Card, CardContent, CardTitle } from '@/components/ui/shadnui/card'
+import { Badge } from '@/components/ui/shadnui/badge'
+import { Alert, AlertDescription } from '@/components/ui/shadnui/alert'
+import { Separator } from '@/components/ui/shadnui/separator'
 import {
     Tooltip,
     TooltipContent,
     TooltipProvider,
     TooltipTrigger,
-} from '@/components/ui/tooltip'
-import { Progress } from '@/components/ui/progress'
-import { Avatar, AvatarFallback } from '@/components/ui/avatar'
+} from '@/components/ui/shadnui/tooltip'
+import { Progress } from '@/components/ui/shadnui/progress'
+import { Avatar, AvatarFallback } from '@/components/ui/shadnui/avatar'
 import {
     HoverCard,
     HoverCardContent,
     HoverCardTrigger,
-} from '@/components/ui/hover-card'
+} from '@/components/ui/shadnui/hover-card'
 import { cn } from '@/lib/utils'
 import React from 'react'
 

@@ -4,13 +4,13 @@ import {
     CardDescription,
     CardHeader,
     CardTitle,
-} from '@/components/ui/card'
-import { Button } from '@/components/ui/button'
-import { Badge } from '@/components/ui/badge'
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
-import { Alert, AlertDescription } from '@/components/ui/alert'
-import { Progress } from '@/components/ui/progress'
-import { Separator } from '@/components/ui/separator'
+} from '@/components/ui/shadnui/card'
+import { Button } from '@/components/ui/shadnui/button'
+import { Badge } from '@/components/ui/shadnui/badge'
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/shadnui/tabs'
+import { Alert, AlertDescription } from '@/components/ui/shadnui/alert'
+import { Progress } from '@/components/ui/shadnui/progress'
+import { Separator } from '@/components/ui/shadnui/separator'
 import {
     Shield,
     BookOpen,

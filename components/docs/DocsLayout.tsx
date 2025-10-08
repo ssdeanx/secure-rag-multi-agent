@@ -9,10 +9,10 @@ import {
     CardHeader,
     CardTitle,
     CardDescription,
-} from '@/components/ui/card'
-import { Button } from '@/components/ui/button'
-import { Badge } from '@/components/ui/badge'
-import { Separator } from '@/components/ui/separator'
+} from '@/components/ui/shadnui/card'
+import { Button } from '@/components/ui/shadnui/button'
+import { Badge } from '@/components/ui/shadnui/badge'
+import { Separator } from '@/components/ui/shadnui/separator'
 import {
     BookOpen,
     Play,
@@ -33,20 +33,20 @@ import {
     BreadcrumbLink,
     BreadcrumbPage,
     BreadcrumbSeparator,
-} from '@/components/ui/breadcrumb'
+} from '@/components/ui/shadnui/breadcrumb'
 import {
     Collapsible,
     CollapsibleTrigger,
     CollapsibleContent,
-} from '@/components/ui/collapsible'
+} from '@/components/ui/shadnui/collapsible'
 import { DocsTOC } from '@/components/docs/DocsTOC'
 import { DocsSearch } from '@/components/docs/DocsSearch'
-import { ScrollArea } from '@/components/ui/scroll-area'
+import { ScrollArea } from '@/components/ui/shadnui/scroll-area'
 import {
     HoverCard,
     HoverCardTrigger,
     HoverCardContent,
-} from '@/components/ui/hover-card'
+} from '@/components/ui/shadnui/hover-card'
 
 interface DocsLayoutProps {
     children: React.ReactNode

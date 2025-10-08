@@ -5,8 +5,8 @@ import {
     CardHeader,
     CardTitle,
     CardDescription,
-} from '@/components/ui/card'
-import { Badge } from '@/components/ui/badge'
+} from '@/components/ui/shadnui/card'
+import { Badge } from '@/components/ui/shadnui/badge'
 
 export interface BlogMeta {
     slug: string

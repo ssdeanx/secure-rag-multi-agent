@@ -1,7 +1,7 @@
 'use client'
 import React from 'react'
 import { motion, useReducedMotion } from 'framer-motion'
-import { Badge } from '@/components/ui/badge'
+import { Badge } from '@/components/ui/shadnui/badge'
 
 export function AboutHero() {
     const reduce = useReducedMotion()

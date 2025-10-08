@@ -15,30 +15,30 @@ import {
     AlertTriangle,
 } from 'lucide-react'
 import ReactMarkdown from 'react-markdown'
-import { Button } from '@/components/ui/button'
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
-import { Input } from '@/components/ui/input'
-import { Avatar, AvatarFallback } from '@/components/ui/avatar'
-import { Badge } from '@/components/ui/badge'
-import { Separator } from '@/components/ui/separator'
-import { ScrollArea } from '@/components/ui/scroll-area'
+import { Button } from '@/components/ui/shadnui/button'
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/shadnui/card'
+import { Input } from '@/components/ui/shadnui/input'
+import { Avatar, AvatarFallback } from '@/components/ui/shadnui/avatar'
+import { Badge } from '@/components/ui/shadnui/badge'
+import { Separator } from '@/components/ui/shadnui/separator'
+import { ScrollArea } from '@/components/ui/shadnui/scroll-area'
 import {
     Collapsible,
     CollapsibleContent,
     CollapsibleTrigger,
-} from '@/components/ui/collapsible'
+} from '@/components/ui/shadnui/collapsible'
 import {
     HoverCard,
     HoverCardContent,
     HoverCardTrigger,
-} from '@/components/ui/hover-card'
+} from '@/components/ui/shadnui/hover-card'
 import {
     ContextMenu,
     ContextMenuContent,
     ContextMenuItem,
     ContextMenuTrigger,
-} from '@/components/ui/context-menu'
-import { Alert, AlertDescription } from '@/components/ui/alert'
+} from '@/components/ui/shadnui/context-menu'
+import { Alert, AlertDescription } from '@/components/ui/shadnui/alert'
 import { cn } from '@/lib/utils'
 
 interface Message {

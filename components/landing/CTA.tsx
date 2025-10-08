@@ -2,8 +2,8 @@
 
 import React from 'react'
 import { motion, useReducedMotion } from 'framer-motion'
-import { Button } from '@/components/ui/button'
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
+import { Button } from '@/components/ui/shadnui/button'
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/shadnui/card'
 
 export function CTA() {
     const reduceMotion = useReducedMotion()

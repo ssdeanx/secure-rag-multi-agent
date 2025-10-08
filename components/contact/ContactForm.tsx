@@ -1,16 +1,16 @@
 'use client'
 import React, { useState } from 'react'
 import { useReducedMotion } from 'framer-motion'
-import { Input } from '@/components/ui/input'
-import { Textarea } from '@/components/ui/textarea'
-import { Button } from '@/components/ui/button'
+import { Input } from '@/components/ui/shadnui/input'
+import { Textarea } from '@/components/ui/shadnui/textarea'
+import { Button } from '@/components/ui/shadnui/button'
 import {
     Select,
     SelectTrigger,
     SelectContent,
     SelectItem,
     SelectValue,
-} from '@/components/ui/select'
+} from '@/components/ui/shadnui/select'
 
 interface ContactPayload {
     name: string

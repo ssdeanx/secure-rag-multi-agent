@@ -1,8 +1,8 @@
 'use client'
 import React from 'react'
 import Link from 'next/link'
-import { Badge } from '@/components/ui/badge'
-import { Separator } from '@/components/ui/separator'
+import { Badge } from '@/components/ui/shadnui/badge'
+import { Separator } from '@/components/ui/shadnui/separator'
 import { Github, Shield, Database, Globe } from 'lucide-react'
 import { cn } from '@/lib/utils'
 

@@ -1,13 +1,13 @@
 'use client'
 import React, { useEffect, useState } from 'react'
-import { Input } from '@/components/ui/input'
+import { Input } from '@/components/ui/shadnui/input'
 import {
     Command,
     CommandEmpty,
     CommandGroup,
     CommandItem,
     CommandList,
-} from '@/components/ui/command'
+} from '@/components/ui/shadnui/command'
 import { useRouter } from 'next/navigation'
 import { Search } from 'lucide-react'
 

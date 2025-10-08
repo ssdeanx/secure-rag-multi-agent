@@ -1,6 +1,6 @@
 'use client'
 import React from 'react'
-import { Button } from '@/components/ui/button'
+import { Button } from '@/components/ui/shadnui/button'
 
 export default function DocsError({ reset }: { reset: () => void }) {
     return (

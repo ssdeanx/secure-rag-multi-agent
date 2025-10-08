@@ -12,35 +12,35 @@ import {
     Shield,
 } from 'lucide-react'
 import { useState, useCallback } from 'react'
-import { Button } from '@/components/ui/button'
+import { Button } from '@/components/ui/shadnui/button'
 import {
     Card,
     CardContent,
     CardDescription,
     CardHeader,
     CardTitle,
-} from '@/components/ui/card'
-import { Alert, AlertDescription } from '@/components/ui/alert'
-import { Badge } from '@/components/ui/badge'
-import { Progress } from '@/components/ui/progress'
-import { Separator } from '@/components/ui/separator'
-import { Avatar, AvatarFallback } from '@/components/ui/avatar'
+} from '@/components/ui/shadnui/card'
+import { Alert, AlertDescription } from '@/components/ui/shadnui/alert'
+import { Badge } from '@/components/ui/shadnui/badge'
+import { Progress } from '@/components/ui/shadnui/progress'
+import { Separator } from '@/components/ui/shadnui/separator'
+import { Avatar, AvatarFallback } from '@/components/ui/shadnui/avatar'
 import {
     Tooltip,
     TooltipContent,
     TooltipProvider,
     TooltipTrigger,
-} from '@/components/ui/tooltip'
+} from '@/components/ui/shadnui/tooltip'
 import {
     Collapsible,
     CollapsibleContent,
     CollapsibleTrigger,
-} from '@/components/ui/collapsible'
+} from '@/components/ui/shadnui/collapsible'
 import {
     HoverCard,
     HoverCardContent,
     HoverCardTrigger,
-} from '@/components/ui/hover-card'
+} from '@/components/ui/shadnui/hover-card'
 import { cn } from '@/lib/utils'
 
 interface IndexingPanelProps {

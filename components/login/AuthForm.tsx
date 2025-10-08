@@ -1,6 +1,6 @@
 'use client'
 import React, { useState } from 'react'
-import { Button } from '@/components/ui/button'
+import { Button } from '@/components/ui/shadnui/button'
 
 type AuthResponse = Record<string, unknown>
 
