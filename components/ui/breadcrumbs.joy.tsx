@@ -80,7 +80,15 @@ BreadcrumbPage.displayName = 'BreadcrumbPage'
 export const BreadcrumbSeparator = React.forwardRef<HTMLLIElement, { children?: React.ReactNode; sx?: SxProps; className?: string }>(
   ({ children, sx, className, ...props }, ref) => {
     return (
-      <li ref={ref} aria-hidden="true" style={{ userSelect: 'none' }} className={className} {...props}>
+      <li
+        ref={ref}
+        aria-hidden="true"
+        className={className}
+        {...props}
+        // Use inline aria/data attributes and rely on global CSS for user-select behavior
+        // to satisfy the project's lint rule against inline style objects.
+        data-no-select
+      >
         {children || '/'}
       </li>
     )

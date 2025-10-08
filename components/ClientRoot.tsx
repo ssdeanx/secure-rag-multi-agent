@@ -3,7 +3,7 @@
 import React from 'react'
 import { ThemeProvider } from './ThemeProvider'
 import { TopNavigation } from './TopNavigation'
-import RouteAnnouncer from './RouteAnnouncer'
+import RouteAnnouncer from './demo-rag/RouteAnnouncer'
 
 export default function ClientRoot({
     children,

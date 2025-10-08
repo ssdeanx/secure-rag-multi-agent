@@ -1,6 +1,7 @@
 'use client';
 
 import { Card, CardContent, Typography, Box, Chip, Avatar } from '@/components/ui/joy';
+import styles from './ArticleCard.module.css';
 import Link from 'next/link';
 import { motion } from 'framer-motion';
 import { CalendarMonth, Person, AccessTime } from '@mui/icons-material';
@@ -36,9 +37,8 @@ export function ArticleCard({
             viewport={{ once: true }}
             transition={{ duration: 0.5 }}
         >
-            <Link href={`/blog/${slug}`} passHref legacyBehavior>
+            <Link href={`/blog/${slug}`}>
                 <Card
-                    component="a"
                     variant="outlined"
                     sx={{
                         height: '100%',
@@ -52,7 +52,7 @@ export function ArticleCard({
                         },
                     }}
                 >
-                    {image && (
+                    {typeof image === 'string' && image.trim() !== '' && (
                         <Box
                             sx={{
                                 width: '100%',
@@ -65,11 +65,7 @@ export function ArticleCard({
                             <img
                                 src={image}
                                 alt={title}
-                                style={{
-                                    width: '100%',
-                                    height: '100%',
-                                    objectFit: 'cover',
-                                }}
+                                className={styles.articleImage}
                             />
                         </Box>
                     )}
@@ -116,7 +112,9 @@ export function ArticleCard({
                                     alt={author.name}
                                     size="sm"
                                 >
-                                    {author.name.split(' ').map(n => n[0]).join('')}
+                                    {author.name?.trim()
+                                        ? author.name.split(' ').map(n => n[0]).join('')
+                                        : <Person sx={{ fontSize: 16 }} />}
                                 </Avatar>
                                 <Box>
                                     <Typography level="body-sm" sx={{ fontWeight: 600 }}>

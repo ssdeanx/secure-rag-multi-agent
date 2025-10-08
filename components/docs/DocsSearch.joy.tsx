@@ -15,7 +15,7 @@ interface SearchResult {
 
 interface DocsSearchProps {
     results?: SearchResult[];
-    onSearch?: (query: string) => void;
+    onSearch?: any;
 }
 
 const mockResults: SearchResult[] = [
@@ -50,12 +50,16 @@ export function DocsSearch({ results = mockResults, onSearch }: DocsSearchProps)
     const [isOpen, setIsOpen] = useState(false);
     const router = useRouter();
 
-    const filteredResults = query
-        ? results.filter(
-              (r) =>
-                  (r.title.toLowerCase().includes(query.toLowerCase()) ||
-                  (r.excerpt?.toLowerCase().includes(query.toLowerCase()))) ?? false,
-          )
+    const filteredResults = query.trim()
+        ? results.filter((r) => {
+              const q = query.toLowerCase();
+              const titleMatch = r.title.toLowerCase().includes(q);
+              const excerptMatch =
+                  typeof r.excerpt === 'string' && r.excerpt.trim().length > 0
+                      ? r.excerpt.toLowerCase().includes(q)
+                      : false;
+              return titleMatch || excerptMatch;
+          })
         : [];
 
     const handleSelect = (href: string) => {
@@ -152,7 +156,7 @@ export function DocsSearch({ results = mockResults, onSearch }: DocsSearchProps)
                                             {result.category}
                                         </Chip>
                                     </Box>
-                                    {result.excerpt && (
+                                    {typeof result.excerpt === 'string' && result.excerpt.trim().length > 0 && (
                                         <Typography
                                             level="body-xs"
                                             sx={{

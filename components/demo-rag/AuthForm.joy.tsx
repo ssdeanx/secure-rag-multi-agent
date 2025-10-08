@@ -15,18 +15,10 @@ import {
 import { Visibility, VisibilityOff, Login, PersonAdd } from '@mui/icons-material';
 import Link from 'next/link';
 
-
-interface AuthFormData {
-    email: string;
-    password: string;
-    role?: string;
-}
-
 interface AuthFormProps {
     mode: 'login' | 'signup';
-    onSubmit: (__data: AuthFormData) => Promise<void>;
+    onSubmit: (data: { email: string; password: string; role?: string }) => Promise<void>;
 }
-
 
 const demoRoles = [
     { value: 'admin', label: 'Admin (All Access)' },
@@ -162,8 +154,9 @@ export function AuthForm({ mode, onSubmit }: AuthFormProps) {
 
                         {!isSignup && (
                             <Box sx={{ display: 'flex', justifyContent: 'flex-end' }}>
-                                <Link href="/forgot-password">
+                                <Link href="/forgot-password" passHref>
                                     <Typography
+                                        component="a"
                                         level="body-sm"
                                         sx={{
                                             color: 'primary.500',
@@ -193,8 +186,9 @@ export function AuthForm({ mode, onSubmit }: AuthFormProps) {
                         <Box sx={{ textAlign: 'center', mt: 2 }}>
                             <Typography level="body-sm" sx={{ color: 'text.secondary' }}>
                                 {isSignup ? 'Already have an account?' : "Don't have an account?"}{' '}
-                                <Link href={isSignup ? '/login' : '/signup'}>
+                                <Link href={isSignup ? '/login' : '/signup'} passHref>
                                     <Typography
+                                        component="a"
                                         level="body-sm"
                                         sx={{
                                             color: 'primary.500',

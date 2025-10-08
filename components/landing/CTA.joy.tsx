@@ -32,29 +32,29 @@ export function CTA() {
                         mx: 'auto',
                         borderWidth: 2,
                         borderColor: 'primary.300',
-                        background: 'linear-gradient(135deg, var(--joy-palette-primary-softBg) 0%, var(--joy-palette-background-level1) 50%, var(--joy-palette-success-softBg) 100%)',
+                        background:
+                            'linear-gradient(135deg, var(--joy-palette-primary-softBg) 0%, var(--joy-palette-background-level1) 50%, var(--joy-palette-success-softBg) 100%)',
                         boxShadow: 'xl',
                         backdropFilter: 'blur(8px)',
                     }}
                 >
                     <CardContent sx={{ textAlign: 'center', p: { xs: 3, sm: 6 } }}>
-                        <Typography
-                            level="h2"
+                        <Box
+                            component="h2"
                             sx={{
                                 fontSize: { xs: '2xl', sm: '3xl' },
                                 fontWeight: 700,
-                                mb: 3,
+                                mb: 2,
+                                lineHeight: 1.1,
                             }}
                         >
-                            Ready to Revolutionize Your Business?
+                            Try the Governed RAG demo
+                        </Box>
+
+                        <Typography level="body-md" sx={{ mb: 4, color: 'text.secondary' }}>
+                            Secure, auditable retrieval-augmented generation for enterprise workflows.
                         </Typography>
-                        <Typography
-                            level="body-lg"
-                            sx={{ color: 'text.secondary', mb: 4 }}
-                        >
-                            Explore the future of enterprise AI. Get started
-                            with a demo or dive into our documentation.
-                        </Typography>
+
                         <Box
                             sx={{
                                 display: 'flex',
@@ -63,18 +63,14 @@ export function CTA() {
                                 justifyContent: 'center',
                             }}
                         >
-                            <Link href="/demo-rag" passHref legacyBehavior>
-                                <Button
-                                    component="a"
-                                    size="lg"
-                                    sx={{ px: 4 }}
-                                >
+                            <Link href="/demo-rag">
+                                <Button size="lg" sx={{ px: 4 }}>
                                     Try the Demo
                                 </Button>
                             </Link>
-                            <Link href="/docs" passHref legacyBehavior>
+
+                            <Link href="/docs">
                                 <Button
-                                    component="a"
                                     variant="outlined"
                                     size="lg"
                                     sx={{

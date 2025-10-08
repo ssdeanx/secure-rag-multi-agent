@@ -1,7 +1,7 @@
 'use client'
 
 import * as React from 'react'
-import { Sheet as JoySheet, ModalClose } from '@mui/joy'
+import { Sheet as JoySheet, ModalClose, Box } from '@mui/joy'
 import type { SxProps } from '@mui/system'
 
 export interface SheetProps {
@@ -55,14 +55,15 @@ Sheet.displayName = 'Sheet'
 export const SheetContent = React.forwardRef<HTMLDivElement, { children: React.ReactNode; sx?: SxProps; className?: string }>(
   ({ children, sx, className, ...props }, ref) => {
     return (
-      <div
+      <Box
         ref={ref}
+        component="div"
         className={className}
         {...props}
-        style={{ padding: '1.5rem' }}
+        sx={{ padding: '1.5rem', ...(sx as any) }}
       >
         {children}
-      </div>
+      </Box>
     )
   }
 )
@@ -71,14 +72,15 @@ SheetContent.displayName = 'SheetContent'
 export const SheetHeader = React.forwardRef<HTMLDivElement, { children: React.ReactNode; sx?: SxProps; className?: string }>(
   ({ children, sx, className, ...props }, ref) => {
     return (
-      <div
+      <Box
         ref={ref}
+        component="div"
         className={className}
         {...props}
-        style={{ marginBottom: '1rem' }}
+        sx={{ marginBottom: '1rem', ...(sx as any) }}
       >
         {children}
-      </div>
+      </Box>
     )
   }
 )
@@ -87,14 +89,15 @@ SheetHeader.displayName = 'SheetHeader'
 export const SheetTitle = React.forwardRef<HTMLHeadingElement, { children: React.ReactNode; sx?: SxProps; className?: string }>(
   ({ children, className, ...props }, ref) => {
     return (
-      <h2
+      <Box
         ref={ref}
+        component="h2"
         className={className}
         {...props}
-        style={{ fontSize: '1.25rem', fontWeight: 600, margin: 0 }}
+        sx={{ fontSize: '1.25rem', fontWeight: 600, margin: 0 }}
       >
         {children}
-      </h2>
+      </Box>
     )
   }
 )
@@ -103,14 +106,15 @@ SheetTitle.displayName = 'SheetTitle'
 export const SheetDescription = React.forwardRef<HTMLParagraphElement, { children: React.ReactNode; sx?: SxProps; className?: string }>(
   ({ children, className, ...props }, ref) => {
     return (
-      <p
+      <Box
         ref={ref}
+        component="p"
         className={className}
         {...props}
-        style={{ fontSize: '0.875rem', color: 'var(--joy-palette-text-secondary)', margin: '0.5rem 0 0 0' }}
+        sx={{ fontSize: '0.875rem', color: 'var(--joy-palette-text-secondary)', margin: '0.5rem 0 0 0' }}
       >
         {children}
-      </p>
+      </Box>
     )
   }
 )

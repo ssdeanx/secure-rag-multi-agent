@@ -164,50 +164,48 @@ export function Hero() {
                         {/* CTA Buttons */}
                         <motion.div {...fadeUp(0.8)}>
                             <Box sx={{ display: 'flex', flexDirection: { xs: 'column', sm: 'row' }, gap: 3, pt: 4 }}>
-                                <Link href="/demo-rag" passHref legacyBehavior>
-                                    <Button
-                                        component="a"
-                                        size="lg"
-                                        endDecorator={<ArrowRight size={20} />}
-                                        sx={{
-                                            px: 4,
-                                            py: 2,
-                                            fontSize: 'lg',
-                                            fontWeight: 600,
-                                            boxShadow: 'lg',
-                                            '&:hover': {
-                                                transform: 'scale(1.05)',
-                                                boxShadow: 'xl',
-                                            },
-                                            transition: 'all 0.2s',
-                                        }}
-                                    >
-                                        Try the Demo
-                                    </Button>
-                                </Link>
+                                    <Link href="/demo-rag">
+                                        <Button
+                                            size="lg"
+                                            endDecorator={<ArrowRight size={20} />}
+                                            sx={{
+                                                px: 4,
+                                                py: 2,
+                                                fontSize: 'lg',
+                                                fontWeight: 600,
+                                                boxShadow: 'lg',
+                                                '&:hover': {
+                                                    transform: 'scale(1.05)',
+                                                    boxShadow: 'xl',
+                                                },
+                                                transition: 'all 0.2s',
+                                            }}
+                                        >
+                                            Try the Demo
+                                        </Button>
+                                    </Link>
 
-                                <Link href="/docs" passHref legacyBehavior>
-                                    <Button
-                                        component="a"
-                                        variant="outlined"
-                                        size="lg"
-                                        sx={{
-                                            px: 4,
-                                            py: 2,
-                                            fontSize: 'lg',
-                                            fontWeight: 600,
-                                            borderWidth: 2,
-                                            '&:hover': {
-                                                borderColor: 'primary.500',
-                                                bgcolor: 'primary.softBg',
-                                            },
-                                            transition: 'all 0.2s',
-                                        }}
-                                    >
-                                        View Documentation
-                                    </Button>
-                                </Link>
-                            </Box>
+                                    <Link href="/docs">
+                                        <Button
+                                            variant="outlined"
+                                            size="lg"
+                                            sx={{
+                                                px: 4,
+                                                py: 2,
+                                                fontSize: 'lg',
+                                                fontWeight: 600,
+                                                borderWidth: 2,
+                                                '&:hover': {
+                                                    borderColor: 'primary.500',
+                                                    bgcolor: 'primary.softBg',
+                                                },
+                                                transition: 'all 0.2s',
+                                            }}
+                                        >
+                                            View Documentation
+                                        </Button>
+                                    </Link>
+                                </Box>
                         </motion.div>
 
                         {/* Trust indicators */}

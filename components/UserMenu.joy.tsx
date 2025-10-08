@@ -1,4 +1,4 @@
-'use client';
+"use client";
 
 import React from 'react';
 import {
@@ -22,7 +22,7 @@ interface UserMenuProps {
     };
 }
 
-export function UserMenu({ user }: UserMenuProps) {
+export const UserMenu: React.FC<UserMenuProps> = ({ user }) => {
     const handleLogout = () => {
         // TODO: Implement logout logic (e.g., call an action or API)
     };
@@ -60,4 +60,4 @@ export function UserMenu({ user }: UserMenuProps) {
             </Dropdown>
         </Box>
     );
-}
+};

@@ -1,7 +1,7 @@
 'use client';
 
 import { useState } from 'react';
-import { Box, Button, Typography, Avatar, Drawer, List, ListItem, ListItemButton } from '@/components/ui/joy';
+import { Box, Button, Typography, Drawer, List, ListItem, ListItemButton } from '@/components/ui/joy';
 import Link from 'next/link';
 import { usePathname, useRouter } from 'next/navigation';
 import {
@@ -13,10 +13,9 @@ import {
     ContactMail,
     Article,
     Login,
-    Logout,
 } from '@mui/icons-material';
 import { ThemeToggle } from './ThemeToggle';
-import { UserMenu } from './UserMenu';
+import { UserMenu } from './UserMenu.joy';
 
 interface TopNavigationProps {
     user?: {
@@ -73,7 +72,7 @@ export function TopNavigation({ user }: TopNavigationProps) {
                     }}
                 >
                     {/* Logo */}
-                    <Link href="/" passHref>
+                    <Link href="/">
                         <Box
                             component="a"
                             sx={{
@@ -124,7 +123,7 @@ export function TopNavigation({ user }: TopNavigationProps) {
                         }}
                     >
                         {navLinks.map((link) => (
-                            <Link key={link.href} href={link.href} passHref>
+                            <Link key={link.href} href={link.href}>
                                 <Button
                                     component="a"
                                     variant={isActive(link.href) ? 'soft' : 'plain'}
@@ -146,7 +145,7 @@ export function TopNavigation({ user }: TopNavigationProps) {
                         {user ? (
                             <UserMenu user={user} />
                         ) : (
-                            <Link href="/login" passHref>
+                            <Link href="/login">
                                 <Button
                                     component="a"
                                     variant="solid"
@@ -225,7 +224,7 @@ export function TopNavigation({ user }: TopNavigationProps) {
 
                         {!user && (
                             <ListItem sx={{ mt: 2 }}>
-                                <Link href="/login" passHref>
+                                <Link href="/login">
                                     <Button
                                         component="a"
                                         variant="solid"

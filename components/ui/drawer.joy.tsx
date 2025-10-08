@@ -1,7 +1,7 @@
 'use client'
 
 import * as React from 'react'
-import { Drawer as JoyDrawer, ModalClose, DialogTitle, DialogContent } from '@mui/joy'
+import { Drawer as JoyDrawer, ModalClose, DialogTitle, DialogContent, Box } from '@mui/joy'
 import type { SxProps } from '@mui/system'
 
 export interface DrawerProps {
@@ -66,20 +66,22 @@ DrawerContent.displayName = 'DrawerContent'
 export const DrawerFooter = React.forwardRef<HTMLDivElement, { children: React.ReactNode; sx?: SxProps; className?: string }>(
   ({ children, sx, className, ...props }, ref) => {
     return (
-      <div
+      <Box
         ref={ref}
+        component="div"
         className={className}
         {...props}
-        style={{
+        sx={{
           padding: '1rem',
           borderTop: '1px solid var(--joy-palette-divider)',
           display: 'flex',
           gap: '0.5rem',
           justifyContent: 'flex-end',
+          ...(sx as any),
         }}
       >
         {children}
-      </div>
+      </Box>
     )
   }
 )

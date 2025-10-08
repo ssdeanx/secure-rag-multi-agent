@@ -104,16 +104,16 @@ export function Footer() {
                         </Typography>
                         <Box sx={{ display: 'flex', gap: 1 }}>
                             {socialLinks.map((social) => (
-                                // Use a real anchor to avoid passing `href` to Box (BoxProps doesn't include href)
-                                <a
+                                <Link
                                     key={social.label}
                                     href={social.href}
                                     target="_blank"
                                     rel="noopener noreferrer"
                                     aria-label={social.label}
-                                    style={{ textDecoration: 'none' }}
+                                    passHref
                                 >
                                     <Box
+                                        component="a"
                                         sx={{
                                             display: 'inline-flex',
                                             alignItems: 'center',
@@ -123,6 +123,7 @@ export function Footer() {
                                             borderRadius: 'sm',
                                             border: '1px solid',
                                             borderColor: 'divider',
+                                            textDecoration: 'none',
                                             '&:hover': {
                                                 bgcolor: 'primary.softBg',
                                                 borderColor: 'primary.500',
@@ -131,7 +132,7 @@ export function Footer() {
                                     >
                                         <social.icon fontSize="small" />
                                     </Box>
-                                </a>
+                                </Link>
                             ))}
                         </Box>
                     </Box>

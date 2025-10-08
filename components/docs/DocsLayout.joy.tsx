@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import React, { useState } from 'react';
 import {
     Box,
     Typography,
@@ -17,9 +17,7 @@ import { usePathname } from 'next/navigation';
 import {
     Menu as MenuIcon,
     Close,
-    Description,
     Code,
-    Security,
     Architecture,
     RocketLaunch,
     ChevronRight,
@@ -95,7 +93,8 @@ function SidebarContent({ onLinkClick }: { onLinkClick?: () => void }) {
 
             <List sx={{ '--List-padding': '0px', '--List-gap': '4px' }}>
                 {sidebarNav.map((section) => {
-                    const SectionIcon = section.icon;
+                    // small typed wrapper to render icon components safely in JSX
+                    const IconComp = section.icon;
                     const isExpanded = expandedSections.includes(section.href);
 
                     return (
@@ -110,7 +109,9 @@ function SidebarContent({ onLinkClick }: { onLinkClick?: () => void }) {
                                         '&:hover': { bgcolor: 'neutral.softHoverBg' },
                                     }}
                                 >
-                                    {SectionIcon && <SectionIcon sx={{ fontSize: 20, mr: 1.5 }} />}
+                                    {(IconComp !== null && IconComp !== undefined && (typeof IconComp === 'function' || typeof IconComp === 'object')) ? (
+                                        <IconComp sx={{ fontSize: 20, mr: 1.5 }} />
+                                    ) : null}
                                     <Typography level="body-sm" sx={{ flex: 1 }}>
                                         {section.title}
                                     </Typography>

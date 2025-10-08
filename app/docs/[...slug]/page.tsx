@@ -6,7 +6,7 @@ import mdxPlugins from '@/lib/mdx-plugins'
 import type { Metadata } from 'next'
 import { metadataFromFrontmatter } from '@/lib/metadata'
 import { DocsLayout } from '@/components/docs/DocsLayout'
-import { Mermaid } from '@/components/Mermaid'
+import { Mermaid } from '@/components/demo-rag/Mermaid'
 import { Badge } from '@/components/ui/shadnui/badge'
 import { Button } from '@/components/ui/shadnui/button'
 import {
