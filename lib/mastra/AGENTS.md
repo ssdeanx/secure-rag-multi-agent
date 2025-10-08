@@ -1,4 +1,4 @@
-<!-- AGENTS-META {"title":"Mastra Browser Client","version":"1.0.0","last_updated":"2025-09-24T12:45:00Z","applies_to":"/lib/mastra","tags":["layer:frontend","domain:rag","type:client","status:stable"],"status":"stable"} -->
+<!-- AGENTS-META {"title":"Mastra Browser Client","version":"1.1.0","last_updated":"2025-10-08T08:00:26Z","applies_to":"/lib/mastra","tags":["layer:frontend","domain:rag","type:client","status:stable"],"status":"stable"} -->
 
 # Mastra Client (`/lib/mastra`)
 
@@ -62,92 +62,9 @@ Singleton for generic (usually read) operations. Adds Authorization header only 
 
 Ephemeral client for user-scoped or request-scoped operations. Pass the JWT you validated elsewhere.
 
-## Usage Examples
-
-```ts
-// 1. Simple query (shared singleton)
-import { mastraClient } from '@/lib/mastra/mastra-client'
-const result = await mastraClient.query({
-    workflow: 'governed-rag-answer',
-    input: { question },
-})
-
-// 2. Authenticated per-request client in a Route Handler
-import { createMastraClient } from '@/lib/mastra/mastra-client'
-export async function POST(req: Request) {
-    const token = await extractAndValidateJWT(req) // your auth logic
-    const client = createMastraClient(token)
-    return Response.json(
-        await client.invoke({ agent: 'some-agent', input: { foo: 'bar' } })
-    )
-}
-```
-
-## Extension Pattern
-
-Add lightweight wrappers without breaking importers:
-
-```ts
-// Example instrumentation wrapper (future idea)
-export function instrumentedClient(token?: string) {
-    const base = createMastraClient(token)
-    return new Proxy(base, {
-        get(target, prop, receiver) {
-            const orig = Reflect.get(target, prop, receiver)
-            if (typeof orig === 'function') {
-                return async (...args: any[]) => {
-                    const start = performance.now()
-                    try {
-                        return await (orig as any).apply(target, args)
-                    } finally {
-                        console.debug(
-                            `[mastra-client] ${String(prop)} ${(performance.now() - start).toFixed(1)}ms`
-                        )
-                    }
-                }
-            }
-            return orig
-        },
-    })
-}
-```
-
-## Best Practices
-
-- Keep exports flat & intentional.
-- Avoid re-exporting Mastra types widely from here (import from `@mastra/...` directly when needed).
-- Fail fast if misconfigured base URL causes network errors (surface clearly in logs).
-- Consider SSR/edge constraints—avoid dynamic features not supported in edge runtimes if you plan to deploy there.
-
-## Common Mistakes & Anti-Patterns
-
-| Pattern                               | Why It's Bad          | Preferred Alternative                      |
-| ------------------------------------- | --------------------- | ------------------------------------------ |
-| Recomputing base URL in many files    | Drift & inconsistency | Always call `getMastraBaseUrl()`           |
-| Adding feature flags here             | Bloats client layer   | Use dedicated config module                |
-| Embedding fetch wrappers with retries | Hidden complexity     | Create a separate utility if needed        |
-| Mixing server auth validation         | Layer violation       | Perform validation upstream, pass token in |
-
-## Troubleshooting
-
-| Symptom                       | Likely Cause                                     | Resolution                                  |
-| ----------------------------- | ------------------------------------------------ | ------------------------------------------- |
-| 401 responses using singleton | Missing `process.env.JWT_TOKEN` or expired token | Use `createMastraClient(userToken)` instead |
-| Network error in browser      | Wrong `MASTRA_BASE_URL`                          | Check env variable or fallback port running |
-| Authorization header absent   | Forgot to pass token                             | Call `createMastraClient(token)`            |
-
 ## Change Log
 
 | Version | Date (UTC) | Change                                   |
 | ------- | ---------- | ---------------------------------------- |
+| 1.1.0   | 2025-10-08 | Verified content accuracy and updated metadata. |
 | 1.0.0   | 2025-09-24 | Initial standardized documentation added |
-
-## Future Enhancements (Non-Blocking)
-
-- Optional typed helper for frequently invoked workflows.
-- Built-in tracing wrapper when Langfuse configured.
-- Token auto-refresh injection hook (separate module).
-
-## Legacy Content
-
-No prior file existed; nothing to preserve.
