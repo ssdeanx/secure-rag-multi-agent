@@ -6,11 +6,11 @@ function findToken(obj: any) {
         return null
     }
     return (
-        obj.token ||
-        obj.jwt ||
-        obj.accessToken ||
-        obj.data?.token ||
-        obj.data?.accessToken ||
+        obj.token ??
+        obj.jwt ??
+        obj.accessToken ??
+        obj.data?.token ??
+        obj.data?.accessToken ??
         null
     )
 }

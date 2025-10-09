@@ -118,6 +118,9 @@ const warningPalette = {
 export const joyTheme = extendTheme({
     colorSchemes: {
         light: {
+            // Improve elevation tuning per Joy docs
+            shadowChannel: '21 21 21',
+            shadowRing: '0 0 0 1px rgba(0 0 0 / 0.08)',
             palette: {
                 // Primary = Supabase Green
                 primary: {
@@ -221,6 +224,8 @@ export const joyTheme = extendTheme({
         },
 
         dark: {
+            shadowChannel: '0 0 0',
+            shadowRing: '0 0 0 1px rgba(255 255 255 / 0.10)',
             palette: {
                 // Primary = Supabase Green (adjusted for dark mode)
                 primary: {
@@ -348,6 +353,22 @@ export const joyTheme = extendTheme({
         md: '0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -2px rgba(0, 0, 0, 0.1)',
         lg: '0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -4px rgba(0, 0, 0, 0.1)',
         xl: '0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.1)',
+    },
+
+    // Minimal component defaults/overrides example per Joy docs
+    components: {
+        JoyButton: {
+            defaultProps: {
+                size: 'md',
+            },
+            styleOverrides: {
+                root: ({ theme }: { theme: any }) => ({
+                    fontWeight: 600,
+                    // example of using vars
+                    '--joy-shadowChannel': theme.vars.palette.primary.mainChannel,
+                }),
+            },
+        },
     },
 })
 

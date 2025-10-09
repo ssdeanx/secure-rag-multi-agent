@@ -1,40 +1,117 @@
 import React from 'react'
-import { Button } from '@/components/ui/shadnui/button'
+import { Button, Box, Typography } from '@/components/ui/joy'
 import Link from 'next/link'
 
 export default function NotFound() {
     return (
-        <main className="min-h-screen bg-background flex items-center py-24">
-            <div className="max-w-lg mx-auto px-4 text-center space-y-6">
-                <div className="inline-flex items-center justify-center rounded-full border border-border/60 w-24 h-24 mx-auto relative overflow-hidden animated-gradient-subtle motion-reduce:animate-none">
-                    <span className="text-4xl font-bold select-none">404</span>
-                </div>
-                <h1 className="text-3xl font-bold tracking-tight">
+        <Box
+            component="main"
+            sx={{
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                minHeight: '100vh',
+                bgcolor: 'background.body',
+                py: { xs: 6, md: 8 }
+            }}
+        >
+            <Box
+                sx={{
+                    maxWidth: 512,
+                    mx: 'auto',
+                    px: { xs: 2, sm: 3, md: 4 },
+                    textAlign: 'center',
+                    display: 'flex',
+                    flexDirection: 'column',
+                    gap: 3
+                }}
+            >
+                <Box
+                    sx={{
+                        display: 'inline-flex',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        borderRadius: '50%',
+                        border: '1px solid',
+                        borderColor: 'divider',
+                        width: 96,
+                        height: 96,
+                        mx: 'auto',
+                        position: 'relative',
+                        overflow: 'hidden',
+                        bgcolor: 'background.level1'
+                    }}
+                >
+                    <Typography
+                        level="h1"
+                        sx={{
+                            fontSize: '2rem',
+                            fontWeight: 800,
+                            color: 'warning.500',
+                            letterSpacing: 1
+                        }}
+                    >
+                        404
+                    </Typography>
+                </Box>
+                <Typography level="h2" sx={{ fontSize: { xs: '1.25rem', md: '1.5rem' }, fontWeight: 800 }}>
                     Page Not Found
-                </h1>
-                <p className="text-lg text-muted-foreground">
+                </Typography>
+                <Typography
+                    level="body-lg"
+                    sx={{
+                        color: 'text.secondary',
+                        lineHeight: 1.6
+                    }}
+                >
                     We couldn't find the page you're looking for. It may have
                     been moved or removed.
-                </p>
-                <div className="rounded-md border border-border/60 p-4 text-left bg-muted/30 space-y-2">
-                    <p className="text-sm text-foreground font-medium">
+                </Typography>
+                <Box
+                    sx={{
+                        borderRadius: 'md',
+                        border: '1px solid',
+                        borderColor: 'divider',
+                        p: 2,
+                        textAlign: 'left',
+                        bgcolor: 'background.level1'
+                    }}
+                >
+                    <Typography level="body-sm" sx={{ fontWeight: 600, color: 'text.primary' }}>
                         Security & Integrity
-                    </p>
-                    <p className="text-xs text-muted-foreground">
+                    </Typography>
+                    <Typography
+                        level="body-xs"
+                        sx={{
+                            color: 'text.secondary',
+                            mt: 0.5,
+                            lineHeight: 1.4
+                        }}
+                    >
                         If you followed a link here, it might be outdated. We
                         log 404s to help improve navigation and detect
                         enumeration attempts.
-                    </p>
-                </div>
-                <div className="flex flex-col sm:flex-row gap-4 justify-center">
-                    <Button asChild>
-                        <Link href="/">Return Home</Link>
-                    </Button>
-                    <Button asChild variant="outline">
-                        <Link href="/docs">View Docs</Link>
-                    </Button>
-                </div>
-            </div>
-        </main>
+                    </Typography>
+                </Box>
+                <Box sx={{ display: 'flex', flexDirection: { xs: 'column', sm: 'row' }, gap: 2, justifyContent: 'center' }}>
+                    <Link href="/" passHref>
+                        <Button
+                            variant="solid"
+                            color="primary"
+                        >
+                            Return Home
+                        </Button>
+                    </Link>
+                    <Link href="/docs" passHref>
+                        <Button
+                            variant="outlined"
+                            color="neutral"
+                        >
+                            View Docs
+                        </Button>
+                    </Link>
+                </Box>
+            </Box>
+        </Box>
     )
 }

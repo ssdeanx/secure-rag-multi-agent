@@ -1,23 +1,55 @@
 'use client'
 import React from 'react'
-import { Button } from '@/components/ui/shadnui/button'
+import { Button, Box, Typography } from '@/components/ui/joy'
+import Link from 'next/link'
 
 export default function DocsError({ reset }: { reset: () => void }) {
     return (
-        <div className="p-8 text-center space-y-4">
-            <h2 className="text-2xl font-bold">Documentation Unavailable</h2>
-            <p className="text-muted-foreground max-w-md mx-auto">
+        <Box
+            component="div"
+            sx={{
+                display: 'flex',
+                flexDirection: 'column',
+                alignItems: 'center',
+                justifyContent: 'center',
+                gap: 2,
+                p: 4,
+                minHeight: '50vh',
+                textAlign: 'center'
+            }}
+        >
+            <Typography level="h2" sx={{ fontWeight: 800 }}>
+                Documentation Unavailable
+            </Typography>
+            <Typography
+                level="body-lg"
+                sx={{
+                    color: 'text.secondary',
+                    maxWidth: 400,
+                    mx: 'auto',
+                    lineHeight: 1.6
+                }}
+            >
                 Something went wrong rendering this documentation page. The
                 issue has been logged. You may retry or return to the docs home.
-            </p>
-            <div className="flex gap-3 justify-center">
-                <Button variant="secondary" onClick={() => reset()}>
+            </Typography>
+            <Box sx={{ display: 'flex', gap: 1.5, mt: 2 }}>
+                <Button
+                    variant="outlined"
+                    color="neutral"
+                    onClick={() => reset()}
+                >
                     Retry
                 </Button>
-                <Button asChild>
-                    <a href="/docs">Back to Docs</a>
-                </Button>
-            </div>
-        </div>
+                <Link href="/docs" passHref>
+                    <Button
+                        variant="solid"
+                        color="primary"
+                    >
+                        Back to Docs
+                    </Button>
+                </Link>
+            </Box>
+        </Box>
     )
 }

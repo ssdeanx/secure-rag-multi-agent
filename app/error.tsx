@@ -1,6 +1,6 @@
 'use client'
 import React from 'react'
-import { Button } from '@/components/ui/shadnui/button'
+import { Button, Box, Typography } from '@/components/ui/joy'
 import Link from 'next/link'
 
 export default function GlobalError({
@@ -11,42 +11,122 @@ export default function GlobalError({
     reset: () => void
 }) {
     return (
-        <html>
-            <body className="min-h-screen bg-background flex items-center py-24">
-                <div className="max-w-lg mx-auto px-4 text-center space-y-6">
-                    <div className="inline-flex items-center justify-center rounded-full border border-border/60 w-24 h-24 mx-auto relative overflow-hidden animated-gradient-subtle motion-reduce:animate-none">
-                        <span className="text-3xl font-bold select-none">
-                            ERR
-                        </span>
-                    </div>
-                    <h1 className="text-4xl font-bold tracking-tight">
-                        Unexpected Error
-                    </h1>
-                    <p className="text-muted-foreground">
-                        An unexpected error occurred while rendering this page.
-                        The event has been recorded.
-                    </p>
-                    {error.digest !== undefined && error.digest !== '' && (
-                        <p className="text-xs text-muted-foreground">
-                            Ref: {error.digest}
-                        </p>
-                    )}
-                    <div className="rounded-md border border-border/60 p-4 text-left bg-muted/30 space-y-1">
-                        <p className="text-sm font-medium text-foreground">
-                            Security Notice
-                        </p>
-                        <p className="text-xs text-muted-foreground">
-                            We intentionally withhold internal error details to
-                            protect system integrity.
-                        </p>
-                    </div>
-                    <div className="flex flex-col sm:flex-row gap-4 justify-center">
-                        <Button onClick={() => reset()}>Retry</Button>
-                        <Button asChild variant="outline">
-                            <Link href="/">Go Home</Link>
-                        </Button>
-                    </div>
-                </div>
+        <html lang="en">
+            <body>
+                <Box
+                    component="div"
+                    sx={{
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        minHeight: '100vh',
+                        bgcolor: 'background.body',
+                        py: { xs: 6, md: 8 }
+                    }}
+                >
+                    <Box
+                        sx={{
+                            maxWidth: 512,
+                            mx: 'auto',
+                            px: { xs: 2, sm: 3, md: 4 },
+                            textAlign: 'center',
+                            display: 'flex',
+                            flexDirection: 'column',
+                            gap: 3
+                        }}
+                    >
+                        <Box
+                            sx={{
+                                display: 'inline-flex',
+                                alignItems: 'center',
+                                justifyContent: 'center',
+                                borderRadius: '50%',
+                                border: '1px solid',
+                                borderColor: 'divider',
+                                width: 96,
+                                height: 96,
+                                mx: 'auto',
+                                position: 'relative',
+                                overflow: 'hidden',
+                                bgcolor: 'background.level1'
+                            }}
+                        >
+                            <Typography
+                                level="h2"
+                                sx={{
+                                    fontSize: '1.5rem',
+                                    fontWeight: 800,
+                                    color: 'danger.500',
+                                    letterSpacing: 1
+                                }}
+                            >
+                                ERR
+                            </Typography>
+                        </Box>
+                        <Typography level="h1" sx={{ fontSize: { xs: '1.5rem', md: '2rem' }, fontWeight: 800 }}>
+                            Unexpected Error
+                        </Typography>
+                        <Typography
+                            level="body-lg"
+                            sx={{
+                                color: 'text.secondary',
+                                lineHeight: 1.6
+                            }}
+                        >
+                            An unexpected error occurred while rendering this page.
+                            The event has been recorded.
+                        </Typography>
+                        {error.digest !== undefined && error.digest !== '' && (
+                            <Typography
+                                level="body-sm"
+                                sx={{
+                                    color: 'text.tertiary',
+                                    fontSize: '0.75rem'
+                                }}
+                            >
+                                Ref: {error.digest}
+                            </Typography>
+                        )}
+                        <Box
+                            sx={{
+                                borderRadius: 'md',
+                                border: '1px solid',
+                                borderColor: 'divider',
+                                p: 2,
+                                textAlign: 'left',
+                                bgcolor: 'background.level1'
+                            }}
+                        >
+                            <Typography level="body-sm" sx={{ fontWeight: 600, color: 'text.primary' }}>
+                                Security Notice
+                            </Typography>
+                            <Typography
+                                level="body-xs"
+                                sx={{
+                                    color: 'text.secondary',
+                                    mt: 0.5,
+                                    lineHeight: 1.4
+                                }}
+                            >
+                                We intentionally withhold internal error details to
+                                protect system integrity.
+                            </Typography>
+                        </Box>
+                        <Box sx={{ display: 'flex', flexDirection: { xs: 'column', sm: 'row' }, gap: 2, justifyContent: 'center' }}>
+                            <Button onClick={() => reset()} variant="solid" color="primary">
+                                Retry
+                            </Button>
+                            <Link href="/" passHref>
+                                <Button
+                                    variant="outlined"
+                                    color="neutral"
+                                >
+                                    Go Home
+                                </Button>
+                            </Link>
+                        </Box>
+                    </Box>
+                </Box>
             </body>
         </html>
     )
