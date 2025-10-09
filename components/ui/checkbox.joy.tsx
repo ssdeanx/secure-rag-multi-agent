@@ -1,9 +1,9 @@
 /**
  * Checkbox Component - Joy UI Primitive
- * 
+ *
  * Production-ready checkbox with proper label association,
  * indeterminate state, and full accessibility support.
- * 
+ *
  * Features:
  * - Proper label association via FormControl
  * - Indeterminate state (aria-checked="mixed")
@@ -117,35 +117,35 @@ export interface CheckboxProps
 
 /**
  * Checkbox component with proper label association and indeterminate state.
- * 
+ *
  * @example Basic usage
  * ```tsx
  * <Checkbox label="Accept terms and conditions" />
  * ```
- * 
+ *
  * @example Controlled
  * ```tsx
  * const [checked, setChecked] = React.useState(false)
- * 
- * <Checkbox 
+ *
+ * <Checkbox
  *   checked={checked}
  *   onChange={(e) => setChecked(e.target.checked)}
  *   label="Subscribe to newsletter"
  * />
  * ```
- * 
+ *
  * @example Indeterminate state
  * ```tsx
- * <Checkbox 
+ * <Checkbox
  *   indeterminate
  *   label="Select all"
  * />
  * ```
- * 
+ *
  * @example With form control
  * ```tsx
  * <FormControl>
- *   <Checkbox 
+ *   <Checkbox
  *     required
  *     label="I agree to the terms"
  *   />

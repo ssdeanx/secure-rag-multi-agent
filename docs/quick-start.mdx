@@ -1,29 +1,31 @@
 import {
-  Badge,
-  Button,
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-  Alert,
-  AlertDescription,
-  AlertTitle,
-  Tabs,
-  TabsContent,
-  TabsList,
-  TabsTrigger,
-  Mermaid,
-  CheckCircle,
-  AlertTriangle,
-  Play,
-  Settings,
-  Database,
-  Shield,
-  ArrowRight,
-  FileText,
+    Badge,
+    Button,
+    Card,
+    CardContent,
+    CardDescription,
+    CardHeader,
+    CardTitle,
+    Alert,
+    AlertDescription,
+    AlertTitle,
+    Tabs,
+    TabsContent,
+    TabsList,
+    TabsTrigger,
+    Mermaid,
+    CheckCircle,
+    AlertTriangle,
+    Play,
+    Settings,
+    Database,
+    Shield,
+    ArrowRight,
+    FileText,
+    Code,
+    Typography,
+    Box,
 } from '@/components/docs/mdx-bridge.joy'
-
 
 # Quick Start Guide
 
@@ -42,53 +44,53 @@ This guide provides step-by-step instructions to set up and run the Mastra Gover
 
 ## Prerequisites
 
-<div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
-  <Card>
-    <CardHeader className="pb-3">
-      <CardTitle className="text-lg flex items-center">
-        <CheckCircle className="h-5 w-5 mr-2 text-green-500" />
+<Box sx={{ display: 'grid', gridTemplateColumns: { xs: '1fr', md: 'repeat(2, 1fr)' }, gap: 2, mb: 3 }}>
+  <Card variant="outlined">
+    <CardHeader sx={{ pb: 1.5 }}>
+      <CardTitle sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+        <CheckCircle sx={{ fontSize: 20, color: 'success.main' }} />
         Required
       </CardTitle>
     </CardHeader>
-    <CardContent className="space-y-3">
-      <div className="flex items-center">
-        <Badge variant="secondary" className="mr-2">Node.js</Badge>
-        <span className="text-sm">≥20.9.0</span>
-      </div>
-      <div className="flex items-center">
-        <Badge variant="secondary" className="mr-2">Docker</Badge>
-        <span className="text-sm">Docker Compose</span>
-      </div>
-      <div className="flex items-center">
-        <Badge variant="secondary" className="mr-2">Git</Badge>
-        <span className="text-sm">Version control</span>
-      </div>
-      <div className="flex items-center">
-        <Badge variant="secondary" className="mr-2">OpenAI</Badge>
-        <span className="text-sm">API key required</span>
-      </div>
+    <CardContent>
+      <Box sx={{ display: 'flex', alignItems: 'center', mb: 1 }}>
+        <Badge variant="soft" color="neutral" sx={{ mr: 1 }}>Node.js</Badge>
+        <Typography level="body-sm">≥20.9.0</Typography>
+      </Box>
+      <Box sx={{ display: 'flex', alignItems: 'center', mb: 1 }}>
+        <Badge variant="soft" color="neutral" sx={{ mr: 1 }}>Docker</Badge>
+        <Typography level="body-sm">Docker Compose</Typography>
+      </Box>
+      <Box sx={{ display: 'flex', alignItems: 'center', mb: 1 }}>
+        <Badge variant="soft" color="neutral" sx={{ mr: 1 }}>Git</Badge>
+        <Typography level="body-sm">Version control</Typography>
+      </Box>
+      <Box sx={{ display: 'flex', alignItems: 'center' }}>
+        <Badge variant="soft" color="neutral" sx={{ mr: 1 }}>Google Gemini</Badge>
+        <Typography level="body-sm">API key required</Typography>
+      </Box>
     </CardContent>
   </Card>
 
-  <Card>
-    <CardHeader className="pb-3">
-      <CardTitle className="text-lg flex items-center">
-        <Database className="h-5 w-5 mr-2 text-blue-500" />
+  <Card variant="outlined">
+    <CardHeader sx={{ pb: 1.5 }}>
+      <CardTitle sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+        <Database sx={{ fontSize: 20, color: 'primary.main' }} />
         Optional
       </CardTitle>
     </CardHeader>
-    <CardContent className="space-y-3">
-      <div className="flex items-center">
-        <Badge variant="outline" className="mr-2">Qdrant</Badge>
-        <span className="text-sm">Cloud or local</span>
-      </div>
-      <div className="flex items-center">
-        <Badge variant="outline" className="mr-2">LibSQL</Badge>
-        <span className="text-sm">Database service</span>
-      </div>
+    <CardContent>
+      <Box sx={{ display: 'flex', alignItems: 'center', mb: 1 }}>
+        <Badge variant="outlined" sx={{ mr: 1 }}>PostgreSQL + PgVector</Badge>
+        <Typography level="body-sm">Cloud or local</Typography>
+      </Box>
+      <Box sx={{ display: 'flex', alignItems: 'center' }}>
+        <Badge variant="outlined" sx={{ mr: 1 }}>LibSQL</Badge>
+        <Typography level="body-sm">Database service</Typography>
+      </Box>
     </CardContent>
   </Card>
-</div>
+</Box>
 
 ## Setup Flow Overview
 
@@ -98,73 +100,69 @@ This guide provides step-by-step instructions to set up and run the Mastra Gover
     C --> D[Start Services]
     D --> E[Index Documents]
     E --> F[Launch Application]
-
     A --> A1[git clone]
     B --> B1[npm install]
     C --> C1[cp .env.example .env]
-    C --> C2[Add OpenAI API key]
+    C --> C2[Add Google Gemini API key]
     D --> D1[docker-compose up]
     D --> D2[npm run dev]
     E --> E1[npm run cli index]
     F --> F1[Open localhost:3000]
-
     classDef step fill:#e3f2fd,stroke:#1976d2,stroke-width:2px
     classDef action fill:#f3e5f5,stroke:#7b1fa2,stroke-width:2px
-
     class A,B,C,D,E,F step
     class A1,B1,C1,C2,D1,D2,E1,F1 action
-
 `} />
 
-<div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
-  <Card>
+<Box sx={{ display: 'grid', gridTemplateColumns: { xs: '1fr', md: 'repeat(3, 1fr)' }, gap: 2, mb: 3 }}>
+  <Card variant="outlined">
     <CardHeader>
-      <CardTitle className="flex items-center gap-2">
-        <Terminal className="h-5 w-5 text-green-600" />
+      <CardTitle sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+        <Code sx={{ fontSize: 20, color: 'success.main' }} />
         Command Line
       </CardTitle>
     </CardHeader>
     <CardContent>
-      <CardDescription>
+      <Typography level="body-sm">
         All setup steps are executed via terminal commands with clear, copy-paste instructions.
-      </CardDescription>
+      </Typography>
     </CardContent>
   </Card>
 
-<Card>
+<Card variant="outlined">
     <CardHeader>
-        <CardTitle className="flex items-center gap-2">
-            <Settings className="h-5 w-5 text-blue-600" />
+        <CardTitle sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+            <Settings sx={{ fontSize: 20, color: 'primary.main' }} />
             Configuration
         </CardTitle>
     </CardHeader>
     <CardContent>
-        <CardDescription>
+        <Typography level="body-sm">
             Minimal configuration required - just copy the example environment
             file and add your API key.
-        </CardDescription>
+        </Typography>
     </CardContent>
 </Card>
 
-  <Card>
+  <Card variant="outlined">
     <CardHeader>
-      <CardTitle className="flex items-center gap-2">
-        <Shield className="h-5 w-5 text-purple-600" />
+      <CardTitle sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+        <Shield sx={{ fontSize: 20, color: 'secondary.main' }} />
         Ready to Use
       </CardTitle>
     </CardHeader>
     <CardContent>
-      <CardDescription>
+      <Typography level="body-sm">
         Includes sample documents and pre-configured roles for immediate testing and exploration.
-      </CardDescription>
+      </Typography>
     </CardContent>
   </Card>
-</div>
+</Box>
 
 ## Installation Steps
 
-<Tabs defaultValue="clone" className="mb-8">
-  <TabsList className="grid w-full grid-cols-6">
+<Tabs defaultValue="clone">
+  <TabsList>
     <TabsTrigger value="clone">1. Clone</TabsTrigger>
     <TabsTrigger value="install">2. Install</TabsTrigger>
     <TabsTrigger value="env">3. Configure</TabsTrigger>
@@ -174,28 +172,44 @@ This guide provides step-by-step instructions to set up and run the Mastra Gover
   </TabsList>
 
 <TabsContent value="clone">
-    <Card>
+    <Card variant="outlined">
         <CardHeader>
             <CardTitle>Clone the Repository</CardTitle>
             <CardDescription>Get the source code from GitHub</CardDescription>
         </CardHeader>
         <CardContent>
-            <div className="bg-muted p-4 rounded-lg mb-4">
-                <pre className="text-sm overflow-x-auto">
-                    <code>{`git clone https://github.com/ssdeanx/governed-rag-ai.git
-cd mastra-governed-rag`}</code>
-                </pre>
-            </div>
-            <div className="flex items-center text-sm text-muted-foreground">
-                <CheckCircle className="h-4 w-4 mr-2 text-green-500" />
+            <Box
+                sx={{
+                    bgcolor: 'background.surface',
+                    p: 2,
+                    borderRadius: 1,
+                    mb: 2,
+                }}
+            >
+                <Typography component="pre" sx={{ fontSize: '0.875rem', m: 0 }}>
+                    {`git clone https://github.com/ssdeanx/governed-rag-ai.git
+cd mastra-governed-rag`}
+                </Typography>
+            </Box>
+            <Box
+                sx={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    typography: 'body-sm',
+                    color: 'text.tertiary',
+                }}
+            >
+                <CheckCircle
+                    sx={{ fontSize: 16, mr: 1, color: 'success.main' }}
+                />
                 Repository cloned successfully
-            </div>
+            </Box>
         </CardContent>
     </Card>
 </TabsContent>
 
 <TabsContent value="install">
-    <Card>
+    <Card variant="outlined">
         <CardHeader>
             <CardTitle>Install Dependencies</CardTitle>
             <CardDescription>
@@ -203,13 +217,20 @@ cd mastra-governed-rag`}</code>
             </CardDescription>
         </CardHeader>
         <CardContent>
-            <div className="bg-muted p-4 rounded-lg mb-4">
-                <pre className="text-sm overflow-x-auto">
-                    <code>npm install</code>
-                </pre>
-            </div>
+            <Box
+                sx={{
+                    bgcolor: 'background.surface',
+                    p: 2,
+                    borderRadius: 1,
+                    mb: 2,
+                }}
+            >
+                <Typography component="pre" sx={{ fontSize: '0.875rem', m: 0 }}>
+                    npm install
+                </Typography>
+            </Box>
             <Alert>
-                <AlertTriangle className="h-4 w-4" />
+                <AlertTriangle />
                 <AlertDescription>
                     This may take a few minutes to download and install all
                     dependencies including Mastra, Next.js, and vector database
@@ -221,383 +242,364 @@ cd mastra-governed-rag`}</code>
 </TabsContent>
 
   <TabsContent value="env">
-    <Card>
+    <Card variant="outlined">
       <CardHeader>
         <CardTitle>Configure Environment</CardTitle>
         <CardDescription>Set up your environment variables</CardDescription>
       </CardHeader>
       <CardContent>
-        <div className="space-y-4">
-          <div className="bg-muted p-4 rounded-lg">
-            <pre className="text-sm overflow-x-auto">
-              <code>{`cp .env.example .env
-# Edit .env with your values`}</code>
-            </pre>
-          </div>
-
-          <div className="space-y-3">
-            <h4 className="font-semibold">Required Variables:</h4>
-            <div className="space-y-2 text-sm">
-              <div className="flex justify-between">
-                <code className="bg-muted px-2 py-1 rounded">OPENAI_API_KEY</code>
-                <span className="text-muted-foreground">Your OpenAI API key</span>
-              </div>
-              <div className="flex justify-between">
-                <code className="bg-muted px-2 py-1 rounded">QDRANT_URL</code>
-                <span className="text-muted-foreground">http://localhost:6333</span>
-              </div>
-              <div className="flex justify-between">
-                <code className="bg-muted px-2 py-1 rounded">TENANT</code>
-                <span className="text-muted-foreground">acme (default tenant)</span>
-              </div>
-              <div className="flex justify-between">
-                <code className="bg-muted px-2 py-1 rounded">JWT_SECRET</code>
-                <span className="text-muted-foreground">Strong random string</span>
-              </div>
-            </div>
-          </div>
-
+        <Box sx={{ mb: 2 }}>
+          <Box sx={{ bgcolor: 'background.surface', p: 2, borderRadius: 1, mb: 2 }}>
+            <Typography component="pre" sx={{ fontSize: '0.875rem', m: 0 }}>
+{`cp .env.example .env
+# Edit .env with your values`}
+            </Typography>
+          </Box>
+          <Typography sx={{ fontWeight: 'bold', mb: 1 }}>Required Variables:</Typography>
+          <Box sx={{ mb: 2 }}>
+            <Box sx={{ display: 'flex', justifyContent: 'space-between', mb: 1 }}>
+              <Typography component="code" sx={{ bgcolor: 'background.surface', px: 1, py: 0.5, borderRadius: 0.5 }}>GOOGLE_GENERATIVE_AI_API_KEY</Typography>
+              <Typography level="body-sm" sx={{ color: 'text.tertiary' }}>Your Google Gemini API key</Typography>
+            </Box>
+            <Box sx={{ display: 'flex', justifyContent: 'space-between', mb: 1 }}>
+              <Typography component="code" sx={{ bgcolor: 'background.surface', px: 1, py: 0.5, borderRadius: 0.5 }}>DATABASE_URL</Typography>
+              <Typography level="body-sm" sx={{ color: 'text.tertiary' }}>postgresql://postgres:password@localhost:5432/mastra</Typography>
+            </Box>
+            <Box sx={{ display: 'flex', justifyContent: 'space-between', mb: 1 }}>
+              <Typography component="code" sx={{ bgcolor: 'background.surface', px: 1, py: 0.5, borderRadius: 0.5 }}>TENANT</Typography>
+              <Typography level="body-sm" sx={{ color: 'text.tertiary' }}>acme (default tenant)</Typography>
+            </Box>
+            <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
+              <Typography component="code" sx={{ bgcolor: 'background.surface', px: 1, py: 0.5, borderRadius: 0.5 }}>JWT_SECRET</Typography>
+              <Typography level="body-sm" sx={{ color: 'text.tertiary' }}>Strong random string</Typography>
+            </Box>
+          </Box>
           <Alert>
-            <Shield className="h-4 w-4" />
+            <Shield />
             <AlertDescription>
-              The JWT_SECRET should be a cryptographically secure random string. You can generate one using: <code>openssl rand -base64 32</code>
+              The JWT_SECRET should be a cryptographically secure random string. You can generate one using: <Typography component="code">openssl rand -base64 32</Typography>
             </AlertDescription>
           </Alert>
-        </div>
+        </Box>
       </CardContent>
     </Card>
 
-  </TabsContent>
+</TabsContent>
 
   <TabsContent value="services">
-    <Card>
+    <Card variant="outlined">
       <CardHeader>
         <CardTitle>Start Backend Services</CardTitle>
-        <CardDescription>Launch Qdrant and database services</CardDescription>
+        <CardDescription>Launch PostgreSQL + PgVector and database services</CardDescription>
       </CardHeader>
       <CardContent>
-        <div className="space-y-4">
-          <div className="bg-muted p-4 rounded-lg">
-            <pre className="text-sm overflow-x-auto">
-              <code>docker-compose up -d</code>
-            </pre>
-          </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <Card>
-              <CardHeader className="pb-3">
-                <CardTitle className="text-sm">Qdrant Vector Store</CardTitle>
+        <Box sx={{ mb: 2 }}>
+          <Box sx={{ bgcolor: 'background.surface', p: 2, borderRadius: 1, mb: 2 }}>
+            <Typography component="pre" sx={{ fontSize: '0.875rem', m: 0 }}>
+docker-compose up -d
+            </Typography>
+          </Box>
+          <Box sx={{ display: 'grid', gridTemplateColumns: { xs: '1fr', md: 'repeat(2, 1fr)' }, gap: 2, mb: 2 }}>
+            <Card variant="soft">
+              <CardHeader sx={{ pb: 1.5 }}>
+                <CardTitle sx={{ fontSize: '1rem' }}>PostgreSQL + PgVector Database</CardTitle>
               </CardHeader>
               <CardContent>
-                <div className="text-sm space-y-1">
-                  <div>Port: <code className="bg-muted px-1 rounded">6333</code></div>
-                  <div>Health: <code className="bg-muted px-1 rounded">curl http://localhost:6333</code></div>
-                </div>
+                <Typography level="body-sm" sx={{ mb: 0.5 }}>
+                  Port: <Typography component="code" sx={{ bgcolor: 'background.surface', px: 0.5 }}>5432</Typography>
+                </Typography>
+                <Typography level="body-sm">
+                  Health: <Typography component="code" sx={{ bgcolor: 'background.surface', px: 0.5 }}>psql postgresql://postgres:password@localhost:5432/mastra -c "SELECT 1;"</Typography>
+                </Typography>
               </CardContent>
             </Card>
-
-            <Card>
-              <CardHeader className="pb-3">
-                <CardTitle className="text-sm">LibSQL Database</CardTitle>
+            <Card variant="soft">
+              <CardHeader sx={{ pb: 1.5 }}>
+                <CardTitle sx={{ fontSize: '1rem' }}>LibSQL Database</CardTitle>
               </CardHeader>
               <CardContent>
-                <div className="text-sm space-y-1">
-                  <div>Port: <code className="bg-muted px-1 rounded">8000</code></div>
-                  <div>Type: SQLite-compatible</div>
-                </div>
+                <Typography level="body-sm" sx={{ mb: 0.5 }}>
+                  Port: <Typography component="code" sx={{ bgcolor: 'background.surface', px: 0.5 }}>8000</Typography>
+                </Typography>
+                <Typography level="body-sm">Type: SQLite-compatible</Typography>
               </CardContent>
             </Card>
-          </div>
-
+          </Box>
           <Alert>
-            <AlertTriangle className="h-4 w-4" />
+            <AlertTriangle />
             <AlertDescription>
               Wait 30 seconds after starting services for full initialization before proceeding.
             </AlertDescription>
           </Alert>
-        </div>
+        </Box>
       </CardContent>
     </Card>
 
-  </TabsContent>
+</TabsContent>
 
   <TabsContent value="index">
-    <Card>
+    <Card variant="outlined">
       <CardHeader>
         <CardTitle>Index Sample Documents</CardTitle>
         <CardDescription>Load and index the sample corpus</CardDescription>
       </CardHeader>
       <CardContent>
-        <div className="space-y-4">
-          <div className="bg-muted p-4 rounded-lg">
-            <pre className="text-sm overflow-x-auto">
-              <code>{`npm run build-cli
-npm run cli index`}</code>
-            </pre>
-          </div>
-
-          <div className="space-y-3">
-            <h4 className="font-semibold">Expected Output:</h4>
-            <div className="bg-muted p-3 rounded text-sm font-mono">
-              <div className="text-green-600">✅ finance-policy-001: 15 chunks indexed</div>
-              <div className="text-green-600">✅ engineering-handbook-001: 23 chunks indexed</div>
-              <div className="text-green-600">✅ hr-conf-001: 8 chunks indexed</div>
-            </div>
-          </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
-            <Card>
-              <CardHeader className="pb-2">
-                <CardTitle className="text-sm">Finance Policy</CardTitle>
+        <Box sx={{ mb: 2 }}>
+          <Box sx={{ bgcolor: 'background.surface', p: 2, borderRadius: 1, mb: 2 }}>
+            <Typography component="pre" sx={{ fontSize: '0.875rem', m: 0 }}>
+{`npm run build-cli
+npm run cli index`}
+            </Typography>
+          </Box>
+          <Typography sx={{ fontWeight: 'bold', mb: 1 }}>Expected Output:</Typography>
+          <Box sx={{ bgcolor: 'background.surface', p: 2, borderRadius: 1, mb: 2, fontFamily: 'monospace', fontSize: '0.875rem' }}>
+            <Typography sx={{ color: 'success.main', mb: 0.5 }}>✅ finance-policy-001: 15 chunks indexed</Typography>
+            <Typography sx={{ color: 'success.main', mb: 0.5 }}>✅ engineering-handbook-001: 23 chunks indexed</Typography>
+            <Typography sx={{ color: 'success.main' }}>✅ hr-conf-001: 8 chunks indexed</Typography>
+          </Box>
+          <Box sx={{ display: 'grid', gridTemplateColumns: { xs: '1fr', md: 'repeat(3, 1fr)' }, gap: 2, mb: 2 }}>
+            <Card variant="soft">
+              <CardHeader sx={{ pb: 1 }}>
+                <CardTitle sx={{ fontSize: '0.9rem' }}>Finance Policy</CardTitle>
               </CardHeader>
-              <CardContent className="pt-0">
-                <Badge variant="secondary" className="text-xs">Internal</Badge>
-                <p className="text-xs text-muted-foreground mt-1">Finance roles only</p>
+              <CardContent sx={{ pt: 0 }}>
+                <Badge variant="soft" color="neutral" sx={{ mb: 0.5 }}>Internal</Badge>
+                <Typography level="body-xs" sx={{ color: 'text.tertiary' }}>Finance roles only</Typography>
               </CardContent>
             </Card>
-
-            <Card>
-              <CardHeader className="pb-2">
-                <CardTitle className="text-sm">Engineering Handbook</CardTitle>
+            <Card variant="soft">
+              <CardHeader sx={{ pb: 1 }}>
+                <CardTitle sx={{ fontSize: '0.9rem' }}>Engineering Handbook</CardTitle>
               </CardHeader>
-              <CardContent className="pt-0">
-                <Badge variant="secondary" className="text-xs">Internal</Badge>
-                <p className="text-xs text-muted-foreground mt-1">Engineering roles</p>
+              <CardContent sx={{ pt: 0 }}>
+                <Badge variant="soft" color="neutral" sx={{ mb: 0.5 }}>Internal</Badge>
+                <Typography level="body-xs" sx={{ color: 'text.tertiary' }}>Engineering roles</Typography>
               </CardContent>
             </Card>
-
-            <Card>
-              <CardHeader className="pb-2">
-                <CardTitle className="text-sm">HR Confidential</CardTitle>
+            <Card variant="soft">
+              <CardHeader sx={{ pb: 1 }}>
+                <CardTitle sx={{ fontSize: '0.9rem' }}>HR Confidential</CardTitle>
               </CardHeader>
-              <CardContent className="pt-0">
-                <Badge variant="destructive" className="text-xs">Confidential</Badge>
-                <p className="text-xs text-muted-foreground mt-1">HR Admin only</p>
+              <CardContent sx={{ pt: 0 }}>
+                <Badge variant="solid" color="danger" sx={{ mb: 0.5 }}>Confidential</Badge>
+                <Typography level="body-xs" sx={{ color: 'text.tertiary' }}>HR Admin only</Typography>
               </CardContent>
             </Card>
-          </div>
-        </div>
+          </Box>
+        </Box>
       </CardContent>
     </Card>
 
-  </TabsContent>
+</TabsContent>
 
   <TabsContent value="run">
-    <Card>
+    <Card variant="outlined">
       <CardHeader>
         <CardTitle>Run Development Server</CardTitle>
         <CardDescription>Start the application and Mastra services</CardDescription>
       </CardHeader>
       <CardContent>
-        <div className="space-y-4">
-          <div className="bg-muted p-4 rounded-lg">
-            <pre className="text-sm overflow-x-auto">
-              <code>npm run dev</code>
-            </pre>
-          </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <Card>
-              <CardHeader className="pb-3">
-                <CardTitle className="text-sm flex items-center">
-                  <Settings className="h-4 w-4 mr-2" />
+        <Box sx={{ mb: 2 }}>
+          <Box sx={{ bgcolor: 'background.surface', p: 2, borderRadius: 1, mb: 2 }}>
+            <Typography component="pre" sx={{ fontSize: '0.875rem', m: 0 }}>
+npm run dev
+            </Typography>
+          </Box>
+          <Box sx={{ display: 'grid', gridTemplateColumns: { xs: '1fr', md: 'repeat(2, 1fr)' }, gap: 2, mb: 2 }}>
+            <Card variant="soft">
+              <CardHeader sx={{ pb: 1.5 }}>
+                <CardTitle sx={{ display: 'flex', alignItems: 'center', gap: 1, fontSize: '1rem' }}>
+                  <Settings sx={{ fontSize: 16 }} />
                   Next.js App
                 </CardTitle>
               </CardHeader>
               <CardContent>
-                <div className="text-sm">
-                  <div>URL: <a href="http://localhost:3000" className="text-primary hover:underline">http://localhost:3000</a></div>
-                  <div>Port: <code className="bg-muted px-1 rounded">3000</code></div>
-                </div>
+                <Typography level="body-sm" sx={{ mb: 0.5 }}>
+                  URL: <Typography component="a" href="http://localhost:3000" sx={{ color: 'primary.main', textDecoration: 'none' }}>http://localhost:3000</Typography>
+                </Typography>
+                <Typography level="body-sm">Port: <Typography component="code" sx={{ bgcolor: 'background.surface', px: 0.5 }}>3000</Typography></Typography>
               </CardContent>
             </Card>
-
-            <Card>
-              <CardHeader className="pb-3">
-                <CardTitle className="text-sm flex items-center">
-                  <Shield className="h-4 w-4 mr-2" />
+            <Card variant="soft">
+              <CardHeader sx={{ pb: 1.5 }}>
+                <CardTitle sx={{ display: 'flex', alignItems: 'center', gap: 1, fontSize: '1rem' }}>
+                  <Shield sx={{ fontSize: 16 }} />
                   Mastra Dev Server
                 </CardTitle>
               </CardHeader>
               <CardContent>
-                <div className="text-sm">
-                  <div>Watches: <code className="bg-muted px-1 rounded">src/mastra/</code></div>
-                  <div>Auto-reloads on changes</div>
-                </div>
+                <Typography level="body-sm" sx={{ mb: 0.5 }}>
+                  Watches: <Typography component="code" sx={{ bgcolor: 'background.surface', px: 0.5 }}>src/mastra/</Typography>
+                </Typography>
+                <Typography level="body-sm">Auto-reloads on changes</Typography>
               </CardContent>
             </Card>
-          </div>
-
+          </Box>
           <Alert>
-            <CheckCircle className="h-4 w-4" />
+            <CheckCircle />
             <AlertDescription>
               The application will open with a chat interface. Use the authentication panel to generate JWT tokens for different roles.
             </AlertDescription>
           </Alert>
-        </div>
+        </Box>
       </CardContent>
     </Card>
 
-  </TabsContent>
+</TabsContent>
 </Tabs>
 
 ## Testing Your Setup
 
-<div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
-  <Card>
+<Box sx={{ display: 'grid', gridTemplateColumns: { xs: '1fr', md: 'repeat(2, 1fr)' }, gap: 2, mb: 3 }}>
+  <Card variant="outlined">
     <CardHeader>
-      <CardTitle className="flex items-center">
-        <Shield className="h-5 w-5 mr-2" />
+      <CardTitle sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+        <Shield sx={{ fontSize: 20 }} />
         Authentication Test
       </CardTitle>
       <CardDescription>Generate and test JWT tokens</CardDescription>
     </CardHeader>
     <CardContent>
-      <div className="space-y-3">
-        <div className="text-sm">
-          <strong>1. Generate JWT:</strong> Use the auth panel or scripts/make-jwt.js
-        </div>
-        <div className="text-sm">
-          <strong>2. Select Role:</strong> Try <code className="bg-muted px-1 rounded">finance.viewer</code>
-        </div>
-        <div className="text-sm">
-          <strong>3. Test Query:</strong> "What is the expense reimbursement policy?"
-        </div>
-      </div>
+      <Typography level="body-sm" sx={{ mb: 1 }}><strong>1. Generate JWT:</strong> Use the auth panel or scripts/make-jwt.js</Typography>
+      <Typography level="body-sm" sx={{ mb: 1 }}><strong>2. Select Role:</strong> Try <Typography component="code" sx={{ bgcolor: 'background.surface', px: 0.5 }}>finance.viewer</Typography></Typography>
+      <Typography level="body-sm"><strong>3. Test Query:</strong> "What is the expense reimbursement policy?"</Typography>
     </CardContent>
   </Card>
 
-  <Card>
+  <Card variant="outlined">
     <CardHeader>
-      <CardTitle className="flex items-center">
-        <FileText className="h-5 w-5 mr-2" />
+      <CardTitle sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+        <FileText sx={{ fontSize: 20 }} />
         Access Control Test
       </CardTitle>
       <CardDescription>Verify role-based document access</CardDescription>
     </CardHeader>
     <CardContent>
-      <div className="space-y-3">
-        <div className="text-sm">
-          <strong>As Employee:</strong> HR queries should return "No authorized documents"
-        </div>
-        <div className="text-sm">
-          <strong>As HR Admin:</strong> Full access to confidential HR documents
-        </div>
-        <div className="text-sm">
-          <strong>As Finance:</strong> Access to finance policies and general documents
-        </div>
-      </div>
+      <Typography level="body-sm" sx={{ mb: 1 }}><strong>As Employee:</strong> HR queries should return "No authorized documents"</Typography>
+      <Typography level="body-sm" sx={{ mb: 1 }}><strong>As HR Admin:</strong> Full access to confidential HR documents</Typography>
+      <Typography level="body-sm"><strong>As Finance:</strong> Access to finance policies and general documents</Typography>
     </CardContent>
   </Card>
-</div>
+</Box>
 
 ## Troubleshooting
 
-<div className="space-y-4 mb-8">
-  <Card>
-    <CardHeader>
-      <CardTitle className="text-lg">Common Issues</CardTitle>
-    </CardHeader>
-    <CardContent>
-      <div className="space-y-4">
-        <div className="flex items-start space-x-3">
-          <AlertTriangle className="h-5 w-5 text-yellow-500 mt-0.5" />
-          <div>
-            <h4 className="font-semibold">Docker Services Fail</h4>
-            <p className="text-sm text-muted-foreground">Check <code>docker-compose logs</code>. Ensure ports 6333 (Qdrant) and 8000 (LibSQL) are free.</p>
-          </div>
-        </div>
+<Card variant="outlined">
+  <CardHeader>
+    <CardTitle>Common Issues</CardTitle>
+  </CardHeader>
+  <CardContent>
+    <Box sx={{ display: 'flex', alignItems: 'flex-start', gap: 2, mb: 2 }}>
+      <AlertTriangle sx={{ fontSize: 20, color: 'warning.main', mt: 0.5 }} />
+      <Box>
+        <Typography sx={{ fontWeight: 'bold' }}>Docker Services Fail</Typography>
+        <Typography level="body-sm" sx={{ color: 'text.tertiary' }}>
+          Check <Typography component="code" sx={{ bgcolor: 'background.surface', px: 0.5 }}>docker-compose logs</Typography>. Ensure ports 5432 (PostgreSQL) and 8000 (LibSQL) are free.
+        </Typography>
+      </Box>
+    </Box>
+    <Box sx={{ display: 'flex', alignItems: 'flex-start', gap: 2, mb: 2 }}>
+      <AlertTriangle sx={{ fontSize: 20, color: 'warning.main', mt: 0.5 }} />
+      <Box>
+        <Typography sx={{ fontWeight: 'bold' }}>Indexing Errors</Typography>
+        <Typography level="body-sm" sx={{ color: 'text.tertiary' }}>
+          Verify DATABASE_URL in .env. Check logs/mastra.log for detailed errors.
+        </Typography>
+      </Box>
+    </Box>
+    <Box sx={{ display: 'flex', alignItems: 'flex-start', gap: 2, mb: 2 }}>
+      <AlertTriangle sx={{ fontSize: 20, color: 'warning.main', mt: 0.5 }} />
+      <Box>
+        <Typography sx={{ fontWeight: 'bold' }}>No Results in Queries</Typography>
+        <Typography level="body-sm" sx={{ color: 'text.tertiary' }}>
+          Ensure indexing completed successfully. Re-run <Typography component="code" sx={{ bgcolor: 'background.surface', px: 0.5 }}>npm run cli index</Typography> if needed.
+        </Typography>
+      </Box>
+    </Box>
+    <Box sx={{ display: 'flex', alignItems: 'flex-start', gap: 2, mb: 2 }}>
+      <AlertTriangle sx={{ fontSize: 20, color: 'warning.main', mt: 0.5 }} />
+      <Box>
+        <Typography sx={{ fontWeight: 'bold' }}>Authentication Fails</Typography>
+        <Typography level="body-sm" sx={{ color: 'text.tertiary' }}>
+          Validate JWT contains correct role from src/mastra/config/role-hierarchy.ts.
+        </Typography>
+      </Box>
+    </Box>
+    <Box sx={{ display: 'flex', alignItems: 'flex-start', gap: 2 }}>
+      <AlertTriangle sx={{ fontSize: 20, color: 'warning.main', mt: 0.5 }} />
+      <Box>
+        <Typography sx={{ fontWeight: 'bold' }}>Dev Server Issues</Typography>
+        <Typography level="body-sm" sx={{ color: 'text.tertiary' }}>
+          Run <Typography component="code" sx={{ bgcolor: 'background.surface', px: 0.5 }}>npm run mastra-dev</Typography> separately if concurrently fails.
+        </Typography>
+      </Box>
+    </Box>
 
-        <div className="flex items-start space-x-3">
-          <AlertTriangle className="h-5 w-5 text-yellow-500 mt-0.5" />
-          <div>
-            <h4 className="font-semibold">Indexing Errors</h4>
-            <p className="text-sm text-muted-foreground">Verify QDRANT_URL in .env. Check logs/mastra.log for detailed errors.</p>
-          </div>
-        </div>
-
-        <div className="flex items-start space-x-3">
-          <AlertTriangle className="h-5 w-5 text-yellow-500 mt-0.5" />
-          <div>
-            <h4 className="font-semibold">No Results in Queries</h4>
-            <p className="text-sm text-muted-foreground">Ensure indexing completed successfully. Re-run <code>npm run cli index</code> if needed.</p>
-          </div>
-        </div>
-
-        <div className="flex items-start space-x-3">
-          <AlertTriangle className="h-5 w-5 text-yellow-500 mt-0.5" />
-          <div>
-            <h4 className="font-semibold">Authentication Fails</h4>
-            <p className="text-sm text-muted-foreground">Validate JWT contains correct role from src/mastra/config/role-hierarchy.ts.</p>
-          </div>
-        </div>
-
-        <div className="flex items-start space-x-3">
-          <AlertTriangle className="h-5 w-5 text-yellow-500 mt-0.5" />
-          <div>
-            <h4 className="font-semibold">Dev Server Issues</h4>
-            <p className="text-sm text-muted-foreground">Run <code>npm run mastra-dev</code> separately if concurrently fails.</p>
-          </div>
-        </div>
-      </div>
-    </CardContent>
-
-  </Card>
-</div>
+  </CardContent>
+</Card>
 
 ## Next Steps
 
-<div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
-  <Card>
+<Box sx={{ display: 'grid', gridTemplateColumns: { xs: '1fr', md: 'repeat(3, 1fr)' }, gap: 2, mb: 3 }}>
+  <Card variant="outlined">
     <CardHeader>
-      <CardTitle className="text-lg">Customize Content</CardTitle>
+      <CardTitle>Customize Content</CardTitle>
       <CardDescription>Add your own documents</CardDescription>
     </CardHeader>
     <CardContent>
-      <p className="text-sm text-muted-foreground">
-        Replace sample documents in <code>./corpus/</code> with your organization's knowledge base.
-      </p>
+      <Typography level="body-sm">
+        Replace sample documents in <Typography component="code" sx={{ bgcolor: 'background.surface', px: 0.5 }}>./corpus/</Typography> with your organization's knowledge base.
+      </Typography>
     </CardContent>
   </Card>
 
-<Card>
+<Card variant="outlined">
     <CardHeader>
-        <CardTitle className="text-lg">Extend Roles</CardTitle>
+        <CardTitle>Extend Roles</CardTitle>
         <CardDescription>Configure access control</CardDescription>
     </CardHeader>
     <CardContent>
-        <p className="text-sm text-muted-foreground">
-            Modify <code>src/mastra/config/role-hierarchy.ts</code> to match
-            your organization's structure.
-        </p>
+        <Typography level="body-sm">
+            Modify{' '}
+            <Typography
+                component="code"
+                sx={{ bgcolor: 'background.surface', px: 0.5 }}
+            >
+                src/mastra/config/role-hierarchy.ts
+            </Typography>{' '}
+            to match your organization's structure.
+        </Typography>
     </CardContent>
 </Card>
 
-  <Card>
+  <Card variant="outlined">
     <CardHeader>
-      <CardTitle className="text-lg">Deploy to Production</CardTitle>
+      <CardTitle>Deploy to Production</CardTitle>
       <CardDescription>Scale your application</CardDescription>
     </CardHeader>
     <CardContent>
-      <p className="text-sm text-muted-foreground">
+      <Typography level="body-sm">
         See deployment guides in the README for production deployment options.
-      </p>
+      </Typography>
     </CardContent>
   </Card>
-</div>
+</Box>
 
-<div className="flex gap-4">
-    <Button asChild>
-        <a href="/docs/security">
-            <Shield className="h-4 w-4 mr-2" />
-            Security Guide
-            <ArrowRight className="h-4 w-4 ml-2" />
-        </a>
+<Box sx={{ display: 'flex', gap: 2 }}>
+    <Button
+        component="a"
+        href="/docs/security"
+        startDecorator={<Shield />}
+        endDecorator={<ArrowRight />}
+    >
+        Security Guide
     </Button>
-    <Button variant="outline" asChild>
-        <a href="/docs/api-reference">
-            <FileText className="h-4 w-4 mr-2" />
-            API Reference
-        </a>
+    <Button
+        variant="soft"
+        component="a"
+        href="/docs/api-reference"
+        startDecorator={<FileText />}
+    >
+        API Reference
     </Button>
-</div>
+</Box>

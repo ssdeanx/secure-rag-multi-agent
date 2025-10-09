@@ -1,64 +1,73 @@
-'use client';
+'use client'
 
-import { useState, useEffect } from 'react';
-import { Box, Typography, List, ListItem, ListItemButton } from '@/components/ui/joy';
-import { ChevronRight } from '@mui/icons-material';
+import { useState, useEffect } from 'react'
+import {
+    Box,
+    Typography,
+    List,
+    ListItem,
+    ListItemButton,
+} from '@/components/ui/joy'
+import { ChevronRight } from '@mui/icons-material'
 
 interface TocItem {
-    id: string;
-    title: string;
-    level: number;
+    id: string
+    title: string
+    level: number
 }
 
 interface DocsTOCProps {
-    items?: TocItem[];
+    items?: TocItem[]
 }
 
 export function DocsTOC({ items = [] }: DocsTOCProps) {
-    const [activeId, setActiveId] = useState<string>('');
+    const [activeId, setActiveId] = useState<string>('')
 
     useEffect(() => {
-        if (typeof window === 'undefined') {return;}
+        if (typeof window === 'undefined') {
+            return
+        }
 
         const observer = new IntersectionObserver(
             (entries) => {
                 entries.forEach((entry) => {
                     if (entry.isIntersecting) {
-                        setActiveId(entry.target.id);
+                        setActiveId(entry.target.id)
                     }
-                });
+                })
             },
-            { rootMargin: '-80px 0px -80% 0px' },
-        );
+            { rootMargin: '-80px 0px -80% 0px' }
+        )
 
         items.forEach((item) => {
-            const element = document.getElementById(item.id);
+            const element = document.getElementById(item.id)
             if (element) {
-                observer.observe(element);
+                observer.observe(element)
             }
-        });
+        })
 
         return () => {
-            observer.disconnect();
-        };
-    }, [items]);
+            observer.disconnect()
+        }
+    }, [items])
 
     const handleClick = (id: string) => {
-        const element = document.getElementById(id);
+        const element = document.getElementById(id)
         if (element) {
-            const offset = 80;
-            const elementPosition = element.getBoundingClientRect().top + window.pageYOffset;
-            const offsetPosition = elementPosition - offset;
+            const offset = 80
+            const elementPosition =
+                element.getBoundingClientRect().top + window.pageYOffset
+            const offsetPosition = elementPosition - offset
 
             window.scrollTo({
                 top: offsetPosition,
                 behavior: 'smooth',
-            });
+            })
         }
-    };
+    }
 
     if (items.length === 0) {
-        return null;
+        return null
     }
 
     return (
@@ -87,7 +96,10 @@ export function DocsTOC({ items = [] }: DocsTOCProps) {
 
             <List sx={{ '--List-padding': '0px', '--List-gap': '4px' }}>
                 {items.map((item) => (
-                    <ListItem key={item.id} sx={{ '--ListItem-paddingY': '0px' }}>
+                    <ListItem
+                        key={item.id}
+                        sx={{ '--ListItem-paddingY': '0px' }}
+                    >
                         <ListItemButton
                             onClick={() => handleClick(item.id)}
                             selected={activeId === item.id}
@@ -97,8 +109,14 @@ export function DocsTOC({ items = [] }: DocsTOCProps) {
                                 borderRadius: 'sm',
                                 fontSize: 'sm',
                                 fontWeight: activeId === item.id ? 600 : 400,
-                                color: activeId === item.id ? 'primary.500' : 'text.secondary',
-                                borderLeft: activeId === item.id ? '2px solid' : '2px solid transparent',
+                                color:
+                                    activeId === item.id
+                                        ? 'primary.500'
+                                        : 'text.secondary',
+                                borderLeft:
+                                    activeId === item.id
+                                        ? '2px solid'
+                                        : '2px solid transparent',
                                 borderColor: 'primary.500',
                                 '&:hover': {
                                     bgcolor: 'neutral.softHoverBg',
@@ -118,5 +136,5 @@ export function DocsTOC({ items = [] }: DocsTOCProps) {
                 ))}
             </List>
         </Box>
-    );
+    )
 }

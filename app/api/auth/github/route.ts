@@ -26,7 +26,10 @@ export async function GET(req: NextRequest) {
     // Store state in a cookie for verification later
     const response = new Response(null, { status: 302 })
     response.headers.set('Location', githubAuthUrl.toString())
-    response.headers.set('Set-Cookie', `oauth_state=${state}; Path=/; HttpOnly; SameSite=Lax; Max-Age=600`)
+    response.headers.set(
+        'Set-Cookie',
+        `oauth_state=${state}; Path=/; HttpOnly; SameSite=Lax; Max-Age=600`
+    )
 
     return response
 }

@@ -15,7 +15,7 @@ export default function BlogError({ reset }: { reset: () => void }) {
                 gap: 2,
                 p: 4,
                 minHeight: '50vh',
-                textAlign: 'center'
+                textAlign: 'center',
             }}
         >
             <Typography level="h2" sx={{ fontWeight: 800 }}>
@@ -27,7 +27,7 @@ export default function BlogError({ reset }: { reset: () => void }) {
                     color: 'text.secondary',
                     maxWidth: 400,
                     mx: 'auto',
-                    lineHeight: 1.6
+                    lineHeight: 1.6,
                 }}
             >
                 We couldn't load this blog content. You can retry or return to
@@ -42,10 +42,7 @@ export default function BlogError({ reset }: { reset: () => void }) {
                     Retry
                 </Button>
                 <Link href="/blog" passHref>
-                    <Button
-                        variant="solid"
-                        color="primary"
-                    >
+                    <Button variant="solid" color="primary">
                         Back to Blog
                     </Button>
                 </Link>

@@ -1,9 +1,17 @@
-'use client';
+'use client'
 
-import { useState } from 'react';
-import { Box, Button, Typography, Drawer, List, ListItem, ListItemButton } from '@/components/ui/joy';
-import Link from 'next/link';
-import { usePathname, useRouter } from 'next/navigation';
+import { useState } from 'react'
+import {
+    Box,
+    Button,
+    Typography,
+    Drawer,
+    List,
+    ListItem,
+    ListItemButton,
+} from '@/components/ui/joy'
+import Link from 'next/link'
+import { usePathname, useRouter } from 'next/navigation'
 import {
     Menu as MenuIcon,
     Close,
@@ -14,17 +22,17 @@ import {
     Article,
     Login,
     RocketLaunch,
-} from '@mui/icons-material';
-import { ThemeToggle } from './ThemeToggle.joy';
-import { UserMenu } from './UserMenu.joy';
+} from '@mui/icons-material'
+import { ThemeToggle } from './ThemeToggle.joy'
+import { UserMenu } from './UserMenu.joy'
 
 interface TopNavigationProps {
     user?: {
-        name: string;
-        email: string;
-        role: string;
-        avatar?: string;
-    };
+        name: string
+        email: string
+        role: string
+        avatar?: string
+    }
 }
 
 const navLinks = [
@@ -33,19 +41,21 @@ const navLinks = [
     { href: '/about', label: 'About', icon: Info },
     { href: '/blog', label: 'Blog', icon: Article },
     { href: '/contact', label: 'Contact', icon: ContactMail },
-];
+]
 
 export function TopNavigation({ user }: TopNavigationProps) {
-    const pathname = usePathname();
-    const router = useRouter();
-    const [mobileOpen, setMobileOpen] = useState(false);
+    const pathname = usePathname()
+    const router = useRouter()
+    const [mobileOpen, setMobileOpen] = useState(false)
 
     const isActive = (href: string) => {
-        if (href === '/') {return pathname === href;}
-        return pathname?.startsWith(href);
-    };
+        if (href === '/') {
+            return pathname === href
+        }
+        return pathname?.startsWith(href)
+    }
 
-    const toggleMobileMenu = () => setMobileOpen(!mobileOpen);
+    const toggleMobileMenu = () => setMobileOpen(!mobileOpen)
 
     return (
         <>
@@ -99,7 +109,9 @@ export function TopNavigation({ user }: TopNavigationProps) {
                                     justifyContent: 'center',
                                 }}
                             >
-                                <RocketLaunch sx={{ color: 'white', fontSize: 22 }} />
+                                <RocketLaunch
+                                    sx={{ color: 'white', fontSize: 22 }}
+                                />
                             </Box>
                             <Typography
                                 level="h4"
@@ -121,19 +133,35 @@ export function TopNavigation({ user }: TopNavigationProps) {
                         }}
                     >
                         {navLinks.map((link) => (
-                            <Link key={link.href} href={link.href} aria-current={isActive(link.href) ? 'page' : undefined}>
+                            <Link
+                                key={link.href}
+                                href={link.href}
+                                aria-current={
+                                    isActive(link.href) ? 'page' : undefined
+                                }
+                            >
                                 <Button
                                     component="span"
-                                    variant={isActive(link.href) ? 'soft' : 'plain'}
-                                    color={isActive(link.href) ? 'primary' : 'neutral'}
+                                    variant={
+                                        isActive(link.href) ? 'soft' : 'plain'
+                                    }
+                                    color={
+                                        isActive(link.href)
+                                            ? 'primary'
+                                            : 'neutral'
+                                    }
                                     sx={{
                                         position: 'relative',
-                                        fontWeight: isActive(link.href) ? 700 : 500,
+                                        fontWeight: isActive(link.href)
+                                            ? 700
+                                            : 500,
                                         borderRadius: 'lg',
                                         px: 1.75,
                                         py: 0.75,
                                         '&:hover': {
-                                            bgcolor: isActive(link.href) ? 'primary.softHoverBg' : 'neutral.softHoverBg',
+                                            bgcolor: isActive(link.href)
+                                                ? 'primary.softHoverBg'
+                                                : 'neutral.softHoverBg',
                                         },
                                         '&::after': {
                                             content: '""',
@@ -143,11 +171,15 @@ export function TopNavigation({ user }: TopNavigationProps) {
                                             bottom: -6,
                                             height: 2,
                                             borderRadius: 2,
-                                            bgcolor: isActive(link.href) ? 'var(--joy-palette-primary-500)' : 'transparent',
+                                            bgcolor: isActive(link.href)
+                                                ? 'var(--joy-palette-primary-500)'
+                                                : 'transparent',
                                             transition: 'all 160ms ease',
                                         },
                                         '&:hover::after': {
-                                            bgcolor: isActive(link.href) ? 'var(--joy-palette-primary-500)' : 'var(--joy-palette-neutral-400)',
+                                            bgcolor: isActive(link.href)
+                                                ? 'var(--joy-palette-primary-500)'
+                                                : 'var(--joy-palette-neutral-400)',
                                             opacity: 0.75,
                                         },
                                     }}
@@ -171,7 +203,10 @@ export function TopNavigation({ user }: TopNavigationProps) {
                                     variant="solid"
                                     color="primary"
                                     startDecorator={<Login />}
-                                    sx={{ display: { xs: 'none', sm: 'flex' }, borderRadius: 'lg' }}
+                                    sx={{
+                                        display: { xs: 'none', sm: 'flex' },
+                                        borderRadius: 'lg',
+                                    }}
                                 >
                                     Sign In
                                 </Button>
@@ -205,7 +240,14 @@ export function TopNavigation({ user }: TopNavigationProps) {
                 }}
             >
                 <Box sx={{ width: 280, p: 3 }}>
-                    <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 3 }}>
+                    <Box
+                        sx={{
+                            display: 'flex',
+                            justifyContent: 'space-between',
+                            alignItems: 'center',
+                            mb: 3,
+                        }}
+                    >
                         <Typography level="h4" sx={{ fontWeight: 700 }}>
                             Menu
                         </Typography>
@@ -225,8 +267,8 @@ export function TopNavigation({ user }: TopNavigationProps) {
                                 <ListItemButton
                                     selected={isActive(link.href)}
                                     onClick={() => {
-                                        router.push(link.href);
-                                        toggleMobileMenu();
+                                        router.push(link.href)
+                                        toggleMobileMenu()
                                     }}
                                     sx={{
                                         borderRadius: 'md',
@@ -263,5 +305,5 @@ export function TopNavigation({ user }: TopNavigationProps) {
                 </Box>
             </Drawer>
         </>
-    );
+    )
 }

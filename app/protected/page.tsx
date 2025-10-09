@@ -1,7 +1,7 @@
 'use client'
 
 import React from 'react'
-import AuthPanel from '@/components/demo-rag/AuthPanel'
+import AuthPanel from '@/components/demo-rag/AuthPanel.joy'
 import ChatInterface from '@/components/demo-rag/ChatInterface'
 import IndexingPanel from '@/components/demo-rag/IndexingPanel'
 import FeatureCard from '@/components/demo-rag/FeatureCard'

@@ -11,7 +11,7 @@ import {
 } from '../config/logger'
 import { embedMany } from 'ai'
 import type { ExtractParams } from '@mastra/rag'
-import { googleAIEmbedding } from '../config/google'
+import { google } from '@ai-sdk/google'
 
 /**
  * Input schema for custom document chunking tool with embeddings and storage
@@ -561,7 +561,7 @@ content indexing, or semantic search capabilities.
                 const embeddingStartTime = Date.now()
                 const result = await embedMany({
                     values: chunksForProcessing.map((chunk) => chunk.text),
-                    model: googleAIEmbedding,
+                    model: google.textEmbedding('gemini-embedding-001'),
                     maxRetries: 3,
                     abortSignal: new AbortController().signal,
                 })

@@ -1,30 +1,32 @@
 import {
-  Badge,
-  Button,
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-  Alert,
-  AlertDescription,
-  AlertTitle,
-  Tabs,
-  TabsContent,
-  TabsList,
-  TabsTrigger,
-  Mermaid,
-  Users,
-  Shield,
-  Eye,
-  EyeOff,
-  Lock,
-  CheckCircle,
-  Play,
-  FileText,
-  ArrowRight,
+    Badge,
+    Button,
+    Card,
+    CardContent,
+    CardDescription,
+    CardHeader,
+    CardTitle,
+    Alert,
+    AlertDescription,
+    AlertTitle,
+    Tabs,
+    TabsContent,
+    TabsList,
+    TabsTrigger,
+    Mermaid,
+    Users,
+    Shield,
+    Eye,
+    EyeOff,
+    Lock,
+    CheckCircle,
+    Play,
+    FileText,
+    ArrowRight,
+    Typography,
+    Box,
+    Terminal,
 } from '@/components/docs/mdx-bridge.joy'
-
 
 # Demo Roles & Access Control
 
@@ -43,34 +45,48 @@ This page demonstrates role-based access control in the Mastra Governed RAG syst
 
 ## Role Hierarchy Overview
 
-<div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mb-8">
-  <Card>
-    <CardHeader className="pb-3">
-      <CardTitle className="text-lg flex items-center">
-        <Eye className="h-5 w-5 mr-2 text-green-500" />
+<Box sx={{ display: 'grid', gridTemplateColumns: { xs: '1fr', md: 'repeat(2, 1fr)', lg: 'repeat(3, 1fr)' }, gap: 3, mb: 3 }}>
+  <Card variant="outlined">
+    <CardHeader sx={{ pb: 1.5 }}>
+      <CardTitle sx={{ fontSize: '1.125rem', display: 'flex', alignItems: 'center', gap: 1 }}>
+        <Eye sx={{ fontSize: 20, color: 'success.main' }} />
         Public (Level 10)
       </CardTitle>
       <CardDescription>Unauthenticated users</CardDescription>
     </CardHeader>
     <CardContent>
-      <div className="space-y-2 text-sm">
+      <Box sx={{ display: 'flex', flexDirection: 'column', gap: 1, fontSize: '0.875rem' }}>
         <div><strong>Max Classification:</strong> public</div>
         <div><strong>Allowed Tags:</strong> None</div>
         <div><strong>Access:</strong> No sensitive content</div>
-      </div>
+      </Box>
     </CardContent>
   </Card>
 
-<Card>
-    <CardHeader className="pb-3">
-        <CardTitle className="text-lg flex items-center">
-            <Users className="h-5 w-5 mr-2 text-blue-500" />
+<Card variant="outlined">
+    <CardHeader sx={{ pb: 1.5 }}>
+        <CardTitle
+            sx={{
+                fontSize: '1.125rem',
+                display: 'flex',
+                alignItems: 'center',
+                gap: 1,
+            }}
+        >
+            <Users sx={{ fontSize: 20, color: 'primary.main' }} />
             Employee (Level 40)
         </CardTitle>
         <CardDescription>General staff access</CardDescription>
     </CardHeader>
     <CardContent>
-        <div className="space-y-2 text-sm">
+        <Box
+            sx={{
+                display: 'flex',
+                flexDirection: 'column',
+                gap: 1,
+                fontSize: '0.875rem',
+            }}
+        >
             <div>
                 <strong>Max Classification:</strong> internal
             </div>
@@ -80,20 +96,34 @@ This page demonstrates role-based access control in the Mastra Governed RAG syst
             <div>
                 <strong>Access:</strong> Internal policies
             </div>
-        </div>
+        </Box>
     </CardContent>
 </Card>
 
-<Card>
-    <CardHeader className="pb-3">
-        <CardTitle className="text-lg flex items-center">
-            <Shield className="h-5 w-5 mr-2 text-orange-500" />
+<Card variant="outlined">
+    <CardHeader sx={{ pb: 1.5 }}>
+        <CardTitle
+            sx={{
+                fontSize: '1.125rem',
+                display: 'flex',
+                alignItems: 'center',
+                gap: 1,
+            }}
+        >
+            <Shield sx={{ fontSize: 20, color: 'warning.main' }} />
             Department Viewer (Level 60)
         </CardTitle>
         <CardDescription>Department-specific read access</CardDescription>
     </CardHeader>
     <CardContent>
-        <div className="space-y-2 text-sm">
+        <Box
+            sx={{
+                display: 'flex',
+                flexDirection: 'column',
+                gap: 1,
+                fontSize: '0.875rem',
+            }}
+        >
             <div>
                 <strong>Max Classification:</strong> internal
             </div>
@@ -103,20 +133,34 @@ This page demonstrates role-based access control in the Mastra Governed RAG syst
             <div>
                 <strong>Access:</strong> Dept docs + general
             </div>
-        </div>
+        </Box>
     </CardContent>
 </Card>
 
-<Card>
-    <CardHeader className="pb-3">
-        <CardTitle className="text-lg flex items-center">
-            <Lock className="h-5 w-5 mr-2 text-purple-500" />
+<Card variant="outlined">
+    <CardHeader sx={{ pb: 1.5 }}>
+        <CardTitle
+            sx={{
+                fontSize: '1.125rem',
+                display: 'flex',
+                alignItems: 'center',
+                gap: 1,
+            }}
+        >
+            <Lock sx={{ fontSize: 20, color: 'secondary.main' }} />
             Department Admin (Level 80)
         </CardTitle>
         <CardDescription>Full department control</CardDescription>
     </CardHeader>
     <CardContent>
-        <div className="space-y-2 text-sm">
+        <Box
+            sx={{
+                display: 'flex',
+                flexDirection: 'column',
+                gap: 1,
+                fontSize: '0.875rem',
+            }}
+        >
             <div>
                 <strong>Max Classification:</strong> confidential
             </div>
@@ -126,65 +170,63 @@ This page demonstrates role-based access control in the Mastra Governed RAG syst
             <div>
                 <strong>Access:</strong> All dept content
             </div>
-        </div>
+        </Box>
     </CardContent>
 </Card>
 
-  <Card className="md:col-span-2 lg:col-span-1">
-    <CardHeader className="pb-3">
-      <CardTitle className="text-lg flex items-center">
-        <CheckCircle className="h-5 w-5 mr-2 text-red-500" />
+  <Card variant="outlined" sx={{ gridColumn: { md: 'span 2', lg: 'span 1' } }}>
+    <CardHeader sx={{ pb: 1.5 }}>
+      <CardTitle sx={{ fontSize: '1.125rem', display: 'flex', alignItems: 'center', gap: 1 }}>
+        <CheckCircle sx={{ fontSize: 20, color: 'error.main' }} />
         Super Admin (Level 100)
       </CardTitle>
       <CardDescription>Complete system access</CardDescription>
     </CardHeader>
     <CardContent>
-      <div className="space-y-2 text-sm">
+      <Box sx={{ display: 'flex', flexDirection: 'column', gap: 1, fontSize: '0.875rem' }}>
         <div><strong>Max Classification:</strong> confidential</div>
         <div><strong>Allowed Tags:</strong> All departments</div>
         <div><strong>Access:</strong> Complete system access</div>
-      </div>
+      </Box>
     </CardContent>
   </Card>
-</div>
+</Box>
 
 ## Interactive Role Testing
 
-<div className="bg-slate-50 dark:bg-slate-900 p-6 rounded-lg border mb-8">
-    <Mermaid
-        chart={`flowchart TD
-    A[User Query] --> B{JWT Authentication}
-    B -->|Valid| C[Extract Role & Permissions]
-    B -->|Invalid| D[Access Denied]
-    C --> E{Classification Check}
-    E -->|Public| F[Allow Public Docs]
-    E -->|Internal| G{Role Level Check}
-    E -->|Confidential| H{Admin Check}
-    G -->|Employee+| I[Allow Internal Docs]
-    G -->|Insufficient| J[Filter Results]
-    H -->|Admin| K[Allow Confidential Docs]
-    H -->|Not Admin| L[Block Access]
-    F --> M[Return Filtered Results]
-    I --> M
-    K --> M
-    J --> M
-    L --> M
-    D --> N[Error Response]
-    style A fill:#e3f2fd
-    style C fill:#f3e5f5
-    style M fill:#e8f5e8
-    style N fill:#ffebee`}
-    />
+<Box sx={{ bgcolor: 'background.surface', p: 3, borderRadius: 1, mb: 3 }}>
+  <Mermaid
+    chart={`flowchart TD
+A[User Query] --> B{JWT Authentication}
+B -->|Valid| C[Extract Role & Permissions]
+B -->|Invalid| D[Access Denied]
+C --> E{Classification Check}
+E -->|Public| F[Allow Public Docs]
+E -->|Internal| G{Role Level Check}
+E -->|Confidential| H{Admin Check}
+G -->|Employee+| I[Allow Internal Docs]
+G -->|Insufficient| J[Filter Results]
+H -->|Admin| K[Allow Confidential Docs]
+H -->|Not Admin| L[Block Access]
+F --> M[Return Filtered Results]
+I --> M
+K --> M
+J --> M
+L --> M
+D --> N[Error Response]
+style A fill:#e3f2fd
+style C fill:#f3e5f5
+style M fill:#e8f5e8
+style N fill:#ffebee`}
+/>
 
-    <div className="mt-4 text-sm text-muted-foreground">
-        <strong>Access Control Flow:</strong> Each query goes through
-        multi-stage security checks before returning results.
-    </div>
+  <Typography level="body-sm" sx={{ color: 'text.tertiary', mt: 2 }}>
+    <strong>Access Control Flow:</strong> Each query goes through multi-stage security checks before returning results.
+  </Typography>
+</Box>
 
-</div>
-
-<Tabs defaultValue="public" className="mb-8">
-  <TabsList className="grid w-full grid-cols-5">
+<Tabs defaultValue="public" sx={{ mb: 3 }}>
+  <TabsList sx={{ gridTemplateColumns: 'repeat(5, 1fr)' }}>
     <TabsTrigger value="public">Public</TabsTrigger>
     <TabsTrigger value="employee">Employee</TabsTrigger>
     <TabsTrigger value="finance">Finance Viewer</TabsTrigger>
@@ -193,311 +235,467 @@ This page demonstrates role-based access control in the Mastra Governed RAG syst
   </TabsList>
 
   <TabsContent value="public">
-    <Card>
+    <Card variant="outlined">
       <CardHeader>
-        <CardTitle className="text-lg">Public User Access</CardTitle>
+        <CardTitle sx={{ fontSize: '1.125rem' }}>Public User Access</CardTitle>
         <CardDescription>Minimal access - no sensitive information</CardDescription>
       </CardHeader>
       <CardContent>
-        <div className="space-y-4">
-          <div className="bg-muted p-4 rounded-lg">
-            <h4 className="font-semibold mb-2">Sample Query: "What is the expense reimbursement policy?"</h4>
-            <div className="flex items-center space-x-2 text-red-600">
-              <XCircle className="h-4 w-4" />
-              <span className="text-sm font-medium">Expected Response:</span>
-            </div>
-            <div className="bg-red-50 dark:bg-red-950 p-3 rounded mt-2 text-sm">
+        <Box sx={{ display: 'flex', flexDirection: 'column', gap: 3 }}>
+          <Box sx={{ bgcolor: 'background.surface', p: 3, borderRadius: 1 }}>
+            <Typography sx={{ fontWeight: 'bold', mb: 1 }}>Sample Query: "What is the expense reimbursement policy?"</Typography>
+            <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, mb: 1, color: 'error.main' }}>
+              <EyeOff sx={{ fontSize: 16 }} />
+              <Typography level="body-sm" sx={{ fontWeight: 'bold' }}>Expected Response:</Typography>
+            </Box>
+            <Box sx={{ bgcolor: 'error.softBg', p: 2, borderRadius: 1, fontSize: '0.875rem' }}>
               "No authorized documents found that contain information about this topic."
-            </div>
-            <p className="text-sm text-muted-foreground mt-2">
+            </Box>
+            <Typography level="body-sm" sx={{ color: 'text.tertiary', mt: 1 }}>
               <strong>Reason:</strong> All corpus documents are classified as internal or confidential, which public users cannot access.
-            </p>
-          </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
-            <div className="text-center">
-              <div className="bg-red-100 dark:bg-red-900 text-red-800 dark:text-red-200 rounded-full w-12 h-12 flex items-center justify-center mb-2">
-                <XCircle className="h-6 w-6" />
-              </div>
-              <div className="text-sm font-medium">Finance Policy</div>
-              <Badge variant="secondary" className="text-xs">Internal</Badge>
-            </div>
-            <div className="text-center">
-              <div className="bg-red-100 dark:bg-red-900 text-red-800 dark:text-red-200 rounded-full w-12 h-12 flex items-center justify-center mb-2">
-                <XCircle className="h-6 w-6" />
-              </div>
-              <div className="text-sm font-medium">Engineering Handbook</div>
-              <Badge variant="secondary" className="text-xs">Internal</Badge>
-            </div>
-            <div className="text-center">
-              <div className="bg-red-100 dark:bg-red-900 text-red-800 dark:text-red-200 rounded-full w-12 h-12 flex items-center justify-center  mb-2">
-                <XCircle className="h-6 w-6" />
-              </div>
-              <div className="text-sm font-medium">HR Confidential</div>
-              <Badge variant="destructive" className="text-xs">Confidential</Badge>
-            </div>
-          </div>
-        </div>
+            </Typography>
+          </Box>
+          <Box sx={{ display: 'grid', gridTemplateColumns: { xs: 'repeat(1, 1fr)', md: 'repeat(3, 1fr)' }, gap: 2 }}>
+            <Box sx={{ textAlign: 'center' }}>
+              <Box sx={{
+                bgcolor: 'error.softBg',
+                color: 'error.main',
+                borderRadius: '50%',
+                width: 48,
+                height: 48,
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                mb: 1,
+                mx: 'auto'
+              }}>
+                <EyeOff sx={{ fontSize: 24 }} />
+              </Box>
+              <Typography level="body-sm" sx={{ fontWeight: 'bold' }}>Finance Policy</Typography>
+              <Badge variant="soft" color="secondary" sx={{ fontSize: '0.75rem' }}>Internal</Badge>
+            </Box>
+            <Box sx={{ textAlign: 'center' }}>
+              <Box sx={{
+                bgcolor: 'error.softBg',
+                color: 'error.main',
+                borderRadius: '50%',
+                width: 48,
+                height: 48,
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                mb: 1,
+                mx: 'auto'
+              }}>
+                <EyeOff sx={{ fontSize: 24 }} />
+              </Box>
+              <Typography level="body-sm" sx={{ fontWeight: 'bold' }}>Engineering Handbook</Typography>
+              <Badge variant="soft" color="secondary" sx={{ fontSize: '0.75rem' }}>Internal</Badge>
+            </Box>
+            <Box sx={{ textAlign: 'center' }}>
+              <Box sx={{
+                bgcolor: 'error.softBg',
+                color: 'error.main',
+                borderRadius: '50%',
+                width: 48,
+                height: 48,
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                mb: 1,
+                mx: 'auto'
+              }}>
+                <EyeOff sx={{ fontSize: 24 }} />
+              </Box>
+              <Typography level="body-sm" sx={{ fontWeight: 'bold' }}>HR Confidential</Typography>
+              <Badge variant="soft" color="danger" sx={{ fontSize: '0.75rem' }}>Confidential</Badge>
+            </Box>
+          </Box>
+        </Box>
       </CardContent>
     </Card>
 
   </TabsContent>
 
   <TabsContent value="employee">
-    <Card>
+    <Card variant="outlined">
       <CardHeader>
-        <CardTitle className="text-lg">Employee Access</CardTitle>
+        <CardTitle sx={{ fontSize: '1.125rem' }}>Employee Access</CardTitle>
         <CardDescription>General internal access with department restrictions</CardDescription>
       </CardHeader>
       <CardContent>
-        <div className="space-y-4">
-          <div className="bg-muted p-4 rounded-lg">
-            <h4 className="font-semibold mb-2">Sample Query: "What is the engineering code review process?"</h4>
-            <div className="flex items-center space-x-2 text-green-600">
-              <CheckCircle className="h-4 w-4" />
-              <span className="text-sm font-medium">Expected Response:</span>
-            </div>
-            <div className="bg-green-50 dark:bg-green-950 p-3 rounded mt-2 text-sm">
+        <Box sx={{ display: 'flex', flexDirection: 'column', gap: 3 }}>
+          <Box sx={{ bgcolor: 'background.surface', p: 3, borderRadius: 1 }}>
+            <Typography sx={{ fontWeight: 'bold', mb: 1 }}>Sample Query: "What is the engineering code review process?"</Typography>
+            <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, mb: 1, color: 'success.main' }}>
+              <CheckCircle sx={{ fontSize: 16 }} />
+              <Typography level="body-sm" sx={{ fontWeight: 'bold' }}>Expected Response:</Typography>
+            </Box>
+            <Box sx={{ bgcolor: 'success.softBg', p: 2, borderRadius: 1, fontSize: '0.875rem' }}>
               "All code must be peer-reviewed... Minimum 2 approvals for production code."
-            </div>
-            <div className="text-sm text-muted-foreground mt-2">
-              <strong>Citations:</strong> <code>[{"docId": "engineering-handbook-001", "source": "Engineering Team Handbook"}]</code>
-            </div>
-          </div>
-
-          <div className="bg-muted p-4 rounded-lg">
-            <h4 className="font-semibold mb-2">Sample Query: "What is executive compensation?"</h4>
-            <div className="flex items-center space-x-2 text-red-600">
-              <XCircle className="h-4 w-4" />
-              <span className="text-sm font-medium">Expected Response:</span>
-            </div>
-            <div className="bg-red-50 dark:bg-red-950 p-3 rounded mt-2 text-sm">
+            </Box>
+            <Typography level="body-sm" sx={{ color: 'text.tertiary', mt: 1 }}>
+              <strong>Citations:</strong> <Typography component="code" sx={{ fontSize: '0.75rem' }}>[{"docId": "engineering-handbook-001", "source": "Engineering Team Handbook"}]</Typography>
+            </Typography>
+          </Box>
+          <Box sx={{ bgcolor: 'background.surface', p: 3, borderRadius: 1 }}>
+            <Typography sx={{ fontWeight: 'bold', mb: 1 }}>Sample Query: "What is executive compensation?"</Typography>
+            <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, mb: 1, color: 'error.main' }}>
+              <EyeOff sx={{ fontSize: 16 }} />
+              <Typography level="body-sm" sx={{ fontWeight: 'bold' }}>Expected Response:</Typography>
+            </Box>
+            <Box sx={{ bgcolor: 'error.softBg', p: 2, borderRadius: 1, fontSize: '0.875rem' }}>
               "No authorized documents found..."
-            </div>
-            <p className="text-sm text-muted-foreground mt-2">
+            </Box>
+            <Typography level="body-sm" sx={{ color: 'text.tertiary', mt: 1 }}>
               <strong>Reason:</strong> HR confidential documents require specific department admin access.
-            </p>
-          </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
-            <div className="text-center">
-              <div className="bg-yellow-100 dark:bg-yellow-900 text-yellow-800 dark:text-yellow-200 rounded-full w-12 h-12 flex items-center justify-center  mb-2">
-                <Eye className="h-6 w-6" />
-              </div>
-              <div className="text-sm font-medium">Finance Policy</div>
-              <Badge variant="secondary" className="text-xs">Internal</Badge>
-            </div>
-            <div className="text-center">
-              <div className="bg-green-100 dark:bg-green-900 text-green-800 dark:text-green-200 rounded-full w-12 h-12 flex items-center justify-center  mb-2">
-                <CheckCircle className="h-6 w-6" />
-              </div>
-              <div className="text-sm font-medium">Engineering Handbook</div>
-              <Badge variant="secondary" className="text-xs">Internal</Badge>
-            </div>
-            <div className="text-center">
-              <div className="bg-red-100 dark:bg-red-900 text-red-800 dark:text-red-200 rounded-full w-12 h-12 flex items-center justify-center  mb-2">
-                <XCircle className="h-6 w-6" />
-              </div>
-              <div className="text-sm font-medium">HR Confidential</div>
-              <Badge variant="destructive" className="text-xs">Confidential</Badge>
-            </div>
-          </div>
-        </div>
+            </Typography>
+          </Box>
+          <Box sx={{ display: 'grid', gridTemplateColumns: { xs: 'repeat(1, 1fr)', md: 'repeat(3, 1fr)' }, gap: 2 }}>
+            <Box sx={{ textAlign: 'center' }}>
+              <Box sx={{
+                bgcolor: 'warning.softBg',
+                color: 'warning.main',
+                borderRadius: '50%',
+                width: 48,
+                height: 48,
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                mb: 1,
+                mx: 'auto'
+              }}>
+                <Eye sx={{ fontSize: 24 }} />
+              </Box>
+              <Typography level="body-sm" sx={{ fontWeight: 'bold' }}>Finance Policy</Typography>
+              <Badge variant="soft" color="secondary" sx={{ fontSize: '0.75rem' }}>Internal</Badge>
+            </Box>
+            <Box sx={{ textAlign: 'center' }}>
+              <Box sx={{
+                bgcolor: 'success.softBg',
+                color: 'success.main',
+                borderRadius: '50%',
+                width: 48,
+                height: 48,
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                mb: 1,
+                mx: 'auto'
+              }}>
+                <CheckCircle sx={{ fontSize: 24 }} />
+              </Box>
+              <Typography level="body-sm" sx={{ fontWeight: 'bold' }}>Engineering Handbook</Typography>
+              <Badge variant="soft" color="secondary" sx={{ fontSize: '0.75rem' }}>Internal</Badge>
+            </Box>
+            <Box sx={{ textAlign: 'center' }}>
+              <Box sx={{
+                bgcolor: 'error.softBg',
+                color: 'error.main',
+                borderRadius: '50%',
+                width: 48,
+                height: 48,
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                mb: 1,
+                mx: 'auto'
+              }}>
+                <EyeOff sx={{ fontSize: 24 }} />
+              </Box>
+              <Typography level="body-sm" sx={{ fontWeight: 'bold' }}>HR Confidential</Typography>
+              <Badge variant="soft" color="danger" sx={{ fontSize: '0.75rem' }}>Confidential</Badge>
+            </Box>
+          </Box>
+        </Box>
       </CardContent>
     </Card>
 
   </TabsContent>
 
   <TabsContent value="finance">
-    <Card>
+    <Card variant="outlined">
       <CardHeader>
-        <CardTitle className="text-lg">Finance Viewer Access</CardTitle>
+        <CardTitle sx={{ fontSize: '1.125rem' }}>Finance Viewer Access</CardTitle>
         <CardDescription>Finance-specific access with inheritance</CardDescription>
       </CardHeader>
       <CardContent>
-        <div className="space-y-4">
-          <div className="bg-muted p-4 rounded-lg">
-            <h4 className="font-semibold mb-2">Sample Query: "What are the approval thresholds for expenses?"</h4>
-            <div className="flex items-center space-x-2 text-green-600">
-              <CheckCircle className="h-4 w-4" />
-              <span className="text-sm font-medium">Expected Response:</span>
-            </div>
-            <div className="bg-green-50 dark:bg-green-950 p-3 rounded mt-2 text-sm">
+        <Box sx={{ display: 'flex', flexDirection: 'column', gap: 3 }}>
+          <Box sx={{ bgcolor: 'background.surface', p: 3, borderRadius: 1 }}>
+            <Typography sx={{ fontWeight: 'bold', mb: 1 }}>Sample Query: "What are the approval thresholds for expenses?"</Typography>
+            <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, mb: 1, color: 'success.main' }}>
+              <CheckCircle sx={{ fontSize: 16 }} />
+              <Typography level="body-sm" sx={{ fontWeight: 'bold' }}>Expected Response:</Typography>
+            </Box>
+            <Box sx={{ bgcolor: 'success.softBg', p: 2, borderRadius: 1, fontSize: '0.875rem' }}>
               "Expenses under $500: Direct manager... over $1000: CFO approval..."
-            </div>
-            <div className="text-sm text-muted-foreground mt-2">
-              <strong>Citations:</strong> <code>[{"docId": "finance-policy-001", "source": "Finance Department Policy Manual"}]</code>
-            </div>
-          </div>
-
-          <div className="bg-muted p-4 rounded-lg">
-            <h4 className="font-semibold mb-2">Sample Query: "What is the engineering on-call schedule?"</h4>
-            <div className="flex items-center space-x-2 text-green-600">
-              <CheckCircle className="h-4 w-4" />
-              <span className="text-sm font-medium">Expected Response:</span>
-            </div>
-            <div className="bg-green-50 dark:bg-green-950 p-3 rounded mt-2 text-sm">
+            </Box>
+            <Typography level="body-sm" sx={{ color: 'text.tertiary', mt: 1 }}>
+              <strong>Citations:</strong> <Typography component="code" sx={{ fontSize: '0.75rem' }}>[{"docId": "finance-policy-001", "source": "Finance Department Policy Manual"}]</Typography>
+            </Typography>
+          </Box>
+          <Box sx={{ bgcolor: 'background.surface', p: 3, borderRadius: 1 }}>
+            <Typography sx={{ fontWeight: 'bold', mb: 1 }}>Sample Query: "What is the engineering on-call schedule?"</Typography>
+            <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, mb: 1, color: 'success.main' }}>
+              <CheckCircle sx={{ fontSize: 16 }} />
+              <Typography level="body-sm" sx={{ fontWeight: 'bold' }}>Expected Response:</Typography>
+            </Box>
+            <Box sx={{ bgcolor: 'success.softBg', p: 2, borderRadius: 1, fontSize: '0.875rem' }}>
               "Weekly rotations starting Monday 9 AM... Compensation: $500/week..."
-            </div>
-            <p className="text-sm text-muted-foreground mt-2">
+            </Box>
+            <Typography level="body-sm" sx={{ color: 'text.tertiary', mt: 1 }}>
               <strong>Access via inheritance:</strong> Employee-level access to engineering documents.
-            </p>
-          </div>
-
-          <div className="bg-muted p-4 rounded-lg">
-            <h4 className="font-semibold mb-2">Sample Query: "Executive severance packages?"</h4>
-            <div className="flex items-center space-x-2 text-red-600">
-              <XCircle className="h-4 w-4" />
-              <span className="text-sm font-medium">Expected Response:</span>
-            </div>
-            <div className="bg-red-50 dark:bg-red-950 p-3 rounded mt-2 text-sm">
+            </Typography>
+          </Box>
+          <Box sx={{ bgcolor: 'background.surface', p: 3, borderRadius: 1 }}>
+            <Typography sx={{ fontWeight: 'bold', mb: 1 }}>Sample Query: "Executive severance packages?"</Typography>
+            <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, mb: 1, color: 'error.main' }}>
+              <EyeOff sx={{ fontSize: 16 }} />
+              <Typography level="body-sm" sx={{ fontWeight: 'bold' }}>Expected Response:</Typography>
+            </Box>
+            <Box sx={{ bgcolor: 'error.softBg', p: 2, borderRadius: 1, fontSize: '0.875rem' }}>
               "No authorized documents found..."
-            </div>
-            <p className="text-sm text-muted-foreground mt-2">
+            </Box>
+            <Typography level="body-sm" sx={{ color: 'text.tertiary', mt: 1 }}>
               <strong>Reason:</strong> Confidential HR documents require HR admin access, not finance viewer.
-            </p>
-          </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
-            <div className="text-center">
-              <div className="bg-green-100 dark:bg-green-900 text-green-800 dark:text-green-200 rounded-full w-12 h-12 flex items-center justify-center  mb-2">
-                <CheckCircle className="h-6 w-6" />
-              </div>
-              <div className="text-sm font-medium">Finance Policy</div>
-              <Badge variant="secondary" className="text-xs">Internal</Badge>
-            </div>
-            <div className="text-center">
-              <div className="bg-green-100 dark:bg-green-900 text-green-800 dark:text-green-200 rounded-full w-12 h-12 flex items-center justify-center  mb-2">
-                <CheckCircle className="h-6 w-6" />
-              </div>
-              <div className="text-sm font-medium">Engineering Handbook</div>
-              <Badge variant="secondary" className="text-xs">Internal</Badge>
-            </div>
-            <div className="text-center">
-              <div className="bg-red-100 dark:bg-red-900 text-red-800 dark:text-red-200 rounded-full w-12 h-12 flex items-center justify-center  mb-2">
-                <XCircle className="h-6 w-6" />
-              </div>
-              <div className="text-sm font-medium">HR Confidential</div>
-              <Badge variant="destructive" className="text-xs">Confidential</Badge>
-            </div>
-          </div>
-        </div>
+            </Typography>
+          </Box>
+          <Box sx={{ display: 'grid', gridTemplateColumns: { xs: 'repeat(1, 1fr)', md: 'repeat(3, 1fr)' }, gap: 2 }}>
+            <Box sx={{ textAlign: 'center' }}>
+              <Box sx={{
+                bgcolor: 'success.softBg',
+                color: 'success.main',
+                borderRadius: '50%',
+                width: 48,
+                height: 48,
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                mb: 1,
+                mx: 'auto'
+              }}>
+                <CheckCircle sx={{ fontSize: 24 }} />
+              </Box>
+              <Typography level="body-sm" sx={{ fontWeight: 'bold' }}>Finance Policy</Typography>
+              <Badge variant="soft" color="secondary" sx={{ fontSize: '0.75rem' }}>Internal</Badge>
+            </Box>
+            <Box sx={{ textAlign: 'center' }}>
+              <Box sx={{
+                bgcolor: 'success.softBg',
+                color: 'success.main',
+                borderRadius: '50%',
+                width: 48,
+                height: 48,
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                mb: 1,
+                mx: 'auto'
+              }}>
+                <CheckCircle sx={{ fontSize: 24 }} />
+              </Box>
+              <Typography level="body-sm" sx={{ fontWeight: 'bold' }}>Engineering Handbook</Typography>
+              <Badge variant="soft" color="secondary" sx={{ fontSize: '0.75rem' }}>Internal</Badge>
+            </Box>
+            <Box sx={{ textAlign: 'center' }}>
+              <Box sx={{
+                bgcolor: 'error.softBg',
+                color: 'error.main',
+                borderRadius: '50%',
+                width: 48,
+                height: 48,
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                mb: 1,
+                mx: 'auto'
+              }}>
+                <EyeOff sx={{ fontSize: 24 }} />
+              </Box>
+              <Typography level="body-sm" sx={{ fontWeight: 'bold' }}>HR Confidential</Typography>
+              <Badge variant="soft" color="danger" sx={{ fontSize: '0.75rem' }}>Confidential</Badge>
+            </Box>
+          </Box>
+        </Box>
       </CardContent>
     </Card>
 
   </TabsContent>
 
   <TabsContent value="hr">
-    <Card>
+    <Card variant="outlined">
       <CardHeader>
-        <CardTitle className="text-lg">HR Admin Access</CardTitle>
+        <CardTitle sx={{ fontSize: '1.125rem' }}>HR Admin Access</CardTitle>
         <CardDescription>Full HR access including confidential documents</CardDescription>
       </CardHeader>
       <CardContent>
-        <div className="space-y-4">
-          <div className="bg-muted p-4 rounded-lg">
-            <h4 className="font-semibold mb-2">Sample Query: "What are the executive compensation bands?"</h4>
-            <div className="flex items-center space-x-2 text-green-600">
-              <CheckCircle className="h-4 w-4" />
-              <span className="text-sm font-medium">Expected Response:</span>
-            </div>
-            <div className="bg-green-50 dark:bg-green-950 p-3 rounded mt-2 text-sm">
+        <Box sx={{ display: 'flex', flexDirection: 'column', gap: 3 }}>
+          <Box sx={{ bgcolor: 'background.surface', p: 3, borderRadius: 1 }}>
+            <Typography sx={{ fontWeight: 'bold', mb: 1 }}>Sample Query: "What are the executive compensation bands?"</Typography>
+            <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, mb: 1, color: 'success.main' }}>
+              <CheckCircle sx={{ fontSize: 16 }} />
+              <Typography level="body-sm" sx={{ fontWeight: 'bold' }}>Expected Response:</Typography>
+            </Box>
+            <Box sx={{ bgcolor: 'success.softBg', p: 2, borderRadius: 1, fontSize: '0.875rem' }}>
               "CEO: Base $850,000... C-Suite: $450k-$550k base..."
-            </div>
-            <div className="text-sm text-muted-foreground mt-2">
-              <strong>Citations:</strong> <code>[{"docId": "hr-conf-001", "source": "HR Confidential Documents"}]</code>
-            </div>
-          </div>
-
-          <div className="bg-muted p-4 rounded-lg">
-            <h4 className="font-semibold mb-2">Sample Query: "Finance budget overrun policy?"</h4>
-            <div className="flex items-center space-x-2 text-green-600">
-              <CheckCircle className="h-4 w-4" />
-              <span className="text-sm font-medium">Expected Response:</span>
-            </div>
-            <div className="bg-green-50 dark:bg-green-950 p-3 rounded mt-2 text-sm">
+            </Box>
+            <Typography level="body-sm" sx={{ color: 'text.tertiary', mt: 1 }}>
+              <strong>Citations:</strong> <Typography component="code" sx={{ fontSize: '0.75rem' }}>[{"docId": "hr-conf-001", "source": "HR Confidential Documents"}]</Typography>
+            </Typography>
+          </Box>
+          <Box sx={{ bgcolor: 'background.surface', p: 3, borderRadius: 1 }}>
+            <Typography sx={{ fontWeight: 'bold', mb: 1 }}>Sample Query: "Finance budget overrun policy?"</Typography>
+            <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, mb: 1, color: 'success.main' }}>
+              <CheckCircle sx={{ fontSize: 16 }} />
+              <Typography level="body-sm" sx={{ fontWeight: 'bold' }}>Expected Response:</Typography>
+            </Box>
+            <Box sx={{ bgcolor: 'success.softBg', p: 2, borderRadius: 1, fontSize: '0.875rem' }}>
               "Any projected overrun exceeding 10% must be reported..."
-            </div>
-            <p className="text-sm text-muted-foreground mt-2">
+            </Box>
+            <Typography level="body-sm" sx={{ color: 'text.tertiary', mt: 1 }}>
               <strong>Access via inheritance:</strong> Employee-level access to finance documents.
-            </p>
-          </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
-            <div className="text-center">
-              <div className="bg-green-100 dark:bg-green-900 text-green-800 dark:text-green-200 rounded-full w-12 h-12 flex items-center justify-center  mb-2">
-                <CheckCircle className="h-6 w-6" />
-              </div>
-              <div className="text-sm font-medium">Finance Policy</div>
-              <Badge variant="secondary" className="text-xs">Internal</Badge>
-            </div>
-            <div className="text-center">
-              <div className="bg-green-100 dark:bg-green-900 text-green-800 dark:text-green-200 rounded-full w-12 h-12 flex items-center justify-center  mb-2">
-                <CheckCircle className="h-6 w-6" />
-              </div>
-              <div className="text-sm font-medium">Engineering Handbook</div>
-              <Badge variant="secondary" className="text-xs">Internal</Badge>
-            </div>
-            <div className="text-center">
-              <div className="bg-green-100 dark:bg-green-900 text-green-800 dark:text-green-200 rounded-full w-12 h-12 flex items-center justify-center  mb-2">
-                <CheckCircle className="h-6 w-6" />
-              </div>
-              <div className="text-sm font-medium">HR Confidential</div>
-              <Badge variant="destructive" className="text-xs">Confidential</Badge>
-            </div>
-          </div>
-        </div>
+            </Typography>
+          </Box>
+          <Box sx={{ display: 'grid', gridTemplateColumns: { xs: 'repeat(1, 1fr)', md: 'repeat(3, 1fr)' }, gap: 2 }}>
+            <Box sx={{ textAlign: 'center' }}>
+              <Box sx={{
+                bgcolor: 'success.softBg',
+                color: 'success.main',
+                borderRadius: '50%',
+                width: 48,
+                height: 48,
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                mb: 1,
+                mx: 'auto'
+              }}>
+                <CheckCircle sx={{ fontSize: 24 }} />
+              </Box>
+              <Typography level="body-sm" sx={{ fontWeight: 'bold' }}>Finance Policy</Typography>
+              <Badge variant="soft" color="secondary" sx={{ fontSize: '0.75rem' }}>Internal</Badge>
+            </Box>
+            <Box sx={{ textAlign: 'center' }}>
+              <Box sx={{
+                bgcolor: 'success.softBg',
+                color: 'success.main',
+                borderRadius: '50%',
+                width: 48,
+                height: 48,
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                mb: 1,
+                mx: 'auto'
+              }}>
+                <CheckCircle sx={{ fontSize: 24 }} />
+              </Box>
+              <Typography level="body-sm" sx={{ fontWeight: 'bold' }}>Engineering Handbook</Typography>
+              <Badge variant="soft" color="secondary" sx={{ fontSize: '0.75rem' }}>Internal</Badge>
+            </Box>
+            <Box sx={{ textAlign: 'center' }}>
+              <Box sx={{
+                bgcolor: 'success.softBg',
+                color: 'success.main',
+                borderRadius: '50%',
+                width: 48,
+                height: 48,
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                mb: 1,
+                mx: 'auto'
+              }}>
+                <CheckCircle sx={{ fontSize: 24 }} />
+              </Box>
+              <Typography level="body-sm" sx={{ fontWeight: 'bold' }}>HR Confidential</Typography>
+              <Badge variant="soft" color="danger" sx={{ fontSize: '0.75rem' }}>Confidential</Badge>
+            </Box>
+          </Box>
+        </Box>
       </CardContent>
     </Card>
 
   </TabsContent>
 
   <TabsContent value="admin">
-    <Card>
+    <Card variant="outlined">
       <CardHeader>
-        <CardTitle className="text-lg">Super Admin Access</CardTitle>
+        <CardTitle sx={{ fontSize: '1.125rem' }}>Super Admin Access</CardTitle>
         <CardDescription>Complete system access to all documents</CardDescription>
       </CardHeader>
       <CardContent>
-        <div className="space-y-4">
-          <div className="bg-muted p-4 rounded-lg">
-            <h4 className="font-semibold mb-2">Sample Query: Any question about any document</h4>
-            <div className="flex items-center space-x-2 text-green-600">
-              <CheckCircle className="h-4 w-4" />
-              <span className="text-sm font-medium">Expected Response:</span>
-            </div>
-            <div className="bg-green-50 dark:bg-green-950 p-3 rounded mt-2 text-sm">
+        <Box sx={{ display: 'flex', flexDirection: 'column', gap: 3 }}>
+          <Box sx={{ bgcolor: 'background.surface', p: 3, borderRadius: 1 }}>
+            <Typography sx={{ fontWeight: 'bold', mb: 1 }}>Sample Query: Any question about any document</Typography>
+            <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, mb: 1, color: 'success.main' }}>
+              <CheckCircle sx={{ fontSize: 16 }} />
+              <Typography level="body-sm" sx={{ fontWeight: 'bold' }}>Expected Response:</Typography>
+            </Box>
+            <Box sx={{ bgcolor: 'success.softBg', p: 2, borderRadius: 1, fontSize: '0.875rem' }}>
               Full access to all documents with complete, accurate answers and comprehensive citations from all relevant sources.
-            </div>
-            <p className="text-sm text-muted-foreground mt-2">
+            </Box>
+            <Typography level="body-sm" sx={{ color: 'text.tertiary', mt: 1 }}>
               <strong>Admin privileges:</strong> Access to all classifications and security tags across all departments.
-            </p>
-          </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
-            <div className="text-center">
-              <div className="bg-green-100 dark:bg-green-900 text-green-800 dark:text-green-200 rounded-full w-12 h-12 flex items-center justify-center  mb-2">
-                <CheckCircle className="h-6 w-6" />
-              </div>
-              <div className="text-sm font-medium">Finance Policy</div>
-              <Badge variant="secondary" className="text-xs">Internal</Badge>
-            </div>
-            <div className="text-center">
-              <div className="bg-green-100 dark:bg-green-900 text-green-800 dark:text-green-200 rounded-full w-12 h-12 flex items-center justify-center  mb-2">
-                <CheckCircle className="h-6 w-6" />
-              </div>
-              <div className="text-sm font-medium">Engineering Handbook</div>
-              <Badge variant="secondary" className="text-xs">Internal</Badge>
-            </div>
-            <div className="text-center">
-              <div className="bg-green-100 dark:bg-green-900 text-green-800 dark:text-green-200 rounded-full w-12 h-12 flex items-center justify-center  mb-2">
-                <CheckCircle className="h-6 w-6" />
-              </div>
-              <div className="text-sm font-medium">HR Confidential</div>
-              <Badge variant="destructive" className="text-xs">Confidential</Badge>
-            </div>
-          </div>
-        </div>
+            </Typography>
+          </Box>
+          <Box sx={{ display: 'grid', gridTemplateColumns: { xs: 'repeat(1, 1fr)', md: 'repeat(3, 1fr)' }, gap: 2 }}>
+            <Box sx={{ textAlign: 'center' }}>
+              <Box sx={{
+                bgcolor: 'success.softBg',
+                color: 'success.main',
+                borderRadius: '50%',
+                width: 48,
+                height: 48,
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                mb: 1,
+                mx: 'auto'
+              }}>
+                <CheckCircle sx={{ fontSize: 24 }} />
+              </Box>
+              <Typography level="body-sm" sx={{ fontWeight: 'bold' }}>Finance Policy</Typography>
+              <Badge variant="soft" color="secondary" sx={{ fontSize: '0.75rem' }}>Internal</Badge>
+            </Box>
+            <Box sx={{ textAlign: 'center' }}>
+              <Box sx={{
+                bgcolor: 'success.softBg',
+                color: 'success.main',
+                borderRadius: '50%',
+                width: 48,
+                height: 48,
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                mb: 1,
+                mx: 'auto'
+              }}>
+                <CheckCircle sx={{ fontSize: 24 }} />
+              </Box>
+              <Typography level="body-sm" sx={{ fontWeight: 'bold' }}>Engineering Handbook</Typography>
+              <Badge variant="soft" color="secondary" sx={{ fontSize: '0.75rem' }}>Internal</Badge>
+            </Box>
+            <Box sx={{ textAlign: 'center' }}>
+              <Box sx={{
+                bgcolor: 'success.softBg',
+                color: 'success.main',
+                borderRadius: '50%',
+                width: 48,
+                height: 48,
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                mb: 1,
+                mx: 'auto'
+              }}>
+                <CheckCircle sx={{ fontSize: 24 }} />
+              </Box>
+              <Typography level="body-sm" sx={{ fontWeight: 'bold' }}>HR Confidential</Typography>
+              <Badge variant="soft" color="danger" sx={{ fontSize: '0.75rem' }}>Confidential</Badge>
+            </Box>
+          </Box>
+        </Box>
       </CardContent>
     </Card>
 
@@ -506,70 +704,58 @@ This page demonstrates role-based access control in the Mastra Governed RAG syst
 
 ## Testing Methods
 
-<div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
-  <Card>
+<Box sx={{ display: 'grid', gridTemplateColumns: { xs: '1fr', md: 'repeat(2, 1fr)' }, gap: 3, mb: 3 }}>
+  <Card variant="outlined">
     <CardHeader>
-      <CardTitle className="flex items-center">
-        <Play className="h-5 w-5 mr-2" />
+      <CardTitle sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+        <Play sx={{ fontSize: 20 }} />
         UI Testing
       </CardTitle>
       <CardDescription>Interactive testing through the web interface</CardDescription>
     </CardHeader>
     <CardContent>
-      <div className="space-y-3">
-        <div className="text-sm">
-          <strong>1. Open Application:</strong> Navigate to <a href="http://localhost:3000" className="text-primary hover:underline">http://localhost:3000</a>
-        </div>
-        <div className="text-sm">
-          <strong>2. Authenticate:</strong> Use the AuthPanel to select a role and generate a JWT
-        </div>
-        <div className="text-sm">
-          <strong>3. Test Queries:</strong> Ask questions in the chat interface
-        </div>
-        <div className="text-sm">
-          <strong>4. Observe Results:</strong> Watch streaming responses and citations
-        </div>
-      </div>
+      <Box sx={{ display: 'flex', flexDirection: 'column', gap: 1.5, fontSize: '0.875rem' }}>
+        <div><strong>1. Open Application:</strong> Navigate to <Typography component="a" href="http://localhost:3000" sx={{ color: 'primary.main', textDecoration: 'none', '&:hover': { textDecoration: 'underline' } }}>http://localhost:3000</Typography></div>
+        <div><strong>2. Authenticate:</strong> Use the AuthPanel to select a role and generate a JWT</div>
+        <div><strong>3. Test Queries:</strong> Ask questions in the chat interface</div>
+        <div><strong>4. Observe Results:</strong> Watch streaming responses and citations</div>
+      </Box>
     </CardContent>
   </Card>
 
-  <Card>
+  <Card variant="outlined">
     <CardHeader>
-      <CardTitle className="flex items-center">
-        <Terminal className="h-5 w-5 mr-2" />
+      <CardTitle sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+        <Terminal sx={{ fontSize: 20 }} />
         CLI Testing
       </CardTitle>
       <CardDescription>Command-line testing for automation</CardDescription>
     </CardHeader>
     <CardContent>
-      <div className="space-y-3">
-        <div className="bg-muted p-3 rounded text-sm font-mono">
-          npm run cli query "JWT_TOKEN" "Your question here"
-        </div>
-        <div className="text-sm text-muted-foreground">
-          Replace JWT_TOKEN with a token generated for the desired role
-        </div>
-        <div className="text-sm">
-          <strong>Output:</strong> Answer with citations logged to console
-        </div>
-      </div>
+      <Box sx={{ bgcolor: 'background.surface', p: 2, borderRadius: 1, fontSize: '0.875rem', fontFamily: 'monospace', mb: 1 }}>
+        npm run cli query "JWT_TOKEN" "Your question here"
+      </Box>
+      <Typography level="body-sm" sx={{ color: 'text.tertiary', mb: 1 }}>
+        Replace JWT_TOKEN with a token generated for the desired role
+      </Typography>
+      <div><strong>Output:</strong> Answer with citations logged to console</div>
     </CardContent>
   </Card>
-</div>
+</Box>
 
 ## Expected Behaviors
 
-<div className="space-y-4 mb-8">
-  <Alert>
-    <CheckCircle className="h-4 w-4" />
+<Box sx={{ display: 'flex', flexDirection: 'column', gap: 2, mb: 3 }}>
+  <Alert color="success">
+    <CheckCircle sx={{ fontSize: 16 }} />
     <AlertTitle>Authorized Access</AlertTitle>
     <AlertDescription>
       When users have appropriate permissions, they receive accurate answers with proper source citations from accessible documents.
     </AlertDescription>
   </Alert>
 
-<Alert>
-    <XCircle className="h-4 w-4" />
+<Alert color="danger">
+    <EyeOff sx={{ fontSize: 16 }} />
     <AlertTitle>Unauthorized Access</AlertTitle>
     <AlertDescription>
         When users lack permissions, they receive polite denials with "No
@@ -577,27 +763,30 @@ This page demonstrates role-based access control in the Mastra Governed RAG syst
     </AlertDescription>
 </Alert>
 
-  <Alert>
-    <Shield className="h-4 w-4" />
+  <Alert color="warning">
+    <Shield sx={{ fontSize: 16 }} />
     <AlertTitle>Security Verification</AlertTitle>
     <AlertDescription>
       All responses go through verification to ensure compliance with security policies and prevent unauthorized information disclosure.
     </AlertDescription>
   </Alert>
-</div>
+</Box>
 
-<div className="flex gap-4">
-    <Button asChild>
-        <a href="/docs/security">
-            <Shield className="h-4 w-4 mr-2" />
-            Security Guide
-            <ArrowRight className="h-4 w-4 ml-2" />
-        </a>
+<Box sx={{ display: 'flex', gap: 2 }}>
+    <Button
+        component="a"
+        href="/docs/security"
+        startDecorator={<Shield sx={{ fontSize: 16 }} />}
+    >
+        Security Guide
+        <ArrowRight sx={{ fontSize: 16, ml: 1 }} />
     </Button>
-    <Button variant="outline" asChild>
-        <a href="/docs/api-reference">
-            <FileText className="h-4 w-4 mr-2" />
-            API Reference
-        </a>
+    <Button
+        variant="outlined"
+        component="a"
+        href="/docs/api-reference"
+        startDecorator={<FileText sx={{ fontSize: 16 }} />}
+    >
+        API Reference
     </Button>
-</div>
+</Box>

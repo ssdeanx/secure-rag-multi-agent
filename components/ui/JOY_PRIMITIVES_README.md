@@ -13,6 +13,7 @@ This collection provides production-ready MUI Joy UI primitive components that i
 Full-featured button component with loading states and decorators.
 
 **Features:**
+
 - ✅ 4 variants: `solid`, `soft`, `outlined`, `plain`
 - ✅ 3 sizes: `sm`, `md`, `lg`
 - ✅ 5 colors: `primary`, `neutral`, `danger`, `success`, `warning`
@@ -22,11 +23,12 @@ Full-featured button component with loading states and decorators.
 - ✅ Proper ref forwarding
 
 **Example:**
+
 ```tsx
 import { Button } from '@/components/ui/joy'
 
-<Button variant="solid" color="primary" loading>
-  Submit
+;<Button variant="solid" color="primary" loading>
+    Submit
 </Button>
 ```
 
@@ -37,6 +39,7 @@ import { Button } from '@/components/ui/joy'
 Text input with custom focus ring and form integration.
 
 **Features:**
+
 - ✅ Custom focus ring with 3:1 contrast ratio
 - ✅ FormControl integration (auto ID generation)
 - ✅ Error state with `aria-invalid`
@@ -44,13 +47,19 @@ Text input with custom focus ring and form integration.
 - ✅ All input types supported
 
 **Example:**
-```tsx
-import { Input, FormControl, FormLabel, FormHelperText } from '@/components/ui/joy'
 
-<FormControl>
-  <FormLabel>Email</FormLabel>
-  <Input type="email" placeholder="you@example.com" />
-  <FormHelperText>We'll never share your email</FormHelperText>
+```tsx
+import {
+    Input,
+    FormControl,
+    FormLabel,
+    FormHelperText,
+} from '@/components/ui/joy'
+
+;<FormControl>
+    <FormLabel>Email</FormLabel>
+    <Input type="email" placeholder="you@example.com" />
+    <FormHelperText>We'll never share your email</FormHelperText>
 </FormControl>
 ```
 
@@ -61,6 +70,7 @@ import { Input, FormControl, FormLabel, FormHelperText } from '@/components/ui/j
 Auto-resizing textarea with custom styling.
 
 **Features:**
+
 - ✅ Auto-resize based on content
 - ✅ `minRows` and `maxRows` configuration
 - ✅ Custom focus ring matching Input
@@ -68,14 +78,11 @@ Auto-resizing textarea with custom styling.
 - ✅ Form integration support
 
 **Example:**
+
 ```tsx
 import { Textarea } from '@/components/ui/joy'
 
-<Textarea 
-  placeholder="Enter your message..."
-  minRows={3}
-  maxRows={10}
-/>
+;<Textarea placeholder="Enter your message..." minRows={3} maxRows={10} />
 ```
 
 ---
@@ -85,6 +92,7 @@ import { Textarea } from '@/components/ui/joy'
 Dropdown select with full keyboard navigation.
 
 **Features:**
+
 - ✅ Keyboard navigation (Arrow keys, Enter, Escape)
 - ✅ `aria-expanded` on trigger
 - ✅ `aria-selected` on options
@@ -92,13 +100,14 @@ Dropdown select with full keyboard navigation.
 - ✅ Start/end decorators
 
 **Example:**
+
 ```tsx
 import { Select, Option } from '@/components/ui/joy'
 
-<Select placeholder="Choose category">
-  <Option value="tech">Technology</Option>
-  <Option value="design">Design</Option>
-  <Option value="marketing">Marketing</Option>
+;<Select placeholder="Choose category">
+    <Option value="tech">Technology</Option>
+    <Option value="design">Design</Option>
+    <Option value="marketing">Marketing</Option>
 </Select>
 ```
 
@@ -109,6 +118,7 @@ import { Select, Option } from '@/components/ui/joy'
 Checkbox with proper label association and indeterminate state.
 
 **Features:**
+
 - ✅ Proper label association via FormControl
 - ✅ Indeterminate state (`aria-checked="mixed"`)
 - ✅ Custom focus ring
@@ -116,13 +126,11 @@ Checkbox with proper label association and indeterminate state.
 - ✅ Minimum 44x44px touch target
 
 **Example:**
+
 ```tsx
 import { Checkbox } from '@/components/ui/joy'
 
-<Checkbox 
-  label="Accept terms and conditions"
-  required
-/>
+;<Checkbox label="Accept terms and conditions" required />
 ```
 
 ---
@@ -132,6 +140,7 @@ import { Checkbox } from '@/components/ui/joy'
 Status indicators, tags, and badges.
 
 **Features:**
+
 - ✅ 4 variants: `solid`, `soft`, `outlined`, `plain`
 - ✅ 5 colors
 - ✅ Delete functionality
@@ -139,6 +148,7 @@ Status indicators, tags, and badges.
 - ✅ Start/end decorators
 
 **Example:**
+
 ```tsx
 import { Chip, Badge } from '@/components/ui/joy'
 
@@ -158,6 +168,7 @@ import { Chip, Badge } from '@/components/ui/joy'
 User profile pictures with fallback support.
 
 **Features:**
+
 - ✅ Image with `alt` text for accessibility
 - ✅ Fallback content (initials, icons)
 - ✅ 3 sizes: `sm`, `md`, `lg`
@@ -165,6 +176,7 @@ User profile pictures with fallback support.
 - ✅ 4 variants
 
 **Example:**
+
 ```tsx
 import { Avatar, AvatarGroup, AvatarImage, AvatarFallback } from '@/components/ui/joy'
 
@@ -187,6 +199,7 @@ import { Avatar, AvatarGroup, AvatarImage, AvatarFallback } from '@/components/u
 Content container with composition pattern.
 
 **Features:**
+
 - ✅ 4 variants: `solid`, `soft`, `outlined`, `plain`
 - ✅ Horizontal and vertical orientation
 - ✅ CardCover for background images/videos
@@ -195,27 +208,26 @@ Content container with composition pattern.
 - ✅ Backward compatibility with Shadcn naming
 
 **Example:**
+
 ```tsx
-import { 
-  Card, 
-  CardContent, 
-  CardTitle, 
-  CardDescription, 
-  CardActions,
-  Button 
+import {
+    Card,
+    CardContent,
+    CardTitle,
+    CardDescription,
+    CardActions,
+    Button,
 } from '@/components/ui/joy'
 
-<Card>
-  <CardContent>
-    <CardTitle>Card Title</CardTitle>
-    <CardDescription>
-      This is a card description.
-    </CardDescription>
-  </CardContent>
-  <CardActions>
-    <Button variant="solid">Action</Button>
-    <Button variant="outlined">Cancel</Button>
-  </CardActions>
+;<Card>
+    <CardContent>
+        <CardTitle>Card Title</CardTitle>
+        <CardDescription>This is a card description.</CardDescription>
+    </CardContent>
+    <CardActions>
+        <Button variant="solid">Action</Button>
+        <Button variant="outlined">Cancel</Button>
+    </CardActions>
 </Card>
 ```
 
@@ -227,19 +239,19 @@ All components are exported from a single file for convenience:
 
 ```tsx
 import {
-  Button,
-  Input,
-  Textarea,
-  Select,
-  Option,
-  Checkbox,
-  Chip,
-  Badge,
-  Avatar,
-  Card,
-  FormControl,
-  FormLabel,
-  FormHelperText,
+    Button,
+    Input,
+    Textarea,
+    Select,
+    Option,
+    Checkbox,
+    Chip,
+    Badge,
+    Avatar,
+    Card,
+    FormControl,
+    FormLabel,
+    FormHelperText,
 } from '@/components/ui/joy'
 ```
 
@@ -250,6 +262,7 @@ import {
 All components integrate with your existing `joyTheme` configuration in `/lib/theme/joy-theme.ts`:
 
 ### Color Palette
+
 - **Primary**: Supabase green (`#3ECF8E` / `hsl(153 60% 53%)`)
 - **Neutral**: Gray scale for text and borders
 - **Danger**: Red for destructive actions
@@ -257,12 +270,14 @@ All components integrate with your existing `joyTheme` configuration in `/lib/th
 - **Warning**: Amber for warnings
 
 ### Variants
+
 - **Solid**: Filled background, high contrast
 - **Soft**: Subtle background, medium contrast
 - **Outlined**: Border only, minimal style
 - **Plain**: No background, text-like
 
 ### Sizes
+
 - **sm**: ~32px height
 - **md**: ~40px height (default)
 - **lg**: ~48px height
@@ -278,13 +293,14 @@ All components meet **WCAG 2.1 Level AA** standards:
 ✅ **ARIA Attributes**: Proper labels, roles, and states  
 ✅ **Keyboard Navigation**: Full keyboard support  
 ✅ **Screen Reader**: Compatible with assistive technology  
-✅ **Color Contrast**: Text meets 4.5:1 ratio  
+✅ **Color Contrast**: Text meets 4.5:1 ratio
 
 ---
 
 ## TypeScript Support
 
 All components are fully typed with:
+
 - ✅ Generic ref forwarding (`React.forwardRef<HTMLElement, Props>`)
 - ✅ Strict prop interfaces (no `any` types)
 - ✅ SxProps for theme-aware styling
@@ -302,6 +318,7 @@ A comprehensive test page is available at:
 ```
 
 Navigate to `/test-components/joy-primitives` in your browser to see all components in action with:
+
 - ✅ All variants demonstrated
 - ✅ Interactive state testing
 - ✅ Form integration examples
@@ -313,6 +330,7 @@ Navigate to `/test-components/joy-primitives` in your browser to see all compone
 ## Next Steps
 
 ### Phase 1 Complete ✅
+
 - [x] Button
 - [x] Input + Form components
 - [x] Textarea
@@ -323,10 +341,11 @@ Navigate to `/test-components/joy-primitives` in your browser to see all compone
 - [x] Card + subcomponents
 
 ### Phase 2 (Next)
+
 - [ ] Radio + RadioGroup
 - [ ] Switch / Toggle
 - [ ] Slider
-- [ ] Progress (Linear + Circular) *already exists*
+- [ ] Progress (Linear + Circular) _already exists_
 - [ ] Tabs + TabList + Tab + TabPanel
 - [ ] Modal / Dialog
 - [ ] Drawer
@@ -340,27 +359,29 @@ Navigate to `/test-components/joy-primitives` in your browser to see all compone
 To migrate from Shadcn components:
 
 1. **Import from new file:**
-   ```tsx
-   // Before
-   import { Button } from '@/components/ui/button'
-   
-   // After
-   import { Button } from '@/components/ui/joy'
-   ```
+
+    ```tsx
+    // Before
+    import { Button } from '@/components/ui/button'
+
+    // After
+    import { Button } from '@/components/ui/joy'
+    ```
 
 2. **Update variant names (if needed):**
-   - Shadcn `default` → Joy `solid`
-   - Shadcn `destructive` → Joy `solid` + `color="danger"`
-   - Shadcn `ghost` → Joy `plain`
+    - Shadcn `default` → Joy `solid`
+    - Shadcn `destructive` → Joy `solid` + `color="danger"`
+    - Shadcn `ghost` → Joy `plain`
 
 3. **Replace Tailwind classes with `sx` prop:**
-   ```tsx
-   // Before
-   <Button className="bg-primary text-white">Click</Button>
-   
-   // After
-   <Button variant="solid" color="primary">Click</Button>
-   ```
+
+    ```tsx
+    // Before
+    <Button className="bg-primary text-white">Click</Button>
+
+    // After
+    <Button variant="solid" color="primary">Click</Button>
+    ```
 
 4. **Test accessibility:** Use the test page to verify all components work correctly.
 
@@ -369,6 +390,7 @@ To migrate from Shadcn components:
 ## Architecture Decisions
 
 ### Why Joy UI?
+
 1. **Theme-first design**: CSS variables make customization easier
 2. **Accessibility built-in**: WCAG compliance out of the box
 3. **TypeScript native**: Better DX with full type support
@@ -376,11 +398,13 @@ To migrate from Shadcn components:
 5. **Modern API**: Cleaner props and better composition
 
 ### Why Not Material UI?
+
 - Material Design is opinionated (doesn't fit all brands)
 - Joy UI is more flexible for custom design systems
 - Joy UI has better TypeScript experience
 
 ### Why Custom Wrappers?
+
 - **Consistency**: Maintain existing API where possible
 - **Type Safety**: Add project-specific types
 - **Theme Integration**: Inject Supabase green palette
@@ -391,6 +415,7 @@ To migrate from Shadcn components:
 ## Troubleshooting
 
 ### Import Errors
+
 ```tsx
 // ❌ Wrong
 import Button from '@mui/joy/Button'
@@ -400,13 +425,17 @@ import { Button } from '@/components/ui/joy'
 ```
 
 ### Type Errors
+
 All components use proper TypeScript types. If you see type errors:
+
 1. Ensure `@mui/joy` and `@mui/system` are installed
 2. Check that you're using the correct prop names
 3. Use `sx` prop for custom styles, not `className`
 
 ### Styling Issues
+
 Joy UI uses Emotion's `sx` prop:
+
 ```tsx
 // ❌ Won't work
 <Button className="bg-red-500">Click</Button>

@@ -15,7 +15,7 @@ This directory contains the rich set of UI components that power the Cedar OS ex
 - **`/diffs`**: Components for visualizing differences in text and data.
 - **`/spells`**: Interactive UI "spells" like `RadialMenuSpell` and `TooltipMenuSpell` that provide novel ways for users to interact with the application.
 - **`/structural`**: Layout components like `FloatingContainer` and `SidePanelContainer` that manage the positioning and behavior of floating UI elements.
-- **`/ui`**: A local copy of `shadcn/ui` primitives, customized for the Cedar OS theme.
+- **`/ui`**: A local copy of MUI Joy UI primitives, customized for the Cedar OS theme.
 
 ### Best Practices
 

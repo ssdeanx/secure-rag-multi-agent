@@ -71,9 +71,9 @@ To update: when adding a new `AGENTS.md`, append a row and ensure consistent tag
 
 ## Project Overview
 
-This is a Next.js application implementing a secure, governed Retrieval-Augmented Generation (RAG) system with role-based access control using Mastra. It features a multi-agent architecture with 15+ specialized agents for secure document retrieval and AI-powered responses.
+This is a Next.js application implementing a secure, governed Retrieval-Augmented Generation (RAG) system with role-based access control using Mastra. It features a multi-agent architecture with 16+ specialized agents for secure document retrieval and AI-powered responses.
 
-**Key Technologies:** Next.js, TypeScript, Mastra, Qdrant, LibSQL, Tailwind CSS, shadcn/ui, Zod
+**Key Technologies:** Next.js, TypeScript, Mastra, PostgreSQL, PgVector, LibSQL, MUI Joy UI, Zod
 
 ## Architectural Diagram
 
@@ -94,7 +94,7 @@ C4Context
             Component(hooks, "/hooks", "React Hooks", "Reusable client-side logic")
         }
 
-        Container(backend, "Backend Services", "Node.js, TypeScript, Mastra, Qdrant, LibSQL", "API Endpoints & AI Orchestration") {
+        Container(backend, "Backend Services", "Node.js, TypeScript, Mastra, PostgreSQL, PgVector, LibSQL", "API Endpoints & AI Orchestration") {
             Component(src_root, "/src", "Backend Source Root", "Entry point, types, utils, Mastra integration")
             Component(api_route_handlers, "/app/api", "API Route Handlers", "Chat & Indexing Endpoints; Streaming")
             Component(mastra_core, "/src/mastra", "Mastra Core Orchestration", "Orchestration, Registration, Tracing")
@@ -104,14 +104,14 @@ C4Context
             Component(mastra_tools, "/src/mastra/tools", "Mastra Tools", "Safe Callable Functions for Agents")
             Component(mastra_services, "/src/mastra/services", "Mastra Services", "Business/Domain Logic Modules")
             Component(mastra_schemas, "/src/mastra/schemas", "Mastra Schemas", "Zod Contracts & Data Validation")
-            Component(mastra_config, "/src/mastra/config", "Mastra Configuration", "External Service Setup (Qdrant, Models)")
+            Component(mastra_config, "/src/mastra/config", "Mastra Configuration", "External Service Setup (PostgreSQL, PgVector, Models)")
             Component(mastra_policy, "/src/mastra/policy", "Mastra Policy / ACL", "Access Control Rule Sources")
             Component(src_utils, "/src/utils", "Backend Utilities", "Stream & Helper Abstractions")
             Component(src_cli, "/src/cli", "CLI Layer", "Indexing & Workflow Invocation CLI")
         }
 
-        Container(data_stores, "Data Stores", "Qdrant, LibSQL", "Vector Database & Persistent Storage") {
-            Component(qdrant, "Qdrant", "Vector Database", "Stores document embeddings and metadata")
+        Container(data_stores, "Data Stores", "PostgreSQL, PgVector, LibSQL", "Vector Database & Persistent Storage") {
+            Component(qdrant, "PostgreSQL with PgVector", "Vector Database", "Stores document embeddings and metadata")
             Component(libsql, "LibSQL", "SQLite-based Database", "Persistent storage for Mastra memory, etc.")
         }
 
@@ -160,15 +160,15 @@ C4Context
     Rel(mastra_networks, "Use memory from", libsql, "Task history")
 
     Rel(mastra_tools, "Utilize", mastra_services)
-    Rel(mastra_tools, "Interact with", qdrant, "Vector Search")
+    Rel(mastra_tools, "Interact with", pgVector, "Vector Search")
     Rel(mastra_tools, "Interact with", libsql, "Data Storage")
 
-    Rel(mastra_services, "Interact with", qdrant, "Vector Storage")
+    Rel(mastra_services, "Interact with", pgVector, "Vector Storage")
     Rel(mastra_services, "Interact with", libsql, "Data Storage")
 
     Rel(src_cli, "Invokes", mastra_core, "Mastra Workflows")
 
-    Rel(qdrant, "Stores", corpus, "Embeddings & Metadata")
+    Rel(pgVector, "Stores", corpus, "Embeddings & Metadata")
     Rel(libsql, "Stores", corpus, "Memory & Metadata")
 
     Rel(corpus, "Indexed by", mastra_workflows, "governed-rag-index")
@@ -181,18 +181,17 @@ C4Context
 
 - Install dependencies: `npm install`
 - Copy environment template: `cp .env.example .env`
-- Start infrastructure: `docker-compose up -d` (Qdrant vector database)
+- Start infrastructure: `docker-compose up -d` (PostgreSQL + PgVector database)
 - Index documents: `npm run cli index`
 - Start development: `npm run dev`
 
 ### Required Environment Variables
 
 ```bash
-OPENAI_API_KEY=your_openai_api_key
-QDRANT_URL=http://localhost:6333
-JWT_SECRET=your_jwt_secret
-DATABASE_URL=file:deep-research.db
 GOOGLE_GENERATIVE_AI_API_KEY=your_gemini_api_key
+DATABASE_URL=postgresql://user:password@localhost:5432/mastra_db
+JWT_SECRET=your_jwt_secret
+OPENAI_API_KEY=your_openai_api_key
 ```
 
 ## Development Workflow
@@ -288,7 +287,7 @@ GOOGLE_GENERATIVE_AI_API_KEY=your_gemini_api_key
 
 - Node.js >= 20.9.0
 - Environment variables must be set
-- Qdrant database connection required
+- PostgreSQL + PgVector database connection required
 - Docker Compose for infrastructure in production
 
 ## Security Considerations
@@ -311,7 +310,7 @@ GOOGLE_GENERATIVE_AI_API_KEY=your_gemini_api_key
 
 - Server-only environment variables (no `NEXT_PUBLIC_` prefix)
 - JWT secrets stored securely
-- API keys for external services (OpenAI, Qdrant, etc.)
+- API keys for external services (Google Gemini, PostgreSQL, PgVector, etc.)
 
 ## Pull Request Guidelines
 
@@ -340,14 +339,17 @@ GOOGLE_GENERATIVE_AI_API_KEY=your_gemini_api_key
 
 ### Common Issues
 
-#### Qdrant Connection Failed
+#### PostgreSQL + PgVector Connection Failed
 
 ```bash
-# Check Qdrant health
-curl http://localhost:6333/health
+# Check PostgreSQL health
+psql postgresql://user:password@localhost:5432/mastra_db -c "SELECT version();"
+
+# Check PgVector extension
+psql postgresql://user:password@localhost:5432/mastra_db -c "SELECT * FROM pg_extension WHERE extname = 'vector';"
 
 # View logs
-docker-compose logs qdrant
+docker-compose logs postgres
 
 # Restart services
 docker-compose down && docker-compose up -d
@@ -385,7 +387,7 @@ npx tsc --noEmit
 
 ### Performance Optimization
 
-- Vector search optimization in Qdrant
+- Vector search optimization in PgVector
 - Batch embedding processing
 - Redis caching for frequent queries
 - Connection pooling for database operations

@@ -38,7 +38,9 @@ export function CTA() {
                         backdropFilter: 'blur(8px)',
                     }}
                 >
-                    <CardContent sx={{ textAlign: 'center', p: { xs: 3, sm: 6 } }}>
+                    <CardContent
+                        sx={{ textAlign: 'center', p: { xs: 3, sm: 6 } }}
+                    >
                         <Box
                             component="h2"
                             sx={{
@@ -51,8 +53,12 @@ export function CTA() {
                             Try the Governed RAG demo
                         </Box>
 
-                        <Typography level="body-md" sx={{ mb: 4, color: 'text.secondary' }}>
-                            Secure, auditable retrieval-augmented generation for enterprise workflows.
+                        <Typography
+                            level="body-md"
+                            sx={{ mb: 4, color: 'text.secondary' }}
+                        >
+                            Secure, auditable retrieval-augmented generation for
+                            enterprise workflows.
                         </Typography>
 
                         <Box

@@ -1,6 +1,6 @@
-'use client';
+'use client'
 
-import React, { useState } from 'react';
+import React, { useState } from 'react'
 import {
     Box,
     Typography,
@@ -12,9 +12,9 @@ import {
     Divider,
     Breadcrumbs,
     Link as JoyLink,
-} from '@/components/ui/joy';
-import Link from 'next/link';
-import { usePathname } from 'next/navigation';
+} from '@/components/ui/joy'
+import Link from 'next/link'
+import { usePathname } from 'next/navigation'
 import {
     Menu as MenuIcon,
     Close,
@@ -23,20 +23,20 @@ import {
     RocketLaunch,
     ChevronRight,
     Home,
-} from '@mui/icons-material';
-import { DocsSearch } from './DocsSearch.joy';
-import { DocsTOC } from './DocsTOC.joy';
+} from '@mui/icons-material'
+import { DocsSearch } from './DocsSearch.joy'
+import { DocsTOC } from './DocsTOC.joy'
 
 interface DocsSidebarItem {
-    title: string;
-    href: string;
-    icon?: React.ElementType;
-    items?: DocsSidebarItem[];
+    title: string
+    href: string
+    icon?: React.ElementType
+    items?: DocsSidebarItem[]
 }
 
 interface DocsLayoutProps {
-    children: React.ReactNode;
-    tableOfContents?: Array<{ id: string; title: string; level: number }>;
+    children: React.ReactNode
+    tableOfContents?: Array<{ id: string; title: string; level: number }>
 }
 
 const sidebarNav: DocsSidebarItem[] = [
@@ -66,26 +66,40 @@ const sidebarNav: DocsSidebarItem[] = [
         icon: Code,
         items: [
             { title: 'API Overview', href: '/docs/api-reference' },
-            { title: 'Authentication', href: '/docs/api-reference#authentication' },
+            {
+                title: 'Authentication',
+                href: '/docs/api-reference#authentication',
+            },
             { title: 'Endpoints', href: '/docs/api-reference#endpoints' },
         ],
     },
-];
+]
 
 function SidebarContent({ onLinkClick }: { onLinkClick?: () => void }) {
-    const pathname = usePathname();
-    const [expandedSections, setExpandedSections] = useState<string[]>(['/docs']);
+    const pathname = usePathname()
+    const [expandedSections, setExpandedSections] = useState<string[]>([
+        '/docs',
+    ])
 
-    const isActive = (href: string) => pathname === href;
+    const isActive = (href: string) => pathname === href
 
     const toggleSection = (href: string) => {
         setExpandedSections((prev) =>
-            prev.includes(href) ? prev.filter((h) => h !== href) : [...prev, href],
-        );
-    };
+            prev.includes(href)
+                ? prev.filter((h) => h !== href)
+                : [...prev, href]
+        )
+    }
 
     return (
-        <Box sx={{ display: 'flex', flexDirection: 'column', height: '100%', p: 3 }}>
+        <Box
+            sx={{
+                display: 'flex',
+                flexDirection: 'column',
+                height: '100%',
+                p: 3,
+            }}
+        >
             <Box sx={{ mb: 3 }}>
                 <DocsSearch />
             </Box>
@@ -95,8 +109,8 @@ function SidebarContent({ onLinkClick }: { onLinkClick?: () => void }) {
             <List sx={{ '--List-padding': '0px', '--List-gap': '4px' }}>
                 {sidebarNav.map((section) => {
                     // small typed wrapper to render icon components safely in JSX
-                    const IconComp = section.icon;
-                    const isExpanded = expandedSections.includes(section.href);
+                    const IconComp = section.icon
+                    const isExpanded = expandedSections.includes(section.href)
 
                     return (
                         <Box key={section.href}>
@@ -107,19 +121,31 @@ function SidebarContent({ onLinkClick }: { onLinkClick?: () => void }) {
                                         py: 1,
                                         borderRadius: 'sm',
                                         fontWeight: 600,
-                                        '&:hover': { bgcolor: 'neutral.softHoverBg' },
+                                        '&:hover': {
+                                            bgcolor: 'neutral.softHoverBg',
+                                        },
                                     }}
                                 >
-                                    {(IconComp !== null && IconComp !== undefined && (typeof IconComp === 'function' || typeof IconComp === 'object')) ? (
-                                        <IconComp sx={{ fontSize: 20, mr: 1.5 }} />
+                                    {IconComp !== null &&
+                                    IconComp !== undefined &&
+                                    (typeof IconComp === 'function' ||
+                                        typeof IconComp === 'object') ? (
+                                        <IconComp
+                                            sx={{ fontSize: 20, mr: 1.5 }}
+                                        />
                                     ) : null}
-                                    <Typography level="body-sm" sx={{ flex: 1 }}>
+                                    <Typography
+                                        level="body-sm"
+                                        sx={{ flex: 1 }}
+                                    >
                                         {section.title}
                                     </Typography>
                                     <ChevronRight
                                         sx={{
                                             fontSize: 16,
-                                            transform: isExpanded ? 'rotate(90deg)' : 'none',
+                                            transform: isExpanded
+                                                ? 'rotate(90deg)'
+                                                : 'none',
                                             transition: 'transform 0.2s',
                                         }}
                                     />
@@ -129,17 +155,25 @@ function SidebarContent({ onLinkClick }: { onLinkClick?: () => void }) {
                             {isExpanded && section.items && (
                                 <List sx={{ pl: 3, mt: 0.5, mb: 1 }}>
                                     {section.items.map((item) => (
-                                        <ListItem key={item.href} sx={{ '--ListItem-paddingY': '0px' }}>
+                                        <ListItem
+                                            key={item.href}
+                                            sx={{
+                                                '--ListItem-paddingY': '0px',
+                                            }}
+                                        >
                                             <Link href={item.href} passHref>
                                                 <ListItemButton
-                                                    selected={isActive(item.href)}
+                                                    selected={isActive(
+                                                        item.href
+                                                    )}
                                                     onClick={onLinkClick}
                                                     sx={{
                                                         py: 0.75,
                                                         borderRadius: 'sm',
                                                         fontSize: 'sm',
                                                         '&.Mui-selected': {
-                                                            bgcolor: 'primary.softBg',
+                                                            bgcolor:
+                                                                'primary.softBg',
                                                             color: 'primary.500',
                                                             fontWeight: 600,
                                                         },
@@ -153,29 +187,40 @@ function SidebarContent({ onLinkClick }: { onLinkClick?: () => void }) {
                                 </List>
                             )}
                         </Box>
-                    );
+                    )
                 })}
             </List>
         </Box>
-    );
+    )
 }
 
-export function DocsLayout({ children, tableOfContents = [] }: DocsLayoutProps) {
-    const [mobileOpen, setMobileOpen] = useState(false);
-    const pathname = usePathname();
+export function DocsLayout({
+    children,
+    tableOfContents = [],
+}: DocsLayoutProps) {
+    const [mobileOpen, setMobileOpen] = useState(false)
+    const pathname = usePathname()
 
-    const toggleMobileSidebar = () => setMobileOpen(!mobileOpen);
+    const toggleMobileSidebar = () => setMobileOpen(!mobileOpen)
 
     const breadcrumbs = pathname
         ?.split('/')
         .filter(Boolean)
         .map((segment, index, array) => ({
-            label: segment.charAt(0).toUpperCase() + segment.slice(1).replace(/-/g, ' '),
+            label:
+                segment.charAt(0).toUpperCase() +
+                segment.slice(1).replace(/-/g, ' '),
             href: '/' + array.slice(0, index + 1).join('/'),
-        }));
+        }))
 
     return (
-        <Box sx={{ display: 'flex', minHeight: '100vh', bgcolor: 'background.body' }}>
+        <Box
+            sx={{
+                display: 'flex',
+                minHeight: '100vh',
+                bgcolor: 'background.body',
+            }}
+        >
             {/* Desktop Sidebar */}
             <Box
                 component="aside"
@@ -195,9 +240,21 @@ export function DocsLayout({ children, tableOfContents = [] }: DocsLayoutProps) 
             </Box>
 
             {/* Mobile Drawer */}
-            <Drawer open={mobileOpen} onClose={toggleMobileSidebar} anchor="left">
+            <Drawer
+                open={mobileOpen}
+                onClose={toggleMobileSidebar}
+                anchor="left"
+            >
                 <Box sx={{ width: 280 }}>
-                    <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', p: 3, pb: 0 }}>
+                    <Box
+                        sx={{
+                            display: 'flex',
+                            justifyContent: 'space-between',
+                            alignItems: 'center',
+                            p: 3,
+                            pb: 0,
+                        }}
+                    >
                         <Typography level="h4" sx={{ fontWeight: 700 }}>
                             Documentation
                         </Typography>
@@ -215,7 +272,10 @@ export function DocsLayout({ children, tableOfContents = [] }: DocsLayoutProps) 
             </Drawer>
 
             {/* Main Content */}
-            <Box component="main" sx={{ flex: 1, display: 'flex', flexDirection: 'column' }}>
+            <Box
+                component="main"
+                sx={{ flex: 1, display: 'flex', flexDirection: 'column' }}
+            >
                 {/* Mobile Menu Button & Breadcrumbs */}
                 <Box
                     sx={{
@@ -229,7 +289,14 @@ export function DocsLayout({ children, tableOfContents = [] }: DocsLayoutProps) 
                         py: 2,
                     }}
                 >
-                    <Box sx={{ display: 'flex', alignItems: 'center', gap: 2, mb: 2 }}>
+                    <Box
+                        sx={{
+                            display: 'flex',
+                            alignItems: 'center',
+                            gap: 2,
+                            mb: 2,
+                        }}
+                    >
                         <Button
                             variant="outlined"
                             color="neutral"
@@ -243,13 +310,19 @@ export function DocsLayout({ children, tableOfContents = [] }: DocsLayoutProps) 
                             <MenuIcon />
                         </Button>
 
-                        <Breadcrumbs separator={<ChevronRight sx={{ fontSize: 16 }} />}>
+                        <Breadcrumbs
+                            separator={<ChevronRight sx={{ fontSize: 16 }} />}
+                        >
                             <JoyLink
                                 href="/"
                                 color="neutral"
                                 level="body-sm"
                                 underline="hover"
-                                sx={{ display: 'inline-flex', alignItems: 'center', gap: 0.5 }}
+                                sx={{
+                                    display: 'inline-flex',
+                                    alignItems: 'center',
+                                    gap: 0.5,
+                                }}
                             >
                                 <Home sx={{ fontSize: 16 }} />
                                 Home
@@ -258,7 +331,11 @@ export function DocsLayout({ children, tableOfContents = [] }: DocsLayoutProps) 
                                 <JoyLink
                                     key={crumb.href}
                                     href={crumb.href}
-                                    color={index === breadcrumbs.length - 1 ? 'primary' : 'neutral'}
+                                    color={
+                                        index === breadcrumbs.length - 1
+                                            ? 'primary'
+                                            : 'neutral'
+                                    }
                                     level="body-sm"
                                     underline="hover"
                                 >
@@ -274,7 +351,10 @@ export function DocsLayout({ children, tableOfContents = [] }: DocsLayoutProps) 
                     <Box
                         sx={{
                             flex: 1,
-                            maxWidth: tableOfContents.length > 0 ? 'calc(100% - 280px)' : '900px',
+                            maxWidth:
+                                tableOfContents.length > 0
+                                    ? 'calc(100% - 280px)'
+                                    : '900px',
                             mx: 'auto',
                             px: { xs: 3, sm: 4, lg: 6 },
                             py: 6,
@@ -301,5 +381,5 @@ export function DocsLayout({ children, tableOfContents = [] }: DocsLayoutProps) 
                 </Box>
             </Box>
         </Box>
-    );
+    )
 }

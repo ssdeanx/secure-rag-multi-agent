@@ -22,7 +22,7 @@ export default defineConfig({
             'coverage',
             '.mastra',
             '.github',
-            'public'
+            'public',
         ],
         reporters: ['dot', 'json'],
         outputFile: {

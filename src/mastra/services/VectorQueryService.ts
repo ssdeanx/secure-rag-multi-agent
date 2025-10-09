@@ -4,7 +4,7 @@ import { ValidationService } from './ValidationService'
 import { RoleService } from './RoleService'
 import { log } from '../config/logger'
 import type { PgVector } from '@mastra/pg'
-import { googleAIEmbedding } from '../config/google'
+import { google } from '@ai-sdk/google'
 
 export interface QueryInput {
     question: string
@@ -83,8 +83,8 @@ function normalizePgVectorResults(raw: unknown): VectorStoreQueryResult[] {
             typeof meta?.classification === 'string'
                 ? meta.classification
                 : (securityTags
-                    .find((t) => t.startsWith('classification:'))
-                    ?.split(':')[1] ?? 'public')
+                      .find((t) => t.startsWith('classification:'))
+                      ?.split(':')[1] ?? 'public')
 
         return {
             score: Number(score ?? 0),
@@ -162,7 +162,7 @@ export class VectorQueryService {
 
     static async generateQueryEmbedding(question: string): Promise<number[]> {
         const { embeddings } = await embedMany({
-            model: googleAIEmbedding,
+            model: google.textEmbedding('gemini-embedding-001'),
             values: [question],
         })
         return embeddings[0] as number[]

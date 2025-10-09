@@ -1,9 +1,9 @@
 /**
  * Button Component - Joy UI Primitive
- * 
+ *
  * Production-ready button with full TypeScript support, accessibility,
  * and integration with Supabase green theme.
- * 
+ *
  * Features:
  * - 4 variants: solid, soft, outlined, plain
  * - 3 sizes: sm, md, lg
@@ -92,21 +92,21 @@ export interface ButtonProps
 
 /**
  * Button component that wraps MUI Joy Button with type-safe props.
- * 
+ *
  * @example
  * ```tsx
  * <Button variant="solid" color="primary">
  *   Click me
  * </Button>
  * ```
- * 
+ *
  * @example Icon button
  * ```tsx
  * <Button variant="outlined" aria-label="Delete">
  *   <DeleteIcon />
  * </Button>
  * ```
- * 
+ *
  * @example Loading button
  * ```tsx
  * <Button loading>

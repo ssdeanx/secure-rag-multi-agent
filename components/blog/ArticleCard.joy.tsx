@@ -1,23 +1,30 @@
-'use client';
+'use client'
 
-import { Card, CardContent, Typography, Box, Chip, Avatar } from '@/components/ui/joy';
-import styles from './ArticleCard.module.css';
-import Link from 'next/link';
-import { motion } from 'framer-motion';
-import { CalendarMonth, Person, AccessTime } from '@mui/icons-material';
+import {
+    Card,
+    CardContent,
+    Typography,
+    Box,
+    Chip,
+    Avatar,
+} from '@/components/ui/joy'
+import styles from './ArticleCard.module.css'
+import Link from 'next/link'
+import { motion } from 'framer-motion'
+import { CalendarMonth, Person, AccessTime } from '@mui/icons-material'
 
 interface ArticleCardProps {
-    title: string;
-    excerpt: string;
-    date: string;
+    title: string
+    excerpt: string
+    date: string
     author: {
-        name: string;
-        avatar?: string;
-    };
-    readingTime: string;
-    tags: string[];
-    slug: string;
-    image?: string;
+        name: string
+        avatar?: string
+    }
+    readingTime: string
+    tags: string[]
+    slug: string
+    image?: string
 }
 
 export function ArticleCard({
@@ -69,7 +76,14 @@ export function ArticleCard({
                             />
                         </Box>
                     )}
-                    <CardContent sx={{ flexGrow: 1, display: 'flex', flexDirection: 'column', gap: 2 }}>
+                    <CardContent
+                        sx={{
+                            flexGrow: 1,
+                            display: 'flex',
+                            flexDirection: 'column',
+                            gap: 2,
+                        }}
+                    >
                         <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 1 }}>
                             {tags.slice(0, 3).map((tag) => (
                                 <Chip
@@ -105,39 +119,100 @@ export function ArticleCard({
                             {excerpt}
                         </Typography>
 
-                        <Box sx={{ display: 'flex', alignItems: 'center', gap: 3, pt: 2, borderTop: '1px solid', borderColor: 'divider' }}>
-                            <Box sx={{ display: 'flex', alignItems: 'center', gap: 1.5 }}>
+                        <Box
+                            sx={{
+                                display: 'flex',
+                                alignItems: 'center',
+                                gap: 3,
+                                pt: 2,
+                                borderTop: '1px solid',
+                                borderColor: 'divider',
+                            }}
+                        >
+                            <Box
+                                sx={{
+                                    display: 'flex',
+                                    alignItems: 'center',
+                                    gap: 1.5,
+                                }}
+                            >
                                 <Avatar
                                     src={author.avatar}
                                     alt={author.name}
                                     size="sm"
                                 >
-                                    {author.name?.trim()
-                                        ? author.name.split(' ').map(n => n[0]).join('')
-                                        : <Person sx={{ fontSize: 16 }} />}
+                                    {author.name?.trim() ? (
+                                        author.name
+                                            .split(' ')
+                                            .map((n) => n[0])
+                                            .join('')
+                                    ) : (
+                                        <Person sx={{ fontSize: 16 }} />
+                                    )}
                                 </Avatar>
                                 <Box>
-                                    <Typography level="body-sm" sx={{ fontWeight: 600 }}>
+                                    <Typography
+                                        level="body-sm"
+                                        sx={{ fontWeight: 600 }}
+                                    >
                                         {author.name}
                                     </Typography>
                                 </Box>
                             </Box>
 
-                            <Box sx={{ display: 'flex', alignItems: 'center', gap: 2, ml: 'auto' }}>
-                                <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.5 }}>
-                                    <CalendarMonth sx={{ fontSize: 16, color: 'text.secondary' }} />
-                                    <Typography level="body-sm" sx={{ color: 'text.secondary' }}>
-                                        {new Date(date).toLocaleDateString('en-US', {
-                                            month: 'short',
-                                            day: 'numeric',
-                                            year: 'numeric',
-                                        })}
+                            <Box
+                                sx={{
+                                    display: 'flex',
+                                    alignItems: 'center',
+                                    gap: 2,
+                                    ml: 'auto',
+                                }}
+                            >
+                                <Box
+                                    sx={{
+                                        display: 'flex',
+                                        alignItems: 'center',
+                                        gap: 0.5,
+                                    }}
+                                >
+                                    <CalendarMonth
+                                        sx={{
+                                            fontSize: 16,
+                                            color: 'text.secondary',
+                                        }}
+                                    />
+                                    <Typography
+                                        level="body-sm"
+                                        sx={{ color: 'text.secondary' }}
+                                    >
+                                        {new Date(date).toLocaleDateString(
+                                            'en-US',
+                                            {
+                                                month: 'short',
+                                                day: 'numeric',
+                                                year: 'numeric',
+                                            }
+                                        )}
                                     </Typography>
                                 </Box>
 
-                                <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.5 }}>
-                                    <AccessTime sx={{ fontSize: 16, color: 'text.secondary' }} />
-                                    <Typography level="body-sm" sx={{ color: 'text.secondary' }}>
+                                <Box
+                                    sx={{
+                                        display: 'flex',
+                                        alignItems: 'center',
+                                        gap: 0.5,
+                                    }}
+                                >
+                                    <AccessTime
+                                        sx={{
+                                            fontSize: 16,
+                                            color: 'text.secondary',
+                                        }}
+                                    />
+                                    <Typography
+                                        level="body-sm"
+                                        sx={{ color: 'text.secondary' }}
+                                    >
                                         {readingTime}
                                     </Typography>
                                 </Box>
@@ -147,5 +222,5 @@ export function ArticleCard({
                 </Card>
             </Link>
         </motion.div>
-    );
+    )
 }

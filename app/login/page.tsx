@@ -4,13 +4,19 @@ import { Box, Typography } from '@/components/ui/joy'
 import { AuthForm } from '@/components/login/AuthForm.joy'
 import { generateDemoJWT } from '@/lib/actions/auth'
 
-interface AuthFormData { email: string; password: string; role?: string }
+interface AuthFormData {
+    email: string
+    password: string
+    role?: string
+}
 
 // Server action passed to the client AuthForm
 async function handleAuth(data: AuthFormData) {
     'use server'
     // Map UI roles to demo templates available in generateDemoJWT
-    const mapRole = (role?: string): 'finance' | 'engineering' | 'hr' | 'executive' => {
+    const mapRole = (
+        role?: string
+    ): 'finance' | 'engineering' | 'hr' | 'executive' => {
         switch (role) {
             case 'finance_admin':
             case 'finance_viewer':
@@ -44,11 +50,19 @@ async function handleAuth(data: AuthFormData) {
 
 export default function LoginPage() {
     return (
-        <Box component="main" sx={{ minHeight: '100vh', bgcolor: 'background.body', py: 8 }}>
+        <Box
+            component="main"
+            sx={{ minHeight: '100vh', bgcolor: 'background.body', py: 8 }}
+        >
             <Box sx={{ maxWidth: 480, mx: 'auto', px: 2 }}>
                 <Box sx={{ textAlign: 'center', mb: 3 }}>
-                    <Typography level="h2" sx={{ fontWeight: 800 }}>Sign in</Typography>
-                    <Typography level="body-sm" sx={{ color: 'text.secondary' }}>
+                    <Typography level="h2" sx={{ fontWeight: 800 }}>
+                        Sign in
+                    </Typography>
+                    <Typography
+                        level="body-sm"
+                        sx={{ color: 'text.secondary' }}
+                    >
                         Use demo credentials to generate a scoped token
                     </Typography>
                 </Box>

@@ -4,30 +4,32 @@ summary: Architecture, configuration, API reference, security model, and operati
 ---
 
 import {
-  Card,
-  CardHeader,
-  CardTitle,
-  CardContent,
-  Tabs,
-  TabsList,
-  TabsTrigger,
-  TabsContent,
-  Badge,
-  Button,
-  Alert,
-  AlertTitle,
-  AlertDescription,
-  Separator,
-  Mermaid,
-  Shield,
-  Database,
-  Users,
-  Zap,
-  Brain,
-  FileText,
-  CheckCircle,
+    Card,
+    CardHeader,
+    CardTitle,
+    CardContent,
+    Tabs,
+    TabsList,
+    TabsTrigger,
+    TabsContent,
+    Badge,
+    Button,
+    Alert,
+    AlertTitle,
+    AlertDescription,
+    Separator,
+    Mermaid,
+    Shield,
+    Database,
+    Users,
+    Zap,
+    Brain,
+    FileText,
+    CheckCircle,
+    Typography,
+    Box,
+    AlertTriangle,
 } from '@/components/docs/mdx-bridge.joy'
-
 
 <!-- Title is set in frontmatter (avoid duplicate H1) -->
 
@@ -44,7 +46,7 @@ import {
     </CardContent>
 </Card>
 
-<Separator className="my-4" />
+<Separator sx={{ my: 2 }} />
 
 ## Architecture
 
@@ -57,85 +59,77 @@ import {
   </TabsList>
 
   <TabsContent value="system">
-    <h3 className="text-lg font-semibold">High-level Components</h3>
-    <ul className="list-disc ml-6">
-      <li><b>Mastra Server</b> — Orchestrates agents, enforces policies, and provides an API surface for the frontend and CI systems.</li>
-      <li><b>Agents</b> — 15+ specialized agents for retrieval, research, content generation, evaluation, and more.</li>
-      <li><b>Vector Store</b> — Qdrant vector database for high-performance similarity search with 3072-dimension embeddings.</li>
-      <li><b>Storage</b> — LibSQL for metadata and conversation storage with built-in vector support.</li>
-      <li><b>Auth & Session</b> — Mastra JWT authentication with role-based access control.</li>
-      <li><b>Memory</b> — Advanced conversation memory with thread management and context persistence.</li>
-    </ul>
-
-    <h4 className="text-md font-semibold mt-4">System Architecture Diagram</h4>
-    <div className="bg-slate-50 dark:bg-slate-900 p-4 rounded-lg border">
+    <Typography sx={{ fontSize: '1.125rem', fontWeight: 'bold', mb: 2 }}>High-level Components</Typography>
+    <Box component="ul" sx={{ ml: 3, '& li': { mb: 1 } }}>
+      <li><strong>Mastra Server</strong> — Orchestrates agents, enforces policies, and provides an API surface for the frontend and CI systems.</li>
+      <li><strong>Agents</strong> — 16+ specialized agents for retrieval, research, content generation, evaluation, and more.</li>
+      <li><strong>Vector Store</strong> — PostgreSQL with PgVector for high-performance similarity search with 1568-dimension embeddings.</li>
+      <li><strong>Storage</strong> — LibSQL for metadata and conversation storage with built-in vector support.</li>
+      <li><strong>Auth & Session</strong> — Mastra JWT authentication with role-based access control.</li>
+      <li><strong>Memory</strong> — Advanced conversation memory with thread management and context persistence.</li>
+    </Box>
+    <Typography sx={{ fontSize: '1rem', fontWeight: 'bold', mt: 3, mb: 2 }}>System Architecture Diagram</Typography>
+    <Box sx={{ bgcolor: 'background.surface', p: 3, borderRadius: 1, border: '1px solid', borderColor: 'divider' }}>
       <Mermaid chart={`graph TB
         A[Next.js Frontend] --> B[API Routes]
         B --> C[Mastra Server]
         C --> D[Agent Orchestrator]
-        D --> E[15+ Specialized Agents]
-        E --> F[Qdrant Vector DB]
+        D --> E[16+ Specialized Agents]
+        E --> F[PgVector DB]
         E --> G[LibSQL Storage]
         C --> H[Mastra Auth]
         C --> I[Memory System]
-        F --> J[3072D Embeddings]
+        F --> J[1568D Embeddings]
         G --> K[Thread Management]
-
         classDef frontend fill:#e1f5fe,stroke:#01579b,stroke-width:2px
         classDef backend fill:#fff3e0,stroke:#e65100,stroke-width:2px
         classDef storage fill:#e8f5e8,stroke:#2e7d32,stroke-width:2px
         classDef ai fill:#f3e5f5,stroke:#7b1fa2,stroke-width:2px
-
         class A,B frontend
         class C,D,H,I backend
         class F,G,J,K storage
         class E ai
-
 `} />
-
-</div>
+    </Box>
 
   </TabsContent>
 
   <TabsContent value="agents">
-    <h3 className="text-lg font-semibold">Agents & Workflows</h3>
-    <p>15+ specialized agents configured in <code>src/mastra/agents/</code> and orchestrated through workflows in <code>src/mastra/workflows/</code>.</p>
-
-    <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
-      <Card>
+    <Typography sx={{ fontSize: '1.125rem', fontWeight: 'bold', mb: 2 }}>Agents & Workflows</Typography>
+    <Typography sx={{ mb: 2 }}>16+ specialized agents configured in <Typography component="code" sx={{ fontSize: '0.875rem' }}>src/mastra/agents/</Typography> and orchestrated through workflows in <Typography component="code" sx={{ fontSize: '0.875rem' }}>src/mastra/workflows/</Typography>.</Typography>
+    <Box sx={{ display: 'grid', gridTemplateColumns: { xs: '1fr', md: 'repeat(2, 1fr)' }, gap: 3, mb: 3 }}>
+      <Card variant="outlined">
         <CardHeader>
-          <CardTitle className="text-sm">Core RAG Agents</CardTitle>
+          <CardTitle sx={{ fontSize: '0.875rem' }}>Core RAG Agents</CardTitle>
         </CardHeader>
         <CardContent>
-          <ul className="text-sm space-y-1">
-            <li><Badge variant="outline" className="mr-2">retrieve</Badge>Document retrieval with access control</li>
-            <li><Badge variant="outline" className="mr-2">rerank</Badge>Result relevance ranking</li>
-            <li><Badge variant="outline" className="mr-2">answerer</Badge>Response generation</li>
-            <li><Badge variant="outline" className="mr-2">verifier</Badge>Content verification & security</li>
-          </ul>
+          <Box component="ul" sx={{ m: 0, pl: 2, '& li': { mb: 1, fontSize: '0.875rem' } }}>
+            <li><Badge variant="soft" sx={{ mr: 1 }}>retrieve</Badge>Document retrieval with access control</li>
+            <li><Badge variant="soft" sx={{ mr: 1 }}>rerank</Badge>Result relevance ranking</li>
+            <li><Badge variant="soft" sx={{ mr: 1 }}>answerer</Badge>Response generation</li>
+            <li><Badge variant="soft" sx={{ mr: 1 }}>verifier</Badge>Content verification & security</li>
+          </Box>
         </CardContent>
       </Card>
-
-      <Card>
+      <Card variant="outlined">
         <CardHeader>
-          <CardTitle className="text-sm">Advanced Agents</CardTitle>
+          <CardTitle sx={{ fontSize: '0.875rem' }}>Advanced Agents</CardTitle>
         </CardHeader>
         <CardContent>
-          <ul className="text-sm space-y-1">
-            <li><Badge variant="outline" className="mr-2">research</Badge>Deep research capabilities</li>
-            <li><Badge variant="outline" className="mr-2">report</Badge>Report generation</li>
-            <li><Badge variant="outline" className="mr-2">copywriter</Badge>Content optimization</li>
-            <li><Badge variant="outline" className="mr-2">evaluation</Badge>Quality assessment</li>
-            <li><Badge variant="outline" className="mr-2">editor</Badge>Content editing</li>
-            <li><Badge variant="outline" className="mr-2">roadmap</Badge>Product planning</li>
-          </ul>
+          <Box component="ul" sx={{ m: 0, pl: 2, '& li': { mb: 1, fontSize: '0.875rem' } }}>
+            <li><Badge variant="soft" sx={{ mr: 1 }}>research</Badge>Deep research capabilities</li>
+            <li><Badge variant="soft" sx={{ mr: 1 }}>report</Badge>Report generation</li>
+            <li><Badge variant="soft" sx={{ mr: 1 }}>copywriter</Badge>Content optimization</li>
+            <li><Badge variant="soft" sx={{ mr: 1 }}>evaluation</Badge>Quality assessment</li>
+            <li><Badge variant="soft" sx={{ mr: 1 }}>editor</Badge>Content editing</li>
+            <li><Badge variant="soft" sx={{ mr: 1 }}>roadmap</Badge>Product planning</li>
+          </Box>
         </CardContent>
       </Card>
-    </div>
-
-    <h4 className="text-md font-semibold mt-4">Real Agent Example: Retrieve Agent</h4>
-    <pre className="bg-slate-100 dark:bg-slate-800 p-4 rounded text-sm overflow-x-auto">
-
+    </Box>
+    <Typography sx={{ fontSize: '1rem', fontWeight: 'bold', mt: 3, mb: 2 }}>Real Agent Example: Retrieve Agent</Typography>
+    <Box sx={{ bgcolor: 'background.surface', p: 3, borderRadius: 1, fontSize: '0.875rem', fontFamily: 'monospace', overflowX: 'auto', mb: 2 }}>
+      <pre style={{ margin: 0, whiteSpace: 'pre-wrap' }}>
 {`import { Agent } from "@mastra/core";
 import { google } from "@ai-sdk/google";
 import { vectorQueryTool } from "../tools/vector-query.tool";
@@ -152,30 +146,29 @@ export const retrieveAgent = new Agent({
 
 **MANDATORY STEPS:**
 
-1.  Parse input JSON for 'question' and 'access' fields
-2.  Call vectorQueryTool EXACTLY ONCE with these exact parameters:
+1. Parse input JSON for 'question' and 'access' fields
+2. Call vectorQueryTool EXACTLY ONCE with these exact parameters:
     - question: the question from input
     - allowTags: from access.allowTags array
     - maxClassification: from access.maxClassification (NEVER change this value)
     - topK: 8
-3.  Return ONLY what the tool returns - never add your own content\`,
+3. Return ONLY what the tool returns - never add your own content\`,
     memory,
     tools: { vectorQueryTool }
     });`}
+        </pre>
 
-    </pre>
+    </Box>
+      <Typography sx={{ fontSize: '1rem', fontWeight: 'bold', mt: 3, mb: 2 }}>Real Tool Example: Vector Query Tool</Typography>
+      <Box sx={{ bgcolor: 'background.surface', p: 3, borderRadius: 1, fontSize: '0.875rem', fontFamily: 'monospace', overflowX: 'auto', mb: 2 }}>
+      <pre style={{ margin: 0, whiteSpace: 'pre-wrap' }}>
+        {`import { createTool } from "@mastra/core/tools";
 
-        <h4 className="text-md font-semibold mt-4">Real Tool Example: Vector Query Tool</h4>
-
-
-        <pre className="bg-slate-100 dark:bg-slate-800 p-4 rounded text-sm overflow-x-auto">
-
-{`import { createTool } from "@mastra/core/tools";
-import { z } from "zod";
+        import { z } from "zod";
 
 export const vectorQueryTool = createTool({
   id: "vector-query",
-  description: "Qdrant query with allowTags + classification filter",
+  description: "PgVector query with allowTags + classification filter",
   inputSchema: z.object({
     question: z.string(),
     allowTags: z.array(z.string()),
@@ -194,14 +187,14 @@ export const vectorQueryTool = createTool({
     }))
   }),
   execute: async ({ context, mastra }) => {
-    // Real implementation with Qdrant queries and security filtering
+    // Real implementation with PgVector queries and security filtering
     // ... actual implementation code ...
   }
 });`}
-    </pre>
-
-    <h4 className="text-md font-semibold mt-4">Agent Workflow Architecture</h4>
-    <div className="bg-slate-50 dark:bg-slate-900 p-4 rounded-lg border">
+      </pre>
+    </Box>
+    <Typography sx={{ fontSize: '1rem', fontWeight: 'bold', mt: 3, mb: 2 }}>Agent Workflow Architecture</Typography>
+    <Box sx={{ bgcolor: 'background.surface', p: 3, borderRadius: 1, border: '1px solid', borderColor: 'divider' }}>
       <Mermaid chart={`graph LR
         A[User Query] --> B[Access Control]
         B --> C[Retrieve Agent]
@@ -209,26 +202,21 @@ export const vectorQueryTool = createTool({
         D --> E[Answerer Agent]
         E --> F[Verifier Agent]
         F --> G[Final Response]
-
         B --> B1[403: Access Denied]
         C --> C1[Research Agent]
         D --> D1[Copywriter Agent]
         E --> E1[Report Agent]
-
         classDef core fill:#e3f2fd,stroke:#1976d2,stroke-width:2px
         classDef advanced fill:#f3e5f5,stroke:#7b1fa2,stroke-width:2px
         classDef error fill:#ffebee,stroke:#c62828,stroke-width:2px
-
         class A,B,C,D,E,F,G core
         class C1,D1,E1 advanced
         class B1 error
+        `} />
 
-`} />
-
-</div>
-
-    <Alert variant="default" className="mt-4">
-      <Shield className="h-4 w-4" />
+</Box>
+    <Alert sx={{ mt: 2 }}>
+      <Shield sx={{ fontSize: 16 }} />
       <AlertTitle>Security Integration</AlertTitle>
       <AlertDescription>
         All agents include security checks and access control. Secrets are managed via environment variables and never committed to code.
@@ -238,100 +226,91 @@ export const vectorQueryTool = createTool({
   </TabsContent>
 
   <TabsContent value="storage">
-    <h3 className="text-lg font-semibold">Storage Architecture</h3>
-    <p>Dual storage system optimized for different data types and access patterns.</p>
-
-    <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
-      <Card>
+    <Typography sx={{ fontSize: '1.125rem', fontWeight: 'bold', mb: 2 }}>Storage Architecture</Typography>
+    <Typography sx={{ mb: 2 }}>Dual storage system optimized for different data types and access patterns.</Typography>
+    <Box sx={{ display: 'grid', gridTemplateColumns: { xs: '1fr', md: 'repeat(2, 1fr)' }, gap: 3, mb: 3 }}>
+      <Card variant="outlined">
         <CardHeader>
-          <CardTitle className="flex items-center gap-2">
-            <Database className="h-5 w-5 text-blue-600" />
+          <CardTitle sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+            <Database sx={{ fontSize: 20, color: 'primary.main' }} />
             LibSQL Storage
           </CardTitle>
         </CardHeader>
         <CardContent>
-          <ul className="text-sm space-y-1">
-            <li><CheckCircle className="h-3 w-3 text-green-500 inline mr-2" />Metadata and conversations</li>
-            <li><CheckCircle className="h-3 w-3 text-green-500 inline mr-2" />Thread management</li>
-            <li><CheckCircle className="h-3 w-3 text-green-500 inline mr-2" />User sessions</li>
-            <li><CheckCircle className="h-3 w-3 text-green-500 inline mr-2" />Audit logs</li>
-          </ul>
+          <Box component="ul" sx={{ m: 0, pl: 2, '& li': { mb: 1, fontSize: '0.875rem', display: 'flex', alignItems: 'center' } }}>
+            <li><CheckCircle sx={{ fontSize: 12, color: 'success.main', mr: 1 }} />Metadata and conversations</li>
+            <li><CheckCircle sx={{ fontSize: 12, color: 'success.main', mr: 1 }} />Thread management</li>
+            <li><CheckCircle sx={{ fontSize: 12, color: 'success.main', mr: 1 }} />User sessions</li>
+            <li><CheckCircle sx={{ fontSize: 12, color: 'success.main', mr: 1 }} />Audit logs</li>
+          </Box>
         </CardContent>
       </Card>
-
-      <Card>
+      <Card variant="outlined">
         <CardHeader>
-          <CardTitle className="flex items-center gap-2">
-            <Search className="h-5 w-5 text-purple-600" />
-            Qdrant Vector DB
+          <CardTitle sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+            <FileText sx={{ fontSize: 20, color: 'secondary.main' }} />
+            PgVector Database
           </CardTitle>
         </CardHeader>
         <CardContent>
-          <ul className="text-sm space-y-1">
-            <li><CheckCircle className="h-3 w-3 text-green-500 inline mr-2" />3072D embeddings</li>
-            <li><CheckCircle className="h-3 w-3 text-green-500 inline mr-2" />Cosine similarity</li>
-            <li><CheckCircle className="h-3 w-3 text-green-500 inline mr-2" />High-performance search</li>
-            <li><CheckCircle className="h-3 w-3 text-green-500 inline mr-2" />Filtered retrieval</li>
-          </ul>
+          <Box component="ul" sx={{ m: 0, pl: 2, '& li': { mb: 1, fontSize: '0.875rem', display: 'flex', alignItems: 'center' } }}>
+            <li><CheckCircle sx={{ fontSize: 12, color: 'success.main', mr: 1 }} />1568D embeddings</li>
+            <li><CheckCircle sx={{ fontSize: 12, color: 'success.main', mr: 1 }} />Cosine similarity</li>
+            <li><CheckCircle sx={{ fontSize: 12, color: 'success.main', mr: 1 }} />High-performance search</li>
+            <li><CheckCircle sx={{ fontSize: 12, color: 'success.main', mr: 1 }} />Filtered retrieval</li>
+          </Box>
         </CardContent>
       </Card>
-    </div>
-
-    <h4 className="text-md font-semibold mt-4">Storage Flow</h4>
-    <div className="bg-slate-50 dark:bg-slate-900 p-4 rounded-lg border">
+    </Box>
+    <Typography sx={{ fontSize: '1rem', fontWeight: 'bold', mt: 3, mb: 2 }}>Storage Flow</Typography>
+    <Box sx={{ bgcolor: 'background.surface', p: 3, borderRadius: 1, border: '1px solid', borderColor: 'divider' }}>
       <Mermaid chart={`graph TD
         A[Document Input] --> B[Text Processing]
         B --> C[Embedding Generation]
-        C --> D[Qdrant Storage]
+        C --> D[PgVector Storage]
         C --> E[Metadata Storage]
         E --> F[LibSQL Database]
-
         D --> G[Vector Search]
         F --> H[Thread Retrieval]
         G --> I[Similarity Results]
         H --> J[Context Assembly]
-
         classDef process fill:#e3f2fd,stroke:#1976d2,stroke-width:2px
         classDef storage fill:#e8f5e8,stroke:#2e7d32,stroke-width:2px
         classDef retrieval fill:#fff3e0,stroke:#e65100,stroke-width:2px
-
         class A,B,C process
         class D,E,F storage
         class G,H,I,J retrieval
-
 `} />
 
-</div>
+</Box>
 
   </TabsContent>
 
   <TabsContent value="observability">
-    <h3 className="text-lg font-semibold">Observability & Monitoring</h3>
-    <p>Comprehensive monitoring with structured logging, AI tracing, and performance metrics.</p>
-
-    <div className="space-y-4">
-      <Card>
+    <Typography sx={{ fontSize: '1.125rem', fontWeight: 'bold', mb: 2 }}>Observability & Monitoring</Typography>
+    <Typography sx={{ mb: 2 }}>Comprehensive monitoring with structured logging, AI tracing, and performance metrics.</Typography>
+    <Box sx={{ display: 'flex', flexDirection: 'column', gap: 3 }}>
+      <Card variant="outlined">
         <CardHeader>
           <CardTitle>Logging & Tracing</CardTitle>
         </CardHeader>
         <CardContent>
-          <ul className="space-y-2">
+          <Box component="ul" sx={{ m: 0, pl: 2, '& li': { mb: 1 } }}>
             <li><strong>Structured Logging:</strong> Pino logger with custom transports</li>
             <li><strong>AI Tracing:</strong> Langfuse integration for LLM observability</li>
             <li><strong>Performance Metrics:</strong> Request latency, token usage, error rates</li>
             <li><strong>Audit Trails:</strong> Complete user action history</li>
-          </ul>
+          </Box>
         </CardContent>
       </Card>
-
       <Alert>
-        <Brain className="h-4 w-4" />
+        <Brain sx={{ fontSize: 16 }} />
         <AlertTitle>AI Model Monitoring</AlertTitle>
         <AlertDescription>
           Tracks Google Gemini 2.5 Flash usage, OpenAI GPT-4o-mini calls, and embedding performance across all agents.
         </AlertDescription>
       </Alert>
-    </div>
+    </Box>
 
   </TabsContent>
 </Tabs>
@@ -347,11 +326,11 @@ export const vectorQueryTool = createTool({
   </TabsContent>
 </Tabs>
 
-<Separator className="my-6" />
+<Separator sx={{ my: 3 }} />
 
 ## Quick Start
 
-<Tabs defaultValue="setup">
+<Tabs defaultValue="setup" sx={{ mb: 3 }}>
   <TabsList>
     <TabsTrigger value="setup">Setup</TabsTrigger>
     <TabsTrigger value="query">Query Example</TabsTrigger>
@@ -359,74 +338,82 @@ export const vectorQueryTool = createTool({
   </TabsList>
 
   <TabsContent value="setup">
-    <h3 className="text-lg font-semibold">Environment Setup</h3>
-    <div className="space-y-4">
-      <div>
-        <h4 className="font-medium">1. Start Dependencies</h4>
-        <pre className="bg-slate-100 dark:bg-slate-800 p-3 rounded text-sm">
-{`\\# Start Qdrant vector database
-docker run -d -p 6333:6333 -p 6334:6334 \\
-  -v qdrant_storage:/qdrant/storage \\
-  qdrant/qdrant
+    <Typography sx={{ fontSize: '1.125rem', fontWeight: 'bold', mb: 2 }}>Environment Setup</Typography>
+    <Box sx={{ display: 'flex', flexDirection: 'column', gap: 3 }}>
+      <Box>
+        <Typography sx={{ fontWeight: 'bold', mb: 1 }}>1. Start Dependencies</Typography>
+        <Box sx={{ bgcolor: 'background.surface', p: 2, borderRadius: 1, fontSize: '0.875rem', fontFamily: 'monospace' }}>
+          <pre style={{ margin: 0, whiteSpace: 'pre-wrap' }}>
+{`# Start PostgreSQL + PgVector database
+docker run -d -p 5432:5432 \\
+  -e POSTGRES_PASSWORD=password \\
+  -e POSTGRES_DB=mastra \\
+  postgres:15
 
-\\# Start development environment
+# Enable PgVector extension
+
+docker exec -it <container_id> psql -U postgres -d mastra -c "CREATE EXTENSION IF NOT EXISTS vector;"
+
+# Start development environment
+
 npm run dev`}
 
 </pre>
-</div>
-
-      <div>
-        <h4 className="font-medium">2. Environment Variables</h4>
-        <pre className="bg-slate-100 dark:bg-slate-800 p-3 rounded text-sm">
+</Box>
+</Box>
+      <Box>
+        <Typography sx={{ fontWeight: 'bold', mb: 1 }}>2. Environment Variables</Typography>
+        <Box sx={{ bgcolor: 'background.surface', p: 2, borderRadius: 1, fontSize: '0.875rem', fontFamily: 'monospace' }}>
+          <pre style={{ margin: 0, whiteSpace: 'pre-wrap' }}>
 
 {`# .env.local
 MASTRA_BASE_URL=http://localhost:3001
 OPENAI_API_KEY=your-key-here
 GOOGLE_GENERATIVE_AI_API_KEY=your-gemini-key
-QDRANT_URL=http://localhost:6333
-DATABASE_URL='file:./data/mastra.db'
+DATABASE_URL=postgresql://postgres:password@localhost:5432/mastra
 JWT_SECRET='dev-secret'
 NODE_ENV='development'`}
 
 </pre>
-</div>
-
-      <div>
-        <h4 className="font-medium">3. Available Models</h4>
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          <Card>
+</Box>
+</Box>
+      <Box>
+        <Typography sx={{ fontWeight: 'bold', mb: 1 }}>3. Available Models</Typography>
+        <Box sx={{ display: 'grid', gridTemplateColumns: { xs: '1fr', md: 'repeat(2, 1fr)' }, gap: 3 }}>
+          <Card variant="outlined">
             <CardHeader>
-              <CardTitle className="text-sm">Google Gemini</CardTitle>
+              <CardTitle sx={{ fontSize: '0.875rem' }}>Google Gemini</CardTitle>
             </CardHeader>
             <CardContent>
-              <ul className="text-xs space-y-1">
+              <Box component="ul" sx={{ m: 0, pl: 2, '& li': { mb: 0.5, fontSize: '0.75rem' } }}>
                 <li>• gemini-2.5-flash-lite (fast)</li>
                 <li>• gemini-2.5-flash (balanced)</li>
                 <li>• gemini-2.5-pro (advanced)</li>
-              </ul>
+              </Box>
             </CardContent>
           </Card>
-          <Card>
+          <Card variant="outlined">
             <CardHeader>
-              <CardTitle className="text-sm">OpenAI</CardTitle>
+              <CardTitle sx={{ fontSize: '0.875rem' }}>OpenAI</CardTitle>
             </CardHeader>
             <CardContent>
-              <ul className="text-xs space-y-1">
+              <Box component="ul" sx={{ m: 0, pl: 2, '& li': { mb: 0.5, fontSize: '0.75rem' } }}>
                 <li>• gpt-4o-mini (fast, cheap)</li>
                 <li>• gpt-4o (advanced)</li>
                 <li>• text-embedding-3-small</li>
-              </ul>
+              </Box>
             </CardContent>
           </Card>
-        </div>
-      </div>
-    </div>
+        </Box>
+      </Box>
+    </Box>
 
   </TabsContent>
 
   <TabsContent value="query">
-    <h3 className="text-lg font-semibold">Query the RAG System</h3>
-    <pre className="bg-slate-100 dark:bg-slate-800 p-3 rounded text-sm overflow-x-auto">
+    <Typography sx={{ fontSize: '1.125rem', fontWeight: 'bold', mb: 2 }}>Query the RAG System</Typography>
+    <Box sx={{ bgcolor: 'background.surface', p: 2, borderRadius: 1, fontSize: '0.875rem', fontFamily: 'monospace', overflowX: 'auto' }}>
+      <pre style={{ margin: 0, whiteSpace: 'pre-wrap' }}>
 {`// Frontend query example
 const response = await fetch('/api/mastra/query', {
   method: 'POST',
@@ -441,12 +428,14 @@ const result = await response.json()
 console.log(result.answer, result.sources)`}
 
 </pre>
+</Box>
 
   </TabsContent>
 
   <TabsContent value="index">
-    <h3 className="text-lg font-semibold">Index Documents</h3>
-    <pre className="bg-slate-100 dark:bg-slate-800 p-3 rounded text-sm overflow-x-auto">
+    <Typography sx={{ fontSize: '1.125rem', fontWeight: 'bold', mb: 2 }}>Index Documents</Typography>
+    <Box sx={{ bgcolor: 'background.surface', p: 2, borderRadius: 1, fontSize: '0.875rem', fontFamily: 'monospace', overflowX: 'auto' }}>
+      <pre style={{ margin: 0, whiteSpace: 'pre-wrap' }}>
 {`// Index new documents
 const response = await fetch('/api/mastra/index', {
   method: 'POST',
@@ -460,64 +449,64 @@ const response = await fetch('/api/mastra/index', {
     ]
   })
 })`}
-    </pre>
+      </pre>
+    </Box>
   </TabsContent>
 </Tabs>
 
-<Separator className="my-6" />
+<Separator sx={{ my: 3 }} />
 
 ## API Reference (server routes)
 
-<Card>
+<Card variant="outlined">
   <CardHeader>
     <CardTitle>Key Endpoints</CardTitle>
   </CardHeader>
   <CardContent>
-    <div className="space-y-4">
-      <div className="flex items-center gap-2">
-        <Badge variant="secondary">POST</Badge>
-        <code className="text-sm">/api/mastra/query</code>
-        <span className="text-sm text-muted-foreground">— Ask the RAG system a question</span>
-      </div>
-      <div className="ml-6">
-        <p className="text-sm"><strong>Request Body:</strong></p>
-        <pre className="bg-slate-100 dark:bg-slate-800 p-2 rounded text-xs overflow-x-auto">
+    <Box sx={{ display: 'flex', flexDirection: 'column', gap: 3 }}>
+      <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+        <Badge variant="soft" color="secondary">POST</Badge>
+        <Typography component="code" sx={{ fontSize: '0.875rem' }}>/api/mastra/query</Typography>
+        <Typography level="body-sm" sx={{ color: 'text.tertiary' }}>— Ask the RAG system a question</Typography>
+      </Box>
+      <Box sx={{ ml: 3 }}>
+        <Typography level="body-sm" sx={{ fontWeight: 'bold' }}>Request Body:</Typography>
+        <Box sx={{ bgcolor: 'background.surface', p: 1, borderRadius: 1, fontSize: '0.75rem', fontFamily: 'monospace', mt: 0.5 }}>
+          <pre style={{ margin: 0, whiteSpace: 'pre-wrap' }}>
 {`{
   "query": "What is the company policy on remote work?",
   "userId": "user123",
   "sessionId": "session456"
 }`}
-        </pre>
-        <p className="text-sm mt-2"><strong>Response:</strong> JSON with answer, sources, and confidence score</p>
-      </div>
-
-      <div className="flex items-center gap-2">
-        <Badge variant="outline">GET</Badge>
-        <code className="text-sm">/api/mastra/status</code>
-        <span className="text-sm text-muted-foreground">— Health check</span>
-      </div>
-
-      <div className="flex items-center gap-2">
-        <Badge variant="destructive">POST</Badge>
-        <code className="text-sm">/api/mastra/index</code>
-        <span className="text-sm text-muted-foreground">— Submit documents (protected)</span>
-      </div>
-
-      <div className="flex items-center gap-2">
-        <Badge variant="destructive">POST</Badge>
-        <code className="text-sm">/api/mastra/agents/run</code>
-        <span className="text-sm text-muted-foreground">— Trigger agent workflows (admin-only)</span>
-      </div>
-    </div>
+          </pre>
+        </Box>
+        <Typography level="body-sm" sx={{ mt: 1 }}>Response: JSON with answer, sources, and confidence score</Typography>
+      </Box>
+      <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+        <Badge variant="soft">GET</Badge>
+        <Typography component="code" sx={{ fontSize: '0.875rem' }}>/api/mastra/status</Typography>
+        <Typography level="body-sm" sx={{ color: 'text.tertiary' }}>— Health check</Typography>
+      </Box>
+      <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+        <Badge variant="soft" color="danger">POST</Badge>
+        <Typography component="code" sx={{ fontSize: '0.875rem' }}>/api/mastra/index</Typography>
+        <Typography level="body-sm" sx={{ color: 'text.tertiary' }}>— Submit documents (protected)</Typography>
+      </Box>
+      <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+        <Badge variant="soft" color="danger">POST</Badge>
+        <Typography component="code" sx={{ fontSize: '0.875rem' }}>/api/mastra/agents/run</Typography>
+        <Typography level="body-sm" sx={{ color: 'text.tertiary' }}>— Trigger agent workflows (admin-only)</Typography>
+      </Box>
+    </Box>
 
   </CardContent>
 </Card>
 
-<Separator className="my-6" />
+<Separator sx={{ my: 3 }} />
 
 ## Authentication & Authorization
 
-<Tabs defaultValue="auth">
+<Tabs defaultValue="auth" sx={{ mb: 3 }}>
   <TabsList>
     <TabsTrigger value="auth">Auth</TabsTrigger>
     <TabsTrigger value="rbac">RBAC</TabsTrigger>
@@ -525,39 +514,41 @@ const response = await fetch('/api/mastra/index', {
   </TabsList>
 
 <TabsContent value="auth">
-    <p>
+    <Typography>
         The app uses JWTs issued by the Mastra auth provider. Tokens are set in
         HttpOnly cookies by server-side proxy routes (see{' '}
-        <code>lib/mastra/mastra-client.ts</code>). Scopes and claims control
-        access to endpoints.
-    </p>
+        <Typography component="code" sx={{ fontSize: '0.875rem' }}>
+            lib/mastra/mastra-client.ts
+        </Typography>
+        ). Scopes and claims control access to endpoints.
+    </Typography>
 </TabsContent>
 
 <TabsContent value="rbac">
-    <p>Roles in the system:</p>
-    <ul className="list-disc ml-6">
+    <Typography sx={{ mb: 2 }}>Roles in the system:</Typography>
+    <Box component="ul" sx={{ ml: 3, '& li': { mb: 1 } }}>
         <li>
-            <b>reader</b> — Query-only access.
+            <strong>reader</strong> — Query-only access.
         </li>
         <li>
-            <b>editor</b> — Can submit documents for indexing.
+            <strong>editor</strong> — Can submit documents for indexing.
         </li>
         <li>
-            <b>admin</b> — Manage agents and configuration.
+            <strong>admin</strong> — Manage agents and configuration.
         </li>
-    </ul>
+    </Box>
 </TabsContent>
 
   <TabsContent value="auditing">
-    <p>All agent runs and query responses are stored with provenance metadata. Configure retention and export via the Mastra server settings.</p>
+    <Typography>All agent runs and query responses are stored with provenance metadata. Configure retention and export via the Mastra server settings.</Typography>
   </TabsContent>
 </Tabs>
 
-<Separator className="my-6" />
+<Separator sx={{ my: 3 }} />
 
 ## Deployment & Local Dev
 
-<Tabs defaultValue="local">
+<Tabs defaultValue="local" sx={{ mb: 3 }}>
   <TabsList>
     <TabsTrigger value="local">Local Dev</TabsTrigger>
     <TabsTrigger value="production">Production</TabsTrigger>
@@ -565,24 +556,23 @@ const response = await fetch('/api/mastra/index', {
   </TabsList>
 
   <TabsContent value="local">
-    <Card>
+    <Card variant="outlined">
       <CardHeader>
         <CardTitle>Local Development Setup</CardTitle>
       </CardHeader>
       <CardContent>
-        <ol className="list-decimal ml-6 space-y-2">
-          <li><strong>Start Qdrant:</strong> <code>docker run -d -p 6333:6333 qdrant/qdrant</code></li>
-          <li><strong>Install Dependencies:</strong> <code>npm install</code></li>
-          <li><strong>Configure Environment:</strong> Copy <code>.env.example</code> to <code>.env</code></li>
-          <li><strong>Start Development:</strong> <code>npm run dev</code></li>
-          <li><strong>Verify Health:</strong> Check <code>http://localhost:3000/api/health</code></li>
-        </ol>
-
-        <Alert className="mt-4">
-          <Terminal className="h-4 w-4" />
+        <Box component="ol" sx={{ ml: 3, '& li': { mb: 1 } }}>
+          <li><strong>Start PostgreSQL + PgVector:</strong> <Typography component="code" sx={{ fontSize: '0.875rem' }}>docker run -d -p 5432:5432 -e POSTGRES_PASSWORD=password postgres:15</Typography></li>
+          <li><strong>Install Dependencies:</strong> <Typography component="code" sx={{ fontSize: '0.875rem' }}>npm install</Typography></li>
+          <li><strong>Configure Environment:</strong> Copy <Typography component="code" sx={{ fontSize: '0.875rem' }}>.env.example</Typography> to <Typography component="code" sx={{ fontSize: '0.875rem' }}>.env</Typography></li>
+          <li><strong>Start Development:</strong> <Typography component="code" sx={{ fontSize: '0.875rem' }}>npm run dev</Typography></li>
+          <li><strong>Verify Health:</strong> Check <Typography component="code" sx={{ fontSize: '0.875rem' }}>http://localhost:3000/api/health</Typography></li>
+        </Box>
+        <Alert sx={{ mt: 2 }}>
+          <FileText sx={{ fontSize: 16 }} />
           <AlertTitle>Development Commands</AlertTitle>
           <AlertDescription>
-            Use <code>npm run dev:mastra</code> to run Mastra in development mode, or <code>npm run dev</code> for full stack.
+            Use <Typography component="code" sx={{ fontSize: '0.875rem' }}>npm run dev:mastra</Typography> to run Mastra in development mode, or <Typography component="code" sx={{ fontSize: '0.875rem' }}>npm run dev</Typography> for full stack.
           </AlertDescription>
         </Alert>
       </CardContent>
@@ -591,44 +581,43 @@ const response = await fetch('/api/mastra/index', {
   </TabsContent>
 
   <TabsContent value="production">
-    <Card>
+    <Card variant="outlined">
       <CardHeader>
         <CardTitle>Production Deployment</CardTitle>
       </CardHeader>
       <CardContent>
-        <div className="space-y-4">
-          <div>
-            <h4 className="font-medium">Infrastructure Requirements</h4>
-            <ul className="list-disc ml-6 space-y-1">
-              <li><strong>Qdrant Cluster:</strong> Managed Qdrant instance (Qdrant Cloud or self-hosted)</li>
+        <Box sx={{ display: 'flex', flexDirection: 'column', gap: 3 }}>
+          <Box>
+            <Typography sx={{ fontWeight: 'bold', mb: 1 }}>Infrastructure Requirements</Typography>
+            <Box component="ul" sx={{ ml: 3, '& li': { mb: 0.5 } }}>
+              <li><strong>PostgreSQL + PgVector Cluster:</strong> Managed PostgreSQL instance with PgVector extension</li>
               <li><strong>Database:</strong> LibSQL (Turso) or PostgreSQL for metadata storage</li>
               <li><strong>AI Models:</strong> Google Gemini API key and/or OpenAI API key</li>
               <li><strong>Storage:</strong> File storage for logs and temporary data</li>
-            </ul>
-          </div>
-
-          <div>
-            <h4 className="font-medium">Environment Variables</h4>
-            <pre className="bg-slate-100 dark:bg-slate-800 p-3 rounded text-sm">
+            </Box>
+          </Box>
+          <Box>
+            <Typography sx={{ fontWeight: 'bold', mb: 1 }}>Environment Variables</Typography>
+            <Box sx={{ bgcolor: 'background.surface', p: 2, borderRadius: 1, fontSize: '0.875rem', fontFamily: 'monospace' }}>
+              <pre style={{ margin: 0, whiteSpace: 'pre-wrap' }}>
 
 {`# Production Configuration
 NODE_ENV=production
 MASTRA_BASE_URL=https://your-domain.com
 OPENAI_API_KEY=your-production-openai-key
 GOOGLE_GENERATIVE_AI_API_KEY=your-production-gemini-key
-QDRANT_URL=https://your-qdrant-instance.com
-QDRANT_API_KEY=your-qdrant-api-key
-DATABASE_URL=libsql://your-database.turso.io
+DATABASE_URL=postgresql://user:password@your-postgres-host:5432/mastra
 JWT_SECRET=your-secure-random-jwt-secret
 LANGFUSE_PUBLIC_KEY=your-langfuse-key
 LANGFUSE_SECRET_KEY=your-langfuse-secret`}
 
 </pre>
-</div>
-
-          <div>
-            <h4 className="font-medium">Deployment Steps</h4>
-            <pre className="bg-slate-100 dark:bg-slate-800 p-3 rounded text-sm">
+</Box>
+</Box>
+          <Box>
+            <Typography sx={{ fontWeight: 'bold', mb: 1 }}>Deployment Steps</Typography>
+            <Box sx={{ bgcolor: 'background.surface', p: 2, borderRadius: 1, fontSize: '0.875rem', fontFamily: 'monospace' }}>
+              <pre style={{ margin: 0, whiteSpace: 'pre-wrap' }}>
 
 {`# Build the application
 npm run build
@@ -643,62 +632,62 @@ npm install -g pm2
 pm2 start npm --name "mastra-rag" -- start`}
 
 </pre>
-</div>
-
-          <div>
-            <h4 className="font-medium">Monitoring Setup</h4>
-            <ul className="list-disc ml-6 space-y-1">
+</Box>
+</Box>
+          <Box>
+            <Typography sx={{ fontWeight: 'bold', mb: 1 }}>Monitoring Setup</Typography>
+            <Box component="ul" sx={{ ml: 3, '& li': { mb: 0.5 } }}>
               <li><strong>Langfuse:</strong> AI model performance and tracing</li>
-              <li><strong>Logs:</strong> Structured logging to <code>logs/mastra.log</code></li>
-              <li><strong>Health Checks:</strong> <code>/api/health</code> endpoint</li>
+              <li><strong>Logs:</strong> Structured logging to <Typography component="code" sx={{ fontSize: '0.875rem' }}>logs/mastra.log</Typography></li>
+              <li><strong>Health Checks:</strong> <Typography component="code" sx={{ fontSize: '0.875rem' }}>/api/health</Typography> endpoint</li>
               <li><strong>Metrics:</strong> Prometheus-compatible metrics available</li>
-            </ul>
-          </div>
-        </div>
+            </Box>
+          </Box>
+        </Box>
       </CardContent>
     </Card>
 
   </TabsContent>
 
   <TabsContent value="troubleshooting">
-    <Card>
+    <Card variant="outlined">
       <CardHeader>
         <CardTitle>Common Issues</CardTitle>
       </CardHeader>
       <CardContent>
-        <div className="space-y-4">
-          <Alert>
-            <AlertTriangle className="h-4 w-4" />
+        <Box sx={{ display: 'flex', flexDirection: 'column', gap: 3 }}>
+          <Alert color="warning">
+            <FileText sx={{ fontSize: 16 }} />
             <AlertTitle>OpenSearch Connection Failed</AlertTitle>
             <AlertDescription>
-              Ensure OpenSearch is running and accessible. Check <code>docker ps</code> and network connectivity.
+              Ensure OpenSearch is running and accessible. Check <Typography component="code" sx={{ fontSize: '0.875rem' }}>docker ps</Typography> and network connectivity.
             </AlertDescription>
           </Alert>
-
-          <Alert>
-            <AlertTriangle className="h-4 w-4" />
+          <Alert color="warning">
+            <Code sx={{ fontSize: 16 }} />
             <AlertTitle>MDX Compilation Errors</AlertTitle>
             <AlertDescription>
-              Check that all remark/rehype plugins are installed and properly configured in <code>lib/mdx-plugins.ts</code>.
+              Check that all remark/rehype plugins are installed and properly configured in <Typography component="code" sx={{ fontSize: '0.875rem' }}>lib/mdx-plugins.ts</Typography>.
             </AlertDescription>
           </Alert>
-        </div>
+        </Box>
       </CardContent>
     </Card>
 
   </TabsContent>
 </Tabs>
 
-<Separator className="my-6" />
+<Separator sx={{ my: 3 }} />
 
 ## Example: Query endpoint (server-side)
 
-<Card>
+<Card variant="outlined">
   <CardHeader>
     <CardTitle>Server route skeleton</CardTitle>
   </CardHeader>
   <CardContent>
-    <pre className="bg-slate-900 text-white p-3 rounded">
+    <Box sx={{ bgcolor: 'grey.900', color: 'grey.50', p: 2, borderRadius: 1, fontFamily: 'monospace', fontSize: '0.875rem' }}>
+      <pre style={{ margin: 0, whiteSpace: 'pre-wrap' }}>
 {`// app/api/mastra/query/route.ts
 import { NextResponse } from 'next/server'
 import { proxyToMastra } from '@/lib/mastra/mastra-client'
@@ -710,15 +699,16 @@ export async function POST(req: Request) {
   return NextResponse.json(await res.json())
 }
 `}
-    </pre>
+      </pre>
+    </Box>
   </CardContent>
 </Card>
 
-<Separator className="my-6" />
+<Separator sx={{ my: 3 }} />
 
 ## Security Checklist
 
-<ul className="list-disc ml-6">
+<Box component="ul" sx={{ ml: 3, '& li': { mb: 1 } }}>
     <li>Require TLS for all Mastra endpoints.</li>
     <li>Rotate the OpenSearch password from the docker compose example.</li>
     <li>Use least-privilege for agents and storage credentials.</li>
@@ -726,53 +716,61 @@ export async function POST(req: Request) {
         Enable audit logging and store logs in a write-once medium if required
         by policy.
     </li>
-</ul>
+</Box>
 
-<Separator className="my-6" />
+<Separator sx={{ my: 3 }} />
 
 ## Next steps & follow-ups
 
-<Card>
+<Card variant="outlined">
   <CardHeader>
     <CardTitle>What's Next?</CardTitle>
   </CardHeader>
   <CardContent>
-    <div className="space-y-4">
-      <div>
-        <h4 className="font-medium">Related Documentation</h4>
-        <ul className="list-disc ml-6 space-y-1">
-          <li><a href="/docs/api-reference" className="text-blue-600 hover:underline">API Reference</a> — Complete endpoint documentation</li>
-          <li><a href="/docs/security" className="text-blue-600 hover:underline">Security Guide</a> — Advanced security configurations</li>
-          <li><a href="/docs/architecture" className="text-blue-600 hover:underline">Architecture Deep Dive</a> — Technical implementation details</li>
-        </ul>
-      </div>
-
-      <div>
-        <h4 className="font-medium">Development Tasks</h4>
-        <ul className="list-disc ml-6 space-y-1">
+    <Box sx={{ display: 'flex', flexDirection: 'column', gap: 3 }}>
+      <Box>
+        <Typography sx={{ fontWeight: 'bold', mb: 1 }}>Related Documentation</Typography>
+        <Box component="ul" sx={{ ml: 3, '& li': { mb: 0.5 } }}>
+          <li><Typography component="a" href="/docs/api-reference" sx={{ color: 'primary.main', textDecoration: 'none', '&:hover': { textDecoration: 'underline' } }}>API Reference</Typography> — Complete endpoint documentation</li>
+          <li><Typography component="a" href="/docs/security" sx={{ color: 'primary.main', textDecoration: 'none', '&:hover': { textDecoration: 'underline' } }}>Security Guide</Typography> — Advanced security configurations</li>
+          <li><Typography component="a" href="/docs/architecture" sx={{ color: 'primary.main', textDecoration: 'none', '&:hover': { textDecoration: 'underline' } }}>Architecture Deep Dive</Typography> — Technical implementation details</li>
+        </Box>
+      </Box>
+      <Box>
+        <Typography sx={{ fontWeight: 'bold', mb: 1 }}>Development Tasks</Typography>
+        <Box component="ul" sx={{ ml: 3, '& li': { mb: 0.5 } }}>
           <li>Implement server routes for all Mastra endpoints</li>
           <li>Add comprehensive error handling and logging</li>
           <li>Create admin UI for agent management</li>
           <li>Set up monitoring and alerting</li>
-        </ul>
-      </div>
-    </div>
+        </Box>
+      </Box>
+    </Box>
 
   </CardContent>
 </Card>
 
-<div className="mt-8 p-4 bg-blue-50 dark:bg-blue-900/20 rounded-lg border border-blue-200 dark:border-blue-800">
-    <div className="flex items-center gap-2 mb-2">
-        <Terminal className="h-5 w-5 text-blue-600" />
-        <span className="font-medium text-blue-900 dark:text-blue-100">
+<Box
+    sx={{
+        mt: 3,
+        p: 3,
+        bgcolor: 'primary.softBg',
+        borderRadius: 1,
+        border: '1px solid',
+        borderColor: 'primary.outlinedBorder',
+    }}
+>
+    <Box sx={{ display: 'flex', alignItems: 'center', gap: 1.5, mb: 1 }}>
+        <FileText sx={{ fontSize: 20, color: 'primary.main' }} />
+        <Typography sx={{ fontWeight: 'bold', color: 'primary.main' }}>
             Ready to Get Started?
-        </span>
-    </div>
-    <p className="text-blue-800 dark:text-blue-200 mb-4">
+        </Typography>
+    </Box>
+    <Typography sx={{ color: 'primary.main', mb: 2 }}>
         Follow the Quick Start guide above to set up your development
         environment and start building with Mastra.
-    </p>
-    <Button variant="default" className="bg-blue-600 hover:bg-blue-700">
+    </Typography>
+    <Button variant="solid" sx={{ bgcolor: 'primary.main' }}>
         Start Development
     </Button>
-</div>
+</Box>

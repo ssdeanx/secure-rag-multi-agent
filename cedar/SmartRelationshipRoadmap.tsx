@@ -4,7 +4,12 @@
 import React, { useState, useEffect } from 'react'
 import type { Node } from 'reactflow'
 import { useCedarState } from 'cedar-os'
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/shadnui/card'
+import {
+    Card,
+    CardContent,
+    CardHeader,
+    CardTitle,
+} from '@/components/ui/shadnui/card'
 import { Badge } from '@/components/ui/shadnui/badge'
 import { Button } from '@/components/ui/shadnui/button'
 import {

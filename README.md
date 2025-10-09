@@ -10,7 +10,7 @@
 ![OpenRouter](https://img.shields.io/badge/OpenRouter-API-purple)
 ![Tailwind CSS](https://img.shields.io/badge/Tailwind%20CSS-4.1-blue)
 ![Lucide React](https://img.shields.io/badge/Lucide%20React-Icons-yellow)
-![shadcn/ui](https://img.shields.io/badge/shadcn%2Fui-Components-indigo)
+![MUI Joy UI](https://img.shields.io/badge/MUI%20Joy%20UI-Components-indigo)
 ![Docker](https://img.shields.io/badge/Docker-Container-blue)
 ![PostgreSQL](https://img.shields.io/badge/PostgreSQL-18-blue?style=flat&logo=postgresql)
 ![Mermaid](https://img.shields.io/badge/Mermaid-Diagrams-blue)
@@ -35,7 +35,7 @@ Traditional RAG systems risk exposing sensitive data. This template provides ent
 
 ```mermaid
 graph TB
-    User[User / JWT Authentication] --> UI[Next.js UI<br/>shadcn/ui, Tailwind CSS, Lucide React]
+    User[User / JWT Authentication] --> UI[Next.js UI<br/>MUI Joy UI, Lucide React]
     UI --> API[Next.js API Routes<br/>/api/chat, /api/index, /api/auth]
     API --> Mastra[Mastra Workflow Engine<br/>Multi-Agent Orchestration]
 

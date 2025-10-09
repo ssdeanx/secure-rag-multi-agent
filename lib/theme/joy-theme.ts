@@ -365,7 +365,8 @@ export const joyTheme = extendTheme({
                 root: ({ theme }: { theme: any }) => ({
                     fontWeight: 600,
                     // example of using vars
-                    '--joy-shadowChannel': theme.vars.palette.primary.mainChannel,
+                    '--joy-shadowChannel':
+                        theme.vars.palette.primary.mainChannel,
                 }),
             },
         },

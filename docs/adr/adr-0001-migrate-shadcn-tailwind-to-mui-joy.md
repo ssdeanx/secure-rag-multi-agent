@@ -1,11 +1,11 @@
 ---
-title: "ADR-0001: Migrate Frontend from Shadcn/UI + Tailwind to MUI Joy"
-status: "Proposed"
-date: "2025-10-08"
-authors: "System Architect"
-tags: ["architecture", "frontend", "ui", "migration"]
-supersedes: ""
-superseded_by: ""
+title: 'ADR-0001: Migrate Frontend from Shadcn/UI + Tailwind to MUI Joy'
+status: 'Proposed'
+date: '2025-10-08'
+authors: 'System Architect'
+tags: ['architecture', 'frontend', 'ui', 'migration']
+supersedes: ''
+superseded_by: ''
 ---
 
 # ADR-0001: Migrate Frontend from Shadcn/UI + Tailwind to MUI Joy

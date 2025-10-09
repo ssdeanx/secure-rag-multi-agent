@@ -53,7 +53,7 @@ export const pgMemory = new Memory({
             messageRange: {
                 before: parseInt(process.env.SEMANTIC_RANGE_BEFORE ?? '3'),
                 after: parseInt(process.env.SEMANTIC_RANGE_AFTER ?? '2'),
-            }
+            },
         },
         // Enhanced working memory with supported template
         workingMemory: {
@@ -91,7 +91,7 @@ export const pgMemory = new Memory({
 - **Action Items**: [To be learned]
 - **Follow-ups Needed**: [To be learned]
         `,
-//            version: 'vnext', // Enable the improved/experimental tool
+            version: 'vnext', // Enable the improved/experimental tool
         },
         // Thread management with supported options
         threads: {

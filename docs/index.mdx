@@ -1,120 +1,171 @@
 import {
-  Badge,
-  Button,
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-  Tabs,
-  TabsContent,
-  TabsList,
-  TabsTrigger,
-  Alert,
-  AlertDescription,
-  AlertTitle,
-  Separator,
-  Mermaid,
-  Shield,
-  Zap,
-  Users,
-  Code,
-  Layers,
-  BookOpen,
-  Play,
-  Github,
-  ExternalLink,
-  CheckCircle,
-  Star,
-  ArrowRight,
-  Database,
-  Lock,
-  Brain,
+    Badge,
+    Button,
+    Card,
+    CardContent,
+    CardDescription,
+    CardHeader,
+    CardTitle,
+    Alert,
+    AlertDescription,
+    AlertTitle,
+    Tabs,
+    TabsContent,
+    TabsList,
+    TabsTrigger,
+    Mermaid,
+    Shield,
+    Users,
+    Code,
+    Layers,
+    BookOpen,
+    Play,
+    Github,
+    CheckCircle,
+    ArrowRight,
+    Bolt,
+    Psychology,
+    Storage,
+    Typography,
+    Box,
 } from '@/components/docs/mdx-bridge.joy'
-
 
 # Mastra Governed RAG Documentation
 
-<div className="flex flex-wrap justify-center gap-2 mb-8">
-    <Badge variant="secondary" className="px-3 py-1">
-        <Shield className="h-3 w-3 mr-1" />
-        Mastra Framework
+<Box
+    sx={{
+        display: 'flex',
+        flexWrap: 'wrap',
+        justifyContent: 'center',
+        gap: 2,
+        mb: 3,
+    }}
+>
+    <Badge color="neutral" variant="soft" sx={{ px: 1.5, py: 0.5 }}>
+        <Shield sx={{ fontSize: 14, mr: 0.5 }} />
+        Mastra Framework v0.20.2
     </Badge>
-    <Badge variant="secondary" className="px-3 py-1">
-        <Code className="h-3 w-3 mr-1" />
-        Next.js 15.5.3
+    <Badge color="neutral" variant="soft" sx={{ px: 1.5, py: 0.5 }}>
+        <Code sx={{ fontSize: 14, mr: 0.5 }} />
+        Next.js 15.5.4
     </Badge>
-    <Badge variant="secondary" className="px-3 py-1">
-        <Database className="h-3 w-3 mr-1" />
-        TypeScript 5.9.2
+    <Badge color="neutral" variant="soft" sx={{ px: 1.5, py: 0.5 }}>
+        <Storage sx={{ fontSize: 14, mr: 0.5 }} />
+        TypeScript 5.9.3
     </Badge>
-    <Badge variant="secondary" className="px-3 py-1">
-        <Brain className="h-3 w-3 mr-1" />
-        OpenAI GPT-4o-mini
+    <Badge color="neutral" variant="soft" sx={{ px: 1.5, py: 0.5 }}>
+        <Psychology sx={{ fontSize: 14, mr: 0.5 }} />
+        Google Gemini 2.5 Flash
     </Badge>
-    <Badge variant="secondary" className="px-3 py-1">
-        <Layers className="h-3 w-3 mr-1" />
-        Qdrant Vector DB
+    <Badge color="neutral" variant="soft" sx={{ px: 1.5, py: 0.5 }}>
+        <Layers sx={{ fontSize: 14, mr: 0.5 }} />
+        PostgreSQL + PgVector
     </Badge>
-</div>
+</Box>
 
 <!-- toc -->
 
 ## System Overview
 
-<Mermaid chart={`graph TB
-    subgraph "User Interface"
-        UI[Next.js Frontend<br/>React + TypeScript]
-        Auth[Authentication<br/>JWT + Mastra]
-        Chat[Chat Interface<br/>Real-time messaging]
-    end
+```mermaid
+graph TB
+    UI[Frontend<br/>Next.js + React]
+    Auth[JWT Auth<br/>@mastra/auth]
+    Mastra[Mastra Core<br/>Agent Orchestration]
+    Agents[16+ AI Agents<br/>Reasoning Units]
+    PgSQL[(PostgreSQL<br/>Metadata)]
+    PgVector[(PgVector<br/>Embeddings)]
+    Gemini[Google Gemini<br/>LLM & Embeddings]
 
-    subgraph "Mastra Backend"
-        Agent[Mastra Agent<br/>Orchestration]
-        Workflow[Workflow Engine<br/>Document processing]
-        Security[Security Layer<br/>RBAC + Policies]
-    end
+    UI --> Auth --> Mastra --> Agents
+    Agents --> PgVector
+    Mastra --> PgSQL
+    Agents --> Gemini
+```
 
-    subgraph "Data Layer"
-        VectorDB[(Qdrant<br/>Vector Database)]
-        DocStore[(Document Store<br/>Indexed content)]
-        Cache[(Redis Cache<br/>Session data)]
-    end
+## Cedar OS Integration
 
-    subgraph "External Services"
-        LLM[OpenAI GPT-4o-mini<br/>Text generation]
-        Embed[OpenAI Embeddings<br/>Vector creation]
-    end
+**Cedar OS** is the advanced UI framework powering interactive features and 3D visualizations. It provides a comprehensive suite of components for building sophisticated user interfaces:
 
-    UI --> Auth
-    UI --> Chat
-    Auth --> Security
-    Chat --> Agent
-    Agent --> Workflow
-    Agent --> Security
-    Workflow --> VectorDB
-    Workflow --> DocStore
-    VectorDB --> Embed
-    Agent --> LLM
-    Security --> Cache
+### Core Components
 
-    classDef frontend fill:#e1f5fe,stroke:#01579b,stroke-width:2px
-    classDef backend fill:#f3e5f5,stroke:#4a148c,stroke-width:2px
-    classDef data fill:#e8f5e8,stroke:#1b5e20,stroke-width:2px
-    classDef external fill:#fff3e0,stroke:#e65100,stroke-width:2px
+- **Chat Systems**: CedarCaptionChat, EmbeddedCedarChat, FloatingCedarChat, SidePanelCedarChat
+- **3D Containers**: Container3D, Flat3dContainer, GlassyPaneContainer, Flat3dButton
+- **UI Primitives**: Command bars, debugger panels, diff viewers, voice indicators
+- **Roadmap Features**: RoadmapCanvas, RoadmapNode, SmartRelationshipRoadmap, FeatureNode
 
-    class UI,Auth,Chat frontend
-    class Agent,Workflow,Security backend
-    class VectorDB,DocStore,Cache data
-    class LLM,Embed external
+### Advanced Features
 
-`} />
+- **Visual Effects**: GlowingMesh, GradientMesh, InsetGlow for 3D styling
+- **Interactive Spells**: QuestioningSpell, RadialMenuSpell, RangeSliderSpell, TooltipMenuSpell
+- **Text Effects**: PhantomText, ShimmerText, TypewriterText for dynamic content
+- **Thread Management**: ChatThreadController for conversation threading
+- **Input Systems**: Advanced chat inputs with context badges and human-in-the-loop indicators
 
-<div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
-  <Card>
+### Developer Tools
+
+- **Debugger Suite**: CollapsibleSection, DebuggerPanel, MessagesTab, NetworkTab, StatesTab
+- **Diff Visualization**: DiffContainer, DiffText for comparing content
+- **Settings Management**: SettingsPanel for user preferences
+- **Voice Integration**: VoiceIndicator for audio features
+
+Cedar OS seamlessly integrates with Mastra agents to provide rich, interactive experiences for complex workflows and data visualization.
+
+### Component Categories
+
+<Box sx={{ display: 'grid', gridTemplateColumns: { xs: '1fr', md: 'repeat(3, 1fr)' }, gap: 2, mb: 3 }}>
+  <Card variant="outlined">
     <CardHeader>
-      <CardTitle className="flex items-center gap-2">
-        <Shield className="h-5 w-5 text-green-600" />
+      <CardTitle sx={{ fontSize: '1rem' }}>Chat & Communication</CardTitle>
+    </CardHeader>
+    <CardContent>
+      <Typography level="body-sm">
+        • Multi-modal chat interfaces<br/>
+        • Thread management<br/>
+        • Voice indicators<br/>
+        • Context badges
+      </Typography>
+    </CardContent>
+  </Card>
+
+<Card variant="outlined">
+    <CardHeader>
+        <CardTitle sx={{ fontSize: '1rem' }}>3D & Visual Effects</CardTitle>
+    </CardHeader>
+    <CardContent>
+        <Typography level="body-sm">
+            • 3D containers & buttons
+            <br />
+            • Glowing mesh effects
+            <br />
+            • Gradient overlays
+            <br />• Interactive spells
+        </Typography>
+    </CardContent>
+</Card>
+
+  <Card variant="outlined">
+    <CardHeader>
+      <CardTitle sx={{ fontSize: '1rem' }}>Developer Tools</CardTitle>
+    </CardHeader>
+    <CardContent>
+      <Typography level="body-sm">
+        • Debugger panels<br/>
+        • Diff viewers<br/>
+        • Settings management<br/>
+        • Roadmap canvas
+      </Typography>
+    </CardContent>
+  </Card>
+</Box>
+
+## Features
+
+<Box sx={{ display: 'grid', gridTemplateColumns: { xs: '1fr', md: 'repeat(2, 1fr)' }, gap: 2, mb: 3 }}>
+  <Card variant="outlined">
+    <CardHeader>
+      <CardTitle sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+        <Shield sx={{ fontSize: 20, color: 'success.main' }} />
         Security First
       </CardTitle>
     </CardHeader>
@@ -125,35 +176,50 @@ import {
     </CardContent>
   </Card>
 
-<Card>
+<Card variant="outlined">
     <CardHeader>
-        <CardTitle className="flex items-center gap-2">
-            <Zap className="h-5 w-5 text-blue-600" />
+        <CardTitle sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+            <Bolt sx={{ fontSize: 20, color: 'primary.main' }} />
             High Performance
         </CardTitle>
     </CardHeader>
     <CardContent>
         <CardDescription>
-            Optimized vector search with Qdrant, Redis caching, and efficient
-            document processing workflows.
+            Optimized vector search with PostgreSQL + PgVector, Supabase
+            storage, and efficient document processing workflows.
         </CardDescription>
     </CardContent>
 </Card>
 
-  <Card>
+<Card variant="outlined">
     <CardHeader>
-      <CardTitle className="flex items-center gap-2">
-        <Brain className="h-5 w-5 text-purple-600" />
-        AI-Powered
+        <CardTitle sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+            <Psychology sx={{ fontSize: 20, color: 'secondary.main' }} />
+            AI-Powered
+        </CardTitle>
+    </CardHeader>
+    <CardContent>
+        <CardDescription>
+            Leverages Google Gemini 2.5 Flash for intelligent document analysis
+            and conversational responses.
+        </CardDescription>
+    </CardContent>
+</Card>
+
+  <Card variant="outlined">
+    <CardHeader>
+      <CardTitle sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+        <Layers sx={{ fontSize: 20, color: 'warning.main' }} />
+        Cedar OS
       </CardTitle>
     </CardHeader>
     <CardContent>
       <CardDescription>
-        Leverages OpenAI GPT-4o-mini for intelligent document analysis and conversational responses.
+        Advanced UI framework with 40+ components including 3D containers, multi-modal chat interfaces, interactive roadmaps, debugger tools, and visual effects.
       </CardDescription>
     </CardContent>
   </Card>
-</div>
+</Box>
 
 ## 🚀 Overview
 
@@ -169,375 +235,186 @@ import {
     </AlertDescription>
 </Alert>
 
-### 🎯 What Makes It Special
-
-<div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mb-8">
-  <Card>
-    <CardHeader className="pb-3">
-      <CardTitle className="text-lg flex items-center">
-        <Lock className="h-5 w-5 mr-2 text-primary" />
-        Security First
-      </CardTitle>
-    </CardHeader>
-    <CardContent>
-      <ul className="space-y-2 text-sm">
-        <li className="flex items-center">
-          <CheckCircle className="h-4 w-4 mr-2 text-green-500" />
-          Multi-stage authentication
-        </li>
-        <li className="flex items-center">
-          <CheckCircle className="h-4 w-4 mr-2 text-green-500" />
-          Role-based document filtering
-        </li>
-        <li className="flex items-center">
-          <CheckCircle className="h-4 w-4 mr-2 text-green-500" />
-          Audit trail tracking
-        </li>
-      </ul>
-    </CardContent>
-  </Card>
-
-<Card>
-    <CardHeader className="pb-3">
-        <CardTitle className="text-lg flex items-center">
-            <Brain className="h-5 w-5 mr-2 text-primary" />
-            AI-Powered
-        </CardTitle>
-    </CardHeader>
-    <CardContent>
-        <ul className="space-y-2 text-sm">
-            <li className="flex items-center">
-                <CheckCircle className="h-4 w-4 mr-2 text-green-500" />
-                Multi-agent orchestration
-            </li>
-            <li className="flex items-center">
-                <CheckCircle className="h-4 w-4 mr-2 text-green-500" />
-                Intelligent reranking
-            </li>
-            <li className="flex items-center">
-                <CheckCircle className="h-4 w-4 mr-2 text-green-500" />
-                Citation tracking
-            </li>
-        </ul>
-    </CardContent>
-</Card>
-
-  <Card>
-    <CardHeader className="pb-3">
-      <CardTitle className="text-lg flex items-center">
-        <Zap className="h-5 w-5 mr-2 text-primary" />
-        Enterprise Ready
-      </CardTitle>
-    </CardHeader>
-    <CardContent>
-      <ul className="space-y-2 text-sm">
-        <li className="flex items-center">
-          <CheckCircle className="h-4 w-4 mr-2 text-green-500" />
-          Production deployment
-        </li>
-        <li className="flex items-center">
-          <CheckCircle className="h-4 w-4 mr-2 text-green-500" />
-          Scalable architecture
-        </li>
-        <li className="flex items-center">
-          <CheckCircle className="h-4 w-4 mr-2 text-green-500" />
-          Comprehensive monitoring
-        </li>
-      </ul>
-    </CardContent>
-  </Card>
-</div>
-
-### 🏗️ Core Architecture
+### Architecture
 
 ```mermaid
-graph TB
-    A[User Query] --> B[JWT Authentication]
+graph LR
+    A[User Query] --> B[JWT Auth]
     B --> C[Policy Agent]
-    C --> D[Access Filter Generation]
+    C --> D[Access Filter]
     D --> E[Retrieval Agent]
-    E --> F[Qdrant Vector Search]
-    F --> G[Security Filtering]
+    E --> F[PgVector Search]
+    F --> G[Security Filter]
     G --> H[Rerank Agent]
     H --> I[Answer Agent]
     I --> J[Verifier Agent]
     J --> K[Final Response]
 
-    subgraph "Security Pipeline"
-        B
-        C
-        D
-        G
-        J
-    end
-
-    subgraph "AI Pipeline"
-        E
-        H
-        I
-    end
-
-    subgraph "Storage Layer"
-        L[(Qdrant Vectors)]
-        M[(LibSQL Metadata)]
-    end
-
-    F --> L
-    K --> M
-
     classDef security fill:#fee2e2,stroke:#dc2626
     classDef ai fill:#dbeafe,stroke:#2563eb
-    classDef storage fill:#f3f4f6,stroke:#6b7280
-
     class B,C,D,G,J security
     class E,H,I ai
-    class L,M storage
 ```
 
-## ✨ Key Features
-
-<Tabs defaultValue="security" className="mb-8">
-  <TabsList className="grid w-full grid-cols-3">
-    <TabsTrigger value="security">🔐 Security</TabsTrigger>
-    <TabsTrigger value="ai">🤖 AI Intelligence</TabsTrigger>
-    <TabsTrigger value="dev">🛠️ Developer Experience</TabsTrigger>
-  </TabsList>
-
-  <TabsContent value="security" className="space-y-4">
-    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-      <Card>
-        <CardHeader>
-          <CardTitle className="text-lg">Hierarchical RBAC</CardTitle>
-          <CardDescription>Role-based access with inheritance</CardDescription>
-        </CardHeader>
-        <CardContent>
-          <p className="text-sm">Users inherit permissions from parent roles, creating a flexible hierarchy that scales with your organization.</p>
-        </CardContent>
-      </Card>
-
-      <Card>
-        <CardHeader>
-          <CardTitle className="text-lg">Document Classification</CardTitle>
-          <CardDescription>Public → Internal → Confidential</CardDescription>
-        </CardHeader>
-        <CardContent>
-          <p className="text-sm">Three-tier classification system ensures sensitive information is only accessible to authorized personnel.</p>
-        </CardContent>
-      </Card>
-
-      <Card>
-        <CardHeader>
-          <CardTitle className="text-lg">Multi-Agent Security</CardTitle>
-          <CardDescription>Policy enforcement pipeline</CardDescription>
-        </CardHeader>
-        <CardContent>
-          <p className="text-sm">Dedicated AI agents enforce security policies at every stage of the query processing pipeline.</p>
-        </CardContent>
-      </Card>
-
-      <Card>
-        <CardHeader>
-          <CardTitle className="text-lg">Audit Logging</CardTitle>
-          <CardDescription>Complete compliance tracking</CardDescription>
-        </CardHeader>
-        <CardContent>
-          <p className="text-sm">Every access attempt and decision is logged for compliance, monitoring, and forensic analysis.</p>
-        </CardContent>
-      </Card>
-    </div>
-
-  </TabsContent>
-
-  <TabsContent value="ai" className="space-y-4">
-    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-      <Card>
-        <CardHeader>
-          <CardTitle className="text-lg">Multi-Agent Orchestration</CardTitle>
-          <CardDescription>Mastra framework integration</CardDescription>
-        </CardHeader>
-        <CardContent>
-          <p className="text-sm">Specialized AI agents work together to process queries, retrieve information, and generate responses.</p>
-        </CardContent>
-      </Card>
-
-      <Card>
-        <CardHeader>
-          <CardTitle className="text-lg">Contextual Retrieval</CardTitle>
-          <CardDescription>Security-aware filtering</CardDescription>
-        </CardHeader>
-        <CardContent>
-          <p className="text-sm">Documents are retrieved and filtered based on both relevance and user access permissions.</p>
-        </CardContent>
-      </Card>
-
-      <Card>
-        <CardHeader>
-          <CardTitle className="text-lg">Intelligent Reranking</CardTitle>
-          <CardDescription>Relevance optimization</CardDescription>
-        </CardHeader>
-        <CardContent>
-          <p className="text-sm">Results are reordered based on contextual relevance and user-specific preferences.</p>
-        </CardContent>
-      </Card>
-
-      <Card>
-        <CardHeader>
-          <CardTitle className="text-lg">Citation Tracking</CardTitle>
-          <CardDescription>Source attribution</CardDescription>
-        </CardHeader>
-        <CardContent>
-          <p className="text-sm">Every response includes citations linking back to source documents with access verification.</p>
-        </CardContent>
-      </Card>
-    </div>
-
-  </TabsContent>
-
-  <TabsContent value="dev" className="space-y-4">
-    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-      <Card>
-        <CardHeader>
-          <CardTitle className="text-lg">TypeScript First</CardTitle>
-          <CardDescription>Full type safety</CardDescription>
-        </CardHeader>
-        <CardContent>
-          <p className="text-sm">Complete TypeScript coverage with strict typing for all components and APIs.</p>
-        </CardContent>
-      </Card>
-
-      <Card>
-        <CardHeader>
-          <CardTitle className="text-lg">Next.js 15</CardTitle>
-          <CardDescription>App Router & Server Components</CardDescription>
-        </CardHeader>
-        <CardContent>
-          <p className="text-sm">Latest Next.js features with optimal performance and developer experience.</p>
-        </CardContent>
-      </Card>
-
-      <Card>
-        <CardHeader>
-          <CardTitle className="text-lg">Modular Architecture</CardTitle>
-          <CardDescription>Clear separation of concerns</CardDescription>
-        </CardHeader>
-        <CardContent>
-          <p className="text-sm">Well-structured codebase with independent modules for security, AI, and UI components.</p>
-        </CardContent>
-      </Card>
-
-      <Card>
-        <CardHeader>
-          <CardTitle className="text-lg">CLI Tools</CardTitle>
-          <CardDescription>Indexing and management</CardDescription>
-        </CardHeader>
-        <CardContent>
-          <p className="text-sm">Command-line utilities for document indexing, user management, and system administration.</p>
-        </CardContent>
-      </Card>
-    </div>
-
-  </TabsContent>
-</Tabs>
-
-## 🏢 Use Cases
-
-### Corporate Knowledge Management
-
-<div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
-  <Card>
+<Box sx={{ display: 'grid', gridTemplateColumns: { xs: '1fr', md: 'repeat(2, 1fr)' }, gap: 2, mb: 3 }}>
+  <Card variant="outlined">
     <CardHeader>
-      <CardTitle className="text-lg">Secure Employee Assistants</CardTitle>
+      <CardTitle sx={{ fontSize: '1rem' }}>Hierarchical RBAC</CardTitle>
+      <CardDescription>Role-based access with inheritance</CardDescription>
+    </CardHeader>
+    <CardContent>
+      <Typography level="body-sm">
+        Users inherit permissions from parent roles, creating a flexible hierarchy.
+      </Typography>
+    </CardContent>
+  </Card>
+
+<Card variant="outlined">
+    <CardHeader>
+        <CardTitle sx={{ fontSize: '1rem' }}>Document Classification</CardTitle>
+        <CardDescription>Public → Internal → Confidential</CardDescription>
+    </CardHeader>
+    <CardContent>
+        <Typography level="body-sm">
+            Three-tier classification system ensures sensitive information is
+            only accessible to authorized personnel.
+        </Typography>
+    </CardContent>
+</Card>
+
+<Card variant="outlined">
+    <CardHeader>
+        <CardTitle sx={{ fontSize: '1rem' }}>Multi-Agent Security</CardTitle>
+        <CardDescription>Policy enforcement pipeline</CardDescription>
+    </CardHeader>
+    <CardContent>
+        <Typography level="body-sm">
+            Dedicated AI agents enforce security policies at every stage of the
+            query processing pipeline.
+        </Typography>
+    </CardContent>
+</Card>
+
+  <Card variant="outlined">
+    <CardHeader>
+      <CardTitle sx={{ fontSize: '1rem' }}>Audit Logging</CardTitle>
+      <CardDescription>Complete compliance tracking</CardDescription>
+    </CardHeader>
+    <CardContent>
+      <Typography level="body-sm">
+        Every access attempt and decision is logged for compliance, monitoring, and forensic analysis.
+      </Typography>
+    </CardContent>
+  </Card>
+</Box>
+
+## Use Cases
+
+<Box sx={{ display: 'grid', gridTemplateColumns: { xs: '1fr', md: 'repeat(2, 1fr)' }, gap: 2, mb: 3 }}>
+  <Card variant="outlined">
+    <CardHeader>
+      <CardTitle sx={{ fontSize: '1.1rem' }}>Secure Employee Assistants</CardTitle>
       <CardDescription>Department-specific access control</CardDescription>
     </CardHeader>
     <CardContent>
-      <p className="text-sm">AI assistants that respect organizational boundaries and data classification policies.</p>
+      <Typography level="body-sm">
+        AI assistants that respect organizational boundaries and data classification policies.
+      </Typography>
     </CardContent>
   </Card>
 
-<Card>
+<Card variant="outlined">
     <CardHeader>
-        <CardTitle className="text-lg">Compliance Chatbots</CardTitle>
+        <CardTitle sx={{ fontSize: '1.1rem' }}>Compliance Chatbots</CardTitle>
         <CardDescription>Regulatory compliance automation</CardDescription>
     </CardHeader>
     <CardContent>
-        <p className="text-sm">
+        <Typography level="body-sm">
             Automated compliance checking and policy enforcement through
             conversational interfaces.
-        </p>
+        </Typography>
     </CardContent>
 </Card>
 
-<Card>
+<Card variant="outlined">
     <CardHeader>
-        <CardTitle className="text-lg">Executive Dashboards</CardTitle>
+        <CardTitle sx={{ fontSize: '1.1rem' }}>Executive Dashboards</CardTitle>
         <CardDescription>Cross-department insights</CardDescription>
     </CardHeader>
     <CardContent>
-        <p className="text-sm">
+        <Typography level="body-sm">
             Aggregated intelligence from multiple departments with appropriate
             access controls.
-        </p>
+        </Typography>
     </CardContent>
 </Card>
 
-  <Card>
+  <Card variant="outlined">
     <CardHeader>
-      <CardTitle className="text-lg">HR Support Systems</CardTitle>
+      <CardTitle sx={{ fontSize: '1.1rem' }}>HR Support Systems</CardTitle>
       <CardDescription>Confidential data protection</CardDescription>
     </CardHeader>
     <CardContent>
-      <p className="text-sm">Human resources assistants with built-in privacy and confidentiality safeguards.</p>
+      <Typography level="body-sm">
+        Human resources assistants with built-in privacy and confidentiality safeguards.
+      </Typography>
     </CardContent>
   </Card>
-</div>
+</Box>
 
-### Industry Applications
+### Industries
 
-<div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
-  <Card>
+<Box sx={{ display: 'grid', gridTemplateColumns: { xs: 'repeat(2, 1fr)', md: 'repeat(4, 1fr)' }, gap: 2, mb: 3 }}>
+  <Card variant="outlined">
     <CardHeader>
-      <CardTitle className="text-sm">Financial Services</CardTitle>
+      <CardTitle sx={{ fontSize: '0.9rem' }}>Financial Services</CardTitle>
     </CardHeader>
     <CardContent>
-      <p className="text-xs">Secure access to trading policies and compliance documents</p>
+      <Typography level="body-xs">
+        Secure access to trading policies and compliance documents
+      </Typography>
     </CardContent>
   </Card>
 
-<Card>
+<Card variant="outlined">
     <CardHeader>
-        <CardTitle className="text-sm">Healthcare</CardTitle>
+        <CardTitle sx={{ fontSize: '0.9rem' }}>Healthcare</CardTitle>
     </CardHeader>
     <CardContent>
-        <p className="text-xs">HIPAA-compliant medical knowledge bases</p>
+        <Typography level="body-xs">
+            HIPAA-compliant medical knowledge bases
+        </Typography>
     </CardContent>
 </Card>
 
-<Card>
+<Card variant="outlined">
     <CardHeader>
-        <CardTitle className="text-sm">Legal Firms</CardTitle>
+        <CardTitle sx={{ fontSize: '0.9rem' }}>Legal Firms</CardTitle>
     </CardHeader>
     <CardContent>
-        <p className="text-xs">Privilege-aware document retrieval</p>
+        <Typography level="body-xs">
+            Privilege-aware document retrieval
+        </Typography>
     </CardContent>
 </Card>
 
-  <Card>
+  <Card variant="outlined">
     <CardHeader>
-      <CardTitle className="text-sm">Government</CardTitle>
+      <CardTitle sx={{ fontSize: '0.9rem' }}>Government</CardTitle>
     </CardHeader>
     <CardContent>
-      <p className="text-xs">Classified information management</p>
+      <Typography level="body-xs">
+        Classified information management
+      </Typography>
     </CardContent>
   </Card>
-</div>
+</Box>
 
-## 🚀 Quick Start
+## Quick Start
 
-Get up and running in under 5 minutes:
-
-<div className="bg-muted p-6 rounded-lg mb-6">
-  <pre className="text-sm overflow-x-auto">
-    <code>{`# 1. Clone and install
+<Box sx={{ bgcolor: 'background.surface', p: 2, borderRadius: 1, mb: 3 }}>
+  <Typography component="pre" sx={{ fontSize: '0.875rem', overflow: 'auto', m: 0 }}>
+    {`# 1. Clone and install
 git clone https://github.com/ssdeanx/governed-rag-ai.git
 cd governed-rag-ai
 npm install
@@ -546,7 +423,7 @@ npm install
 
 cp .env.example .env
 
-# Edit .env with your OpenAI API key
+# Edit .env with your Google Gemini API key and PostgreSQL settings
 
 # 3. Start services
 
@@ -558,282 +435,91 @@ npm run dev
 npm run build-cli
 npm run cli index
 
-# 5. Open <http://localhost:3000>`}</code>
+# 5. Open http://localhost:3000`}
 
-  </pre>
-</div>
+  </Typography>
+</Box>
 
-<div className="flex gap-4 mb-8">
-    <Button asChild>
-        <a href="/docs/quick-start">
-            <Play className="h-4 w-4 mr-2" />
-            Detailed Setup Guide
-            <ArrowRight className="h-4 w-4 ml-2" />
-        </a>
+<Box sx={{ display: 'flex', gap: 2, mb: 3 }}>
+    <Button
+        component="a"
+        href="/docs/quick-start"
+        startDecorator={<Play />}
+        endDecorator={<ArrowRight />}
+    >
+        Detailed Setup Guide
     </Button>
-    <Button variant="outline" asChild>
-        <a href="/docs/demo-roles">
-            <Users className="h-4 w-4 mr-2" />
-            Try Demo Roles
-        </a>
+    <Button
+        variant="soft"
+        component="a"
+        href="/docs/demo-roles"
+        startDecorator={<Users />}
+    >
+        Try Demo Roles
     </Button>
-</div>
+</Box>
 
-## 📚 Documentation Structure
+## Documentation Structure
 
-### 🏁 Getting Started
-
-- **[Quick Start](/docs/quick-start)**: Installation, configuration, and first run
-- **[Demo Roles](/docs/demo-roles)**: Interactive examples with different user roles
-
-### 🔐 Security & Governance
-
-- **[Security Model](/docs/security)**: Roles, classifications, and access policies
-- **[Architecture](/docs/architecture)**: System design and agent workflows
-
-### 🛠️ Developer Resources
-
-- **[API Reference](/docs/api-reference)**: Complete endpoint documentation
-
-### 🐛 Troubleshooting
-
-- **[Troubleshooting](/docs/troubleshooting)**: Common issues and solutions
-
-## 🔧 System Requirements
-
-<div className="overflow-x-auto mb-6">
-    <table className="w-full border-collapse border border-border">
-        <thead>
-            <tr className="bg-muted">
-                <th className="border border-border p-3 text-left">
-                    Component
-                </th>
-                <th className="border border-border p-3 text-left">Minimum</th>
-                <th className="border border-border p-3 text-left">
-                    Recommended
-                </th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr>
-                <td className="border border-border p-3 font-medium">
-                    Node.js
-                </td>
-                <td className="border border-border p-3">20.9.0</td>
-                <td className="border border-border p-3">20.15.0+</td>
-            </tr>
-            <tr>
-                <td className="border border-border p-3 font-medium">Memory</td>
-                <td className="border border-border p-3">4GB RAM</td>
-                <td className="border border-border p-3">8GB RAM</td>
-            </tr>
-            <tr>
-                <td className="border border-border p-3 font-medium">
-                    Storage
-                </td>
-                <td className="border border-border p-3">10GB</td>
-                <td className="border border-border p-3">50GB SSD</td>
-            </tr>
-            <tr>
-                <td className="border border-border p-3 font-medium">Docker</td>
-                <td className="border border-border p-3">24.0+</td>
-                <td className="border border-border p-3">25.0+</td>
-            </tr>
-        </tbody>
-    </table>
-</div>
-
-### Supported Platforms
-
-<div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
-    <div className="flex items-center">
-        <CheckCircle className="h-5 w-5 mr-2 text-green-500" />
-        <span className="text-sm">Linux (Ubuntu 20.04+)</span>
-    </div>
-    <div className="flex items-center">
-        <CheckCircle className="h-5 w-5 mr-2 text-green-500" />
-        <span className="text-sm">macOS (12.0+)</span>
-    </div>
-    <div className="flex items-center">
-        <CheckCircle className="h-5 w-5 mr-2 text-green-500" />
-        <span className="text-sm">Windows (WSL2)</span>
-    </div>
-    <div className="flex items-center">
-        <CheckCircle className="h-5 w-5 mr-2 text-green-500" />
-        <span className="text-sm">Docker (all platforms)</span>
-    </div>
-</div>
-
-## 🌟 Sample Interactions
-
-<Tabs defaultValue="finance" className="mb-8">
-  <TabsList>
-    <TabsTrigger value="finance">Finance Team</TabsTrigger>
-    <TabsTrigger value="hr">HR Admin</TabsTrigger>
-  </TabsList>
-
-<TabsContent value="finance">
-    <Card>
-        <CardHeader>
-            <CardTitle>Finance Team Member Query</CardTitle>
-            <CardDescription>
-                Expense reimbursement policy inquiry
-            </CardDescription>
-        </CardHeader>
-        <CardContent>
-            <div className="bg-muted p-4 rounded-lg font-mono text-sm">
-                <div className="text-blue-600 mb-2">
-                    User: "What's our expense reimbursement policy?"
-                </div>
-                <div className="text-green-600">
-                    System: [Authenticates as finance.viewer]
-                    <br />
-                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;[Filters
-                    documents: classification ≤ internal, roles include
-                    finance.*]
-                    <br />
-                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;[Retrieves:
-                    finance-policy.md, expense-guidelines.pdf]
-                    <br />
-                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;[Generates answer
-                    with citations]
-                </div>
-            </div>
-        </CardContent>
-    </Card>
-</TabsContent>
-
-  <TabsContent value="hr">
-    <Card>
-      <CardHeader>
-        <CardTitle>HR Administrator Query</CardTitle>
-        <CardDescription>Salary ranges for senior engineers</CardDescription>
-      </CardHeader>
-      <CardContent>
-        <div className="bg-muted p-4 rounded-lg font-mono text-sm">
-          <div className="text-blue-600 mb-2">User: "Show me the salary ranges for senior engineers"</div>
-          <div className="text-green-600">
-            System: [Authenticates as hr.admin]<br/>
-            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;[Filters documents: classification ≤ confidential, roles include hr.admin]<br/>
-            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;[Retrieves: compensation-plan-2025.pdf, salary-bands.xlsx]<br/>
-            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;[Applies step-up authentication for confidential data]
-          </div>
-        </div>
-      </CardContent>
-    </Card>
-  </TabsContent>
-</Tabs>
-
-## 🤝 Contributing
-
-We welcome contributions! Please see our [Contributing Guide](../README.md#contributing) for:
-
-- Development setup and workflow
-- Code standards and testing
-- Pull request guidelines
-- Issue reporting templates
-
-### Development Commands
-
-<div className="bg-muted p-4 rounded-lg mb-6">
-  <pre className="text-sm overflow-x-auto">
-    <code>{`# Install dependencies
-npm install
-
-# Start development servers
-
-npm run dev
-
-# Run tests
-
-npm test
-
-# Build for production
-
-npm run build
-
-# CLI tools
-
-npm run cli -- --help`}</code>
-
-  </pre>
-</div>
-
-## 📞 Support & Community
-
-<div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
-  <Card>
+<Box sx={{ display: 'grid', gridTemplateColumns: { xs: '1fr', md: 'repeat(2, 1fr)' }, gap: 2, mb: 3 }}>
+  <Card variant="outlined">
     <CardHeader>
-      <CardTitle className="text-lg flex items-center">
-        <BookOpen className="h-5 w-5 mr-2" />
-        Documentation
-      </CardTitle>
+      <CardTitle>Cedar OS & UI</CardTitle>
     </CardHeader>
     <CardContent>
-      <p className="text-sm">You're reading it! Complete guides and API references.</p>
+      <Box component="ul" sx={{ m: 0, pl: 2 }}>
+        <li><a href="/docs/onboarding-cedar-mastra">Cedar OS Integration</a> - Framework setup & usage</li>
+        <li><a href="/docs/joy-components">Joy Components</a> - UI component library</li>
+        <li><a href="/docs/component-mapping">Component Mapping</a> - Migration guides</li>
+        <li><a href="/docs/spikes/mastra-cedar">Cedar Architecture</a> - Technical deep-dive</li>
+      </Box>
     </CardContent>
   </Card>
 
-<Card>
+<Card variant="outlined">
     <CardHeader>
-        <CardTitle className="text-lg flex items-center">
-            <Github className="h-5 w-5 mr-2" />
-            GitHub
-        </CardTitle>
+        <CardTitle>Security & Architecture</CardTitle>
     </CardHeader>
     <CardContent>
-        <p className="text-sm">
-            Issues, discussions, and source code repository.
-        </p>
+        <Box component="ul" sx={{ m: 0, pl: 2 }}>
+            <li>
+                <a href="/docs/security">Security Model</a> - Roles & policies
+            </li>
+            <li>
+                <a href="/docs/architecture">Architecture</a> - System design
+            </li>
+        </Box>
     </CardContent>
 </Card>
 
-  <Card>
+<Card variant="outlined">
     <CardHeader>
-      <CardTitle className="text-lg flex items-center">
-        <Users className="h-5 w-5 mr-2" />
-        Community
-      </CardTitle>
+        <CardTitle>Cedar OS & UI</CardTitle>
     </CardHeader>
     <CardContent>
-      <p className="text-sm">Discord community, blog posts, and monthly newsletter.</p>
+        <Box component="ul" sx={{ m: 0, pl: 2 }}>
+            <li>
+                <a href="/docs/cedar-os">Cedar OS</a> - Advanced UI framework
+            </li>
+            <li>
+                <a href="/docs/joy-components">Joy Components</a> - UI component
+                library
+            </li>
+        </Box>
+    </CardContent>
+</Card>
+
+  <Card variant="outlined">
+    <CardHeader>
+      <CardTitle>Developer Resources</CardTitle>
+    </CardHeader>
+    <CardContent>
+      <Box component="ul" sx={{ m: 0, pl: 2 }}>
+        <li><a href="/docs/api-reference">API Reference</a> - Complete endpoints</li>
+        <li><a href="/docs/mastra">Mastra Framework</a> - Core concepts</li>
+      </Box>
     </CardContent>
   </Card>
-</div>
+</Box>
 
----
-
-<div className="text-center py-8">
-    <p className="text-lg font-semibold mb-4">
-        Built with ❤️ using Mastra AI Framework
-    </p>
-    <div className="flex flex-wrap justify-center gap-4 text-sm text-muted-foreground">
-        <a
-            href="https://mastra.ai"
-            className="hover:text-primary transition-colors"
-        >
-            Mastra.ai
-        </a>
-        <span>•</span>
-        <a
-            href="https://nextjs.org"
-            className="hover:text-primary transition-colors"
-        >
-            Next.js
-        </a>
-        <span>•</span>
-        <a
-            href="https://qdrant.tech"
-            className="hover:text-primary transition-colors"
-        >
-            Qdrant
-        </a>
-        <span>•</span>
-        <a
-            href="https://openai.com"
-            className="hover:text-primary transition-colors"
-        >
-            OpenAI
-        </a>
-    </div>
-</div>
+## 🤝 Contributing

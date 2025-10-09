@@ -33,15 +33,15 @@
 
 ```tsx
 <Box
-  component="section"
-  sx={{
-    p: 2,
-    border: '1px dashed grey',
-    display: 'flex',
-    gap: 2,
-  }}
+    component="section"
+    sx={{
+        p: 2,
+        border: '1px dashed grey',
+        display: 'flex',
+        gap: 2,
+    }}
 >
-  Content
+    Content
 </Box>
 ```
 
@@ -63,12 +63,12 @@
 
 ```tsx
 <Grid container spacing={2}>
-  <Grid size={{ xs: 12, md: 6 }}>
-    <Item>Left column</Item>
-  </Grid>
-  <Grid size={{ xs: 12, md: 6 }}>
-    <Item>Right column</Item>
-  </Grid>
+    <Grid size={{ xs: 12, md: 6 }}>
+        <Item>Left column</Item>
+    </Grid>
+    <Grid size={{ xs: 12, md: 6 }}>
+        <Item>Right column</Item>
+    </Grid>
 </Grid>
 ```
 
@@ -92,9 +92,9 @@
 
 ```tsx
 <Stack direction="row" spacing={2} divider={<Divider orientation="vertical" />}>
-  <Item>Item 1</Item>
-  <Item>Item 2</Item>
-  <Item>Item 3</Item>
+    <Item>Item 1</Item>
+    <Item>Item 2</Item>
+    <Item>Item 3</Item>
 </Stack>
 ```
 
@@ -112,23 +112,23 @@
 **Import:**
 
 ```tsx
-import Dropdown from '@mui/joy/Dropdown';
-import Menu from '@mui/joy/Menu';
-import MenuButton from '@mui/joy/MenuButton';
-import MenuItem from '@mui/joy/MenuItem';
-import MenuList from '@mui/joy/MenuList';
+import Dropdown from '@mui/joy/Dropdown'
+import Menu from '@mui/joy/Menu'
+import MenuButton from '@mui/joy/MenuButton'
+import MenuItem from '@mui/joy/MenuItem'
+import MenuList from '@mui/joy/MenuList'
 ```
 
 **Component Structure:**
 
 ```tsx
 <Dropdown>
-  <MenuButton>Actions</MenuButton>
-  <Menu>
-    <MenuItem>Profile</MenuItem>
-    <MenuItem>Settings</MenuItem>
-    <MenuItem>Logout</MenuItem>
-  </Menu>
+    <MenuButton>Actions</MenuButton>
+    <Menu>
+        <MenuItem>Profile</MenuItem>
+        <MenuItem>Settings</MenuItem>
+        <MenuItem>Logout</MenuItem>
+    </Menu>
 </Dropdown>
 ```
 
@@ -145,13 +145,13 @@ import MenuList from '@mui/joy/MenuList';
 
 ```tsx
 <Dropdown>
-  <MenuButton
-    slots={{ root: IconButton }}
-    slotProps={{ root: { variant: 'outlined' } }}
-  >
-    <MoreVert />
-  </MenuButton>
-  <Menu>...</Menu>
+    <MenuButton
+        slots={{ root: IconButton }}
+        slotProps={{ root: { variant: 'outlined' } }}
+    >
+        <MoreVert />
+    </MenuButton>
+    <Menu>...</Menu>
 </Dropdown>
 ```
 
@@ -160,22 +160,22 @@ import MenuList from '@mui/joy/MenuList';
 **Import:**
 
 ```tsx
-import Tabs from '@mui/joy/Tabs';
-import TabList from '@mui/joy/TabList';
-import Tab from '@mui/joy/Tab';
-import TabPanel from '@mui/joy/TabPanel';
+import Tabs from '@mui/joy/Tabs'
+import TabList from '@mui/joy/TabList'
+import Tab from '@mui/joy/Tab'
+import TabPanel from '@mui/joy/TabPanel'
 ```
 
 **Component Structure:**
 
 ```tsx
 <Tabs defaultValue={0}>
-  <TabList>
-    <Tab>First tab</Tab>
-    <Tab>Second tab</Tab>
-  </TabList>
-  <TabPanel value={0}>First content</TabPanel>
-  <TabPanel value={1}>Second content</TabPanel>
+    <TabList>
+        <Tab>First tab</Tab>
+        <Tab>Second tab</Tab>
+    </TabList>
+    <TabPanel value={0}>First content</TabPanel>
+    <TabPanel value={1}>Second content</TabPanel>
 </Tabs>
 ```
 
@@ -206,9 +206,9 @@ import TabPanel from '@mui/joy/TabPanel';
 
 ```tsx
 <Drawer open={open} onClose={() => setOpen(false)} anchor="right">
-  <ModalClose />
-  <DialogTitle>Title</DialogTitle>
-  <DialogContent>Content here</DialogContent>
+    <ModalClose />
+    <DialogTitle>Title</DialogTitle>
+    <DialogContent>Content here</DialogContent>
 </Drawer>
 ```
 
@@ -226,27 +226,27 @@ import TabPanel from '@mui/joy/TabPanel';
 **Import:**
 
 ```tsx
-import Card from '@mui/joy/Card';
-import CardContent from '@mui/joy/CardContent';
-import CardCover from '@mui/joy/CardCover';
-import CardOverflow from '@mui/joy/CardOverflow';
-import CardActions from '@mui/joy/CardActions';
+import Card from '@mui/joy/Card'
+import CardContent from '@mui/joy/CardContent'
+import CardCover from '@mui/joy/CardCover'
+import CardOverflow from '@mui/joy/CardOverflow'
+import CardActions from '@mui/joy/CardActions'
 ```
 
 **Component Structure:**
 
 ```tsx
 <Card variant="outlined" size="md">
-  <CardCover>
-    <img src="background.jpg" alt="Background" />
-  </CardCover>
-  <CardContent>
-    <Typography level="title-lg">Title</Typography>
-    <Typography level="body-sm">Description</Typography>
-  </CardContent>
-  <CardActions>
-    <Button>Action</Button>
-  </CardActions>
+    <CardCover>
+        <img src="background.jpg" alt="Background" />
+    </CardCover>
+    <CardContent>
+        <Typography level="title-lg">Title</Typography>
+        <Typography level="body-sm">Description</Typography>
+    </CardContent>
+    <CardActions>
+        <Button>Action</Button>
+    </CardActions>
 </Card>
 ```
 
@@ -282,7 +282,7 @@ import CardActions from '@mui/joy/CardActions';
 
 ```tsx
 <Sheet variant="outlined" color="neutral" sx={{ p: 4 }}>
-  Content
+    Content
 </Sheet>
 ```
 
@@ -291,20 +291,20 @@ import CardActions from '@mui/joy/CardActions';
 **Import:**
 
 ```tsx
-import AccordionGroup from '@mui/joy/AccordionGroup';
-import Accordion from '@mui/joy/Accordion';
-import AccordionSummary from '@mui/joy/AccordionSummary';
-import AccordionDetails from '@mui/joy/AccordionDetails';
+import AccordionGroup from '@mui/joy/AccordionGroup'
+import Accordion from '@mui/joy/Accordion'
+import AccordionSummary from '@mui/joy/AccordionSummary'
+import AccordionDetails from '@mui/joy/AccordionDetails'
 ```
 
 **Component Structure:**
 
 ```tsx
 <AccordionGroup size="md" disableDivider={false}>
-  <Accordion>
-    <AccordionSummary>Header</AccordionSummary>
-    <AccordionDetails>Content</AccordionDetails>
-  </Accordion>
+    <Accordion>
+        <AccordionSummary>Header</AccordionSummary>
+        <AccordionDetails>Content</AccordionDetails>
+    </Accordion>
 </AccordionGroup>
 ```
 
@@ -338,11 +338,11 @@ import AccordionDetails from '@mui/joy/AccordionDetails';
 
 ```tsx
 <Input
-  sx={{
-    '--Input-focusedInset': 'var(--any, )',
-    '--Input-focusedThickness': '2px',
-    '--Input-focusedHighlight': 'var(--joy-palette-primary-500)',
-  }}
+    sx={{
+        '--Input-focusedInset': 'var(--any, )',
+        '--Input-focusedThickness': '2px',
+        '--Input-focusedHighlight': 'var(--joy-palette-primary-500)',
+    }}
 />
 ```
 
@@ -350,9 +350,9 @@ import AccordionDetails from '@mui/joy/AccordionDetails';
 
 ```tsx
 <FormControl>
-  <FormLabel>Label</FormLabel>
-  <Input placeholder="Type here" />
-  <FormHelperText>Helper text</FormHelperText>
+    <FormLabel>Label</FormLabel>
+    <Input placeholder="Type here" />
+    <FormHelperText>Helper text</FormHelperText>
 </FormControl>
 ```
 
@@ -372,10 +372,10 @@ import AccordionDetails from '@mui/joy/AccordionDetails';
 
 ```tsx
 <Textarea
-  placeholder="Type anything…"
-  minRows={3}
-  maxRows={10}
-  endDecorator={<Typography level="body-xs">{count} characters</Typography>}
+    placeholder="Type anything…"
+    minRows={3}
+    maxRows={10}
+    endDecorator={<Typography level="body-xs">{count} characters</Typography>}
 />
 ```
 
@@ -395,19 +395,19 @@ import AccordionDetails from '@mui/joy/AccordionDetails';
 
 ```tsx
 <Switch
-  slotProps={{
-    track: {
-      children: (
-        <>
-          <Typography component="span">On</Typography>
-          <Typography component="span">Off</Typography>
-        </>
-      ),
-    },
-    thumb: {
-      children: <DarkMode />,
-    },
-  }}
+    slotProps={{
+        track: {
+            children: (
+                <>
+                    <Typography component="span">On</Typography>
+                    <Typography component="span">Off</Typography>
+                </>
+            ),
+        },
+        thumb: {
+            children: <DarkMode />,
+        },
+    }}
 />
 ```
 
@@ -437,12 +437,12 @@ import AccordionDetails from '@mui/joy/AccordionDetails';
 
 ```tsx
 <Slider
-  defaultValue={30}
-  marks={[
-    { value: 0, label: '0°C' },
-    { value: 100, label: '100°C' },
-  ]}
-  valueLabelDisplay="auto"
+    defaultValue={30}
+    marks={[
+        { value: 0, label: '0°C' },
+        { value: 100, label: '100°C' },
+    ]}
+    valueLabelDisplay="auto"
 />
 ```
 
@@ -457,9 +457,9 @@ import AccordionDetails from '@mui/joy/AccordionDetails';
 **Key Features:**
 
 - `level` prop for semantic levels:
-  - Headings: `h1`, `h2`, `h3`, `h4`
-  - Titles: `title-lg`, `title-md`, `title-sm`
-  - Body: `body-lg`, `body-md` (default), `body-sm`, `body-xs`
+    - Headings: `h1`, `h2`, `h3`, `h4`
+    - Titles: `title-lg`, `title-md`, `title-sm`
+    - Body: `body-lg`, `body-md` (default), `body-sm`, `body-xs`
 - `startDecorator` and `endDecorator` props
 - `gutterBottom` prop for spacing
 - `noWrap` prop for ellipsis
@@ -485,8 +485,8 @@ import AccordionDetails from '@mui/joy/AccordionDetails';
 **Import:**
 
 ```tsx
-import CircularProgress from '@mui/joy/CircularProgress';
-import LinearProgress from '@mui/joy/LinearProgress';
+import CircularProgress from '@mui/joy/CircularProgress'
+import LinearProgress from '@mui/joy/LinearProgress'
 ```
 
 **Key Features:**
@@ -512,63 +512,63 @@ import LinearProgress from '@mui/joy/LinearProgress';
 **Required setup in app/ThemeRegistry.tsx:**
 
 ```tsx
-'use client';
-import createCache from '@emotion/cache';
-import { useServerInsertedHTML } from 'next/navigation';
-import { CacheProvider } from '@emotion/react';
-import { CssVarsProvider } from '@mui/joy/styles';
-import CssBaseline from '@mui/joy/CssBaseline';
+'use client'
+import createCache from '@emotion/cache'
+import { useServerInsertedHTML } from 'next/navigation'
+import { CacheProvider } from '@emotion/react'
+import { CssVarsProvider } from '@mui/joy/styles'
+import CssBaseline from '@mui/joy/CssBaseline'
 
 export default function ThemeRegistry({ children }) {
-  // Emotion cache setup for SSR
-  const [{ cache, flush }] = React.useState(() => {
-    const cache = createCache({ key: 'joy' });
-    cache.compat = true;
-    // ... flush logic
-    return { cache, flush };
-  });
+    // Emotion cache setup for SSR
+    const [{ cache, flush }] = React.useState(() => {
+        const cache = createCache({ key: 'joy' })
+        cache.compat = true
+        // ... flush logic
+        return { cache, flush }
+    })
 
-  useServerInsertedHTML(() => {
-    const names = flush();
-    if (names.length === 0) return null;
-    let styles = '';
-    for (const name of names) {
-      styles += cache.inserted[name];
-    }
+    useServerInsertedHTML(() => {
+        const names = flush()
+        if (names.length === 0) return null
+        let styles = ''
+        for (const name of names) {
+            styles += cache.inserted[name]
+        }
+        return (
+            <style
+                key={cache.key}
+                data-emotion={`${cache.key} ${names.join(' ')}`}
+                dangerouslySetInnerHTML={{ __html: styles }}
+            />
+        )
+    })
+
     return (
-      <style
-        key={cache.key}
-        data-emotion={`${cache.key} ${names.join(' ')}`}
-        dangerouslySetInnerHTML={{ __html: styles }}
-      />
-    );
-  });
-
-  return (
-    <CacheProvider value={cache}>
-      <CssVarsProvider>
-        <CssBaseline />
-        {children}
-      </CssVarsProvider>
-    </CacheProvider>
-  );
+        <CacheProvider value={cache}>
+            <CssVarsProvider>
+                <CssBaseline />
+                {children}
+            </CssVarsProvider>
+        </CacheProvider>
+    )
 }
 ```
 
 **In app/layout.tsx:**
 
 ```tsx
-import { getInitColorSchemeScript } from '@mui/joy/styles';
+import { getInitColorSchemeScript } from '@mui/joy/styles'
 
 export default function RootLayout({ children }) {
-  return (
-    <html lang="en">
-      <head>{getInitColorSchemeScript()}</head>
-      <body>
-        <ThemeRegistry>{children}</ThemeRegistry>
-      </body>
-    </html>
-  );
+    return (
+        <html lang="en">
+            <head>{getInitColorSchemeScript()}</head>
+            <body>
+                <ThemeRegistry>{children}</ThemeRegistry>
+            </body>
+        </html>
+    )
 }
 ```
 
@@ -589,11 +589,9 @@ export default function RootLayout({ children }) {
 **Scoped version:**
 
 ```tsx
-import ScopedCssBaseline from '@mui/joy/ScopedCssBaseline';
+import ScopedCssBaseline from '@mui/joy/ScopedCssBaseline'
 
-<ScopedCssBaseline>
-  {/* Only children affected */}
-</ScopedCssBaseline>;
+;<ScopedCssBaseline>{/* Only children affected */}</ScopedCssBaseline>
 ```
 
 ### Common Patterns
@@ -620,12 +618,12 @@ import ScopedCssBaseline from '@mui/joy/ScopedCssBaseline';
 
 ```tsx
 <Button
-  loading={isLoading}
-  loadingPosition="start"
-  startDecorator={<SaveIcon />}
-  onClick={handleSave}
+    loading={isLoading}
+    loadingPosition="start"
+    startDecorator={<SaveIcon />}
+    onClick={handleSave}
 >
-  Save Changes
+    Save Changes
 </Button>
 ```
 
@@ -633,19 +631,20 @@ import ScopedCssBaseline from '@mui/joy/ScopedCssBaseline';
 
 ```tsx
 <Card sx={{ minHeight: 280 }}>
-  <CardCover>
-    <img src="background.jpg" alt="" />
-  </CardCover>
-  <CardCover
-    sx={{
-      background: 'linear-gradient(to top, rgba(0,0,0,0.4), rgba(0,0,0,0) 200px)',
-    }}
-  />
-  <CardContent sx={{ justifyContent: 'flex-end' }}>
-    <Typography level="title-lg" textColor="#fff">
-      Card Title
-    </Typography>
-  </CardContent>
+    <CardCover>
+        <img src="background.jpg" alt="" />
+    </CardCover>
+    <CardCover
+        sx={{
+            background:
+                'linear-gradient(to top, rgba(0,0,0,0.4), rgba(0,0,0,0) 200px)',
+        }}
+    />
+    <CardContent sx={{ justifyContent: 'flex-end' }}>
+        <Typography level="title-lg" textColor="#fff">
+            Card Title
+        </Typography>
+    </CardContent>
 </Card>
 ```
 
@@ -653,15 +652,15 @@ import ScopedCssBaseline from '@mui/joy/ScopedCssBaseline';
 
 ```tsx
 <Grid container spacing={2}>
-  <Grid size={{ xs: 12, sm: 6, md: 4 }}>
-    <Card>Item 1</Card>
-  </Grid>
-  <Grid size={{ xs: 12, sm: 6, md: 4 }}>
-    <Card>Item 2</Card>
-  </Grid>
-  <Grid size={{ xs: 12, sm: 6, md: 4 }}>
-    <Card>Item 3</Card>
-  </Grid>
+    <Grid size={{ xs: 12, sm: 6, md: 4 }}>
+        <Card>Item 1</Card>
+    </Grid>
+    <Grid size={{ xs: 12, sm: 6, md: 4 }}>
+        <Card>Item 2</Card>
+    </Grid>
+    <Grid size={{ xs: 12, sm: 6, md: 4 }}>
+        <Card>Item 3</Card>
+    </Grid>
 </Grid>
 ```
 
@@ -672,27 +671,24 @@ import ScopedCssBaseline from '@mui/joy/ScopedCssBaseline';
 ### From Shadcn/UI
 
 1. **Button variants:**
-
-   - `default` → `solid` + `primary`
-   - `destructive` → `solid` + `danger`
-   - `outline` → `outlined`
-   - `ghost` → `plain`
-   - `link` → `plain` with custom styling
+    - `default` → `solid` + `primary`
+    - `destructive` → `solid` + `danger`
+    - `outline` → `outlined`
+    - `ghost` → `plain`
+    - `link` → `plain` with custom styling
 
 2. **Form components:**
-
-   - Joy UI requires `FormControl` wrapper
-   - Use `FormLabel` instead of `Label`
-   - Use `FormHelperText` instead of separate helper components
+    - Joy UI requires `FormControl` wrapper
+    - Use `FormLabel` instead of `Label`
+    - Use `FormHelperText` instead of separate helper components
 
 3. **Card components:**
-
-   - Joy Card has more built-in layers (Cover, Content, Overflow)
-   - No need for separate CardHeader/CardFooter - use Typography + CardActions
+    - Joy Card has more built-in layers (Cover, Content, Overflow)
+    - No need for separate CardHeader/CardFooter - use Typography + CardActions
 
 4. **Focus rings:**
-   - Joy uses `::before` pseudo-element for focus rings
-   - Customize via CSS variables instead of Tailwind utilities
+    - Joy uses `::before` pseudo-element for focus rings
+    - Customize via CSS variables instead of Tailwind utilities
 
 ### Component Equivalents
 

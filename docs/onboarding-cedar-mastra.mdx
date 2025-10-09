@@ -4,13 +4,12 @@ description: Guide for developers to build interactive UI components in Cedar-OS
 ---
 
 import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
+    Card,
+    CardContent,
+    CardDescription,
+    CardHeader,
+    CardTitle,
 } from '@/components/docs/mdx-bridge.joy'
-
 
 # Onboarding to Cedar Component Development with Mastra Integration
 
@@ -23,16 +22,16 @@ At a high level, the system consists of a frontend built with `cedar-os` (a Reac
 ### Architectural Components
 
 - **Cedar-OS (Frontend)**:
-    - **Purpose**: Provides the interactive user interface, often leveraging `ReactFlow` for canvas-based interactions.
-    - **Cedar Components**: Standard React components whose visual representation and behavior are driven by `data` props. Located in `src/components/` and `cedar/components/`.
-    - **`cedar-os` Hooks/Context**: A bridge (`app/cedar-os/context.ts`, `app/cedar-os/state.ts`) that exposes UI state to AI agents and allows AI agents to manipulate UI state.
-    - **`MastraClient`**: A client-side utility (`lib/mastra/mastra-client.ts`) for making authenticated requests to the `mastra-governed-rag` backend.
+  - **Purpose**: Provides the interactive user interface, often leveraging `ReactFlow` for canvas-based interactions.
+  - **Cedar Components**: Standard React components whose visual representation and behavior are driven by `data` props. Located in `src/components/` and `cedar/components/`.
+  - **`cedar-os` Hooks/Context**: A bridge (`app/cedar-os/context.ts`, `app/cedar-os/state.ts`) that exposes UI state to AI agents and allows AI agents to manipulate UI state.
+  - **`MastraClient`**: A client-side utility (`lib/mastra/mastra-client.ts`) for making authenticated requests to the `mastra-governed-rag` backend.
 
 - **Mastra-Governed-RAG (Backend)**:
-    - **Purpose**: Securely processes natural language queries, retrieves relevant information, generates responses, and enforces access control.
-    - **Next.js API Routes**: Entry points (`/app/api/`) for frontend communication (e.g., `/api/chat`, `/api/index`, `/api/auth`).
-    - **Mastra Workflow Engine**: Orchestrates complex sequences of operations using specialized agents and tools (`src/mastra/workflows/`).
-    - **Mastra Agents**: Specialized AI components (`src/mastra/agents/`) performing distinct tasks (e.g., Identity, Policy, Retrieve, Answerer, Verifier), ensuring governance, security, and traceability in all interactions.
+  - **Purpose**: Securely processes natural language queries, retrieves relevant information, generates responses, and enforces access control.
+  - **Next.js API Routes**: Entry points (`/app/api/`) for frontend communication (e.g., `/api/chat`, `/api/index`, `/api/auth`).
+  - **Mastra Workflow Engine**: Orchestrates complex sequences of operations using specialized agents and tools (`src/mastra/workflows/`).
+  - **Mastra Agents**: Specialized AI components (`src/mastra/agents/`) performing distinct tasks (e.g., Identity, Policy, Retrieve, Answerer, Verifier), ensuring governance, security, and traceability in all interactions.
 
 ### High-Level System Diagram
 
@@ -140,15 +139,15 @@ graph TD
 
 1. Clone the repository:
 
-    ```
+    ```bash
     git clone https://github.com/your-org/mastra-governed-rag.git
     cd mastra-governed-rag
     ```
 
 2. Install dependencies:
 
-    ```
-    pnpm install
+    ```bash
+    npm install
     ```
 
 3. Set up environment variables:
@@ -158,9 +157,9 @@ graph TD
 
 4. Start services:
 
-    ```
+    ```bash
     docker-compose up -d  # Starts vector DB, etc.
-    pnpm dev
+    npm dev
     ```
 
 5. Verify setup:

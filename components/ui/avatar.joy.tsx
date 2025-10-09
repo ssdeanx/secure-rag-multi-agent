@@ -1,9 +1,9 @@
 /**
  * Avatar Component - Joy UI Primitive
- * 
+ *
  * Production-ready avatar component with image fallback,
  * group support, and full accessibility.
- * 
+ *
  * Features:
  * - Image with alt text for accessibility
  * - Fallback content (initials, icons)
@@ -65,27 +65,27 @@ export interface AvatarProps {
 
 /**
  * Avatar component for user profile pictures with fallback support.
- * 
+ *
  * @example With image
  * ```tsx
- * <Avatar 
- *   src="/avatar.jpg" 
+ * <Avatar
+ *   src="/avatar.jpg"
  *   alt="John Doe"
  * />
  * ```
- * 
+ *
  * @example With fallback initials
  * ```tsx
  * <Avatar>JD</Avatar>
  * ```
- * 
+ *
  * @example With icon fallback
  * ```tsx
  * <Avatar>
  *   <UserIcon />
  * </Avatar>
  * ```
- * 
+ *
  * @example Different sizes
  * ```tsx
  * <Avatar size="sm" src="/avatar.jpg" />
@@ -94,7 +94,10 @@ export interface AvatarProps {
  * ```
  */
 const Avatar = React.forwardRef<HTMLDivElement, AvatarProps>(
-    ({ variant = 'soft', size = 'md', color = 'neutral', sx, ...props }, ref) => {
+    (
+        { variant = 'soft', size = 'md', color = 'neutral', sx, ...props },
+        ref
+    ) => {
         return (
             <JoyAvatar
                 ref={ref}
@@ -149,7 +152,7 @@ export interface AvatarGroupProps {
 
 /**
  * AvatarGroup component for displaying a collection of avatars.
- * 
+ *
  * @example Basic group
  * ```tsx
  * <AvatarGroup>
@@ -158,7 +161,7 @@ export interface AvatarGroupProps {
  *   <Avatar src="/user3.jpg" alt="User 3" />
  * </AvatarGroup>
  * ```
- * 
+ *
  * @example With max limit
  * ```tsx
  * <AvatarGroup max={3}>

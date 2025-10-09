@@ -9,12 +9,12 @@ export default function DocsLoading() {
                 display: 'grid',
                 gridTemplateColumns: {
                     xs: '1fr',
-                    xl: '1fr 4fr'
+                    xl: '1fr 4fr',
                 },
                 gap: 4,
                 p: 4,
                 minHeight: '100vh',
-                bgcolor: 'background.body'
+                bgcolor: 'background.body',
             }}
         >
             <Box sx={{ display: 'flex', flexDirection: 'column', gap: 1 }}>
@@ -24,7 +24,7 @@ export default function DocsLoading() {
                         width: 160,
                         bgcolor: 'background.level2',
                         borderRadius: 'sm',
-                        animation: 'pulse 1.5s ease-in-out infinite'
+                        animation: 'pulse 1.5s ease-in-out infinite',
                     }}
                 />
                 {Array.from({ length: 6 }).map((_, i) => (
@@ -35,7 +35,7 @@ export default function DocsLoading() {
                             width: 128,
                             bgcolor: 'background.level2',
                             borderRadius: 'sm',
-                            animation: 'pulse 1.5s ease-in-out infinite 0.5s'
+                            animation: 'pulse 1.5s ease-in-out infinite 0.5s',
                         }}
                     />
                 ))}
@@ -47,7 +47,7 @@ export default function DocsLoading() {
                         width: 288,
                         bgcolor: 'background.level2',
                         borderRadius: 'sm',
-                        animation: 'pulse 1.5s ease-in-out infinite'
+                        animation: 'pulse 1.5s ease-in-out infinite',
                     }}
                 />
                 {Array.from({ length: 10 }).map((_, i) => (
@@ -58,7 +58,7 @@ export default function DocsLoading() {
                             width: '100%',
                             bgcolor: 'background.level2',
                             borderRadius: 'sm',
-                            animation: 'pulse 1.5s ease-in-out infinite 0.5s'
+                            animation: 'pulse 1.5s ease-in-out infinite 0.5s',
                         }}
                     />
                 ))}

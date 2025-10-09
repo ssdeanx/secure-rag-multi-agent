@@ -12,7 +12,7 @@ export default function NotFound() {
                 justifyContent: 'center',
                 minHeight: '100vh',
                 bgcolor: 'background.body',
-                py: { xs: 6, md: 8 }
+                py: { xs: 6, md: 8 },
             }}
         >
             <Box
@@ -23,7 +23,7 @@ export default function NotFound() {
                     textAlign: 'center',
                     display: 'flex',
                     flexDirection: 'column',
-                    gap: 3
+                    gap: 3,
                 }}
             >
                 <Box
@@ -39,7 +39,7 @@ export default function NotFound() {
                         mx: 'auto',
                         position: 'relative',
                         overflow: 'hidden',
-                        bgcolor: 'background.level1'
+                        bgcolor: 'background.level1',
                     }}
                 >
                     <Typography
@@ -48,20 +48,26 @@ export default function NotFound() {
                             fontSize: '2rem',
                             fontWeight: 800,
                             color: 'warning.500',
-                            letterSpacing: 1
+                            letterSpacing: 1,
                         }}
                     >
                         404
                     </Typography>
                 </Box>
-                <Typography level="h2" sx={{ fontSize: { xs: '1.25rem', md: '1.5rem' }, fontWeight: 800 }}>
+                <Typography
+                    level="h2"
+                    sx={{
+                        fontSize: { xs: '1.25rem', md: '1.5rem' },
+                        fontWeight: 800,
+                    }}
+                >
                     Page Not Found
                 </Typography>
                 <Typography
                     level="body-lg"
                     sx={{
                         color: 'text.secondary',
-                        lineHeight: 1.6
+                        lineHeight: 1.6,
                     }}
                 >
                     We couldn't find the page you're looking for. It may have
@@ -74,10 +80,13 @@ export default function NotFound() {
                         borderColor: 'divider',
                         p: 2,
                         textAlign: 'left',
-                        bgcolor: 'background.level1'
+                        bgcolor: 'background.level1',
                     }}
                 >
-                    <Typography level="body-sm" sx={{ fontWeight: 600, color: 'text.primary' }}>
+                    <Typography
+                        level="body-sm"
+                        sx={{ fontWeight: 600, color: 'text.primary' }}
+                    >
                         Security & Integrity
                     </Typography>
                     <Typography
@@ -85,7 +94,7 @@ export default function NotFound() {
                         sx={{
                             color: 'text.secondary',
                             mt: 0.5,
-                            lineHeight: 1.4
+                            lineHeight: 1.4,
                         }}
                     >
                         If you followed a link here, it might be outdated. We
@@ -93,20 +102,21 @@ export default function NotFound() {
                         enumeration attempts.
                     </Typography>
                 </Box>
-                <Box sx={{ display: 'flex', flexDirection: { xs: 'column', sm: 'row' }, gap: 2, justifyContent: 'center' }}>
+                <Box
+                    sx={{
+                        display: 'flex',
+                        flexDirection: { xs: 'column', sm: 'row' },
+                        gap: 2,
+                        justifyContent: 'center',
+                    }}
+                >
                     <Link href="/" passHref>
-                        <Button
-                            variant="solid"
-                            color="primary"
-                        >
+                        <Button variant="solid" color="primary">
                             Return Home
                         </Button>
                     </Link>
                     <Link href="/docs" passHref>
-                        <Button
-                            variant="outlined"
-                            color="neutral"
-                        >
+                        <Button variant="outlined" color="neutral">
                             View Docs
                         </Button>
                     </Link>

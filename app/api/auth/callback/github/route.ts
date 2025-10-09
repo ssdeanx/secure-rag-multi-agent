@@ -34,19 +34,23 @@ export async function GET(req: NextRequest) {
 
     try {
         // Exchange code for access token
-        const tokenResponse = await fetch('https://github.com/login/oauth/access_token', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                'Accept': 'application/json',
-            },
-            body: JSON.stringify({
-                client_id: process.env.GITHUB_CLIENT_ID,
-                client_secret: process.env.GITHUB_CLIENT_SECRET,
-                code,
-                redirect_uri: 'http://localhost:3000/api/auth/callback/github',
-            }),
-        })
+        const tokenResponse = await fetch(
+            'https://github.com/login/oauth/access_token',
+            {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    Accept: 'application/json',
+                },
+                body: JSON.stringify({
+                    client_id: process.env.GITHUB_CLIENT_ID,
+                    client_secret: process.env.GITHUB_CLIENT_SECRET,
+                    code,
+                    redirect_uri:
+                        'http://localhost:3000/api/auth/callback/github',
+                }),
+            }
+        )
 
         if (!tokenResponse.ok) {
             throw new Error(`Token exchange failed: ${tokenResponse.status}`)
@@ -81,7 +85,6 @@ export async function GET(req: NextRequest) {
 
         // Redirect to home page
         redirect('/')
-
     } catch (error) {
         console.error('OAuth callback error:', error)
         redirect('/login?error=auth_failed')

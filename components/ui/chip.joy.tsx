@@ -1,9 +1,9 @@
 /**
  * Chip Component - Joy UI Primitive (Badge Alternative)
- * 
+ *
  * Production-ready chip/badge component for status indicators,
  * tags, and labels with full theme integration.
- * 
+ *
  * Features:
  * - 4 variants: solid, soft, outlined, plain
  * - 3 sizes: sm, md, lg
@@ -79,34 +79,34 @@ export interface ChipProps {
 
 /**
  * Chip component for badges, tags, and status indicators.
- * 
+ *
  * @example Basic badge
  * ```tsx
  * <Chip variant="soft" color="primary">
  *   New
  * </Chip>
  * ```
- * 
+ *
  * @example Status indicator
  * ```tsx
  * <Chip variant="solid" color="success">
  *   Active
  * </Chip>
  * ```
- * 
+ *
  * @example With delete
  * ```tsx
- * <Chip 
+ * <Chip
  *   variant="outlined"
  *   onDelete={() => console.log('Delete clicked')}
  * >
  *   Removable
  * </Chip>
  * ```
- * 
+ *
  * @example With icon
  * ```tsx
- * <Chip 
+ * <Chip
  *   variant="soft"
  *   startDecorator={<CheckIcon />}
  *   color="success"
@@ -114,10 +114,10 @@ export interface ChipProps {
  *   Verified
  * </Chip>
  * ```
- * 
+ *
  * @example Clickable
  * ```tsx
- * <Chip 
+ * <Chip
  *   variant="outlined"
  *   onClick={() => console.log('Clicked')}
  *   component="button"
@@ -127,7 +127,10 @@ export interface ChipProps {
  * ```
  */
 const Chip = React.forwardRef<HTMLDivElement, ChipProps>(
-    ({ variant = 'soft', size = 'md', color = 'primary', sx, ...props }, ref) => {
+    (
+        { variant = 'soft', size = 'md', color = 'primary', sx, ...props },
+        ref
+    ) => {
         return (
             <JoyChip
                 ref={ref}
