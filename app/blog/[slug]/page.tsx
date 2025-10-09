@@ -4,9 +4,9 @@ import { metadataFromFrontmatter } from '@/lib/metadata'
 import { compileMDX } from 'next-mdx-remote/rsc'
 import mdxPlugins from '@/lib/mdx-plugins'
 import { getPostBySlug, getAllPosts } from '@/lib/blog'
-import { Badge } from '@/components/ui/badge'
 import Link from 'next/link'
-import { ArrowLeft } from 'lucide-react'
+import { Box, Typography, Chip, Button } from '@/components/ui/joy'
+import { ArrowBack } from '@mui/icons-material'
 
 export async function generateStaticParams() {
     const posts = await getAllPosts()
@@ -58,55 +58,48 @@ export default async function BlogPostPage({
     })
 
     return (
-        <main className="min-h-screen bg-background py-16">
-            <div className="max-w-3xl mx-auto px-4">
-                <div className="mb-8 flex items-center gap-4">
-                    <Link
-                        href="/blog"
-                        className="inline-flex items-center text-sm text-muted-foreground hover:text-foreground focus:outline-none focus:ring-2 focus:ring-primary/60 rounded-sm"
-                    >
-                        <ArrowLeft className="h-4 w-4 mr-1" /> Back
+        <Box component="main" sx={{ minHeight: '100vh', bgcolor: 'background.body', py: 8 }}>
+            <Box sx={{ maxWidth: 880, mx: 'auto', px: 2 }}>
+                <Box sx={{ mb: 4, display: 'flex', alignItems: 'center', gap: 2 }}>
+                    <Link href="/blog" passHref>
+                        <Button component="a" variant="plain" color="neutral" startDecorator={<ArrowBack />}>Back</Button>
                     </Link>
-                </div>
-                <article>
-                    <header className="mb-8 space-y-4">
-                        <p className="text-xs uppercase tracking-wide text-muted-foreground font-mono">
+                </Box>
+                <Box component="article">
+                    <Box sx={{ mb: 4 }}>
+                        <Typography level="body-xs" sx={{ textTransform: 'uppercase', letterSpacing: 0.6, color: 'text.tertiary' }}>
                             {new Date(post.date).toLocaleDateString(undefined, {
                                 year: 'numeric',
                                 month: 'short',
                                 day: 'numeric',
-                            })}{' '}
+                            })}
+                            {' '}
                             • {post.readingTime}
-                        </p>
-                        <h1 className="text-4xl font-bold tracking-tight">
+                        </Typography>
+                        <Typography level="h1" sx={{ fontWeight: 800 }}>
                             {post.title}
-                        </h1>
-                        {post.author !== undefined &&
-                            post.author !== '' &&
-                            post.author.length > 0 && (
-                                <p className="text-sm text-muted-foreground">
-                                    By {post.author}
-                                </p>
-                            )}
-                        {post.tags && post.tags.length > 0 && (
-                            <div className="flex flex-wrap gap-2 pt-2">
-                                {post.tags.map((tag) => (
-                                    <Badge
-                                        key={tag}
-                                        variant="secondary"
-                                        className="text-xs px-2 py-0.5"
-                                    >
-                                        {tag}
-                                    </Badge>
-                                ))}
-                            </div>
+                        </Typography>
+                        {post.author && (
+                            <Typography level="body-sm" sx={{ color: 'text.secondary', mt: 1 }}>
+                                By {post.author}
+                            </Typography>
                         )}
-                    </header>
-                    <div className="prose dark:prose-invert max-w-none">
+                        {post.tags && post.tags.length > 0 && (
+                            <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 1.5, pt: 2 }}>
+                                {post.tags.map((tag) => (
+                                    <Chip key={tag} variant="soft" color="primary" size="sm">{tag}</Chip>
+                                ))}
+                            </Box>
+                        )}
+                    </Box>
+                    <Box sx={{
+                        '& h1, & h2, & h3, & h4': { scrollMarginTop: '80px' },
+                        '& p': { lineHeight: 1.75 },
+                    }}>
                         {content}
-                    </div>
-                </article>
-            </div>
-        </main>
+                    </Box>
+                </Box>
+            </Box>
+        </Box>
     )
 }

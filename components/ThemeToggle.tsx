@@ -3,7 +3,7 @@
 import React from 'react'
 import { useTheme } from 'next-themes'
 import { useEffect, useState } from 'react'
-import { Switch } from '@/components/ui/switch'
+import { Switch } from '@/components/ui/shadnui/switch'
 
 export function ThemeToggle() {
     const [mounted, setMounted] = useState(false)

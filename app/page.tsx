@@ -1,7 +1,7 @@
-import { Hero } from '@/components/landing/Hero'
-import { InteractiveFeatures } from '@/components/landing/InteractiveFeatures'
-import { NewsletterForm } from '@/components/landing/NewsletterForm'
-import { CTA } from '@/components/landing/CTA'
+import { Hero } from '@/components/landing/Hero.joy'
+import { InteractiveFeatures } from '@/components/landing/InteractiveFeatures.joy'
+import { NewsletterForm } from '@/components/landing/NewsletterForm.joy'
+import { CTA } from '@/components/landing/CTA.joy'
 
 export default function Home() {
     return (

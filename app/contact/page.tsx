@@ -1,20 +1,18 @@
-import { ContactForm } from '@/components/contact/ContactForm'
+import { Box, Typography } from '@/components/ui/joy'
+import { ContactForm } from '@/components/contact/ContactForm.joy'
 
 export default function ContactPage() {
     return (
-        <main className="min-h-screen bg-background py-24">
-            <div className="max-w-4xl mx-auto px-4">
-                <header className="mb-12 text-center space-y-4">
-                    <h1 className="text-4xl font-bold tracking-tight">
-                        Contact Us
-                    </h1>
-                    <p className="text-muted-foreground max-w-2xl mx-auto">
-                        Have a question about governed RAG, security posture, or
-                        enterprise integration? Send us a message.
-                    </p>
-                </header>
+        <Box component="main" sx={{ minHeight: '100vh', bgcolor: 'background.body', py: 8 }}>
+            <Box sx={{ maxWidth: 880, mx: 'auto', px: 2 }}>
+                <Box sx={{ mb: 6, textAlign: 'center' }}>
+                    <Typography level="h1" sx={{ fontWeight: 800 }}>Contact Us</Typography>
+                    <Typography level="body-md" sx={{ color: 'text.secondary', mt: 1 }}>
+                        Have a question about governed RAG, security posture, or enterprise integration? Send us a message.
+                    </Typography>
+                </Box>
                 <ContactForm />
-            </div>
-        </main>
+            </Box>
+        </Box>
     )
 }

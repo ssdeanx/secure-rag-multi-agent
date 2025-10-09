@@ -1,6 +1,6 @@
 import { Memory } from '@mastra/memory'
 import { LibSQLStore, LibSQLVector } from '@mastra/libsql'
-import { log } from './logger'
+import { log } from '../logger'
 
 log.info('Setting up LibSQLStore and LibSQLVector...')
 

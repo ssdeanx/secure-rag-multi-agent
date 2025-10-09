@@ -1,22 +1,85 @@
 import React from 'react'
-import { Skeleton } from '@/components/ui/skeleton'
+import { Box } from '@/components/ui/joy'
 
 export default function BlogLoading() {
     return (
-        <div className="space-y-8 p-8">
-            <div className="max-w-xl space-y-2">
-                <Skeleton className="h-8 w-64" />
-                <Skeleton className="h-4 w-80" />
-            </div>
-            <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+        <Box
+            component="div"
+            sx={{
+                display: 'flex',
+                flexDirection: 'column',
+                gap: 4,
+                p: 4,
+                minHeight: '100vh',
+                bgcolor: 'background.body'
+            }}
+        >
+            <Box sx={{ maxWidth: 600, mx: 'auto', display: 'flex', flexDirection: 'column', gap: 1 }}>
+                <Box
+                    sx={{
+                        height: 32,
+                        width: 256,
+                        bgcolor: 'background.level2',
+                        borderRadius: 'sm',
+                        animation: 'pulse 1.5s ease-in-out infinite'
+                    }}
+                />
+                <Box
+                    sx={{
+                        height: 16,
+                        width: 320,
+                        bgcolor: 'background.level2',
+                        borderRadius: 'sm',
+                        animation: 'pulse 1.5s ease-in-out infinite 0.5s'
+                    }}
+                />
+            </Box>
+            <Box
+                sx={{
+                    display: 'grid',
+                    gap: 3,
+                    gridTemplateColumns: {
+                        xs: '1fr',
+                        sm: 'repeat(2, 1fr)',
+                        lg: 'repeat(3, 1fr)'
+                    },
+                    maxWidth: 1200,
+                    mx: 'auto',
+                    width: '100%'
+                }}
+            >
                 {Array.from({ length: 6 }).map((_, i) => (
-                    <div key={i} className="space-y-3">
-                        <Skeleton className="h-40 w-full" />
-                        <Skeleton className="h-5 w-3/4" />
-                        <Skeleton className="h-4 w-1/2" />
-                    </div>
+                    <Box key={i} sx={{ display: 'flex', flexDirection: 'column', gap: 1.5 }}>
+                        <Box
+                            sx={{
+                                height: 160,
+                                width: '100%',
+                                bgcolor: 'background.level2',
+                                borderRadius: 'md',
+                                animation: 'pulse 1.5s ease-in-out infinite'
+                            }}
+                        />
+                        <Box
+                            sx={{
+                                height: 20,
+                                width: '75%',
+                                bgcolor: 'background.level2',
+                                borderRadius: 'sm',
+                                animation: 'pulse 1.5s ease-in-out infinite 0.5s'
+                            }}
+                        />
+                        <Box
+                            sx={{
+                                height: 16,
+                                width: '50%',
+                                bgcolor: 'background.level2',
+                                borderRadius: 'sm',
+                                animation: 'pulse 1.5s ease-in-out infinite 1s'
+                            }}
+                        />
+                    </Box>
                 ))}
-            </div>
-        </div>
+            </Box>
+        </Box>
     )
 }

@@ -5,27 +5,28 @@ import { compileMDX } from 'next-mdx-remote/rsc'
 import mdxPlugins from '@/lib/mdx-plugins'
 import type { Metadata } from 'next'
 import { metadataFromFrontmatter } from '@/lib/metadata'
-import { DocsLayout } from '@/components/docs/DocsLayout'
+import { DocsLayout } from '@/components/docs/DocsLayout.joy'
 import { Mermaid } from '@/components/Mermaid'
-import { Badge } from '@/components/ui/badge'
-import { Button } from '@/components/ui/button'
 import {
+    Badge,
+    Button,
     Card,
     CardContent,
     CardDescription,
     CardHeader,
     CardTitle,
-} from '@/components/ui/card'
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
-import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'
-import { Separator } from '@/components/ui/separator'
-import {
+    Tabs,
+    TabsContent,
+    TabList as TabsList,
+    TabsTrigger,
+    Alert,
+    AlertDescription,
+    Separator,
     Shield,
     Zap,
     Users,
     Code,
     Layers,
-    BookOpen,
     Play,
     Github,
     ExternalLink,
@@ -38,14 +39,9 @@ import {
     Eye,
     EyeOff,
     AlertTriangle,
-    XCircle,
-    Terminal,
     FileText,
     Settings,
-    Key,
-    ChevronRight,
-    Home,
-} from 'lucide-react'
+} from '@/components/docs/mdx-bridge.joy'
 
 // Simple in-memory cache (per server runtime) for compiled docs to reduce FS + compilation cost per request.
 // Key: normalized slug path ("index" for root)
@@ -124,7 +120,6 @@ const components = {
     TabsTrigger,
     Alert,
     AlertDescription,
-    AlertTitle,
     Separator,
     Mermaid,
     Shield,
@@ -132,7 +127,6 @@ const components = {
     Users,
     Code,
     Layers,
-    BookOpen,
     Play,
     Github,
     ExternalLink,
@@ -145,13 +139,8 @@ const components = {
     Eye,
     EyeOff,
     AlertTriangle,
-    XCircle,
-    Terminal,
     FileText,
     Settings,
-    Key,
-    ChevronRight,
-    Home,
 }
 
 export default async function DocsPage({

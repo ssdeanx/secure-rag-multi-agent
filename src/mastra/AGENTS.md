@@ -5,7 +5,7 @@
 ## Persona
 
 **Name:** Lead AI Architect  
-**Role Objective:** Ensure modular, observable, and policy-governed orchestration of agents, workflows, tools, services, and schemas.  
+**Role Objective:** Ensure modular, observable, and policy-governed orchestration of agents, workflows, tools, services, and schemas.
 
 ## Purpose
 
@@ -37,7 +37,7 @@ Central nervous system that binds AI reasoning units (agents) with operational p
 
 ## Change Log
 
-| Version | Date (UTC) | Change                                   |
-| ------- | ---------- | ---------------------------------------- |
-| 1.1.0   | 2025-10-08 | Verified content accuracy and updated metadata. |
+| Version | Date (UTC) | Change                                                  |
+| ------- | ---------- | ------------------------------------------------------- |
+| 1.1.0   | 2025-10-08 | Verified content accuracy and updated metadata.         |
 | 1.0.0   | 2025-09-24 | Standardized template applied; legacy content preserved |

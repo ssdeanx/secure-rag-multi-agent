@@ -15,27 +15,27 @@ This directory contains the complete integration of the Cedar OS framework with 
 
 ### In-Scope
 
--   Configuring the main `<CedarCopilot>` provider to connect to the Mastra backend.
--   Rendering the main UI, including the `RoadmapCanvas` and chat mode selectors.
--   Registering application state (like roadmap nodes and edges) with Cedar OS so the agent can manipulate it.
--   Subscribing to application state to expose it as context to the agent's prompts.
--   Configuring `@` mentions to allow users to reference application state in the chat.
+- Configuring the main `<CedarCopilot>` provider to connect to the Mastra backend.
+- Rendering the main UI, including the `RoadmapCanvas` and chat mode selectors.
+- Registering application state (like roadmap nodes and edges) with Cedar OS so the agent can manipulate it.
+- Subscribing to application state to expose it as context to the agent's prompts.
+- Configuring `@` mentions to allow users to reference application state in the chat.
 
 ### Out-of-Scope
 
--   The definition of the `RoadmapCanvas` component itself (which lives in `/cedar`).
--   The backend Mastra agent and workflow logic.
+- The definition of the `RoadmapCanvas` component itself (which lives in `/cedar`).
+- The backend Mastra agent and workflow logic.
 
 ## Key Files
 
-| File | Responsibility | Notes |
-| --- | --- | --- |
-| `layout.tsx` | Configures the Cedar OS Provider | Wraps the route in `<CedarCopilot>` and configures it to connect to the Mastra backend at `http://localhost:4111`. |
-| `page.tsx` | Renders the UI | A client component that renders the `RoadmapCanvas` and allows the user to switch between different chat modes. |
-| `hooks.ts` | Orchestrates Cedar Hooks | A simple facade that calls the other setup hooks (`useRoadmapState`, `useRoadmapMentions`, `useRoadmapContext`). |
-| `state.ts` | State Registration & Manipulation | Uses `useRegisterState` to make the roadmap's `nodes` and `edges` state available to Cedar. Defines `stateSetters` (`addNode`, `removeNode`) that allow the agent to modify this state. |
-| `context.ts` | State Exposure to Agent | Uses `useSubscribeStateToAgentContext` to feed the current `nodes` and `selectedNodes` into the agent's prompt context, allowing it to "see" the UI. |
-| `mentions.ts` | Configures `@` Mentions | Uses `useStateBasedMentionProvider` to allow the user to reference roadmap nodes and edges in the chat with the `@` trigger. |
+| File          | Responsibility                    | Notes                                                                                                                                                                                   |
+| ------------- | --------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `layout.tsx`  | Configures the Cedar OS Provider  | Wraps the route in `<CedarCopilot>` and configures it to connect to the Mastra backend at `http://localhost:4111`.                                                                      |
+| `page.tsx`    | Renders the UI                    | A client component that renders the `RoadmapCanvas` and allows the user to switch between different chat modes.                                                                         |
+| `hooks.ts`    | Orchestrates Cedar Hooks          | A simple facade that calls the other setup hooks (`useRoadmapState`, `useRoadmapMentions`, `useRoadmapContext`).                                                                        |
+| `state.ts`    | State Registration & Manipulation | Uses `useRegisterState` to make the roadmap's `nodes` and `edges` state available to Cedar. Defines `stateSetters` (`addNode`, `removeNode`) that allow the agent to modify this state. |
+| `context.ts`  | State Exposure to Agent           | Uses `useSubscribeStateToAgentContext` to feed the current `nodes` and `selectedNodes` into the agent's prompt context, allowing it to "see" the UI.                                    |
+| `mentions.ts` | Configures `@` Mentions           | Uses `useStateBasedMentionProvider` to allow the user to reference roadmap nodes and edges in the chat with the `@` trigger.                                                            |
 
 ## Data Flow
 
@@ -48,7 +48,7 @@ This directory contains the complete integration of the Cedar OS framework with 
 
 ## Change Log
 
-| Version | Date (UTC) | Change |
-| --- | --- | --- |
-| 1.1.0 | 2025-10-08 | Rewrote documentation to accurately reflect the specific roles of each file in the Cedar OS integration. |
-| 1.0.0 | 2025-09-24 | Initial standardized documentation. |
+| Version | Date (UTC) | Change                                                                                                   |
+| ------- | ---------- | -------------------------------------------------------------------------------------------------------- |
+| 1.1.0   | 2025-10-08 | Rewrote documentation to accurately reflect the specific roles of each file in the Cedar OS integration. |
+| 1.0.0   | 2025-09-24 | Initial standardized documentation.                                                                      |

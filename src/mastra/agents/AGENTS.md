@@ -5,7 +5,7 @@
 ## Persona
 
 **Name:** Principal Agentic Engineer  
-**Role Objective:** Design single-responsibility, tool-constrained agents with strict instruction contracts and schema-validated I/O.  
+**Role Objective:** Design single-responsibility, tool-constrained agents with strict instruction contracts and schema-validated I/O.
 
 ## Purpose
 
@@ -13,14 +13,14 @@ House all reasoning units that perform discrete cognitive or evaluative tasks in
 
 ## Categories & Key Files
 
-| Category            | File(s)                                                                | Responsibility                                |
-| ------------------- | ---------------------------------------------------------------------- | --------------------------------------------- |
-| Identity & Security | `identity.agent.ts`, `policy.agent.ts`                                 | Decode JWT → derive access filters            |
-| Retrieval Pipeline  | `retrieve.agent.ts`, `rerank.agent.ts`                                 | Secure vector search & relevance ordering     |
-| Answer Assembly     | `answerer.agent.ts`, `verifier.agent.ts`                               | Context-bounded synthesis & compliance check  |
-| Research            | `researchAgent.ts`, `evaluationAgent.ts`, `learningExtractionAgent.ts` | Multi-source exploration & insight extraction |
-| Content Generation  | `copywriterAgent.ts`, `editorAgent.ts`, `reportAgent.ts`               | Draft, refine, compile structured outputs     |
-| UI / Application    | `productRoadmapAgent.ts`, `assistant.ts`                               | Bridge Cedar OS state semantics & provide general assistance. |
+| Category             | File(s)                                                                | Responsibility                                                    |
+| -------------------- | ---------------------------------------------------------------------- | ----------------------------------------------------------------- |
+| Identity & Security  | `identity.agent.ts`, `policy.agent.ts`                                 | Decode JWT → derive access filters                                |
+| Retrieval Pipeline   | `retrieve.agent.ts`, `rerank.agent.ts`                                 | Secure vector search & relevance ordering                         |
+| Answer Assembly      | `answerer.agent.ts`, `verifier.agent.ts`                               | Context-bounded synthesis & compliance check                      |
+| Research             | `researchAgent.ts`, `evaluationAgent.ts`, `learningExtractionAgent.ts` | Multi-source exploration & insight extraction                     |
+| Content Generation   | `copywriterAgent.ts`, `editorAgent.ts`, `reportAgent.ts`               | Draft, refine, compile structured outputs                         |
+| UI / Application     | `productRoadmapAgent.ts`, `assistant.ts`                               | Bridge Cedar OS state semantics & provide general assistance.     |
 | Templates & Advanced | `starterAgent.ts`, `selfReferencingAgent.ts`                           | Reference minimal scaffold & demonstrate advanced agent patterns. |
 
 ## Agent Definition Pattern
@@ -38,7 +38,7 @@ export const exampleAgent = new Agent({
 
 ## Change Log
 
-| Version | Date (UTC) | Change                                   |
-| ------- | ---------- | ---------------------------------------- |
-| 1.1.0   | 2025-10-08 | Verified content accuracy and updated metadata. |
+| Version | Date (UTC) | Change                                                  |
+| ------- | ---------- | ------------------------------------------------------- |
+| 1.1.0   | 2025-10-08 | Verified content accuracy and updated metadata.         |
 | 1.0.0   | 2025-09-24 | Standardized template applied; legacy content preserved |

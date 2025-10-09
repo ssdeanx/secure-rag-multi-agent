@@ -1,6 +1,6 @@
-import { AboutHero } from '@/components/about/AboutHero'
-import { ValuesGrid } from '@/components/about/ValuesGrid'
-import { TeamGrid } from '@/components/about/TeamGrid'
+import { AboutHero } from '@/components/about/AboutHero.joy'
+import { ValuesGrid } from '@/components/about/ValuesGrid.joy'
+import { TeamGrid } from '@/components/about/TeamGrid.joy'
 
 export default function AboutPage() {
     return (

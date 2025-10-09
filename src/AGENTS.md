@@ -5,7 +5,7 @@
 ## Persona
 
 **Name:** Lead Software Architect  
-**Role Objective:** Preserve clean modular boundaries between AI orchestration (`mastra`), operational CLI (`cli`), shared helpers (`utils`), and type contracts (`types.ts`).  
+**Role Objective:** Preserve clean modular boundaries between AI orchestration (`mastra`), operational CLI (`cli`), shared helpers (`utils`), and type contracts (`types.ts`).
 
 ## Purpose
 
@@ -54,7 +54,7 @@ Contain all backend runtime composition apart from frontend App Router code, act
 
 ## Change Log
 
-| Version | Date (UTC) | Change                                   |
-| ------- | ---------- | ---------------------------------------- |
-| 1.1.0   | 2025-10-08 | Verified content accuracy and updated metadata. |
+| Version | Date (UTC) | Change                                                  |
+| ------- | ---------- | ------------------------------------------------------- |
+| 1.1.0   | 2025-10-08 | Verified content accuracy and updated metadata.         |
 | 1.0.0   | 2025-09-24 | Standardized template applied; legacy content preserved |

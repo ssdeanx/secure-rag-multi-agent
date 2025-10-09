@@ -14,29 +14,28 @@ import { vectorQueryTool } from '../tools/vector-query.tool'
 import { promises as fs } from 'fs'
 import path from 'path'
 import { BatchPartsProcessor, UnicodeNormalizer } from '@mastra/core/processors'
-import { GeminiLiveVoice } from "@mastra/voice-google-gemini-live";
-import { playAudio, getMicrophoneStream } from "@mastra/node-audio";
-
+import { GeminiLiveVoice } from '@mastra/voice-google-gemini-live'
+import { playAudio, getMicrophoneStream } from '@mastra/node-audio'
 
 const voiceConfig = new GeminiLiveVoice({
     speechModel: {
-        name: "gemini-2.5.flash-preview-tts",
-        apiKey: process.env.GOOGLE_GENERATIVE_AI_API_KEY,
+        name: 'gemini-2.5.flash-preview-tts',
+        apiKey: process.env.GOOGLE_API_KEY,
     },
-    speaker: "Orus",
+    speaker: 'Orus',
     realtimeConfig: {
-        model: "gemini-live-2.5-flash-preview",
-        apiKey: process.env.GOOGLE_GENERATIVE_AI_API_KEY,
+        model: 'gemini-live-2.5-flash-preview',
+        apiKey: process.env.GOOGLE_API_KEY,
         options: {
             debug: true,
-        sessionConfig: {
-            interrupts: { enabled: true },
-            enableResumption: true,
-            maxDuration: "1h",
+            sessionConfig: {
+                interrupts: { enabled: true },
+                enableResumption: true,
+                maxDuration: '1h',
             },
         },
     },
-});
+})
 
 log.info('Initializing productRoadmap Agent...')
 
@@ -181,7 +180,7 @@ When generating content, include the generated content in your response and indi
         mdocumentChunker,
         webScraperTool,
         htmlToMarkdownTool,
-        vectorQueryTool
+        vectorQueryTool,
     },
     inputProcessors: [
         new UnicodeNormalizer({
@@ -203,58 +202,63 @@ When generating content, include the generated content in your response and indi
     },
     scorers: {},
     workflows: {},
-    voice: voiceConfig
+    voice: voiceConfig,
 })
 export { productRoadmapOutputSchema }
 
 // Establish connection (required before using other methods)
-await voiceConfig.connect();
-// Set up event listeners
-voiceConfig.on("speaker", (audioStream) => {
-  // Handle audio stream (NodeJS.ReadableStream)
-  playAudio(audioStream);
+async function main() {
+  // Establish connection (required before using other methods)
+  await voiceConfig.connect();
+  // Set up event listeners
+  voiceConfig.on("speaker", (audioStream) => {
+    // Handle audio stream (NodeJS.ReadableStream)
+    playAudio(audioStream);
+  });
+  voiceConfig.on("writing", ({ text, role }) => {
+    // Handle transcribed text
+    log.info(`${role}: ${text}`);
+  });
+  voiceConfig.on("turnComplete", ({ timestamp }) => {
+    // Handle turn completion
+    log.info("Turn completed at:", { timestamp });
+  });
+  // Convert text to speech
+  await voiceConfig.speak("Hello, how can I help you today?", {
+  //  speaker: "Charon", // Override default voice
+    responseModalities: ["AUDIO", "TEXT"],
+  });
+}
+main().catch((err) => {
+  log.error("Error in voice setup:", err);
 });
-
-voiceConfig.on("writing", ({ text, role }) => {
-  // Handle transcribed text
-  log.info(`${role}: ${text}`);
-});
-
-voiceConfig.on("turnComplete", ({ timestamp }) => {
-  // Handle turn completion
-  log.info("Turn completed at:", { timestamp });
-});
-
-// Convert text to speech
-await voiceConfig.speak("Hello, how can I help you today?", {
-//  speaker: "Charon", // Override default voice
-  responseModalities: ["AUDIO", "TEXT"],
-});
-
 // Process audio input
 const microphoneStream = getMicrophoneStream();
 await voiceConfig.send(microphoneStream);
 
 // Update session configuration
 await voiceConfig.updateSessionConfig({
-  speaker: "Kore",
-  instructions: "Be more concise in your responses",
-});
+    speaker: 'Kore',
+    instructions: 'Be more concise in your responses',
+})
 // Save session handle for resumption
-voiceConfig.on("sessionHandle", ({ handle, expiresAt }) => {
-  // Store session handle for resumption
-    saveSessionHandle(handle, expiresAt);
-});
+voiceConfig.on('sessionHandle', ({ handle, expiresAt }) => {
+    // Store session handle for resumption
+    saveSessionHandle(handle, expiresAt)
+})
 // When done, disconnect
-await voiceConfig.disconnect();
+await voiceConfig.disconnect()
 // Or use the synchronous wrapper
-voiceConfig.close();
+voiceConfig.close()
 
 // Ensure a small .mastra directory exists in the project root.
 // Reads the existing session-handles file (if any), prunes expired handles, adds/updates the incoming handle with ISO expiration, and writes the file back.
 // Logs success or error using the existing log utility.
 // Keeps the API simple (Promise<void>) so existing callers that don't await the result continue to work.
-async function saveSessionHandle(handle: string, expiresAt: Date): Promise<void> {
+async function saveSessionHandle(
+    handle: string,
+    expiresAt: Date
+): Promise<void> {
     const dataDir = path.join(process.cwd(), '.mastra')
     const filePath = path.join(dataDir, 'session-handles.json')
 
@@ -299,11 +303,18 @@ async function saveSessionHandle(handle: string, expiresAt: Date): Promise<void>
         // Persist back to disk
         await fs.writeFile(filePath, JSON.stringify(existing, null, 2), 'utf8')
 
-        log.info('Saved voice session handle', { handle, expiresAt: expiresAt.toISOString(), file: filePath })
+        log.info('Saved voice session handle', {
+            handle,
+            expiresAt: expiresAt.toISOString(),
+            file: filePath,
+        })
     } catch (error) {
         // Safely extract error message without using `any`
         const message = error instanceof Error ? error.message : String(error)
-        log.error('Failed to save session handle', { error: message, handle, expiresAt })
+        log.error('Failed to save session handle', {
+            error: message,
+            handle,
+            expiresAt,
+        })
     }
 }
-

@@ -2,8 +2,9 @@
 
 import React from 'react'
 import { ThemeProvider } from './ThemeProvider'
-import { TopNavigation } from './TopNavigation'
+import { TopNavigation } from './TopNavigation.joy'
 import RouteAnnouncer from './RouteAnnouncer'
+import { Footer } from './Footer.joy'
 
 export default function ClientRoot({
     children,
@@ -27,6 +28,7 @@ export default function ClientRoot({
                 >
                     {children}
                 </main>
+                <Footer />
             </div>
         </ThemeProvider>
     )

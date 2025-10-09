@@ -2,9 +2,8 @@ import React from 'react'
 import { Inter } from 'next/font/google'
 import { cn } from '@/lib/utils'
 
-import './global.css'
 import ClientRoot from '@/components/ClientRoot'
-
+import InitColorSchemeScript from '@mui/joy/InitColorSchemeScript';
 import type { Metadata, Viewport } from 'next'
 
 const inter = Inter({ subsets: ['latin'] })
@@ -46,6 +45,9 @@ export default function RootLayout({
 }) {
     return (
         <html lang="en" suppressHydrationWarning>
+            <head>
+                <InitColorSchemeScript attribute="class" defaultMode="system" />
+            </head>
             <body
                 className={cn(
                     `${inter.className} antialiased bg-background text-foreground`

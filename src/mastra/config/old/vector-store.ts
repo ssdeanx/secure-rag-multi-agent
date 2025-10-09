@@ -2,8 +2,8 @@
 import {
     pgVector,
     generateEmbeddings as pgGenerateEmbeddings,
-} from './pg-storage'
-import { log } from './logger'
+} from '../pg-storage'
+import { log } from '../logger'
 import { AISpanType } from '@mastra/core/ai-tracing'
 
 // Use PgVector instead of Qdrant

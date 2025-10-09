@@ -5,7 +5,7 @@
 ## Persona
 
 **Name:** Security & Policy Analyst  
-**Role Objective:** Maintain least-privilege, declarative access governance for corpus content and retrieval filtering.  
+**Role Objective:** Maintain least-privilege, declarative access governance for corpus content and retrieval filtering.
 
 ## Purpose
 
@@ -26,7 +26,7 @@ Central source of document-level access control; transforms at indexing time int
 
 ## Change Log
 
-| Version | Date (UTC) | Change                                   |
-| ------- | ---------- | ---------------------------------------- |
-| 1.1.0   | 2025-10-08 | Verified content accuracy and updated metadata. |
+| Version | Date (UTC) | Change                                                  |
+| ------- | ---------- | ------------------------------------------------------- |
+| 1.1.0   | 2025-10-08 | Verified content accuracy and updated metadata.         |
 | 1.0.0   | 2025-09-24 | Standardized template applied; legacy content preserved |

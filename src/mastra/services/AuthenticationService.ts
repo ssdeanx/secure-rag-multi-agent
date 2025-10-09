@@ -40,8 +40,7 @@ export class AuthenticationService {
         const tenantResult =
             payloadRecord.tenant !== undefined && payloadRecord.tenant !== null
                 ? String(payloadRecord.tenant)
-                : process.env.TENANT/* It looks like there is a typo in the code snippet. The line
-                `process.env.TENANT` should actually be `process.env.TENANT`. */
+                : process.env.TENANT
 
         const now = Math.floor(Date.now() / 1000)
         ValidationService.validateTokenExpiry(payload.exp, now)
@@ -79,9 +78,7 @@ export class AuthenticationService {
 
         log.info('AUTH_SERVICE: Generating access policy with hierarchy:')
         log.info(`  - Original roles: [${claims.roles.join(', ')}]`)
-        log.info(
-            `  - Expanded roles: [${accessInfo.expandedRoles.join(', ')}]`
-        )
+        log.info(`  - Expanded roles: [${accessInfo.expandedRoles.join(', ')}]`)
         log.info(`  - StepUp: ${claims.stepUp}`)
 
         // Determine maximum classification based on stepUp status and role hierarchy

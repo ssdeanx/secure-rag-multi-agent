@@ -2,17 +2,17 @@
 
 import React from 'react'
 import { CheckCircle, LogOut, User, Shield } from 'lucide-react'
-import { Button } from '@/components/ui/button'
-import { Alert, AlertDescription } from '@/components/ui/alert'
-import { Badge } from '@/components/ui/badge'
-import { Avatar, AvatarFallback } from '@/components/ui/avatar'
+import { Button } from '@/components/ui/shadnui/button'
+import { Alert, AlertDescription } from '@/components/ui/shadnui/alert'
+import { Badge } from '@/components/ui/shadnui/badge'
+import { Avatar, AvatarFallback } from '@/components/ui/shadnui/avatar'
 import {
     Tooltip,
     TooltipContent,
     TooltipProvider,
     TooltipTrigger,
-} from '@/components/ui/tooltip'
-import { Separator } from '@/components/ui/separator'
+} from '@/components/ui/shadnui/tooltip'
+import { Separator } from '@/components/ui/shadnui/separator'
 import { cn } from '@/lib/utils'
 
 interface LoggedInAlertProps {
