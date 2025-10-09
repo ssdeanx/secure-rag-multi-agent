@@ -40,9 +40,10 @@
     "node": ">=20.19.5"
   },
   "dependencies": {
-    "@ai-sdk/google": "^2.0.17",
-    "@ai-sdk/google-vertex": "^3.0.34",
-    "@ai-sdk/openai": "^2.0.44",
+    "@ai-sdk/google": "^2.0.18",
+    "@ai-sdk/google-vertex": "^3.0.36",
+    "@ai-sdk/openai": "^2.0.46",
+    "@composio/core": "^0.1.55",
     "@dotenvx/dotenvx": "^1.51.0",
     "@emotion/react": "^11.14.0",
     "@emotion/styled": "^11.14.1",
@@ -106,7 +107,7 @@
     "@tsparticles/preset-links": "^3.2.0",
     "@tsparticles/react": "^3.0.0",
     "@tsparticles/slim": "^3.9.1",
-    "ai": "^5.0.61",
+    "ai": "^5.0.63",
     "ai-sdk-provider-gemini-cli": "^1.1.2",
     "autoprefixer": "^10.4.21",
     "cedar-os": "^0.1.23",

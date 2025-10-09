@@ -21,6 +21,8 @@ export default defineConfig({
             'dist',
             'coverage',
             '.mastra',
+            '.github',
+            'public'
         ],
         reporters: ['dot', 'json'],
         outputFile: {

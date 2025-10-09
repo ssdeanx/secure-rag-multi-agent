@@ -96,7 +96,7 @@ export function Footer() {
                                 </Typography>
                             </Box>
                             <Typography level="h4" sx={{ fontWeight: 700 }}>
-                                Governed RAG
+                                Deanmachines
                             </Typography>
                         </Box>
                         <Typography level="body-sm" sx={{ color: 'text.secondary', mb: 3, lineHeight: 1.6 }}>
@@ -110,10 +110,9 @@ export function Footer() {
                                     target="_blank"
                                     rel="noopener noreferrer"
                                     aria-label={social.label}
-                                    passHref
                                 >
                                     <Box
-                                        component="a"
+                                        component="span"
                                         sx={{
                                             display: 'inline-flex',
                                             alignItems: 'center',
@@ -144,9 +143,9 @@ export function Footer() {
                         </Typography>
                         <Box sx={{ display: 'flex', flexDirection: 'column', gap: 1.5 }}>
                             {footerLinks.product.map((link) => (
-                                <Link key={link.href} href={link.href} passHref>
+                                <Link key={link.href} href={link.href}>
                                     <Typography
-                                        component="a"
+                                        component="span"
                                         level="body-sm"
                                         sx={{
                                             color: 'text.secondary',
@@ -170,9 +169,9 @@ export function Footer() {
                         </Typography>
                         <Box sx={{ display: 'flex', flexDirection: 'column', gap: 1.5 }}>
                             {footerLinks.company.map((link) => (
-                                <Link key={link.href} href={link.href} passHref>
+                                <Link key={link.href} href={link.href}>
                                     <Typography
-                                        component="a"
+                                        component="span"
                                         level="body-sm"
                                         sx={{
                                             color: 'text.secondary',
@@ -196,9 +195,9 @@ export function Footer() {
                         </Typography>
                         <Box sx={{ display: 'flex', flexDirection: 'column', gap: 1.5 }}>
                             {footerLinks.resources.map((link) => (
-                                <Link key={link.href} href={link.href} passHref>
+                                <Link key={link.href} href={link.href}>
                                     <Typography
-                                        component="a"
+                                        component="span"
                                         level="body-sm"
                                         sx={{
                                             color: 'text.secondary',
@@ -222,9 +221,9 @@ export function Footer() {
                         </Typography>
                         <Box sx={{ display: 'flex', flexDirection: 'column', gap: 1.5 }}>
                             {footerLinks.legal.map((link) => (
-                                <Link key={link.href} href={link.href} passHref>
+                                <Link key={link.href} href={link.href}>
                                     <Typography
-                                        component="a"
+                                        component="span"
                                         level="body-sm"
                                         sx={{
                                             color: 'text.secondary',
@@ -255,7 +254,7 @@ export function Footer() {
                     }}
                 >
                     <Typography level="body-sm" sx={{ color: 'text.secondary' }}>
-                        © {currentYear} Governed RAG. All rights reserved.
+                        © {currentYear} Deanmachines. All rights reserved.
                     </Typography>
 
                     <Box sx={{ display: 'flex', alignItems: 'center', gap: 2, flexWrap: 'wrap' }}>

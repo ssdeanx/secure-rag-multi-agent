@@ -1,7 +1,7 @@
 import { Memory } from '@mastra/memory'
 
 import { log } from '../config/logger'
-import { google } from '@ai-sdk/google'
+import { googleAIEmbedding } from '../config/google'
 
 export interface ChunkingOptions {
     tokenSize?: number
@@ -23,7 +23,7 @@ export class ChunkingService {
         // Initialize Memory instance for access to native chunking
         // We need to provide an embedder even though we won't use it for embedding
         this.memory = new Memory({
-            embedder: google.textEmbedding('gemini-embedding-001'),
+            embedder: googleAIEmbedding,
         })
     }
 

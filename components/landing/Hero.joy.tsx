@@ -29,7 +29,9 @@ export function Hero() {
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'center',
-                background: 'linear-gradient(135deg, var(--joy-palette-background-surface) 0%, var(--joy-palette-primary-softBg) 100%)',
+                // Premium layered background (less green, more depth)
+                background:
+                    'radial-gradient(1200px 600px at 10% -10%, rgba(62,207,142,0.18), transparent 60%), radial-gradient(1000px 500px at 90% 10%, rgba(20,184,166,0.16), transparent 60%), linear-gradient(135deg, var(--joy-palette-background-surface) 0%, var(--joy-palette-neutral-900) 100%)',
                 overflow: 'hidden',
             }}
         >
@@ -45,25 +47,36 @@ export function Hero() {
                 <Box
                     sx={{
                         position: 'absolute',
-                        top: '25%',
-                        left: '25%',
-                        width: 384,
-                        height: 384,
+                        top: '22%',
+                        left: '20%',
+                        width: 480,
+                        height: 480,
                         bgcolor: 'primary.softBg',
                         borderRadius: '50%',
-                        filter: 'blur(80px)',
+                        filter: 'blur(100px)',
                     }}
                 />
                 <Box
                     sx={{
                         position: 'absolute',
-                        bottom: '25%',
-                        right: '25%',
-                        width: 320,
-                        height: 320,
+                        bottom: '18%',
+                        right: '15%',
+                        width: 420,
+                        height: 420,
                         bgcolor: 'success.softBg',
                         borderRadius: '50%',
-                        filter: 'blur(80px)',
+                        filter: 'blur(100px)',
+                    }}
+                />
+                {/* subtle grid */}
+                <Box
+                    sx={{
+                        position: 'absolute',
+                        inset: 0,
+                        opacity: 0.06,
+                        backgroundImage:
+                            'linear-gradient(rgba(255,255,255,0.08) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.08) 1px, transparent 1px)',
+                        backgroundSize: '36px 36px',
                     }}
                 />
             </Box>
@@ -129,14 +142,14 @@ export function Hero() {
                                     component="span"
                                     sx={{
                                         color: 'primary.500',
-                                        textShadow: '0 0 40px var(--joy-palette-primary-softBg)',
+                                        textShadow: '0 0 30px var(--joy-palette-primary-softBg)',
                                     }}
                                 >
-                                    Governed AI
+                                    Deanmachines
                                 </Typography>
                                 <br />
                                 <Typography component="span">
-                                    for the Enterprise
+                                    AI for the Enterprise
                                 </Typography>
                             </Typography>
                         </motion.div>

@@ -13,8 +13,9 @@ import {
     ContactMail,
     Article,
     Login,
+    RocketLaunch,
 } from '@mui/icons-material';
-import { ThemeToggle } from './ThemeToggle';
+import { ThemeToggle } from './ThemeToggle.joy';
 import { UserMenu } from './UserMenu.joy';
 
 interface TopNavigationProps {
@@ -54,10 +55,15 @@ export function TopNavigation({ user }: TopNavigationProps) {
                     position: 'sticky',
                     top: 0,
                     zIndex: 1000,
-                    bgcolor: 'background.surface',
+                    bgcolor: 'transparent',
                     borderBottom: '1px solid',
                     borderColor: 'divider',
                     backdropFilter: 'blur(8px)',
+                    // premium gradient surface using Joy tokens
+                    backgroundImage:
+                        'linear-gradient(180deg, rgba(0,0,0,0.25) 0%, rgba(0,0,0,0.05) 100%), var(--joy-palette-background-surface)',
+                    // subtle elevated feel
+                    boxShadow: { xs: 'none', md: 'sm' },
                 }}
             >
                 <Box
@@ -65,16 +71,16 @@ export function TopNavigation({ user }: TopNavigationProps) {
                         maxWidth: '1400px',
                         mx: 'auto',
                         px: { xs: 2, sm: 4 },
-                        py: 2,
+                        py: { xs: 1.5, md: 2 },
                         display: 'flex',
                         alignItems: 'center',
                         justifyContent: 'space-between',
                     }}
                 >
                     {/* Logo */}
-                    <Link href="/">
+                    <Link href="/" aria-label="Deanmachines home">
                         <Box
-                            component="a"
+                            component="span"
                             sx={{
                                 display: 'flex',
                                 alignItems: 'center',
@@ -93,15 +99,7 @@ export function TopNavigation({ user }: TopNavigationProps) {
                                     justifyContent: 'center',
                                 }}
                             >
-                                <Typography
-                                    level="h4"
-                                    sx={{
-                                        color: 'white',
-                                        fontWeight: 700,
-                                    }}
-                                >
-                                    G
-                                </Typography>
+                                <RocketLaunch sx={{ color: 'white', fontSize: 22 }} />
                             </Box>
                             <Typography
                                 level="h4"
@@ -110,7 +108,7 @@ export function TopNavigation({ user }: TopNavigationProps) {
                                     display: { xs: 'none', sm: 'block' },
                                 }}
                             >
-                                Governed RAG
+                                Deanmachines
                             </Typography>
                         </Box>
                     </Link>
@@ -119,17 +117,39 @@ export function TopNavigation({ user }: TopNavigationProps) {
                     <Box
                         sx={{
                             display: { xs: 'none', md: 'flex' },
-                            gap: 1,
+                            gap: 0.5,
                         }}
                     >
                         {navLinks.map((link) => (
-                            <Link key={link.href} href={link.href}>
+                            <Link key={link.href} href={link.href} aria-current={isActive(link.href) ? 'page' : undefined}>
                                 <Button
-                                    component="a"
+                                    component="span"
                                     variant={isActive(link.href) ? 'soft' : 'plain'}
                                     color={isActive(link.href) ? 'primary' : 'neutral'}
                                     sx={{
-                                        fontWeight: isActive(link.href) ? 600 : 400,
+                                        position: 'relative',
+                                        fontWeight: isActive(link.href) ? 700 : 500,
+                                        borderRadius: 'lg',
+                                        px: 1.75,
+                                        py: 0.75,
+                                        '&:hover': {
+                                            bgcolor: isActive(link.href) ? 'primary.softHoverBg' : 'neutral.softHoverBg',
+                                        },
+                                        '&::after': {
+                                            content: '""',
+                                            position: 'absolute',
+                                            left: 12,
+                                            right: 12,
+                                            bottom: -6,
+                                            height: 2,
+                                            borderRadius: 2,
+                                            bgcolor: isActive(link.href) ? 'var(--joy-palette-primary-500)' : 'transparent',
+                                            transition: 'all 160ms ease',
+                                        },
+                                        '&:hover::after': {
+                                            bgcolor: isActive(link.href) ? 'var(--joy-palette-primary-500)' : 'var(--joy-palette-neutral-400)',
+                                            opacity: 0.75,
+                                        },
                                     }}
                                 >
                                     {link.label}
@@ -147,11 +167,11 @@ export function TopNavigation({ user }: TopNavigationProps) {
                         ) : (
                             <Link href="/login">
                                 <Button
-                                    component="a"
+                                    component="span"
                                     variant="solid"
                                     color="primary"
                                     startDecorator={<Login />}
-                                    sx={{ display: { xs: 'none', sm: 'flex' } }}
+                                    sx={{ display: { xs: 'none', sm: 'flex' }, borderRadius: 'lg' }}
                                 >
                                     Sign In
                                 </Button>
@@ -226,12 +246,13 @@ export function TopNavigation({ user }: TopNavigationProps) {
                             <ListItem sx={{ mt: 2 }}>
                                 <Link href="/login">
                                     <Button
-                                        component="a"
+                                        component="span"
                                         variant="solid"
                                         color="primary"
                                         fullWidth
                                         startDecorator={<Login />}
                                         onClick={toggleMobileMenu}
+                                        sx={{ borderRadius: 'lg' }}
                                     >
                                         Sign In
                                     </Button>

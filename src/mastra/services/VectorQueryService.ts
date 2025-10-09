@@ -1,9 +1,10 @@
 import { embedMany } from 'ai'
-import { google } from '@ai-sdk/google'
+
 import { ValidationService } from './ValidationService'
 import { RoleService } from './RoleService'
 import { log } from '../config/logger'
 import type { PgVector } from '@mastra/pg'
+import { googleAIEmbedding } from '../config/google'
 
 export interface QueryInput {
     question: string
@@ -82,8 +83,8 @@ function normalizePgVectorResults(raw: unknown): VectorStoreQueryResult[] {
             typeof meta?.classification === 'string'
                 ? meta.classification
                 : (securityTags
-                      .find((t) => t.startsWith('classification:'))
-                      ?.split(':')[1] ?? 'public')
+                    .find((t) => t.startsWith('classification:'))
+                    ?.split(':')[1] ?? 'public')
 
         return {
             score: Number(score ?? 0),
@@ -160,10 +161,8 @@ export class VectorQueryService {
     }
 
     static async generateQueryEmbedding(question: string): Promise<number[]> {
-        const embeddingModel: string =
-            process.env.EMBEDDING_MODEL ?? 'gemini-embedding-001'
         const { embeddings } = await embedMany({
-            model: google.textEmbedding(embeddingModel),
+            model: googleAIEmbedding,
             values: [question],
         })
         return embeddings[0] as number[]

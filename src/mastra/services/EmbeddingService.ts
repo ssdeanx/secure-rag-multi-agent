@@ -1,9 +1,12 @@
 import { Memory } from '@mastra/memory'
 import { embedMany } from 'ai'
-import { google } from '@ai-sdk/google'
+
 
 import { log } from '../config/logger'
 import { generateEmbeddings as pgGenerateEmbeddings } from '../config/pg-storage'
+import { google } from '@ai-sdk/google'
+import { googleAIEmbedding } from '../config/google'
+
 
 const MAX_RETRIES = 3
 
@@ -53,7 +56,7 @@ export class EmbeddingService {
 
         // Initialize Memory instance for native embedding with caching
         this.memory = new Memory({
-            embedder: google.textEmbedding(this.defaultOptions.model),
+            embedder: google.textEmbedding('gemini-embedding-001'),
         })
     }
 
@@ -98,7 +101,7 @@ export class EmbeddingService {
         // Use the standard AI SDK embedMany function since Memory might not be properly configured
         // The Memory instance requires more complex setup that we don't need for just chunking
         const { embeddings } = await embedMany({
-            model: google.textEmbedding(this.defaultOptions.model),
+            model: google.textEmbedding('gemini-embedding-001'),
             values: chunks,
             maxRetries: this.defaultOptions.maxRetries,
         })
@@ -126,7 +129,7 @@ export class EmbeddingService {
         options: EmbeddingOptions = {}
     ): Promise<EmbeddingResult> {
         const opts = { ...this.defaultOptions, ...options }
-        const { batchSize, maxRetries, model } = opts
+        const { batchSize, maxRetries } = opts
         log.info(
             `Generating embeddings in batches of ${batchSize} for ${chunks.length} chunks`,
             {
@@ -149,7 +152,7 @@ export class EmbeddingService {
 
             try {
                 const { embeddings } = await embedMany({
-                    model: google.textEmbedding(model),
+                    model: google.textEmbedding('gemini-embedding-001'),
                     values: batch,
                     maxRetries,
                 })
@@ -196,7 +199,7 @@ export class EmbeddingService {
         // For smaller documents, use native implementation with caching
         // For larger documents, use manual batching for better memory control
         if (chunks.length <= 500 && opts.useCache) {
-            return this.generateEmbeddingsNative(chunks)
+            return this.generateEmbeddings(chunks)
         } else {
             return this.generateEmbeddingsBatched(chunks, options)
         }

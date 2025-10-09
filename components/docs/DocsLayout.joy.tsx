@@ -11,6 +11,7 @@ import {
     Button,
     Divider,
     Breadcrumbs,
+    Link as JoyLink,
 } from '@/components/ui/joy';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
@@ -243,37 +244,26 @@ export function DocsLayout({ children, tableOfContents = [] }: DocsLayoutProps) 
                         </Button>
 
                         <Breadcrumbs separator={<ChevronRight sx={{ fontSize: 16 }} />}>
-                            <Link href="/" passHref>
-                                <Typography
-                                    component="a"
-                                    level="body-sm"
-                                    sx={{
-                                        color: 'text.secondary',
-                                        textDecoration: 'none',
-                                        display: 'flex',
-                                        alignItems: 'center',
-                                        gap: 0.5,
-                                        '&:hover': { color: 'primary.500' },
-                                    }}
-                                >
-                                    <Home sx={{ fontSize: 16 }} />
-                                    Home
-                                </Typography>
-                            </Link>
+                            <JoyLink
+                                href="/"
+                                color="neutral"
+                                level="body-sm"
+                                underline="hover"
+                                sx={{ display: 'inline-flex', alignItems: 'center', gap: 0.5 }}
+                            >
+                                <Home sx={{ fontSize: 16 }} />
+                                Home
+                            </JoyLink>
                             {breadcrumbs?.map((crumb, index) => (
-                                <Link key={crumb.href} href={crumb.href} passHref>
-                                    <Typography
-                                        component="a"
-                                        level="body-sm"
-                                        sx={{
-                                            color: index === breadcrumbs.length - 1 ? 'text.primary' : 'text.secondary',
-                                            textDecoration: 'none',
-                                            '&:hover': { color: 'primary.500' },
-                                        }}
-                                    >
-                                        {crumb.label}
-                                    </Typography>
-                                </Link>
+                                <JoyLink
+                                    key={crumb.href}
+                                    href={crumb.href}
+                                    color={index === breadcrumbs.length - 1 ? 'primary' : 'neutral'}
+                                    level="body-sm"
+                                    underline="hover"
+                                >
+                                    {crumb.label}
+                                </JoyLink>
                             ))}
                         </Breadcrumbs>
                     </Box>

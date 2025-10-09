@@ -20,12 +20,12 @@ import { playAudio, getMicrophoneStream } from '@mastra/node-audio'
 const voiceConfig = new GeminiLiveVoice({
     speechModel: {
         name: 'gemini-2.5.flash-preview-tts',
-        apiKey: process.env.GOOGLE_GENERATIVE_AI_API_KEY,
+        apiKey: process.env.GOOGLE_API_KEY,
     },
     speaker: 'Orus',
     realtimeConfig: {
         model: 'gemini-live-2.5-flash-preview',
-        apiKey: process.env.GOOGLE_GENERATIVE_AI_API_KEY,
+        apiKey: process.env.GOOGLE_API_KEY,
         options: {
             debug: true,
             sessionConfig: {

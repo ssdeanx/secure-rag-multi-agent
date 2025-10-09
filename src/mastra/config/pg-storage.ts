@@ -1,6 +1,5 @@
 import { Memory } from '@mastra/memory'
-import { PgVector, PostgresStore, PGVECTOR_PROMPT } from '@mastra/pg'
-import { google } from '@ai-sdk/google'
+import { PgVector, PostgresStore } from '@mastra/pg'
 import { createVectorQueryTool, createGraphRAGTool } from '@mastra/rag'
 import type { UIMessage } from 'ai'
 import { embedMany } from 'ai'
@@ -8,6 +7,8 @@ import { log } from './logger'
 import type { RuntimeContext } from '@mastra/core/runtime-context'
 import { AISpanType } from '@mastra/core/ai-tracing'
 import type { TracingContext } from '@mastra/core/ai-tracing'
+
+import { google } from '@ai-sdk/google'
 
 // Production-grade PostgreSQL configuration with supported options
 export const pgStore = new PostgresStore({
@@ -52,11 +53,7 @@ export const pgMemory = new Memory({
             messageRange: {
                 before: parseInt(process.env.SEMANTIC_RANGE_BEFORE ?? '3'),
                 after: parseInt(process.env.SEMANTIC_RANGE_AFTER ?? '2'),
-            },
-            scope:
-                process.env.SEMANTIC_SCOPE === 'resource'
-                    ? 'resource'
-                    : 'thread',
+            }
         },
         // Enhanced working memory with supported template
         workingMemory: {
@@ -94,7 +91,7 @@ export const pgMemory = new Memory({
 - **Action Items**: [To be learned]
 - **Follow-ups Needed**: [To be learned]
         `,
-            version: 'vnext', // Enable the improved/experimental tool
+//            version: 'vnext', // Enable the improved/experimental tool
         },
         // Thread management with supported options
         threads: {
@@ -157,7 +154,7 @@ export async function generateEmbeddings(
 
     // Create tracing span for embedding generation
     const embeddingSpan = tracingContext?.currentSpan?.createChildSpan({
-        type: AISpanType.GENERIC,
+        type: AISpanType.LLM_CHUNK,
         name: 'generate-embeddings',
         input: {
             chunkCount: chunks.length,

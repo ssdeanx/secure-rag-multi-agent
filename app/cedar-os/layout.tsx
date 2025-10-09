@@ -16,6 +16,8 @@ import { CedarCopilot } from 'cedar-os'
  * - baseURL: Mastra server URL (default: http://localhost:4111)
  * - apiKey: JWT token for authentication
  * - chatPath: '/chat' - base endpoint (Cedar auto-appends /stream for streaming)
+ * - resumePath: '' - This is the path to resume
+ * - voiceRoute: '' - Route for productRoadmapAgent voice.
  *
  * How it works:
  * 1. User sends message in any Cedar chat component (Caption/Floating/SidePanel)
@@ -34,8 +36,10 @@ export default function CedarLayout({ children }: { children: ReactNode }) {
                 baseURL:
                     process.env.NEXT_PUBLIC_MASTRA_URL ??
                     'http://localhost:4111',
-                apiKey: process.env.JWT_TOKEN, // JWT for Mastra auth
+                apiKey: process.env.NEXT_PUBLIC_MASTRA_API_KEY, // JWT for Mastra auth
                 chatPath: '/chat', // Cedar auto-appends /stream for streaming
+//              resumePath: '',
+//              voiceRoute: ''
                 // Streaming is ENABLED BY DEFAULT
                 // Cedar will call: POST {baseURL}/chat/stream
                 // For non-streaming: POST {baseURL}/chat (fallback)
