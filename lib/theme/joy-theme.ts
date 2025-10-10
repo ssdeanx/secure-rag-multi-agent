@@ -9,6 +9,7 @@
  * - Preserve existing HSL color values
  * - Map semantic naming (primary, accent, etc.) to Joy palettes
  * - Support light/dark modes with existing tokens
+ * - Leverage Joy UI's advanced theming capabilities
  */
 
 import { extendTheme } from '@mui/joy/styles'
@@ -338,18 +339,189 @@ export const joyTheme = extendTheme({
         xl: '0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.1)',
     },
 
-    // Minimal component defaults/overrides example per Joy docs
+    // Enhanced component defaults with Joy UI best practices
+    spacing: 4,
+
+    breakpoints: {
+        values: {
+            xs: 0,
+            sm: 600,
+            md: 900,
+            lg: 1200,
+            xl: 1536,
+        },
+    },
+
+    // Advanced component theming with Joy UI patterns
     components: {
         JoyButton: {
             defaultProps: {
                 size: 'md',
             },
             styleOverrides: {
-                root: ({ theme }) => ({
+                root: ({ theme, ownerState }) => ({
                     fontWeight: 600,
-                    // example of using vars
-                    '--joy-shadowChannel':
-                        theme.vars.palette.primary.mainChannel,
+                    borderRadius: theme.vars.radius.lg,
+                    minWidth: 44,
+                    minHeight: 40,
+                    // Enhanced motion with Joy patterns
+                    transition: 'all 160ms cubic-bezier(0.4, 0, 0.2, 1)',
+                    // Focus visible with theme tokens
+                    '&:focus-visible': {
+                        outline: 'none',
+                        boxShadow: `0 0 0 4px ${theme.vars.palette.focusVisible}`,
+                    },
+                    // Size-specific adjustments
+                    ...(ownerState.size === 'sm' && {
+                        minHeight: 36,
+                        fontSize: theme.vars.fontSize.sm,
+                    }),
+                    ...(ownerState.size === 'lg' && {
+                        minHeight: 48,
+                        fontSize: theme.vars.fontSize.lg,
+                    }),
+                    // Loading state enhancements
+                    ...(ownerState.loading && {
+                        pointerEvents: 'none',
+                    }),
+                }),
+            },
+        },
+
+        JoyInput: {
+            defaultProps: {
+                size: 'md',
+            },
+            styleOverrides: {
+                root: ({ theme, ownerState }) => ({
+                    minHeight: 40,
+                    borderRadius: theme.vars.radius.md,
+                    // Enhanced focus states
+                    '&:focus-within': {
+                        boxShadow: `0 0 0 4px ${theme.vars.palette.focusVisible}`,
+                    },
+                    // Size variants
+                    ...(ownerState.size === 'sm' && {
+                        minHeight: 36,
+                        fontSize: theme.vars.fontSize.sm,
+                    }),
+                    ...(ownerState.size === 'lg' && {
+                        minHeight: 48,
+                        fontSize: theme.vars.fontSize.lg,
+                    }),
+                }),
+                input: ({ theme }) => ({
+                    // Better input styling
+                    '&::placeholder': {
+                        color: theme.vars.palette.text.tertiary,
+                        opacity: 0.7,
+                    },
+                }),
+            },
+        },
+
+        JoyCard: {
+            defaultProps: {
+                variant: 'outlined',
+            },
+            styleOverrides: {
+                root: ({ theme }) => ({
+                    borderRadius: theme.vars.radius.xl,
+                    transition: 'transform 200ms ease, box-shadow 200ms ease',
+                    '&:hover': {
+                        transform: 'translateY(-2px)',
+                        boxShadow: theme.vars.shadow.lg,
+                    },
+                    // Dark mode specific styling
+                    [theme.getColorSchemeSelector('dark')]: {
+                        backgroundColor: theme.vars.palette.background.surface,
+                        borderColor: theme.vars.palette.divider,
+                    },
+                }),
+            },
+        },
+
+        JoyDrawer: {
+            defaultProps: {
+                size: 'md',
+            },
+            styleOverrides: {
+                root: ({ theme }) => ({
+                    // Enhanced mobile drawer
+                    boxShadow: theme.vars.shadow.xl,
+                    borderRadius: theme.vars.radius.lg,
+                }),
+                content: ({ theme }) => ({
+                    padding: theme.spacing(3),
+                    // Better content spacing
+                    '& > * + *': {
+                        marginTop: theme.spacing(2),
+                    },
+                }),
+            },
+        },
+
+        // Enhanced navigation components
+        JoyListItemButton: {
+            styleOverrides: {
+                root: ({ theme, ownerState }) => ({
+                    borderRadius: theme.vars.radius.md,
+                    minHeight: 44,
+                    transition: 'all 160ms ease',
+                    '&:hover': {
+                        backgroundColor: theme.vars.palette.primary.softBg,
+                    },
+                    '&.Mui-selected': {
+                        backgroundColor: theme.vars.palette.primary.softBg,
+                        color: theme.vars.palette.primary.plainColor,
+                        fontWeight: 600,
+                    },
+                    '&:focus-visible': {
+                        outline: 'none',
+                        boxShadow: `0 0 0 4px ${theme.vars.palette.focusVisible}`,
+                    },
+                }),
+            },
+        },
+
+        // Typography enhancements
+        JoyTypography: {
+            styleOverrides: {
+                root: ({ theme, ownerState }) => ({
+                    // Better line heights for readability
+                    ...(ownerState.level === 'body-sm' && {
+                        lineHeight: 1.5,
+                    }),
+                    ...(ownerState.level === 'body-md' && {
+                        lineHeight: 1.6,
+                    }),
+                    ...(ownerState.level === 'h1' && {
+                        lineHeight: 1.2,
+                        fontWeight: 700,
+                    }),
+                    ...(ownerState.level === 'h2' && {
+                        lineHeight: 1.3,
+                        fontWeight: 600,
+                    }),
+                }),
+            },
+        },
+
+        // Enhanced chip styling
+        JoyChip: {
+            styleOverrides: {
+                root: ({ theme, ownerState }) => ({
+                    borderRadius: theme.vars.radius.sm,
+                    fontWeight: 500,
+                    // Size variants
+                    ...(ownerState.size === 'sm' && {
+                        fontSize: theme.vars.fontSize.xs,
+                        minHeight: 24,
+                    }),
+                    ...(ownerState.size === 'md' && {
+                        fontSize: theme.vars.fontSize.sm,
+                        minHeight: 32,
+                    }),
                 }),
             },
         },

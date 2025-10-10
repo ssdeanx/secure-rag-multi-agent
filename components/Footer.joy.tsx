@@ -1,6 +1,6 @@
 'use client'
 
-import { Box, Typography, Divider, Chip } from '@/components/ui/joy'
+import { Box, Typography, Divider, Chip, Stack } from '@/components/ui/joy'
 import Link from 'next/link'
 import {
     GitHub,
@@ -55,6 +55,7 @@ export function Footer() {
                 borderColor: 'divider',
                 pt: { xs: 6, sm: 8 },
                 pb: 4,
+                mt: 'auto', // Push footer to bottom
             }}
         >
             <Box
@@ -96,6 +97,11 @@ export function Footer() {
                                     display: 'flex',
                                     alignItems: 'center',
                                     justifyContent: 'center',
+                                    transition: 'all 200ms ease',
+                                    '&:hover': {
+                                        bgcolor: 'primary.600',
+                                        transform: 'scale(1.05)',
+                                    },
                                 }}
                             >
                                 <Typography
@@ -144,9 +150,16 @@ export function Footer() {
                                             border: '1px solid',
                                             borderColor: 'divider',
                                             textDecoration: 'none',
+                                            transition: 'all 160ms ease',
                                             '&:hover': {
                                                 bgcolor: 'primary.softBg',
                                                 borderColor: 'primary.500',
+                                                transform: 'translateY(-1px)',
+                                            },
+                                            '&:focus-visible': {
+                                                outline: 'none',
+                                                boxShadow:
+                                                    '0 0 0 4px var(--joy-palette-focusVisible)',
                                             },
                                         }}
                                     >
@@ -161,17 +174,15 @@ export function Footer() {
                     <Box>
                         <Typography
                             level="body-sm"
-                            sx={{ fontWeight: 700, mb: 2 }}
+                            sx={{
+                                fontWeight: 700,
+                                mb: 2,
+                                color: 'text.primary',
+                            }}
                         >
                             Product
                         </Typography>
-                        <Box
-                            sx={{
-                                display: 'flex',
-                                flexDirection: 'column',
-                                gap: 1.5,
-                            }}
-                        >
+                        <Stack spacing={1.5}>
                             {footerLinks.product.map((link) => (
                                 <Link key={link.href} href={link.href}>
                                     <Typography
@@ -180,6 +191,7 @@ export function Footer() {
                                         sx={{
                                             color: 'text.secondary',
                                             textDecoration: 'none',
+                                            transition: 'color 160ms ease',
                                             '&:hover': {
                                                 color: 'primary.500',
                                             },
@@ -189,24 +201,22 @@ export function Footer() {
                                     </Typography>
                                 </Link>
                             ))}
-                        </Box>
+                        </Stack>
                     </Box>
 
                     {/* Company Column */}
                     <Box>
                         <Typography
                             level="body-sm"
-                            sx={{ fontWeight: 700, mb: 2 }}
+                            sx={{
+                                fontWeight: 700,
+                                mb: 2,
+                                color: 'text.primary',
+                            }}
                         >
                             Company
                         </Typography>
-                        <Box
-                            sx={{
-                                display: 'flex',
-                                flexDirection: 'column',
-                                gap: 1.5,
-                            }}
-                        >
+                        <Stack spacing={1.5}>
                             {footerLinks.company.map((link) => (
                                 <Link key={link.href} href={link.href}>
                                     <Typography
@@ -215,6 +225,7 @@ export function Footer() {
                                         sx={{
                                             color: 'text.secondary',
                                             textDecoration: 'none',
+                                            transition: 'color 160ms ease',
                                             '&:hover': {
                                                 color: 'primary.500',
                                             },
@@ -224,24 +235,22 @@ export function Footer() {
                                     </Typography>
                                 </Link>
                             ))}
-                        </Box>
+                        </Stack>
                     </Box>
 
                     {/* Resources Column */}
                     <Box>
                         <Typography
                             level="body-sm"
-                            sx={{ fontWeight: 700, mb: 2 }}
+                            sx={{
+                                fontWeight: 700,
+                                mb: 2,
+                                color: 'text.primary',
+                            }}
                         >
                             Resources
                         </Typography>
-                        <Box
-                            sx={{
-                                display: 'flex',
-                                flexDirection: 'column',
-                                gap: 1.5,
-                            }}
-                        >
+                        <Stack spacing={1.5}>
                             {footerLinks.resources.map((link) => (
                                 <Link key={link.href} href={link.href}>
                                     <Typography
@@ -250,6 +259,7 @@ export function Footer() {
                                         sx={{
                                             color: 'text.secondary',
                                             textDecoration: 'none',
+                                            transition: 'color 160ms ease',
                                             '&:hover': {
                                                 color: 'primary.500',
                                             },
@@ -259,24 +269,22 @@ export function Footer() {
                                     </Typography>
                                 </Link>
                             ))}
-                        </Box>
+                        </Stack>
                     </Box>
 
                     {/* Legal Column */}
                     <Box>
                         <Typography
                             level="body-sm"
-                            sx={{ fontWeight: 700, mb: 2 }}
+                            sx={{
+                                fontWeight: 700,
+                                mb: 2,
+                                color: 'text.primary',
+                            }}
                         >
                             Legal
                         </Typography>
-                        <Box
-                            sx={{
-                                display: 'flex',
-                                flexDirection: 'column',
-                                gap: 1.5,
-                            }}
-                        >
+                        <Stack spacing={1.5}>
                             {footerLinks.legal.map((link) => (
                                 <Link key={link.href} href={link.href}>
                                     <Typography
@@ -285,6 +293,7 @@ export function Footer() {
                                         sx={{
                                             color: 'text.secondary',
                                             textDecoration: 'none',
+                                            transition: 'color 160ms ease',
                                             '&:hover': {
                                                 color: 'primary.500',
                                             },
@@ -294,7 +303,7 @@ export function Footer() {
                                     </Typography>
                                 </Link>
                             ))}
-                        </Box>
+                        </Stack>
                     </Box>
                 </Box>
 
@@ -330,6 +339,12 @@ export function Footer() {
                             color="success"
                             size="sm"
                             startDecorator={<Storage sx={{ fontSize: 16 }} />}
+                            sx={{
+                                fontWeight: 500,
+                                '&:hover': {
+                                    bgcolor: 'success.softHoverBg',
+                                },
+                            }}
                         >
                             Vector DB: PostgreSQL + PgVector
                         </Chip>
@@ -338,6 +353,12 @@ export function Footer() {
                             color="primary"
                             size="sm"
                             startDecorator={<Language sx={{ fontSize: 16 }} />}
+                            sx={{
+                                fontWeight: 500,
+                                '&:hover': {
+                                    bgcolor: 'primary.softHoverBg',
+                                },
+                            }}
                         >
                             Powered by Mastra
                         </Chip>

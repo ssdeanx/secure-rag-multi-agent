@@ -55,7 +55,15 @@ export const Typography = React.forwardRef<HTMLElement, TypographyProps>(
             ...props,
         }
 
-        if (component) {
+        // For body text levels, default to div if no component specified
+        // to avoid <p> cannot contain <div> errors
+        if (!component) {
+            if (level?.includes('body')) {
+                typographyProps.component = 'div'
+            } else if (level?.startsWith('title')) {
+                typographyProps.component = 'div'
+            }
+        } else {
             typographyProps.component = component
         }
 

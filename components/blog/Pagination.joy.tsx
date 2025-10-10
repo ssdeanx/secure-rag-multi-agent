@@ -7,12 +7,14 @@ interface PaginationProps {
     currentPage: number
     totalPages: number
     onPageChange: (_: number) => void
+    loading?: boolean
 }
 
 export function Pagination({
     currentPage,
     totalPages,
     onPageChange,
+    loading = false,
 }: PaginationProps) {
     const pages = Array.from({ length: totalPages }, (_, i) => i + 1)
 
@@ -41,10 +43,11 @@ export function Pagination({
             <Button
                 variant="outlined"
                 color="neutral"
-                disabled={currentPage === 1}
+                disabled={currentPage === 1 || loading}
                 onClick={() => onPageChange(currentPage - 1)}
                 startDecorator={<ChevronLeft />}
                 sx={{ minWidth: 100 }}
+                loading={loading}
             >
                 Previous
             </Button>
@@ -95,10 +98,11 @@ export function Pagination({
             <Button
                 variant="outlined"
                 color="neutral"
-                disabled={currentPage === totalPages}
+                disabled={currentPage === totalPages || loading}
                 onClick={() => onPageChange(currentPage + 1)}
                 endDecorator={<ChevronRight />}
                 sx={{ minWidth: 100 }}
+                loading={loading}
             >
                 Next
             </Button>

@@ -8,7 +8,6 @@ import {
     Chip,
     Avatar,
 } from '@/components/ui/joy'
-import styles from './ArticleCard.module.css'
 import Link from 'next/link'
 import { motion } from 'framer-motion'
 import { CalendarMonth, Person, AccessTime } from '@mui/icons-material'
@@ -54,7 +53,7 @@ export function ArticleCard({
             viewport={{ once: true }}
             transition={{ duration: 0.5 }}
         >
-            <Link href={`/blog/${slug}`}>
+            <Link href={`/blog/${slug}`} aria-label={`Read article: ${title}`}>
                 <Card
                     variant="outlined"
                     sx={{
@@ -67,6 +66,11 @@ export function ArticleCard({
                             boxShadow: 'lg',
                             borderColor: 'primary.500',
                         },
+                        '&:focus-visible': {
+                            outline: '2px solid',
+                            outlineColor: 'primary.500',
+                            outlineOffset: '2px',
+                        },
                     }}
                 >
                     {typeof image === 'string' && image.trim() !== '' && (
@@ -75,14 +79,19 @@ export function ArticleCard({
                                 width: '100%',
                                 height: 200,
                                 overflow: 'hidden',
-                                borderTopLeftRadius: 'sm',
-                                borderTopRightRadius: 'sm',
+                                borderTopLeftRadius: 'var(--joy-radius-sm)',
+                                borderTopRightRadius: 'var(--joy-radius-sm)',
                             }}
                         >
                             <img
                                 src={image}
                                 alt={title}
-                                className={styles.articleImage}
+                                style={{
+                                    width: '100%',
+                                    height: '100%',
+                                    objectFit: 'cover',
+                                    display: 'block',
+                                }}
                             />
                         </Box>
                     )}
@@ -146,20 +155,43 @@ export function ArticleCard({
                                     gap: 1.5,
                                 }}
                             >
-                                <Avatar
-                                    src={author.avatar}
-                                    alt={author.name}
-                                    size="sm"
+                                <Box
+                                    sx={{
+                                        width: 32,
+                                        height: 32,
+                                        borderRadius: '50%',
+                                        bgcolor: 'primary.softBg',
+                                        color: 'primary.500',
+                                        display: 'flex',
+                                        alignItems: 'center',
+                                        justifyContent: 'center',
+                                        fontSize: 'sm',
+                                        fontWeight: 600,
+                                        border: '2px solid',
+                                        borderColor: 'primary.200',
+                                    }}
                                 >
-                                    {author.name?.trim() ? (
+                                    {author.avatar ? (
+                                        <img
+                                            src={author.avatar}
+                                            alt={author.name}
+                                            style={{
+                                                width: '100%',
+                                                height: '100%',
+                                                borderRadius: '50%',
+                                                objectFit: 'cover',
+                                            }}
+                                        />
+                                    ) : author.name?.trim() ? (
                                         author.name
                                             .split(' ')
                                             .map((n) => n[0])
                                             .join('')
+                                            .toUpperCase()
                                     ) : (
                                         <Person sx={{ fontSize: 16 }} />
                                     )}
-                                </Avatar>
+                                </Box>
                                 <Box>
                                     <Typography
                                         level="body-sm"

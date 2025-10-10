@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import {
     Box,
     Button,
@@ -10,6 +10,7 @@ import {
     Card,
     CardContent,
     Divider,
+    Checkbox,
 } from '@/components/ui/joy'
 import {
     Visibility,
@@ -30,6 +31,24 @@ export function AuthForm({ mode }: AuthFormProps) {
     const [showPassword, setShowPassword] = useState(false)
     const [loading, setLoading] = useState(false)
     const [error, setError] = useState('')
+    const [rememberMe, setRememberMe] = useState(false)
+
+    // Check for saved authentication on component mount
+    useEffect(() => {
+        const savedAuth = localStorage.getItem('auth_remember')
+        if (savedAuth !== null && savedAuth !== '') {
+            try {
+                const authData = JSON.parse(savedAuth)
+                if (authData.expiresAt > Date.now()) {
+                    // Auto-redirect if valid saved session exists
+                    window.location.href = '/protected/dash'
+                }
+            } catch {
+                // Invalid saved data, remove it
+                localStorage.removeItem('auth_remember')
+            }
+        }
+    }, [])
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault()
@@ -37,23 +56,38 @@ export function AuthForm({ mode }: AuthFormProps) {
         setLoading(true)
 
         try {
-            const endpoint = mode === 'signup' ? '/api/auth/signup' : '/api/auth/login'
+            const endpoint =
+                mode === 'signup' ? '/api/auth/signup' : '/api/auth/login'
             const response = await fetch(endpoint, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ email, password }),
             })
 
-            const data: { error?: string; message?: string } = await response.json()
+            const data = await response.json()
 
             if (!response.ok) {
                 throw new Error(data.error ?? 'Authentication failed')
             }
 
             if (mode === 'signup') {
-                setError(data.message ?? 'Check your email to confirm your account')
+                setError(
+                    data.message ?? 'Check your email to confirm your account'
+                )
             } else {
-                window.location.href = '/'
+                // Save authentication data if remember me is checked
+                if (rememberMe) {
+                    const authData = {
+                        email,
+                        expiresAt: Date.now() + 7 * 24 * 60 * 60 * 1000, // 7 days
+                    }
+                    localStorage.setItem(
+                        'auth_remember',
+                        JSON.stringify(authData)
+                    )
+                }
+
+                window.location.href = '/protected/dash'
             }
         } catch (err) {
             setError(
@@ -124,10 +158,15 @@ export function AuthForm({ mode }: AuthFormProps) {
                             py: 2,
                             fontSize: 'lg',
                             fontWeight: 600,
-                            backgroundColor: '#24292e',
-                            color: 'white',
+                            bgcolor: 'neutral.900',
+                            color: 'common.white',
                             '&:hover': {
-                                backgroundColor: '#1b1f23',
+                                bgcolor: 'neutral.800',
+                            },
+                            '&:focus-visible': {
+                                outline: '2px solid',
+                                outlineColor: 'primary.500',
+                                outlineOffset: '2px',
                             },
                         }}
                     >
@@ -140,7 +179,10 @@ export function AuthForm({ mode }: AuthFormProps) {
                         <Divider>
                             <Typography
                                 level="body-sm"
-                                sx={{ px: 2, backgroundColor: 'background.surface' }}
+                                sx={{
+                                    px: 2,
+                                    backgroundColor: 'background.surface',
+                                }}
                             >
                                 Alternative Sign In
                             </Typography>
@@ -182,6 +224,13 @@ export function AuthForm({ mode }: AuthFormProps) {
                                     required
                                     fullWidth
                                     size="sm"
+                                    sx={{
+                                        '&:focus-visible': {
+                                            outline: '2px solid',
+                                            outlineColor: 'primary.500',
+                                            outlineOffset: '2px',
+                                        },
+                                    }}
                                 />
                             </Box>
 
@@ -211,6 +260,11 @@ export function AuthForm({ mode }: AuthFormProps) {
                                                 setShowPassword(!showPassword)
                                             }
                                             sx={{ minHeight: 0, px: 1 }}
+                                            aria-label={
+                                                showPassword
+                                                    ? 'Hide password'
+                                                    : 'Show password'
+                                            }
                                         >
                                             {showPassword ? (
                                                 <VisibilityOff fontSize="small" />
@@ -219,8 +273,35 @@ export function AuthForm({ mode }: AuthFormProps) {
                                             )}
                                         </Button>
                                     }
+                                    sx={{
+                                        '&:focus-visible': {
+                                            outline: '2px solid',
+                                            outlineColor: 'primary.500',
+                                            outlineOffset: '2px',
+                                        },
+                                    }}
                                 />
                             </Box>
+
+                            {/* Remember Me Checkbox */}
+                            {!isSignup && (
+                                <Box
+                                    sx={{
+                                        display: 'flex',
+                                        alignItems: 'center',
+                                        gap: 1,
+                                    }}
+                                >
+                                    <Checkbox
+                                        checked={rememberMe}
+                                        onChange={(e) =>
+                                            setRememberMe(e.target.checked)
+                                        }
+                                        label="Remember me"
+                                        size="sm"
+                                    />
+                                </Box>
+                            )}
 
                             {!isSignup && (
                                 <Box
@@ -257,6 +338,13 @@ export function AuthForm({ mode }: AuthFormProps) {
                                 }
                                 fullWidth
                                 disabled={loading}
+                                sx={{
+                                    '&:focus-visible': {
+                                        outline: '2px solid',
+                                        outlineColor: 'primary.500',
+                                        outlineOffset: '2px',
+                                    },
+                                }}
                             >
                                 {isSignup ? 'Create Account' : 'Sign In'}
                             </Button>
