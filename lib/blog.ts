@@ -1,6 +1,6 @@
 import { promises as fs } from 'fs'
 import path from 'path'
-import type { BlogMeta } from '@/components/blog/ArticleCard'
+import type { BlogMeta } from '@/components/blog/ArticleCard.joy'
 
 const BLOG_DIR = path.join(process.cwd(), 'blog')
 

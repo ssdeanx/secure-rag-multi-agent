@@ -13,6 +13,16 @@ import Link from 'next/link'
 import { motion } from 'framer-motion'
 import { CalendarMonth, Person, AccessTime } from '@mui/icons-material'
 
+export interface BlogMeta {
+    slug: string
+    title: string
+    date: string
+    excerpt: string
+    tags: string[]
+    author?: string
+    readingTime: string
+}
+
 interface ArticleCardProps {
     title: string
     excerpt: string

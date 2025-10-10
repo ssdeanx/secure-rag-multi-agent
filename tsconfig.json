@@ -37,7 +37,8 @@
         "eslint.config.js",
         "prettier.config.js",
         "cedar/**/*",
-        "next-sitemap.config.js"
+        "next-sitemap.config.js",
+        "middleware.ts"
     ],
-    "exclude": ["node_modules"]
+    "exclude": ["node_modules", "dist", ".next", ".mastra", ".github/**/*.md"]
 }

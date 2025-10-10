@@ -6,7 +6,7 @@ import { verifierAgent } from './agents/verifier.agent'
 import { log } from './config/logger'
 import { governedRagAnswer } from './workflows/governed-rag-answer.workflow'
 import { governedRagIndex } from './workflows/governed-rag-index.workflow'
-import { MastraJwtAuth } from '@mastra/auth'
+import { MastraAuthSupabase } from '@mastra/auth-supabase';
 import { LangfuseExporter } from './ai-tracing'
 import { SamplingStrategyType } from '@mastra/core/ai-tracing'
 import { pgStore, pgVector } from './config/pg-storage'
@@ -66,8 +66,9 @@ export const mastra = new Mastra({
     },
     server: {
         apiRoutes,
-        experimental_auth: new MastraJwtAuth({
-            secret: process.env.NEXT_PUBLIC_MASTRA_API_KEY!,
+        experimental_auth: new MastraAuthSupabase({
+            url: process.env.SUPABASE_URL,
+            anonKey: process.env.SUPABASE_ANON_KEY
         }),
     },
     observability: {
@@ -88,6 +89,22 @@ export const mastra = new Mastra({
                             flushInterval: 5000,
                         },
                     }),
+                ],
+                processors: [
+                    new SensitiveDataFilter({
+                      // Add custom sensitive fields
+                        sensitiveFields: [
+                        // Default fields
+                        'password', 'token', 'secret', 'key', 'apikey',
+                        // Custom fields for your application
+                        'creditCard', 'bankAccount', 'routingNumber',
+                        'email', 'phoneNumber', 'dateOfBirth',
+                        ],
+                        // Custom redaction token
+                        redactionToken: '***SENSITIVE***',
+                      // Redaction style
+                      redactionStyle: 'full', // or 'partial'
+                    })
                 ],
             },
         },

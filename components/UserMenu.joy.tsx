@@ -12,6 +12,7 @@ import {
     Dropdown,
 } from '@/components/ui/joy'
 import { Logout } from '@mui/icons-material'
+import { useRouter } from 'next/navigation'
 
 interface UserMenuProps {
     user: {
@@ -23,8 +24,12 @@ interface UserMenuProps {
 }
 
 export const UserMenu: React.FC<UserMenuProps> = ({ user }) => {
-    const handleLogout = () => {
-        // TODO: Implement logout logic (e.g., call an action or API)
+    const router = useRouter()
+
+    const handleLogout = async () => {
+        await fetch('/api/auth/logout', { method: 'POST' })
+        router.push('/login')
+        router.refresh()
     }
 
     return (

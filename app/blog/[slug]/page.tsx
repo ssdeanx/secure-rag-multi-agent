@@ -102,7 +102,7 @@ export default async function BlogPostPage({
                         <Typography level="h1" sx={{ fontWeight: 800 }}>
                             {post.title}
                         </Typography>
-                        {post.author && (
+                        {post.author !== null && (
                             <Typography
                                 level="body-sm"
                                 sx={{ color: 'text.secondary', mt: 1 }}
@@ -110,7 +110,7 @@ export default async function BlogPostPage({
                                 By {post.author}
                             </Typography>
                         )}
-                        {post.tags && post.tags.length > 0 && (
+                        {post.tags !== null && post.tags.length > 0 && (
                             <Box
                                 sx={{
                                     display: 'flex',
@@ -119,7 +119,7 @@ export default async function BlogPostPage({
                                     pt: 2,
                                 }}
                             >
-                                {post.tags.map((tag) => (
+                                {post.tags.map((tag: string) => (
                                     <Chip
                                         key={tag}
                                         variant="soft"

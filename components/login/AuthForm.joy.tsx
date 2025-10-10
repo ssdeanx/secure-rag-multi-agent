@@ -9,8 +9,6 @@ import {
     Alert,
     Card,
     CardContent,
-    Select,
-    Option,
     Divider,
 } from '@/components/ui/joy'
 import {
@@ -22,31 +20,13 @@ import {
 } from '@mui/icons-material'
 import Link from 'next/link'
 
-interface AuthFormData {
-    email: string
-    password: string
-    role?: string
-}
-
 interface AuthFormProps {
     mode: 'login' | 'signup'
-    onSubmit: (data: AuthFormData) => Promise<void>
 }
 
-const demoRoles = [
-    { value: 'admin', label: 'Admin (All Access)' },
-    { value: 'finance_admin', label: 'Finance Admin' },
-    { value: 'finance_viewer', label: 'Finance Viewer' },
-    { value: 'hr_admin', label: 'HR Admin' },
-    { value: 'hr_viewer', label: 'HR Viewer' },
-    { value: 'employee', label: 'Employee' },
-    { value: 'public', label: 'Public' },
-]
-
-export function AuthForm({ mode, onSubmit }: AuthFormProps) {
+export function AuthForm({ mode }: AuthFormProps) {
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
-    const [role, setRole] = useState('employee')
     const [showPassword, setShowPassword] = useState(false)
     const [loading, setLoading] = useState(false)
     const [error, setError] = useState('')
@@ -57,11 +37,24 @@ export function AuthForm({ mode, onSubmit }: AuthFormProps) {
         setLoading(true)
 
         try {
-            await onSubmit({
-                email,
-                password,
-                ...(mode === 'signup' && { role }),
+            const endpoint = mode === 'signup' ? '/api/auth/signup' : '/api/auth/login'
+            const response = await fetch(endpoint, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ email, password }),
             })
+
+            const data: { error?: string; message?: string } = await response.json()
+
+            if (!response.ok) {
+                throw new Error(data.error ?? 'Authentication failed')
+            }
+
+            if (mode === 'signup') {
+                setError(data.message ?? 'Check your email to confirm your account')
+            } else {
+                window.location.href = '/'
+            }
         } catch (err) {
             setError(
                 err instanceof Error ? err.message : 'Authentication failed'
@@ -74,13 +67,7 @@ export function AuthForm({ mode, onSubmit }: AuthFormProps) {
     const handleGitHubLogin = async () => {
         setError('')
         setLoading(true)
-
-        try {
-            window.location.href = '/api/auth/github/login'
-        } catch (err) {
-            setError(err instanceof Error ? err.message : 'GitHub login failed')
-            setLoading(false)
-        }
+        window.location.href = '/api/auth/github'
     }
 
     const isSignup = mode === 'signup'
@@ -137,9 +124,10 @@ export function AuthForm({ mode, onSubmit }: AuthFormProps) {
                             py: 2,
                             fontSize: 'lg',
                             fontWeight: 600,
-                            bgcolor: 'github.main',
+                            backgroundColor: '#24292e',
+                            color: 'white',
                             '&:hover': {
-                                bgcolor: 'github.dark',
+                                backgroundColor: '#1b1f23',
                             },
                         }}
                     >
@@ -152,7 +140,7 @@ export function AuthForm({ mode, onSubmit }: AuthFormProps) {
                         <Divider>
                             <Typography
                                 level="body-sm"
-                                sx={{ px: 2, bgcolor: 'background.surface' }}
+                                sx={{ px: 2, backgroundColor: 'background.surface' }}
                             >
                                 Alternative Sign In
                             </Typography>
@@ -233,33 +221,6 @@ export function AuthForm({ mode, onSubmit }: AuthFormProps) {
                                     }
                                 />
                             </Box>
-
-                            {isSignup && (
-                                <Box>
-                                    <Typography
-                                        level="body-sm"
-                                        sx={{ mb: 0.5, fontWeight: 600 }}
-                                    >
-                                        Role
-                                    </Typography>
-                                    <Select
-                                        value={role}
-                                        onChange={(_, newValue) =>
-                                            setRole(newValue as string)
-                                        }
-                                        size="sm"
-                                    >
-                                        {demoRoles.map((r) => (
-                                            <Option
-                                                key={r.value}
-                                                value={r.value}
-                                            >
-                                                {r.label}
-                                            </Option>
-                                        ))}
-                                    </Select>
-                                </Box>
-                            )}
 
                             {!isSignup && (
                                 <Box
