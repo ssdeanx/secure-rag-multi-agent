@@ -83,7 +83,7 @@ export const mastra = new Mastra({
                         secretKey: process.env.LANGFUSE_SECRET_KEY,
                         baseUrl: process.env.LANGFUSE_BASE_URL, // Optional
                         realtime: process.env.NODE_ENV === 'development',
-                        logLevel: 'info',
+                        logLevel: 'warn',
                         options: {
                             batchSize: 200,
                             flushInterval: 5000,

@@ -7,7 +7,7 @@ import { log } from './logger'
 import type { RuntimeContext } from '@mastra/core/runtime-context'
 import { AISpanType } from '@mastra/core/ai-tracing'
 import type { TracingContext } from '@mastra/core/ai-tracing'
-
+import { TokenLimiter } from "@mastra/memory/processors";
 import { google } from '@ai-sdk/google'
 
 // Production-grade PostgreSQL configuration with supported options
@@ -98,6 +98,9 @@ export const pgMemory = new Memory({
             generateTitle: process.env.THREAD_GENERATE_TITLE !== 'true',
         },
     },
+    processors: [
+        new TokenLimiter(1048576)
+    ],
 })
 
 // Graph-based RAG tool using PgVector
