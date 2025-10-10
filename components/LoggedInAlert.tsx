@@ -1,19 +1,14 @@
 'use client'
 
 import React from 'react'
-import { CheckCircle, LogOut, User, Shield } from 'lucide-react'
-import { Button } from '@/components/ui/shadnui/button'
-import { Alert, AlertDescription } from '@/components/ui/shadnui/alert'
-import { Badge } from '@/components/ui/shadnui/badge'
-import { Avatar, AvatarFallback } from '@/components/ui/shadnui/avatar'
 import {
-    Tooltip,
-    TooltipContent,
-    TooltipProvider,
-    TooltipTrigger,
-} from '@/components/ui/shadnui/tooltip'
-import { Separator } from '@/components/ui/shadnui/separator'
-import { cn } from '@/lib/utils'
+    CheckCircle as CheckCircleIcon,
+    Logout as LogoutIcon,
+    Person as PersonIcon,
+    Security as SecurityIcon
+} from '@mui/icons-material'
+import { Button, Alert, Chip, Avatar, Tooltip, Divider } from '@/components/ui/joy'
+import { Box, Typography } from '@mui/joy'
 
 interface LoggedInAlertProps {
     currentRole: string
@@ -22,90 +17,169 @@ interface LoggedInAlertProps {
 
 export function LoggedInAlert({ currentRole, onSignOut }: LoggedInAlertProps) {
     return (
-        <TooltipProvider>
-            <Alert
-                className={cn(
-                    'relative border-2 border-accent/30',
-                    'bg-gradient-mocha backdrop-blur-sm',
-                    'hover-lift hover-glow hover-scale',
-                    'transition-all duration-300 ease-spring',
-                    'shadow-xl overflow-hidden'
-                )}
+        <Alert
+            variant="soft"
+            color="primary"
+            startDecorator={<CheckCircleIcon />}
+            sx={{
+                position: 'relative',
+                border: '2px solid',
+                borderColor: 'primary.softColor',
+                borderRadius: 'md',
+                background: 'linear-gradient(135deg, rgba(255,255,255,0.1) 0%, rgba(255,255,255,0.05) 100%)',
+                backdropFilter: 'blur(10px)',
+                transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
+                boxShadow: '0 8px 32px rgba(0,0,0,0.1)',
+                overflow: 'hidden',
+                '&:hover': {
+                    transform: 'translateY(-2px) scale(1.02)',
+                    boxShadow: '0 12px 40px rgba(0,0,0,0.15)',
+                },
+            }}
+        >
+            {/* Background decorative elements */}
+            <Box
+                sx={{
+                    position: 'absolute',
+                    top: 0,
+                    right: 0,
+                    width: 48,
+                    height: 48,
+                    borderRadius: '50%',
+                    backgroundColor: 'primary.softColor',
+                    opacity: 0.1,
+                    animation: 'pulse 2s infinite',
+                }}
+            />
+            <Box
+                sx={{
+                    position: 'absolute',
+                    bottom: 0,
+                    left: 0,
+                    width: 32,
+                    height: 32,
+                    borderRadius: '50%',
+                    backgroundColor: 'primary.main',
+                    opacity: 0.1,
+                    animation: 'pulse 2s infinite',
+                }}
+            />
+
+            <Box
+                sx={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'space-between',
+                    width: '100%',
+                    position: 'relative',
+                }}
             >
-                <CheckCircle className="h-5 w-5 text-accent" />
-                <AlertDescription className="flex items-center justify-between w-full">
-                    {/* Background decorative elements */}
-                    <div className="absolute top-0 right-0 w-12 h-12 bg-accent/10 rounded-full blur-lg animate-pulse" />
-                    <div className="absolute bottom-0 left-0 w-8 h-8 bg-primary/10 rounded-full blur-md animate-pulse" />
+                <Box
+                    sx={{
+                        display: 'flex',
+                        alignItems: 'center',
+                        gap: 2,
+                    }}
+                >
+                    <Avatar
+                        size="lg"
+                        variant="soft"
+                        color="primary"
+                    >
+                        <PersonIcon />
+                    </Avatar>
 
-                    <div className="relative flex items-center justify-between w-full">
-                        <div className="flex items-center space-x-4">
-                            <Avatar className="h-12 w-12 border-2 border-accent/30">
-                                <AvatarFallback className="bg-accent/10 text-accent font-bold">
-                                    <User className="h-6 w-6" />
-                                </AvatarFallback>
-                            </Avatar>
-                            <div className="flex flex-col">
-                                <div className="flex items-center space-x-2">
-                                    <span className="text-sm font-bold text-foreground">
-                                        Logged in as
-                                    </span>
-                                    <Badge
-                                        variant="secondary"
-                                        className="font-bold px-3 py-1"
-                                    >
-                                        <User className="h-4 w-4 mr-1" />
-                                        {currentRole}
-                                    </Badge>
-                                </div>
-                                <Separator className="my-2" />
-                                <div className="flex items-center space-x-2">
-                                    <Shield className="h-3 w-3 text-accent" />
-                                    <span className="text-xs text-muted-foreground font-medium">
-                                        Authenticated Session
-                                    </span>
-                                    <Badge
-                                        variant="outline"
-                                        className="text-xs"
-                                    >
-                                        Active
-                                    </Badge>
-                                </div>
-                            </div>
-                        </div>
+                    <Box>
+                        <Box
+                            sx={{
+                                display: 'flex',
+                                alignItems: 'center',
+                                gap: 1,
+                                mb: 1,
+                            }}
+                        >
+                            <Typography level="body-sm" sx={{ fontWeight: 'bold' }}>
+                                Logged in as
+                            </Typography>
+                            <Chip
+                                variant="soft"
+                                color="primary"
+                                size="sm"
+                                startDecorator={<PersonIcon sx={{ fontSize: 16 }} />}
+                            >
+                                {currentRole}
+                            </Chip>
+                        </Box>
 
-                        <Tooltip>
-                            <TooltipTrigger asChild>
-                                <Button
-                                    onClick={onSignOut}
-                                    variant="outline"
-                                    size="sm"
-                                    className={cn(
-                                        'group h-10 px-4 border-2 border-destructive/30 hover:border-destructive/50',
-                                        'bg-destructive/10 hover:bg-destructive/20',
-                                        'hover-lift hover-glow hover-scale',
-                                        'transition-all duration-300 ease-spring',
-                                        'btn-brutalist',
-                                        'focus-visible:ring-2 focus-visible:ring-destructive focus-visible:ring-offset-2'
-                                    )}
-                                >
-                                    <LogOut className="h-4 w-4 mr-2 group-hover:rotate-12 transition-all duration-300" />
-                                    <span className="font-bold text-destructive">
-                                        Sign Out
-                                    </span>
-                                </Button>
-                            </TooltipTrigger>
-                            <TooltipContent>
-                                <p>End your current session</p>
-                            </TooltipContent>
-                        </Tooltip>
-                    </div>
+                        <Divider sx={{ my: 1 }} />
 
-                    {/* Bottom accent line */}
-                    <div className="absolute bottom-0 left-0 h-1 bg-gradient-accent w-0 group-hover:w-full transition-all duration-500 ease-spring" />
-                </AlertDescription>
-            </Alert>
-        </TooltipProvider>
+                        <Box
+                            sx={{
+                                display: 'flex',
+                                alignItems: 'center',
+                                gap: 1,
+                            }}
+                        >
+                            <SecurityIcon sx={{ fontSize: 12 }} />
+                            <Typography level="body-xs" sx={{ color: 'text.tertiary' }}>
+                                Authenticated Session
+                            </Typography>
+                            <Chip
+                                variant="outlined"
+                                color="success"
+                                size="sm"
+                            >
+                                Active
+                            </Chip>
+                        </Box>
+                    </Box>
+                </Box>
+
+                <Tooltip title="End your current session" placement="top">
+                    <Button
+                        onClick={onSignOut}
+                        variant="outlined"
+                        color="danger"
+                        size="sm"
+                        startDecorator={<LogoutIcon sx={{ fontSize: 16 }} />}
+                        sx={{
+                            border: '2px solid',
+                            borderColor: 'danger.softColor',
+                            backgroundColor: 'danger.softColor',
+                            color: 'danger.main',
+                            transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
+                            '&:hover': {
+                                borderColor: 'danger.main',
+                                backgroundColor: 'danger.main',
+                                color: 'common.white',
+                                transform: 'translateY(-2px)',
+                                boxShadow: '0 4px 12px rgba(211, 47, 47, 0.3)',
+                            },
+                        }}
+                    >
+                        <Typography sx={{ fontWeight: 'bold' }}>
+                            Sign Out
+                        </Typography>
+                    </Button>
+                </Tooltip>
+            </Box>
+
+            {/* Bottom accent line */}
+            <Box
+                sx={{
+                    position: 'absolute',
+                    bottom: 0,
+                    left: 0,
+                    height: '4px',
+                    background: 'linear-gradient(90deg, transparent 0%, currentColor 50%, transparent 100%)',
+                    width: 0,
+                    transition: 'width 0.5s cubic-bezier(0.4, 0, 0.2, 1)',
+                    '.MuiAlert-root:hover &': {
+                        width: '100%',
+                    },
+                }}
+            />
+        </Alert>
     )
 }
 

@@ -39,12 +39,12 @@ This directory contains the complete integration of the Cedar OS framework with 
 
 ## Data Flow
 
-1.  **Provider Setup:** `layout.tsx` wraps the entire page in `<CedarCopilot>`, establishing the connection to the Mastra backend.
-2.  **UI Rendering:** `page.tsx` renders the `RoadmapCanvas` and the selected chat interface.
-3.  **State Registration:** `state.ts` registers the `nodes` and `edges` from the canvas with Cedar OS and provides functions (`stateSetters`) for the agent to call to modify them.
-4.  **Context Exposure:** `context.ts` subscribes to the `nodes` state and injects a simplified version of it into the context that is sent to the agent with every chat message.
-5.  **User Interaction:** The user can interact with the UI directly or chat with the agent. They can use `@` mentions (configured in `mentions.ts`) to refer to specific nodes.
-6.  **Agent Action:** The agent on the backend receives the user's message plus the context from `context.ts`. It can then decide to call one of the `stateSetters` defined in `state.ts` to modify the UI.
+1. **Provider Setup:** `layout.tsx` wraps the entire page in `<CedarCopilot>`, establishing the connection to the Mastra backend.
+2. **UI Rendering:** `page.tsx` renders the `RoadmapCanvas` and the selected chat interface.
+3. **State Registration:** `state.ts` registers the `nodes` and `edges` from the canvas with Cedar OS and provides functions (`stateSetters`) for the agent to call to modify them.
+4. **Context Exposure:** `context.ts` subscribes to the `nodes` state and injects a simplified version of it into the context that is sent to the agent with every chat message.
+5. **User Interaction:** The user can interact with the UI directly or chat with the agent. They can use `@` mentions (configured in `mentions.ts`) to refer to specific nodes.
+6. **Agent Action:** The agent on the backend receives the user's message plus the context from `context.ts`. It can then decide to call one of the `stateSetters` defined in `state.ts` to modify the UI.
 
 ## Change Log
 

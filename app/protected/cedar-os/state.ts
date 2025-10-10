@@ -3,7 +3,7 @@ import { useEffect } from 'react'
 import type { Node, Edge } from 'reactflow'
 import { v4 as uuidv4 } from 'uuid'
 import { useCedarState, useRegisterState } from 'cedar-os'
-import type { FeatureNodeData } from '../../cedar/FeatureNode'
+import type { FeatureNodeData } from '../../../cedar/FeatureNode'
 
 // [STEP 4]: There are a few ways to make your application states visible to your agent.
 // This allows your agent to understand and manipulate roadmap features using the state functions
