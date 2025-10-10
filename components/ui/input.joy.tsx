@@ -1,9 +1,9 @@
 /**
  * Input Component - Joy UI Primitive
- * 
+ *
  * Production-ready input field with form control integration,
  * custom focus ring, and full accessibility support.
- * 
+ *
  * Features:
  * - Focus ring with 3:1 contrast ratio
  * - Form integration (FormControl, FormLabel, FormHelperText)
@@ -78,22 +78,25 @@ export interface InputProps
 
 /**
  * Input component with custom focus ring matching Supabase green theme.
- * 
+ *
  * @example
  * ```tsx
  * <Input placeholder="Enter your email" type="email" />
  * ```
- * 
+ *
  * @example With decorators
  * ```tsx
- * <Input 
+ * <Input
  *   startDecorator={<SearchIcon />}
  *   placeholder="Search..."
  * />
  * ```
  */
 const Input = React.forwardRef<HTMLInputElement, InputProps>(
-    ({ variant = 'outlined', size = 'md', color = 'neutral', sx, ...props }, ref) => {
+    (
+        { variant = 'outlined', size = 'md', color = 'neutral', sx, ...props },
+        ref
+    ) => {
         return (
             <JoyInput
                 ref={ref}
@@ -109,7 +112,8 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
                     // Custom focus ring with Supabase green
                     '--Input-focusedInset': 'var(--any, )',
                     '--Input-focusedThickness': '2px',
-                    '--Input-focusedHighlight': 'var(--joy-palette-primary-500)',
+                    '--Input-focusedHighlight':
+                        'var(--joy-palette-primary-500)',
                     ...sx,
                 }}
                 {...props}

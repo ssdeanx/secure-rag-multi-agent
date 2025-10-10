@@ -1,9 +1,9 @@
 /**
  * Card Component - Joy UI Primitive
- * 
+ *
  * Production-ready card component with composition pattern
  * for building complex card layouts.
- * 
+ *
  * Features:
  * - 4 variants: solid, soft, outlined, plain
  * - Horizontal and vertical orientation
@@ -69,7 +69,7 @@ export interface CardProps {
 
 /**
  * Card component for content containers.
- * 
+ *
  * @example Basic card
  * ```tsx
  * <Card>
@@ -79,7 +79,7 @@ export interface CardProps {
  *   </CardContent>
  * </Card>
  * ```
- * 
+ *
  * @example Card with actions
  * ```tsx
  * <Card>
@@ -93,7 +93,7 @@ export interface CardProps {
  *   </CardActions>
  * </Card>
  * ```
- * 
+ *
  * @example Card with cover image
  * ```tsx
  * <Card>
@@ -241,10 +241,10 @@ const CardTitle: React.FC<{ children: React.ReactNode; sx?: SxProps }> = ({
     )
 }
 
-const CardDescription: React.FC<{ children: React.ReactNode; sx?: SxProps }> = ({
-    children,
-    sx,
-}) => {
+const CardDescription: React.FC<{
+    children: React.ReactNode
+    sx?: SxProps
+}> = ({ children, sx }) => {
     return (
         <Typography level="body-sm" sx={sx}>
             {children}

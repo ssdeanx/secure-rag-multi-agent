@@ -38,8 +38,8 @@ export default function CedarLayout({ children }: { children: ReactNode }) {
                     'http://localhost:4111',
                 apiKey: process.env.NEXT_PUBLIC_MASTRA_API_KEY, // JWT for Mastra auth
                 chatPath: '/chat', // Cedar auto-appends /stream for streaming
-//              resumePath: '',
-//              voiceRoute: ''
+                //              resumePath: '',
+                //              voiceRoute: ''
                 // Streaming is ENABLED BY DEFAULT
                 // Cedar will call: POST {baseURL}/chat/stream
                 // For non-streaming: POST {baseURL}/chat (fallback)

@@ -10,10 +10,10 @@ export function AboutHero() {
         reduce === true
             ? {}
             : {
-                initial: { opacity: 0, y: 40 },
-                animate: { opacity: 1, y: 0 },
-                transition: { duration: 0.8 },
-            }
+                  initial: { opacity: 0, y: 40 },
+                  animate: { opacity: 1, y: 0 },
+                  transition: { duration: 0.8 },
+              }
 
     return (
         <Box
@@ -22,12 +22,27 @@ export function AboutHero() {
             sx={{
                 py: 12,
                 textAlign: 'center',
-                background: 'linear-gradient(to bottom, var(--joy-palette-background-surface) 0%, var(--joy-palette-background-surface) 50%, var(--joy-palette-primary-softBg) 100%)',
+                background:
+                    'linear-gradient(to bottom, var(--joy-palette-background-surface) 0%, var(--joy-palette-background-surface) 50%, var(--joy-palette-primary-softBg) 100%)',
             }}
         >
             <motion.div {...base}>
-                <Box sx={{ maxWidth: 896, mx: 'auto', px: 2, display: 'flex', flexDirection: 'column', gap: 3 }}>
-                    <Chip variant="soft" color="neutral" size="lg" sx={{ alignSelf: 'center' }}>
+                <Box
+                    sx={{
+                        maxWidth: 896,
+                        mx: 'auto',
+                        px: 2,
+                        display: 'flex',
+                        flexDirection: 'column',
+                        gap: 3,
+                    }}
+                >
+                    <Chip
+                        variant="soft"
+                        color="neutral"
+                        size="lg"
+                        sx={{ alignSelf: 'center' }}
+                    >
                         Our Story
                     </Chip>
                     <Typography
@@ -47,9 +62,9 @@ export function AboutHero() {
                             lineHeight: 1.6,
                         }}
                     >
-                        We are on a mission to make Retrieval-Augmented Generation
-                        safe for the enterprise—without sacrificing velocity,
-                        creativity, or governance.
+                        We are on a mission to make Retrieval-Augmented
+                        Generation safe for the enterprise—without sacrificing
+                        velocity, creativity, or governance.
                     </Typography>
                 </Box>
             </motion.div>

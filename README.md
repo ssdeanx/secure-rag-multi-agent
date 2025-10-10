@@ -10,7 +10,7 @@
 ![OpenRouter](https://img.shields.io/badge/OpenRouter-API-purple)
 ![Tailwind CSS](https://img.shields.io/badge/Tailwind%20CSS-4.1-blue)
 ![Lucide React](https://img.shields.io/badge/Lucide%20React-Icons-yellow)
-![shadcn/ui](https://img.shields.io/badge/shadcn%2Fui-Components-indigo)
+![MUI Joy UI](https://img.shields.io/badge/MUI%20Joy%20UI-Components-indigo)
 ![Docker](https://img.shields.io/badge/Docker-Container-blue)
 ![PostgreSQL](https://img.shields.io/badge/PostgreSQL-18-blue?style=flat&logo=postgresql)
 ![Mermaid](https://img.shields.io/badge/Mermaid-Diagrams-blue)
@@ -35,7 +35,7 @@ Traditional RAG systems risk exposing sensitive data. This template provides ent
 
 ```mermaid
 graph TB
-    User[User / JWT Authentication] --> UI[Next.js UI<br/>shadcn/ui, Tailwind CSS, Lucide React]
+    User[User / JWT Authentication] --> UI[Next.js UI<br/>MUI Joy UI, Lucide React]
     UI --> API[Next.js API Routes<br/>/api/chat, /api/index, /api/auth]
     API --> Mastra[Mastra Workflow Engine<br/>Multi-Agent Orchestration]
 
@@ -144,20 +144,46 @@ flowchart TD
     # Edit .env with your OpenAI API key and other settings
     ```
 
-3. **Start database (optional):**
+3. **Set up authentication (Supabase):**
+
+    This application uses Supabase for user authentication. You need to:
+
+    a. **Create a Supabase project** at [https://supabase.com/dashboard](https://supabase.com/dashboard)
+
+    b. **Get your credentials** from Project Settings:
+       - `SUPABASE_URL` - Your project URL (e.g., `https://xxxxx.supabase.co`)
+       - `SUPABASE_ANON_KEY` - Your anon/public key
+
+    c. **Update your `.env` file** with Supabase credentials:
+       ```bash
+       SUPABASE_URL="https://your-project.supabase.co"
+       SUPABASE_ANON_KEY="your_anon_key_here"
+       NEXT_PUBLIC_SUPABASE_URL="https://your-project.supabase.co"
+       NEXT_PUBLIC_SUPABASE_ANON_KEY="your_anon_key_here"
+       ```
+
+    d. **Configure GitHub OAuth** (optional):
+       - In Supabase Dashboard: Authentication > Providers > GitHub
+       - Add your GitHub OAuth app credentials
+       - Callback URL: `https://your-project.supabase.co/auth/v1/callback`
+       - Update `.env` with `GITHUB_CLIENT_ID` and `GITHUB_CLIENT_SECRET`
+
+    📖 **See [docs/AUTH_ARCHITECTURE.md](docs/AUTH_ARCHITECTURE.md) for detailed authentication documentation.**
+
+4. **Start database (optional):**
 
     ```bash
     # Only needed if using local PostgreSQL
     docker-compose up -d db
     ```
 
-4. **Index documents:**
+5. **Index documents:**
 
     ```bash
     npm run cli index
     ```
 
-5. **Start development:**
+6. **Start development:**
 
     ```bash
     npm run dev  # http://localhost:3000

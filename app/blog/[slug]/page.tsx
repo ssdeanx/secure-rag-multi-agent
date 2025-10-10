@@ -58,44 +58,88 @@ export default async function BlogPostPage({
     })
 
     return (
-        <Box component="main" sx={{ minHeight: '100vh', bgcolor: 'background.body', py: 8 }}>
+        <Box
+            component="main"
+            sx={{ minHeight: '100vh', bgcolor: 'background.body', py: 8 }}
+        >
             <Box sx={{ maxWidth: 880, mx: 'auto', px: 2 }}>
-                <Box sx={{ mb: 4, display: 'flex', alignItems: 'center', gap: 2 }}>
+                <Box
+                    sx={{
+                        mb: 4,
+                        display: 'flex',
+                        alignItems: 'center',
+                        gap: 2,
+                    }}
+                >
                     <Link href="/blog" passHref>
-                        <Button component="a" variant="plain" color="neutral" startDecorator={<ArrowBack />}>Back</Button>
+                        <Button
+                            component="a"
+                            variant="plain"
+                            color="neutral"
+                            startDecorator={<ArrowBack />}
+                        >
+                            Back
+                        </Button>
                     </Link>
                 </Box>
                 <Box component="article">
                     <Box sx={{ mb: 4 }}>
-                        <Typography level="body-xs" sx={{ textTransform: 'uppercase', letterSpacing: 0.6, color: 'text.tertiary' }}>
+                        <Typography
+                            level="body-xs"
+                            sx={{
+                                textTransform: 'uppercase',
+                                letterSpacing: 0.6,
+                                color: 'text.tertiary',
+                            }}
+                        >
                             {new Date(post.date).toLocaleDateString(undefined, {
                                 year: 'numeric',
                                 month: 'short',
                                 day: 'numeric',
-                            })}
-                            {' '}
+                            })}{' '}
                             • {post.readingTime}
                         </Typography>
                         <Typography level="h1" sx={{ fontWeight: 800 }}>
                             {post.title}
                         </Typography>
-                        {post.author && (
-                            <Typography level="body-sm" sx={{ color: 'text.secondary', mt: 1 }}>
+                        {post.author !== null && (
+                            <Typography
+                                level="body-sm"
+                                sx={{ color: 'text.secondary', mt: 1 }}
+                            >
                                 By {post.author}
                             </Typography>
                         )}
-                        {post.tags && post.tags.length > 0 && (
-                            <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 1.5, pt: 2 }}>
-                                {post.tags.map((tag) => (
-                                    <Chip key={tag} variant="soft" color="primary" size="sm">{tag}</Chip>
+                        {post.tags !== null && post.tags.length > 0 && (
+                            <Box
+                                sx={{
+                                    display: 'flex',
+                                    flexWrap: 'wrap',
+                                    gap: 1.5,
+                                    pt: 2,
+                                }}
+                            >
+                                {post.tags.map((tag: string) => (
+                                    <Chip
+                                        key={tag}
+                                        variant="soft"
+                                        color="primary"
+                                        size="sm"
+                                    >
+                                        {tag}
+                                    </Chip>
                                 ))}
                             </Box>
                         )}
                     </Box>
-                    <Box sx={{
-                        '& h1, & h2, & h3, & h4': { scrollMarginTop: '80px' },
-                        '& p': { lineHeight: 1.75 },
-                    }}>
+                    <Box
+                        sx={{
+                            '& h1, & h2, & h3, & h4': {
+                                scrollMarginTop: '80px',
+                            },
+                            '& p': { lineHeight: 1.75 },
+                        }}
+                    >
                         {content}
                     </Box>
                 </Box>

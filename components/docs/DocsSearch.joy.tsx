@@ -1,21 +1,29 @@
-'use client';
+'use client'
 
-import { useState } from 'react';
-import { Box, Input, Typography, List, ListItem, ListItemButton, Chip } from '@/components/ui/joy';
-import { IconButton } from '@mui/joy';
-import { Search, Close, Article, Code } from '@mui/icons-material';
-import { useRouter } from 'next/navigation';
+import { useState } from 'react'
+import {
+    Box,
+    Input,
+    Typography,
+    List,
+    ListItem,
+    ListItemButton,
+    Chip,
+} from '@/components/ui/joy'
+import { IconButton } from '@mui/joy'
+import { Search, Close, Article, Code } from '@mui/icons-material'
+import { useRouter } from 'next/navigation'
 
 interface SearchResult {
-    title: string;
-    href: string;
-    category: string;
-    excerpt?: string;
+    title: string
+    href: string
+    category: string
+    excerpt?: string
 }
 
 interface DocsSearchProps {
-    results?: SearchResult[];
-    onSearch?: any;
+    results?: SearchResult[]
+    onSearch?: any
 }
 
 const mockResults: SearchResult[] = [
@@ -43,44 +51,47 @@ const mockResults: SearchResult[] = [
         category: 'Security',
         excerpt: 'Role-based access control and data classification',
     },
-];
+]
 
-export function DocsSearch({ results = mockResults, onSearch }: DocsSearchProps) {
-    const [query, setQuery] = useState('');
-    const [isOpen, setIsOpen] = useState(false);
-    const router = useRouter();
+export function DocsSearch({
+    results = mockResults,
+    onSearch,
+}: DocsSearchProps) {
+    const [query, setQuery] = useState('')
+    const [isOpen, setIsOpen] = useState(false)
+    const router = useRouter()
 
     const filteredResults = query.trim()
         ? results.filter((r) => {
-              const q = query.toLowerCase();
-              const titleMatch = r.title.toLowerCase().includes(q);
+              const q = query.toLowerCase()
+              const titleMatch = r.title.toLowerCase().includes(q)
               const excerptMatch =
                   typeof r.excerpt === 'string' && r.excerpt.trim().length > 0
                       ? r.excerpt.toLowerCase().includes(q)
-                      : false;
-              return titleMatch || excerptMatch;
+                      : false
+              return titleMatch || excerptMatch
           })
-        : [];
+        : []
 
     const handleSelect = (href: string) => {
-        router.push(href);
-        setQuery('');
-        setIsOpen(false);
-    };
+        router.push(href)
+        setQuery('')
+        setIsOpen(false)
+    }
 
     const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        const value = e.target.value;
-        setQuery(value);
-        setIsOpen(value.length > 0);
+        const value = e.target.value
+        setQuery(value)
+        setIsOpen(value.length > 0)
         if (onSearch) {
-            onSearch(value);
+            onSearch(value)
         }
-    };
+    }
 
     const clearSearch = () => {
-        setQuery('');
-        setIsOpen(false);
-    };
+        setQuery('')
+        setIsOpen(false)
+    }
 
     return (
         <Box sx={{ position: 'relative', width: '100%' }}>
@@ -89,7 +100,9 @@ export function DocsSearch({ results = mockResults, onSearch }: DocsSearchProps)
                 value={query}
                 onChange={handleInputChange}
                 onFocus={() => query.length > 0 && setIsOpen(true)}
-                startDecorator={<Search sx={{ fontSize: 20, color: 'text.secondary' }} />}
+                startDecorator={
+                    <Search sx={{ fontSize: 20, color: 'text.secondary' }} />
+                }
                 endDecorator={
                     query && (
                         <IconButton
@@ -105,7 +118,9 @@ export function DocsSearch({ results = mockResults, onSearch }: DocsSearchProps)
                                 '&:hover': { bgcolor: 'neutral.softHoverBg' },
                             }}
                         >
-                            <Close sx={{ fontSize: 18, color: 'text.secondary' }} />
+                            <Close
+                                sx={{ fontSize: 18, color: 'text.secondary' }}
+                            />
                         </IconButton>
                     )
                 }
@@ -143,30 +158,55 @@ export function DocsSearch({ results = mockResults, onSearch }: DocsSearchProps)
                                         borderRadius: 'sm',
                                     }}
                                 >
-                                    <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, width: '100%' }}>
+                                    <Box
+                                        sx={{
+                                            display: 'flex',
+                                            alignItems: 'center',
+                                            gap: 1,
+                                            width: '100%',
+                                        }}
+                                    >
                                         {result.category === 'API' ? (
-                                            <Code sx={{ fontSize: 16, color: 'primary.500' }} />
+                                            <Code
+                                                sx={{
+                                                    fontSize: 16,
+                                                    color: 'primary.500',
+                                                }}
+                                            />
                                         ) : (
-                                            <Article sx={{ fontSize: 16, color: 'primary.500' }} />
+                                            <Article
+                                                sx={{
+                                                    fontSize: 16,
+                                                    color: 'primary.500',
+                                                }}
+                                            />
                                         )}
-                                        <Typography level="body-sm" sx={{ fontWeight: 600, flex: 1 }}>
+                                        <Typography
+                                            level="body-sm"
+                                            sx={{ fontWeight: 600, flex: 1 }}
+                                        >
                                             {result.title}
                                         </Typography>
-                                        <Chip variant="soft" color="neutral" size="sm">
+                                        <Chip
+                                            variant="soft"
+                                            color="neutral"
+                                            size="sm"
+                                        >
                                             {result.category}
                                         </Chip>
                                     </Box>
-                                    {typeof result.excerpt === 'string' && result.excerpt.trim().length > 0 && (
-                                        <Typography
-                                            level="body-xs"
-                                            sx={{
-                                                color: 'text.secondary',
-                                                pl: 3,
-                                            }}
-                                        >
-                                            {result.excerpt}
-                                        </Typography>
-                                    )}
+                                    {typeof result.excerpt === 'string' &&
+                                        result.excerpt.trim().length > 0 && (
+                                            <Typography
+                                                level="body-xs"
+                                                sx={{
+                                                    color: 'text.secondary',
+                                                    pl: 3,
+                                                }}
+                                            >
+                                                {result.excerpt}
+                                            </Typography>
+                                        )}
                                 </ListItemButton>
                             </ListItem>
                         ))}
@@ -192,11 +232,14 @@ export function DocsSearch({ results = mockResults, onSearch }: DocsSearchProps)
                         zIndex: 1000,
                     }}
                 >
-                    <Typography level="body-sm" sx={{ color: 'text.secondary' }}>
+                    <Typography
+                        level="body-sm"
+                        sx={{ color: 'text.secondary' }}
+                    >
                         No results found for "{query}"
                     </Typography>
                 </Box>
             )}
         </Box>
-    );
+    )
 }

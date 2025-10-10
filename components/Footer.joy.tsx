@@ -1,8 +1,14 @@
-'use client';
+'use client'
 
-import { Box, Typography, Divider, Chip } from '@/components/ui/joy';
-import Link from 'next/link';
-import { GitHub, Language, Storage, Twitter, LinkedIn } from '@mui/icons-material';
+import { Box, Typography, Divider, Chip } from '@/components/ui/joy'
+import Link from 'next/link'
+import {
+    GitHub,
+    Language,
+    Storage,
+    Twitter,
+    LinkedIn,
+} from '@mui/icons-material'
 
 const footerLinks = {
     product: [
@@ -29,16 +35,16 @@ const footerLinks = {
         { label: 'Cookie Policy', href: '/cookies' },
         { label: 'License', href: '/license' },
     ],
-};
+}
 
 const socialLinks = [
     { icon: GitHub, href: 'https://github.com', label: 'GitHub' },
     { icon: Twitter, href: 'https://twitter.com', label: 'Twitter' },
     { icon: LinkedIn, href: 'https://linkedin.com', label: 'LinkedIn' },
-];
+]
 
 export function Footer() {
-    const currentYear = new Date().getFullYear();
+    const currentYear = new Date().getFullYear()
 
     return (
         <Box
@@ -73,7 +79,14 @@ export function Footer() {
                 >
                     {/* Brand Column */}
                     <Box sx={{ gridColumn: { xs: '1', md: 'span 1' } }}>
-                        <Box sx={{ display: 'flex', alignItems: 'center', gap: 1.5, mb: 2 }}>
+                        <Box
+                            sx={{
+                                display: 'flex',
+                                alignItems: 'center',
+                                gap: 1.5,
+                                mb: 2,
+                            }}
+                        >
                             <Box
                                 sx={{
                                     width: 40,
@@ -99,8 +112,16 @@ export function Footer() {
                                 Deanmachines
                             </Typography>
                         </Box>
-                        <Typography level="body-sm" sx={{ color: 'text.secondary', mb: 3, lineHeight: 1.6 }}>
-                            Secure, enterprise-grade RAG with role-based access control and multi-agent orchestration.
+                        <Typography
+                            level="body-sm"
+                            sx={{
+                                color: 'text.secondary',
+                                mb: 3,
+                                lineHeight: 1.6,
+                            }}
+                        >
+                            Secure, enterprise-grade RAG with role-based access
+                            control and multi-agent orchestration.
                         </Typography>
                         <Box sx={{ display: 'flex', gap: 1 }}>
                             {socialLinks.map((social) => (
@@ -138,10 +159,19 @@ export function Footer() {
 
                     {/* Product Column */}
                     <Box>
-                        <Typography level="body-sm" sx={{ fontWeight: 700, mb: 2 }}>
+                        <Typography
+                            level="body-sm"
+                            sx={{ fontWeight: 700, mb: 2 }}
+                        >
                             Product
                         </Typography>
-                        <Box sx={{ display: 'flex', flexDirection: 'column', gap: 1.5 }}>
+                        <Box
+                            sx={{
+                                display: 'flex',
+                                flexDirection: 'column',
+                                gap: 1.5,
+                            }}
+                        >
                             {footerLinks.product.map((link) => (
                                 <Link key={link.href} href={link.href}>
                                     <Typography
@@ -164,10 +194,19 @@ export function Footer() {
 
                     {/* Company Column */}
                     <Box>
-                        <Typography level="body-sm" sx={{ fontWeight: 700, mb: 2 }}>
+                        <Typography
+                            level="body-sm"
+                            sx={{ fontWeight: 700, mb: 2 }}
+                        >
                             Company
                         </Typography>
-                        <Box sx={{ display: 'flex', flexDirection: 'column', gap: 1.5 }}>
+                        <Box
+                            sx={{
+                                display: 'flex',
+                                flexDirection: 'column',
+                                gap: 1.5,
+                            }}
+                        >
                             {footerLinks.company.map((link) => (
                                 <Link key={link.href} href={link.href}>
                                     <Typography
@@ -190,10 +229,19 @@ export function Footer() {
 
                     {/* Resources Column */}
                     <Box>
-                        <Typography level="body-sm" sx={{ fontWeight: 700, mb: 2 }}>
+                        <Typography
+                            level="body-sm"
+                            sx={{ fontWeight: 700, mb: 2 }}
+                        >
                             Resources
                         </Typography>
-                        <Box sx={{ display: 'flex', flexDirection: 'column', gap: 1.5 }}>
+                        <Box
+                            sx={{
+                                display: 'flex',
+                                flexDirection: 'column',
+                                gap: 1.5,
+                            }}
+                        >
                             {footerLinks.resources.map((link) => (
                                 <Link key={link.href} href={link.href}>
                                     <Typography
@@ -216,10 +264,19 @@ export function Footer() {
 
                     {/* Legal Column */}
                     <Box>
-                        <Typography level="body-sm" sx={{ fontWeight: 700, mb: 2 }}>
+                        <Typography
+                            level="body-sm"
+                            sx={{ fontWeight: 700, mb: 2 }}
+                        >
                             Legal
                         </Typography>
-                        <Box sx={{ display: 'flex', flexDirection: 'column', gap: 1.5 }}>
+                        <Box
+                            sx={{
+                                display: 'flex',
+                                flexDirection: 'column',
+                                gap: 1.5,
+                            }}
+                        >
                             {footerLinks.legal.map((link) => (
                                 <Link key={link.href} href={link.href}>
                                     <Typography
@@ -253,18 +310,28 @@ export function Footer() {
                         gap: 2,
                     }}
                 >
-                    <Typography level="body-sm" sx={{ color: 'text.secondary' }}>
+                    <Typography
+                        level="body-sm"
+                        sx={{ color: 'text.secondary' }}
+                    >
                         © {currentYear} Deanmachines. All rights reserved.
                     </Typography>
 
-                    <Box sx={{ display: 'flex', alignItems: 'center', gap: 2, flexWrap: 'wrap' }}>
+                    <Box
+                        sx={{
+                            display: 'flex',
+                            alignItems: 'center',
+                            gap: 2,
+                            flexWrap: 'wrap',
+                        }}
+                    >
                         <Chip
                             variant="soft"
                             color="success"
                             size="sm"
                             startDecorator={<Storage sx={{ fontSize: 16 }} />}
                         >
-                            Vector DB: Qdrant
+                            Vector DB: PostgreSQL + PgVector
                         </Chip>
                         <Chip
                             variant="soft"
@@ -278,5 +345,5 @@ export function Footer() {
                 </Box>
             </Box>
         </Box>
-    );
+    )
 }

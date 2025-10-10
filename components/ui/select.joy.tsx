@@ -1,9 +1,9 @@
 /**
  * Select Component - Joy UI Primitive
- * 
+ *
  * Production-ready select dropdown with full keyboard navigation,
  * ARIA support, and theme integration.
- * 
+ *
  * Features:
  * - Keyboard navigation (Arrow keys, Enter, Escape)
  * - aria-expanded and aria-selected support
@@ -59,10 +59,7 @@ export interface SelectProps<T = any> {
     /**
      * Callback fired when the value changes.
      */
-    onChange?: (
-        event: React.SyntheticEvent | null,
-        newValue: T | null
-    ) => void
+    onChange?: (event: React.SyntheticEvent | null, newValue: T | null) => void
 
     /**
      * If `true`, the select will allow multiple selections.
@@ -109,7 +106,7 @@ export interface SelectProps<T = any> {
 
 /**
  * Select component with full keyboard navigation and accessibility.
- * 
+ *
  * @example Basic usage
  * ```tsx
  * <Select placeholder="Choose an option">
@@ -118,17 +115,17 @@ export interface SelectProps<T = any> {
  *   <Option value="3">Option 3</Option>
  * </Select>
  * ```
- * 
+ *
  * @example Controlled
  * ```tsx
  * const [value, setValue] = React.useState('1')
- * 
+ *
  * <Select value={value} onChange={(e, newValue) => setValue(newValue)}>
  *   <Option value="1">Option 1</Option>
  *   <Option value="2">Option 2</Option>
  * </Select>
  * ```
- * 
+ *
  * @example With form control
  * ```tsx
  * <FormControl>

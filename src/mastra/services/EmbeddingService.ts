@@ -1,12 +1,10 @@
 import { Memory } from '@mastra/memory'
 import { embedMany } from 'ai'
 
-
 import { log } from '../config/logger'
 import { generateEmbeddings as pgGenerateEmbeddings } from '../config/pg-storage'
 import { google } from '@ai-sdk/google'
 import { googleAIEmbedding } from '../config/google'
-
 
 const MAX_RETRIES = 3
 

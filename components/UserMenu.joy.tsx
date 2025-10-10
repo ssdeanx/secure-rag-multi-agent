@@ -1,6 +1,6 @@
-"use client";
+'use client'
 
-import React from 'react';
+import React from 'react'
 import {
     MenuButton,
     Menu,
@@ -10,27 +10,34 @@ import {
     Typography,
     Box,
     Dropdown,
-} from '@/components/ui/joy';
-import { Logout } from '@mui/icons-material';
+} from '@/components/ui/joy'
+import { Logout } from '@mui/icons-material'
+import { useRouter } from 'next/navigation'
 
 interface UserMenuProps {
     user: {
-        name: string;
-        email: string;
-        role: string;
-        avatar?: string;
-    };
+        name: string
+        email: string
+        role: string
+        avatar?: string
+    }
 }
 
 export const UserMenu: React.FC<UserMenuProps> = ({ user }) => {
-    const handleLogout = () => {
-        // TODO: Implement logout logic (e.g., call an action or API)
-    };
+    const router = useRouter()
+
+    const handleLogout = async () => {
+        await fetch('/api/auth/logout', { method: 'POST' })
+        router.push('/login')
+        router.refresh()
+    }
 
     return (
         <Box>
             <Dropdown>
-                <MenuButton sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+                <MenuButton
+                    sx={{ display: 'flex', alignItems: 'center', gap: 1 }}
+                >
                     <Avatar src={user.avatar} alt={user.name} size="sm" />
                     <Typography level="body-sm">{user.name}</Typography>
                 </MenuButton>
@@ -38,13 +45,23 @@ export const UserMenu: React.FC<UserMenuProps> = ({ user }) => {
                 <Menu>
                     <MenuItem>
                         <ListItemDecorator>
-                            <Avatar src={user.avatar} alt={user.name} size="sm" />
+                            <Avatar
+                                src={user.avatar}
+                                alt={user.name}
+                                size="sm"
+                            />
                         </ListItemDecorator>
                         <Box>
-                            <Typography level="body-sm" sx={{ fontWeight: 600 }}>
+                            <Typography
+                                level="body-sm"
+                                sx={{ fontWeight: 600 }}
+                            >
                                 {user.name}
                             </Typography>
-                            <Typography level="body-xs" sx={{ color: 'text.secondary' }}>
+                            <Typography
+                                level="body-xs"
+                                sx={{ color: 'text.secondary' }}
+                            >
                                 {user.email}
                             </Typography>
                         </Box>
@@ -59,5 +76,5 @@ export const UserMenu: React.FC<UserMenuProps> = ({ user }) => {
                 </Menu>
             </Dropdown>
         </Box>
-    );
-};
+    )
+}

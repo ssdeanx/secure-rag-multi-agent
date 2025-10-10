@@ -1,8 +1,21 @@
 'use server'
 
+/**
+ * DEMO JWT GENERATION - FOR RBAC DEMONSTRATION ONLY
+ *
+ * This file generates demo JWTs for testing role-based access control.
+ * It is NOT used for actual user authentication.
+ *
+ * Real user authentication uses Supabase (see /lib/auth.ts)
+ *
+ * Used by:
+ * - /src/mastra/tools/jwt-auth.tool.ts (backend RBAC validation)
+ * - /app/protected/page.tsx (demo UI for testing RBAC)
+ */
+
 import { SignJWT } from 'jose'
 
-export async function generateDemoJWT(roleId: string) {
+export async function generateDemoJWTForRBAC(roleId: string) {
     const secret = new TextEncoder().encode(
         process.env.JWT_SECRET ?? 'dev-secret'
     )

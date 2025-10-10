@@ -16,7 +16,12 @@ import {
 } from 'lucide-react'
 import ReactMarkdown from 'react-markdown'
 import { Button } from '@/components/ui/shadnui/button'
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/shadnui/card'
+import {
+    Card,
+    CardContent,
+    CardHeader,
+    CardTitle,
+} from '@/components/ui/shadnui/card'
 import { Input } from '@/components/ui/shadnui/input'
 import { Avatar, AvatarFallback } from '@/components/ui/shadnui/avatar'
 import { Badge } from '@/components/ui/shadnui/badge'

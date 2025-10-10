@@ -1,4 +1,4 @@
- 'use client'
+'use client'
 
 import React, { useEffect, useState } from 'react'
 import { useTheme } from 'next-themes'
@@ -37,7 +37,9 @@ export function ThemeToggle() {
                 track: {
                     sx: {
                         boxShadow: 'sm',
-                        bgcolor: isDark ? 'primary.softBg' : 'background.level2',
+                        bgcolor: isDark
+                            ? 'primary.softBg'
+                            : 'background.level2',
                     },
                 },
                 thumb: {

@@ -21,7 +21,7 @@ export default function GlobalError({
                         justifyContent: 'center',
                         minHeight: '100vh',
                         bgcolor: 'background.body',
-                        py: { xs: 6, md: 8 }
+                        py: { xs: 6, md: 8 },
                     }}
                 >
                     <Box
@@ -32,7 +32,7 @@ export default function GlobalError({
                             textAlign: 'center',
                             display: 'flex',
                             flexDirection: 'column',
-                            gap: 3
+                            gap: 3,
                         }}
                     >
                         <Box
@@ -48,7 +48,7 @@ export default function GlobalError({
                                 mx: 'auto',
                                 position: 'relative',
                                 overflow: 'hidden',
-                                bgcolor: 'background.level1'
+                                bgcolor: 'background.level1',
                             }}
                         >
                             <Typography
@@ -57,31 +57,37 @@ export default function GlobalError({
                                     fontSize: '1.5rem',
                                     fontWeight: 800,
                                     color: 'danger.500',
-                                    letterSpacing: 1
+                                    letterSpacing: 1,
                                 }}
                             >
                                 ERR
                             </Typography>
                         </Box>
-                        <Typography level="h1" sx={{ fontSize: { xs: '1.5rem', md: '2rem' }, fontWeight: 800 }}>
+                        <Typography
+                            level="h1"
+                            sx={{
+                                fontSize: { xs: '1.5rem', md: '2rem' },
+                                fontWeight: 800,
+                            }}
+                        >
                             Unexpected Error
                         </Typography>
                         <Typography
                             level="body-lg"
                             sx={{
                                 color: 'text.secondary',
-                                lineHeight: 1.6
+                                lineHeight: 1.6,
                             }}
                         >
-                            An unexpected error occurred while rendering this page.
-                            The event has been recorded.
+                            An unexpected error occurred while rendering this
+                            page. The event has been recorded.
                         </Typography>
                         {error.digest !== undefined && error.digest !== '' && (
                             <Typography
                                 level="body-sm"
                                 sx={{
                                     color: 'text.tertiary',
-                                    fontSize: '0.75rem'
+                                    fontSize: '0.75rem',
                                 }}
                             >
                                 Ref: {error.digest}
@@ -94,10 +100,13 @@ export default function GlobalError({
                                 borderColor: 'divider',
                                 p: 2,
                                 textAlign: 'left',
-                                bgcolor: 'background.level1'
+                                bgcolor: 'background.level1',
                             }}
                         >
-                            <Typography level="body-sm" sx={{ fontWeight: 600, color: 'text.primary' }}>
+                            <Typography
+                                level="body-sm"
+                                sx={{ fontWeight: 600, color: 'text.primary' }}
+                            >
                                 Security Notice
                             </Typography>
                             <Typography
@@ -105,22 +114,30 @@ export default function GlobalError({
                                 sx={{
                                     color: 'text.secondary',
                                     mt: 0.5,
-                                    lineHeight: 1.4
+                                    lineHeight: 1.4,
                                 }}
                             >
-                                We intentionally withhold internal error details to
-                                protect system integrity.
+                                We intentionally withhold internal error details
+                                to protect system integrity.
                             </Typography>
                         </Box>
-                        <Box sx={{ display: 'flex', flexDirection: { xs: 'column', sm: 'row' }, gap: 2, justifyContent: 'center' }}>
-                            <Button onClick={() => reset()} variant="solid" color="primary">
+                        <Box
+                            sx={{
+                                display: 'flex',
+                                flexDirection: { xs: 'column', sm: 'row' },
+                                gap: 2,
+                                justifyContent: 'center',
+                            }}
+                        >
+                            <Button
+                                onClick={() => reset()}
+                                variant="solid"
+                                color="primary"
+                            >
                                 Retry
                             </Button>
                             <Link href="/" passHref>
-                                <Button
-                                    variant="outlined"
-                                    color="neutral"
-                                >
+                                <Button variant="outlined" color="neutral">
                                     Go Home
                                 </Button>
                             </Link>

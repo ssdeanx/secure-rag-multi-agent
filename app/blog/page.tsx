@@ -16,7 +16,8 @@ export default async function BlogIndex({
     const { posts, page, pageCount } = await getPaginatedPosts(safePage, 6)
 
     const cards = posts.map((p) => {
-        const authorName: string = (p.author && p.author.trim().length > 0) ? p.author : 'Unknown'
+        const authorName: string =
+            p.author && p.author.trim().length > 0 ? p.author : 'Unknown'
         const tags: string[] = Array.isArray(p.tags) ? p.tags : []
         return { ...p, authorName, tags }
     })
@@ -27,10 +28,12 @@ export default async function BlogIndex({
             sx={{
                 minHeight: '100vh',
                 bgcolor: 'background.body',
-                py: { xs: 6, md: 8 }
+                py: { xs: 6, md: 8 },
             }}
         >
-            <Box sx={{ maxWidth: 1200, mx: 'auto', px: { xs: 2, sm: 3, md: 4 } }}>
+            <Box
+                sx={{ maxWidth: 1200, mx: 'auto', px: { xs: 2, sm: 3, md: 4 } }}
+            >
                 <Box
                     component="header"
                     sx={{
@@ -38,10 +41,16 @@ export default async function BlogIndex({
                         textAlign: 'center',
                         display: 'flex',
                         flexDirection: 'column',
-                        gap: 2
+                        gap: 2,
                     }}
                 >
-                    <Typography level="h1" sx={{ fontSize: { xs: '2rem', md: '2.5rem' }, fontWeight: 800 }}>
+                    <Typography
+                        level="h1"
+                        sx={{
+                            fontSize: { xs: '2rem', md: '2.5rem' },
+                            fontWeight: 800,
+                        }}
+                    >
                         Blog
                     </Typography>
                     <Typography
@@ -50,10 +59,11 @@ export default async function BlogIndex({
                             color: 'text.secondary',
                             maxWidth: 600,
                             mx: 'auto',
-                            lineHeight: 1.6
+                            lineHeight: 1.6,
                         }}
                     >
-                        Updates, architecture insights, and governance best practices.
+                        Updates, architecture insights, and governance best
+                        practices.
                     </Typography>
                 </Box>
                 {posts.length === 0 ? (
@@ -62,7 +72,7 @@ export default async function BlogIndex({
                         sx={{
                             textAlign: 'center',
                             color: 'text.secondary',
-                            py: 8
+                            py: 8,
                         }}
                     >
                         No posts yet. Check back soon.
@@ -75,8 +85,8 @@ export default async function BlogIndex({
                             gridTemplateColumns: {
                                 xs: '1fr',
                                 sm: 'repeat(2, 1fr)',
-                                lg: 'repeat(3, 1fr)'
-                            }
+                                lg: 'repeat(3, 1fr)',
+                            },
                         }}
                     >
                         {cards.map((p) => (
@@ -104,10 +114,14 @@ export default async function BlogIndex({
                             alignItems: 'center',
                             gap: 1,
                             mt: 8,
-                            flexWrap: 'wrap'
+                            flexWrap: 'wrap',
                         }}
                     >
-                        <Link href={`/blog?page=${page - 1}`} aria-label="Previous page" passHref>
+                        <Link
+                            href={`/blog?page=${page - 1}`}
+                            aria-label="Previous page"
+                            passHref
+                        >
                             <Button
                                 component="a"
                                 variant="outlined"
@@ -118,19 +132,60 @@ export default async function BlogIndex({
                                 Previous
                             </Button>
                         </Link>
-                        <Box sx={{ display: 'flex', gap: 1, mx: 2, flexWrap: 'wrap' }}>
+                        <Box
+                            sx={{
+                                display: 'flex',
+                                gap: 1,
+                                mx: 2,
+                                flexWrap: 'wrap',
+                            }}
+                        >
                             {Array.from({ length: pageCount }, (_, i) => i + 1)
-                                .filter((p) => p === 1 || p === pageCount || (p >= page - 1 && p <= page + 1))
+                                .filter(
+                                    (p) =>
+                                        p === 1 ||
+                                        p === pageCount ||
+                                        (p >= page - 1 && p <= page + 1)
+                                )
                                 .map((p, idx, arr) => (
-                                    <Box key={p} sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+                                    <Box
+                                        key={p}
+                                        sx={{
+                                            display: 'flex',
+                                            alignItems: 'center',
+                                            gap: 1,
+                                        }}
+                                    >
                                         {idx > 0 && p - arr[idx - 1] > 1 && (
-                                            <Typography level="body-md" sx={{ px: 1, color: 'text.secondary' }}>…</Typography>
+                                            <Typography
+                                                level="body-md"
+                                                sx={{
+                                                    px: 1,
+                                                    color: 'text.secondary',
+                                                }}
+                                            >
+                                                …
+                                            </Typography>
                                         )}
-                                        <Link href={`/blog?page=${p}`} aria-current={p === page ? 'page' : undefined} passHref>
+                                        <Link
+                                            href={`/blog?page=${p}`}
+                                            aria-current={
+                                                p === page ? 'page' : undefined
+                                            }
+                                            passHref
+                                        >
                                             <Button
                                                 component="a"
-                                                variant={p === page ? 'solid' : 'outlined'}
-                                                color={p === page ? 'primary' : 'neutral'}
+                                                variant={
+                                                    p === page
+                                                        ? 'solid'
+                                                        : 'outlined'
+                                                }
+                                                color={
+                                                    p === page
+                                                        ? 'primary'
+                                                        : 'neutral'
+                                                }
                                                 sx={{ minWidth: 40, px: 2 }}
                                             >
                                                 {p}
@@ -139,7 +194,11 @@ export default async function BlogIndex({
                                     </Box>
                                 ))}
                         </Box>
-                        <Link href={`/blog?page=${page + 1}`} aria-label="Next page" passHref>
+                        <Link
+                            href={`/blog?page=${page + 1}`}
+                            aria-label="Next page"
+                            passHref
+                        >
                             <Button
                                 component="a"
                                 variant="outlined"

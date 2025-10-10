@@ -1,33 +1,34 @@
 import {
-  Badge,
-  Button,
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-  Alert,
-  AlertDescription,
-  AlertTitle,
-  Tabs,
-  TabsContent,
-  TabsList,
-  TabsTrigger,
-  Mermaid,
-  Shield,
-  Users,
-  Lock,
-  Eye,
-  EyeOff,
-  AlertTriangle,
-  CheckCircle,
-  ArrowRight,
-  FileText,
-  Database,
-  Settings,
-  Key,
+    Badge,
+    Button,
+    Card,
+    CardContent,
+    CardDescription,
+    CardHeader,
+    CardTitle,
+    Alert,
+    AlertDescription,
+    AlertTitle,
+    Tabs,
+    TabsContent,
+    TabsList,
+    TabsTrigger,
+    Mermaid,
+    Shield,
+    Users,
+    Lock,
+    Eye,
+    EyeOff,
+    AlertTriangle,
+    CheckCircle,
+    ArrowRight,
+    FileText,
+    Database,
+    Settings,
+    Key,
+    Typography,
+    Box,
 } from '@/components/docs/mdx-bridge.joy'
-
 
 # Security Model
 
@@ -50,199 +51,359 @@ Roles are defined in `src/mastra/config/role-hierarchy.ts`. Higher-level roles i
 
 ### Role Structure
 
-<div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mb-6">
-  <Card>
-    <CardHeader className="pb-3">
-      <CardTitle className="text-lg flex items-center">
-        <Users className="h-5 w-5 mr-2 text-green-500" />
+<Box sx={{ display: 'grid', gridTemplateColumns: { xs: '1fr', md: 'repeat(2, 1fr)', lg: 'repeat(3, 1fr)' }, gap: 2, mb: 3 }}>
+  <Card variant="outlined">
+    <CardHeader sx={{ pb: 1.5 }}>
+      <CardTitle sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+        <Users sx={{ fontSize: 20, color: 'success.main' }} />
         Public (Level 10)
       </CardTitle>
       <CardDescription>Base access for unauthenticated users</CardDescription>
     </CardHeader>
     <CardContent>
-      <ul className="space-y-1 text-sm">
+      <Box component="ul" sx={{ m: 0, pl: 2, '& li': { mb: 0.5 } }}>
         <li>• No inheritance</li>
         <li>• Basic public documents</li>
         <li>• No sensitive content</li>
-      </ul>
+      </Box>
     </CardContent>
   </Card>
 
-<Card>
-    <CardHeader className="pb-3">
-        <CardTitle className="text-lg flex items-center">
-            <Users className="h-5 w-5 mr-2 text-blue-500" />
+<Card variant="outlined">
+    <CardHeader sx={{ pb: 1.5 }}>
+        <CardTitle sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+            <Users sx={{ fontSize: 20, color: 'primary.main' }} />
             Employee (Level 40)
         </CardTitle>
         <CardDescription>Inherits public access</CardDescription>
     </CardHeader>
     <CardContent>
-        <ul className="space-y-1 text-sm">
+        <Box component="ul" sx={{ m: 0, pl: 2, '& li': { mb: 0.5 } }}>
             <li>• General company documents</li>
             <li>• Internal policies</li>
             <li>• Department overviews</li>
-        </ul>
+        </Box>
     </CardContent>
 </Card>
 
-<Card>
-    <CardHeader className="pb-3">
-        <CardTitle className="text-lg flex items-center">
-            <Eye className="h-5 w-5 mr-2 text-orange-500" />
+<Card variant="outlined">
+    <CardHeader sx={{ pb: 1.5 }}>
+        <CardTitle sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+            <Eye sx={{ fontSize: 20, color: 'warning.main' }} />
             Department Viewer (Level 60)
         </CardTitle>
         <CardDescription>Read access to department content</CardDescription>
     </CardHeader>
     <CardContent>
-        <ul className="space-y-1 text-sm">
+        <Box component="ul" sx={{ m: 0, pl: 2, '& li': { mb: 0.5 } }}>
             <li>• Department-specific content</li>
             <li>• Internal documents</li>
             <li>• Read-only access</li>
-        </ul>
+        </Box>
     </CardContent>
 </Card>
 
-<Card>
-    <CardHeader className="pb-3">
-        <CardTitle className="text-lg flex items-center">
-            <Settings className="h-5 w-5 mr-2 text-purple-500" />
+<Card variant="outlined">
+    <CardHeader sx={{ pb: 1.5 }}>
+        <CardTitle sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+            <Settings sx={{ fontSize: 20, color: 'secondary.main' }} />
             Department Admin (Level 80)
         </CardTitle>
         <CardDescription>Full department access</CardDescription>
     </CardHeader>
     <CardContent>
-        <ul className="space-y-1 text-sm">
+        <Box component="ul" sx={{ m: 0, pl: 2, '& li': { mb: 0.5 } }}>
             <li>• Full department access</li>
             <li>• Confidential documents</li>
             <li>• Administrative controls</li>
-        </ul>
+        </Box>
     </CardContent>
 </Card>
 
-  <Card>
-    <CardHeader className="pb-3">
-      <CardTitle className="text-lg flex items-center">
-        <Key className="h-5 w-5 mr-2 text-red-500" />
+  <Card variant="outlined">
+    <CardHeader sx={{ pb: 1.5 }}>
+      <CardTitle sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+        <Key sx={{ fontSize: 20, color: 'danger.main' }} />
         Super Admin (Level 100)
       </CardTitle>
       <CardDescription>Complete system access</CardDescription>
     </CardHeader>
     <CardContent>
-      <ul className="space-y-1 text-sm">
+      <Box component="ul" sx={{ m: 0, pl: 2, '& li': { mb: 0.5 } }}>
         <li>• All roles and permissions</li>
         <li>• System administration</li>
         <li>• Security overrides</li>
-      </ul>
+      </Box>
     </CardContent>
   </Card>
-</div>
+</Box>
 
 ## Role Hierarchy Visualization
 
-<div className="bg-slate-50 dark:bg-slate-900 p-6 rounded-lg border mb-8">
+<Box sx={{ bgcolor: 'background.surface', p: 3, borderRadius: 1, mb: 3 }}>
   <Mermaid chart={`flowchart TD
     A[Super Admin<br/>Level 100] --> B[Department Admin<br/>Level 80]
     A --> C[Global Admin<br/>Level 90]
-
     B --> D[Department Viewer<br/>Level 60]
     C --> D
-
     D --> E[Employee<br/>Level 40]
     E --> F[Public<br/>Level 10]
-
     G[Specific Roles] --> D
     G --> E
-
     H[hr.viewer<br/>Level 60] --> G
     I[finance.viewer<br/>Level 60] --> G
     J[hr.admin<br/>Level 80] --> B
     K[it.admin<br/>Level 80] --> B
-
     style A fill:#ffebee
     style B fill:#fff3e0
     style D fill:#e8f5e8
     style F fill:#f3e5f5
     style G fill:#e3f2fd`} />
 
-  <div className="mt-4 text-sm text-muted-foreground">
+  <Typography level="body-sm" sx={{ mt: 2, color: 'text.tertiary' }}>
     <strong>Legend:</strong> Higher levels inherit permissions from lower levels. Arrows show inheritance direction.
-  </div>
-</div>
+  </Typography>
+</Box>
 
 ### Specific Role Examples
 
-<div className="overflow-x-auto mb-6">
-    <table className="w-full border-collapse border border-border">
+<Box sx={{ overflow: 'auto', mb: 3 }}>
+    <table
+        style={{
+            width: '100%',
+            borderCollapse: 'collapse',
+            border: '1px solid var(--joy-palette-divider)',
+        }}
+    >
         <thead>
-            <tr className="bg-muted">
-                <th className="border border-border p-3 text-left">Role</th>
-                <th className="border border-border p-3 text-left">Level</th>
-                <th className="border border-border p-3 text-left">
+            <tr
+                style={{
+                    backgroundColor: 'var(--joy-palette-background-surface)',
+                }}
+            >
+                <th
+                    style={{
+                        border: '1px solid var(--joy-palette-divider)',
+                        padding: '12px',
+                        textAlign: 'left',
+                    }}
+                >
+                    Role
+                </th>
+                <th
+                    style={{
+                        border: '1px solid var(--joy-palette-divider)',
+                        padding: '12px',
+                        textAlign: 'left',
+                    }}
+                >
+                    Level
+                </th>
+                <th
+                    style={{
+                        border: '1px solid var(--joy-palette-divider)',
+                        padding: '12px',
+                        textAlign: 'left',
+                    }}
+                >
                     Inherits From
                 </th>
-                <th className="border border-border p-3 text-left">
+                <th
+                    style={{
+                        border: '1px solid var(--joy-palette-divider)',
+                        padding: '12px',
+                        textAlign: 'left',
+                    }}
+                >
                     Access Scope
                 </th>
             </tr>
         </thead>
         <tbody>
             <tr>
-                <td className="border border-border p-3 font-medium">
+                <td
+                    style={{
+                        border: '1px solid var(--joy-palette-divider)',
+                        padding: '12px',
+                        fontWeight: 'bold',
+                    }}
+                >
                     hr.viewer
                 </td>
-                <td className="border border-border p-3">60</td>
-                <td className="border border-border p-3">employee, public</td>
-                <td className="border border-border p-3">HR internal docs</td>
+                <td
+                    style={{
+                        border: '1px solid var(--joy-palette-divider)',
+                        padding: '12px',
+                    }}
+                >
+                    60
+                </td>
+                <td
+                    style={{
+                        border: '1px solid var(--joy-palette-divider)',
+                        padding: '12px',
+                    }}
+                >
+                    employee, public
+                </td>
+                <td
+                    style={{
+                        border: '1px solid var(--joy-palette-divider)',
+                        padding: '12px',
+                    }}
+                >
+                    HR internal docs
+                </td>
             </tr>
             <tr>
-                <td className="border border-border p-3 font-medium">
+                <td
+                    style={{
+                        border: '1px solid var(--joy-palette-divider)',
+                        padding: '12px',
+                        fontWeight: 'bold',
+                    }}
+                >
                     finance.viewer
                 </td>
-                <td className="border border-border p-3">60</td>
-                <td className="border border-border p-3">employee, public</td>
-                <td className="border border-border p-3">
+                <td
+                    style={{
+                        border: '1px solid var(--joy-palette-divider)',
+                        padding: '12px',
+                    }}
+                >
+                    60
+                </td>
+                <td
+                    style={{
+                        border: '1px solid var(--joy-palette-divider)',
+                        padding: '12px',
+                    }}
+                >
+                    employee, public
+                </td>
+                <td
+                    style={{
+                        border: '1px solid var(--joy-palette-divider)',
+                        padding: '12px',
+                    }}
+                >
                     Finance internal docs
                 </td>
             </tr>
             <tr>
-                <td className="border border-border p-3 font-medium">
+                <td
+                    style={{
+                        border: '1px solid var(--joy-palette-divider)',
+                        padding: '12px',
+                        fontWeight: 'bold',
+                    }}
+                >
                     engineering.viewer
                 </td>
-                <td className="border border-border p-3">60</td>
-                <td className="border border-border p-3">employee, public</td>
-                <td className="border border-border p-3">
+                <td
+                    style={{
+                        border: '1px solid var(--joy-palette-divider)',
+                        padding: '12px',
+                    }}
+                >
+                    60
+                </td>
+                <td
+                    style={{
+                        border: '1px solid var(--joy-palette-divider)',
+                        padding: '12px',
+                    }}
+                >
+                    employee, public
+                </td>
+                <td
+                    style={{
+                        border: '1px solid var(--joy-palette-divider)',
+                        padding: '12px',
+                    }}
+                >
                     Engineering internal docs
                 </td>
             </tr>
             <tr>
-                <td className="border border-border p-3 font-medium">
+                <td
+                    style={{
+                        border: '1px solid var(--joy-palette-divider)',
+                        padding: '12px',
+                        fontWeight: 'bold',
+                    }}
+                >
                     hr.admin
                 </td>
-                <td className="border border-border p-3">80</td>
-                <td className="border border-border p-3">
+                <td
+                    style={{
+                        border: '1px solid var(--joy-palette-divider)',
+                        padding: '12px',
+                    }}
+                >
+                    80
+                </td>
+                <td
+                    style={{
+                        border: '1px solid var(--joy-palette-divider)',
+                        padding: '12px',
+                    }}
+                >
                     hr.viewer, employee, public
                 </td>
-                <td className="border border-border p-3">
+                <td
+                    style={{
+                        border: '1px solid var(--joy-palette-divider)',
+                        padding: '12px',
+                    }}
+                >
                     All HR docs including confidential
                 </td>
             </tr>
             <tr>
-                <td className="border border-border p-3 font-medium">admin</td>
-                <td className="border border-border p-3">100</td>
-                <td className="border border-border p-3">All roles</td>
-                <td className="border border-border p-3">
+                <td
+                    style={{
+                        border: '1px solid var(--joy-palette-divider)',
+                        padding: '12px',
+                        fontWeight: 'bold',
+                    }}
+                >
+                    admin
+                </td>
+                <td
+                    style={{
+                        border: '1px solid var(--joy-palette-divider)',
+                        padding: '12px',
+                    }}
+                >
+                    100
+                </td>
+                <td
+                    style={{
+                        border: '1px solid var(--joy-palette-divider)',
+                        padding: '12px',
+                    }}
+                >
+                    All roles
+                </td>
+                <td
+                    style={{
+                        border: '1px solid var(--joy-palette-divider)',
+                        padding: '12px',
+                    }}
+                >
                     Complete system access
                 </td>
             </tr>
         </tbody>
     </table>
-</div>
+</Box>
 
 ## Document Classifications
 
 Documents are classified during indexing with metadata enforced in storage and retrieval.
 
-<Tabs defaultValue="classifications" className="mb-8">
+<Tabs defaultValue="classifications">
   <TabsList>
     <TabsTrigger value="classifications">Classifications</TabsTrigger>
     <TabsTrigger value="examples">Sample Documents</TabsTrigger>
@@ -250,161 +411,147 @@ Documents are classified during indexing with metadata enforced in storage and r
   </TabsList>
 
   <TabsContent value="classifications">
-    <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-      <Card>
-        <CardHeader className="pb-3">
-          <CardTitle className="text-lg flex items-center">
-            <Eye className="h-5 w-5 mr-2 text-green-500" />
+    <Box sx={{ display: 'grid', gridTemplateColumns: { xs: '1fr', md: 'repeat(3, 1fr)' }, gap: 2 }}>
+      <Card variant="outlined">
+        <CardHeader sx={{ pb: 1.5 }}>
+          <CardTitle sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+            <Eye sx={{ fontSize: 20, color: 'success.main' }} />
             Public
           </CardTitle>
           <CardDescription>Accessible by all roles</CardDescription>
         </CardHeader>
         <CardContent>
-          <ul className="space-y-1 text-sm">
+          <Box component="ul" sx={{ m: 0, pl: 2, '& li': { mb: 0.5 } }}>
             <li>• General company information</li>
             <li>• Public policies</li>
             <li>• Marketing materials</li>
             <li>• No sensitive data</li>
-          </ul>
+          </Box>
         </CardContent>
       </Card>
-
-      <Card>
-        <CardHeader className="pb-3">
-          <CardTitle className="text-lg flex items-center">
-            <Lock className="h-5 w-5 mr-2 text-orange-500" />
+      <Card variant="outlined">
+        <CardHeader sx={{ pb: 1.5 }}>
+          <CardTitle sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+            <Lock sx={{ fontSize: 20, color: 'warning.main' }} />
             Internal
           </CardTitle>
           <CardDescription>Department-specific content</CardDescription>
         </CardHeader>
         <CardContent>
-          <ul className="space-y-1 text-sm">
+          <Box component="ul" sx={{ m: 0, pl: 2, '& li': { mb: 0.5 } }}>
             <li>• Department policies</li>
             <li>• Internal procedures</li>
             <li>• Employee handbooks</li>
             <li>• Limited distribution</li>
-          </ul>
+          </Box>
         </CardContent>
       </Card>
-
-      <Card>
-        <CardHeader className="pb-3">
-          <CardTitle className="text-lg flex items-center">
-            <EyeOff className="h-5 w-5 mr-2 text-red-500" />
+      <Card variant="outlined">
+        <CardHeader sx={{ pb: 1.5 }}>
+          <CardTitle sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+            <EyeOff sx={{ fontSize: 20, color: 'danger.main' }} />
             Confidential
           </CardTitle>
           <CardDescription>Highly sensitive information</CardDescription>
         </CardHeader>
         <CardContent>
-          <ul className="space-y-1 text-sm">
+          <Box component="ul" sx={{ m: 0, pl: 2, '& li': { mb: 0.5 } }}>
             <li>• Executive compensation</li>
             <li>• Legal documents</li>
             <li>• Financial data</li>
             <li>• Need-to-know basis only</li>
-          </ul>
+          </Box>
         </CardContent>
       </Card>
-    </div>
+    </Box>
 
   </TabsContent>
 
   <TabsContent value="examples">
-    <div className="space-y-4">
-      <Card>
+    <Box sx={{ mb: 2 }}>
+      <Card variant="outlined" sx={{ mb: 2 }}>
         <CardHeader>
-          <CardTitle className="text-lg">Finance Policy Manual</CardTitle>
+          <CardTitle>Finance Policy Manual</CardTitle>
           <CardDescription>finance-policy.md</CardDescription>
         </CardHeader>
         <CardContent>
-          <div className="flex items-center space-x-4 mb-3">
-            <Badge variant="secondary">Internal</Badge>
-            <Badge variant="outline">Finance</Badge>
-            <Badge variant="outline">Policy</Badge>
-          </div>
-          <div className="text-sm space-y-2">
-            <div><strong>Allowed Roles:</strong> finance.viewer, finance.admin, employee</div>
-            <div><strong>Classification:</strong> internal</div>
-            <div><strong>Tags:</strong> finance, policy, reimbursement</div>
-          </div>
+          <Box sx={{ display: 'flex', gap: 1, mb: 1 }}>
+            <Badge variant="soft" color="neutral">Internal</Badge>
+            <Badge variant="outlined">Finance</Badge>
+            <Badge variant="outlined">Policy</Badge>
+          </Box>
+          <Typography level="body-sm" sx={{ mb: 0.5 }}><strong>Allowed Roles:</strong> finance.viewer, finance.admin, employee</Typography>
+          <Typography level="body-sm" sx={{ mb: 0.5 }}><strong>Classification:</strong> internal</Typography>
+          <Typography level="body-sm"><strong>Tags:</strong> finance, policy, reimbursement</Typography>
         </CardContent>
       </Card>
-
-      <Card>
+      <Card variant="outlined" sx={{ mb: 2 }}>
         <CardHeader>
-          <CardTitle className="text-lg">Engineering Handbook</CardTitle>
+          <CardTitle>Engineering Handbook</CardTitle>
           <CardDescription>engineering-handbook.md</CardDescription>
         </CardHeader>
         <CardContent>
-          <div className="flex items-center space-x-4 mb-3">
-            <Badge variant="secondary">Internal</Badge>
-            <Badge variant="outline">Engineering</Badge>
-            <Badge variant="outline">Development</Badge>
-          </div>
-          <div className="text-sm space-y-2">
-            <div><strong>Allowed Roles:</strong> engineering.viewer, engineering.admin, employee</div>
-            <div><strong>Classification:</strong> internal</div>
-            <div><strong>Tags:</strong> engineering, development, practices</div>
-          </div>
+          <Box sx={{ display: 'flex', gap: 1, mb: 1 }}>
+            <Badge variant="soft" color="neutral">Internal</Badge>
+            <Badge variant="outlined">Engineering</Badge>
+            <Badge variant="outlined">Development</Badge>
+          </Box>
+          <Typography level="body-sm" sx={{ mb: 0.5 }}><strong>Allowed Roles:</strong> engineering.viewer, engineering.admin, employee</Typography>
+          <Typography level="body-sm" sx={{ mb: 0.5 }}><strong>Classification:</strong> internal</Typography>
+          <Typography level="body-sm"><strong>Tags:</strong> engineering, development, practices</Typography>
         </CardContent>
       </Card>
-
-      <Card>
+      <Card variant="outlined">
         <CardHeader>
-          <CardTitle className="text-lg">HR Confidential</CardTitle>
+          <CardTitle>HR Confidential</CardTitle>
           <CardDescription>hr-confidential.md</CardDescription>
         </CardHeader>
         <CardContent>
-          <div className="flex items-center space-x-4 mb-3">
-            <Badge variant="destructive">Confidential</Badge>
-            <Badge variant="outline">HR</Badge>
-            <Badge variant="outline">Executive</Badge>
-          </div>
-          <div className="text-sm space-y-2">
-            <div><strong>Allowed Roles:</strong> hr.admin only</div>
-            <div><strong>Classification:</strong> confidential</div>
-            <div><strong>Tags:</strong> hr, executive, compensation</div>
-          </div>
+          <Box sx={{ display: 'flex', gap: 1, mb: 1 }}>
+            <Badge variant="solid" color="danger">Confidential</Badge>
+            <Badge variant="outlined">HR</Badge>
+            <Badge variant="outlined">Executive</Badge>
+          </Box>
+          <Typography level="body-sm" sx={{ mb: 0.5 }}><strong>Allowed Roles:</strong> hr.admin only</Typography>
+          <Typography level="body-sm" sx={{ mb: 0.5 }}><strong>Classification:</strong> confidential</Typography>
+          <Typography level="body-sm"><strong>Tags:</strong> hr, executive, compensation</Typography>
         </CardContent>
       </Card>
-    </div>
+    </Box>
 
   </TabsContent>
 
   <TabsContent value="tags">
-    <Card>
+    <Card variant="outlined">
       <CardHeader>
         <CardTitle>Security Tag System</CardTitle>
         <CardDescription>How tags control document access</CardDescription>
       </CardHeader>
       <CardContent>
-        <div className="space-y-4">
-          <div>
-            <h4 className="font-semibold mb-2">Tag Generation</h4>
-            <p className="text-sm text-muted-foreground mb-3">
-              Each document chunk stores <code>securityTags: string[]</code> derived from content analysis and metadata.
-            </p>
-            <div className="bg-muted p-3 rounded text-sm">
-              <strong>Example:</strong> finance-policy.md → <code>['finance', 'policy', 'reimbursement']</code>
-            </div>
-          </div>
-
-          <div>
-            <h4 className="font-semibold mb-2">Access Filtering</h4>
-            <p className="text-sm text-muted-foreground mb-3">
-              User roles determine <code>allowTags: string[]</code> for filtering accessible documents.
-            </p>
-            <div className="bg-muted p-3 rounded text-sm">
-              <strong>Example:</strong> finance.viewer → <code>allowTags: ['finance']</code>
-            </div>
-          </div>
-
-          <div>
-            <h4 className="font-semibold mb-2">Query Filtering</h4>
-            <p className="text-sm text-muted-foreground">
-              Retrieval queries filter by classification level AND matching security tags.
-            </p>
-          </div>
-        </div>
+        <Box sx={{ mb: 2 }}>
+          <Typography sx={{ fontWeight: 'bold', mb: 1 }}>Tag Generation</Typography>
+          <Typography level="body-sm" sx={{ color: 'text.tertiary', mb: 1 }}>
+            Each document chunk stores <Typography component="code" sx={{ bgcolor: 'background.surface', px: 0.5 }}>securityTags: string[]</Typography> derived from content analysis and metadata.
+          </Typography>
+          <Box sx={{ bgcolor: 'background.surface', p: 1, borderRadius: 0.5, fontSize: '0.875rem' }}>
+            <strong>Example:</strong> finance-policy.md → <Typography component="code">['finance', 'policy', 'reimbursement']</Typography>
+          </Box>
+        </Box>
+        <Box sx={{ mb: 2 }}>
+          <Typography sx={{ fontWeight: 'bold', mb: 1 }}>Access Filtering</Typography>
+          <Typography level="body-sm" sx={{ color: 'text.tertiary', mb: 1 }}>
+            User roles determine <Typography component="code" sx={{ bgcolor: 'background.surface', px: 0.5 }}>allowTags: string[]</Typography> for filtering accessible documents.
+          </Typography>
+          <Box sx={{ bgcolor: 'background.surface', p: 1, borderRadius: 0.5, fontSize: '0.875rem' }}>
+            <strong>Example:</strong> finance.viewer → <Typography component="code">allowTags: ['finance']</Typography>
+          </Box>
+        </Box>
+        <Box>
+          <Typography sx={{ fontWeight: 'bold', mb: 1 }}>Query Filtering</Typography>
+          <Typography level="body-sm" sx={{ color: 'text.tertiary' }}>
+            Retrieval queries filter by classification level AND matching security tags.
+          </Typography>
+        </Box>
       </CardContent>
     </Card>
 
@@ -415,7 +562,7 @@ Documents are classified during indexing with metadata enforced in storage and r
 
 Security is enforced end-to-end via the Mastra query workflow:
 
-<div className="bg-slate-50 dark:bg-slate-900 p-6 rounded-lg border mb-8">
+<Box sx={{ bgcolor: 'background.surface', p: 3, borderRadius: 1, mb: 3 }}>
   <Mermaid chart={`flowchart TD
     A[User Query + JWT] --> B[JWT Validation]
     B --> C{Valid Token?}
@@ -437,240 +584,279 @@ Security is enforced end-to-end via the Mastra query workflow:
     style M fill:#fff3e0
     style N fill:#e8f5e8`} />
 
-  <div className="mt-4 text-sm text-muted-foreground">
+  <Typography level="body-sm" sx={{ mt: 2, color: 'text.tertiary' }}>
     <strong>Security Flow:</strong> Every step validates permissions before proceeding to the next stage.
-  </div>
-</div>
+  </Typography>
+</Box>
 
-<div className="space-y-4 mb-8">
-  <div className="flex items-center space-x-4">
-    <div className="flex-shrink-0 w-8 h-8 bg-primary rounded-full flex items-center justify-center text-white font-bold">1</div>
-    <Card className="flex-1">
-      <CardHeader className="pb-3">
-        <CardTitle className="text-lg">Authentication Step</CardTitle>
+<Box sx={{ mb: 3 }}>
+  <Box sx={{ display: 'flex', alignItems: 'flex-start', gap: 2, mb: 2 }}>
+    <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center', width: 32, height: 32, borderRadius: '50%', bgcolor: 'primary.main', color: 'white', fontWeight: 'bold', flexShrink: 0 }}>1</Box>
+    <Card variant="outlined" sx={{ flex: 1 }}>
+      <CardHeader sx={{ pb: 1.5 }}>
+        <CardTitle>Authentication Step</CardTitle>
         <CardDescription>JWT validation and access filter generation</CardDescription>
       </CardHeader>
       <CardContent>
-        <ul className="space-y-1 text-sm">
+        <Box component="ul" sx={{ m: 0, pl: 2, '& li': { mb: 0.5 } }}>
           <li>• Validate JWT token via AuthenticationService</li>
           <li>• Extract user role from token claims</li>
           <li>• Generate accessFilter with maxClassification and allowTags</li>
           <li>• Example: finance.viewer → maxClassification: 'internal', allowTags: ['finance']</li>
-        </ul>
+        </Box>
       </CardContent>
     </Card>
-  </div>
+  </Box>
 
-<div className="flex items-center space-x-4">
-    <div className="flex-shrink-0 w-8 h-8 bg-primary rounded-full flex items-center justify-center text-white font-bold">
+<Box sx={{ display: 'flex', alignItems: 'flex-start', gap: 2, mb: 2 }}>
+    <Box
+        sx={{
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            width: 32,
+            height: 32,
+            borderRadius: '50%',
+            bgcolor: 'primary.main',
+            color: 'white',
+            fontWeight: 'bold',
+            flexShrink: 0,
+        }}
+    >
         2
-    </div>
-    <Card className="flex-1">
-        <CardHeader className="pb-3">
-            <CardTitle className="text-lg">Retrieval Step</CardTitle>
+    </Box>
+    <Card variant="outlined" sx={{ flex: 1 }}>
+        <CardHeader sx={{ pb: 1.5 }}>
+            <CardTitle>Retrieval Step</CardTitle>
             <CardDescription>
                 Filtered vector search with security constraints
             </CardDescription>
         </CardHeader>
         <CardContent>
-            <ul className="space-y-1 text-sm">
+            <Box component="ul" sx={{ m: 0, pl: 2, '& li': { mb: 0.5 } }}>
                 <li>• Query Qdrant with accessFilter applied</li>
                 <li>• Filter by classification ≤ maxClassification</li>
                 <li>• Match security tags with allowTags</li>
                 <li>• Return only authorized document chunks</li>
-            </ul>
+            </Box>
         </CardContent>
     </Card>
-</div>
+</Box>
 
-<div className="flex items-center space-x-4">
-    <div className="flex-shrink-0 w-8 h-8 bg-primary rounded-full flex items-center justify-center text-white font-bold">
+<Box sx={{ display: 'flex', alignItems: 'flex-start', gap: 2, mb: 2 }}>
+    <Box
+        sx={{
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            width: 32,
+            height: 32,
+            borderRadius: '50%',
+            bgcolor: 'primary.main',
+            color: 'white',
+            fontWeight: 'bold',
+            flexShrink: 0,
+        }}
+    >
         3
-    </div>
-    <Card className="flex-1">
-        <CardHeader className="pb-3">
-            <CardTitle className="text-lg">Processing Steps</CardTitle>
+    </Box>
+    <Card variant="outlined" sx={{ flex: 1 }}>
+        <CardHeader sx={{ pb: 1.5 }}>
+            <CardTitle>Processing Steps</CardTitle>
             <CardDescription>
                 Reranking and answer generation with authorized content
             </CardDescription>
         </CardHeader>
         <CardContent>
-            <ul className="space-y-1 text-sm">
+            <Box component="ul" sx={{ m: 0, pl: 2, '& li': { mb: 0.5 } }}>
                 <li>• Rerank agent processes only authorized contexts</li>
                 <li>
                     • Answer agent generates responses from filtered content
                 </li>
                 <li>• Citations limited to accessible documents</li>
                 <li>• No information leakage from unauthorized sources</li>
-            </ul>
+            </Box>
         </CardContent>
     </Card>
-</div>
+</Box>
 
-  <div className="flex items-center space-x-4">
-    <div className="flex-shrink-0 w-8 h-8 bg-primary rounded-full flex items-center justify-center text-white font-bold">4</div>
-    <Card className="flex-1">
-      <CardHeader className="pb-3">
-        <CardTitle className="text-lg">Verification Step</CardTitle>
+  <Box sx={{ display: 'flex', alignItems: 'flex-start', gap: 2 }}>
+    <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center', width: 32, height: 32, borderRadius: '50%', bgcolor: 'primary.main', color: 'white', fontWeight: 'bold', flexShrink: 0 }}>4</Box>
+    <Card variant="outlined" sx={{ flex: 1 }}>
+      <CardHeader sx={{ pb: 1.5 }}>
+        <CardTitle>Verification Step</CardTitle>
         <CardDescription>Final compliance check</CardDescription>
       </CardHeader>
       <CardContent>
-        <ul className="space-y-1 text-sm">
+        <Box component="ul" sx={{ m: 0, pl: 2, '& li': { mb: 0.5 } }}>
           <li>• Verifier agent checks answer for compliance</li>
           <li>• Validates no unauthorized information leakage</li>
           <li>• Ensures citations match accessible documents</li>
           <li>• Fails workflow if security violation detected</li>
-        </ul>
+        </Box>
       </CardContent>
     </Card>
-  </div>
-</div>
+  </Box>
+</Box>
 
 ## Additional Security Features
 
-<div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
-  <Card>
+<Box sx={{ display: 'grid', gridTemplateColumns: { xs: '1fr', md: 'repeat(2, 1fr)' }, gap: 2, mb: 3 }}>
+  <Card variant="outlined">
     <CardHeader>
-      <CardTitle className="flex items-center">
-        <Database className="h-5 w-5 mr-2" />
+      <CardTitle sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+        <Database sx={{ fontSize: 20 }} />
         Tenant Isolation
       </CardTitle>
     </CardHeader>
     <CardContent>
-      <p className="text-sm text-muted-foreground">
+      <Typography level="body-sm">
         All documents are scoped to a specific tenant (configurable in .env as TENANT). This ensures complete data isolation between different organizations or environments.
-      </p>
+      </Typography>
     </CardContent>
   </Card>
 
-<Card>
+<Card variant="outlined">
     <CardHeader>
-        <CardTitle className="flex items-center">
-            <FileText className="h-5 w-5 mr-2" />
+        <CardTitle sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+            <FileText sx={{ fontSize: 20 }} />
             Audit Logging
         </CardTitle>
     </CardHeader>
     <CardContent>
-        <p className="text-sm text-muted-foreground">
+        <Typography level="body-sm">
             All workflow steps are logged to mastra.log and workflow.log. This
             provides complete audit trails for compliance, monitoring, and
             forensic analysis.
-        </p>
+        </Typography>
     </CardContent>
 </Card>
 
-<Card>
+<Card variant="outlined">
     <CardHeader>
-        <CardTitle className="flex items-center">
-            <Shield className="h-5 w-5 mr-2" />
+        <CardTitle sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+            <Shield sx={{ fontSize: 20 }} />
             ACL Configuration
         </CardTitle>
     </CardHeader>
     <CardContent>
-        <p className="text-sm text-muted-foreground">
-            Base access control policies are defined in
-            src/mastra/policy/acl.yaml. This can be extended for custom security
-            rules and organizational requirements.
-        </p>
+        <Typography level="body-sm">
+            Base access control policies are defined in{' '}
+            <Typography
+                component="code"
+                sx={{ bgcolor: 'background.surface', px: 0.5 }}
+            >
+                src/mastra/policy/acl.yaml
+            </Typography>
+            . This can be extended for custom security rules and organizational
+            requirements.
+        </Typography>
     </CardContent>
 </Card>
 
-  <Card>
+  <Card variant="outlined">
     <CardHeader>
-      <CardTitle className="flex items-center">
-        <Key className="h-5 w-5 mr-2" />
+      <CardTitle sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+        <Key sx={{ fontSize: 20 }} />
         JWT Authentication
       </CardTitle>
     </CardHeader>
     <CardContent>
-      <p className="text-sm text-muted-foreground">
+      <Typography level="body-sm">
         Tokens include role claims and are validated via the jwt-auth.tool. This ensures secure authentication with proper role-based access control.
-      </p>
+      </Typography>
     </CardContent>
   </Card>
-</div>
+</Box>
 
 ## Best Practices
 
-<div className="space-y-4 mb-8">
-  <Alert>
-    <CheckCircle className="h-4 w-4" />
+<Alert sx={{ mb: 3 }}>
+    <CheckCircle />
     <AlertTitle>Principle of Least Privilege</AlertTitle>
     <AlertDescription>
-      Always assign users the minimum role necessary for their job function. Use viewer roles by default and admin roles only when required.
+        Always assign users the minimum role necessary for their job function.
+        Use viewer roles by default and admin roles only when required.
     </AlertDescription>
-  </Alert>
+</Alert>
 
-  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-    <Card>
-      <CardHeader>
-        <CardTitle className="text-lg">Document Classification</CardTitle>
-      </CardHeader>
-      <CardContent>
-        <ul className="space-y-2 text-sm">
-          <li>• <strong>Public:</strong> General information, no sensitive data</li>
-          <li>• <strong>Internal:</strong> Department-specific, business operations</li>
-          <li>• <strong>Confidential:</strong> Executive, legal, highly sensitive</li>
-          <li>• Always classify documents appropriately during indexing</li>
-        </ul>
-      </CardContent>
-    </Card>
-
-    <Card>
-      <CardHeader>
-        <CardTitle className="text-lg">Role Management</CardTitle>
-      </CardHeader>
-      <CardContent>
-        <ul className="space-y-2 text-sm">
-          <li>• Regularly review and update role assignments</li>
-          <li>• Remove access when employees change roles</li>
-          <li>• Use inheritance to simplify permission management</li>
-          <li>• Document role responsibilities and access levels</li>
-        </ul>
-      </CardContent>
-    </Card>
-
-  </div>
-
-  <Card>
+<Box sx={{ display: 'grid', gridTemplateColumns: { xs: '1fr', md: 'repeat(2, 1fr)' }, gap: 2, mb: 3 }}>
+  <Card variant="outlined">
     <CardHeader>
-      <CardTitle className="text-lg">Testing and Validation</CardTitle>
+      <CardTitle>Document Classification</CardTitle>
     </CardHeader>
     <CardContent>
-      <div className="space-y-3">
-        <div className="flex items-center">
-          <CheckCircle className="h-4 w-4 mr-2 text-green-500" />
-          <span className="text-sm">Use demo roles to simulate different access scenarios</span>
-        </div>
-        <div className="flex items-center">
-          <CheckCircle className="h-4 w-4 mr-2 text-green-500" />
-          <span className="text-sm">Test role inheritance and permission boundaries</span>
-        </div>
-        <div className="flex items-center">
-          <CheckCircle className="h-4 w-4 mr-2 text-green-500" />
-          <span className="text-sm">Validate document classifications match business requirements</span>
-        </div>
-        <div className="flex items-center">
-          <CheckCircle className="h-4 w-4 mr-2 text-green-500" />
-          <span className="text-sm">Regular security audits and access reviews</span>
-        </div>
-      </div>
+      <Box component="ul" sx={{ m: 0, pl: 2, '& li': { mb: 0.5 } }}>
+        <li>• <strong>Public:</strong> General information, no sensitive data</li>
+        <li>• <strong>Internal:</strong> Department-specific, business operations</li>
+        <li>• <strong>Confidential:</strong> Executive, legal, highly sensitive</li>
+        <li>• Always classify documents appropriately during indexing</li>
+      </Box>
     </CardContent>
   </Card>
-</div>
 
-<div className="flex gap-4">
-    <Button asChild>
-        <a href="/docs/demo-roles">
-            <Users className="h-4 w-4 mr-2" />
-            Try Demo Roles
-            <ArrowRight className="h-4 w-4 ml-2" />
-        </a>
+  <Card variant="outlined">
+    <CardHeader>
+      <CardTitle>Role Management</CardTitle>
+    </CardHeader>
+    <CardContent>
+      <Box component="ul" sx={{ m: 0, pl: 2, '& li': { mb: 0.5 } }}>
+        <li>• Regularly review and update role assignments</li>
+        <li>• Remove access when employees change roles</li>
+        <li>• Use inheritance to simplify permission management</li>
+        <li>• Document role responsibilities and access levels</li>
+      </Box>
+    </CardContent>
+  </Card>
+</Box>
+
+<Card variant="outlined">
+    <CardHeader>
+        <CardTitle>Testing and Validation</CardTitle>
+    </CardHeader>
+    <CardContent>
+        <Box sx={{ display: 'flex', alignItems: 'center', mb: 1 }}>
+            <CheckCircle sx={{ fontSize: 16, mr: 1, color: 'success.main' }} />
+            <Typography level="body-sm">
+                Use demo roles to simulate different access scenarios
+            </Typography>
+        </Box>
+        <Box sx={{ display: 'flex', alignItems: 'center', mb: 1 }}>
+            <CheckCircle sx={{ fontSize: 16, mr: 1, color: 'success.main' }} />
+            <Typography level="body-sm">
+                Test role inheritance and permission boundaries
+            </Typography>
+        </Box>
+        <Box sx={{ display: 'flex', alignItems: 'center', mb: 1 }}>
+            <CheckCircle sx={{ fontSize: 16, mr: 1, color: 'success.main' }} />
+            <Typography level="body-sm">
+                Validate document classifications match business requirements
+            </Typography>
+        </Box>
+        <Box sx={{ display: 'flex', alignItems: 'center' }}>
+            <CheckCircle sx={{ fontSize: 16, mr: 1, color: 'success.main' }} />
+            <Typography level="body-sm">
+                Regular security audits and access reviews
+            </Typography>
+        </Box>
+    </CardContent>
+</Card>
+
+<Box sx={{ display: 'flex', gap: 2, mt: 3 }}>
+    <Button
+        component="a"
+        href="/docs/demo-roles"
+        startDecorator={<Users />}
+        endDecorator={<ArrowRight />}
+    >
+        Try Demo Roles
     </Button>
-    <Button variant="outline" asChild>
-        <a href="/docs/api-reference">
-            <FileText className="h-4 w-4 mr-2" />
-            API Reference
-        </a>
+    <Button
+        variant="soft"
+        component="a"
+        href="/docs/api-reference"
+        startDecorator={<FileText />}
+    >
+        API Reference
     </Button>
-</div>
+</Box>

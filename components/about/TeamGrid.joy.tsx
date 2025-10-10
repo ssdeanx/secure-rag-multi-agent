@@ -35,7 +35,14 @@ export function TeamGrid() {
                     >
                         Team
                     </Typography>
-                    <Typography level="body-lg" sx={{ color: 'text.secondary', maxWidth: 640, mx: 'auto' }}>
+                    <Typography
+                        level="body-lg"
+                        sx={{
+                            color: 'text.secondary',
+                            maxWidth: 640,
+                            mx: 'auto',
+                        }}
+                    >
                         A focused group of engineers and researchers building
                         the future of governed AI.
                     </Typography>
@@ -46,7 +53,11 @@ export function TeamGrid() {
                     aria-label="Team members"
                     sx={{
                         display: 'grid',
-                        gridTemplateColumns: { xs: '1fr', sm: 'repeat(2, 1fr)', md: 'repeat(4, 1fr)' },
+                        gridTemplateColumns: {
+                            xs: '1fr',
+                            sm: 'repeat(2, 1fr)',
+                            md: 'repeat(4, 1fr)',
+                        },
                         gap: 4,
                         listStyle: 'none',
                         p: 0,
@@ -80,7 +91,14 @@ export function TeamGrid() {
                                         },
                                     }}
                                 >
-                                    <CardContent sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 2 }}>
+                                    <CardContent
+                                        sx={{
+                                            display: 'flex',
+                                            flexDirection: 'column',
+                                            alignItems: 'center',
+                                            gap: 2,
+                                        }}
+                                    >
                                         <Avatar
                                             size="lg"
                                             sx={{
@@ -97,10 +115,19 @@ export function TeamGrid() {
                                             {member.initials}
                                         </Avatar>
                                         <Box>
-                                            <Typography level="h4" sx={{ fontSize: 'lg', fontWeight: 600 }}>
+                                            <Typography
+                                                level="h4"
+                                                sx={{
+                                                    fontSize: 'lg',
+                                                    fontWeight: 600,
+                                                }}
+                                            >
                                                 {member.name}
                                             </Typography>
-                                            <Typography level="body-sm" sx={{ color: 'text.secondary' }}>
+                                            <Typography
+                                                level="body-sm"
+                                                sx={{ color: 'text.secondary' }}
+                                            >
                                                 {member.role}
                                             </Typography>
                                         </Box>

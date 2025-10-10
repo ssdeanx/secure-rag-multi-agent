@@ -52,190 +52,190 @@ Based on analysis of the codebase, approximately 20+ Shadcn/UI components are in
 
 **GOAL-001**: Install dependencies, configure MUI Joy, establish theme foundation, create migration utilities
 
-| Task | Description | Completed | Date |
-|------|-------------|-----------|------|
-| TASK-001 | Install MUI Joy packages (@mui/joy, @mui/material for icons) | ✅ | 2025-10-08 |
-| TASK-002 | Create Joy UI theme configuration file (lib/theme/joy-theme.ts) matching current design tokens | ✅ | 2025-10-08 |
-| TASK-003 | Set up CSS baseline and global styles integration in app/layout.tsx | ✅ | 2025-10-08 |
-| TASK-004 | Create component mapping document (Shadcn → Joy equivalents) | ✅ | 2025-10-08 |
-| TASK-005 | Build codemods/migration scripts for common patterns | | |
-| TASK-006 | Create parallel import structure to allow gradual migration | ✅ | 2025-10-08 |
-| TASK-007 | Document Joy UI coding standards and patterns | | |
-| TASK-008 | Set up bundle size monitoring baseline | | |
+| Task     | Description                                                                                    | Completed | Date       |
+| -------- | ---------------------------------------------------------------------------------------------- | --------- | ---------- |
+| TASK-001 | Install MUI Joy packages (@mui/joy, @mui/material for icons)                                   | ✅        | 2025-10-08 |
+| TASK-002 | Create Joy UI theme configuration file (lib/theme/joy-theme.ts) matching current design tokens | ✅        | 2025-10-08 |
+| TASK-003 | Set up CSS baseline and global styles integration in app/layout.tsx                            | ✅        | 2025-10-08 |
+| TASK-004 | Create component mapping document (Shadcn → Joy equivalents)                                   | ✅        | 2025-10-08 |
+| TASK-005 | Build codemods/migration scripts for common patterns                                           |           |            |
+| TASK-006 | Create parallel import structure to allow gradual migration                                    | ✅        | 2025-10-08 |
+| TASK-007 | Document Joy UI coding standards and patterns                                                  |           |            |
+| TASK-008 | Set up bundle size monitoring baseline                                                         |           |            |
 
 ### Phase 1: Core UI Primitives Migration
 
 **GOAL-002**: Replace foundational components (Button, Input, Badge, Avatar, Progress) that have minimal dependencies
 
-| Task | Description | Completed | Date |
-|------|-------------|-----------|------|
-| TASK-009 | Migrate Button component (components/ui/button.tsx → Joy Button) | ✅ | 2025-10-08 |
-| TASK-010 | Update all Button usages in app/ and components/ directories | | |
-| TASK-011 | Migrate Badge component and update usages | ✅ | 2025-10-08 |
-| TASK-012 | Migrate Avatar component and update usages | ✅ | 2025-10-08 |
-| TASK-013 | Migrate Progress component and update usages | ✅ | 2025-10-08 |
-| TASK-014 | Migrate Input component maintaining form compatibility | ✅ | 2025-10-08 |
-| TASK-015 | Migrate Textarea component | ✅ | 2025-10-08 |
-| TASK-016 | Run visual regression tests on updated components | | |
-| TASK-017 | Update component documentation and Storybook (if exists) | | |
+| Task     | Description                                                      | Completed | Date       |
+| -------- | ---------------------------------------------------------------- | --------- | ---------- |
+| TASK-009 | Migrate Button component (components/ui/button.tsx → Joy Button) | ✅        | 2025-10-08 |
+| TASK-010 | Update all Button usages in app/ and components/ directories     |           |            |
+| TASK-011 | Migrate Badge component and update usages                        | ✅        | 2025-10-08 |
+| TASK-012 | Migrate Avatar component and update usages                       | ✅        | 2025-10-08 |
+| TASK-013 | Migrate Progress component and update usages                     | ✅        | 2025-10-08 |
+| TASK-014 | Migrate Input component maintaining form compatibility           | ✅        | 2025-10-08 |
+| TASK-015 | Migrate Textarea component                                       | ✅        | 2025-10-08 |
+| TASK-016 | Run visual regression tests on updated components                |           |            |
+| TASK-017 | Update component documentation and Storybook (if exists)         |           |            |
 
 ### Phase 2: Layout & Container Components
 
 **GOAL-003**: Migrate structural components (Card, Sheet, Dialog, Separator, ScrollArea)
 
-| Task | Description | Completed | Date |
-|------|-------------|-----------|------|
-| TASK-018 | Migrate Card component (Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter) | ✅ | 2025-10-08 |
-| TASK-019 | Update all Card usages in blog, docs, and main components | | |
-| TASK-020 | Migrate Sheet component to Joy Modal/Drawer | ✅ | 2025-10-08 |
-| TASK-021 | Update Sheet usages in TopNavigation and mobile menus | | |
-| TASK-022 | Migrate Dialog/AlertDialog to Joy Modal with variants | ✅ | 2025-10-08 |
-| TASK-023 | Migrate Separator component to Joy Divider | ✅ | 2025-10-08 |
-| TASK-024 | Migrate ScrollArea to Joy custom implementation | | |
-| TASK-025 | Test responsive behavior across breakpoints | | |
+| Task     | Description                                                                                    | Completed | Date       |
+| -------- | ---------------------------------------------------------------------------------------------- | --------- | ---------- |
+| TASK-018 | Migrate Card component (Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter) | ✅        | 2025-10-08 |
+| TASK-019 | Update all Card usages in blog, docs, and main components                                      |           |            |
+| TASK-020 | Migrate Sheet component to Joy Modal/Drawer                                                    | ✅        | 2025-10-08 |
+| TASK-021 | Update Sheet usages in TopNavigation and mobile menus                                          |           |            |
+| TASK-022 | Migrate Dialog/AlertDialog to Joy Modal with variants                                          | ✅        | 2025-10-08 |
+| TASK-023 | Migrate Separator component to Joy Divider                                                     | ✅        | 2025-10-08 |
+| TASK-024 | Migrate ScrollArea to Joy custom implementation                                                |           |            |
+| TASK-025 | Test responsive behavior across breakpoints                                                    |           |            |
 
 ### Phase 3: Form & Input Components
 
 **GOAL-004**: Migrate form-related components maintaining validation and accessibility
 
-| Task | Description | Completed | Date |
-|------|-------------|-----------|------|
-| TASK-026 | Migrate Form, FormField, FormLabel, FormControl to Joy alternatives | ✅ | 2025-10-08 |
-| TASK-027 | Migrate Select component to Joy Select | ✅ | 2025-10-08 |
-| TASK-028 | Migrate Checkbox component | ✅ | 2025-10-08 |
-| TASK-029 | Migrate Radio Group component | ✅ | 2025-10-08 |
-| TASK-030 | Migrate Switch/Toggle components | ✅ | 2025-10-08 |
-| TASK-031 | Migrate Slider component | ✅ | 2025-10-08 |
-| TASK-032 | Update react-hook-form integration patterns | | |
-| TASK-033 | Migrate Calendar/DatePicker (requires custom implementation) | | |
-| TASK-034 | Test form validation and accessibility features | | |
+| Task     | Description                                                         | Completed | Date       |
+| -------- | ------------------------------------------------------------------- | --------- | ---------- |
+| TASK-026 | Migrate Form, FormField, FormLabel, FormControl to Joy alternatives | ✅        | 2025-10-08 |
+| TASK-027 | Migrate Select component to Joy Select                              | ✅        | 2025-10-08 |
+| TASK-028 | Migrate Checkbox component                                          | ✅        | 2025-10-08 |
+| TASK-029 | Migrate Radio Group component                                       | ✅        | 2025-10-08 |
+| TASK-030 | Migrate Switch/Toggle components                                    | ✅        | 2025-10-08 |
+| TASK-031 | Migrate Slider component                                            | ✅        | 2025-10-08 |
+| TASK-032 | Update react-hook-form integration patterns                         |           |            |
+| TASK-033 | Migrate Calendar/DatePicker (requires custom implementation)        |           |            |
+| TASK-034 | Test form validation and accessibility features                     |           |            |
 
 ### Phase 4: Navigation Components
 
 **GOAL-005**: Migrate navigation components (Menubar, DropdownMenu, NavigationMenu, Breadcrumb, Tabs)
 
-| Task | Description | Completed | Date |
-|------|-------------|-----------|------|
-| TASK-035 | Migrate Menubar component to Joy Menu | ✅ | 2025-10-08 |
-| TASK-036 | Update TopNavigation to use Joy Menu system | | |
-| TASK-037 | Migrate DropdownMenu to Joy Dropdown | ✅ | 2025-10-08 |
-| TASK-038 | Migrate NavigationMenu for main site navigation | | |
-| TASK-039 | Migrate Breadcrumb component to Joy Breadcrumbs | ✅ | 2025-10-08 |
-| TASK-040 | Migrate Tabs component to Joy Tabs | ✅ | 2025-10-08 |
-| TASK-041 | Migrate Collapsible component to Joy Accordion equivalent | ✅ | 2025-10-08 |
-| TASK-042 | Test keyboard navigation and focus management | | |
+| Task     | Description                                               | Completed | Date       |
+| -------- | --------------------------------------------------------- | --------- | ---------- |
+| TASK-035 | Migrate Menubar component to Joy Menu                     | ✅        | 2025-10-08 |
+| TASK-036 | Update TopNavigation to use Joy Menu system               |           |            |
+| TASK-037 | Migrate DropdownMenu to Joy Dropdown                      | ✅        | 2025-10-08 |
+| TASK-038 | Migrate NavigationMenu for main site navigation           |           |            |
+| TASK-039 | Migrate Breadcrumb component to Joy Breadcrumbs           | ✅        | 2025-10-08 |
+| TASK-040 | Migrate Tabs component to Joy Tabs                        | ✅        | 2025-10-08 |
+| TASK-041 | Migrate Collapsible component to Joy Accordion equivalent | ✅        | 2025-10-08 |
+| TASK-042 | Test keyboard navigation and focus management             |           |            |
 
 ### Phase 5: Feedback & Overlay Components
 
 **GOAL-006**: Migrate user feedback components (Alert, Toast, Tooltip, HoverCard, Popover)
 
-| Task | Description | Completed | Date |
-|------|-------------|-----------|------|
-| TASK-043 | Migrate Alert component to Joy Alert | ✅ | 2025-10-08 |
-| TASK-044 | Update SecurityIndicator to use Joy Alert | | |
-| TASK-045 | Migrate Tooltip component | ✅ | 2025-10-08 |
-| TASK-046 | Migrate HoverCard to Joy custom component | | |
-| TASK-047 | Migrate Popover component | | |
-| TASK-048 | Migrate Toast/Sonner to Joy Snackbar | | |
-| TASK-049 | Migrate ContextMenu to Joy Menu variant | | |
-| TASK-050 | Test all overlay positioning and z-index behavior | | |
+| Task     | Description                                       | Completed | Date       |
+| -------- | ------------------------------------------------- | --------- | ---------- |
+| TASK-043 | Migrate Alert component to Joy Alert              | ✅        | 2025-10-08 |
+| TASK-044 | Update SecurityIndicator to use Joy Alert         |           |            |
+| TASK-045 | Migrate Tooltip component                         | ✅        | 2025-10-08 |
+| TASK-046 | Migrate HoverCard to Joy custom component         |           |            |
+| TASK-047 | Migrate Popover component                         |           |            |
+| TASK-048 | Migrate Toast/Sonner to Joy Snackbar              |           |            |
+| TASK-049 | Migrate ContextMenu to Joy Menu variant           |           |            |
+| TASK-050 | Test all overlay positioning and z-index behavior |           |            |
 
 ### Phase 6: Data Display Components
 
 **GOAL-007**: Migrate complex data components (Table, Accordion, Command, Chart)
 
-| Task | Description | Completed | Date |
-|------|-------------|-----------|------|
-| TASK-051 | Migrate Table component to Joy Table or custom implementation | ✅ | 2025-10-08 |
-| TASK-052 | Update data-heavy pages to use new Table | | |
-| TASK-053 | Migrate Accordion component to Joy Accordion | ✅ | 2025-10-08 |
-| TASK-054 | Migrate Command palette (may need custom implementation) | | |
-| TASK-055 | Update DocsSearch to use Joy alternatives | | |
-| TASK-056 | Migrate Chart components or keep recharts integration | | |
-| TASK-057 | Migrate Carousel using embla-carousel-react | | |
-| TASK-058 | Test performance with large datasets | | |
+| Task     | Description                                                   | Completed | Date       |
+| -------- | ------------------------------------------------------------- | --------- | ---------- |
+| TASK-051 | Migrate Table component to Joy Table or custom implementation | ✅        | 2025-10-08 |
+| TASK-052 | Update data-heavy pages to use new Table                      |           |            |
+| TASK-053 | Migrate Accordion component to Joy Accordion                  | ✅        | 2025-10-08 |
+| TASK-054 | Migrate Command palette (may need custom implementation)      |           |            |
+| TASK-055 | Update DocsSearch to use Joy alternatives                     |           |            |
+| TASK-056 | Migrate Chart components or keep recharts integration         |           |            |
+| TASK-057 | Migrate Carousel using embla-carousel-react                   |           |            |
+| TASK-058 | Test performance with large datasets                          |           |            |
 
 ### Phase 7: Utility & Advanced Components
 
 **GOAL-008**: Migrate remaining specialized components (Resizable, Drawer, Sidebar, Skeleton)
 
-| Task | Description | Completed | Date |
-|------|-------------|-----------|------|
-| TASK-059 | Migrate or retain ResizablePanels (may keep react-resizable-panels) | | |
-| TASK-060 | Migrate Drawer component to Joy Drawer | ✅ | 2025-10-08 |
-| TASK-061 | Migrate Sidebar component to Joy navigation pattern | | |
-| TASK-062 | Migrate Skeleton component to Joy Skeleton | ✅ | 2025-10-08 |
-| TASK-063 | Migrate Pagination component | | |
-| TASK-064 | Migrate AspectRatio component | ✅ | 2025-10-08 |
-| TASK-065 | Review and migrate any remaining Radix primitives | | |
+| Task     | Description                                                         | Completed | Date       |
+| -------- | ------------------------------------------------------------------- | --------- | ---------- |
+| TASK-059 | Migrate or retain ResizablePanels (may keep react-resizable-panels) |           |            |
+| TASK-060 | Migrate Drawer component to Joy Drawer                              | ✅        | 2025-10-08 |
+| TASK-061 | Migrate Sidebar component to Joy navigation pattern                 |           |            |
+| TASK-062 | Migrate Skeleton component to Joy Skeleton                          | ✅        | 2025-10-08 |
+| TASK-063 | Migrate Pagination component                                        |           |            |
+| TASK-064 | Migrate AspectRatio component                                       | ✅        | 2025-10-08 |
+| TASK-065 | Review and migrate any remaining Radix primitives                   |           |            |
 
 ### Phase 8: Theme & Styling System
 
 **GOAL-009**: Complete Tailwind removal and finalize Joy UI theming
 
-| Task | Description | Completed | Date |
-|------|-------------|-----------|------|
-| TASK-066 | Map all Tailwind utility classes to Joy sx equivalents | | |
-| TASK-067 | Convert global.css custom styles to Joy theme tokens | | |
-| TASK-068 | Update ThemeProvider to use Joy CssVarsProvider | | |
-| TASK-069 | Implement dark/light mode toggle with Joy theme | | |
-| TASK-070 | Remove Tailwind config and dependencies | | |
-| TASK-071 | Remove unused @tailwindcss/* packages | | |
-| TASK-072 | Update PostCSS config to remove Tailwind | | |
-| TASK-073 | Clean up cn() utility or replace with Joy's styled | | |
-| TASK-074 | Document theme customization patterns | | |
+| Task     | Description                                            | Completed | Date |
+| -------- | ------------------------------------------------------ | --------- | ---- |
+| TASK-066 | Map all Tailwind utility classes to Joy sx equivalents |           |      |
+| TASK-067 | Convert global.css custom styles to Joy theme tokens   |           |      |
+| TASK-068 | Update ThemeProvider to use Joy CssVarsProvider        |           |      |
+| TASK-069 | Implement dark/light mode toggle with Joy theme        |           |      |
+| TASK-070 | Remove Tailwind config and dependencies                |           |      |
+| TASK-071 | Remove unused @tailwindcss/\* packages                 |           |      |
+| TASK-072 | Update PostCSS config to remove Tailwind               |           |      |
+| TASK-073 | Clean up cn() utility or replace with Joy's styled     |           |      |
+| TASK-074 | Document theme customization patterns                  |           |      |
 
 ### Phase 9: Cleanup & Optimization
 
 **GOAL-010**: Remove old dependencies, optimize bundle, finalize documentation
 
-| Task | Description | Completed | Date |
-|------|-------------|-----------|------|
-| TASK-075 | Remove all Shadcn UI component files from components/ui/ | | |
-| TASK-076 | Remove Radix UI dependencies no longer needed | | |
-| TASK-077 | Remove Tailwind CSS and related packages | | |
-| TASK-078 | Remove class-variance-authority if no longer used | | |
-| TASK-079 | Remove tailwind-merge (clsx can remain) | | |
-| TASK-080 | Update components.json if needed | | |
-| TASK-081 | Run bundle size analysis and optimization | | |
-| TASK-082 | Update ESLint rules for Joy UI patterns | | |
-| TASK-083 | Update Prettier config if needed | | |
+| Task     | Description                                              | Completed | Date |
+| -------- | -------------------------------------------------------- | --------- | ---- |
+| TASK-075 | Remove all Shadcn UI component files from components/ui/ |           |      |
+| TASK-076 | Remove Radix UI dependencies no longer needed            |           |      |
+| TASK-077 | Remove Tailwind CSS and related packages                 |           |      |
+| TASK-078 | Remove class-variance-authority if no longer used        |           |      |
+| TASK-079 | Remove tailwind-merge (clsx can remain)                  |           |      |
+| TASK-080 | Update components.json if needed                         |           |      |
+| TASK-081 | Run bundle size analysis and optimization                |           |      |
+| TASK-082 | Update ESLint rules for Joy UI patterns                  |           |      |
+| TASK-083 | Update Prettier config if needed                         |           |      |
 
 ### Phase 10: Testing & Documentation
 
 **GOAL-011**: Comprehensive testing, accessibility audit, migration guide completion
 
-| Task | Description | Completed | Date |
-|------|-------------|-----------|------|
-| TASK-084 | Run full test suite (unit, integration, E2E) | | |
-| TASK-085 | Perform accessibility audit with axe-core | | |
-| TASK-086 | Test keyboard navigation across all components | | |
-| TASK-087 | Test screen reader compatibility | | |
-| TASK-088 | Visual regression testing with Playwright | | |
-| TASK-089 | Cross-browser testing (Chrome, Firefox, Safari, Edge) | | |
-| TASK-090 | Mobile responsive testing | | |
-| TASK-091 | Performance testing and Core Web Vitals check | | |
-| TASK-092 | Create comprehensive migration guide for team | | |
-| TASK-093 | Update all component documentation | | |
-| TASK-094 | Document troubleshooting and common issues | | |
+| Task     | Description                                           | Completed | Date |
+| -------- | ----------------------------------------------------- | --------- | ---- |
+| TASK-084 | Run full test suite (unit, integration, E2E)          |           |      |
+| TASK-085 | Perform accessibility audit with axe-core             |           |      |
+| TASK-086 | Test keyboard navigation across all components        |           |      |
+| TASK-087 | Test screen reader compatibility                      |           |      |
+| TASK-088 | Visual regression testing with Playwright             |           |      |
+| TASK-089 | Cross-browser testing (Chrome, Firefox, Safari, Edge) |           |      |
+| TASK-090 | Mobile responsive testing                             |           |      |
+| TASK-091 | Performance testing and Core Web Vitals check         |           |      |
+| TASK-092 | Create comprehensive migration guide for team         |           |      |
+| TASK-093 | Update all component documentation                    |           |      |
+| TASK-094 | Document troubleshooting and common issues            |           |      |
 
 ## 3. Alternatives
 
-- **ALT-001**: **Continue with Shadcn/UI + Tailwind** - Maintain current stack with targeted fixes to global.css and CSS optimization. *Rejected*: Doesn't address fundamental issues with CSS complexity, bundle size growth, and long-term maintenance burden.
+- **ALT-001**: **Continue with Shadcn/UI + Tailwind** - Maintain current stack with targeted fixes to global.css and CSS optimization. _Rejected_: Doesn't address fundamental issues with CSS complexity, bundle size growth, and long-term maintenance burden.
 
-- **ALT-002**: **Migrate to traditional Material UI (MUI Core)** - Replace with full Material Design implementation using @mui/material. *Rejected*: Material Design aesthetic may not align with current design language; Joy UI provides more modern, flexible approach with better customization.
+- **ALT-002**: **Migrate to traditional Material UI (MUI Core)** - Replace with full Material Design implementation using @mui/material. _Rejected_: Material Design aesthetic may not align with current design language; Joy UI provides more modern, flexible approach with better customization.
 
-- **ALT-003**: **Build custom component library** - Create bespoke components without external dependencies. *Rejected*: High development cost, ongoing maintenance burden, missing out on mature ecosystem benefits, accessibility features, and community support.
+- **ALT-003**: **Build custom component library** - Create bespoke components without external dependencies. _Rejected_: High development cost, ongoing maintenance burden, missing out on mature ecosystem benefits, accessibility features, and community support.
 
-- **ALT-004**: **Migrate to Mantine UI** - Alternative modern React component library with built-in theming. *Rejected*: Smaller ecosystem and community compared to MUI; less comprehensive component coverage; less enterprise adoption.
+- **ALT-004**: **Migrate to Mantine UI** - Alternative modern React component library with built-in theming. _Rejected_: Smaller ecosystem and community compared to MUI; less comprehensive component coverage; less enterprise adoption.
 
-- **ALT-005**: **Migrate to Ant Design** - Comprehensive design system with extensive components. *Rejected*: Opinionated design language may clash with requirements; larger bundle size; different theming approach.
+- **ALT-005**: **Migrate to Ant Design** - Comprehensive design system with extensive components. _Rejected_: Opinionated design language may clash with requirements; larger bundle size; different theming approach.
 
-- **ALT-006**: **Keep Tailwind, replace only Shadcn** - Maintain Tailwind CSS while replacing Shadcn components with headless UI libraries. *Rejected*: Doesn't solve the core CSS complexity issues; Tailwind + component library integration often causes conflicts.
+- **ALT-006**: **Keep Tailwind, replace only Shadcn** - Maintain Tailwind CSS while replacing Shadcn components with headless UI libraries. _Rejected_: Doesn't solve the core CSS complexity issues; Tailwind + component library integration often causes conflicts.
 
-- **ALT-007**: **Hybrid approach** - Keep some Shadcn components while migrating others to Joy UI. *Rejected*: Maintaining two component libraries increases complexity, bundle size, and developer confusion; inconsistent theming.
+- **ALT-007**: **Hybrid approach** - Keep some Shadcn components while migrating others to Joy UI. _Rejected_: Maintaining two component libraries increases complexity, bundle size, and developer confusion; inconsistent theming.
 
-- **ALT-008**: **CSS Modules + headless components** - Use CSS Modules with Radix UI or similar headless components. *Rejected*: Doesn't provide comprehensive design system; more manual styling work required; missing Joy UI's variant system benefits.
+- **ALT-008**: **CSS Modules + headless components** - Use CSS Modules with Radix UI or similar headless components. _Rejected_: Doesn't provide comprehensive design system; more manual styling work required; missing Joy UI's variant system benefits.
 
 ## 4. Dependencies
 
@@ -254,7 +254,7 @@ Based on analysis of the codebase, approximately 20+ Shadcn/UI components are in
 - @tailwindcss/postcss
 - tailwind-merge
 - tw-animate-css
-- Most @radix-ui/* packages (some may be retained if Joy UI uses them internally)
+- Most @radix-ui/\* packages (some may be retained if Joy UI uses them internally)
 
 **Packages to Retain:**
 
@@ -309,21 +309,21 @@ Based on analysis of the codebase, approximately 20+ Shadcn/UI components are in
 
 ## 7. Risks & Assumptions
 
-- **RISK-001**: **MUI Joy is in beta** - Potential breaking changes in future releases. *Mitigation*: Lock Joy version, monitor changelog, maintain migration capability.
+- **RISK-001**: **MUI Joy is in beta** - Potential breaking changes in future releases. _Mitigation_: Lock Joy version, monitor changelog, maintain migration capability.
 
-- **RISK-002**: **Learning curve** - Team unfamiliar with Joy UI patterns. *Mitigation*: Comprehensive documentation, pair programming, code reviews.
+- **RISK-002**: **Learning curve** - Team unfamiliar with Joy UI patterns. _Mitigation_: Comprehensive documentation, pair programming, code reviews.
 
-- **RISK-003**: **Bundle size increase** - Joy UI may be larger than Shadcn/Tailwind. *Mitigation*: Use tree-shaking, monitor bundle size, lazy load components.
+- **RISK-003**: **Bundle size increase** - Joy UI may be larger than Shadcn/Tailwind. _Mitigation_: Use tree-shaking, monitor bundle size, lazy load components.
 
-- **RISK-004**: **Component API mismatches** - Not all Shadcn props have Joy equivalents. *Mitigation*: Create wrapper components, document breaking changes.
+- **RISK-004**: **Component API mismatches** - Not all Shadcn props have Joy equivalents. _Mitigation_: Create wrapper components, document breaking changes.
 
-- **RISK-005**: **Migration timeline overrun** - Complexity may exceed estimates. *Mitigation*: Phased approach allows early value delivery, parallel work tracks.
+- **RISK-005**: **Migration timeline overrun** - Complexity may exceed estimates. _Mitigation_: Phased approach allows early value delivery, parallel work tracks.
 
-- **RISK-006**: **Regression in accessibility** - New components may have different a11y implementations. *Mitigation*: Comprehensive accessibility testing at each phase.
+- **RISK-006**: **Regression in accessibility** - New components may have different a11y implementations. _Mitigation_: Comprehensive accessibility testing at each phase.
 
-- **RISK-007**: **Performance degradation** - Joy UI may have different performance characteristics. *Mitigation*: Performance testing at each phase, profiling, optimization.
+- **RISK-007**: **Performance degradation** - Joy UI may have different performance characteristics. _Mitigation_: Performance testing at each phase, profiling, optimization.
 
-- **RISK-008**: **Design consistency issues** - Joy UI defaults may not match current design. *Mitigation*: Comprehensive theme customization upfront.
+- **RISK-008**: **Design consistency issues** - Joy UI defaults may not match current design. _Mitigation_: Comprehensive theme customization upfront.
 
 - **ASSUMPTION-001**: Team has capacity for 8-12 weeks of migration work
 - **ASSUMPTION-002**: Production deployments can continue during migration

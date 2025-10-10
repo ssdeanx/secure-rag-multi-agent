@@ -15,7 +15,7 @@ export default function DocsError({ reset }: { reset: () => void }) {
                 gap: 2,
                 p: 4,
                 minHeight: '50vh',
-                textAlign: 'center'
+                textAlign: 'center',
             }}
         >
             <Typography level="h2" sx={{ fontWeight: 800 }}>
@@ -27,7 +27,7 @@ export default function DocsError({ reset }: { reset: () => void }) {
                     color: 'text.secondary',
                     maxWidth: 400,
                     mx: 'auto',
-                    lineHeight: 1.6
+                    lineHeight: 1.6,
                 }}
             >
                 Something went wrong rendering this documentation page. The
@@ -42,10 +42,7 @@ export default function DocsError({ reset }: { reset: () => void }) {
                     Retry
                 </Button>
                 <Link href="/docs" passHref>
-                    <Button
-                        variant="solid"
-                        color="primary"
-                    >
+                    <Button variant="solid" color="primary">
                         Back to Docs
                     </Button>
                 </Link>

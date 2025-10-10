@@ -53,7 +53,10 @@ export function InteractiveFeatures() {
                     >
                         Powerful Features, Simply Delivered
                     </Typography>
-                    <Typography level="body-lg" sx={{ color: 'text.secondary' }}>
+                    <Typography
+                        level="body-lg"
+                        sx={{ color: 'text.secondary' }}
+                    >
                         Explore the core capabilities that make Governed RAG the
                         leader in governed AI.
                     </Typography>
@@ -75,7 +78,11 @@ export function InteractiveFeatures() {
                 }}
             >
                 {features.map((feature, i) => (
-                    <Box component="li" key={feature.title} sx={{ height: '100%' }}>
+                    <Box
+                        component="li"
+                        key={feature.title}
+                        sx={{ height: '100%' }}
+                    >
                         <motion.div
                             {...(prefersReducedMotion
                                 ? {}
@@ -106,7 +113,14 @@ export function InteractiveFeatures() {
                                     },
                                 }}
                             >
-                                <CardContent sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 2 }}>
+                                <CardContent
+                                    sx={{
+                                        display: 'flex',
+                                        flexDirection: 'column',
+                                        alignItems: 'center',
+                                        gap: 2,
+                                    }}
+                                >
                                     <Box
                                         aria-hidden="true"
                                         sx={{
@@ -120,10 +134,16 @@ export function InteractiveFeatures() {
                                     >
                                         {feature.icon}
                                     </Box>
-                                    <Typography level="h4" sx={{ fontWeight: 600 }}>
+                                    <Typography
+                                        level="h4"
+                                        sx={{ fontWeight: 600 }}
+                                    >
                                         {feature.title}
                                     </Typography>
-                                    <Typography level="body-md" sx={{ color: 'text.secondary' }}>
+                                    <Typography
+                                        level="body-md"
+                                        sx={{ color: 'text.secondary' }}
+                                    >
                                         {feature.description}
                                     </Typography>
                                 </CardContent>

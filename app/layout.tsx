@@ -3,7 +3,7 @@ import { Inter } from 'next/font/google'
 import { cn } from '@/lib/utils'
 
 import ClientRoot from '@/components/ClientRoot'
-import InitColorSchemeScript from '@mui/joy/InitColorSchemeScript';
+import InitColorSchemeScript from '@mui/joy/InitColorSchemeScript'
 import type { Metadata, Viewport } from 'next'
 
 const inter = Inter({ subsets: ['latin'] })

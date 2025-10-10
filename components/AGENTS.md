@@ -42,7 +42,7 @@ This directory contains high-level, application-specific React components that c
 
 ## Subdirectories
 
-- `/ui`: Contains low-level, `shadcn/ui`-based primitive components like `Button`, `Card`, etc.
+- `/ui`: Contains low-level, MUI Joy UI-based primitive components like `Button`, `Card`, etc.
 - `/landing`, `/about`, `/blog`, `/contact`, `/login`: Contain components that are specific to those pages or sections of the application.
 
 ## Change Log

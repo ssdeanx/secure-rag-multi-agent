@@ -14,7 +14,9 @@ export function NewsletterForm() {
     const prefersReducedMotion = reduceMotion === true
 
     // add helper to bypass BoxProps typing for attributes like role
-    const statusProps = { role: 'status' } as React.HTMLAttributes<HTMLDivElement>
+    const statusProps = {
+        role: 'status',
+    } as React.HTMLAttributes<HTMLDivElement>
 
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault()
@@ -50,10 +52,7 @@ export function NewsletterForm() {
     }
 
     return (
-        <Box
-            component="section"
-            sx={{ py: 10, bgcolor: 'background.surface' }}
-        >
+        <Box component="section" sx={{ py: 10, bgcolor: 'background.surface' }}>
             <Box sx={{ maxWidth: 768, mx: 'auto', px: 2, textAlign: 'center' }}>
                 <motion.div
                     {...(prefersReducedMotion
@@ -65,10 +64,16 @@ export function NewsletterForm() {
                           })}
                     viewport={{ once: true }}
                 >
-                    <Typography level="h2" sx={{ fontSize: '2xl', fontWeight: 700, mb: 2 }}>
+                    <Typography
+                        level="h2"
+                        sx={{ fontSize: '2xl', fontWeight: 700, mb: 2 }}
+                    >
                         Stay Ahead of the Curve
                     </Typography>
-                    <Typography level="body-lg" sx={{ color: 'text.secondary', mb: 4 }}>
+                    <Typography
+                        level="body-lg"
+                        sx={{ color: 'text.secondary', mb: 4 }}
+                    >
                         Subscribe to our newsletter for the latest on AI,
                         security, and enterprise tech.
                     </Typography>
@@ -89,7 +94,10 @@ export function NewsletterForm() {
                     {!submitted && (
                         <Box
                             component="form"
-                            {...({ onSubmit: handleSubmit, noValidate: true } as React.FormHTMLAttributes<HTMLFormElement>)}
+                            {...({
+                                onSubmit: handleSubmit,
+                                noValidate: true,
+                            } as React.FormHTMLAttributes<HTMLFormElement>)}
                             sx={{
                                 display: 'flex',
                                 flexDirection: { xs: 'column', sm: 'row' },
@@ -125,8 +133,17 @@ export function NewsletterForm() {
                     )}
 
                     {error && !submitted && (
-                        <Box {...({ id: 'newsletter-error', role: 'alert' } as React.HTMLAttributes<HTMLDivElement>)} sx={{ mt: 2 }}>
-                            <Typography level="body-sm" sx={{ color: 'danger.500' }}>
+                        <Box
+                            {...({
+                                id: 'newsletter-error',
+                                role: 'alert',
+                            } as React.HTMLAttributes<HTMLDivElement>)}
+                            sx={{ mt: 2 }}
+                        >
+                            <Typography
+                                level="body-sm"
+                                sx={{ color: 'danger.500' }}
+                            >
                                 {error}
                             </Typography>
                         </Box>

@@ -1,6 +1,6 @@
-'use client';
+'use client'
 
-import { useState } from 'react';
+import { useState } from 'react'
 import {
     Box,
     Button,
@@ -11,13 +11,22 @@ import {
     CardContent,
     Select,
     Option,
-} from '@/components/ui/joy';
-import { Visibility, VisibilityOff, Login, PersonAdd } from '@mui/icons-material';
-import Link from 'next/link';
+} from '@/components/ui/joy'
+import {
+    Visibility,
+    VisibilityOff,
+    Login,
+    PersonAdd,
+} from '@mui/icons-material'
+import Link from 'next/link'
 
 interface AuthFormProps {
-    mode: 'login' | 'signup';
-    onSubmit: (data: { email: string; password: string; role?: string }) => Promise<void>;
+    mode: 'login' | 'signup'
+    onSubmit: (data: {
+        email: string
+        password: string
+        role?: string
+    }) => Promise<void>
 }
 
 const demoRoles = [
@@ -28,35 +37,37 @@ const demoRoles = [
     { value: 'hr_viewer', label: 'HR Viewer' },
     { value: 'employee', label: 'Employee' },
     { value: 'public', label: 'Public' },
-];
+]
 
 export function AuthForm({ mode, onSubmit }: AuthFormProps) {
-    const [email, setEmail] = useState('');
-    const [password, setPassword] = useState('');
-    const [role, setRole] = useState('employee');
-    const [showPassword, setShowPassword] = useState(false);
-    const [loading, setLoading] = useState(false);
-    const [error, setError] = useState('');
+    const [email, setEmail] = useState('')
+    const [password, setPassword] = useState('')
+    const [role, setRole] = useState('employee')
+    const [showPassword, setShowPassword] = useState(false)
+    const [loading, setLoading] = useState(false)
+    const [error, setError] = useState('')
 
     const handleSubmit = async (e: React.FormEvent) => {
-        e.preventDefault();
-        setError('');
-        setLoading(true);
+        e.preventDefault()
+        setError('')
+        setLoading(true)
 
         try {
             await onSubmit({
                 email,
                 password,
                 ...(mode === 'signup' && { role }),
-            });
+            })
         } catch (err) {
-            setError(err instanceof Error ? err.message : 'Authentication failed');
+            setError(
+                err instanceof Error ? err.message : 'Authentication failed'
+            )
         } finally {
-            setLoading(false);
+            setLoading(false)
         }
-    };
+    }
 
-    const isSignup = mode === 'signup';
+    const isSignup = mode === 'signup'
 
     return (
         <Card
@@ -79,7 +90,10 @@ export function AuthForm({ mode, onSubmit }: AuthFormProps) {
                     >
                         {isSignup ? 'Create Account' : 'Welcome Back'}
                     </Typography>
-                    <Typography level="body-md" sx={{ color: 'text.secondary' }}>
+                    <Typography
+                        level="body-md"
+                        sx={{ color: 'text.secondary' }}
+                    >
                         {isSignup
                             ? 'Sign up to get started with Governed RAG'
                             : 'Sign in to your account to continue'}
@@ -94,118 +108,165 @@ export function AuthForm({ mode, onSubmit }: AuthFormProps) {
 
                 <Box>
                     <form onSubmit={handleSubmit}>
-                        <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2.5 }}>
-                        <Box>
-                            <Typography level="body-sm" sx={{ mb: 0.5, fontWeight: 600 }}>
-                                Email
-                            </Typography>
-                            <Input
-                                type="email"
-                                placeholder="you@example.com"
-                                value={email}
-                                onChange={(e) => setEmail(e.target.value)}
-                                required
-                                fullWidth
-                            />
-                        </Box>
-
-                        <Box>
-                            <Typography level="body-sm" sx={{ mb: 0.5, fontWeight: 600 }}>
-                                Password
-                            </Typography>
-                            <Input
-                                type={showPassword ? 'text' : 'password'}
-                                placeholder="••••••••"
-                                value={password}
-                                onChange={(e) => setPassword(e.target.value)}
-                                required
-                                fullWidth
-                                endDecorator={
-                                    <Button
-                                        variant="plain"
-                                        color="neutral"
-                                        size="sm"
-                                        onClick={() => setShowPassword(!showPassword)}
-                                        sx={{ minHeight: 0, px: 1 }}
-                                    >
-                                        {showPassword ? <VisibilityOff fontSize="small" /> : <Visibility fontSize="small" />}
-                                    </Button>
-                                }
-                            />
-                        </Box>
-
-                        {isSignup && (
-                            <Box>
-                                <Typography level="body-sm" sx={{ mb: 0.5, fontWeight: 600 }}>
-                                    Role
-                                </Typography>
-                                <Select
-                                    value={role}
-                                    onChange={(_, newValue) => setRole(newValue as string)}
-                                >
-                                    {demoRoles.map((r) => (
-                                        <Option key={r.value} value={r.value}>
-                                            {r.label}
-                                        </Option>
-                                    ))}
-                                </Select>
-                            </Box>
-                        )}
-
-                        {!isSignup && (
-                            <Box sx={{ display: 'flex', justifyContent: 'flex-end' }}>
-                                <Link href="/forgot-password" passHref>
-                                    <Typography
-                                        component="a"
-                                        level="body-sm"
-                                        sx={{
-                                            color: 'primary.500',
-                                            textDecoration: 'none',
-                                            '&:hover': { textDecoration: 'underline' },
-                                        }}
-                                    >
-                                        Forgot password?
-                                    </Typography>
-                                </Link>
-                            </Box>
-                        )}
-
-                        <Button
-                            type="submit"
-                            variant="solid"
-                            color="primary"
-                            size="lg"
-                            loading={loading}
-                            startDecorator={isSignup ? <PersonAdd /> : <Login />}
-                            fullWidth
-                            sx={{ mt: 1 }}
+                        <Box
+                            sx={{
+                                display: 'flex',
+                                flexDirection: 'column',
+                                gap: 2.5,
+                            }}
                         >
-                            {isSignup ? 'Create Account' : 'Sign In'}
-                        </Button>
+                            <Box>
+                                <Typography
+                                    level="body-sm"
+                                    sx={{ mb: 0.5, fontWeight: 600 }}
+                                >
+                                    Email
+                                </Typography>
+                                <Input
+                                    type="email"
+                                    placeholder="you@example.com"
+                                    value={email}
+                                    onChange={(e) => setEmail(e.target.value)}
+                                    required
+                                    fullWidth
+                                />
+                            </Box>
 
-                        <Box sx={{ textAlign: 'center', mt: 2 }}>
-                            <Typography level="body-sm" sx={{ color: 'text.secondary' }}>
-                                {isSignup ? 'Already have an account?' : "Don't have an account?"}{' '}
-                                <Link href={isSignup ? '/login' : '/signup'} passHref>
+                            <Box>
+                                <Typography
+                                    level="body-sm"
+                                    sx={{ mb: 0.5, fontWeight: 600 }}
+                                >
+                                    Password
+                                </Typography>
+                                <Input
+                                    type={showPassword ? 'text' : 'password'}
+                                    placeholder="••••••••"
+                                    value={password}
+                                    onChange={(e) =>
+                                        setPassword(e.target.value)
+                                    }
+                                    required
+                                    fullWidth
+                                    endDecorator={
+                                        <Button
+                                            variant="plain"
+                                            color="neutral"
+                                            size="sm"
+                                            onClick={() =>
+                                                setShowPassword(!showPassword)
+                                            }
+                                            sx={{ minHeight: 0, px: 1 }}
+                                        >
+                                            {showPassword ? (
+                                                <VisibilityOff fontSize="small" />
+                                            ) : (
+                                                <Visibility fontSize="small" />
+                                            )}
+                                        </Button>
+                                    }
+                                />
+                            </Box>
+
+                            {isSignup && (
+                                <Box>
                                     <Typography
-                                        component="a"
                                         level="body-sm"
-                                        sx={{
-                                            color: 'primary.500',
-                                            fontWeight: 600,
-                                            textDecoration: 'none',
-                                            '&:hover': { textDecoration: 'underline' },
-                                        }}
+                                        sx={{ mb: 0.5, fontWeight: 600 }}
                                     >
-                                        {isSignup ? 'Sign in' : 'Sign up'}
+                                        Role
                                     </Typography>
-                                </Link>
-                            </Typography>
-                        </Box>
+                                    <Select
+                                        value={role}
+                                        onChange={(_, newValue) =>
+                                            setRole(newValue as string)
+                                        }
+                                    >
+                                        {demoRoles.map((r) => (
+                                            <Option
+                                                key={r.value}
+                                                value={r.value}
+                                            >
+                                                {r.label}
+                                            </Option>
+                                        ))}
+                                    </Select>
+                                </Box>
+                            )}
+
+                            {!isSignup && (
+                                <Box
+                                    sx={{
+                                        display: 'flex',
+                                        justifyContent: 'flex-end',
+                                    }}
+                                >
+                                    <Link href="/forgot-password" passHref>
+                                        <Typography
+                                            component="a"
+                                            level="body-sm"
+                                            sx={{
+                                                color: 'primary.500',
+                                                textDecoration: 'none',
+                                                '&:hover': {
+                                                    textDecoration: 'underline',
+                                                },
+                                            }}
+                                        >
+                                            Forgot password?
+                                        </Typography>
+                                    </Link>
+                                </Box>
+                            )}
+
+                            <Button
+                                type="submit"
+                                variant="solid"
+                                color="primary"
+                                size="lg"
+                                loading={loading}
+                                startDecorator={
+                                    isSignup ? <PersonAdd /> : <Login />
+                                }
+                                fullWidth
+                                sx={{ mt: 1 }}
+                            >
+                                {isSignup ? 'Create Account' : 'Sign In'}
+                            </Button>
+
+                            <Box sx={{ textAlign: 'center', mt: 2 }}>
+                                <Typography
+                                    level="body-sm"
+                                    sx={{ color: 'text.secondary' }}
+                                >
+                                    {isSignup
+                                        ? 'Already have an account?'
+                                        : "Don't have an account?"}{' '}
+                                    <Link
+                                        href={isSignup ? '/login' : '/signup'}
+                                        passHref
+                                    >
+                                        <Typography
+                                            component="a"
+                                            level="body-sm"
+                                            sx={{
+                                                color: 'primary.500',
+                                                fontWeight: 600,
+                                                textDecoration: 'none',
+                                                '&:hover': {
+                                                    textDecoration: 'underline',
+                                                },
+                                            }}
+                                        >
+                                            {isSignup ? 'Sign in' : 'Sign up'}
+                                        </Typography>
+                                    </Link>
+                                </Typography>
+                            </Box>
                         </Box>
                     </form>
                 </Box>
             </CardContent>
         </Card>
-    );
+    )
 }

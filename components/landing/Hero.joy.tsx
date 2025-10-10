@@ -100,7 +100,14 @@ export function Hero() {
                               transition: { duration: 0.8 },
                           })}
                 >
-                    <Box sx={{ display: 'flex', flexDirection: 'column', gap: 6, alignItems: 'center' }}>
+                    <Box
+                        sx={{
+                            display: 'flex',
+                            flexDirection: 'column',
+                            gap: 6,
+                            alignItems: 'center',
+                        }}
+                    >
                         {/* Badge */}
                         <motion.div
                             {...(prefersReducedMotion
@@ -132,7 +139,11 @@ export function Hero() {
                             <Typography
                                 level="h1"
                                 sx={{
-                                    fontSize: { xs: '3rem', sm: '4rem', lg: '5rem' },
+                                    fontSize: {
+                                        xs: '3rem',
+                                        sm: '4rem',
+                                        lg: '5rem',
+                                    },
                                     fontWeight: 700,
                                     lineHeight: 1.1,
                                     mb: 0,
@@ -142,7 +153,8 @@ export function Hero() {
                                     component="span"
                                     sx={{
                                         color: 'primary.500',
-                                        textShadow: '0 0 30px var(--joy-palette-primary-softBg)',
+                                        textShadow:
+                                            '0 0 30px var(--joy-palette-primary-softBg)',
                                     }}
                                 >
                                     Deanmachines
@@ -167,58 +179,66 @@ export function Hero() {
                                     color: 'text.secondary',
                                 }}
                             >
-                                Secure, compliant AI solutions with role-based access
-                                control. Transform your enterprise knowledge into
-                                actionable insights while maintaining complete
-                                governance and audit trails.
+                                Secure, compliant AI solutions with role-based
+                                access control. Transform your enterprise
+                                knowledge into actionable insights while
+                                maintaining complete governance and audit
+                                trails.
                             </Typography>
                         </motion.div>
 
                         {/* CTA Buttons */}
                         <motion.div {...fadeUp(0.8)}>
-                            <Box sx={{ display: 'flex', flexDirection: { xs: 'column', sm: 'row' }, gap: 3, pt: 4 }}>
-                                    <Link href="/demo-rag">
-                                        <Button
-                                            size="lg"
-                                            endDecorator={<ArrowRight size={20} />}
-                                            sx={{
-                                                px: 4,
-                                                py: 2,
-                                                fontSize: 'lg',
-                                                fontWeight: 600,
-                                                boxShadow: 'lg',
-                                                '&:hover': {
-                                                    transform: 'scale(1.05)',
-                                                    boxShadow: 'xl',
-                                                },
-                                                transition: 'all 0.2s',
-                                            }}
-                                        >
-                                            Try the Demo
-                                        </Button>
-                                    </Link>
+                            <Box
+                                sx={{
+                                    display: 'flex',
+                                    flexDirection: { xs: 'column', sm: 'row' },
+                                    gap: 3,
+                                    pt: 4,
+                                }}
+                            >
+                                <Link href="/demo-rag">
+                                    <Button
+                                        size="lg"
+                                        endDecorator={<ArrowRight size={20} />}
+                                        sx={{
+                                            px: 4,
+                                            py: 2,
+                                            fontSize: 'lg',
+                                            fontWeight: 600,
+                                            boxShadow: 'lg',
+                                            '&:hover': {
+                                                transform: 'scale(1.05)',
+                                                boxShadow: 'xl',
+                                            },
+                                            transition: 'all 0.2s',
+                                        }}
+                                    >
+                                        Try the Demo
+                                    </Button>
+                                </Link>
 
-                                    <Link href="/docs">
-                                        <Button
-                                            variant="outlined"
-                                            size="lg"
-                                            sx={{
-                                                px: 4,
-                                                py: 2,
-                                                fontSize: 'lg',
-                                                fontWeight: 600,
-                                                borderWidth: 2,
-                                                '&:hover': {
-                                                    borderColor: 'primary.500',
-                                                    bgcolor: 'primary.softBg',
-                                                },
-                                                transition: 'all 0.2s',
-                                            }}
-                                        >
-                                            View Documentation
-                                        </Button>
-                                    </Link>
-                                </Box>
+                                <Link href="/docs">
+                                    <Button
+                                        variant="outlined"
+                                        size="lg"
+                                        sx={{
+                                            px: 4,
+                                            py: 2,
+                                            fontSize: 'lg',
+                                            fontWeight: 600,
+                                            borderWidth: 2,
+                                            '&:hover': {
+                                                borderColor: 'primary.500',
+                                                bgcolor: 'primary.softBg',
+                                            },
+                                            transition: 'all 0.2s',
+                                        }}
+                                    >
+                                        View Documentation
+                                    </Button>
+                                </Link>
+                            </Box>
                         </motion.div>
 
                         {/* Trust indicators */}
@@ -235,33 +255,69 @@ export function Hero() {
                                 sx={{
                                     pt: 12,
                                     display: 'grid',
-                                    gridTemplateColumns: { xs: '1fr', sm: 'repeat(3, 1fr)' },
+                                    gridTemplateColumns: {
+                                        xs: '1fr',
+                                        sm: 'repeat(3, 1fr)',
+                                    },
                                     gap: 4,
                                     maxWidth: 640,
                                     mx: 'auto',
                                 }}
                             >
                                 <Box sx={{ textAlign: 'center' }}>
-                                    <Typography level="h2" sx={{ fontSize: '2xl', fontWeight: 700, color: 'primary.500', mb: 0.5 }}>
+                                    <Typography
+                                        level="h2"
+                                        sx={{
+                                            fontSize: '2xl',
+                                            fontWeight: 700,
+                                            color: 'primary.500',
+                                            mb: 0.5,
+                                        }}
+                                    >
                                         99.9%
                                     </Typography>
-                                    <Typography level="body-sm" sx={{ color: 'text.tertiary' }}>
+                                    <Typography
+                                        level="body-sm"
+                                        sx={{ color: 'text.tertiary' }}
+                                    >
                                         Uptime SLA
                                     </Typography>
                                 </Box>
                                 <Box sx={{ textAlign: 'center' }}>
-                                    <Typography level="h2" sx={{ fontSize: '2xl', fontWeight: 700, color: 'primary.500', mb: 0.5 }}>
+                                    <Typography
+                                        level="h2"
+                                        sx={{
+                                            fontSize: '2xl',
+                                            fontWeight: 700,
+                                            color: 'primary.500',
+                                            mb: 0.5,
+                                        }}
+                                    >
                                         SOC 2
                                     </Typography>
-                                    <Typography level="body-sm" sx={{ color: 'text.tertiary' }}>
+                                    <Typography
+                                        level="body-sm"
+                                        sx={{ color: 'text.tertiary' }}
+                                    >
                                         Compliant
                                     </Typography>
                                 </Box>
                                 <Box sx={{ textAlign: 'center' }}>
-                                    <Typography level="h2" sx={{ fontSize: '2xl', fontWeight: 700, color: 'primary.500', mb: 0.5 }}>
+                                    <Typography
+                                        level="h2"
+                                        sx={{
+                                            fontSize: '2xl',
+                                            fontWeight: 700,
+                                            color: 'primary.500',
+                                            mb: 0.5,
+                                        }}
+                                    >
                                         24/7
                                     </Typography>
-                                    <Typography level="body-sm" sx={{ color: 'text.tertiary' }}>
+                                    <Typography
+                                        level="body-sm"
+                                        sx={{ color: 'text.tertiary' }}
+                                    >
                                         Support
                                     </Typography>
                                 </Box>
@@ -301,13 +357,29 @@ export function Hero() {
                         }}
                     >
                         {prefersReducedMotion ? (
-                            <Box sx={{ width: 4, height: 12, bgcolor: 'primary.500', borderRadius: 'xl', mt: 1 }} />
+                            <Box
+                                sx={{
+                                    width: 4,
+                                    height: 12,
+                                    bgcolor: 'primary.500',
+                                    borderRadius: 'xl',
+                                    mt: 1,
+                                }}
+                            />
                         ) : (
                             <motion.div
                                 animate={{ y: [0, 12, 0] }}
                                 transition={{ duration: 1.5, repeat: Infinity }}
                             >
-                                <Box sx={{ width: 4, height: 12, bgcolor: 'primary.500', borderRadius: 'xl', mt: 1 }} />
+                                <Box
+                                    sx={{
+                                        width: 4,
+                                        height: 12,
+                                        bgcolor: 'primary.500',
+                                        borderRadius: 'xl',
+                                        mt: 1,
+                                    }}
+                                />
                             </motion.div>
                         )}
                     </Box>

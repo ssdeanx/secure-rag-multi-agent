@@ -37,7 +37,11 @@ export function ValuesGrid() {
     const prefReduce = reduce === true
 
     return (
-        <Box component="section" aria-labelledby="values-heading" sx={{ py: 10 }}>
+        <Box
+            component="section"
+            aria-labelledby="values-heading"
+            sx={{ py: 10 }}
+        >
             <Box sx={{ maxWidth: 1152, mx: 'auto', px: 2 }}>
                 <Box sx={{ mb: 5, textAlign: 'center' }}>
                     <Typography
@@ -46,7 +50,14 @@ export function ValuesGrid() {
                     >
                         Our Core Values
                     </Typography>
-                    <Typography level="body-lg" sx={{ color: 'text.secondary', maxWidth: 640, mx: 'auto' }}>
+                    <Typography
+                        level="body-lg"
+                        sx={{
+                            color: 'text.secondary',
+                            maxWidth: 640,
+                            mx: 'auto',
+                        }}
+                    >
                         Principles that guide every design decision—from API
                         surface to user onboarding.
                     </Typography>
@@ -57,7 +68,11 @@ export function ValuesGrid() {
                     aria-label="Company values"
                     sx={{
                         display: 'grid',
-                        gridTemplateColumns: { xs: '1fr', sm: 'repeat(2, 1fr)', lg: 'repeat(4, 1fr)' },
+                        gridTemplateColumns: {
+                            xs: '1fr',
+                            sm: 'repeat(2, 1fr)',
+                            lg: 'repeat(4, 1fr)',
+                        },
                         gap: 3,
                         listStyle: 'none',
                         p: 0,
@@ -92,10 +107,20 @@ export function ValuesGrid() {
                                     }}
                                 >
                                     <CardContent>
-                                        <Typography level="h4" sx={{ fontSize: 'lg', fontWeight: 600, mb: 1 }}>
+                                        <Typography
+                                            level="h4"
+                                            sx={{
+                                                fontSize: 'lg',
+                                                fontWeight: 600,
+                                                mb: 1,
+                                            }}
+                                        >
                                             {val.title}
                                         </Typography>
-                                        <Typography level="body-sm" sx={{ color: 'text.secondary' }}>
+                                        <Typography
+                                            level="body-sm"
+                                            sx={{ color: 'text.secondary' }}
+                                        >
                                             {val.description}
                                         </Typography>
                                     </CardContent>

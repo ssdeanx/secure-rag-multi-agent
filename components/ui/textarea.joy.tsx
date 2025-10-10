@@ -126,16 +126,16 @@ export interface TextareaProps {
 
 /**
  * Textarea component with auto-resize and custom focus ring.
- * 
+ *
  * @example Basic usage
  * ```tsx
- * <Textarea 
- *   placeholder="Enter your message..." 
+ * <Textarea
+ *   placeholder="Enter your message..."
  *   minRows={3}
  *   maxRows={10}
  * />
  * ```
- * 
+ *
  * @example With error state
  * ```tsx
  * <FormControl error>
@@ -144,7 +144,7 @@ export interface TextareaProps {
  *   <FormHelperText>This field is required</FormHelperText>
  * </FormControl>
  * ```
- * 
+ *
  * @example With decorators
  * ```tsx
  * <Textarea
