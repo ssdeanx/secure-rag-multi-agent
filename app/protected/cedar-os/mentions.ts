@@ -2,7 +2,7 @@ import React from 'react'
 import type { Node, Edge } from 'reactflow'
 import { getCedarState, useStateBasedMentionProvider } from 'cedar-os'
 import { ArrowRight, Box } from 'lucide-react'
-import type { FeatureNodeData } from '../../cedar/FeatureNode'
+import type { FeatureNodeData } from '../../../cedar/FeatureNode'
 
 // [STEP 5]: To enable @ mentions, we use the useStateBasedMentionProvider hook.
 // This allows the user to reference any state value from the chat using something like @nodeName

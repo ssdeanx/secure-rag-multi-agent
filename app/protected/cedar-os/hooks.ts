@@ -1,6 +1,6 @@
 import type React from 'react'
 import type { Node, Edge } from 'reactflow'
-import type { FeatureNodeData } from '../../cedar/FeatureNode'
+import type { FeatureNodeData } from '../../../cedar/FeatureNode'
 
 import { useRoadmapState } from './state'
 import { useRoadmapMentions } from './mentions'

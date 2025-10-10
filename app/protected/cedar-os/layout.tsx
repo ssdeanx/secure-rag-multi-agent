@@ -36,7 +36,8 @@ export default function CedarLayout({ children }: { children: ReactNode }) {
                 baseURL:
                     process.env.NEXT_PUBLIC_MASTRA_URL ??
                     'http://localhost:4111',
-                apiKey: process.env.NEXT_PUBLIC_MASTRA_API_KEY, // JWT for Mastra auth
+                // Removed apiKey since the chatWorkflow1 doesn't need JWT authentication
+                // apiKey: process.env.NEXT_PUBLIC_JWT_TOKEN ?? '', // #FIXME - Not needed for this workflow
                 chatPath: '/chat', // Cedar auto-appends /stream for streaming
                 //              resumePath: '',
                 //              voiceRoute: ''

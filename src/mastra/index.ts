@@ -83,7 +83,7 @@ export const mastra = new Mastra({
                         secretKey: process.env.LANGFUSE_SECRET_KEY,
                         baseUrl: process.env.LANGFUSE_BASE_URL, // Optional
                         realtime: process.env.NODE_ENV === 'development',
-                        logLevel: 'info',
+                        logLevel: 'warn',
                         options: {
                             batchSize: 200,
                             flushInterval: 5000,
@@ -95,10 +95,10 @@ export const mastra = new Mastra({
                       // Add custom sensitive fields
                         sensitiveFields: [
                         // Default fields
-                        'password', 'token', 'secret', 'key', 'apikey',
+                        'password', 'token', 'secret', 'key', 'apikey', 'auth', 'authorization', 'bearer', 'bearertoken', 'jwt', 'credential', 'clientsecret', 'privatekey', 'refresh', 'ssn',
                         // Custom fields for your application
                         'creditCard', 'bankAccount', 'routingNumber',
-                        'email', 'phoneNumber', 'dateOfBirth',
+                        'email', 'phoneNumber', 'dateOfBirth', 'socialSecurityNumber', 'address'
                         ],
                         // Custom redaction token
                         redactionToken: '***SENSITIVE***',
