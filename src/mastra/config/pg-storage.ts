@@ -10,6 +10,7 @@ import type { TracingContext } from '@mastra/core/ai-tracing'
 import { TokenLimiter } from "@mastra/memory/processors";
 import { google } from '@ai-sdk/google'
 
+log.info('Loading PG Storage config with PgVector support')
 // Production-grade PostgreSQL configuration with supported options
 export const pgStore = new PostgresStore({
     // Connection configuration
@@ -54,11 +55,13 @@ export const pgMemory = new Memory({
                 before: parseInt(process.env.SEMANTIC_RANGE_BEFORE ?? '3'),
                 after: parseInt(process.env.SEMANTIC_RANGE_AFTER ?? '2'),
             },
+            scope: 'resource', // 'resource' | 'thread'
         },
         // Enhanced working memory with supported template
         workingMemory: {
             enabled: true,
             scope: 'resource', // 'resource' | 'thread'
+            version: 'vnext', // Enable the improved/experimental tool
             template: `
 # User Profile & Context
 ## Personal Information
@@ -91,7 +94,6 @@ export const pgMemory = new Memory({
 - **Action Items**: [To be learned]
 - **Follow-ups Needed**: [To be learned]
         `,
-            version: 'vnext', // Enable the improved/experimental tool
         },
         // Thread management with supported options
         threads: {
@@ -103,25 +105,57 @@ export const pgMemory = new Memory({
     ],
 })
 
+log.info('PG Store and Memory initialized with PgVector support', {
+    schema: process.env.DB_SCHEMA ?? 'public',
+    maxConnections: parseInt(process.env.DB_MAX_CONNECTIONS ?? '20'),
+    memoryOptions: {
+        lastMessages: parseInt(process.env.MEMORY_LAST_MESSAGES ?? '500'),
+        semanticRecall: {
+            topK: parseInt(process.env.SEMANTIC_TOP_K ?? '5'),
+            messageRange: {
+                before: parseInt(process.env.SEMANTIC_RANGE_BEFORE ?? '3'),
+                after: parseInt(process.env.SEMANTIC_RANGE_AFTER ?? '2'),
+            },
+            scope: 'resource',
+        },
+        workingMemory: {
+            enabled: true,
+            scope: 'resource',
+            version: 'vnext',
+        },
+        threads: {
+            generateTitle: process.env.THREAD_GENERATE_TITLE !== 'true',
+        },
+    },
+})
+
 // Graph-based RAG tool using PgVector
 export const graphQueryTool = createGraphRAGTool({
+    id: 'graph-rag',
+    description:
+        'Graph-based retrieval augmented generation using PostgreSQL and PgVector for advanced semantic search and context retrieval.',
+    // Supported vector store and index options
     vectorStoreName: 'pgVector',
     indexName: 'governed_rag',
     model: google.textEmbedding('gemini-embedding-001'),
-
     // Supported graph options
     graphOptions: {
+        dimension: 1568,
         threshold: parseFloat(process.env.GRAPH_THRESHOLD ?? '0.7'),
         randomWalkSteps: parseInt(process.env.GRAPH_RANDOM_WALK_STEPS ?? '10'),
         restartProb: parseFloat(process.env.GRAPH_RESTART_PROB ?? '0.15'),
     },
-
+    includeSources: true,
     // Filtering and ranking
     enableFilter: true,
 })
 
 // PostgreSQL vector query tool using PgVector
 export const pgQueryTool = createVectorQueryTool({
+    id: 'vector-query',
+    description:
+        'PostgreSQL vector similarity search using PgVector for semantic content retrieval and question answering.',
+    // Supported vector store and index options
     vectorStoreName: 'pgVector',
     indexName: 'governed_rag',
     model: google.textEmbedding('gemini-embedding-001'),
@@ -133,10 +167,10 @@ export const pgQueryTool = createVectorQueryTool({
             probes: parseInt(process.env.PG_PROBES ?? '10'), // IVFFlat probe parameter
         },
     },
+    includeVectors: true,
     // Advanced filtering
     enableFilter: true,
-    description:
-        'Advanced vector search with filtering and ranking for PostgreSQL semantic content retrieval.',
+    includeSources: true,
 })
 
 // Production-grade embedding generation with tracing
