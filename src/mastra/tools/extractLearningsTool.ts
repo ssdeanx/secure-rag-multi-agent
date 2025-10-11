@@ -61,27 +61,45 @@ export const extractLearningsTool = createTool({
             - learning: string with the key insight from the content
             - followUpQuestions: array of up to 1 follow-up question for deeper research`,
                     },
-                ],
-                {
-                    experimental_output: z.object({
-                        learning: z.string(),
-                        followUpQuestions: z.array(z.string()).max(1),
-                    }),
-                }
+                ]
             )
+
+            const outputSchema = z.object({
+                learning: z.string(),
+                followUpQuestions: z.array(z.string()).max(1),
+            })
 
             log.info('Learning extraction response', {
                 result: response.object,
             })
 
+            const parsed = outputSchema.safeParse(response.object)
+
+            if (!parsed.success) {
+                log.warn('Learning extraction agent returned unexpected shape', {
+                    response: response.object,
+                })
+                extractSpan?.end({
+                    output: {
+                        learningLength: (response.object as any)?.learning?.length ?? 0,
+                        followUpQuestionsCount:
+                            (response.object as any)?.followUpQuestions?.length ?? 0,
+                    },
+                    metadata: { invalidResponse: true },
+                })
+                return {
+                    learning: 'Invalid response format from learning extraction agent',
+                    followUpQuestions: [],
+                }
+            }
+
             extractSpan?.end({
                 output: {
-                    learningLength: response.object?.learning?.length ?? 0,
-                    followUpQuestionsCount:
-                        response.object?.followUpQuestions?.length ?? 0,
+                    learningLength: parsed.data.learning.length,
+                    followUpQuestionsCount: parsed.data.followUpQuestions.length,
                 },
             })
-            return response.object
+            return parsed.data
         } catch (error) {
             log.error('Error extracting learnings', {
                 error: error instanceof Error ? error.message : String(error),

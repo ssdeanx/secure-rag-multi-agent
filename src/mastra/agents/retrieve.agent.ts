@@ -11,7 +11,7 @@
 // approvedBy: TODO
 // approvalDate: TODO
 
-import { Agent } from '@mastra/core'
+import { Agent } from '@mastra/core/agent'
 import { retrieveOutputSchema } from '../schemas/agent-schemas'
 import { vectorQueryTool } from '../tools/vector-query.tool'
 import { log } from '../config/logger'

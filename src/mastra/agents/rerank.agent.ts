@@ -1,4 +1,4 @@
-import { Agent } from '@mastra/core'
+import { Agent } from '@mastra/core/agent'
 import { rerankOutputSchema } from '../schemas/agent-schemas'
 import { google } from '@ai-sdk/google'
 import { log } from '../config/logger'

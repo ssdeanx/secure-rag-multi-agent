@@ -1,4 +1,4 @@
-import { Agent } from '@mastra/core'
+import { Agent } from '@mastra/core/agent'
 
 import { openAIModel } from '../config/openai'
 import { policyOutputSchema } from '../schemas/agent-schemas'

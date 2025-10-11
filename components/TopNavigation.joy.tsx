@@ -9,8 +9,8 @@ import {
     List,
     ListItem,
     ListItemButton,
+    Link,
 } from '@/components/ui/joy'
-import Link from 'next/link'
 import { usePathname, useRouter } from 'next/navigation'
 import {
     Menu as MenuIcon,
@@ -88,7 +88,7 @@ export function TopNavigation({ user }: TopNavigationProps) {
                     }}
                 >
                     {/* Logo */}
-                    <Link href="/" aria-label="Deanmachines home">
+                    <Link href="/" aria-label="Deanmachines home" sx={{ textDecoration: 'none' }}>
                         <Box
                             component="span"
                             sx={{
@@ -247,7 +247,7 @@ export function TopNavigation({ user }: TopNavigationProps) {
                                 >
                                     Sign In
                                 </Button>
-                            </Link>
+                                </Link>
                         )}
 
                         {/* Mobile Menu Button */}
@@ -304,16 +304,13 @@ export function TopNavigation({ user }: TopNavigationProps) {
                             mb: 3,
                         }}
                     >
-                        <div
+                        <Box
                             id="mobile-menu-heading"
-                            style={{
-                                margin: 0,
-                                fontWeight: 700,
-                                fontSize: '1.125rem',
-                            }}
+                            component="div"
+                            sx={{ m: 0, fontWeight: 700, fontSize: '1.125rem' }}
                         >
-                            Menu
-                        </div>
+                            <Typography level="title-md">Menu</Typography>
+                        </Box>
                         <Button
                             variant="plain"
                             color="neutral"
@@ -374,7 +371,7 @@ export function TopNavigation({ user }: TopNavigationProps) {
 
                         {!user && (
                             <ListItem sx={{ mt: 2, p: 0 }}>
-                                <Link href="/login" style={{ width: '100%' }}>
+                                <Link href="/login" sx={{ width: '100%', display: 'block' }}>
                                     <Button
                                         component="span"
                                         variant="solid"

@@ -5,7 +5,7 @@ import { Box as JoyBox, Grid as JoyGrid, Stack as JoyStack } from '@mui/joy'
 import type { SxProps } from '@mui/system'
 
 // Box Component
-export interface BoxProps {
+export type BoxProps = React.ComponentPropsWithoutRef<typeof JoyBox> & {
     children?: React.ReactNode
     sx?: SxProps
     component?: React.ElementType

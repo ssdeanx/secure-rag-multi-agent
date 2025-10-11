@@ -1,11 +1,14 @@
-import { inject, injectable } from "inversify";
+import { injectable } from "inversify";
 import { JSDOM } from "jsdom";
-import { Config } from "../../../domain/aggregates/config.js";
+import type { Config } from "../../../domain/aggregates/config.js";
 
 @injectable()
 export class VideoService {
-  @inject(Config)
-  config!: Config;
+  private readonly config: Config;
+
+  constructor(config: Config) {
+    this.config = config;
+  }
 
   async getTranscript(videoId: string): Promise<string> {
     const response = await fetch(

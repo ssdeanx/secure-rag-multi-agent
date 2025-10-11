@@ -12,8 +12,8 @@ import {
     Divider,
     Breadcrumbs,
     Link as JoyLink,
+    Link,
 } from '@/components/ui/joy'
-import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import {
     Menu as MenuIcon,
@@ -161,7 +161,14 @@ function SidebarContent({ onLinkClick }: { onLinkClick?: () => void }) {
                                                 '--ListItem-paddingY': '0px',
                                             }}
                                         >
-                                            <Link href={item.href} passHref>
+                                            <Link
+                                                href={item.href}
+                                                sx={{
+                                                    textDecoration: 'none',
+                                                    display: 'block',
+                                                    width: '100%',
+                                                }}
+                                            >
                                                 <ListItemButton
                                                     selected={isActive(
                                                         item.href

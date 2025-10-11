@@ -1,6 +1,6 @@
 import { inject, injectable } from "inversify";
 import { DB_SYMBOL, type DB } from "../database/mongodb.js";
-import type { Project} from "../../domain/aggregates/project/index.js";
+import type { Project } from "../../domain/aggregates/project/index.js";
 import { ProjectFactory } from "../../domain/aggregates/project/index.js";
 
 @injectable()

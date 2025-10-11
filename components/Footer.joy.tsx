@@ -1,7 +1,6 @@
 'use client'
 
-import { Box, Typography, Divider, Chip, Stack } from '@/components/ui/joy'
-import Link from 'next/link'
+import { Box, Typography, Divider, Chip, Stack, Link } from '@/components/ui/joy'
 import {
     GitHub,
     Language,
@@ -182,26 +181,17 @@ export function Footer() {
                         >
                             Product
                         </Typography>
-                        <Stack spacing={1.5}>
-                            {footerLinks.product.map((link) => (
-                                <Link key={link.href} href={link.href}>
-                                    <Typography
-                                        component="span"
-                                        level="body-sm"
-                                        sx={{
-                                            color: 'text.secondary',
-                                            textDecoration: 'none',
-                                            transition: 'color 160ms ease',
-                                            '&:hover': {
-                                                color: 'primary.500',
-                                            },
-                                        }}
-                                    >
-                                        {link.label}
-                                    </Typography>
-                                </Link>
-                            ))}
-                        </Stack>
+                        <Box component="nav" aria-label="Product links">
+                            <Box component="ul" sx={{ listStyle: 'none', m: 0, p: 0 }}>
+                                {footerLinks.product.map((link) => (
+                                    <Box component="li" key={link.href} sx={{ mb: 1 }}>
+                                        <Link href={link.href} level="body-sm" underline="hover" sx={{ color: 'text.secondary' }}>
+                                            {link.label}
+                                        </Link>
+                                    </Box>
+                                ))}
+                            </Box>
+                        </Box>
                     </Box>
 
                     {/* Company Column */}
@@ -216,26 +206,17 @@ export function Footer() {
                         >
                             Company
                         </Typography>
-                        <Stack spacing={1.5}>
-                            {footerLinks.company.map((link) => (
-                                <Link key={link.href} href={link.href}>
-                                    <Typography
-                                        component="span"
-                                        level="body-sm"
-                                        sx={{
-                                            color: 'text.secondary',
-                                            textDecoration: 'none',
-                                            transition: 'color 160ms ease',
-                                            '&:hover': {
-                                                color: 'primary.500',
-                                            },
-                                        }}
-                                    >
-                                        {link.label}
-                                    </Typography>
-                                </Link>
-                            ))}
-                        </Stack>
+                        <Box component="nav" aria-label="Company links">
+                            <Box component="ul" sx={{ listStyle: 'none', m: 0, p: 0 }}>
+                                {footerLinks.company.map((link) => (
+                                    <Box component="li" key={link.href} sx={{ mb: 1 }}>
+                                        <Link href={link.href} level="body-sm" underline="hover" sx={{ color: 'text.secondary' }}>
+                                            {link.label}
+                                        </Link>
+                                    </Box>
+                                ))}
+                            </Box>
+                        </Box>
                     </Box>
 
                     {/* Resources Column */}
@@ -250,26 +231,17 @@ export function Footer() {
                         >
                             Resources
                         </Typography>
-                        <Stack spacing={1.5}>
-                            {footerLinks.resources.map((link) => (
-                                <Link key={link.href} href={link.href}>
-                                    <Typography
-                                        component="span"
-                                        level="body-sm"
-                                        sx={{
-                                            color: 'text.secondary',
-                                            textDecoration: 'none',
-                                            transition: 'color 160ms ease',
-                                            '&:hover': {
-                                                color: 'primary.500',
-                                            },
-                                        }}
-                                    >
-                                        {link.label}
-                                    </Typography>
-                                </Link>
-                            ))}
-                        </Stack>
+                        <Box component="nav" aria-label="Resources links">
+                            <Box component="ul" sx={{ listStyle: 'none', m: 0, p: 0 }}>
+                                {footerLinks.resources.map((link) => (
+                                    <Box component="li" key={link.href} sx={{ mb: 1 }}>
+                                        <Link href={link.href} level="body-sm" underline="hover" sx={{ color: 'text.secondary' }}>
+                                            {link.label}
+                                        </Link>
+                                    </Box>
+                                ))}
+                            </Box>
+                        </Box>
                     </Box>
 
                     {/* Legal Column */}
@@ -284,26 +256,17 @@ export function Footer() {
                         >
                             Legal
                         </Typography>
-                        <Stack spacing={1.5}>
-                            {footerLinks.legal.map((link) => (
-                                <Link key={link.href} href={link.href}>
-                                    <Typography
-                                        component="span"
-                                        level="body-sm"
-                                        sx={{
-                                            color: 'text.secondary',
-                                            textDecoration: 'none',
-                                            transition: 'color 160ms ease',
-                                            '&:hover': {
-                                                color: 'primary.500',
-                                            },
-                                        }}
-                                    >
-                                        {link.label}
-                                    </Typography>
-                                </Link>
-                            ))}
-                        </Stack>
+                        <Box component="nav" aria-label="Legal links">
+                            <Box component="ul" sx={{ listStyle: 'none', m: 0, p: 0 }}>
+                                {footerLinks.legal.map((link) => (
+                                    <Box component="li" key={link.href} sx={{ mb: 1 }}>
+                                        <Link href={link.href} level="body-sm" underline="hover" sx={{ color: 'text.secondary' }}>
+                                            {link.label}
+                                        </Link>
+                                    </Box>
+                                ))}
+                            </Box>
+                        </Box>
                     </Box>
                 </Box>
 

@@ -7,8 +7,8 @@ import {
     Box,
     Chip,
     Avatar,
+    Link,
 } from '@/components/ui/joy'
-import Link from 'next/link'
 import { motion } from 'framer-motion'
 import { CalendarMonth, Person, AccessTime } from '@mui/icons-material'
 
@@ -53,7 +53,11 @@ export function ArticleCard({
             viewport={{ once: true }}
             transition={{ duration: 0.5 }}
         >
-            <Link href={`/blog/${slug}`} aria-label={`Read article: ${title}`}>
+            <Link
+                href={`/blog/${slug}`}
+                aria-label={`Read article: ${title}`}
+                sx={{ textDecoration: 'none', display: 'block' }}
+            >
                 <Card
                     variant="outlined"
                     sx={{

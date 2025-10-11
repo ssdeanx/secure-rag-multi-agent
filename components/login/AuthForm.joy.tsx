@@ -11,6 +11,7 @@ import {
     CardContent,
     Divider,
     Checkbox,
+    Link,
 } from '@/components/ui/joy'
 import {
     Visibility,
@@ -19,7 +20,6 @@ import {
     PersonAdd,
     GitHub,
 } from '@mui/icons-material'
-import Link from 'next/link'
 
 interface AuthFormProps {
     mode: 'login' | 'signup'
@@ -310,19 +310,12 @@ export function AuthForm({ mode }: AuthFormProps) {
                                         justifyContent: 'flex-end',
                                     }}
                                 >
-                                    <Link href="/forgot-password">
-                                        <Typography
-                                            level="body-sm"
-                                            sx={{
-                                                color: 'primary.500',
-                                                textDecoration: 'none',
-                                                '&:hover': {
-                                                    textDecoration: 'underline',
-                                                },
-                                            }}
-                                        >
-                                            Forgot password?
-                                        </Typography>
+                                    <Link
+                                        href="/forgot-password"
+                                        level="body-sm"
+                                        color="primary"
+                                    >
+                                        Forgot password?
                                     </Link>
                                 </Box>
                             )}
@@ -359,20 +352,13 @@ export function AuthForm({ mode }: AuthFormProps) {
                             {isSignup
                                 ? 'Already have an account?'
                                 : "Don't have an account?"}{' '}
-                            <Link href={isSignup ? '/login' : '/signup'}>
-                                <Typography
-                                    level="body-sm"
-                                    sx={{
-                                        color: 'primary.500',
-                                        fontWeight: 600,
-                                        textDecoration: 'none',
-                                        '&:hover': {
-                                            textDecoration: 'underline',
-                                        },
-                                    }}
-                                >
-                                    {isSignup ? 'Sign in' : 'Sign up'}
-                                </Typography>
+                            <Link
+                                href={isSignup ? '/login' : '/signup'}
+                                level="body-sm"
+                                color="primary"
+                                sx={{ fontWeight: 600 }}
+                            >
+                                {isSignup ? 'Sign in' : 'Sign up'}
                             </Link>
                         </Typography>
                     </Box>

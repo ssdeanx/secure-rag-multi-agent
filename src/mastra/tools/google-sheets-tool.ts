@@ -1,6 +1,7 @@
 import { createTool } from "@mastra/core/tools";
 import { z } from "zod";
 import Arcade from "@arcadeai/arcadejs";
+import { log } from "../config/logger";
 
 interface ToolConfig {
   arcadeApiKey?: string | undefined;
@@ -13,11 +14,11 @@ export const googleSheetsTool = ({ arcadeApiKey, arcadeUserId, defaultSpreadshee
   if (!arcadeApiKey || arcadeApiKey.trim() === '') {
     throw new Error("ARCADE_API_KEY is required but not provided or is empty");
   }
-  
+
   if (!arcadeUserId || arcadeUserId.trim() === '') {
     throw new Error("ARCADE_USER_ID is required but not provided or is empty");
   }
-  
+
   if (!defaultSpreadsheetId || defaultSpreadsheetId.trim() === '') {
     throw new Error("GOOGLE_SHEETS_SPREADSHEET_ID is required but not provided or is empty");
   }
@@ -34,8 +35,8 @@ export const googleSheetsTool = ({ arcadeApiKey, arcadeUserId, defaultSpreadshee
       error: z.string().optional().describe("Error message if any"),
     }),
     execute: async ({ context  }) => {
-      const finalSpreadsheetId = context?.spreadsheet_id || defaultSpreadsheetId;
-      
+      const finalSpreadsheetId = context?.spreadsheet_id ?? defaultSpreadsheetId;
+
       // Runtime validation for spreadsheet ID
       if (!finalSpreadsheetId || finalSpreadsheetId.trim() === '') {
         return {
@@ -44,7 +45,7 @@ export const googleSheetsTool = ({ arcadeApiKey, arcadeUserId, defaultSpreadshee
           error: "Spreadsheet ID is required but not provided",
         };
       }
-      
+
       try {
         const client = new Arcade({
             "apiKey": arcadeApiKey,
@@ -60,7 +61,7 @@ export const googleSheetsTool = ({ arcadeApiKey, arcadeUserId, defaultSpreadshee
             },
             user_id: arcadeUserId,
           });
-          
+
           return {
             data: testResult,
             success: true,
@@ -68,8 +69,8 @@ export const googleSheetsTool = ({ arcadeApiKey, arcadeUserId, defaultSpreadshee
         } catch (error: any) {
           // If execution fails, we might need authorization
           if (error.message?.includes("authorization") || error.message?.includes("auth")) {
-            console.log("Tool needs authorization, starting auth flow...");
-            
+            log.info("Tool needs authorization, starting auth flow...");
+
             // Authorize the tool
             const auth = await client.tools.authorize({
               tool_name: "GoogleSheets.GetSpreadsheet@3.0.0",
@@ -78,8 +79,8 @@ export const googleSheetsTool = ({ arcadeApiKey, arcadeUserId, defaultSpreadshee
 
             // Check if authorization is completed
             if (auth?.status !== "completed") {
-              console.log(`Click here to authorize the tool: ${auth?.url}`);
-              
+              log.info(`Click here to authorize the tool: ${auth?.url}`);
+
               // Wait for authorization to complete
               const { status } = await client.auth.waitForCompletion(auth);
 
@@ -91,7 +92,7 @@ export const googleSheetsTool = ({ arcadeApiKey, arcadeUserId, defaultSpreadshee
                 };
               }
 
-              console.log("🚀 Authorization successful!");
+              log.info("🚀 Authorization successful!");
             }
 
             // Now try to execute the tool again
@@ -113,11 +114,11 @@ export const googleSheetsTool = ({ arcadeApiKey, arcadeUserId, defaultSpreadshee
           }
         }
       } catch (error: any) {
-        console.error("Error fetching Google Spreadsheet:", error);
+        log.error("Error fetching Google Spreadsheet:", error);
         return {
           data: null,
           success: false,
-          error: error.message || "Unknown error occurred",
+          error: error.message ?? "Unknown error occurred",
         };
       }
     },
