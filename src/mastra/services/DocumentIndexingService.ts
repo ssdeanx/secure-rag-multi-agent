@@ -11,6 +11,7 @@ import { ValidationService } from './ValidationService'
 import type { StorageResult } from './VectorStorageService'
 import { VectorStorageService } from './VectorStorageService'
 import { RoleService } from './RoleService'
+import { log } from '../config/logger'
 
 export interface DocumentInput {
     filePath: string
@@ -52,7 +53,7 @@ export class DocumentIndexingService {
         maxChunkSize = 1000,
         overlap = 200
     ): string[] {
-        console.warn(
+        log.warn(
             'DocumentIndexingService.chunkText is deprecated. Use ChunkingService for better performance.'
         )
         // Use the new chunking service with character-based strategy for backward compatibility
@@ -108,7 +109,7 @@ export class DocumentIndexingService {
             )
             if (!isDepartmentSpecific && !roleSet.has('employee')) {
                 tags.push('role:employee')
-                console.log(
+                log.info(
                     `INDEXING: Auto-added 'employee' role for ${classification} document`
                 )
             }
@@ -117,7 +118,7 @@ export class DocumentIndexingService {
         // For public documents, add public access
         if (classification === 'public' && !roleSet.has('public')) {
             tags.push('role:public')
-            console.log(
+            log.info(
                 `INDEXING: Auto-added 'public' role for public document`
             )
         }
@@ -128,7 +129,7 @@ export class DocumentIndexingService {
         }
 
         // Log the generated tags using RoleService formatting for consistency
-        console.log(
+        log.info(
             `INDEXING: Generated security tags for ${classification} document:`,
             tags
         )
@@ -163,7 +164,7 @@ export class DocumentIndexingService {
      */
 
     static async generateEmbeddings(chunks: string[]): Promise<number[][]> {
-        console.warn(
+        log.warn(
             'DocumentIndexingService.generateEmbeddings is deprecated. Use EmbeddingService for better performance.'
         )
         const result: EmbeddingResult =
@@ -183,7 +184,7 @@ export class DocumentIndexingService {
         vectorStore: unknown,
         indexName: string
     ): Promise<void> {
-        console.warn(
+        log.warn(
             'DocumentIndexingService.storeVectors is deprecated. Use VectorStorageService for better performance.'
         )
 
@@ -200,10 +201,11 @@ export class DocumentIndexingService {
         if (!result.success) {
             throw new Error(`Storage failed: ${result.errors.join(', ')}`)
         }
-        console.log(
-            'DOCUMENT_INDEXING_SERVICE',
-            `Successfully stored ${result.totalVectors} chunks for document ${processedDoc.docId}`
-        )
+        log.info('DOCUMENT_INDEXING_SERVICE', {
+            message: `Successfully stored ${result.totalVectors} chunks for document ${processedDoc.docId}`,
+            totalVectors: result.totalVectors,
+            docId: processedDoc.docId,
+        })
     }
 
     /**
@@ -248,6 +250,7 @@ export class DocumentIndexingService {
             docs,
             vectorStore,
             indexName,
+            options,
             progressCallback
         )
     }

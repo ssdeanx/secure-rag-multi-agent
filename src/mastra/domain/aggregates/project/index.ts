@@ -4,13 +4,14 @@ import { randomUUID } from "crypto";
 import path from "path";
 import { tmpdir } from "os";
 import degit from "degit";
-import { inject, injectable } from "inversify";
-import { Config } from "../config.js";
+import { injectable } from "inversify";
+import type { Config } from "../config.js";
 import { spawn, spawnSync, type ChildProcess } from "child_process";
 import { readFileSync } from "fs";
 import { globby } from "globby";
 import http from "http";
 import https from "https";
+import { log } from '../../../config/logger.js';
 /**
  * Represents a port in the system.
  * Constructor should pick a random port between 3000 and 9000 if not provided.
@@ -102,21 +103,21 @@ export class Project {
     ),
     config: Config
   ) {
-    console.log(`[Project] Creating new Project instance`);
-    console.log(`[Project] Name: ${props.name}`);
-    console.log(`[Project] VideoURL: ${props.videoURL}`);
+    log.info(`[Project] Creating new Project instance`);
+    log.info(`[Project] Name: ${props.name}`);
+    log.info(`[Project] VideoURL: ${props.videoURL}`);
 
     this.name = props.name;
-    this.id = new Id(props.id || randomUUID());
-    console.log(`[Project] Assigned ID: ${this.id.value}`);
+    this.id = new Id(props.id ?? randomUUID());
+    log.info(`[Project] Assigned ID: ${this.id.value}`);
 
     this.port = new Port(props.port);
-    console.log(`[Project] Assigned port: ${this.port.number}`);
+    log.info(`[Project] Assigned port: ${this.port.number}`);
 
-    this.directory = props.directory || path.join(tmpdir(), this.id.value);
-    console.log(`[Project] Directory: ${this.directory}`);
+    this.directory = props.directory ?? path.join(tmpdir(), this.id.value);
+    log.info(`[Project] Directory: ${this.directory}`);
 
-    const status = props.status || "initialized";
+    const status = props.status ?? "initialized";
     const castedStatus = status as ProjectStatus;
     this.repoURL =
       "repoURL" in props
@@ -124,14 +125,14 @@ export class Project {
         : props.repoURLOrShorthand.startsWith("http")
           ? props.repoURLOrShorthand
           : `https://github.com/${props.repoURLOrShorthand}`;
-    console.log(`[Project] Repository URL: ${this.repoURL}`);
+    log.info(`[Project] Repository URL: ${this.repoURL}`);
 
     if (!AllowedProjectStatuses.includes(castedStatus)) {
-      console.error(`[Project] Invalid project status: ${castedStatus}`);
+      log.error(`[Project] Invalid project status: ${castedStatus}`);
       throw new Error(`Invalid project status: ${castedStatus}`);
     }
     this.status = castedStatus;
-    console.log(`[Project] Status: ${this.status}`);
+    log.info(`[Project] Status: ${this.status}`);
 
     this.videoURL = props.videoURL;
     this.description = props.description || "No description provided";
@@ -145,7 +146,7 @@ export class Project {
         : props.createdAt
       : new Date();
 
-    console.log(
+    log.info(
       `[Project] Project instance created successfully - ID: ${this.id.value}, CreatedAt: ${this.createdAt.toISOString()}`
     );
   }
@@ -161,7 +162,7 @@ export class Project {
    * - https://www.youtube.com/v/VIDEO_ID
    */
   get videoId() {
-    console.log(`[Project] Getting videoId for project ${this.id.value}`);
+    log.info(`[Project] Getting videoId for project ${this.id.value}`);
     const url = this.videoURL;
 
     // Match various YouTube URL patterns
@@ -173,17 +174,17 @@ export class Project {
     for (const pattern of patterns) {
       const match = url.match(pattern);
       if (match?.[1]) {
-        console.log(`[Project] Successfully extracted videoId: ${match[1]}`);
+        log.info(`[Project] Successfully extracted videoId: ${match[1]}`);
         return match[1];
       }
     }
 
-    console.error(`[Project] Unable to extract video ID from URL: ${url}`);
+    log.error(`[Project] Unable to extract video ID from URL: ${url}`);
     throw new Error("Unable to extract video ID");
   }
 
   toDTO() {
-    console.log(`[Project] Converting project ${this.id.value} to DTO`);
+    log.info(`[Project] Converting project ${this.id.value} to DTO`);
     const dto = {
       name: this.name,
       id: this.id.value,
@@ -199,15 +200,15 @@ export class Project {
       scores: this.scores,
       createdAt: this.createdAt.toISOString(),
     };
-    console.log(`[Project] DTO created with ${Object.keys(dto).length} fields`);
+    log.info(`[Project] DTO created with ${Object.keys(dto).length} fields`);
     return dto;
   }
 
   async setup() {
-    console.log(
+    log.info(
       `[Project] Starting setup for project ${this.id.value} from ${this.repoURL}`
     );
-    console.log(`[Project] Target directory: ${this.directory}`);
+    log.info(`[Project] Target directory: ${this.directory}`);
 
     const emitter = degit(this.repoURL, {
       cache: true,
@@ -215,16 +216,16 @@ export class Project {
       verbose: true,
     });
 
-    console.log(`[Project] Cloning repository...`);
+    log.info(`[Project] Cloning repository...`);
     await emitter.clone(this.directory);
-    console.log(`[Project] Repository cloned successfully`);
+    log.info(`[Project] Repository cloned successfully`);
 
-    console.log(`[Project] Running parallel setup tasks (env + npm install)`);
+    log.info(`[Project] Running parallel setup tasks (env + npm install)`);
     await Promise.all([
       this.emitEnvInFolder(this.directory),
       this.conductNpmInstall(this.directory),
     ]);
-    console.log(`[Project] Setup completed successfully`);
+    log.info(`[Project] Setup completed successfully`);
   }
 
   /**
@@ -241,9 +242,9 @@ export class Project {
     };
     detectedTechnologies: Record<string, boolean>;
   }> {
-    console.log(`[Project] Getting stats for project ${this.id.value}`);
+    log.info(`[Project] Getting stats for project ${this.id.value}`);
     const root = this.directory;
-    console.log(`[Project] Analyzing directory: ${root}`);
+    log.info(`[Project] Analyzing directory: ${root}`);
 
     const pkg = this.safeReadJSON(path.join(root, "package.json"));
     const allDeps = {
@@ -251,7 +252,7 @@ export class Project {
       ...(pkg?.devDependencies ?? {}),
     } as Record<string, string>;
 
-    console.log(`[Project] Found ${Object.keys(allDeps).length} dependencies`);
+    log.info(`[Project] Found ${Object.keys(allDeps).length} dependencies`);
 
     // Basic tech detection from deps and code
     const hasDep = (name: string) => Boolean(allDeps[name]);
@@ -273,7 +274,7 @@ export class Project {
       followSymbolicLinks: false,
     });
     files = rel.map((p: string) => path.join(root, p));
-    console.log(`[Project] Found ${files.length} source files to analyze`);
+    log.info(`[Project] Found ${files.length} source files to analyze`);
 
     const readText = (fp: string) => {
       try {
@@ -294,7 +295,7 @@ export class Project {
         /[/\\]workflows[/\\]/.test(f) || /createWorkflow\s*\(/.test(readText(f))
     ).length;
 
-    console.log(
+    log.info(
       `[Project] Architecture counts - Agents: ${agentsCount}, Tools: ${toolsCount}, Workflows: ${workflowsCount}`
     );
 
@@ -328,7 +329,7 @@ export class Project {
     const enabledTechs = Object.entries(detectedTechnologies)
       .filter(([_, enabled]) => enabled)
       .map(([tech]) => tech);
-    console.log(
+    log.info(
       `[Project] Detected technologies: ${enabledTechs.join(", ") || "none"}`
     );
 
@@ -341,13 +342,13 @@ export class Project {
       detectedTechnologies,
     };
 
-    console.log(`[Project] Stats analysis completed`);
+    log.info(`[Project] Stats analysis completed`);
     return result;
   }
 
   /** Absolute path to the cloned repo */
   private get repoPath() {
-    console.log(
+    log.info(
       `[Project] Getting repoPath for project ${this.id.value}: ${this.directory}`
     );
     return this.directory;
@@ -358,18 +359,18 @@ export class Project {
    * Heuristic: prefer `npm run dev`, then `npm start`. PORT is forced to this.port.number.
    */
   async startTargetServer(): Promise<void> {
-    console.log(
+    log.info(
       `[Project] Starting target server for project ${this.id.value}`
     );
     if (this._serverProc && !this._serverProc.killed) {
-      console.log(`[Project] Server already running, skipping start`);
+      log.info(`[Project] Server already running, skipping start`);
       return; // already running
     }
 
-    console.log(`[Project] Reading package.json from ${this.repoPath}`);
+    log.info(`[Project] Reading package.json from ${this.repoPath}`);
     const pkg =
-      this.safeReadJSON(path.join(this.repoPath, "package.json")) || {};
-    const scripts = (pkg.scripts || {}) as Record<string, string>;
+      this.safeReadJSON(path.join(this.repoPath, "package.json")) ?? {};
+    const scripts = (pkg.scripts ?? {}) as Record<string, string>;
     const hasDev = typeof scripts.dev === "string";
     const hasStart = typeof scripts.start === "string";
 
@@ -380,7 +381,7 @@ export class Project {
         ? ["start"]
         : ["run", "dev"]; // default to dev
 
-    console.log(
+    log.info(
       `[Project] Executing command: ${cmd} ${args.join(" ")} (port: ${this.port.number})`
     );
     this._serverProc = spawn(cmd, args, {
@@ -394,16 +395,16 @@ export class Project {
     });
 
     this.registerExitCleanup();
-    console.log(
+    log.info(
       `[Project] Server process started, waiting for ready signal...`
     );
     await this.waitForServerReady(60_000);
-    console.log(`[Project] Target server is ready and responding`);
+    log.info(`[Project] Target server is ready and responding`);
   }
 
   /** Poll the server until it responds or timeout */
   private async waitForServerReady(timeoutMs = 30000): Promise<void> {
-    console.log(
+    log.info(
       `[Project] Waiting for server to be ready (timeout: ${timeoutMs}ms)`
     );
     const baseUrl = `http://localhost:${this.port.number}/`;
@@ -423,16 +424,16 @@ export class Project {
     while (Date.now() - start < timeoutMs) {
       attempts++;
       try {
-        console.log(`[Project] Server ready check attempt ${attempts}`);
+        log.info(`[Project] Server ready check attempt ${attempts}`);
         await tryPing();
-        console.log(
+        log.info(
           `[Project] Server is ready after ${attempts} attempts (${Date.now() - start}ms)`
         );
         return;
       } catch { /* empty */ }
       await sleep(500);
     }
-    console.error(
+    log.error(
       `[Project] Server failed to become ready after ${attempts} attempts`
     );
     throw new Error(
@@ -442,36 +443,38 @@ export class Project {
 
   /** Stop the target server if running */
   async stopTargetServer(): Promise<void> {
-    console.log(
+    log.info(
       `[Project] Stopping target server for project ${this.id.value}`
     );
     if (this._serverProc && !this._serverProc.killed) {
-      console.log(`[Project] Sending SIGTERM to server process`);
+      log.info(`[Project] Sending SIGTERM to server process`);
       try {
         this._serverProc.kill("SIGTERM");
-        console.log(`[Project] Server process terminated successfully`);
+        log.info(`[Project] Server process terminated successfully`);
       } catch (error) {
-        console.error(`[Project] Error stopping server process:`, error);
+        log.error(`[Project] Error stopping server process:`, {
+          error: error instanceof Error ? error.message : String(error),
+        });
       }
     } else {
-      console.log(`[Project] No running server process to stop`);
+      log.info(`[Project] No running server process to stop`);
     }
   }
 
   private registerExitCleanup() {
     if (this._cleanupRegistered) {
-      console.log(
+      log.info(
         `[Project] Exit cleanup already registered for project ${this.id.value}`
       );
       return;
     }
-    console.log(
+    log.info(
       `[Project] Registering exit cleanup handlers for project ${this.id.value}`
     );
     this._cleanupRegistered = true;
     const cleanup = () => {
       if (this._serverProc && !this._serverProc.killed) {
-        console.log(`[Project] Cleanup: terminating server process`);
+        log.info(`[Project] Cleanup: terminating server process`);
         try {
           this._serverProc.kill("SIGTERM");
         } catch { /* empty */ }
@@ -479,12 +482,12 @@ export class Project {
     };
     process.on("exit", cleanup);
     process.on("SIGINT", () => {
-      console.log(`[Project] Received SIGINT, cleaning up...`);
+      log.info(`[Project] Received SIGINT, cleaning up...`);
       cleanup();
       process.exit(1);
     });
     process.on("SIGTERM", () => {
-      console.log(`[Project] Received SIGTERM, cleaning up...`);
+      log.info(`[Project] Received SIGTERM, cleaning up...`);
       cleanup();
       process.exit(1);
     });
@@ -492,26 +495,28 @@ export class Project {
 
 
   private safeReadJSON(file: string): any | undefined {
-    console.log(`[Project] Reading JSON file: ${file}`);
+    log.info(`[Project] Reading JSON file: ${file}`);
     try {
       const txt = readFileSync(file, "utf-8");
       const parsed = JSON.parse(txt);
-      console.log(
+      log.info(
         `[Project] Successfully parsed JSON file (${Object.keys(parsed).length} keys)`
       );
       return parsed;
     } catch (error) {
-      console.warn(
+      log.warn(
         `[Project] Failed to read/parse JSON file ${file}:`,
-        error instanceof Error ? error.message : "Unknown error"
+        {
+          error: error instanceof Error ? error.message : "Unknown error",
+        }
       );
       return undefined;
     }
   }
 
   private async conductNpmInstall(folder: string): Promise<void> {
-    console.log(`[Project] Starting npm install in folder: ${folder}`);
-    console.log(`[Project] Using npm path: ${this.config.NPM_PATH}`);
+    log.info(`[Project] Starting npm install in folder: ${folder}`);
+    log.info(`[Project] Using npm path: ${this.config.NPM_PATH}`);
 
     return new Promise((resolve, reject) => {
       const childProcess = spawn(this.config.NPM_PATH, ["install"], {
@@ -521,59 +526,63 @@ export class Project {
       });
 
       childProcess.on("close", (code) => {
-        console.log(`[Project] npm install completed with exit code: ${code}`);
+        log.info(`[Project] npm install completed with exit code: ${code}`);
 
         if (code === 0) {
           resolve();
         } else {
-          console.error(`[Project] npm install failed with exit code: ${code}`);
+          log.error(`[Project] npm install failed with exit code: ${code}`);
           reject(new Error(`npm install failed with exit code: ${code}`));
         }
       });
 
       childProcess.on("error", (error) => {
-        console.error(`[Project] npm install process error:`, error);
+        log.error(`[Project] npm install process error:`, error);
         reject(new Error(`npm install process error: ${error.message}`));
       });
     });
   }
   private async emitEnvInFolder(folder: string) {
-    console.log(`[Project] Creating .env file in folder: ${folder}`);
+    log.info(`[Project] Creating .env file in folder: ${folder}`);
     const envPath = path.join(folder, ".env");
     const envContent = Object.entries(this.envConfig)
       .map(([key, value]) => `${key}=${value}`)
       .join("\n");
 
-    console.log(
+    log.info(
       `[Project] Writing ${Object.keys(this.envConfig).length} environment variables to .env`
     );
     await promises.writeFile(envPath, envContent, {
       encoding: "utf-8",
     });
-    console.log(`[Project] .env file created successfully at: ${envPath}`);
+    log.info(`[Project] .env file created successfully at: ${envPath}`);
   }
   get canonicalVideoURL() {
-    console.log(
+    log.info(
       `[Project] Getting canonical video URL for project ${this.id.value}`
     );
     const canonicalUrl = `https://www.youtube.com/watch?v=${this.videoId}`;
-    console.log(`[Project] Canonical URL: ${canonicalUrl}`);
+    log.info(`[Project] Canonical URL: ${canonicalUrl}`);
     return canonicalUrl;
   }
 }
 
 @injectable()
 export class ProjectFactory {
-  @inject(Config)
-  config!: Config;
+  private readonly config: Config;
+
+  constructor(config: Config) {
+    this.config = config;
+    log.info(`[ProjectFactory] Config received via constructor`);
+  }
 
   create(props: ConstructorParameters<typeof Project>[0]) {
-    console.log(`[ProjectFactory] Creating new Project with factory`);
-    console.log(
+    log.info(`[ProjectFactory] Creating new Project with factory`);
+    log.info(
       `[ProjectFactory] Props keys: ${Object.keys(props).join(", ")}`
     );
     const project = new Project(props, this.config);
-    console.log(
+    log.info(
       `[ProjectFactory] Project created with ID: ${project.id.value}`
     );
     return project;

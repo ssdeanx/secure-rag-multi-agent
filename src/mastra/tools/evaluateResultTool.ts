@@ -79,22 +79,39 @@ export const evaluateResultTool = createTool({
         - isRelevant: boolean indicating if the result is relevant
         - reason: brief explanation of your decision`,
                     },
-                ],
-                {
-                    experimental_output: z.object({
-                        isRelevant: z.boolean(),
-                        reason: z.string(),
-                    }),
-                }
+                ]
             )
+
+            const outputSchema = z.object({
+                isRelevant: z.boolean(),
+                reason: z.string(),
+            })
+
+            const parsed = outputSchema.safeParse(response.object)
+
+            if (!parsed.success) {
+                log.warn('Evaluation agent returned unexpected shape', {
+                    response: response.object,
+                })
+                evalSpan?.end({
+                    output: {
+                        isRelevant: false,
+                        reason: 'Invalid response format from evaluation agent',
+                    },
+                })
+                return {
+                    isRelevant: false,
+                    reason: 'Invalid response format from evaluation agent',
+                }
+            }
 
             evalSpan?.end({
                 output: {
-                    isRelevant: response.object?.isRelevant,
-                    reason: response.object?.reason,
+                    isRelevant: parsed.data.isRelevant,
+                    reason: parsed.data.reason,
                 },
             })
-            return response.object
+            return parsed.data
         } catch (error) {
             log.error('Error evaluating result:', {
                 error: error instanceof Error ? error.message : String(error),

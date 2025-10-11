@@ -4,7 +4,7 @@ import * as React from 'react'
 import { Typography as JoyTypography } from '@mui/joy'
 import type { SxProps } from '@mui/system'
 
-export interface TypographyProps {
+export interface TypographyProps extends React.HTMLAttributes<HTMLElement> {
     children: React.ReactNode
     level?:
         | 'h1'

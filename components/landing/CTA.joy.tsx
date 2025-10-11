@@ -2,9 +2,8 @@
 
 import * as React from 'react'
 import { motion, useReducedMotion } from 'framer-motion'
-import { Box, Typography, Button, Card, CardContent } from '@/components/ui/joy'
+import { Box, Typography, Button, Card, CardContent, Link } from '@/components/ui/joy'
 import { ArrowRight, PlayArrow } from '@mui/icons-material'
-import Link from 'next/link'
 
 export function CTA() {
     const reduceMotion = useReducedMotion()
@@ -69,19 +68,19 @@ export function CTA() {
                             p: { xs: 4, sm: 6 },
                         }}
                     >
-                        <h2
+                        <Typography
                             id="cta-heading"
-                            style={{
+                            level="h2"
+                            sx={{
                                 fontSize: 'clamp(1.5rem, 4vw, 2rem)',
                                 fontWeight: 700,
-                                marginBottom: '1.5rem',
+                                mb: 3,
                                 lineHeight: 1.1,
-                                color: 'var(--joy-palette-text-primary)',
-                                margin: 0,
+                                color: 'text.primary',
                             }}
                         >
                             Try the Governed RAG Demo
-                        </h2>
+                        </Typography>
 
                         <Typography
                             level="body-lg"

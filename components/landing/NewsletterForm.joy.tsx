@@ -92,44 +92,41 @@ export function NewsletterForm() {
                     </Box>
 
                     {!submitted && (
-                        <Box
-                            component="form"
-                            {...({
-                                onSubmit: handleSubmit,
-                                noValidate: true,
-                            } as React.FormHTMLAttributes<HTMLFormElement>)}
-                            sx={{
-                                display: 'flex',
-                                flexDirection: { xs: 'column', sm: 'row' },
-                                gap: 2,
-                                maxWidth: 448,
-                                mx: 'auto',
-                            }}
-                        >
-                            <Input
-                                type="email"
-                                placeholder="Enter your email"
-                                aria-label="Email for newsletter"
-                                aria-invalid={!!error}
-                                aria-describedby={
-                                    error ? 'newsletter-error' : undefined
-                                }
-                                value={email}
-                                onChange={(e) => setEmail(e.target.value)}
-                                disabled={loading}
-                                required
-                                sx={{ flexGrow: 1 }}
-                            />
-                            <Button
-                                type="submit"
-                                size="lg"
-                                disabled={loading}
-                                loading={loading}
-                                sx={{ flexShrink: 0 }}
+                        <form onSubmit={handleSubmit} noValidate>
+                            <Box
+                                sx={{
+                                    display: 'flex',
+                                    flexDirection: { xs: 'column', sm: 'row' },
+                                    gap: 2,
+                                    maxWidth: 448,
+                                    mx: 'auto',
+                                }}
                             >
-                                {loading ? 'Submitting…' : 'Subscribe'}
-                            </Button>
-                        </Box>
+                                <Input
+                                    type="email"
+                                    placeholder="Enter your email"
+                                    aria-label="Email for newsletter"
+                                    aria-invalid={!!error}
+                                    aria-describedby={
+                                        error ? 'newsletter-error' : undefined
+                                    }
+                                    value={email}
+                                    onChange={(e) => setEmail(e.target.value)}
+                                    disabled={loading}
+                                    required
+                                    sx={{ flexGrow: 1 }}
+                                />
+                                <Button
+                                    type="submit"
+                                    size="lg"
+                                    disabled={loading}
+                                    loading={loading}
+                                    sx={{ flexShrink: 0 }}
+                                >
+                                    {loading ? 'Submitting…' : 'Subscribe'}
+                                </Button>
+                            </Box>
+                        </form>
                     )}
 
                     {error && !submitted && (

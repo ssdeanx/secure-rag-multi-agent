@@ -65,21 +65,35 @@ export const joyMdxComponents = {
         </JoyLink>
     ),
     ul: (props: React.HTMLAttributes<HTMLUListElement>) => (
-        <Box
-            component="ul"
-            sx={{ pl: 3, my: 1.5, listStyle: 'disc' }}
+        <ul
             {...props}
+            style={{
+                paddingLeft: 'var(--joy-spacing-3)',
+                marginTop: 'var(--joy-spacing-1-5)',
+                marginBottom: 'var(--joy-spacing-1-5)',
+                listStyle: 'disc',
+            }}
         />
     ),
     ol: (props: React.HTMLAttributes<HTMLOListElement>) => (
-        <Box
-            component="ol"
-            sx={{ pl: 3, my: 1.5, listStyle: 'decimal' }}
+        <ol
             {...props}
+            style={{
+                paddingLeft: 'var(--joy-spacing-3)',
+                marginTop: 'var(--joy-spacing-1-5)',
+                marginBottom: 'var(--joy-spacing-1-5)',
+                listStyle: 'decimal',
+            }}
         />
     ),
     li: (props: React.LiHTMLAttributes<HTMLLIElement>) => (
-        <Box component="li" sx={{ my: 0.5 }} {...props} />
+        <li
+            {...props}
+            style={{
+                marginTop: 'var(--joy-spacing-0-5)',
+                marginBottom: 'var(--joy-spacing-0-5)',
+            }}
+        />
     ),
     blockquote: (props: React.HTMLAttributes<HTMLElement>) => (
         <Box
@@ -117,21 +131,21 @@ export const joyMdxComponents = {
         children,
         ...rest
     }: WithChildren<React.HTMLAttributes<HTMLPreElement>>) => (
-        <Box
-            component="pre"
-            sx={{
-                fontFamily: 'var(--joy-fontFamily-code)',
-                fontSize: 'sm',
-                bgcolor: 'neutral.100',
-                p: 2,
-                borderRadius: 'sm',
-                overflowX: 'auto',
-                my: 2,
-            }}
+        <pre
             {...rest}
+            style={{
+                fontFamily: 'var(--joy-fontFamily-code)',
+                fontSize: 'var(--joy-fontSize-sm)',
+                backgroundColor: 'var(--joy-palette-neutral-100)',
+                padding: 'var(--joy-spacing-2)',
+                borderRadius: 'var(--joy-radius-sm)',
+                overflowX: 'auto',
+                marginTop: 'var(--joy-spacing-2)',
+                marginBottom: 'var(--joy-spacing-2)',
+            }}
         >
             {children}
-        </Box>
+        </pre>
     ),
 }
 

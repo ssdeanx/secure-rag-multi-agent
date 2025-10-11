@@ -2,9 +2,8 @@
 
 import * as React from 'react'
 import { motion, useReducedMotion } from 'framer-motion'
-import { Box, Typography, Button, Chip } from '@/components/ui/joy'
+import { Box, Typography, Button, Chip, Link } from '@/components/ui/joy'
 import { ArrowRight, Sparkles } from 'lucide-react'
-import Link from 'next/link'
 
 export function Hero() {
     const reduceMotion = useReducedMotion()

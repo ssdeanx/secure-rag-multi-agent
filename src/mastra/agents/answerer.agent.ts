@@ -8,7 +8,7 @@
 //  - tenant: global
 // approvedBy: sam
 // approvalDate: 2025-09-24
-import { Agent } from '@mastra/core'
+import { Agent } from '@mastra/core/agent'
 import { answererOutputSchema } from '../schemas/agent-schemas'
 import { google } from '@ai-sdk/google'
 import { log } from '../config/logger'

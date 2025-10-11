@@ -81,6 +81,8 @@ export default function Slider({
                     value={value}
                     onChange={(e) => setValue(Number(e.target.value))}
                     className="relative w-full h-full opacity-0 cursor-pointer"
+                    aria-label={`Slider value: ${value}`}
+                    title={`Adjust value between ${min} and ${max}`}
                 />
             </div>
             <Flat3dButton
