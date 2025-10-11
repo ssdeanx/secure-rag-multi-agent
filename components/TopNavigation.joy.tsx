@@ -69,10 +69,10 @@ export function TopNavigation({ user }: TopNavigationProps) {
                     borderBottom: '1px solid',
                     borderColor: 'divider',
                     backdropFilter: 'blur(8px)',
-                    // premium gradient surface using Joy tokens
-                    backgroundImage:
-                        'linear-gradient(180deg, rgba(0,0,0,0.25) 0%, rgba(0,0,0,0.05) 100%), var(--joy-palette-background-surface)',
-                    // subtle elevated feel
+                    // Enhanced gradient surface using Joy tokens
+                    backgroundImage: (theme: any) =>
+                        `linear-gradient(180deg, rgba(0,0,0,0.25) 0%, rgba(0,0,0,0.05) 100%), ${theme.vars.palette.background.surface}`,
+                    // Subtle elevated feel with theme shadows
                     boxShadow: { xs: 'none', md: 'sm' },
                 }}
             >
@@ -96,6 +96,10 @@ export function TopNavigation({ user }: TopNavigationProps) {
                                 alignItems: 'center',
                                 gap: 1.5,
                                 textDecoration: 'none',
+                                transition: 'transform 200ms ease',
+                                '&:hover': {
+                                    transform: 'scale(1.02)',
+                                },
                             }}
                         >
                             <Box
@@ -107,10 +111,19 @@ export function TopNavigation({ user }: TopNavigationProps) {
                                     display: 'flex',
                                     alignItems: 'center',
                                     justifyContent: 'center',
+                                    transition: 'all 200ms ease',
+                                    '&:hover': {
+                                        bgcolor: 'primary.600',
+                                        transform: 'rotate(5deg)',
+                                    },
                                 }}
                             >
                                 <RocketLaunch
-                                    sx={{ color: 'white', fontSize: 22 }}
+                                    sx={{
+                                        color: 'white',
+                                        fontSize: 22,
+                                        transition: 'transform 200ms ease',
+                                    }}
                                 />
                             </Box>
                             <Typography
@@ -118,6 +131,7 @@ export function TopNavigation({ user }: TopNavigationProps) {
                                 sx={{
                                     fontWeight: 700,
                                     display: { xs: 'none', sm: 'block' },
+                                    color: 'text.primary',
                                 }}
                             >
                                 Deanmachines
@@ -158,10 +172,19 @@ export function TopNavigation({ user }: TopNavigationProps) {
                                         borderRadius: 'lg',
                                         px: 1.75,
                                         py: 0.75,
+                                        minWidth: 44,
+                                        minHeight: 40,
+                                        transition: 'all 160ms ease',
                                         '&:hover': {
                                             bgcolor: isActive(link.href)
                                                 ? 'primary.softHoverBg'
                                                 : 'neutral.softHoverBg',
+                                            transform: 'translateY(-1px)',
+                                        },
+                                        '&:focus-visible': {
+                                            outline: 'none',
+                                            boxShadow:
+                                                '0 0 0 4px var(--joy-palette-focusVisible)',
                                         },
                                         '&::after': {
                                             content: '""',
@@ -202,10 +225,24 @@ export function TopNavigation({ user }: TopNavigationProps) {
                                     component="span"
                                     variant="solid"
                                     color="primary"
+                                    aria-label="Sign in"
                                     startDecorator={<Login />}
                                     sx={{
                                         display: { xs: 'none', sm: 'flex' },
                                         borderRadius: 'lg',
+                                        minWidth: 44,
+                                        minHeight: 40,
+                                        fontWeight: 600,
+                                        transition: 'all 160ms ease',
+                                        '&:hover': {
+                                            transform: 'translateY(-1px)',
+                                            boxShadow: 'md',
+                                        },
+                                        '&:focus-visible': {
+                                            outline: 'none',
+                                            boxShadow:
+                                                '0 0 0 4px var(--joy-palette-focusVisible)',
+                                        },
                                     }}
                                 >
                                     Sign In
@@ -218,10 +255,22 @@ export function TopNavigation({ user }: TopNavigationProps) {
                             variant="plain"
                             color="neutral"
                             onClick={toggleMobileMenu}
+                            aria-expanded={mobileOpen}
+                            aria-controls="mobile-menu"
                             sx={{
                                 display: { xs: 'flex', md: 'none' },
                                 minWidth: 40,
                                 p: 1,
+                                borderRadius: 'md',
+                                transition: 'all 160ms ease',
+                                '&:hover': {
+                                    bgcolor: 'neutral.softHoverBg',
+                                },
+                                '&:focus-visible': {
+                                    outline: 'none',
+                                    boxShadow:
+                                        '0 0 0 4px var(--joy-palette-focusVisible)',
+                                },
                             }}
                         >
                             {mobileOpen ? <Close /> : <MenuIcon />}
@@ -235,8 +284,15 @@ export function TopNavigation({ user }: TopNavigationProps) {
                 open={mobileOpen}
                 onClose={toggleMobileMenu}
                 anchor="right"
+                aria-labelledby="mobile-menu-heading"
+                size="sm"
                 sx={{
                     display: { xs: 'block', md: 'none' },
+                    // Enhanced drawer styling
+                    '& .MuiDrawer-content': {
+                        borderTopLeftRadius: 'lg',
+                        borderBottomLeftRadius: 'lg',
+                    },
                 }}
             >
                 <Box sx={{ width: 280, p: 3 }}>
@@ -248,22 +304,39 @@ export function TopNavigation({ user }: TopNavigationProps) {
                             mb: 3,
                         }}
                     >
-                        <Typography level="h4" sx={{ fontWeight: 700 }}>
+                        <div
+                            id="mobile-menu-heading"
+                            style={{
+                                margin: 0,
+                                fontWeight: 700,
+                                fontSize: '1.125rem',
+                            }}
+                        >
                             Menu
-                        </Typography>
+                        </div>
                         <Button
                             variant="plain"
                             color="neutral"
                             onClick={toggleMobileMenu}
-                            sx={{ minWidth: 40, p: 1 }}
+                            aria-label="Close menu"
+                            sx={{
+                                minWidth: 40,
+                                p: 1,
+                                borderRadius: 'md',
+                                '&:focus-visible': {
+                                    outline: 'none',
+                                    boxShadow:
+                                        '0 0 0 4px var(--joy-palette-focusVisible)',
+                                },
+                            }}
                         >
                             <Close />
                         </Button>
                     </Box>
 
-                    <List>
+                    <List sx={{ gap: 1 }}>
                         {navLinks.map((link) => (
-                            <ListItem key={link.href}>
+                            <ListItem key={link.href} sx={{ p: 0 }}>
                                 <ListItemButton
                                     selected={isActive(link.href)}
                                     onClick={() => {
@@ -272,21 +345,36 @@ export function TopNavigation({ user }: TopNavigationProps) {
                                     }}
                                     sx={{
                                         borderRadius: 'md',
+                                        minHeight: 48,
+                                        px: 2,
+                                        py: 1.5,
+                                        transition: 'all 160ms ease',
                                         '&.Mui-selected': {
                                             bgcolor: 'primary.softBg',
                                             color: 'primary.500',
+                                            fontWeight: 600,
+                                        },
+                                        '&:hover': {
+                                            bgcolor: 'primary.softHoverBg',
+                                        },
+                                        '&:focus-visible': {
+                                            outline: 'none',
+                                            boxShadow:
+                                                '0 0 0 4px var(--joy-palette-focusVisible)',
                                         },
                                     }}
                                 >
                                     <link.icon sx={{ mr: 2, fontSize: 20 }} />
-                                    {link.label}
+                                    <Typography level="body-lg">
+                                        {link.label}
+                                    </Typography>
                                 </ListItemButton>
                             </ListItem>
                         ))}
 
                         {!user && (
-                            <ListItem sx={{ mt: 2 }}>
-                                <Link href="/login">
+                            <ListItem sx={{ mt: 2, p: 0 }}>
+                                <Link href="/login" style={{ width: '100%' }}>
                                     <Button
                                         component="span"
                                         variant="solid"
@@ -294,7 +382,17 @@ export function TopNavigation({ user }: TopNavigationProps) {
                                         fullWidth
                                         startDecorator={<Login />}
                                         onClick={toggleMobileMenu}
-                                        sx={{ borderRadius: 'lg' }}
+                                        aria-label="Sign in"
+                                        sx={{
+                                            borderRadius: 'lg',
+                                            minHeight: 48,
+                                            fontWeight: 600,
+                                            '&:focus-visible': {
+                                                outline: 'none',
+                                                boxShadow:
+                                                    '0 0 0 4px var(--joy-palette-focusVisible)',
+                                            },
+                                        }}
                                     >
                                         Sign In
                                     </Button>

@@ -1,47 +1,37 @@
-'use client'
-
 import React from 'react'
-import {
-    Database,
-    Loader,
-    CheckCircle,
-    XCircle,
-    AlertTriangle,
-    FileText,
-    Zap,
-    Shield,
-} from 'lucide-react'
 import { useState, useCallback } from 'react'
-import { Button } from '@/components/ui/shadnui/button'
 import {
     Card,
     CardContent,
-    CardDescription,
     CardHeader,
-    CardTitle,
-} from '@/components/ui/shadnui/card'
-import { Alert, AlertDescription } from '@/components/ui/shadnui/alert'
-import { Badge } from '@/components/ui/shadnui/badge'
-import { Progress } from '@/components/ui/shadnui/progress'
-import { Separator } from '@/components/ui/shadnui/separator'
-import { Avatar, AvatarFallback } from '@/components/ui/shadnui/avatar'
-import {
+    Badge,
+    Alert,
+    AlertDescription,
+    LinearProgress,
+    Divider,
+    Avatar,
+    AvatarFallback,
     Tooltip,
     TooltipContent,
     TooltipProvider,
     TooltipTrigger,
-} from '@/components/ui/shadnui/tooltip'
+    AccordionGroup,
+    Accordion,
+    AccordionSummary,
+    AccordionDetails,
+    Box,
+    Typography,
+    Button,
+} from '@/components/ui/joy'
 import {
-    Collapsible,
-    CollapsibleContent,
-    CollapsibleTrigger,
-} from '@/components/ui/shadnui/collapsible'
-import {
-    HoverCard,
-    HoverCardContent,
-    HoverCardTrigger,
-} from '@/components/ui/shadnui/hover-card'
-import { cn } from '@/lib/utils'
+    Dataset as DatabaseIcon,
+    CheckCircle as CheckCircleIcon,
+    Cancel as CancelIcon,
+    Warning as WarningIcon,
+    Description,
+    Security,
+} from '@mui/icons-material'
+import { CircularProgress } from '@mui/material'
 
 interface IndexingPanelProps {
     jwt: string
@@ -134,425 +124,800 @@ export default function IndexingPanel({ jwt }: IndexingPanelProps) {
     return (
         <TooltipProvider>
             <Card
-                className={cn(
-                    'relative overflow-hidden',
-                    'border-4 border-primary/20 bg-gradient-mocha backdrop-blur-xl',
-                    'brutalist-card shadow-2xl'
-                )}
+                variant="outlined"
+                sx={{
+                    position: 'relative',
+                    overflow: 'hidden',
+                    border: '4px solid',
+                    borderColor: 'primary.softBg',
+                    bgcolor: 'background.surface',
+                    boxShadow: 'xl',
+                }}
             >
                 {/* Background decorative elements */}
-                <div className="absolute top-0 right-0 w-24 h-24 bg-accent/10 rounded-full blur-2xl animate-pulse" />
-                <div className="absolute bottom-0 left-0 w-16 h-16 bg-primary/10 rounded-full blur-xl animate-pulse" />
+                <Box
+                    sx={{
+                        position: 'absolute',
+                        top: 0,
+                        right: 0,
+                        width: 96,
+                        height: 96,
+                        bgcolor: 'primary.softBg',
+                        borderRadius: '50%',
+                        filter: 'blur(30px)',
+                        animation: 'pulse 2s ease-in-out infinite',
+                    }}
+                />
+                <Box
+                    sx={{
+                        position: 'absolute',
+                        bottom: 0,
+                        left: 0,
+                        width: 64,
+                        height: 64,
+                        bgcolor: 'warning.softBg',
+                        borderRadius: '50%',
+                        filter: 'blur(25px)',
+                        animation: 'pulse 2s ease-in-out infinite',
+                    }}
+                />
 
-                <CardHeader className="relative pb-6">
-                    <div className="flex items-center justify-between">
-                        <div className="flex items-center space-x-4 group hover-lift">
-                            <Avatar className="h-14 w-14 border-2 border-accent/30">
-                                <AvatarFallback className="bg-accent/10 text-accent font-bold">
-                                    <Database className="h-7 w-7" />
+                <CardHeader sx={{ pb: 3 }}>
+                    <Box
+                        sx={{
+                            display: 'flex',
+                            alignItems: 'center',
+                            justifyContent: 'space-between',
+                        }}
+                    >
+                        <Box
+                            sx={{
+                                display: 'flex',
+                                alignItems: 'center',
+                                gap: 2,
+                            }}
+                        >
+                            <Avatar
+                                size="lg"
+                                sx={{
+                                    border: '2px solid',
+                                    borderColor: 'primary.outlinedBorder',
+                                }}
+                            >
+                                <AvatarFallback>
+                                    <DatabaseIcon />
                                 </AvatarFallback>
                             </Avatar>
-                            <div className="p-3 rounded-xl bg-accent/10 border-2 border-accent/20 group-hover:bg-accent/20 transition-all duration-300 hover-scale">
-                                <Database className="h-7 w-7 text-accent" />
-                            </div>
-                            <div>
-                                <CardTitle className="text-maximalist text-primary brutalist-text text-shadow-xl">
+                            <Box
+                                sx={{
+                                    p: 1.5,
+                                    borderRadius: 'xl',
+                                    bgcolor: 'primary.softBg',
+                                    border: '2px solid',
+                                    borderColor: 'primary.outlinedBorder',
+                                    transition: 'all 0.3s ease',
+                                    '&:hover': {
+                                        bgcolor: 'primary.softBg',
+                                        borderColor: 'primary.main',
+                                        transform: 'scale(1.05)',
+                                    },
+                                }}
+                            >
+                                <DatabaseIcon
+                                    sx={{ fontSize: 28, color: 'primary.main' }}
+                                />
+                            </Box>
+                            <Box>
+                                <Typography
+                                    level="title-lg"
+                                    sx={{ fontWeight: 'bold', mb: 0.5 }}
+                                >
                                     Document Indexing
-                                </CardTitle>
-                                <CardDescription className="text-bold-serif text-muted-foreground text-base">
+                                </Typography>
+                                <Typography
+                                    level="body-md"
+                                    sx={{ color: 'text.tertiary' }}
+                                >
                                     Index corpus documents for RAG
-                                </CardDescription>
-                            </div>
-                        </div>
+                                </Typography>
+                            </Box>
+                        </Box>
 
                         <Tooltip>
                             <TooltipTrigger asChild>
-                                <Button
-                                    onClick={handleIndex}
-                                    disabled={isIndexing}
-                                    size="lg"
-                                    className={cn(
-                                        'group h-12 px-6 border-2 border-primary/30 hover:border-accent/50',
-                                        'bg-gradient-mocha backdrop-blur-sm',
-                                        'hover-lift hover-glow hover-scale',
-                                        'transition-all duration-300 ease-spring',
-                                        'btn-brutalist shadow-lg',
-                                        'focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2',
-                                        'disabled:opacity-50 disabled:cursor-not-allowed'
-                                    )}
-                                >
-                                    {isIndexing ? (
-                                        <>
-                                            <Loader className="h-5 w-5 animate-spin mr-2" />
-                                            <span className="font-bold text-shadow-sm">
-                                                Indexing...
-                                            </span>
-                                        </>
-                                    ) : (
-                                        <>
-                                            <Database className="h-5 w-5 mr-2 group-hover:rotate-12 transition-all duration-300" />
-                                            <span className="font-bold text-shadow-sm">
-                                                Start Indexing
-                                            </span>
-                                        </>
-                                    )}
-                                </Button>
+                                <Box>
+                                    <Button
+                                        onClick={handleIndex}
+                                        disabled={isIndexing}
+                                        size="lg"
+                                        startDecorator={
+                                            isIndexing ? (
+                                                <CircularProgress size={20} />
+                                            ) : (
+                                                <DatabaseIcon
+                                                    sx={{ fontSize: 20 }}
+                                                />
+                                            )
+                                        }
+                                        sx={{
+                                            minHeight: 48,
+                                            px: 3,
+                                            border: '2px solid',
+                                            borderColor:
+                                                'primary.outlinedBorder',
+                                            bgcolor: 'background.surface',
+                                            transition: 'all 0.3s ease',
+                                            '&:hover': {
+                                                borderColor: 'primary.main',
+                                                transform: 'translateY(-1px)',
+                                                boxShadow: 'lg',
+                                            },
+                                            '&:disabled': {
+                                                opacity: 0.5,
+                                                cursor: 'not-allowed',
+                                            },
+                                        }}
+                                    >
+                                        {isIndexing
+                                            ? 'Indexing...'
+                                            : 'Start Indexing'}
+                                    </Button>
+                                </Box>
                             </TooltipTrigger>
                             <TooltipContent>
-                                <p>
+                                <Typography level="body-sm">
                                     Index all documents in the corpus with
                                     security classifications
-                                </p>
+                                </Typography>
                             </TooltipContent>
                         </Tooltip>
-                    </div>
+                    </Box>
 
                     {/* Progress Bar */}
                     {(isIndexing || progress > 0) && (
-                        <div className="mt-4">
-                            <div className="flex items-center justify-between mb-2">
-                                <span className="text-sm font-bold text-muted-foreground">
-                                    Indexing Progress
-                                </span>
-                                <Badge
-                                    variant="secondary"
-                                    className="font-bold"
+                        <Box sx={{ mt: 2 }}>
+                            <Box
+                                sx={{
+                                    display: 'flex',
+                                    alignItems: 'center',
+                                    justifyContent: 'space-between',
+                                    mb: 1,
+                                }}
+                            >
+                                <Typography
+                                    level="body-sm"
+                                    sx={{
+                                        fontWeight: 'bold',
+                                        color: 'text.tertiary',
+                                    }}
                                 >
+                                    Indexing Progress
+                                </Typography>
+                                <Badge variant="soft" color="neutral">
                                     {Math.round(progress)}%
                                 </Badge>
-                            </div>
-                            <Progress value={progress} className="h-3" />
-                        </div>
+                            </Box>
+                            <LinearProgress
+                                value={progress}
+                                color="primary"
+                                size="lg"
+                            />
+                        </Box>
                     )}
                 </CardHeader>
 
-                <CardContent className="relative">
+                <CardContent>
                     {/* Error State */}
                     {error && (
-                        <Alert className="mb-6 border-2 border-destructive/30 bg-destructive/10">
-                            <XCircle className="h-5 w-5 text-destructive" />
-                            <AlertDescription className="text-destructive font-bold">
-                                <div className="flex items-center justify-between">
-                                    <span>Error: {error}</span>
-                                    <Badge
-                                        variant="destructive"
-                                        className="ml-2"
-                                    >
+                        <Alert
+                            variant="soft"
+                            color="danger"
+                            sx={{
+                                mb: 3,
+                                border: '2px solid',
+                                borderColor: 'danger.outlinedBorder',
+                                bgcolor: 'danger.softBg',
+                            }}
+                        >
+                            <CancelIcon />
+                            <AlertDescription>
+                                <Box
+                                    sx={{
+                                        display: 'flex',
+                                        alignItems: 'center',
+                                        justifyContent: 'space-between',
+                                    }}
+                                >
+                                    <Typography sx={{ fontWeight: 'bold' }}>
+                                        Error: {error}
+                                    </Typography>
+                                    <Badge variant="soft" color="danger">
                                         Failed
                                     </Badge>
-                                </div>
+                                </Box>
                             </AlertDescription>
                         </Alert>
                     )}
 
                     {/* Success Result */}
                     {result && (
-                        <div className="space-y-6">
-                            <Alert className="border-2 border-accent/30 bg-accent/10">
-                                <CheckCircle className="h-5 w-5 text-accent" />
-                                <AlertDescription className="text-accent font-bold">
-                                    <div className="flex items-center justify-between">
-                                        <span>
+                        <Box sx={{ mb: 3 }}>
+                            <Alert
+                                variant="soft"
+                                color="success"
+                                sx={{
+                                    border: '2px solid',
+                                    borderColor: 'success.outlinedBorder',
+                                    bgcolor: 'success.softBg',
+                                }}
+                            >
+                                <CheckCircleIcon />
+                                <AlertDescription>
+                                    <Box
+                                        sx={{
+                                            display: 'flex',
+                                            alignItems: 'center',
+                                            justifyContent: 'space-between',
+                                        }}
+                                    >
+                                        <Typography sx={{ fontWeight: 'bold' }}>
                                             Indexing completed successfully
-                                        </span>
-                                        <div className="flex items-center space-x-2">
+                                        </Typography>
+                                        <Box
+                                            sx={{
+                                                display: 'flex',
+                                                alignItems: 'center',
+                                                gap: 1,
+                                            }}
+                                        >
                                             <Badge
-                                                variant="secondary"
-                                                className="font-bold"
+                                                variant="soft"
+                                                color="success"
                                             >
                                                 {result.indexed} indexed
                                             </Badge>
                                             {result.failed > 0 && (
                                                 <Badge
-                                                    variant="destructive"
-                                                    className="font-bold"
+                                                    variant="soft"
+                                                    color="danger"
                                                 >
                                                     {result.failed} failed
                                                 </Badge>
                                             )}
-                                        </div>
-                                    </div>
+                                        </Box>
+                                    </Box>
                                 </AlertDescription>
                             </Alert>
 
                             {/* Document Results */}
                             {result.documents.length > 0 && (
-                                <div className="space-y-4">
-                                    <Separator className="my-4" />
-                                    <Collapsible
-                                        open={expandedSections.has('documents')}
-                                        onOpenChange={() =>
-                                            toggleSection('documents')
-                                        }
-                                    >
-                                        <CollapsibleTrigger className="flex items-center justify-between w-full p-4 border-2 border-primary/20 rounded-lg hover:border-accent/40 transition-all duration-300">
-                                            <h4 className="text-bold-serif text-foreground font-black text-lg brutalist-text text-shadow-lg">
-                                                Document Results (
-                                                {result.documents.length})
-                                            </h4>
-                                            <Badge
-                                                variant="outline"
-                                                className="font-bold"
-                                            >
-                                                {expandedSections.has(
-                                                    'documents'
-                                                )
-                                                    ? 'Collapse'
-                                                    : 'Expand'}
-                                            </Badge>
-                                        </CollapsibleTrigger>
-                                        <CollapsibleContent className="mt-4">
-                                            <div className="max-h-60 overflow-y-auto space-y-2">
-                                                {result.documents.map(
-                                                    (doc, index) => (
-                                                        <HoverCard key={index}>
-                                                            <HoverCardTrigger
-                                                                asChild
+                                <Box sx={{ mt: 2 }}>
+                                    <Divider sx={{ my: 2 }} />
+                                    <AccordionGroup>
+                                        <Accordion
+                                            expanded={expandedSections.has(
+                                                'documents'
+                                            )}
+                                            onChange={() =>
+                                                toggleSection('documents')
+                                            }
+                                        >
+                                            <AccordionSummary>
+                                                <Typography
+                                                    level="title-md"
+                                                    sx={{ fontWeight: 'bold' }}
+                                                >
+                                                    Document Results (
+                                                    {result.documents.length})
+                                                </Typography>
+                                                <Badge
+                                                    variant="outlined"
+                                                    color="neutral"
+                                                >
+                                                    {expandedSections.has(
+                                                        'documents'
+                                                    )
+                                                        ? 'Collapse'
+                                                        : 'Expand'}
+                                                </Badge>
+                                            </AccordionSummary>
+                                            <AccordionDetails>
+                                                <Box
+                                                    sx={{
+                                                        maxHeight: 240,
+                                                        overflow: 'auto',
+                                                        display: 'flex',
+                                                        flexDirection: 'column',
+                                                        gap: 1,
+                                                    }}
+                                                >
+                                                    {result.documents.map(
+                                                        (doc, index) => (
+                                                            <Tooltip
+                                                                key={index}
                                                             >
-                                                                <div
-                                                                    className={cn(
-                                                                        'flex items-center justify-between p-4 border-2 rounded-lg cursor-pointer',
-                                                                        'hover-lift hover-scale transition-all duration-300',
-                                                                        'bg-gradient-mocha backdrop-blur-sm',
-                                                                        doc.status ===
-                                                                            'success'
-                                                                            ? 'border-accent/30 hover:border-accent/50'
-                                                                            : 'border-destructive/30 hover:border-destructive/50'
-                                                                    )}
+                                                                <TooltipTrigger
+                                                                    asChild
                                                                 >
-                                                                    <div className="flex items-center space-x-3">
-                                                                        <Avatar className="h-8 w-8">
-                                                                            <AvatarFallback
-                                                                                className={cn(
-                                                                                    'text-xs font-bold',
-                                                                                    doc.status ===
-                                                                                        'success'
-                                                                                        ? 'bg-accent/10 text-accent'
-                                                                                        : 'bg-destructive/10 text-destructive'
-                                                                                )}
-                                                                            >
-                                                                                {doc.status ===
-                                                                                'success' ? (
-                                                                                    <CheckCircle className="h-4 w-4" />
-                                                                                ) : (
-                                                                                    <XCircle className="h-4 w-4" />
-                                                                                )}
-                                                                            </AvatarFallback>
-                                                                        </Avatar>
-                                                                        <div>
-                                                                            <span className="text-foreground font-bold break-all block">
+                                                                    <Box
+                                                                        sx={{
+                                                                            display:
+                                                                                'flex',
+                                                                            alignItems:
+                                                                                'center',
+                                                                            justifyContent:
+                                                                                'space-between',
+                                                                            p: 2,
+                                                                            border: '2px solid',
+                                                                            borderRadius:
+                                                                                'md',
+                                                                            cursor: 'pointer',
+                                                                            transition:
+                                                                                'all 0.3s ease',
+                                                                            borderColor:
+                                                                                doc.status ===
+                                                                                'success'
+                                                                                    ? 'success.outlinedBorder'
+                                                                                    : 'danger.outlinedBorder',
+                                                                            bgcolor:
+                                                                                doc.status ===
+                                                                                'success'
+                                                                                    ? 'success.softBg'
+                                                                                    : 'danger.softBg',
+                                                                            '&:hover':
                                                                                 {
-                                                                                    doc.docId
+                                                                                    borderColor:
+                                                                                        doc.status ===
+                                                                                        'success'
+                                                                                            ? 'success.main'
+                                                                                            : 'danger.main',
+                                                                                    transform:
+                                                                                        'translateY(-1px)',
+                                                                                },
+                                                                        }}
+                                                                    >
+                                                                        <Box
+                                                                            sx={{
+                                                                                display:
+                                                                                    'flex',
+                                                                                alignItems:
+                                                                                    'center',
+                                                                                gap: 1.5,
+                                                                            }}
+                                                                        >
+                                                                            <Avatar size="sm">
+                                                                                <AvatarFallback>
+                                                                                    {doc.status ===
+                                                                                    'success' ? (
+                                                                                        <CheckCircleIcon />
+                                                                                    ) : (
+                                                                                        <CancelIcon />
+                                                                                    )}
+                                                                                </AvatarFallback>
+                                                                            </Avatar>
+                                                                            <Box>
+                                                                                <Typography
+                                                                                    level="body-sm"
+                                                                                    sx={{
+                                                                                        fontWeight:
+                                                                                            'bold',
+                                                                                        mb: 0.5,
+                                                                                    }}
+                                                                                >
+                                                                                    {
+                                                                                        doc.docId
+                                                                                    }
+                                                                                </Typography>
+                                                                                {doc.classification && (
+                                                                                    <Badge
+                                                                                        variant="soft"
+                                                                                        color={
+                                                                                            doc.classification ===
+                                                                                            'confidential'
+                                                                                                ? 'danger'
+                                                                                                : 'neutral'
+                                                                                        }
+                                                                                        size="sm"
+                                                                                    >
+                                                                                        {
+                                                                                            doc.classification
+                                                                                        }
+                                                                                    </Badge>
+                                                                                )}
+                                                                            </Box>
+                                                                        </Box>
+                                                                        <Box
+                                                                            sx={{
+                                                                                textAlign:
+                                                                                    'right',
+                                                                            }}
+                                                                        >
+                                                                            {doc.status ===
+                                                                                'success' &&
+                                                                            doc.chunks ? (
+                                                                                <Box
+                                                                                    sx={{
+                                                                                        display:
+                                                                                            'flex',
+                                                                                        alignItems:
+                                                                                            'center',
+                                                                                        gap: 0.5,
+                                                                                        color: 'success.main',
+                                                                                    }}
+                                                                                >
+                                                                                    <Description />
+                                                                                    <Typography
+                                                                                        level="body-sm"
+                                                                                        sx={{
+                                                                                            fontWeight:
+                                                                                                'bold',
+                                                                                        }}
+                                                                                    >
+                                                                                        {
+                                                                                            doc.chunks
+                                                                                        }{' '}
+                                                                                        chunks
+                                                                                    </Typography>
+                                                                                </Box>
+                                                                            ) : doc.error ? (
+                                                                                <Typography
+                                                                                    level="body-xs"
+                                                                                    sx={{
+                                                                                        fontWeight:
+                                                                                            'bold',
+                                                                                        color: 'danger.main',
+                                                                                    }}
+                                                                                >
+                                                                                    Failed
+                                                                                </Typography>
+                                                                            ) : (
+                                                                                <Badge
+                                                                                    variant="outlined"
+                                                                                    size="sm"
+                                                                                >
+                                                                                    {
+                                                                                        doc.status
+                                                                                    }
+                                                                                </Badge>
+                                                                            )}
+                                                                            {doc.size && (
+                                                                                <Typography
+                                                                                    level="body-xs"
+                                                                                    sx={{
+                                                                                        color: 'text.tertiary',
+                                                                                        mt: 0.5,
+                                                                                    }}
+                                                                                >
+                                                                                    {
+                                                                                        doc.size
+                                                                                    }{' '}
+                                                                                    KB
+                                                                                </Typography>
+                                                                            )}
+                                                                        </Box>
+                                                                    </Box>
+                                                                </TooltipTrigger>
+                                                                <TooltipContent>
+                                                                    <Box
+                                                                        sx={{
+                                                                            maxWidth: 320,
+                                                                        }}
+                                                                    >
+                                                                        <Typography
+                                                                            level="title-sm"
+                                                                            sx={{
+                                                                                fontWeight:
+                                                                                    'bold',
+                                                                                mb: 1,
+                                                                            }}
+                                                                        >
+                                                                            {
+                                                                                doc.docId
+                                                                            }
+                                                                        </Typography>
+                                                                        <Box
+                                                                            sx={{
+                                                                                display:
+                                                                                    'flex',
+                                                                                alignItems:
+                                                                                    'center',
+                                                                                gap: 1,
+                                                                                mb: 1,
+                                                                            }}
+                                                                        >
+                                                                            <Badge
+                                                                                variant="soft"
+                                                                                color={
+                                                                                    doc.status ===
+                                                                                    'success'
+                                                                                        ? 'success'
+                                                                                        : 'danger'
                                                                                 }
-                                                                            </span>
+                                                                            >
+                                                                                {
+                                                                                    doc.status
+                                                                                }
+                                                                            </Badge>
                                                                             {doc.classification && (
                                                                                 <Badge
-                                                                                    variant={
+                                                                                    variant="soft"
+                                                                                    color={
                                                                                         doc.classification ===
                                                                                         'confidential'
-                                                                                            ? 'destructive'
-                                                                                            : 'secondary'
+                                                                                            ? 'danger'
+                                                                                            : 'neutral'
                                                                                     }
-                                                                                    className="text-xs mt-1"
                                                                                 >
                                                                                     {
                                                                                         doc.classification
                                                                                     }
                                                                                 </Badge>
                                                                             )}
-                                                                        </div>
-                                                                    </div>
-                                                                    <div className="text-muted-foreground font-medium text-right">
-                                                                        {doc.status ===
-                                                                            'success' &&
-                                                                        doc.chunks ? (
-                                                                            <div className="flex items-center text-accent">
-                                                                                <FileText className="h-4 w-4 mr-1" />
-                                                                                <span className="font-bold">
-                                                                                    {
-                                                                                        doc.chunks
-                                                                                    }{' '}
-                                                                                    chunks
-                                                                                </span>
-                                                                            </div>
-                                                                        ) : doc.error ? (
-                                                                            <span className="text-destructive text-xs font-bold">
-                                                                                Failed
-                                                                            </span>
-                                                                        ) : (
-                                                                            <Badge
-                                                                                variant="outline"
-                                                                                className="text-xs"
+                                                                        </Box>
+                                                                        {doc.chunks && (
+                                                                            <Typography
+                                                                                level="body-sm"
+                                                                                sx={{
+                                                                                    color: 'text.tertiary',
+                                                                                    mb: 1,
+                                                                                }}
                                                                             >
+                                                                                Indexed
+                                                                                into{' '}
                                                                                 {
-                                                                                    doc.status
+                                                                                    doc.chunks
+                                                                                }{' '}
+                                                                                chunks
+                                                                            </Typography>
+                                                                        )}
+                                                                        {doc.error && (
+                                                                            <Typography
+                                                                                level="body-sm"
+                                                                                sx={{
+                                                                                    color: 'danger.main',
+                                                                                    mb: 1,
+                                                                                }}
+                                                                            >
+                                                                                Error:{' '}
+                                                                                {
+                                                                                    doc.error
                                                                                 }
-                                                                            </Badge>
+                                                                            </Typography>
                                                                         )}
                                                                         {doc.size && (
-                                                                            <div className="text-xs text-muted-foreground mt-1">
+                                                                            <Typography
+                                                                                level="body-sm"
+                                                                                sx={{
+                                                                                    color: 'text.tertiary',
+                                                                                }}
+                                                                            >
+                                                                                Size:{' '}
                                                                                 {
                                                                                     doc.size
                                                                                 }{' '}
                                                                                 KB
-                                                                            </div>
+                                                                            </Typography>
                                                                         )}
-                                                                    </div>
-                                                                </div>
-                                                            </HoverCardTrigger>
-                                                            <HoverCardContent className="w-80">
-                                                                <div className="space-y-2">
-                                                                    <h4 className="font-bold">
-                                                                        {
-                                                                            doc.docId
-                                                                        }
-                                                                    </h4>
-                                                                    <div className="flex items-center space-x-2">
-                                                                        <Badge
-                                                                            variant={
-                                                                                doc.status ===
-                                                                                'success'
-                                                                                    ? 'secondary'
-                                                                                    : 'destructive'
-                                                                            }
-                                                                        >
-                                                                            {
-                                                                                doc.status
-                                                                            }
-                                                                        </Badge>
-                                                                        {doc.classification && (
-                                                                            <Badge
-                                                                                variant={
-                                                                                    doc.classification ===
-                                                                                    'confidential'
-                                                                                        ? 'destructive'
-                                                                                        : 'secondary'
-                                                                                }
-                                                                            >
-                                                                                {
-                                                                                    doc.classification
-                                                                                }
-                                                                            </Badge>
-                                                                        )}
-                                                                    </div>
-                                                                    {doc.chunks && (
-                                                                        <p className="text-sm text-muted-foreground">
-                                                                            Indexed
-                                                                            into{' '}
-                                                                            {
-                                                                                doc.chunks
-                                                                            }{' '}
-                                                                            chunks
-                                                                        </p>
-                                                                    )}
-                                                                    {doc.error && (
-                                                                        <p className="text-sm text-destructive">
-                                                                            Error:{' '}
-                                                                            {
-                                                                                doc.error
-                                                                            }
-                                                                        </p>
-                                                                    )}
-                                                                    {doc.size && (
-                                                                        <p className="text-sm text-muted-foreground">
-                                                                            Size:{' '}
-                                                                            {
-                                                                                doc.size
-                                                                            }{' '}
-                                                                            KB
-                                                                        </p>
-                                                                    )}
-                                                                </div>
-                                                            </HoverCardContent>
-                                                        </HoverCard>
-                                                    )
-                                                )}
-                                            </div>
-                                        </CollapsibleContent>
-                                    </Collapsible>
-                                </div>
+                                                                    </Box>
+                                                                </TooltipContent>
+                                                            </Tooltip>
+                                                        )
+                                                    )}
+                                                </Box>
+                                            </AccordionDetails>
+                                        </Accordion>
+                                    </AccordionGroup>
+                                </Box>
                             )}
-                        </div>
+                        </Box>
                     )}
 
                     {/* Information Section */}
-                    <Separator className="my-6" />
-                    <Collapsible
-                        open={expandedSections.has('info')}
-                        onOpenChange={() => toggleSection('info')}
-                    >
-                        <CollapsibleTrigger className="flex items-center justify-between w-full p-4 border-2 border-primary/20 rounded-lg hover:border-accent/40 transition-all duration-300">
-                            <div className="flex items-center space-x-3">
-                                <AlertTriangle className="h-5 w-5 text-accent" />
-                                <span className="font-bold text-foreground">
-                                    Security Information
-                                </span>
-                            </div>
-                            <Badge variant="outline" className="font-bold">
-                                {expandedSections.has('info') ? 'Hide' : 'Show'}
-                            </Badge>
-                        </CollapsibleTrigger>
-                        <CollapsibleContent className="mt-4">
-                            <Alert className="border-2 border-primary/20 bg-primary/5">
-                                <Shield className="h-5 w-5 text-primary" />
-                                <AlertDescription className="text-muted-foreground leading-relaxed">
-                                    <p className="font-bold text-foreground mb-3">
-                                        This will index all documents in the
-                                        corpus folder with appropriate security
-                                        classifications:
-                                    </p>
-                                    <div className="space-y-2">
-                                        <div className="flex items-center space-x-3 p-3 rounded-lg bg-destructive/5 border border-destructive/20">
-                                            <Shield className="h-4 w-4 text-destructive" />
-                                            <div>
-                                                <Badge
-                                                    variant="destructive"
-                                                    className="mb-1"
-                                                >
-                                                    HR/Confidential files
-                                                </Badge>
-                                                <p className="text-sm text-muted-foreground">
-                                                    Admin access only
-                                                </p>
-                                            </div>
-                                        </div>
-                                        <div className="flex items-center space-x-3 p-3 rounded-lg bg-primary/5 border border-primary/20">
-                                            <Shield className="h-4 w-4 text-primary" />
-                                            <div>
-                                                <Badge
-                                                    variant="secondary"
-                                                    className="mb-1"
-                                                >
-                                                    Finance/Policy files
-                                                </Badge>
-                                                <p className="text-sm text-muted-foreground">
-                                                    Manager+ access
-                                                </p>
-                                            </div>
-                                        </div>
-                                        <div className="flex items-center space-x-3 p-3 rounded-lg bg-accent/5 border border-accent/20">
-                                            <Shield className="h-4 w-4 text-accent" />
-                                            <div>
-                                                <Badge
-                                                    variant="outline"
-                                                    className="mb-1"
-                                                >
-                                                    Other files
-                                                </Badge>
-                                                <p className="text-sm text-muted-foreground">
-                                                    All employee access
-                                                </p>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </AlertDescription>
-                            </Alert>
-                        </CollapsibleContent>
-                    </Collapsible>
+                    <Divider sx={{ my: 3 }} />
+                    <AccordionGroup>
+                        <Accordion
+                            expanded={expandedSections.has('info')}
+                            onChange={() => toggleSection('info')}
+                        >
+                            <AccordionSummary>
+                                <Box
+                                    sx={{
+                                        display: 'flex',
+                                        alignItems: 'center',
+                                        gap: 1.5,
+                                    }}
+                                >
+                                    <WarningIcon
+                                        sx={{
+                                            fontSize: 20,
+                                            color: 'warning.main',
+                                        }}
+                                    />
+                                    <Typography
+                                        level="body-md"
+                                        sx={{ fontWeight: 'bold' }}
+                                    >
+                                        Security Information
+                                    </Typography>
+                                </Box>
+                                <Badge variant="outlined" color="neutral">
+                                    {expandedSections.has('info')
+                                        ? 'Hide'
+                                        : 'Show'}
+                                </Badge>
+                            </AccordionSummary>
+                            <AccordionDetails>
+                                <Alert
+                                    variant="soft"
+                                    color="primary"
+                                    sx={{
+                                        border: '2px solid',
+                                        borderColor: 'primary.outlinedBorder',
+                                        bgcolor: 'primary.softBg',
+                                    }}
+                                >
+                                    <Security />
+                                    <AlertDescription>
+                                        <Typography
+                                            level="body-md"
+                                            sx={{ fontWeight: 'bold', mb: 2 }}
+                                        >
+                                            This will index all documents in the
+                                            corpus folder with appropriate
+                                            security classifications:
+                                        </Typography>
+                                        <Box
+                                            sx={{
+                                                display: 'flex',
+                                                flexDirection: 'column',
+                                                gap: 1,
+                                            }}
+                                        >
+                                            <Box
+                                                sx={{
+                                                    display: 'flex',
+                                                    alignItems: 'center',
+                                                    gap: 1.5,
+                                                    p: 1.5,
+                                                    borderRadius: 'md',
+                                                    bgcolor: 'danger.softBg',
+                                                    border: '1px solid',
+                                                    borderColor:
+                                                        'danger.outlinedBorder',
+                                                }}
+                                            >
+                                                <Security
+                                                    sx={{
+                                                        fontSize: 16,
+                                                        color: 'danger.main',
+                                                    }}
+                                                />
+                                                <Box>
+                                                    <Badge
+                                                        variant="soft"
+                                                        color="danger"
+                                                        sx={{ mb: 0.5 }}
+                                                    >
+                                                        HR/Confidential files
+                                                    </Badge>
+                                                    <Typography
+                                                        level="body-xs"
+                                                        sx={{
+                                                            color: 'text.tertiary',
+                                                        }}
+                                                    >
+                                                        Admin access only
+                                                    </Typography>
+                                                </Box>
+                                            </Box>
+                                            <Box
+                                                sx={{
+                                                    display: 'flex',
+                                                    alignItems: 'center',
+                                                    gap: 1.5,
+                                                    p: 1.5,
+                                                    borderRadius: 'md',
+                                                    bgcolor: 'primary.softBg',
+                                                    border: '1px solid',
+                                                    borderColor:
+                                                        'primary.outlinedBorder',
+                                                }}
+                                            >
+                                                <Security
+                                                    sx={{
+                                                        fontSize: 16,
+                                                        color: 'primary.main',
+                                                    }}
+                                                />
+                                                <Box>
+                                                    <Badge
+                                                        variant="soft"
+                                                        color="primary"
+                                                        sx={{ mb: 0.5 }}
+                                                    >
+                                                        Finance/Policy files
+                                                    </Badge>
+                                                    <Typography
+                                                        level="body-xs"
+                                                        sx={{
+                                                            color: 'text.tertiary',
+                                                        }}
+                                                    >
+                                                        Manager+ access
+                                                    </Typography>
+                                                </Box>
+                                            </Box>
+                                            <Box
+                                                sx={{
+                                                    display: 'flex',
+                                                    alignItems: 'center',
+                                                    gap: 1.5,
+                                                    p: 1.5,
+                                                    borderRadius: 'md',
+                                                    bgcolor: 'neutral.softBg',
+                                                    border: '1px solid',
+                                                    borderColor:
+                                                        'neutral.outlinedBorder',
+                                                }}
+                                            >
+                                                <Security
+                                                    sx={{
+                                                        fontSize: 16,
+                                                        color: 'neutral.main',
+                                                    }}
+                                                />
+                                                <Box>
+                                                    <Badge
+                                                        variant="outlined"
+                                                        color="neutral"
+                                                        sx={{ mb: 0.5 }}
+                                                    >
+                                                        Other files
+                                                    </Badge>
+                                                    <Typography
+                                                        level="body-xs"
+                                                        sx={{
+                                                            color: 'text.tertiary',
+                                                        }}
+                                                    >
+                                                        All employee access
+                                                    </Typography>
+                                                </Box>
+                                            </Box>
+                                        </Box>
+                                    </AlertDescription>
+                                </Alert>
+                            </AccordionDetails>
+                        </Accordion>
+                    </AccordionGroup>
 
                     {/* Decorative bottom elements */}
-                    <div className="absolute bottom-4 left-8 w-6 h-6 bg-accent/20 rounded-full blur-lg animate-pulse" />
-                    <div className="absolute bottom-4 right-8 w-4 h-4 bg-primary/20 rounded-full blur-md animate-pulse" />
+                    <Box
+                        sx={{
+                            position: 'absolute',
+                            bottom: 16,
+                            left: 32,
+                            width: 24,
+                            height: 24,
+                            bgcolor: 'primary.softBg',
+                            borderRadius: '50%',
+                            filter: 'blur(15px)',
+                            animation: 'pulse 2s ease-in-out infinite',
+                        }}
+                    />
+                    <Box
+                        sx={{
+                            position: 'absolute',
+                            bottom: 16,
+                            right: 32,
+                            width: 16,
+                            height: 16,
+                            bgcolor: 'warning.softBg',
+                            borderRadius: '50%',
+                            filter: 'blur(10px)',
+                            animation: 'pulse 2s ease-in-out infinite',
+                        }}
+                    />
                 </CardContent>
             </Card>
         </TooltipProvider>

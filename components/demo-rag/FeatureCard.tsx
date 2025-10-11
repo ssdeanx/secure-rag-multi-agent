@@ -1,31 +1,35 @@
 'use client'
 
-import { Card, CardContent, CardTitle } from '@/components/ui/shadnui/card'
-import { Badge } from '@/components/ui/shadnui/badge'
-import { Alert, AlertDescription } from '@/components/ui/shadnui/alert'
-import { Separator } from '@/components/ui/shadnui/separator'
+import React from 'react'
 import {
+    Card,
+    CardContent,
+    Badge,
+    Alert,
+    AlertDescription,
+    Divider,
+    Avatar,
+    AvatarFallback,
+    LinearProgress,
     Tooltip,
     TooltipContent,
     TooltipProvider,
     TooltipTrigger,
-} from '@/components/ui/shadnui/tooltip'
-import { Progress } from '@/components/ui/shadnui/progress'
-import { Avatar, AvatarFallback } from '@/components/ui/shadnui/avatar'
+    Box,
+    Typography,
+} from '@/components/ui/joy'
 import {
-    HoverCard,
-    HoverCardContent,
-    HoverCardTrigger,
-} from '@/components/ui/shadnui/hover-card'
-import { cn } from '@/lib/utils'
-import React from 'react'
+    Security,
+    Warning,
+    Error as ErrorIcon,
+    Info,
+} from '@mui/icons-material'
 
 interface FeatureCardProps {
     title: string
     badgeVariant?: 'secondary' | 'destructive' | 'default'
     badgeText?: string
     icon?: React.ReactNode
-    className?: string
     children?: React.ReactNode
     status?: 'success' | 'warning' | 'error' | 'info'
     statusMessage?: string
@@ -41,7 +45,6 @@ export function FeatureCard({
     badgeVariant = 'secondary',
     badgeText,
     icon,
-    className,
     children,
     status,
     statusMessage,
@@ -51,146 +54,234 @@ export function FeatureCard({
     tooltip,
     hoverContent,
 }: FeatureCardProps) {
-    return (
-        <TooltipProvider>
-            <HoverCard>
-                <HoverCardTrigger asChild>
-                    <Card
-                        className={cn(
-                            'group relative overflow-hidden',
-                            'border-4 border-primary/20 hover:border-accent/40',
-                            'bg-gradient-mocha backdrop-blur-sm',
-                            'hover-lift hover-glow hover-scale',
-                            'transition-all duration-500 ease-spring',
-                            'shadow-2xl hover:shadow-accent/20',
-                            'animated-gradient brutalist-card',
-                            className
-                        )}
-                    >
-                        {/* Background decorative elements */}
-                        <div className="absolute top-0 right-0 w-16 h-16 bg-accent/10 rounded-full blur-xl opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
-                        <div className="absolute bottom-0 left-0 w-12 h-12 bg-primary/10 rounded-full blur-lg opacity-0 group-hover:opacity-100 transition-opacity duration-500 delay-100" />
+    const getStatusColor = (statusProp?: string) => {
+        switch (statusProp) {
+            case 'success':
+                return 'success' as const
+            case 'warning':
+                return 'warning' as const
+            case 'error':
+                return 'danger' as const
+            case 'info':
+                return 'primary' as const
+            default:
+                return 'neutral' as const
+        }
+    }
 
-                        <CardContent className="relative p-8">
-                            <div className="flex items-start justify-between mb-6">
-                                <div className="flex items-center space-x-4 group/icon">
-                                    {showAvatar === true && (
-                                        <Avatar className="h-12 w-12 border-2 border-accent/30">
-                                            <AvatarFallback className="bg-accent/10 text-accent font-bold">
-                                                {avatarFallback ??
-                                                    title.charAt(0)}
-                                            </AvatarFallback>
-                                        </Avatar>
-                                    )}
-                                    <div className="p-3 rounded-xl bg-accent/10 border-2 border-accent/20 group-hover/icon:bg-accent/20 group-hover/icon:border-accent/40 transition-all duration-300 hover-scale">
-                                        {icon}
-                                    </div>
-                                    <div className="flex flex-col">
-                                        <CardTitle className="text-xl font-black brutalist-text text-shadow-lg text-foreground group-hover:text-primary transition-colors duration-300">
-                                            {title}
-                                        </CardTitle>
-                                        {typeof badgeText === 'string' &&
-                                            badgeText.trim().length > 0 && (
-                                                <Badge
-                                                    variant={
-                                                        badgeVariant ===
-                                                        'default'
-                                                            ? undefined
-                                                            : badgeVariant
-                                                    }
-                                                    className={cn(
-                                                        'mt-2 w-fit font-bold uppercase tracking-wider text-xs',
-                                                        'btn-brutalist hover-scale',
-                                                        badgeVariant ===
-                                                            'default' &&
-                                                            'bg-primary text-primary-foreground',
-                                                        badgeVariant ===
-                                                            'secondary' &&
-                                                            'bg-accent text-accent-foreground',
-                                                        badgeVariant ===
-                                                            'destructive' &&
-                                                            'bg-destructive text-destructive-foreground'
-                                                    )}
-                                                >
-                                                    {badgeText}
-                                                </Badge>
-                                            )}
-                                    </div>
-                                </div>
-                            </div>
+    const getBadgeColor = (variant?: string) => {
+        switch (variant) {
+            case 'default':
+                return 'primary' as const
+            case 'secondary':
+                return 'neutral' as const
+            case 'destructive':
+                return 'danger' as const
+            default:
+                return 'neutral' as const
+        }
+    }
 
-                            {/* Status Alert */}
-                            {status &&
-                                typeof statusMessage === 'string' &&
-                                statusMessage.trim().length > 0 && (
-                                    <Alert
-                                        className={cn(
-                                            'mb-4 border-2',
-                                            status === 'success' &&
-                                                'border-accent/30 bg-accent/5',
-                                            status === 'warning' &&
-                                                'border-yellow-500/30 bg-yellow-500/5',
-                                            status === 'error' &&
-                                                'border-destructive/30 bg-destructive/5',
-                                            status === 'info' &&
-                                                'border-primary/30 bg-primary/5'
-                                        )}
+    const cardContent = (
+        <Card
+            variant="outlined"
+            sx={{
+                position: 'relative',
+                overflow: 'hidden',
+                border: '4px solid',
+                borderColor: 'primary.softBg',
+                bgcolor: 'background.surface',
+                boxShadow: 'xl',
+                transition: 'all 0.3s ease',
+                '&:hover': {
+                    borderColor: 'primary.main',
+                    boxShadow: '2xl',
+                },
+            }}
+        >
+            {/* Background decorative elements */}
+            <Box
+                sx={{
+                    position: 'absolute',
+                    top: 0,
+                    right: 0,
+                    width: 64,
+                    height: 64,
+                    bgcolor: 'primary.softBg',
+                    borderRadius: '50%',
+                    filter: 'blur(20px)',
+                    opacity: 0,
+                    transition: 'opacity 0.5s ease',
+                    '&:hover': {
+                        opacity: 1,
+                    },
+                }}
+            />
+            <Box
+                sx={{
+                    position: 'absolute',
+                    bottom: 0,
+                    left: 0,
+                    width: 48,
+                    height: 48,
+                    bgcolor: 'warning.softBg',
+                    borderRadius: '50%',
+                    filter: 'blur(15px)',
+                    opacity: 0,
+                    transition: 'opacity 0.5s ease 0.1s',
+                    '&:hover': {
+                        opacity: 1,
+                    },
+                }}
+            />
+
+            <CardContent sx={{ p: 3, position: 'relative' }}>
+                <Box
+                    sx={{
+                        display: 'flex',
+                        alignItems: 'flex-start',
+                        justifyContent: 'space-between',
+                        mb: 3,
+                    }}
+                >
+                    <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
+                        {showAvatar && (
+                            <Avatar
+                                size="lg"
+                                sx={{
+                                    border: '2px solid',
+                                    borderColor: 'primary.outlinedBorder',
+                                }}
+                            >
+                                <AvatarFallback>
+                                    <Box
+                                        sx={{
+                                            bgcolor: 'primary.softBg',
+                                            color: 'primary.main',
+                                            fontWeight: 'bold',
+                                        }}
                                     >
-                                        <AlertDescription
-                                            className={cn(
-                                                'font-bold',
-                                                status === 'success' &&
-                                                    'text-accent',
-                                                status === 'warning' &&
-                                                    'text-yellow-600',
-                                                status === 'error' &&
-                                                    'text-destructive',
-                                                status === 'info' &&
-                                                    'text-primary'
-                                            )}
-                                        >
-                                            {statusMessage}
-                                        </AlertDescription>
-                                    </Alert>
-                                )}
-
-                            {/* Progress Bar */}
-                            {progress !== undefined && (
-                                <div className="mb-4">
-                                    <Progress
-                                        value={progress}
-                                        className="h-2"
-                                    />
-                                    <span className="text-xs text-muted-foreground mt-1 block">
-                                        {progress}% complete
-                                    </span>
-                                </div>
+                                        {avatarFallback ?? title.charAt(0)}
+                                    </Box>
+                                </AvatarFallback>
+                            </Avatar>
+                        )}
+                        <Box
+                            sx={{
+                                p: 1.5,
+                                borderRadius: 'xl',
+                                bgcolor: 'primary.softBg',
+                                border: '2px solid',
+                                borderColor: 'primary.outlinedBorder',
+                                transition: 'all 0.3s ease',
+                                '&:hover': {
+                                    bgcolor: 'primary.softBg',
+                                    borderColor: 'primary.main',
+                                },
+                            }}
+                        >
+                            {icon}
+                        </Box>
+                        <Box>
+                            <Typography
+                                level="title-lg"
+                                sx={{ fontWeight: 'bold', mb: 0.5 }}
+                            >
+                                {title}
+                            </Typography>
+                            {badgeText && badgeText.trim().length > 0 && (
+                                <Badge
+                                    variant="soft"
+                                    color={getBadgeColor(badgeVariant)}
+                                    sx={{
+                                        fontWeight: 'bold',
+                                        textTransform: 'uppercase',
+                                        fontSize: 'xs',
+                                        letterSpacing: '0.1em',
+                                    }}
+                                >
+                                    {badgeText}
+                                </Badge>
                             )}
+                        </Box>
+                    </Box>
+                </Box>
 
-                            <Separator className="mb-4" />
+                {/* Status Alert */}
+                {status &&
+                    statusMessage &&
+                    statusMessage?.trim().length > 0 && (
+                        <Alert
+                            variant="soft"
+                            color={getStatusColor(status)}
+                            sx={{
+                                mb: 2,
+                                border: '2px solid',
+                                borderColor: `${status}.outlinedBorder`,
+                                bgcolor: `${status}.softBg`,
+                            }}
+                        >
+                            {status === 'success' && <Security />}
+                            {status === 'warning' && <Warning />}
+                            {status === 'error' && <ErrorIcon />}
+                            {status === 'info' && <Info />}
+                            <AlertDescription sx={{ fontWeight: 'bold' }}>
+                                {statusMessage}
+                            </AlertDescription>
+                        </Alert>
+                    )}
 
-                            <div className="text-sm text-muted-foreground leading-relaxed group-hover:text-foreground/90 transition-colors duration-300">
-                                {children}
-                            </div>
-
-                            {/* Bottom accent line */}
-                            <div className="absolute bottom-0 left-0 h-1 bg-gradient-accent w-0 group-hover:w-full transition-all duration-500 ease-spring" />
-                        </CardContent>
-                    </Card>
-                </HoverCardTrigger>
-
-                {/* Hover Card Content */}
-                {hoverContent !== null && (
-                    <HoverCardContent className="w-80">
-                        <div className="space-y-2">
-                            <h4 className="font-bold">{title}</h4>
-                            {hoverContent}
-                        </div>
-                    </HoverCardContent>
+                {/* Progress Bar */}
+                {progress !== undefined && (
+                    <Box sx={{ mb: 2 }}>
+                        <LinearProgress
+                            value={progress}
+                            color="primary"
+                            size="sm"
+                            sx={{ mb: 0.5 }}
+                        />
+                        <Typography
+                            level="body-xs"
+                            sx={{ color: 'text.tertiary' }}
+                        >
+                            {progress}% complete
+                        </Typography>
+                    </Box>
                 )}
-            </HoverCard>
-        </TooltipProvider>
+
+                <Divider sx={{ mb: 2 }} />
+
+                <Typography
+                    level="body-sm"
+                    sx={{ color: 'text.tertiary', lineHeight: 1.6 }}
+                >
+                    {children}
+                </Typography>
+
+                {/* Bottom accent line */}
+                <Box
+                    sx={{
+                        position: 'absolute',
+                        bottom: 0,
+                        left: 0,
+                        height: 4,
+                        bgcolor: 'primary.main',
+                        width: 0,
+                        transition: 'width 0.5s ease',
+                        '&:hover': {
+                            width: '100%',
+                        },
+                    }}
+                />
+            </CardContent>
+        </Card>
     )
+
+    if (tooltip || hoverContent) {
+        return <div title={tooltip}>{cardContent}</div>
+    }
+
+    return cardContent
 }
 
 export default FeatureCard

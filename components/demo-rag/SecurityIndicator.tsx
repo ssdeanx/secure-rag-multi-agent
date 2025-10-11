@@ -1,19 +1,26 @@
 'use client'
 
 import React, { useCallback } from 'react'
-import { Lock, Shield, Eye, Crown } from 'lucide-react'
-import { Alert, AlertDescription } from '@/components/ui/shadnui/alert'
-import { Badge } from '@/components/ui/shadnui/badge'
-import { Progress } from '@/components/ui/shadnui/progress'
-import { Avatar, AvatarFallback } from '@/components/ui/shadnui/avatar'
 import {
+    Alert,
+    AlertDescription,
+    Badge,
+    Avatar,
+    AvatarFallback,
     Tooltip,
     TooltipContent,
     TooltipProvider,
     TooltipTrigger,
-} from '@/components/ui/shadnui/tooltip'
-import { Separator } from '@/components/ui/shadnui/separator'
-import { cn } from '@/lib/utils'
+    Divider,
+    Box,
+    Typography,
+} from '@/components/ui/joy'
+import {
+    Lock,
+    Security,
+    Visibility,
+    AdminPanelSettings,
+} from '@mui/icons-material'
 
 interface SecurityIndicatorProps {
     role?: string
@@ -22,51 +29,91 @@ interface SecurityIndicatorProps {
 export default function SecurityIndicator({ role }: SecurityIndicatorProps) {
     if (role === null) {
         return (
-            <TooltipProvider>
-                <Alert
-                    className={cn(
-                        'group relative border-2 border-destructive/30',
-                        'bg-gradient-mocha backdrop-blur-sm',
-                        'hover-lift hover-glow hover-scale',
-                        'transition-all duration-300 ease-spring',
-                        'shadow-xl overflow-hidden'
-                    )}
-                >
-                    <Lock className="h-5 w-5 text-destructive" />
-                    <AlertDescription>
-                        {/* Background decorative elements */}
-                        <div className="absolute top-0 right-0 w-16 h-16 bg-destructive/10 rounded-full blur-xl animate-pulse" />
-                        <div className="absolute bottom-0 left-0 w-12 h-12 bg-destructive/5 rounded-full blur-lg animate-pulse" />
+            <Alert
+                variant="soft"
+                color="danger"
+                sx={{
+                    position: 'relative',
+                    overflow: 'hidden',
+                    border: '2px solid',
+                    borderColor: 'danger.outlinedBorder',
+                    bgcolor: 'danger.50',
+                    transition: 'all 0.3s ease',
+                    '&:hover': {
+                        boxShadow: 'lg',
+                    },
+                }}
+            >
+                <Lock />
+                <AlertDescription>
+                    <Box
+                        sx={{
+                            position: 'relative',
+                            display: 'flex',
+                            alignItems: 'center',
+                            gap: 2,
+                        }}
+                    >
+                        <Avatar
+                            size="md"
+                            sx={{
+                                border: '2px solid',
+                                borderColor: 'danger.outlinedBorder',
+                            }}
+                        >
+                            <AvatarFallback>
+                                <Lock />
+                            </AvatarFallback>
+                        </Avatar>
+                        <Box>
+                            <Box
+                                sx={{
+                                    display: 'flex',
+                                    alignItems: 'center',
+                                    gap: 1,
+                                }}
+                            >
+                                <Typography
+                                    level="body-sm"
+                                    sx={{
+                                        fontWeight: 'bold',
+                                        color: 'danger.main',
+                                    }}
+                                >
+                                    Not Authenticated
+                                </Typography>
+                                <Badge variant="soft" color="danger" size="sm">
+                                    Access Required
+                                </Badge>
+                            </Box>
+                            <Typography
+                                level="body-xs"
+                                sx={{
+                                    color: 'text.tertiary',
+                                    fontWeight: 'medium',
+                                }}
+                            >
+                                Please sign in to continue
+                            </Typography>
+                        </Box>
+                    </Box>
 
-                        <div className="relative flex items-center space-x-3">
-                            <Avatar className="h-10 w-10 border-2 border-destructive/30">
-                                <AvatarFallback className="bg-destructive/10 text-destructive font-bold">
-                                    <Lock className="h-5 w-5" />
-                                </AvatarFallback>
-                            </Avatar>
-                            <div className="flex flex-col">
-                                <div className="flex items-center space-x-2">
-                                    <span className="text-sm font-bold text-destructive brutalist-text">
-                                        Not Authenticated
-                                    </span>
-                                    <Badge
-                                        variant="destructive"
-                                        className="text-xs"
-                                    >
-                                        Access Required
-                                    </Badge>
-                                </div>
-                                <span className="text-xs text-muted-foreground font-medium">
-                                    Please sign in to continue
-                                </span>
-                            </div>
-                        </div>
-
-                        {/* Bottom accent line */}
-                        <div className="absolute bottom-0 left-0 h-1 bg-destructive w-0 group-hover:w-full transition-all duration-500 ease-spring" />
-                    </AlertDescription>
-                </Alert>
-            </TooltipProvider>
+                    <Box
+                        sx={{
+                            position: 'absolute',
+                            bottom: 0,
+                            left: 0,
+                            height: 4,
+                            bgcolor: 'danger.main',
+                            width: 0,
+                            transition: 'width 0.5s ease',
+                            '&:hover': {
+                                width: '100%',
+                            },
+                        }}
+                    />
+                </AlertDescription>
+            </Alert>
         )
     }
 
@@ -92,41 +139,29 @@ export default function SecurityIndicator({ role }: SecurityIndicatorProps) {
                     label: 'Confidential Access',
                     description:
                         'Full system access with step-up authentication',
-                    bgClass: 'bg-destructive/10 border-destructive/30',
-                    textClass: 'text-destructive',
-                    icon: Crown,
-                    pulseClass: 'bg-destructive',
-                    shadowClass: 'hover:shadow-destructive/20',
+                    color: 'danger' as const,
+                    icon: AdminPanelSettings,
                 }
             case 'internal-plus':
                 return {
                     label: 'Enhanced Access',
                     description: 'Cross-department administrative privileges',
-                    bgClass: 'bg-primary/10 border-primary/30',
-                    textClass: 'text-primary',
-                    icon: Shield,
-                    pulseClass: 'bg-primary',
-                    shadowClass: 'hover:shadow-primary/20',
+                    color: 'primary' as const,
+                    icon: Security,
                 }
             case 'internal':
                 return {
                     label: 'Internal Access',
                     description: 'Department-level document access',
-                    bgClass: 'bg-accent/10 border-accent/30',
-                    textClass: 'text-accent',
-                    icon: Eye,
-                    pulseClass: 'bg-accent',
-                    shadowClass: 'hover:shadow-accent/20',
+                    color: 'neutral' as const,
+                    icon: Visibility,
                 }
             default:
                 return {
                     label: 'Internal Access',
                     description: 'Department-level document access',
-                    bgClass: 'bg-accent/10 border-accent/30',
-                    textClass: 'text-accent',
-                    icon: Eye,
-                    pulseClass: 'bg-accent',
-                    shadowClass: 'hover:shadow-accent/20',
+                    color: 'neutral' as const,
+                    icon: Visibility,
                 }
         }
     }, [level])
@@ -136,191 +171,356 @@ export default function SecurityIndicator({ role }: SecurityIndicatorProps) {
 
     return (
         <TooltipProvider>
-            <div className="flex flex-col sm:flex-row sm:items-center space-y-4 sm:space-y-0 sm:space-x-6">
+            <Box
+                sx={{
+                    display: 'flex',
+                    flexDirection: { xs: 'column', sm: 'row' },
+                    alignItems: { xs: 'stretch', sm: 'center' },
+                    gap: { xs: 2, sm: 3 },
+                }}
+            >
                 {/* Access Level Indicator */}
-                <div className="flex items-center space-x-4">
-                    <span className="text-sm font-bold text-foreground brutalist-text">
+                <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
+                    <Typography level="body-sm" sx={{ fontWeight: 'bold' }}>
                         Access Level:
-                    </span>
-                    <div className="flex space-x-2">
+                    </Typography>
+                    <Box sx={{ display: 'flex', gap: 1 }}>
                         {/* Public Level */}
                         <Tooltip>
-                            <TooltipTrigger asChild>
-                                <div className="relative group/level cursor-pointer">
-                                    <div
-                                        className={cn(
-                                            'h-4 w-12 rounded-lg border-2 transition-all duration-500',
-                                            level === 'confidential' ||
+                            <TooltipTrigger>
+                                <Box
+                                    sx={{
+                                        position: 'relative',
+                                        cursor: 'pointer',
+                                    }}
+                                >
+                                    <Box
+                                        sx={{
+                                            height: 16,
+                                            width: 48,
+                                            borderRadius: 'md',
+                                            border: '2px solid',
+                                            transition: 'all 0.3s ease',
+                                            borderColor:
+                                                level === 'confidential' ||
                                                 level === 'internal-plus' ||
                                                 level === 'internal'
-                                                ? 'bg-accent border-accent/50 shadow-lg shadow-accent/30'
-                                                : 'bg-muted border-muted-foreground/30'
-                                        )}
+                                                    ? 'neutral.outlinedBorder'
+                                                    : 'neutral.main',
+                                            bgcolor:
+                                                level === 'confidential' ||
+                                                level === 'internal-plus' ||
+                                                level === 'internal'
+                                                    ? 'neutral.50'
+                                                    : 'background.surface',
+                                        }}
                                     />
                                     {(level === 'confidential' ||
                                         level === 'internal-plus' ||
                                         level === 'internal') && (
-                                        <div className="absolute inset-0 bg-accent rounded-lg animate-pulse opacity-30" />
+                                        <Box
+                                            sx={{
+                                                position: 'absolute',
+                                                inset: 0,
+                                                borderRadius: 'md',
+                                                bgcolor: 'neutral.50',
+                                                opacity: 0.3,
+                                                transition:
+                                                    'background-color 0.3s ease',
+                                            }}
+                                        />
                                     )}
-                                    <Badge
-                                        variant="outline"
-                                        className="absolute -bottom-6 left-1/2 transform -translate-x-1/2 text-xs font-bold opacity-0 group-hover/level:opacity-100 transition-opacity duration-300 whitespace-nowrap"
+                                    <Typography
+                                        level="body-xs"
+                                        sx={{
+                                            position: 'absolute',
+                                            bottom: -20,
+                                            left: '50%',
+                                            transform: 'translateX(-50%)',
+                                            fontWeight: 'bold',
+                                            opacity: 0,
+                                            transition: 'opacity 0.3s ease',
+                                            '&:hover': {
+                                                opacity: 1,
+                                            },
+                                            whiteSpace: 'nowrap',
+                                        }}
                                     >
                                         Public
-                                    </Badge>
-                                </div>
+                                    </Typography>
+                                </Box>
                             </TooltipTrigger>
                             <TooltipContent>
-                                <p>Basic document access level</p>
+                                <Typography level="body-sm">
+                                    Basic document access level
+                                </Typography>
                             </TooltipContent>
                         </Tooltip>
 
                         {/* Internal Level */}
                         <Tooltip>
-                            <TooltipTrigger asChild>
-                                <div className="relative group/level cursor-pointer">
-                                    <div
-                                        className={cn(
-                                            'h-4 w-12 rounded-lg border-2 transition-all duration-500',
-                                            level === 'confidential' ||
+                            <TooltipTrigger>
+                                <Box
+                                    sx={{
+                                        position: 'relative',
+                                        cursor: 'pointer',
+                                    }}
+                                >
+                                    <Box
+                                        sx={{
+                                            height: 16,
+                                            width: 48,
+                                            borderRadius: 'md',
+                                            border: '2px solid',
+                                            transition: 'all 0.3s ease',
+                                            borderColor:
+                                                level === 'confidential' ||
                                                 level === 'internal-plus'
-                                                ? 'bg-primary border-primary/50 shadow-lg shadow-primary/30'
-                                                : 'bg-muted border-muted-foreground/30'
-                                        )}
+                                                    ? 'primary.outlinedBorder'
+                                                    : 'neutral.main',
+                                            bgcolor:
+                                                level === 'confidential' ||
+                                                level === 'internal-plus'
+                                                    ? 'primary.50'
+                                                    : 'background.surface',
+                                        }}
                                     />
                                     {(level === 'confidential' ||
                                         level === 'internal-plus') && (
-                                        <div className="absolute inset-0 bg-primary rounded-lg animate-pulse opacity-30" />
+                                        <Box
+                                            sx={{
+                                                position: 'absolute',
+                                                inset: 0,
+                                                borderRadius: 'md',
+                                                bgcolor: 'primary.50',
+                                                opacity: 0.3,
+                                                transition:
+                                                    'background-color 0.3s ease',
+                                            }}
+                                        />
                                     )}
-                                    <Badge
-                                        variant="outline"
-                                        className="absolute -bottom-6 left-1/2 transform -translate-x-1/2 text-xs font-bold opacity-0 group-hover/level:opacity-100 transition-opacity duration-300 whitespace-nowrap"
+                                    <Typography
+                                        level="body-xs"
+                                        sx={{
+                                            position: 'absolute',
+                                            bottom: -20,
+                                            left: '50%',
+                                            transform: 'translateX(-50%)',
+                                            fontWeight: 'bold',
+                                            opacity: 0,
+                                            transition: 'opacity 0.3s ease',
+                                            '&:hover': {
+                                                opacity: 1,
+                                            },
+                                            whiteSpace: 'nowrap',
+                                        }}
                                     >
                                         Internal
-                                    </Badge>
-                                </div>
+                                    </Typography>
+                                </Box>
                             </TooltipTrigger>
                             <TooltipContent>
-                                <p>Department-level access</p>
+                                <Typography level="body-sm">
+                                    Department-level access
+                                </Typography>
                             </TooltipContent>
                         </Tooltip>
 
                         {/* Confidential Level */}
                         <Tooltip>
-                            <TooltipTrigger asChild>
-                                <div className="relative group/level cursor-pointer">
-                                    <div
-                                        className={cn(
-                                            'h-4 w-12 rounded-lg border-2 transition-all duration-500',
-                                            level === 'confidential'
-                                                ? 'bg-destructive border-destructive/50 shadow-lg shadow-destructive/30'
-                                                : 'bg-muted border-muted-foreground/30'
-                                        )}
+                            <TooltipTrigger>
+                                <Box
+                                    sx={{
+                                        position: 'relative',
+                                        cursor: 'pointer',
+                                    }}
+                                >
+                                    <Box
+                                        sx={{
+                                            height: 16,
+                                            width: 48,
+                                            borderRadius: 'md',
+                                            border: '2px solid',
+                                            transition: 'all 0.3s ease',
+                                            borderColor:
+                                                level === 'confidential'
+                                                    ? 'danger.outlinedBorder'
+                                                    : 'neutral.main',
+                                            bgcolor:
+                                                level === 'confidential'
+                                                    ? 'danger.50'
+                                                    : 'background.surface',
+                                        }}
                                     />
                                     {level === 'confidential' && (
-                                        <div className="absolute inset-0 bg-destructive rounded-lg animate-pulse opacity-30" />
+                                        <Box
+                                            sx={{
+                                                position: 'absolute',
+                                                inset: 0,
+                                                borderRadius: 'md',
+                                                bgcolor: 'danger.50',
+                                                opacity: 0.3,
+                                                transition:
+                                                    'background-color 0.3s ease',
+                                            }}
+                                        />
                                     )}
-                                    <Badge
-                                        variant="outline"
-                                        className="absolute -bottom-6 left-1/2 transform -translate-x-1/2 text-xs font-bold opacity-0 group-hover/level:opacity-100 transition-opacity duration-300 whitespace-nowrap"
+                                    <Typography
+                                        level="body-xs"
+                                        sx={{
+                                            position: 'absolute',
+                                            bottom: -20,
+                                            left: '50%',
+                                            transform: 'translateX(-50%)',
+                                            fontWeight: 'bold',
+                                            opacity: 0,
+                                            transition: 'opacity 0.3s ease',
+                                            '&:hover': {
+                                                opacity: 1,
+                                            },
+                                            whiteSpace: 'nowrap',
+                                        }}
                                     >
                                         Confidential
-                                    </Badge>
-                                </div>
+                                    </Typography>
+                                </Box>
                             </TooltipTrigger>
                             <TooltipContent>
-                                <p>
+                                <Typography level="body-sm">
                                     Full system access with step-up
                                     authentication
-                                </p>
+                                </Typography>
                             </TooltipContent>
                         </Tooltip>
-                    </div>
-                </div>
+                    </Box>
+                </Box>
 
-                <Separator
+                <Divider
                     orientation="vertical"
-                    className="hidden sm:block h-12"
+                    sx={{ height: 48, display: { xs: 'none', sm: 'block' } }}
                 />
 
                 {/* Security Badge */}
                 <Alert
-                    className={cn(
-                        'group relative border-2',
-                        'bg-gradient-mocha backdrop-blur-sm',
-                        config.bgClass,
-                        'hover-lift hover-glow hover-scale',
-                        'transition-all duration-300 ease-spring',
-                        'shadow-xl overflow-hidden',
-                        config.shadowClass
-                    )}
+                    variant="soft"
+                    color={config.color}
+                    sx={{
+                        position: 'relative',
+                        overflow: 'hidden',
+                        border: '2px solid',
+                        borderColor: `${config.color}.outlinedBorder`,
+                        bgcolor: `${config.color}.softBg`,
+                        transition: 'all 0.3s ease',
+                        '&:hover': {
+                            boxShadow: 'lg',
+                            borderColor: `${config.color}.main`,
+                        },
+                        flex: 1,
+                    }}
                 >
                     <IconComponent
-                        className={cn('h-5 w-5', config.textClass)}
+                        sx={{ fontSize: 20, color: `${config.color}.main` }}
                     />
                     <AlertDescription>
                         {/* Animated background shimmer */}
-                        <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/5 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-1000" />
+                        <Box
+                            sx={{
+                                position: 'absolute',
+                                inset: 0,
+                                background:
+                                    'linear-gradient(90deg, transparent 0%, rgba(255,255,255,0.05) 50%, transparent 100%)',
+                                transform: 'translateX(-100%)',
+                                transition: 'transform 1s ease',
+                                '.MuiAlert-root:hover &': {
+                                    transform: 'translateX(100%)',
+                                },
+                            }}
+                        />
 
-                        <div className="relative z-10 flex items-center space-x-4">
-                            <Avatar className="h-10 w-10 border-2 border-accent/30">
-                                <AvatarFallback
-                                    className={cn(
-                                        'bg-accent/10 font-bold',
-                                        config.textClass
-                                    )}
-                                >
-                                    <IconComponent className="h-5 w-5" />
-                                </AvatarFallback>
+                        <Box
+                            sx={{
+                                position: 'relative',
+                                zIndex: 1,
+                                display: 'flex',
+                                alignItems: 'center',
+                                gap: 2,
+                            }}
+                        >
+                            <Avatar
+                                size="md"
+                                sx={{
+                                    border: '2px solid',
+                                    borderColor: 'neutral.outlinedBorder',
+                                }}
+                            >
+                                {config.label.charAt(0)}
                             </Avatar>
 
-                            <div className="flex flex-col">
-                                <div className="flex items-center space-x-2">
-                                    <span
-                                        className={cn(
-                                            'text-sm font-black brutalist-text text-shadow-lg',
-                                            config.textClass
-                                        )}
+                            <Box sx={{ flex: 1 }}>
+                                <Box
+                                    sx={{
+                                        display: 'flex',
+                                        alignItems: 'center',
+                                        gap: 1,
+                                    }}
+                                >
+                                    <Typography
+                                        level="body-sm"
+                                        sx={{
+                                            fontWeight: 'bold',
+                                            color: `${config.color}.main`,
+                                        }}
                                     >
                                         {config.label}
-                                    </span>
+                                    </Typography>
                                     <Badge
-                                        variant="secondary"
-                                        className="text-xs"
+                                        variant="soft"
+                                        color="neutral"
+                                        size="sm"
                                     >
                                         Active
                                     </Badge>
-                                </div>
-                                <span className="text-xs text-muted-foreground font-medium">
+                                </Box>
+                                <Typography
+                                    level="body-xs"
+                                    sx={{
+                                        color: 'text.tertiary',
+                                        fontWeight: 'medium',
+                                    }}
+                                >
                                     {config.description}
-                                </span>
-                            </div>
-                        </div>
+                                </Typography>
+                            </Box>
 
-                        {/* Role indicator */}
-                        <div className="ml-auto">
+                            {/* Role indicator */}
                             <Badge
-                                variant="outline"
-                                className="text-xs font-mono"
+                                variant="outlined"
+                                color="neutral"
+                                size="sm"
+                                sx={{ fontFamily: 'monospace' }}
                             >
                                 {role}
                             </Badge>
-                        </div>
+                        </Box>
 
                         {/* Bottom accent line */}
-                        <div
-                            className={cn(
-                                'absolute bottom-0 left-0 h-1 w-0 group-hover:w-full transition-all duration-500 ease-spring',
-                                level === 'confidential'
-                                    ? 'bg-destructive'
-                                    : level === 'internal-plus'
-                                      ? 'bg-primary'
-                                      : 'bg-accent'
-                            )}
+                        <Box
+                            sx={{
+                                position: 'absolute',
+                                bottom: 0,
+                                left: 0,
+                                height: 4,
+                                bgcolor: `${config.color}.main`,
+                                width: 0,
+                                transition: 'width 0.5s ease',
+                                '&:hover': {
+                                    width: '100%',
+                                },
+                            }}
                         />
                     </AlertDescription>
                 </Alert>
-            </div>
+            </Box>
         </TooltipProvider>
     )
 }

@@ -1,62 +1,50 @@
 'use client'
 
-import React, { useState, useEffect, useRef, useCallback, useMemo } from 'react'
+import React, { useState, useEffect, useRef, useCallback } from 'react'
 import {
-    Send,
-    Loader2,
-    Shield,
-    FileText,
-    Bot,
-    User,
-    Copy,
-    ThumbsUp,
-    ThumbsDown,
-    MessageSquare,
-    AlertTriangle,
-} from 'lucide-react'
-import ReactMarkdown from 'react-markdown'
-import { Button } from '@/components/ui/shadnui/button'
+    Send as SendIcon,
+    Shield as ShieldIcon,
+    Description as FileTextIcon,
+    SmartToy as BotIcon,
+    Person as UserIcon,
+} from '@mui/icons-material'
 import {
+    Button,
     Card,
-    CardContent,
-    CardHeader,
-    CardTitle,
-} from '@/components/ui/shadnui/card'
-import { Input } from '@/components/ui/shadnui/input'
-import { Avatar, AvatarFallback } from '@/components/ui/shadnui/avatar'
-import { Badge } from '@/components/ui/shadnui/badge'
-import { Separator } from '@/components/ui/shadnui/separator'
-import { ScrollArea } from '@/components/ui/shadnui/scroll-area'
-import {
-    Collapsible,
-    CollapsibleContent,
-    CollapsibleTrigger,
-} from '@/components/ui/shadnui/collapsible'
-import {
-    HoverCard,
-    HoverCardContent,
-    HoverCardTrigger,
-} from '@/components/ui/shadnui/hover-card'
-import {
-    ContextMenu,
-    ContextMenuContent,
-    ContextMenuItem,
-    ContextMenuTrigger,
-} from '@/components/ui/shadnui/context-menu'
-import { Alert, AlertDescription } from '@/components/ui/shadnui/alert'
-import { cn } from '@/lib/utils'
+    CardOverflow,
+    Input,
+    Avatar,
+    AvatarFallback,
+    Badge,
+    Divider,
+    Box,
+    Typography,
+    Alert,
+    AlertDescription,
+    AccordionGroup,
+    Accordion,
+    AccordionSummary,
+    AccordionDetails,
+    Tooltip,
+    TooltipContent,
+    TooltipTrigger,
+    CircularProgress,
+} from '@/components/ui/joy'
 
 interface Message {
     id: string
     role: 'user' | 'assistant' | 'system'
     content: string
-    citations?: Array<{ docId: string; source?: string }>
+    timestamp: Date
     contexts?: Array<{
         docId: string
         classification: string
         score: number
     }>
-    timestamp: Date
+    citations?: Array<{
+        docId: string
+        source?: string
+    }>
 }
 
 interface ChatInterfaceProps {
@@ -65,7 +53,15 @@ interface ChatInterfaceProps {
 }
 
 export default function ChatInterface({ jwt, role }: ChatInterfaceProps) {
-    const [messages, setMessages] = useState<Message[]>([])
+    const [messages, setMessages] = useState<Message[]>([
+        {
+            id: '1',
+            role: 'assistant',
+            content:
+                "Hello! I'm your secure AI assistant. I have access to your organization's knowledge base and will only provide information based on your access level. How can I help you today?",
+            timestamp: new Date(),
+        },
+    ])
     const [input, setInput] = useState('')
     const [loading, setLoading] = useState(false)
     const messagesEndRef = useRef<HTMLDivElement>(null)
@@ -76,28 +72,15 @@ export default function ChatInterface({ jwt, role }: ChatInterfaceProps) {
 
     useEffect(() => {
         scrollToBottom()
-    }, [messages])
-
-    useEffect(() => {
-        setMessages([
-            {
-                id: '0',
-                role: 'system',
-                content: `Welcome! You're authenticated as **${role}**. Ask me anything and I'll retrieve information based on your access level.`,
-                timestamp: new Date(),
-            },
-        ])
-    }, [role])
+    }, [messages, scrollToBottom])
 
     const handleSend = useCallback(async () => {
-        if (!input.trim() || loading) {
-            return
-        }
+        if (!input.trim() || loading) return
 
         const userMessage: Message = {
             id: Date.now().toString(),
             role: 'user',
-            content: input,
+            content: input.trim(),
             timestamp: new Date(),
         }
 
@@ -112,472 +95,569 @@ export default function ChatInterface({ jwt, role }: ChatInterfaceProps) {
                     'Content-Type': 'application/json',
                     Authorization: `Bearer ${jwt}`,
                 },
-                body: JSON.stringify({ message: input }),
+                body: JSON.stringify({
+                    message: input.trim(),
+                    role,
+                }),
             })
 
             if (!response.ok) {
                 throw new Error('Failed to send message')
             }
 
+            const data = await response.json()
+
             const assistantMessage: Message = {
                 id: (Date.now() + 1).toString(),
                 role: 'assistant',
-                content: '',
+                content: data.response,
                 timestamp: new Date(),
+                contexts: data.contexts,
+                citations: data.citations,
             }
 
             setMessages((prev) => [...prev, assistantMessage])
-
-            const reader = response.body?.getReader()
-            const decoder = new TextDecoder()
-
-            if (reader) {
-                while (true) {
-                    const { done, value } = await reader.read()
-                    if (done) {
-                        break
-                    }
-
-                    const chunk: string = decoder.decode(value)
-                    const lines = chunk.split('\n')
-
-                    for (const line of lines) {
-                        if (line.startsWith('data: ')) {
-                            try {
-                                const data = JSON.parse(line.slice(6))
-
-                                if (
-                                    typeof data.content === 'string' &&
-                                    Boolean(data.content)
-                                ) {
-                                    assistantMessage.content += data.content
-                                    setMessages((prev) =>
-                                        prev.map((msg) =>
-                                            msg.id === assistantMessage.id
-                                                ? {
-                                                      ...msg,
-                                                      content:
-                                                          assistantMessage.content,
-                                                  }
-                                                : msg
-                                        )
-                                    )
-                                }
-
-                                if (Array.isArray(data.citations)) {
-                                    assistantMessage.citations = data.citations
-                                }
-
-                                if (Array.isArray(data.contexts)) {
-                                    assistantMessage.contexts = data.contexts
-                                }
-
-                                if (data.done === true) {
-                                    setMessages((prev) =>
-                                        prev.map((msg) =>
-                                            msg.id === assistantMessage.id
-                                                ? assistantMessage
-                                                : msg
-                                        )
-                                    )
-                                }
-                            } catch (e) {
-                                console.error('Failed to parse SSE data:', e)
-                            }
-                        }
-                    }
-                }
-            }
         } catch (error) {
-            console.error('Chat error:', error)
-            setMessages((prev) => [
-                ...prev,
-                {
-                    id: Date.now().toString(),
-                    role: 'system',
-                    content: 'Failed to get response. Please try again.',
-                    timestamp: new Date(),
-                },
-            ])
+            console.error('Error sending message:', error)
+            const errorMessage: Message = {
+                id: (Date.now() + 2).toString(),
+                role: 'system',
+                content:
+                    'Sorry, I encountered an error processing your request. Please try again.',
+                timestamp: new Date(),
+            }
+            setMessages((prev) => [...prev, errorMessage])
         } finally {
             setLoading(false)
         }
-    }, [input, loading, jwt])
+    }, [input, loading, jwt, role])
 
     return (
-        <Card className="h-full flex flex-col border-4 border-primary/20 bg-gradient-mocha backdrop-blur-xl brutalist-card shadow-2xl">
+        <Card
+            variant="outlined"
+            sx={{
+                height: '100%',
+                display: 'flex',
+                flexDirection: 'column',
+                border: '4px solid',
+                borderColor: 'primary.outlinedBorder',
+                bgcolor: 'background.surface',
+                boxShadow: 'xl',
+            }}
+        >
             {/* Header */}
-            <CardHeader className="relative border-b-2 border-primary/10 bg-gradient-mocha/80 backdrop-blur-sm">
-                <div className="flex items-center space-x-4">
-                    <Avatar className="h-12 w-12 border-2 border-accent/30">
-                        <AvatarFallback className="bg-accent/10 text-accent font-bold">
-                            <Shield className="h-6 w-6" />
-                        </AvatarFallback>
-                    </Avatar>
-                    <div className="flex flex-col">
-                        <CardTitle className="text-bold-serif text-primary font-black text-shadow-lg">
-                            Governed Chat
-                        </CardTitle>
-                        <div className="flex items-center space-x-2">
-                            <Badge variant="secondary" className="font-bold">
-                                {role}
-                            </Badge>
-                            <Badge
-                                variant="outline"
-                                className="text-accent border-accent/30"
+            <CardOverflow
+                sx={{
+                    borderBottom: '2px solid',
+                    borderColor: 'primary.outlinedBorder',
+                    bgcolor: 'background.level1',
+                }}
+            >
+                <Box sx={{ p: 3 }}>
+                    <Box sx={{ display: 'flex', alignItems: 'center', gap: 4 }}>
+                        <Avatar
+                            size="lg"
+                            sx={{
+                                border: '2px solid',
+                                borderColor: 'primary.outlinedBorder',
+                            }}
+                        >
+                            <AvatarFallback>
+                                <ShieldIcon />
+                            </AvatarFallback>
+                        </Avatar>
+                        <Box>
+                            <Typography
+                                level="h4"
+                                sx={{
+                                    fontWeight: 'bold',
+                                    color: 'primary.main',
+                                }}
                             >
-                                <Shield className="h-3 w-3 mr-1" />
-                                Secure
-                            </Badge>
-                        </div>
-                    </div>
-                </div>
+                                Governed Chat
+                            </Typography>
+                            <Box
+                                sx={{
+                                    display: 'flex',
+                                    alignItems: 'center',
+                                    gap: 1,
+                                    mt: 1,
+                                }}
+                            >
+                                <Badge variant="soft" color="primary">
+                                    {role}
+                                </Badge>
+                                <Badge variant="outlined" color="primary">
+                                    <ShieldIcon
+                                        sx={{ fontSize: 14, mr: 0.5 }}
+                                    />
+                                    Secure
+                                </Badge>
+                            </Box>
+                        </Box>
+                    </Box>
 
-                {/* Security Alert */}
-                <Alert className="mt-4 border-2 border-accent/30 bg-accent/5">
-                    <Shield className="h-4 w-4 text-accent" />
-                    <AlertDescription className="text-accent/80 font-bold">
-                        All conversations are logged and monitored for
-                        compliance with access policies.
-                    </AlertDescription>
-                </Alert>
-            </CardHeader>
+                    {/* Security Alert */}
+                    <Alert variant="soft" color="primary" sx={{ mt: 2 }}>
+                        <ShieldIcon />
+                        <AlertDescription>
+                            All conversations are logged and monitored for
+                            compliance with access policies.
+                        </AlertDescription>
+                    </Alert>
+                </Box>
+            </CardOverflow>
 
             {/* Messages Container */}
-            <ScrollArea className="relative flex-1 p-6">
-                <div className="space-y-6">
-                    {messages.map((message) => (
-                        <ContextMenu key={message.id}>
-                            <ContextMenuTrigger>
-                                <div
-                                    className={cn(
-                                        'flex items-start space-x-4 group animate-in slide-in-from-bottom-4 duration-500',
-                                        message.role === 'user'
-                                            ? 'justify-end'
-                                            : 'justify-start'
-                                    )}
+            <Box
+                sx={{
+                    flex: 1,
+                    overflow: 'auto',
+                    p: 3,
+                    display: 'flex',
+                    flexDirection: 'column',
+                    gap: 3,
+                }}
+            >
+                {messages.map((message) => (
+                    <Box
+                        key={message.id}
+                        sx={{
+                            display: 'flex',
+                            alignItems: 'flex-start',
+                            gap: 3,
+                            justifyContent:
+                                message.role === 'user'
+                                    ? 'flex-end'
+                                    : 'flex-start',
+                        }}
+                    >
+                        {/* Avatar */}
+                        <Avatar
+                            size="md"
+                            sx={{
+                                border: '2px solid',
+                                borderColor:
+                                    message.role === 'user'
+                                        ? 'primary.outlinedBorder'
+                                        : 'neutral.outlinedBorder',
+                            }}
+                        >
+                            <AvatarFallback>
+                                {message.role === 'user' ? (
+                                    <UserIcon />
+                                ) : (
+                                    <BotIcon />
+                                )}
+                            </AvatarFallback>
+                        </Avatar>
+
+                        {/* Message Bubble */}
+                        <Box
+                            sx={{
+                                maxWidth: '85%',
+                                p: 3,
+                                borderRadius: 'lg',
+                                border: '2px solid',
+                                borderColor:
+                                    message.role === 'user'
+                                        ? 'primary.outlinedBorder'
+                                        : 'neutral.outlinedBorder',
+                                bgcolor:
+                                    message.role === 'user'
+                                        ? 'primary.softBg'
+                                        : 'background.level1',
+                                transition: 'all 0.3s ease',
+                                '&:hover': {
+                                    boxShadow: 'md',
+                                },
+                            }}
+                        >
+                            {/* Message Header */}
+                            <Box
+                                sx={{
+                                    display: 'flex',
+                                    alignItems: 'center',
+                                    justifyContent: 'space-between',
+                                    mb: 2,
+                                }}
+                            >
+                                <Box
+                                    sx={{
+                                        display: 'flex',
+                                        alignItems: 'center',
+                                        gap: 1,
+                                    }}
                                 >
-                                    {/* Avatar */}
-                                    <Avatar
-                                        className={cn(
-                                            'h-10 w-10 border-2 transition-all duration-300',
+                                    <Badge
+                                        variant={
                                             message.role === 'user'
-                                                ? 'border-primary/30 group-hover:border-accent/50'
-                                                : message.role === 'system'
-                                                  ? 'border-secondary group-hover:border-accent/40'
-                                                  : 'border-accent/30 group-hover:border-accent/50'
-                                        )}
-                                    >
-                                        <AvatarFallback
-                                            className={cn(
-                                                'font-bold text-sm',
-                                                message.role === 'user'
-                                                    ? 'bg-primary/10 text-primary'
-                                                    : message.role === 'system'
-                                                      ? 'bg-secondary text-secondary-foreground'
-                                                      : 'bg-accent/10 text-accent'
-                                            )}
-                                        >
-                                            {message.role === 'user' ? (
-                                                <User className="h-5 w-5" />
-                                            ) : (
-                                                <Bot className="h-5 w-5" />
-                                            )}
-                                        </AvatarFallback>
-                                    </Avatar>
-
-                                    {/* Message Bubble */}
-                                    <div
-                                        className={cn(
-                                            'group relative max-w-[85%] transition-all duration-300 ease-spring',
-                                            'border-2 rounded-xl p-5 hover-scale',
-                                            'hover-lift hover-glow hover:shadow-xl',
+                                                ? 'solid'
+                                                : 'soft'
+                                        }
+                                        color={
                                             message.role === 'user'
-                                                ? 'bg-primary/10 border-primary/30 hover:border-accent/50'
-                                                : message.role === 'system'
-                                                  ? 'bg-secondary border-primary/20 hover:border-accent/40'
-                                                  : 'bg-gradient-mocha border-primary/20 hover:border-accent/40'
-                                        )}
+                                                ? 'primary'
+                                                : 'neutral'
+                                        }
                                     >
-                                        {/* Message Header */}
-                                        <div className="flex items-center justify-between mb-3">
-                                            <div className="flex items-center space-x-2">
-                                                <Badge
-                                                    variant={
-                                                        message.role === 'user'
-                                                            ? 'default'
-                                                            : 'secondary'
-                                                    }
-                                                    className="font-bold"
-                                                >
-                                                    {message.role === 'user'
-                                                        ? 'You'
-                                                        : message.role ===
-                                                            'system'
-                                                          ? 'System'
-                                                          : 'Assistant'}
-                                                </Badge>
-                                                {message.role ===
-                                                    'assistant' && (
-                                                    <Badge
-                                                        variant="outline"
-                                                        className="text-accent border-accent/30"
-                                                    >
-                                                        <Shield className="h-3 w-3 mr-1" />
-                                                        Verified
-                                                    </Badge>
-                                                )}
-                                            </div>
-                                            <span className="text-xs text-muted-foreground font-mono">
-                                                {message.timestamp.toLocaleTimeString()}
-                                            </span>
-                                        </div>
-
-                                        {/* Context Tags */}
-                                        {message.role === 'assistant' &&
-                                            message.contexts &&
-                                            message.contexts.length > 0 && (
-                                                <div className="mb-4">
-                                                    <div className="flex items-center space-x-2 mb-2">
-                                                        <FileText className="h-4 w-4 text-accent" />
-                                                        <span className="text-xs font-bold text-muted-foreground uppercase tracking-wider">
-                                                            Knowledge Sources
-                                                        </span>
-                                                    </div>
-                                                    <div className="flex flex-wrap gap-2">
-                                                        {message.contexts.map(
-                                                            (ctx, idx) => (
-                                                                <HoverCard
-                                                                    key={idx}
-                                                                >
-                                                                    <HoverCardTrigger>
-                                                                        <Badge
-                                                                            variant="outline"
-                                                                            className={cn(
-                                                                                'cursor-pointer transition-all duration-300 hover-scale',
-                                                                                ctx.classification ===
-                                                                                    'confidential'
-                                                                                    ? 'border-destructive/40 text-destructive hover:border-destructive/60'
-                                                                                    : ctx.classification ===
-                                                                                        'internal'
-                                                                                      ? 'border-primary/40 text-primary hover:border-primary/60'
-                                                                                      : 'border-accent/40 text-accent hover:border-accent/60'
-                                                                            )}
-                                                                        >
-                                                                            <FileText className="h-3 w-3 mr-1" />
-                                                                            {
-                                                                                ctx.docId
-                                                                            }
-                                                                        </Badge>
-                                                                    </HoverCardTrigger>
-                                                                    <HoverCardContent className="w-80">
-                                                                        <div className="space-y-2">
-                                                                            <h4 className="font-bold">
-                                                                                {
-                                                                                    ctx.docId
-                                                                                }
-                                                                            </h4>
-                                                                            <div className="flex items-center space-x-2">
-                                                                                <Badge
-                                                                                    variant={
-                                                                                        ctx.classification ===
-                                                                                        'confidential'
-                                                                                            ? 'destructive'
-                                                                                            : 'secondary'
-                                                                                    }
-                                                                                >
-                                                                                    {
-                                                                                        ctx.classification
-                                                                                    }
-                                                                                </Badge>
-                                                                                <span className="text-sm text-muted-foreground">
-                                                                                    Relevance:{' '}
-                                                                                    {Math.round(
-                                                                                        ctx.score *
-                                                                                            100
-                                                                                    )}
-
-                                                                                    %
-                                                                                </span>
-                                                                            </div>
-                                                                        </div>
-                                                                    </HoverCardContent>
-                                                                </HoverCard>
-                                                            )
-                                                        )}
-                                                    </div>
-                                                </div>
-                                            )}
-
-                                        {/* Message Content */}
-                                        <div
-                                            className="prose prose-sm max-w-none dark:prose-invert message-content
-                                  prose-headings:text-foreground prose-p:text-foreground prose-p:leading-relaxed
-                                  prose-strong:text-foreground prose-code:text-primary prose-code:bg-muted
-                                  prose-code:px-2 prose-code:py-1 prose-code:rounded prose-code:text-sm
-                                  prose-pre:bg-muted prose-pre:border-2 prose-pre:border-primary/20
-                                  prose-blockquote:border-l-accent prose-blockquote:text-muted-foreground"
+                                        {message.role === 'user'
+                                            ? 'You'
+                                            : message.role === 'system'
+                                              ? 'System'
+                                              : 'Assistant'}
+                                    </Badge>
+                                    {message.role === 'assistant' && (
+                                        <Badge
+                                            variant="outlined"
+                                            color="primary"
                                         >
-                                            <ReactMarkdown
-                                                components={{
-                                                    p: ({ children }) => (
-                                                        <p className="mb-3 last:mb-0 break-words">
-                                                            {children}
-                                                        </p>
-                                                    ),
-                                                    code: ({
-                                                        children,
-                                                        className,
-                                                    }) => {
-                                                        const isInline =
-                                                            !className ||
-                                                            className?.length ===
-                                                                0
-                                                        return isInline ? (
-                                                            <code className="break-all bg-primary/10 px-1.5 py-0.5 rounded">
-                                                                {children}
-                                                            </code>
-                                                        ) : (
-                                                            <code
-                                                                className={
-                                                                    className
-                                                                }
-                                                            >
-                                                                {children}
-                                                            </code>
-                                                        )
-                                                    },
+                                            <ShieldIcon
+                                                sx={{ fontSize: 12, mr: 0.5 }}
+                                            />
+                                            Verified
+                                        </Badge>
+                                    )}
+                                </Box>
+                                <Typography
+                                    level="body-xs"
+                                    sx={{
+                                        color: 'text.tertiary',
+                                        fontFamily: 'monospace',
+                                    }}
+                                >
+                                    {message.timestamp.toLocaleTimeString()}
+                                </Typography>
+                            </Box>
+
+                            {/* Message Content */}
+                            <Typography
+                                level="body-sm"
+                                sx={{ lineHeight: 1.6 }}
+                            >
+                                {message.content}
+                            </Typography>
+
+                            {/* Context Tags */}
+                            {message.role === 'assistant' &&
+                                message.contexts &&
+                                message.contexts.length > 0 && (
+                                    <Box sx={{ mt: 2 }}>
+                                        <Box
+                                            sx={{
+                                                display: 'flex',
+                                                alignItems: 'center',
+                                                gap: 1,
+                                                mb: 1,
+                                            }}
+                                        >
+                                            <FileTextIcon
+                                                sx={{
+                                                    fontSize: 16,
+                                                    color: 'primary.main',
+                                                }}
+                                            />
+                                            <Typography
+                                                level="body-xs"
+                                                sx={{
+                                                    fontWeight: 'bold',
+                                                    color: 'text.tertiary',
+                                                    textTransform: 'uppercase',
+                                                    letterSpacing: '0.1em',
                                                 }}
                                             >
-                                                {message.content}
-                                            </ReactMarkdown>
-                                        </div>
-
-                                        {/* Citations Section */}
-                                        {message.citations &&
-                                            message.citations.length > 0 && (
-                                                <div className="mt-4">
-                                                    <Separator className="mb-3" />
-                                                    <Collapsible>
-                                                        <CollapsibleTrigger className="flex items-center space-x-2 text-xs font-bold text-muted-foreground hover:text-foreground transition-colors">
-                                                            <Shield className="h-4 w-4 text-accent" />
-                                                            <span className="uppercase tracking-wider">
-                                                                {
-                                                                    message
-                                                                        .citations
-                                                                        .length
-                                                                }{' '}
-                                                                Verified Source
-                                                                {message
-                                                                    .citations
-                                                                    .length > 1
-                                                                    ? 's'
-                                                                    : ''}
-                                                            </span>
-                                                        </CollapsibleTrigger>
-                                                        <CollapsibleContent className="mt-3 space-y-2">
-                                                            {message.citations.map(
-                                                                (
-                                                                    citation,
-                                                                    idx
-                                                                ) => (
-                                                                    <HoverCard
-                                                                        key={
-                                                                            idx
+                                                Knowledge Sources
+                                            </Typography>
+                                        </Box>
+                                        <Box
+                                            sx={{
+                                                display: 'flex',
+                                                flexWrap: 'wrap',
+                                                gap: 1,
+                                            }}
+                                        >
+                                            {message.contexts.map(
+                                                (ctx, idx) => (
+                                                    <Tooltip key={idx}>
+                                                        <TooltipTrigger>
+                                                            <Badge
+                                                                variant="outlined"
+                                                                color={
+                                                                    ctx.classification ===
+                                                                    'confidential'
+                                                                        ? 'danger'
+                                                                        : 'primary'
+                                                                }
+                                                                sx={{
+                                                                    cursor: 'pointer',
+                                                                }}
+                                                            >
+                                                                <FileTextIcon
+                                                                    sx={{
+                                                                        fontSize: 12,
+                                                                        mr: 0.5,
+                                                                    }}
+                                                                />
+                                                                {ctx.docId}
+                                                            </Badge>
+                                                        </TooltipTrigger>
+                                                        <TooltipContent>
+                                                            <Box sx={{ p: 1 }}>
+                                                                <Typography
+                                                                    level="body-sm"
+                                                                    sx={{
+                                                                        fontWeight:
+                                                                            'bold',
+                                                                    }}
+                                                                >
+                                                                    {ctx.docId}
+                                                                </Typography>
+                                                                <Box
+                                                                    sx={{
+                                                                        display:
+                                                                            'flex',
+                                                                        alignItems:
+                                                                            'center',
+                                                                        gap: 1,
+                                                                        mt: 1,
+                                                                    }}
+                                                                >
+                                                                    <Badge
+                                                                        variant="soft"
+                                                                        color={
+                                                                            ctx.classification ===
+                                                                            'confidential'
+                                                                                ? 'danger'
+                                                                                : 'primary'
                                                                         }
                                                                     >
-                                                                        <HoverCardTrigger>
-                                                                            <div className="text-xs text-muted-foreground flex items-start space-x-2 p-3 rounded-lg bg-accent/5 border border-accent/20 hover:border-accent/40 transition-all duration-300 cursor-pointer">
-                                                                                <span className="text-accent font-black">
-                                                                                    •
-                                                                                </span>
-                                                                                <span className="break-all font-medium">
-                                                                                    {citation.source ??
-                                                                                        citation.docId}
-                                                                                </span>
-                                                                            </div>
-                                                                        </HoverCardTrigger>
-                                                                        <HoverCardContent>
-                                                                            <p className="font-bold">
-                                                                                {
-                                                                                    citation.docId
-                                                                                }
-                                                                            </p>
-                                                                            <p className="text-sm text-muted-foreground">
-                                                                                Click
-                                                                                to
-                                                                                view
-                                                                                source
-                                                                                details
-                                                                            </p>
-                                                                        </HoverCardContent>
-                                                                    </HoverCard>
-                                                                )
-                                                            )}
-                                                        </CollapsibleContent>
-                                                    </Collapsible>
-                                                </div>
+                                                                        {
+                                                                            ctx.classification
+                                                                        }
+                                                                    </Badge>
+                                                                    <Typography
+                                                                        level="body-xs"
+                                                                        sx={{
+                                                                            color: 'text.tertiary',
+                                                                        }}
+                                                                    >
+                                                                        Relevance:{' '}
+                                                                        {Math.round(
+                                                                            ctx.score *
+                                                                                100
+                                                                        )}
+                                                                        %
+                                                                    </Typography>
+                                                                </Box>
+                                                            </Box>
+                                                        </TooltipContent>
+                                                    </Tooltip>
+                                                )
                                             )}
-
-                                        {/* Message decoration */}
-                                        <div className="absolute -bottom-1 left-4 w-4 h-1 bg-accent rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-                                    </div>
-                                </div>
-                            </ContextMenuTrigger>
-                            <ContextMenuContent>
-                                <ContextMenuItem>
-                                    <Copy className="h-4 w-4 mr-2" />
-                                    Copy Message
-                                </ContextMenuItem>
-                                {message.role === 'assistant' && (
-                                    <>
-                                        <ContextMenuItem>
-                                            <ThumbsUp className="h-4 w-4 mr-2" />
-                                            Helpful
-                                        </ContextMenuItem>
-                                        <ContextMenuItem>
-                                            <ThumbsDown className="h-4 w-4 mr-2" />
-                                            Not Helpful
-                                        </ContextMenuItem>
-                                    </>
+                                        </Box>
+                                    </Box>
                                 )}
-                            </ContextMenuContent>
-                        </ContextMenu>
-                    ))}
 
-                    {/* Loading State */}
-                    {loading && (
-                        <div className="flex justify-start animate-in slide-in-from-bottom-4 duration-300">
-                            <div
-                                className={cn(
-                                    'bg-gradient-mocha border-2 border-primary/20 rounded-xl p-5',
-                                    'max-w-[85%] shadow-xl'
+                            {/* Citations Section */}
+                            {message.citations &&
+                                message.citations.length > 0 && (
+                                    <Box sx={{ mt: 3 }}>
+                                        <Divider sx={{ mb: 2 }} />
+                                        <AccordionGroup>
+                                            <Accordion>
+                                                <AccordionSummary>
+                                                    <Box
+                                                        sx={{
+                                                            display: 'flex',
+                                                            alignItems:
+                                                                'center',
+                                                            gap: 1,
+                                                        }}
+                                                    >
+                                                        <ShieldIcon
+                                                            sx={{
+                                                                fontSize: 16,
+                                                                color: 'primary.main',
+                                                            }}
+                                                        />
+                                                        <Typography
+                                                            level="body-xs"
+                                                            sx={{
+                                                                fontWeight:
+                                                                    'bold',
+                                                                color: 'text.tertiary',
+                                                                textTransform:
+                                                                    'uppercase',
+                                                                letterSpacing:
+                                                                    '0.1em',
+                                                            }}
+                                                        >
+                                                            {
+                                                                message
+                                                                    .citations
+                                                                    .length
+                                                            }{' '}
+                                                            Verified Source
+                                                            {message.citations
+                                                                .length > 1
+                                                                ? 's'
+                                                                : ''}
+                                                        </Typography>
+                                                    </Box>
+                                                </AccordionSummary>
+                                                <AccordionDetails>
+                                                    <Box
+                                                        sx={{
+                                                            display: 'flex',
+                                                            flexDirection:
+                                                                'column',
+                                                            gap: 1,
+                                                        }}
+                                                    >
+                                                        {message.citations.map(
+                                                            (citation, idx) => (
+                                                                <Tooltip
+                                                                    key={idx}
+                                                                >
+                                                                    <TooltipTrigger>
+                                                                        <Box
+                                                                            sx={{
+                                                                                p: 2,
+                                                                                borderRadius:
+                                                                                    'md',
+                                                                                border: '1px solid',
+                                                                                borderColor:
+                                                                                    'primary.outlinedBorder',
+                                                                                bgcolor:
+                                                                                    'background.level1',
+                                                                                cursor: 'pointer',
+                                                                                transition:
+                                                                                    'all 0.3s ease',
+                                                                                '&:hover':
+                                                                                    {
+                                                                                        borderColor:
+                                                                                            'primary.main',
+                                                                                    },
+                                                                            }}
+                                                                        >
+                                                                            <Typography
+                                                                                level="body-xs"
+                                                                                sx={{
+                                                                                    fontWeight:
+                                                                                        'medium',
+                                                                                }}
+                                                                            >
+                                                                                {citation.source ??
+                                                                                    citation.docId}
+                                                                            </Typography>
+                                                                        </Box>
+                                                                    </TooltipTrigger>
+                                                                    <TooltipContent>
+                                                                        <Typography
+                                                                            level="body-sm"
+                                                                            sx={{
+                                                                                fontWeight:
+                                                                                    'bold',
+                                                                            }}
+                                                                        >
+                                                                            {
+                                                                                citation.docId
+                                                                            }
+                                                                        </Typography>
+                                                                        <Typography
+                                                                            level="body-xs"
+                                                                            sx={{
+                                                                                color: 'text.tertiary',
+                                                                                mt: 0.5,
+                                                                            }}
+                                                                        >
+                                                                            Click
+                                                                            to
+                                                                            view
+                                                                            source
+                                                                            details
+                                                                        </Typography>
+                                                                    </TooltipContent>
+                                                                </Tooltip>
+                                                            )
+                                                        )}
+                                                    </Box>
+                                                </AccordionDetails>
+                                            </Accordion>
+                                        </AccordionGroup>
+                                    </Box>
                                 )}
+                        </Box>
+                    </Box>
+                ))}
+
+                {/* Loading State */}
+                {loading && (
+                    <Box sx={{ display: 'flex', justifyContent: 'flex-start' }}>
+                        <Box
+                            sx={{
+                                p: 3,
+                                borderRadius: 'lg',
+                                border: '2px solid',
+                                borderColor: 'neutral.outlinedBorder',
+                                bgcolor: 'background.level1',
+                                maxWidth: '85%',
+                                boxShadow: 'md',
+                            }}
+                        >
+                            <Box
+                                sx={{
+                                    display: 'flex',
+                                    alignItems: 'center',
+                                    gap: 2,
+                                }}
                             >
-                                <div className="flex items-center space-x-3">
-                                    <Avatar className="h-8 w-8 border-2 border-accent/30">
-                                        <AvatarFallback className="bg-accent/10 text-accent">
-                                            <Bot className="h-4 w-4" />
-                                        </AvatarFallback>
-                                    </Avatar>
-                                    <div className="flex items-center space-x-2">
-                                        <Loader2 className="h-4 w-4 animate-spin text-accent" />
-                                        <span className="text-sm font-bold text-muted-foreground">
-                                            Thinking...
-                                        </span>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    )}
-                </div>
+                                <Avatar
+                                    size="sm"
+                                    sx={{
+                                        border: '2px solid',
+                                        borderColor: 'primary.outlinedBorder',
+                                    }}
+                                >
+                                    <AvatarFallback>
+                                        <BotIcon />
+                                    </AvatarFallback>
+                                </Avatar>
+                                <Box
+                                    sx={{
+                                        display: 'flex',
+                                        alignItems: 'center',
+                                        gap: 1,
+                                    }}
+                                >
+                                    <CircularProgress size="sm" />
+                                    <Typography
+                                        level="body-sm"
+                                        sx={{
+                                            color: 'text.tertiary',
+                                            fontWeight: 'bold',
+                                        }}
+                                    >
+                                        Thinking...
+                                    </Typography>
+                                </Box>
+                            </Box>
+                        </Box>
+                    </Box>
+                )}
                 <div ref={messagesEndRef} />
-            </ScrollArea>
+            </Box>
 
             {/* Input Section */}
-            <CardContent className="relative border-t-2 border-primary/10 bg-gradient-mocha/50 backdrop-blur-sm">
-                <div className="flex space-x-4 pt-4">
-                    <div className="flex-1 relative">
+            <CardOverflow
+                sx={{
+                    borderTop: '2px solid',
+                    borderColor: 'primary.outlinedBorder',
+                    bgcolor: 'background.level1',
+                }}
+            >
+                <Box sx={{ p: 3 }}>
+                    <Box sx={{ display: 'flex', gap: 3 }}>
                         <Input
                             value={input}
                             onChange={(e) => setInput(e.target.value)}
@@ -586,42 +666,38 @@ export default function ChatInterface({ jwt, role }: ChatInterfaceProps) {
                             }
                             placeholder="Ask me anything about your organization's knowledge base..."
                             disabled={loading}
-                            className={cn(
-                                'pr-12 h-14 text-lg border-4 border-primary/20 bg-background/80 backdrop-blur-sm',
-                                'focus:border-accent/50 focus:ring-2 focus:ring-accent/20',
-                                'hover-lift hover-glow transition-all duration-300 ease-spring',
-                                'placeholder:text-muted-foreground/60'
-                            )}
+                            sx={{
+                                flex: 1,
+                                height: 56,
+                                fontSize: 'lg',
+                                border: '4px solid',
+                                borderColor: 'primary.outlinedBorder',
+                                bgcolor: 'background.surface',
+                                '&:focus': {
+                                    borderColor: 'primary.main',
+                                },
+                            }}
                         />
-                        <div className="absolute right-3 top-1/2 transform -translate-y-1/2">
-                            <Button
-                                onClick={handleSend}
-                                disabled={loading || !input.trim()}
-                                size="sm"
-                                className={cn(
-                                    'h-8 w-8 p-0 group',
-                                    'border-2 border-primary/30 hover:border-accent/50',
-                                    'bg-gradient-mocha backdrop-blur-sm',
-                                    'hover-lift hover-glow hover-scale',
-                                    'transition-all duration-300 ease-spring',
-                                    'focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2',
-                                    'disabled:opacity-50 disabled:cursor-not-allowed'
-                                )}
-                            >
-                                {loading ? (
-                                    <Loader2 className="h-4 w-4 animate-spin" />
-                                ) : (
-                                    <Send className="h-4 w-4 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-all duration-300" />
-                                )}
-                            </Button>
-                        </div>
-                    </div>
-                </div>
-
-                {/* Decorative bottom elements */}
-                <div className="absolute bottom-2 left-8 w-6 h-6 bg-accent/20 rounded-full blur-lg animate-pulse" />
-                <div className="absolute bottom-2 right-8 w-4 h-4 bg-primary/20 rounded-full blur-md animate-pulse" />
-            </CardContent>
+                        <Button
+                            onClick={handleSend}
+                            disabled={loading || !input.trim()}
+                            size="lg"
+                            variant="solid"
+                            color="primary"
+                            sx={{
+                                minHeight: 56,
+                                px: 3,
+                            }}
+                        >
+                            {loading ? (
+                                <CircularProgress size="sm" />
+                            ) : (
+                                <SendIcon />
+                            )}
+                        </Button>
+                    </Box>
+                </Box>
+            </CardOverflow>
         </Card>
     )
 }

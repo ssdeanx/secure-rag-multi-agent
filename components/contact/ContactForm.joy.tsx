@@ -139,6 +139,13 @@ export function ContactForm({ onSubmit }: ContactFormProps) {
                                 onChange={(e) => setName(e.target.value)}
                                 required
                                 fullWidth
+                                sx={{
+                                    '&:focus-visible': {
+                                        outline: '2px solid',
+                                        outlineColor: 'primary.500',
+                                        outlineOffset: '2px',
+                                    },
+                                }}
                             />
                         </Box>
 
@@ -156,6 +163,13 @@ export function ContactForm({ onSubmit }: ContactFormProps) {
                                 onChange={(e) => setEmail(e.target.value)}
                                 required
                                 fullWidth
+                                sx={{
+                                    '&:focus-visible': {
+                                        outline: '2px solid',
+                                        outlineColor: 'primary.500',
+                                        outlineOffset: '2px',
+                                    },
+                                }}
                             />
                         </Box>
 
@@ -205,7 +219,14 @@ export function ContactForm({ onSubmit }: ContactFormProps) {
                             loading={loading}
                             startDecorator={<Send />}
                             fullWidth
-                            sx={{ mt: 1 }}
+                            sx={{
+                                mt: 1,
+                                '&:focus-visible': {
+                                    outline: '2px solid',
+                                    outlineColor: 'primary.500',
+                                    outlineOffset: '2px',
+                                },
+                            }}
                         >
                             Send Message
                         </Button>

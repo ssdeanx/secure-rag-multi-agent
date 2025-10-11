@@ -104,6 +104,11 @@ export function ValuesGrid() {
                                             boxShadow: 'lg',
                                             borderColor: 'primary.400',
                                         },
+                                        '&:focus-visible': {
+                                            outline: '2px solid',
+                                            outlineColor: 'primary.500',
+                                            outlineOffset: '2px',
+                                        },
                                     }}
                                 >
                                     <CardContent>
