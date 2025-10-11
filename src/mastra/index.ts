@@ -66,10 +66,10 @@ export const mastra = new Mastra({
     },
     server: {
         apiRoutes,
-        experimental_auth: new MastraAuthSupabase({
-            url: process.env.SUPABASE_URL,
-            anonKey: process.env.SUPABASE_ANON_KEY
-        }),
+//        experimental_auth: new MastraAuthSupabase({
+//            url: process.env.SUPABASE_URL,
+//            anonKey: process.env.SUPABASE_ANON_KEY
+//        }),
     },
     observability: {
         default: { enabled: true }, // Enable default tracing with DefaultExporter and CloudExporter
