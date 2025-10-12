@@ -1,11 +1,11 @@
 ---
-title: "ADR-0002: Dual UI Architecture - Joy Dashboard and Tailwind Cedar-OS"
-status: "Accepted"
-date: "2025-10-10"
-authors: ["System Architect", "AI Assistant"]
-tags: ["architecture", "decision", "ui", "frontend", "separation-of-concerns"]
-supersedes: ""
-superseded_by: ""
+title: 'ADR-0002: Dual UI Architecture - Joy Dashboard and Tailwind Cedar-OS'
+status: 'Accepted'
+date: '2025-10-10'
+authors: ['System Architect', 'AI Assistant']
+tags: ['architecture', 'decision', 'ui', 'frontend', 'separation-of-concerns']
+supersedes: ''
+superseded_by: ''
 ---
 
 # ADR-0002: Dual UI Architecture - Joy Dashboard and Tailwind Cedar-OS
@@ -22,6 +22,7 @@ The Governed RAG system has evolved to require two distinct user experiences:
 2. **AI Interaction Plane**: Real-time chat, workflow execution, voice interactions, visual AI experiences
 
 **Current State:**
+
 - Supabase authentication is now functional
 - Backend supports 16+ specialized agents with role-based access control
 - Mastra orchestration for workflows and multi-agent systems
@@ -30,6 +31,7 @@ The Governed RAG system has evolved to require two distinct user experiences:
 
 **Problem Statement:**
 We need an architecture that:
+
 - Exposes the full power of the backend through intuitive UIs
 - Maintains clear separation between administrative and interactive experiences
 - Avoids CSS conflicts and specificity wars
@@ -41,11 +43,13 @@ We need an architecture that:
 We will implement a **dual UI architecture** with clear separation of concerns:
 
 ### Dashboard - Administrative Control Plane
+
 **Location**: `/app/protected/dash/*`  
 **Styling**: MUI Joy v5 beta.52  
 **Purpose**: Administrative and configuration interfaces
 
 **Features:**
+
 - User settings and profile management
 - Theme preferences and UI customization
 - Document management (upload, indexing, classification)
@@ -55,6 +59,7 @@ We will implement a **dual UI architecture** with clear separation of concerns:
 - API key and model configuration
 
 **Technology Stack:**
+
 - MUI Joy v5 components (`@/components/ui/*.joy.tsx`)
 - Joy `CssVarsProvider` with extended theme
 - Joy's built-in dark mode via `useColorScheme()`
@@ -62,11 +67,13 @@ We will implement a **dual UI architecture** with clear separation of concerns:
 - CSS-in-JS (Joy's styling system)
 
 ### Cedar-OS - AI Interaction Plane
+
 **Location**: `/app/protected/cedar-os/*`  
 **Styling**: Tailwind v4  
 **Purpose**: Real-time AI interactions and visual experiences
 
 **Features:**
+
 - Real-time chat with AI agents
 - Workflow execution and monitoring
 - Voice interactions (VoiceIndicator, transcription)
@@ -75,6 +82,7 @@ We will implement a **dual UI architecture** with clear separation of concerns:
 - Agent input context (mentions, state subscription)
 
 **Technology Stack:**
+
 - Cedar components (`@/cedar/components/*`)
 - Tailwind v4 utility classes
 - Custom CSS for advanced animations
@@ -82,10 +90,12 @@ We will implement a **dual UI architecture** with clear separation of concerns:
 - Tailwind config at `app/protected/cedar-os/globals.css`
 
 ### Shared Layer
+
 **Location**: `/lib/*`, `/hooks/*`, `/src/mastra/*`  
 **Purpose**: Common services consumed by both UIs
 
 **Components:**
+
 - Supabase authentication (`lib/auth.ts`)
 - Session management (`lib/session.ts`)
 - Mastra client factory (`lib/mastra/mastra-client.ts`)
@@ -169,6 +179,7 @@ We will implement a **dual UI architecture** with clear separation of concerns:
 ## Migration Path
 
 ### Phase 1: Foundation (Week 1)
+
 1. Create dashboard directory structure
 2. Implement base dashboard layout with Joy theme provider
 3. Create shared authentication hooks
@@ -176,12 +187,14 @@ We will implement a **dual UI architecture** with clear separation of concerns:
 5. Implement theme toggle for Joy UI dark mode
 
 ### Phase 2: Core Dashboard Features (Week 2-3)
+
 1. User settings page (profile, preferences)
 2. System overview dashboard (metrics cards)
 3. Document management list view
 4. Basic monitoring views (agent logs, workflow status)
 
 ### Phase 3: Advanced Administration (Week 4-5)
+
 1. User management (CRUD, role assignment)
 2. Document upload and indexing interface
 3. Policy editor (ACL configuration)
@@ -189,6 +202,7 @@ We will implement a **dual UI architecture** with clear separation of concerns:
 5. API configuration interface
 
 ### Phase 4: Integration & Polish (Week 6)
+
 1. Comprehensive error handling
 2. Loading states and skeletons
 3. Responsive design optimization
@@ -196,6 +210,7 @@ We will implement a **dual UI architecture** with clear separation of concerns:
 5. Documentation and examples
 
 ### Phase 5: Ongoing
+
 - Cedar-OS continues development independently
 - Both systems evolve based on user feedback
 - Shared layer improves as patterns emerge

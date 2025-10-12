@@ -15,7 +15,10 @@ export async function GET() {
     })
 
     if (error || !data.url) {
-        return NextResponse.json({ error: 'Failed to initiate OAuth' }, { status: 500 })
+        return NextResponse.json(
+            { error: 'Failed to initiate OAuth' },
+            { status: 500 }
+        )
     }
 
     return NextResponse.redirect(data.url)

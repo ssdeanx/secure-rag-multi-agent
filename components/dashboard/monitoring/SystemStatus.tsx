@@ -57,14 +57,14 @@ export default function SystemStatus() {
                             metric.status === 'healthy'
                                 ? 'success'
                                 : metric.status === 'warning'
-                                    ? 'warning'
-                                    : 'danger'
+                                  ? 'warning'
+                                  : 'danger'
                         const StatusIcon =
                             metric.status === 'healthy'
                                 ? CheckCircle
                                 : metric.status === 'warning'
-                                    ? Warning
-                                    : Error
+                                  ? Warning
+                                  : Error
 
                         return (
                             <Box key={metric.name}>
@@ -76,20 +76,34 @@ export default function SystemStatus() {
                                         mb: 1,
                                     }}
                                 >
-                                    <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
-                                        <Typography level="body-sm" fontWeight="lg">
+                                    <Box
+                                        sx={{
+                                            display: 'flex',
+                                            alignItems: 'center',
+                                            gap: 1,
+                                        }}
+                                    >
+                                        <Typography
+                                            level="body-sm"
+                                            fontWeight="lg"
+                                        >
                                             {metric.name}
                                         </Typography>
                                         <Chip
                                             size="sm"
                                             variant="soft"
                                             color={statusColor}
-                                            startDecorator={<StatusIcon fontSize="small" />}
+                                            startDecorator={
+                                                <StatusIcon fontSize="small" />
+                                            }
                                         >
                                             {metric.status}
                                         </Chip>
                                     </Box>
-                                    <Typography level="body-sm" sx={{ color: `${statusColor}.solidBg` }}>
+                                    <Typography
+                                        level="body-sm"
+                                        sx={{ color: `${statusColor}.solidBg` }}
+                                    >
                                         {metric.value}%
                                     </Typography>
                                 </Box>
@@ -100,7 +114,10 @@ export default function SystemStatus() {
                                     size="sm"
                                     sx={{ mb: 0.5 }}
                                 />
-                                <Typography level="body-xs" sx={{ color: 'text.tertiary' }}>
+                                <Typography
+                                    level="body-xs"
+                                    sx={{ color: 'text.tertiary' }}
+                                >
                                     {metric.description}
                                 </Typography>
                             </Box>

@@ -25,7 +25,9 @@ export async function GET(request: NextRequest) {
                 email: 'jane.smith@example.com',
                 role: 'dept_admin' as const,
                 status: 'active' as const,
-                lastLogin: new Date(Date.now() - 1000 * 60 * 60 * 2).toISOString(),
+                lastLogin: new Date(
+                    Date.now() - 1000 * 60 * 60 * 2
+                ).toISOString(),
                 createdAt: new Date('2024-01-15').toISOString(),
             },
             {
@@ -34,7 +36,9 @@ export async function GET(request: NextRequest) {
                 email: 'bob.wilson@example.com',
                 role: 'employee' as const,
                 status: 'suspended' as const,
-                lastLogin: new Date(Date.now() - 1000 * 60 * 60 * 48).toISOString(),
+                lastLogin: new Date(
+                    Date.now() - 1000 * 60 * 60 * 48
+                ).toISOString(),
                 createdAt: new Date('2024-02-01').toISOString(),
             },
         ]

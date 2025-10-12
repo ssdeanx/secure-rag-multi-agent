@@ -19,7 +19,8 @@ export function PricingHero() {
                     width: 200,
                     height: 200,
                     borderRadius: '50%',
-                    background: 'linear-gradient(45deg, rgba(62, 207, 142, 0.1), rgba(52, 183, 124, 0.05))',
+                    background:
+                        'linear-gradient(45deg, rgba(62, 207, 142, 0.1), rgba(52, 183, 124, 0.05))',
                     filter: 'blur(40px)',
                     animation: 'float 6s ease-in-out infinite',
                     '@keyframes float': {
@@ -36,7 +37,8 @@ export function PricingHero() {
                     width: 150,
                     height: 150,
                     borderRadius: '50%',
-                    background: 'linear-gradient(45deg, rgba(20, 184, 166, 0.1), rgba(14, 165, 233, 0.05))',
+                    background:
+                        'linear-gradient(45deg, rgba(20, 184, 166, 0.1), rgba(14, 165, 233, 0.05))',
                     filter: 'blur(30px)',
                     animation: 'float 8s ease-in-out infinite reverse',
                 }}
@@ -77,7 +79,8 @@ export function PricingHero() {
                         fontSize: { xs: '2.5rem', md: '4rem' },
                         fontWeight: 800,
                         lineHeight: 1.1,
-                        background: 'linear-gradient(135deg, var(--joy-palette-text-primary), var(--joy-palette-primary-600))',
+                        background:
+                            'linear-gradient(135deg, var(--joy-palette-text-primary), var(--joy-palette-primary-600))',
                         backgroundClip: 'text',
                         WebkitBackgroundClip: 'text',
                         WebkitTextFillColor: 'transparent',
@@ -99,8 +102,9 @@ export function PricingHero() {
                         lineHeight: 1.6,
                     }}
                 >
-                    Start free and scale as you grow. All plans include enterprise-grade security,
-                    24/7 support, and unlimited document processing.
+                    Start free and scale as you grow. All plans include
+                    enterprise-grade security, 24/7 support, and unlimited
+                    document processing.
                 </Typography>
             </Box>
         </Box>

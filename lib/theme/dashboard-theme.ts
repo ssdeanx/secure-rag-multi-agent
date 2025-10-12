@@ -2,11 +2,11 @@ import { extendTheme } from '@mui/joy/styles'
 
 /**
  * Dashboard Theme Extension
- * 
+ *
  * Extends the base Joy UI theme with customizations specific to the
  * administrative dashboard. This theme is completely independent from
  * the Cedar-OS Tailwind system.
- * 
+ *
  * Key customizations:
  * - Enhanced color palette for data visualization
  * - Consistent spacing and typography scale
@@ -77,7 +77,8 @@ export const dashboardTheme = extendTheme({
     },
     fontFamily: {
         // Use system font stack for optimal performance
-        display: 'Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif',
+        display:
+            'Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif',
         body: 'Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif',
     },
     typography: {
@@ -156,10 +157,12 @@ export const dashboardTheme = extendTheme({
             styleOverrides: {
                 root: {
                     // Subtle shadow for depth
-                    boxShadow: '0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06)',
+                    boxShadow:
+                        '0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06)',
                     transition: 'box-shadow 0.2s ease',
                     '&:hover': {
-                        boxShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06)',
+                        boxShadow:
+                            '0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06)',
                     },
                 },
             },

@@ -3,6 +3,12 @@ import { z } from 'zod'
 import { log } from '../config/logger'
 import { AISpanType } from '@mastra/core/ai-tracing'
 
+// Define runtime context for this tool
+export interface CopywriterToolContext {
+    userId?: string
+    contentType?: string
+}
+
 log.info('Initializing Enhanced Copywriter Agent Tool...')
 
 export const copywriterTool = createTool({

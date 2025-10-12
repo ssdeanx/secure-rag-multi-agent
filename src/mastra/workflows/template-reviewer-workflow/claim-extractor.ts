@@ -1,10 +1,10 @@
-import z from "zod";
+import z from 'zod'
 
 export const claimExtractorPrompt = (props: {
-  transcript: string;
-  documentation: string;
+    transcript: string
+    documentation: string
 }) => {
-  return `You are an expert technical analyst.
+    return `You are an expert technical analyst.
 
 ## Context
 
@@ -77,31 +77,33 @@ ${props.documentation}
 
 **Video transcript**
 ${props.transcript}
-`;
-};
+`
+}
 
 export const claimsSchema = z.object({
-  claims: z
-    .array(
-      z.object({
-        /**
-         * A concise, verb-first summary of the capability.
-         * Must be 10 words or fewer.
-         */
-        name: z.string().describe("Concise, verb-first summary (≤ 10 words)"),
+    claims: z
+        .array(
+            z.object({
+                /**
+                 * A concise, verb-first summary of the capability.
+                 * Must be 10 words or fewer.
+                 */
+                name: z
+                    .string()
+                    .describe('Concise, verb-first summary (≤ 10 words)'),
 
-        /**
-         * The full claim text (or a faithful paraphrase) plus
-         * an evidence snippet (≤ 25 words) with a line/time reference.
-         */
-        description: z
-          .string()
-          .describe(
-            "Full claim text with ≤ 25-word evidence snippet and line/time code"
-          ),
-      })
-    )
-    .describe(
-      "List of non-duplicative, present-tense claims extracted from the sources"
-    ),
-});
+                /**
+                 * The full claim text (or a faithful paraphrase) plus
+                 * an evidence snippet (≤ 25 words) with a line/time reference.
+                 */
+                description: z
+                    .string()
+                    .describe(
+                        'Full claim text with ≤ 25-word evidence snippet and line/time code'
+                    ),
+            })
+        )
+        .describe(
+            'List of non-duplicative, present-tense claims extracted from the sources'
+        ),
+})

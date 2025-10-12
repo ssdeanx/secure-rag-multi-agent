@@ -22,6 +22,12 @@ import * as zlib from 'zlib'
 import { pipeline } from 'stream/promises'
 import { log } from '../config/logger'
 
+// Define runtime context for these tools
+export interface DataFileManagerContext {
+    userId?: string
+    workspaceId?: string
+}
+
 const DATA_DIR = path.join(process.cwd(), 'docs/data')
 
 /**

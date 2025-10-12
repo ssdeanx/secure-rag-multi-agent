@@ -40,15 +40,30 @@ interface Permission {
 export default function PermissionEditor({ role }: PermissionEditorProps) {
     const [permissions, setPermissions] = React.useState<Permission[]>([])
     const [loading, setLoading] = React.useState(false)
-    const [message, setMessage] = React.useState<{ type: 'success' | 'danger'; text: string } | null>(null)
+    const [message, setMessage] = React.useState<{
+        type: 'success' | 'danger'
+        text: string
+    } | null>(null)
 
     React.useEffect(() => {
         // Initialize permissions based on role
         const defaultPermissions: Permission[] = [
-            { resource: 'documents', actions: { read: false, write: false, delete: false } },
-            { resource: 'users', actions: { read: false, write: false, delete: false } },
-            { resource: 'policy', actions: { read: false, write: false, delete: false } },
-            { resource: 'settings', actions: { read: false, write: false, delete: false } }
+            {
+                resource: 'documents',
+                actions: { read: false, write: false, delete: false },
+            },
+            {
+                resource: 'users',
+                actions: { read: false, write: false, delete: false },
+            },
+            {
+                resource: 'policy',
+                actions: { read: false, write: false, delete: false },
+            },
+            {
+                resource: 'settings',
+                actions: { read: false, write: false, delete: false },
+            },
         ]
 
         // Apply role-specific defaults
@@ -57,20 +72,47 @@ export default function PermissionEditor({ role }: PermissionEditorProps) {
                 perm.actions = { read: true, write: true, delete: true }
             })
         } else if (role === 'dept_admin') {
-            defaultPermissions[0].actions = { read: true, write: true, delete: true }
-            defaultPermissions[1].actions = { read: true, write: true, delete: false }
-            defaultPermissions[2].actions = { read: true, write: false, delete: false }
+            defaultPermissions[0].actions = {
+                read: true,
+                write: true,
+                delete: true,
+            }
+            defaultPermissions[1].actions = {
+                read: true,
+                write: true,
+                delete: false,
+            }
+            defaultPermissions[2].actions = {
+                read: true,
+                write: false,
+                delete: false,
+            }
         } else if (role === 'dept_viewer') {
-            defaultPermissions[0].actions = { read: true, write: false, delete: false }
-            defaultPermissions[1].actions = { read: true, write: false, delete: false }
+            defaultPermissions[0].actions = {
+                read: true,
+                write: false,
+                delete: false,
+            }
+            defaultPermissions[1].actions = {
+                read: true,
+                write: false,
+                delete: false,
+            }
         } else if (role === 'employee') {
-            defaultPermissions[0].actions = { read: true, write: false, delete: false }
+            defaultPermissions[0].actions = {
+                read: true,
+                write: false,
+                delete: false,
+            }
         }
 
         setPermissions(defaultPermissions)
     }, [role])
 
-    const handleToggle = (resourceIndex: number, action: 'read' | 'write' | 'delete') => {
+    const handleToggle = (
+        resourceIndex: number,
+        action: 'read' | 'write' | 'delete'
+    ) => {
         setPermissions((prev) =>
             prev.map((perm, idx) =>
                 idx === resourceIndex
@@ -78,8 +120,8 @@ export default function PermissionEditor({ role }: PermissionEditorProps) {
                           ...perm,
                           actions: {
                               ...perm.actions,
-                              [action]: !perm.actions[action]
-                          }
+                              [action]: !perm.actions[action],
+                          },
                       }
                     : perm
             )
@@ -91,17 +133,23 @@ export default function PermissionEditor({ role }: PermissionEditorProps) {
         setMessage(null)
 
         try {
-            const response = await fetch(`/api/policy/roles/${role}/permissions`, {
-                method: 'PATCH',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ permissions })
-            })
+            const response = await fetch(
+                `/api/policy/roles/${role}/permissions`,
+                {
+                    method: 'PATCH',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ permissions }),
+                }
+            )
 
             if (!response.ok) {
                 throw new Error('Failed to save permissions')
             }
 
-            setMessage({ type: 'success', text: 'Permissions saved successfully' })
+            setMessage({
+                type: 'success',
+                text: 'Permissions saved successfully',
+            })
         } catch {
             setMessage({ type: 'danger', text: 'Failed to save permissions' })
         } finally {
@@ -126,7 +174,8 @@ export default function PermissionEditor({ role }: PermissionEditorProps) {
                     {permissions.map((perm, idx) => (
                         <Box key={perm.resource}>
                             <FormLabel sx={{ mb: 1, fontWeight: 'lg' }}>
-                                {perm.resource.charAt(0).toUpperCase() + perm.resource.slice(1)}
+                                {perm.resource.charAt(0).toUpperCase() +
+                                    perm.resource.slice(1)}
                             </FormLabel>
                             <Stack direction="row" spacing={2}>
                                 <FormControl>
@@ -161,7 +210,11 @@ export default function PermissionEditor({ role }: PermissionEditorProps) {
                     ))}
 
                     <Box sx={{ display: 'flex', justifyContent: 'flex-end' }}>
-                        <Button startDecorator={<Save />} loading={loading} onClick={handleSave}>
+                        <Button
+                            startDecorator={<Save />}
+                            loading={loading}
+                            onClick={handleSave}
+                        >
                             Save Permissions
                         </Button>
                     </Box>

@@ -19,7 +19,9 @@ export async function GET(request: NextRequest) {
                 name: 'Development Key',
                 key: 'mra_dev_*****************************',
                 createdAt: new Date('2024-02-01').toISOString(),
-                lastUsed: new Date(Date.now() - 1000 * 60 * 60 * 24 * 3).toISOString(),
+                lastUsed: new Date(
+                    Date.now() - 1000 * 60 * 60 * 24 * 3
+                ).toISOString(),
                 status: 'active' as const,
             },
         ]

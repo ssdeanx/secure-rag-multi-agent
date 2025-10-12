@@ -18,6 +18,16 @@ import { log } from '../config/logger'
 import { pgMemory } from '../config/pg-storage'
 import { googleAIFlashLite } from '../config/google'
 
+// Define runtime context for this agent
+export interface RetrieveAgentContext {
+    tier: 'free' | 'pro' | 'enterprise'
+    userId: string
+    accessFilter: {
+        allowTags: string[]
+        maxClassification: 'public' | 'internal' | 'confidential'
+    }
+}
+
 log.info('Initializing Retrieve Agent...')
 
 export const retrieveAgent = new Agent({
@@ -26,7 +36,10 @@ export const retrieveAgent = new Agent({
     model: googleAIFlashLite,
     description:
         "A document retrieval agent that retrieves relevant documents based on a user's question and access level.",
-    instructions: `You are a document retrieval agent. You MUST call vectorQueryTool EXACTLY ONCE and ONLY return its results.
+    instructions: ({ runtimeContext }) => {
+        const userId = runtimeContext.get('userId')
+        return `You are a document retrieval agent. You MUST call vectorQueryTool EXACTLY ONCE and ONLY return its results.
+User: ${userId ?? 'anonymous'}
 
 **MANDATORY STEPS:**
 1. Parse input JSON for 'question' and 'access' fields
@@ -54,8 +67,8 @@ export const retrieveAgent = new Agent({
 - Adding explanatory text about what you found
 
 
-
-`,
+`
+    },
     memory: pgMemory,
     tools: { vectorQueryTool },
     scorers: {},

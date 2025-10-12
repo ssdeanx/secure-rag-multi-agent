@@ -13,6 +13,13 @@ import { htmlToMarkdownTool, webScraperTool } from '../tools/web-scraper-tool'
 import { vectorQueryTool } from '../tools/vector-query.tool'
 import { BatchPartsProcessor, UnicodeNormalizer } from '@mastra/core/processors'
 
+// Define runtime context for this agent
+export interface ProductRoadmapAgentContext {
+    userId?: string
+    projectId?: string
+    userRole?: string
+}
+
 log.info('Initializing productRoadmap Agent...')
 
 // Create RAG tools for interacting with the product roadmap graph database
@@ -21,8 +28,11 @@ export const productRoadmapAgent = new Agent({
     name: 'Product Roadmap Agent',
     description:
         'Manages the product roadmap for the Cedar project, including features, priorities, and requests with enhanced content generation capabilities.',
-    instructions: `
+    instructions: ({ runtimeContext }) => {
+        const userId = runtimeContext.get('userId')
+        return `
 <role>
+User: ${userId ?? 'anonymous'}
 You are a helpful product roadmap assistant for the Cedar open source project. Cedar is a JavaScript library that provides tools for building interactive AI applications.
 </role>
 
@@ -143,7 +153,8 @@ When generating content, include the generated content in your response and indi
     "content": "Your response"
 }
 </decision_logic>
-    `,
+    `
+    },
     model: googleAI,
     memory: pgMemory,
     tools: {

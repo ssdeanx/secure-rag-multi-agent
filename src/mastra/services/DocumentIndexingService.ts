@@ -118,9 +118,7 @@ export class DocumentIndexingService {
         // For public documents, add public access
         if (classification === 'public' && !roleSet.has('public')) {
             tags.push('role:public')
-            log.info(
-                `INDEXING: Auto-added 'public' role for public document`
-            )
+            log.info(`INDEXING: Auto-added 'public' role for public document`)
         }
 
         // Add tenant tag

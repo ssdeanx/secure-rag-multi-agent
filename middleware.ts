@@ -18,7 +18,7 @@ export async function middleware(request: NextRequest) {
         {
             cookies: {
                 getAll() {
-                    return request.cookies.getAll().map(cookie => ({
+                    return request.cookies.getAll().map((cookie) => ({
                         name: cookie.name,
                         value: cookie.value,
                     }))

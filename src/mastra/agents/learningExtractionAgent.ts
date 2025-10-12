@@ -12,6 +12,12 @@ import { log } from '../config/logger'
 import { pgMemory } from '../config/pg-storage'
 import { googleAI } from '../config/google'
 
+// Define runtime context for this agent
+export interface LearningExtractionAgentContext {
+    userId?: string
+    researchPhase?: string
+}
+
 log.info('Initializing Learning Extraction Agent...')
 
 export const learningExtractionAgent = new Agent({
@@ -19,8 +25,11 @@ export const learningExtractionAgent = new Agent({
     name: 'Learning Extraction Agent',
     description:
         'An expert at analyzing search results and extracting key insights to deepen research understanding.',
-    instructions: `
+    instructions: ({ runtimeContext }) => {
+        const userId = runtimeContext.get('userId')
+        return `
 <role>
+User: ${userId ?? 'anonymous'}
 You are an expert at analyzing search results to extract key insights and generate follow-up questions for deeper research.
 </role>
 
@@ -44,7 +53,8 @@ Example:
   "followUpQuestion": "What are the specific metrics to measure the impact of X on Y?"
 }
 </output_format>
-  `,
+  `
+    },
 
     evals: {
         contentSimilarity: new ContentSimilarityMetric({

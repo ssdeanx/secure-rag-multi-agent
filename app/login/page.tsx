@@ -5,7 +5,11 @@ export default function LoginPage() {
     return (
         <Box
             component="main"
-            sx={{ minHeight: '100vh', backgroundColor: 'background.body', py: 8 }}
+            sx={{
+                minHeight: '100vh',
+                backgroundColor: 'background.body',
+                py: 8,
+            }}
         >
             <Box sx={{ maxWidth: 480, mx: 'auto', px: 2 }}>
                 <Box sx={{ textAlign: 'center', mb: 3 }}>

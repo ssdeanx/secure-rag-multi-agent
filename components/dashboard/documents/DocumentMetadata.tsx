@@ -35,8 +35,12 @@ interface DocumentMetadataProps {
  *
  * Display document metadata in a card layout.
  */
-export default function DocumentMetadata({ documentId }: DocumentMetadataProps) {
-    const [metadata, setMetadata] = React.useState<DocumentMetadataType | null>(null)
+export default function DocumentMetadata({
+    documentId,
+}: DocumentMetadataProps) {
+    const [metadata, setMetadata] = React.useState<DocumentMetadataType | null>(
+        null
+    )
     const [loading, setLoading] = React.useState(true)
 
     React.useEffect(() => {
@@ -47,7 +51,7 @@ export default function DocumentMetadata({ documentId }: DocumentMetadataProps) 
                     throw new Error('Failed to fetch metadata')
                 }
 
-                const data = await response.json() as DocumentMetadataType
+                const data = (await response.json()) as DocumentMetadataType
                 setMetadata(data)
             } catch {
                 // Error handled silently
@@ -73,7 +77,9 @@ export default function DocumentMetadata({ documentId }: DocumentMetadataProps) 
         return (
             <Card>
                 <CardContent>
-                    <Typography color="danger">Failed to load document metadata</Typography>
+                    <Typography color="danger">
+                        Failed to load document metadata
+                    </Typography>
                 </CardContent>
             </Card>
         )
@@ -90,27 +96,40 @@ export default function DocumentMetadata({ documentId }: DocumentMetadataProps) 
                     {/* Title */}
                     <Grid xs={12}>
                         <Stack spacing={0.5}>
-                            <Typography level="body-xs" sx={{ color: 'text.secondary' }}>
+                            <Typography
+                                level="body-xs"
+                                sx={{ color: 'text.secondary' }}
+                            >
                                 Title
                             </Typography>
-                            <Typography level="title-sm">{metadata.title}</Typography>
+                            <Typography level="title-sm">
+                                {metadata.title}
+                            </Typography>
                         </Stack>
                     </Grid>
 
                     {/* Classification */}
                     <Grid xs={12} sm={6}>
                         <Stack spacing={0.5}>
-                            <Typography level="body-xs" sx={{ color: 'text.secondary' }}>
+                            <Typography
+                                level="body-xs"
+                                sx={{ color: 'text.secondary' }}
+                            >
                                 Classification
                             </Typography>
-                            <ClassificationBadge classification={metadata.classification} />
+                            <ClassificationBadge
+                                classification={metadata.classification}
+                            />
                         </Stack>
                     </Grid>
 
                     {/* Chunks */}
                     <Grid xs={12} sm={6}>
                         <Stack spacing={0.5}>
-                            <Typography level="body-xs" sx={{ color: 'text.secondary' }}>
+                            <Typography
+                                level="body-xs"
+                                sx={{ color: 'text.secondary' }}
+                            >
                                 Indexed Chunks
                             </Typography>
                             <Chip size="sm" variant="soft" color="neutral">
@@ -122,7 +141,10 @@ export default function DocumentMetadata({ documentId }: DocumentMetadataProps) 
                     {/* Uploaded */}
                     <Grid xs={12} sm={6}>
                         <Stack spacing={0.5}>
-                            <Typography level="body-xs" sx={{ color: 'text.secondary' }}>
+                            <Typography
+                                level="body-xs"
+                                sx={{ color: 'text.secondary' }}
+                            >
                                 Uploaded
                             </Typography>
                             <Typography level="body-sm">
@@ -134,17 +156,25 @@ export default function DocumentMetadata({ documentId }: DocumentMetadataProps) 
                     {/* Uploaded By */}
                     <Grid xs={12} sm={6}>
                         <Stack spacing={0.5}>
-                            <Typography level="body-xs" sx={{ color: 'text.secondary' }}>
+                            <Typography
+                                level="body-xs"
+                                sx={{ color: 'text.secondary' }}
+                            >
                                 Uploaded By
                             </Typography>
-                            <Typography level="body-sm">{metadata.uploadedBy}</Typography>
+                            <Typography level="body-sm">
+                                {metadata.uploadedBy}
+                            </Typography>
                         </Stack>
                     </Grid>
 
                     {/* File Size */}
                     <Grid xs={12} sm={6}>
                         <Stack spacing={0.5}>
-                            <Typography level="body-xs" sx={{ color: 'text.secondary' }}>
+                            <Typography
+                                level="body-xs"
+                                sx={{ color: 'text.secondary' }}
+                            >
                                 File Size
                             </Typography>
                             <Typography level="body-sm">
@@ -156,7 +186,10 @@ export default function DocumentMetadata({ documentId }: DocumentMetadataProps) 
                     {/* Word Count */}
                     <Grid xs={12} sm={6}>
                         <Stack spacing={0.5}>
-                            <Typography level="body-xs" sx={{ color: 'text.secondary' }}>
+                            <Typography
+                                level="body-xs"
+                                sx={{ color: 'text.secondary' }}
+                            >
                                 Word Count
                             </Typography>
                             <Typography level="body-sm">

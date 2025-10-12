@@ -1,36 +1,36 @@
-import { Agent } from "@mastra/core/agent";
-import type { Container } from "inversify";
-import { templateReviewerWorkflow } from "../workflows/template-reviewer-workflow/index.js";
-import type { LanguageModel } from "ai";
-import { MODEL_SYMBOL } from "../infra/model/index.js";
-import { ProjectRepository } from "../infra/repositories/project.js";
-import { googleSheetsTool } from "../tools/google-sheets-tool.js";
-import { listProjectsTool } from "../tools/list-projects-tool.js";
-import { Config } from "../domain/aggregates/config.js";
-import { pgMemory } from "../config/pg-storage.js";
+import { Agent } from '@mastra/core/agent'
+import type { Container } from 'inversify'
+import { templateReviewerWorkflow } from '../workflows/template-reviewer-workflow/index.js'
+import type { LanguageModel } from 'ai'
+import { MODEL_SYMBOL } from '../infra/model/index.js'
+import { ProjectRepository } from '../infra/repositories/project.js'
+import { googleSheetsTool } from '../tools/google-sheets-tool.js'
+import { listProjectsTool } from '../tools/list-projects-tool.js'
+import { Config } from '../domain/aggregates/config.js'
+import { pgMemory } from '../config/pg-storage.js'
 
 export const templateReviewerAgent = (container: Container) => {
-  const model = container.get<LanguageModel>(MODEL_SYMBOL);
-  const repository = container.get(ProjectRepository);
-  const config = container.get(Config);
+    const model = container.get<LanguageModel>(MODEL_SYMBOL)
+    const repository = container.get(ProjectRepository)
+    const config = container.get(Config)
 
-  return new Agent({
-    name: "Mastra Template Reviewer Agent",
-    model,
-    workflows: {
-      templateReviewerWorkflow: templateReviewerWorkflow(container),
-    },
-    tools: {
-      listExistingResults: listProjectsTool({
-        repository,
-      }),
-      googleSheets: googleSheetsTool({
-        arcadeApiKey: config.ARCADE_API_KEY,
-        arcadeUserId: config.ARCADE_USER_ID,
-        defaultSpreadsheetId: config.GOOGLE_SHEETS_SPREADSHEET_ID,
-      }),
-    },
-    instructions: `You are "CoordinatorAgent", an agent powered by **Mastra** to review and rate template submissions for the Mastra hackathon.
+    return new Agent({
+        name: 'Mastra Template Reviewer Agent',
+        model,
+        workflows: {
+            templateReviewerWorkflow: templateReviewerWorkflow(container),
+        },
+        tools: {
+            listExistingResults: listProjectsTool({
+                repository,
+            }),
+            googleSheets: googleSheetsTool({
+                arcadeApiKey: config.ARCADE_API_KEY,
+                arcadeUserId: config.ARCADE_USER_ID,
+                defaultSpreadsheetId: config.GOOGLE_SHEETS_SPREADSHEET_ID,
+            }),
+        },
+        instructions: `You are "CoordinatorAgent", an agent powered by **Mastra** to review and rate template submissions for the Mastra hackathon.
 
 ─────────────────────────────  GREETING  ─────────────────────────────
 On first user message, greet exactly once with:
@@ -80,6 +80,6 @@ On first user message, greet exactly once with:
 • Never reveal internal implementation details or environment variables.
 
 `,
-    memory: pgMemory
-  });
-};
+        memory: pgMemory,
+    })
+}

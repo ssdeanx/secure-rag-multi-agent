@@ -95,3 +95,110 @@ export function getInheritorRoles(targetRole: string): string[] {
 
     return inheritors.sort((a, b) => getRoleLevel(b) - getRoleLevel(a))
 }
+
+/**
+ * Subscription Tier Configuration
+ * Defines quotas and feature access for each tier
+ */
+export type SubscriptionTier = 'free' | 'pro' | 'enterprise'
+
+export interface TierQuota {
+    maxDocuments: number // -1 = unlimited
+    maxApiRequestsPerDay: number
+    maxUsersPerTenant: number
+    features: string[]
+    supportLevel: 'community' | 'email' | 'priority' | 'phone_24x7'
+    customIntegrations: boolean
+    advancedAnalytics: boolean
+    whiteLabel: boolean
+    onPremise: boolean
+}
+
+export const TIER_QUOTAS: Record<SubscriptionTier, TierQuota> = {
+    free: {
+        maxDocuments: 1000,
+        maxApiRequestsPerDay: 100,
+        maxUsersPerTenant: 5,
+        features: ['basic-rag', 'public-docs'],
+        supportLevel: 'community',
+        customIntegrations: false,
+        advancedAnalytics: false,
+        whiteLabel: false,
+        onPremise: false,
+    },
+    pro: {
+        maxDocuments: 50000,
+        maxApiRequestsPerDay: 10000,
+        maxUsersPerTenant: -1, // unlimited
+        features: [
+            'basic-rag',
+            'public-docs',
+            'internal-docs',
+            'advanced-analytics',
+            'custom-integrations',
+            'priority-support',
+        ],
+        supportLevel: 'priority',
+        customIntegrations: true,
+        advancedAnalytics: true,
+        whiteLabel: false,
+        onPremise: false,
+    },
+    enterprise: {
+        maxDocuments: -1, // unlimited
+        maxApiRequestsPerDay: -1, // unlimited
+        maxUsersPerTenant: -1, // unlimited
+        features: [
+            'basic-rag',
+            'public-docs',
+            'internal-docs',
+            'confidential-docs',
+            'advanced-analytics',
+            'custom-integrations',
+            'white-label',
+            'on-premise',
+            'phone-support',
+            'dedicated-account-manager',
+        ],
+        supportLevel: 'phone_24x7',
+        customIntegrations: true,
+        advancedAnalytics: true,
+        whiteLabel: true,
+        onPremise: true,
+    },
+}
+
+/**
+ * Get quota configuration for a tier
+ */
+export function getTierQuota(tier: SubscriptionTier): TierQuota {
+    return TIER_QUOTAS[tier]
+}
+
+/**
+ * Check if a feature is available in a tier
+ */
+export function isTierFeatureEnabled(
+    tier: SubscriptionTier,
+    feature: string
+): boolean {
+    return TIER_QUOTAS[tier].features.includes(feature)
+}
+
+/**
+ * Get the minimum tier required for a classification level
+ */
+export function getMinimumTierForClassification(
+    classification: 'public' | 'internal' | 'confidential'
+): SubscriptionTier {
+    switch (classification) {
+        case 'public':
+            return 'free'
+        case 'internal':
+            return 'pro'
+        case 'confidential':
+            return 'enterprise'
+        default:
+            return 'free'
+    }
+}

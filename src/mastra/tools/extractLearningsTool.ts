@@ -46,11 +46,10 @@ export const extractLearningsTool = createTool({
                 title: result.title,
                 url: result.url,
             })
-            const response = await learningExtractionAgent.generate(
-                [
-                    {
-                        role: 'user',
-                        content: `The user is researching "${query}".
+            const response = await learningExtractionAgent.generate([
+                {
+                    role: 'user',
+                    content: `The user is researching "${query}".
             Extract a key learning and generate follow-up questions from this search result:
 
             Title: ${result.title}
@@ -60,9 +59,8 @@ export const extractLearningsTool = createTool({
             Respond with a JSON object containing:
             - learning: string with the key insight from the content
             - followUpQuestions: array of up to 1 follow-up question for deeper research`,
-                    },
-                ]
-            )
+                },
+            ])
 
             const outputSchema = z.object({
                 learning: z.string(),
@@ -76,19 +74,25 @@ export const extractLearningsTool = createTool({
             const parsed = outputSchema.safeParse(response.object)
 
             if (!parsed.success) {
-                log.warn('Learning extraction agent returned unexpected shape', {
-                    response: response.object,
-                })
+                log.warn(
+                    'Learning extraction agent returned unexpected shape',
+                    {
+                        response: response.object,
+                    }
+                )
                 extractSpan?.end({
                     output: {
-                        learningLength: (response.object as any)?.learning?.length ?? 0,
+                        learningLength:
+                            (response.object as any)?.learning?.length ?? 0,
                         followUpQuestionsCount:
-                            (response.object as any)?.followUpQuestions?.length ?? 0,
+                            (response.object as any)?.followUpQuestions
+                                ?.length ?? 0,
                     },
                     metadata: { invalidResponse: true },
                 })
                 return {
-                    learning: 'Invalid response format from learning extraction agent',
+                    learning:
+                        'Invalid response format from learning extraction agent',
                     followUpQuestions: [],
                 }
             }
@@ -96,7 +100,8 @@ export const extractLearningsTool = createTool({
             extractSpan?.end({
                 output: {
                     learningLength: parsed.data.learning.length,
-                    followUpQuestionsCount: parsed.data.followUpQuestions.length,
+                    followUpQuestionsCount:
+                        parsed.data.followUpQuestions.length,
                 },
             })
             return parsed.data

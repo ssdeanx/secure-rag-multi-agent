@@ -5,6 +5,12 @@ import { log } from '../config/logger'
 import { pgMemory } from '../config/pg-storage'
 import { googleAI } from '../config/google'
 
+// Define runtime context for this agent
+export interface EditorAgentContext {
+    userId?: string
+    contentType?: string
+}
+
 log.info('Initializing Editor Agent...')
 
 export const editorAgent = new Agent({
@@ -12,8 +18,11 @@ export const editorAgent = new Agent({
     name: 'Editor',
     description:
         'A versatile content editor that improves clarity, coherence, and quality across various content types including technical writing, documentation, emails, reports, and creative content.',
-    instructions: `
+    instructions: ({ runtimeContext }) => {
+        const userId = runtimeContext.get('userId')
+        return `
 <role>
+User: ${userId ?? 'anonymous'}
 You are an expert content editor, tasked with refining and improving written content across multiple domains and formats.
 </role>
 
@@ -89,7 +98,8 @@ You must respond with a JSON object in the following format:
   "improvementSuggestions": "Optional suggestions for further improvement or structural changes."
 }
 </output_format>
-  `,
+  `
+    },
     model: googleAI,
     memory: pgMemory,
     scorers: {},

@@ -19,8 +19,11 @@ export async function POST(req: NextRequest) {
         return NextResponse.json({ error: error.message }, { status: 400 })
     }
 
-    return NextResponse.json({
-        session: data.session,
-        message: 'Check your email to confirm your account'
-    }, { status: 200 })
+    return NextResponse.json(
+        {
+            session: data.session,
+            message: 'Check your email to confirm your account',
+        },
+        { status: 200 }
+    )
 }

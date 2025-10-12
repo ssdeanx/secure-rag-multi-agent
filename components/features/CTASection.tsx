@@ -1,4 +1,11 @@
-import { Box, Typography, Button, Stack, Card, CardContent } from '@/components/ui/joy'
+import {
+    Box,
+    Typography,
+    Button,
+    Stack,
+    Card,
+    CardContent,
+} from '@/components/ui/joy'
 import { ArrowForward, ContactMail, PlayArrow } from '@mui/icons-material'
 
 export function CTASection() {
@@ -17,7 +24,8 @@ export function CTASection() {
                             overflow: 'hidden',
                             maxWidth: 800,
                             width: '100%',
-                            background: 'linear-gradient(135deg, rgba(62, 207, 142, 0.05), rgba(255, 255, 255, 0.05))',
+                            background:
+                                'linear-gradient(135deg, rgba(62, 207, 142, 0.05), rgba(255, 255, 255, 0.05))',
                         }}
                     >
                         {/* Background decoration */}
@@ -35,20 +43,24 @@ export function CTASection() {
                             }}
                         />
 
-                        <CardContent sx={{ p: 0, position: 'relative', zIndex: 1 }}>
+                        <CardContent
+                            sx={{ p: 0, position: 'relative', zIndex: 1 }}
+                        >
                             <Stack spacing={4} sx={{ alignItems: 'center' }}>
                                 <Typography
                                     level="h2"
                                     sx={{
                                         fontSize: { xs: '2rem', md: '2.5rem' },
                                         fontWeight: 700,
-                                        background: 'linear-gradient(135deg, var(--joy-palette-text-primary), var(--joy-palette-primary-600))',
+                                        background:
+                                            'linear-gradient(135deg, var(--joy-palette-text-primary), var(--joy-palette-primary-600))',
                                         backgroundClip: 'text',
                                         WebkitBackgroundClip: 'text',
                                         WebkitTextFillColor: 'transparent',
                                     }}
                                 >
-                                    Ready to Transform Your Document Intelligence?
+                                    Ready to Transform Your Document
+                                    Intelligence?
                                 </Typography>
 
                                 <Typography
@@ -60,13 +72,22 @@ export function CTASection() {
                                         maxWidth: 600,
                                     }}
                                 >
-                                    Join leading enterprises using our cutting-edge RAG technology.
-                                    Start your free trial today and experience the future of AI-powered document processing.
+                                    Join leading enterprises using our
+                                    cutting-edge RAG technology. Start your free
+                                    trial today and experience the future of
+                                    AI-powered document processing.
                                 </Typography>
 
                                 <Stack
                                     spacing={3}
-                                    sx={{ width: '100%', maxWidth: 500, flexDirection: { xs: 'column', sm: 'row' } }}
+                                    sx={{
+                                        width: '100%',
+                                        maxWidth: 500,
+                                        flexDirection: {
+                                            xs: 'column',
+                                            sm: 'row',
+                                        },
+                                    }}
                                 >
                                     <Button
                                         size="lg"
@@ -117,7 +138,12 @@ export function CTASection() {
                     {/* Additional Actions */}
                     <Stack
                         spacing={4}
-                        sx={{ width: '100%', maxWidth: 600, flexDirection: { xs: 'column', sm: 'row' }, alignItems: 'center' }}
+                        sx={{
+                            width: '100%',
+                            maxWidth: 600,
+                            flexDirection: { xs: 'column', sm: 'row' },
+                            alignItems: 'center',
+                        }}
                     >
                         <Button
                             variant="plain"
@@ -146,7 +172,8 @@ export function CTASection() {
                                 textAlign: 'center',
                             }}
                         >
-                            No credit card required • 14-day free trial • Cancel anytime
+                            No credit card required • 14-day free trial • Cancel
+                            anytime
                         </Typography>
                     </Stack>
                 </Stack>

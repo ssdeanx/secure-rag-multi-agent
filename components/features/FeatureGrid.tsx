@@ -1,4 +1,3 @@
-
 import {
     Security,
     Speed,
@@ -11,98 +10,127 @@ import {
     Assessment,
     GroupWork,
     AutoAwesome,
-    Shield
+    Shield,
 } from '@mui/icons-material'
-import { Box, Typography, Grid, Card, CardContent, Chip, Stack } from '@/components/ui/joy'
+import {
+    Box,
+    Typography,
+    Grid,
+    Card,
+    CardContent,
+    Chip,
+    Stack,
+} from '@/components/ui/joy'
 
 const features = [
     {
         icon: Security,
         title: 'Enterprise Security',
-        description: 'Bank-grade encryption with role-based access control and comprehensive audit logging.',
+        description:
+            'Bank-grade encryption with role-based access control and comprehensive audit logging.',
         color: 'success' as const,
-        category: 'Security'
+        category: 'Security',
     },
     {
         icon: Speed,
         title: 'Lightning Fast',
-        description: 'Sub-second response times with optimized vector search and intelligent caching.',
+        description:
+            'Sub-second response times with optimized vector search and intelligent caching.',
         color: 'warning' as const,
-        category: 'Performance'
+        category: 'Performance',
     },
     {
         icon: Analytics,
         title: 'Advanced Analytics',
-        description: 'Deep insights into document usage, user behavior, and system performance metrics.',
+        description:
+            'Deep insights into document usage, user behavior, and system performance metrics.',
         color: 'neutral' as const,
-        category: 'Intelligence'
+        category: 'Intelligence',
     },
     {
         icon: SmartToy,
         title: 'AI-Powered Agents',
-        description: '16+ specialized agents for document analysis, summarization, and intelligent querying.',
+        description:
+            '16+ specialized agents for document analysis, summarization, and intelligent querying.',
         color: 'primary' as const,
-        category: 'AI'
+        category: 'AI',
     },
     {
         icon: Cloud,
         title: 'Cloud-Native',
-        description: 'Scalable architecture with multi-cloud support and automatic failover capabilities.',
+        description:
+            'Scalable architecture with multi-cloud support and automatic failover capabilities.',
         color: 'neutral' as const,
-        category: 'Infrastructure'
+        category: 'Infrastructure',
     },
     {
         icon: Lock,
         title: 'Zero-Trust Security',
-        description: 'Every request validated with continuous authentication and authorization.',
+        description:
+            'Every request validated with continuous authentication and authorization.',
         color: 'danger' as const,
-        category: 'Security'
+        category: 'Security',
     },
     {
         icon: Search,
         title: 'Semantic Search',
-        description: 'Context-aware search with natural language understanding and relevance ranking.',
+        description:
+            'Context-aware search with natural language understanding and relevance ranking.',
         color: 'primary' as const,
-        category: 'Search'
+        category: 'Search',
     },
     {
         icon: Psychology,
         title: 'Cognitive Computing',
-        description: 'Advanced reasoning capabilities with multi-modal document processing.',
+        description:
+            'Advanced reasoning capabilities with multi-modal document processing.',
         color: 'neutral' as const,
-        category: 'AI'
+        category: 'AI',
     },
     {
         icon: Assessment,
         title: 'Real-time Monitoring',
-        description: 'Live dashboards with performance metrics, error tracking, and usage analytics.',
+        description:
+            'Live dashboards with performance metrics, error tracking, and usage analytics.',
         color: 'neutral' as const,
-        category: 'Monitoring'
+        category: 'Monitoring',
     },
     {
         icon: GroupWork,
         title: 'Multi-Agent Orchestration',
-        description: 'Coordinated agent workflows with dynamic routing and collaborative intelligence.',
+        description:
+            'Coordinated agent workflows with dynamic routing and collaborative intelligence.',
         color: 'primary' as const,
-        category: 'AI'
+        category: 'AI',
     },
     {
         icon: AutoAwesome,
         title: 'Automated Workflows',
-        description: 'Customizable pipelines for document ingestion, processing, and output generation.',
+        description:
+            'Customizable pipelines for document ingestion, processing, and output generation.',
         color: 'warning' as const,
-        category: 'Performance'
+        category: 'Performance',
     },
     {
         icon: Shield,
         title: 'Compliance Ready',
-        description: 'Built-in support for GDPR, HIPAA, and other regulatory requirements.',
+        description:
+            'Built-in support for GDPR, HIPAA, and other regulatory requirements.',
         color: 'danger' as const,
-        category: 'Security'
+        category: 'Security',
     },
 ]
 
-const categories = ['All', 'Security', 'AI', 'Performance', 'Search', 'Monitoring', 'Infrastructure', 'Intelligence']
+const categories = [
+    'All',
+    'Security',
+    'AI',
+    'Performance',
+    'Search',
+    'Monitoring',
+    'Infrastructure',
+    'Intelligence',
+]
 
 export function FeatureGrid() {
     return (
@@ -110,13 +138,17 @@ export function FeatureGrid() {
             <Box sx={{ maxWidth: '1200px', mx: 'auto', px: { xs: 2, sm: 4 } }}>
                 <Stack spacing={6} sx={{ alignItems: 'center' }}>
                     {/* Section Header */}
-                    <Stack spacing={3} sx={{ textAlign: 'center', maxWidth: 800 }}>
+                    <Stack
+                        spacing={3}
+                        sx={{ textAlign: 'center', maxWidth: 800 }}
+                    >
                         <Typography
                             level="h2"
                             sx={{
                                 fontSize: { xs: '2rem', md: '2.5rem' },
                                 fontWeight: 700,
-                                background: 'linear-gradient(135deg, var(--joy-palette-text-primary), var(--joy-palette-primary-600))',
+                                background:
+                                    'linear-gradient(135deg, var(--joy-palette-text-primary), var(--joy-palette-primary-600))',
                                 backgroundClip: 'text',
                                 WebkitBackgroundClip: 'text',
                                 WebkitTextFillColor: 'transparent',
@@ -129,11 +161,12 @@ export function FeatureGrid() {
                             sx={{
                                 color: 'text.secondary',
                                 fontSize: '1.125rem',
-                                lineHeight: 1.6
+                                lineHeight: 1.6,
                             }}
                         >
-                            Discover the comprehensive suite of capabilities that make our RAG system
-                            the most advanced document intelligence platform available.
+                            Discover the comprehensive suite of capabilities
+                            that make our RAG system the most advanced document
+                            intelligence platform available.
                         </Typography>
                     </Stack>
 
@@ -144,21 +177,25 @@ export function FeatureGrid() {
                             flexWrap: 'wrap',
                             justifyContent: 'center',
                             '& > *': { minWidth: 'fit-content' },
-                            flexDirection: { xs: 'column', sm: 'row' }
+                            flexDirection: { xs: 'column', sm: 'row' },
                         }}
                     >
                         {categories.map((category) => (
                             <Chip
                                 key={category}
-                                variant={category === 'All' ? 'soft' : 'outlined'}
-                                color={category === 'All' ? 'primary' : 'neutral'}
+                                variant={
+                                    category === 'All' ? 'soft' : 'outlined'
+                                }
+                                color={
+                                    category === 'All' ? 'primary' : 'neutral'
+                                }
                                 sx={{
                                     cursor: 'pointer',
                                     transition: 'all 200ms ease',
                                     '&:hover': {
                                         transform: 'translateY(-1px)',
                                         boxShadow: 'sm',
-                                    }
+                                    },
                                 }}
                             >
                                 {category}
@@ -174,7 +211,7 @@ export function FeatureGrid() {
                             width: '100%',
                             '& > *': {
                                 display: 'flex',
-                            }
+                            },
                         }}
                     >
                         {features.map((feature) => (
@@ -200,11 +237,14 @@ export function FeatureGrid() {
                                             right: 0,
                                             height: 4,
                                             background: `linear-gradient(90deg, var(--joy-palette-${feature.color}-500), var(--joy-palette-${feature.color}-300))`,
-                                        }
+                                        },
                                     }}
                                 >
                                     <CardContent sx={{ p: 4, height: '100%' }}>
-                                        <Stack spacing={3} sx={{ height: '100%' }}>
+                                        <Stack
+                                            spacing={3}
+                                            sx={{ height: '100%' }}
+                                        >
                                             {/* Icon */}
                                             <Box
                                                 sx={{
@@ -215,11 +255,12 @@ export function FeatureGrid() {
                                                     display: 'flex',
                                                     alignItems: 'center',
                                                     justifyContent: 'center',
-                                                    transition: 'all 200ms ease',
+                                                    transition:
+                                                        'all 200ms ease',
                                                     '&:hover': {
                                                         transform: 'scale(1.1)',
                                                         bgcolor: `${feature.color}.100`,
-                                                    }
+                                                    },
                                                 }}
                                             >
                                                 <feature.icon
@@ -232,13 +273,19 @@ export function FeatureGrid() {
 
                                             {/* Content */}
                                             <Stack spacing={2} sx={{ flex: 1 }}>
-                                                <Stack direction="row" spacing={2} sx={{ alignItems: 'center' }}>
+                                                <Stack
+                                                    direction="row"
+                                                    spacing={2}
+                                                    sx={{
+                                                        alignItems: 'center',
+                                                    }}
+                                                >
                                                     <Typography
                                                         level="h4"
                                                         sx={{
                                                             fontSize: '1.25rem',
                                                             fontWeight: 600,
-                                                            m: 0
+                                                            m: 0,
                                                         }}
                                                     >
                                                         {feature.title}
@@ -258,7 +305,7 @@ export function FeatureGrid() {
                                                     sx={{
                                                         color: 'text.secondary',
                                                         lineHeight: 1.6,
-                                                        flex: 1
+                                                        flex: 1,
                                                     }}
                                                 >
                                                     {feature.description}

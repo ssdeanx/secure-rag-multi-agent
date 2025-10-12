@@ -77,17 +77,17 @@ export default function ProfileForm() {
             setSuccessMessage('Profile updated successfully')
         } catch (error) {
             // TODO: Add proper error handling with toast/snackbar
-            const errorMessage = error instanceof Error ? error.message : 'Unknown error occurred'
+            const errorMessage =
+                error instanceof Error
+                    ? error.message
+                    : 'Unknown error occurred'
             setSuccessMessage(`Error: ${errorMessage}`)
         } finally {
             setSaving(false)
         }
     }
 
-    const handleInputChange = (
-        field: keyof ProfileFormData,
-        value: string
-    ) => {
+    const handleInputChange = (field: keyof ProfileFormData, value: string) => {
         setFormData((prev) => ({
             ...prev,
             [field]: value,
@@ -111,13 +111,21 @@ export default function ProfileForm() {
                         <Typography level="title-md" sx={{ mb: 2 }}>
                             Profile Picture
                         </Typography>
-                        <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
+                        <Box
+                            sx={{
+                                display: 'flex',
+                                alignItems: 'center',
+                                gap: 2,
+                            }}
+                        >
                             <Avatar
                                 src={formData.avatarUrl || undefined}
                                 alt={formData.displayName}
                                 sx={{ width: 80, height: 80 }}
                             >
-                                {!formData.avatarUrl && <AccountCircle sx={{ fontSize: 40 }} />}
+                                {!formData.avatarUrl && (
+                                    <AccountCircle sx={{ fontSize: 40 }} />
+                                )}
                             </Avatar>
                             <Box>
                                 <IconButton
@@ -135,13 +143,20 @@ export default function ProfileForm() {
                                             const file = e.target.files?.[0]
                                             if (file) {
                                                 // For now, create object URL for preview
-                                                const url = URL.createObjectURL(file)
-                                                handleInputChange('avatarUrl', url)
+                                                const url =
+                                                    URL.createObjectURL(file)
+                                                handleInputChange(
+                                                    'avatarUrl',
+                                                    url
+                                                )
                                             }
                                         }}
                                     />
                                 </IconButton>
-                                <Typography level="body-xs" sx={{ mt: 1, color: 'text.tertiary' }}>
+                                <Typography
+                                    level="body-xs"
+                                    sx={{ mt: 1, color: 'text.tertiary' }}
+                                >
                                     JPG, GIF or PNG. Max size of 2MB
                                 </Typography>
                             </Box>
@@ -155,12 +170,23 @@ export default function ProfileForm() {
                         Basic Information
                     </Typography>
 
-                    <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
+                    <Box
+                        sx={{
+                            display: 'flex',
+                            flexDirection: 'column',
+                            gap: 2,
+                        }}
+                    >
                         <FormControl required>
                             <FormLabel>Display Name</FormLabel>
                             <Input
                                 value={formData.displayName}
-                                onChange={(e) => handleInputChange('displayName', e.target.value)}
+                                onChange={(e) =>
+                                    handleInputChange(
+                                        'displayName',
+                                        e.target.value
+                                    )
+                                }
                                 placeholder="Enter your display name"
                             />
                         </FormControl>
@@ -177,8 +203,12 @@ export default function ProfileForm() {
                                     },
                                 }}
                             />
-                            <Typography level="body-xs" sx={{ mt: 0.5, color: 'text.tertiary' }}>
-                                Email cannot be changed here. Contact support if you need to update your email.
+                            <Typography
+                                level="body-xs"
+                                sx={{ mt: 0.5, color: 'text.tertiary' }}
+                            >
+                                Email cannot be changed here. Contact support if
+                                you need to update your email.
                             </Typography>
                         </FormControl>
 
@@ -186,13 +216,19 @@ export default function ProfileForm() {
                             <FormLabel>Bio</FormLabel>
                             <Textarea
                                 value={formData.bio}
-                                onChange={(e) => handleInputChange('bio', e.target.value)}
+                                onChange={(e) =>
+                                    handleInputChange('bio', e.target.value)
+                                }
                                 placeholder="Tell us about yourself..."
                                 minRows={4}
                                 maxRows={8}
                             />
-                            <Typography level="body-xs" sx={{ mt: 0.5, color: 'text.tertiary' }}>
-                                Brief description for your profile. Maximum 500 characters.
+                            <Typography
+                                level="body-xs"
+                                sx={{ mt: 0.5, color: 'text.tertiary' }}
+                            >
+                                Brief description for your profile. Maximum 500
+                                characters.
                             </Typography>
                         </FormControl>
                     </Box>
@@ -218,7 +254,14 @@ export default function ProfileForm() {
                     )}
 
                     {/* Action Buttons */}
-                    <Box sx={{ display: 'flex', gap: 2, mt: 3, justifyContent: 'flex-end' }}>
+                    <Box
+                        sx={{
+                            display: 'flex',
+                            gap: 2,
+                            mt: 3,
+                            justifyContent: 'flex-end',
+                        }}
+                    >
                         <Button
                             type="button"
                             variant="outlined"
@@ -227,10 +270,16 @@ export default function ProfileForm() {
                                 // Reset form to original values
                                 if (session?.user) {
                                     setFormData({
-                                        displayName: session.user.user_metadata?.display_name ?? '',
+                                        displayName:
+                                            session.user.user_metadata
+                                                ?.display_name ?? '',
                                         email: session.user.email ?? '',
-                                        bio: session.user.user_metadata?.bio ?? '',
-                                        avatarUrl: session.user.user_metadata?.avatar_url ?? '',
+                                        bio:
+                                            session.user.user_metadata?.bio ??
+                                            '',
+                                        avatarUrl:
+                                            session.user.user_metadata
+                                                ?.avatar_url ?? '',
                                     })
                                 }
                             }}
@@ -256,7 +305,10 @@ export default function ProfileForm() {
                     <Typography level="title-md" sx={{ mb: 1 }}>
                         Password
                     </Typography>
-                    <Typography level="body-sm" sx={{ mb: 2, color: 'text.tertiary' }}>
+                    <Typography
+                        level="body-sm"
+                        sx={{ mb: 2, color: 'text.tertiary' }}
+                    >
                         Change your password to keep your account secure
                     </Typography>
                     <Button variant="outlined" color="neutral">

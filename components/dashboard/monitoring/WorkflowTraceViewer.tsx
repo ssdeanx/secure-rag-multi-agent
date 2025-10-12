@@ -75,8 +75,11 @@ export default function WorkflowTraceViewer() {
     const [statusFilter, setStatusFilter] = React.useState<string>('all')
 
     const filteredTraces = traces.filter((trace) => {
-        const matchesSearch = trace.workflowName.toLowerCase().includes(searchQuery.toLowerCase())
-        const matchesStatus = statusFilter === 'all' || trace.status === statusFilter
+        const matchesSearch = trace.workflowName
+            .toLowerCase()
+            .includes(searchQuery.toLowerCase())
+        const matchesStatus =
+            statusFilter === 'all' || trace.status === statusFilter
         return matchesSearch && matchesStatus
     })
 
@@ -144,7 +147,11 @@ export default function WorkflowTraceViewer() {
                                 <td colSpan={6}>
                                     <Typography
                                         level="body-sm"
-                                        sx={{ textAlign: 'center', py: 4, color: 'text.secondary' }}
+                                        sx={{
+                                            textAlign: 'center',
+                                            py: 4,
+                                            color: 'text.secondary',
+                                        }}
                                     >
                                         No workflow traces found
                                     </Typography>
@@ -154,41 +161,65 @@ export default function WorkflowTraceViewer() {
                             filteredTraces.map((trace) => (
                                 <tr key={trace.id}>
                                     <td>
-                                        <Typography level="body-sm" fontWeight="md">
+                                        <Typography
+                                            level="body-sm"
+                                            fontWeight="md"
+                                        >
                                             {trace.workflowName}
                                         </Typography>
                                     </td>
                                     <td>
-                                        <Chip size="sm" variant="soft" color={getStatusColor(trace.status)}>
+                                        <Chip
+                                            size="sm"
+                                            variant="soft"
+                                            color={getStatusColor(trace.status)}
+                                        >
                                             {trace.status}
                                         </Chip>
                                     </td>
                                     <td>
-                                        <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+                                        <Box
+                                            sx={{
+                                                display: 'flex',
+                                                alignItems: 'center',
+                                                gap: 1,
+                                            }}
+                                        >
                                             <LinearProgress
                                                 determinate
                                                 value={trace.progress}
                                                 size="sm"
                                                 sx={{ flexGrow: 1 }}
-                                                color={getStatusColor(trace.status)}
+                                                color={getStatusColor(
+                                                    trace.status
+                                                )}
                                             />
-                                            <Typography level="body-xs">{trace.progress}%</Typography>
+                                            <Typography level="body-xs">
+                                                {trace.progress}%
+                                            </Typography>
                                         </Box>
                                     </td>
                                     <td>
                                         <Typography level="body-sm">
-                                            {new Date(trace.startTime).toLocaleString()}
+                                            {new Date(
+                                                trace.startTime
+                                            ).toLocaleString()}
                                         </Typography>
                                     </td>
                                     <td>
                                         <Typography level="body-sm">
-                                            {typeof trace.duration === 'number' && trace.duration > 0
+                                            {typeof trace.duration ===
+                                                'number' && trace.duration > 0
                                                 ? `${(trace.duration / 1000).toFixed(1)}s`
                                                 : '-'}
                                         </Typography>
                                     </td>
                                     <td>
-                                        <IconButton size="sm" variant="plain" color="neutral">
+                                        <IconButton
+                                            size="sm"
+                                            variant="plain"
+                                            color="neutral"
+                                        >
                                             <VisibilityIcon />
                                         </IconButton>
                                     </td>

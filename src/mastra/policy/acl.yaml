@@ -2,11 +2,54 @@ docs:
     - path: './corpus/finance-policy.md'
       allow:
           roles: ['finance.viewer', 'finance.admin']
+          tiers: ['pro', 'enterprise']
       tenant: 'acme'
       classification: 'internal'
 
     - path: './corpus/engineering-handbook.md'
       allow:
           roles: ['engineering.viewer', 'engineering.admin']
+          tiers: ['free', 'pro', 'enterprise']
       tenant: 'acme'
       classification: 'public'
+
+    - path: './corpus/hr-confidential.md'
+      allow:
+          roles: ['hr.admin', 'admin']
+          tiers: ['enterprise']
+      tenant: 'acme'
+      classification: 'confidential'
+
+# Tier-based feature access
+features:
+    basic-rag:
+        tiers: ['free', 'pro', 'enterprise']
+        description: 'Basic RAG query capabilities'
+
+    public-docs:
+        tiers: ['free', 'pro', 'enterprise']
+        description: 'Access to public classification documents'
+
+    internal-docs:
+        tiers: ['pro', 'enterprise']
+        description: 'Access to internal classification documents'
+
+    confidential-docs:
+        tiers: ['enterprise']
+        description: 'Access to confidential classification documents'
+
+    advanced-analytics:
+        tiers: ['pro', 'enterprise']
+        description: 'Advanced usage analytics and insights'
+
+    custom-integrations:
+        tiers: ['pro', 'enterprise']
+        description: 'Custom integration capabilities'
+
+    white-label:
+        tiers: ['enterprise']
+        description: 'White-label branding options'
+
+    on-premise:
+        tiers: ['enterprise']
+        description: 'On-premise deployment support'

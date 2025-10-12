@@ -590,7 +590,6 @@ export default function RootLayout({ children }) {
 
 ```tsx
 import ScopedCssBaseline from '@mui/joy/ScopedCssBaseline'
-
 ;<ScopedCssBaseline>{/* Only children affected */}</ScopedCssBaseline>
 ```
 

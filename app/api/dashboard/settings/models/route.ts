@@ -35,10 +35,10 @@ export async function GET(request: NextRequest) {
 export async function PATCH(request: NextRequest) {
     try {
         const body = await request.json()
-        
+
         // TODO: Validate input with Zod schema
         // TODO: Update database
-        
+
         return NextResponse.json({
             message: 'Model configuration updated successfully',
             model: body,

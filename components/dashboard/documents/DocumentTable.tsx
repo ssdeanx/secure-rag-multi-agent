@@ -35,7 +35,8 @@ interface Document {
  */
 export default function DocumentTable() {
     const [searchQuery, setSearchQuery] = React.useState('')
-    const [classificationFilter, setClassificationFilter] = React.useState<string>('all')
+    const [classificationFilter, setClassificationFilter] =
+        React.useState<string>('all')
     const [documents, setDocuments] = React.useState<Document[]>([])
     const [loading, setLoading] = React.useState(true)
 
@@ -50,12 +51,16 @@ export default function DocumentTable() {
                     params.set('classification', classificationFilter)
                 }
 
-                const response = await fetch(`/api/documents?${params.toString()}`)
+                const response = await fetch(
+                    `/api/documents?${params.toString()}`
+                )
                 if (!response.ok) {
                     throw new Error('Failed to fetch documents')
                 }
 
-                const data = await response.json() as { documents: Document[] }
+                const data = (await response.json()) as {
+                    documents: Document[]
+                }
                 setDocuments(data.documents)
             } catch {
                 // Error handled silently - show empty state
@@ -74,7 +79,7 @@ export default function DocumentTable() {
 
         try {
             const response = await fetch(`/api/documents/${id}`, {
-                method: 'DELETE'
+                method: 'DELETE',
             })
 
             if (!response.ok) {
@@ -117,13 +122,18 @@ export default function DocumentTable() {
             </Stack>
 
             {/* Table */}
-            <Sheet variant="outlined" sx={{ borderRadius: 'sm', overflow: 'auto' }}>
+            <Sheet
+                variant="outlined"
+                sx={{ borderRadius: 'sm', overflow: 'auto' }}
+            >
                 <Table
                     hoverRow
                     sx={{
-                        '--TableCell-headBackground': 'var(--joy-palette-background-level1)',
+                        '--TableCell-headBackground':
+                            'var(--joy-palette-background-level1)',
                         '--Table-headerUnderlineThickness': '1px',
-                        '--TableRow-hoverBackground': 'var(--joy-palette-background-level1)'
+                        '--TableRow-hoverBackground':
+                            'var(--joy-palette-background-level1)',
                     }}
                 >
                     <thead>
@@ -140,7 +150,10 @@ export default function DocumentTable() {
                         {loading ? (
                             <tr>
                                 <td colSpan={6}>
-                                    <Typography level="body-sm" sx={{ textAlign: 'center', py: 4 }}>
+                                    <Typography
+                                        level="body-sm"
+                                        sx={{ textAlign: 'center', py: 4 }}
+                                    >
                                         Loading documents...
                                     </Typography>
                                 </td>
@@ -148,7 +161,10 @@ export default function DocumentTable() {
                         ) : documents.length === 0 ? (
                             <tr>
                                 <td colSpan={6}>
-                                    <Typography level="body-sm" sx={{ textAlign: 'center', py: 4 }}>
+                                    <Typography
+                                        level="body-sm"
+                                        sx={{ textAlign: 'center', py: 4 }}
+                                    >
                                         No documents found
                                     </Typography>
                                 </td>
@@ -167,23 +183,39 @@ export default function DocumentTable() {
                                         </Link>
                                     </td>
                                     <td>
-                                        <ClassificationBadge classification={doc.classification} />
+                                        <ClassificationBadge
+                                            classification={doc.classification}
+                                        />
                                     </td>
                                     <td>
-                                        <Chip size="sm" variant="soft" color="neutral">
+                                        <Chip
+                                            size="sm"
+                                            variant="soft"
+                                            color="neutral"
+                                        >
                                             {doc.chunkCount}
                                         </Chip>
                                     </td>
                                     <td>
                                         <Typography level="body-sm">
-                                            {new Date(doc.uploadedAt).toLocaleDateString()}
+                                            {new Date(
+                                                doc.uploadedAt
+                                            ).toLocaleDateString()}
                                         </Typography>
                                     </td>
                                     <td>
-                                        <Typography level="body-sm">{doc.uploadedBy}</Typography>
+                                        <Typography level="body-sm">
+                                            {doc.uploadedBy}
+                                        </Typography>
                                     </td>
                                     <td>
-                                        <Box sx={{ display: 'flex', gap: 1, justifyContent: 'flex-end' }}>
+                                        <Box
+                                            sx={{
+                                                display: 'flex',
+                                                gap: 1,
+                                                justifyContent: 'flex-end',
+                                            }}
+                                        >
                                             <IconButton
                                                 component={NextLink}
                                                 href={`/protected/dash/documents/${doc.id}`}

@@ -37,12 +37,22 @@ export default function DocumentsPage() {
             </Breadcrumbs>
 
             {/* Page Header */}
-            <Box sx={{ mb: 4, display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+            <Box
+                sx={{
+                    mb: 4,
+                    display: 'flex',
+                    justifyContent: 'space-between',
+                    alignItems: 'center',
+                }}
+            >
                 <Box>
                     <Typography level="h2" component="h1" sx={{ mb: 1 }}>
                         Documents
                     </Typography>
-                    <Typography level="body-md" sx={{ color: 'text.secondary' }}>
+                    <Typography
+                        level="body-md"
+                        sx={{ color: 'text.secondary' }}
+                    >
                         Manage indexed documents and upload new content
                     </Typography>
                 </Box>

@@ -5,9 +5,16 @@ import {
     CheckCircle as CheckCircleIcon,
     Logout as LogoutIcon,
     Person as PersonIcon,
-    Security as SecurityIcon
+    Security as SecurityIcon,
 } from '@mui/icons-material'
-import { Button, Alert, Chip, Avatar, Tooltip, Divider } from '@/components/ui/joy'
+import {
+    Button,
+    Alert,
+    Chip,
+    Avatar,
+    Tooltip,
+    Divider,
+} from '@/components/ui/joy'
 import { Box, Typography } from '@mui/joy'
 
 interface LoggedInAlertProps {
@@ -26,7 +33,8 @@ export function LoggedInAlert({ currentRole, onSignOut }: LoggedInAlertProps) {
                 border: '2px solid',
                 borderColor: 'primary.softColor',
                 borderRadius: 'md',
-                background: 'linear-gradient(135deg, rgba(255,255,255,0.1) 0%, rgba(255,255,255,0.05) 100%)',
+                background:
+                    'linear-gradient(135deg, rgba(255,255,255,0.1) 0%, rgba(255,255,255,0.05) 100%)',
                 backdropFilter: 'blur(10px)',
                 transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
                 boxShadow: '0 8px 32px rgba(0,0,0,0.1)',
@@ -81,11 +89,7 @@ export function LoggedInAlert({ currentRole, onSignOut }: LoggedInAlertProps) {
                         gap: 2,
                     }}
                 >
-                    <Avatar
-                        size="lg"
-                        variant="soft"
-                        color="primary"
-                    >
+                    <Avatar size="lg" variant="soft" color="primary">
                         <PersonIcon />
                     </Avatar>
 
@@ -98,14 +102,19 @@ export function LoggedInAlert({ currentRole, onSignOut }: LoggedInAlertProps) {
                                 mb: 1,
                             }}
                         >
-                            <Typography level="body-sm" sx={{ fontWeight: 'bold' }}>
+                            <Typography
+                                level="body-sm"
+                                sx={{ fontWeight: 'bold' }}
+                            >
                                 Logged in as
                             </Typography>
                             <Chip
                                 variant="soft"
                                 color="primary"
                                 size="sm"
-                                startDecorator={<PersonIcon sx={{ fontSize: 16 }} />}
+                                startDecorator={
+                                    <PersonIcon sx={{ fontSize: 16 }} />
+                                }
                             >
                                 {currentRole}
                             </Chip>
@@ -121,14 +130,13 @@ export function LoggedInAlert({ currentRole, onSignOut }: LoggedInAlertProps) {
                             }}
                         >
                             <SecurityIcon sx={{ fontSize: 12 }} />
-                            <Typography level="body-xs" sx={{ color: 'text.tertiary' }}>
+                            <Typography
+                                level="body-xs"
+                                sx={{ color: 'text.tertiary' }}
+                            >
                                 Authenticated Session
                             </Typography>
-                            <Chip
-                                variant="outlined"
-                                color="success"
-                                size="sm"
-                            >
+                            <Chip variant="outlined" color="success" size="sm">
                                 Active
                             </Chip>
                         </Box>
@@ -171,7 +179,8 @@ export function LoggedInAlert({ currentRole, onSignOut }: LoggedInAlertProps) {
                     bottom: 0,
                     left: 0,
                     height: '4px',
-                    background: 'linear-gradient(90deg, transparent 0%, currentColor 50%, transparent 100%)',
+                    background:
+                        'linear-gradient(90deg, transparent 0%, currentColor 50%, transparent 100%)',
                     width: 0,
                     transition: 'width 0.5s cubic-bezier(0.4, 0, 0.2, 1)',
                     '.MuiAlert-root:hover &': {

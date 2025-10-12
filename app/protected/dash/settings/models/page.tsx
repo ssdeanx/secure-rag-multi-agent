@@ -33,7 +33,11 @@ export default function ModelsPage() {
                     <Home fontSize="small" />
                     Dashboard
                 </Link>
-                <Link component={NextLink} href="/protected/dash/settings" color="neutral">
+                <Link
+                    component={NextLink}
+                    href="/protected/dash/settings"
+                    color="neutral"
+                >
                     Settings
                 </Link>
                 <Typography>Models</Typography>

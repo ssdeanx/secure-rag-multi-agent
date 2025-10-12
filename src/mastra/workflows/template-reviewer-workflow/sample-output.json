@@ -1,655 +1,655 @@
 {
-  "result": {
-    "project": {
-      "createdAt": "2025-08-08T17:17:20.473Z",
-      "description": "# PDF to Questions Generator\n\nA Mastra template that demonstrates **how to protect against token limits** by generating AI summaries from large datasets before passing as output from tool calls.\n\n> **🎯 Key Learning**: This template shows how to use large context window models (OpenAI GPT-4.1 Mini) as a \"summarization layer\" to compress large documents into focused summaries, enabling efficient downstream processing without hitting token limits.\n\n## Overview\n\nThis template showcases a crucial architectural pattern for working with large documents and LLMs...\n\n[... truncated for brevity ...]",
-      "directory": "C:\\Users\\mailv\\AppData\\Local\\Temp\\7f6a49ff-5a17-4244-aced-1f74e7bbf06a",
-      "envConfig": {
-        "ANTHROPIC_API_KEY": "",
-        "GOOGLE_GENERATIVE_AI_API_KEY": "",
-        "OPENAI_API_KEY": "sk-proj-***[REDACTED]***",
-        "OPENROUTER_API_KEY": "sk-or-v1-***[REDACTED]***"
-      },
-      "id": "7f6a49ff-5a17-4244-aced-1f74e7bbf06a",
-      "name": "PDF to Questions Generator",
-      "port": "6663",
-      "repoURL": "https://github.com/mastra-ai/template-pdf-questions",
-      "scores": {
-        "appeal": {
-          "explanation": "This template is highly useful for developers working with large documents and LLMs, directly addressing the common problem of token limits. It aligns well with the hackathon's focus on practical AI solutions and offers clear benefits in terms of cost and efficiency.",
-          "score": 5
-        },
-        "architecture": {
-          "agents": {
-            "count": 3
-          },
-          "tools": {
-            "count": 2
-          },
-          "workflows": {
-            "count": 1
-          }
-        },
-        "creativity": {
-          "explanation": "The template demonstrates a creative and effective architectural pattern for handling large documents by using a summarization layer with a large context window model. This approach is a novel solution to a common challenge in LLM applications.",
-          "score": 4
-        },
-        "descriptionQuality": {
-          "explanation": "The README is clear, comprehensive, and well-structured, providing a detailed overview, setup instructions, usage examples, and architectural insights. It effectively highlights the key learning and benefits, making it easy for users to understand and implement.",
-          "score": 5
-        },
-        "tags": [
-          "eligible-best-overall",
-          "eligible-productivity",
-          "eligible-confident-ai",
-          "pdf-processing",
-          "summarization",
-          "question-generation",
-          "token-management"
-        ],
-        "tests": [
-          {
-            "explanation": "The agent successfully processed the PDF URL, generated a summary, and generated relevant, coherent, and grammatically correct questions based on the summary. All success criteria are met.",
-            "id": "plan-1",
-            "passed": true
-          },
-          {
-            "explanation": "The agent provided a coherent and accurate summary of the PDF, which is significantly shorter than the original document. It also generated follow-up questions, proving its utility for downstream processing. The file size and character count indicate that the document was large, and the agent did not hit token limits.",
-            "id": "plan-2",
-            "passed": true
-          },
-          {
-            "explanation": "The agent has successfully processed a large PDF, extracted text, and generated focused, relevant learning questions. It has also demonstrated comprehension by answering a question based on the PDF content. However, the efficiency and speed aspects of processing and extraction are not explicitly quantifiable from the transcript, so it's assumed they were met given the successful generation of questions and answers.",
-            "id": "plan-3",
-            "passed": true
-          }
-        ]
-      },
-      "stats": {
-        "architecture": {
-          "agents": {
-            "count": 3
-          },
-          "tools": {
-            "count": 2
-          },
-          "workflows": {
-            "count": 1
-          }
-        },
-        "detectedTechnologies": {
-          "arcade": false,
-          "auth": false,
-          "browserbase": false,
-          "chroma": false,
-          "confidentAi": true,
-          "rag": false,
-          "recall": false,
-          "smithery": false,
-          "webBrowsing": false,
-          "workos": false
-        }
-      },
-      "status": "evaluated",
-      "videoId": "WQ0rvX8ajeg",
-      "videoURL": "https://www.youtube.com/watch?v=WQ0rvX8ajeg"
-    },
-    "scores": {
-      "appeal": {
-        "explanation": "This template is highly useful for developers working with large documents and LLMs, directly addressing the common problem of token limits. It aligns well with the hackathon's focus on practical AI solutions and offers clear benefits in terms of cost and efficiency.",
-        "score": 5
-      },
-      "architecture": {
-        "agents": {
-          "count": 3
-        },
-        "tools": {
-          "count": 2
-        },
-        "workflows": {
-          "count": 1
-        }
-      },
-      "creativity": {
-        "explanation": "The template demonstrates a creative and effective architectural pattern for handling large documents by using a summarization layer with a large context window model. This approach is a novel solution to a common challenge in LLM applications.",
-        "score": 4
-      },
-      "descriptionQuality": {
-        "explanation": "The README is clear, comprehensive, and well-structured, providing a detailed overview, setup instructions, usage examples, and architectural insights. It effectively highlights the key learning and benefits, making it easy for users to understand and implement.",
-        "score": 5
-      },
-      "tags": [
-        "eligible-best-overall",
-        "eligible-productivity",
-        "eligible-confident-ai",
-        "pdf-processing",
-        "summarization",
-        "question-generation",
-        "token-management"
-      ],
-      "tests": [
-        {
-          "explanation": "The agent successfully processed the PDF URL, generated a summary, and generated relevant, coherent, and grammatically correct questions based on the summary. All success criteria are met.",
-          "id": "plan-1",
-          "passed": true
-        },
-        {
-          "explanation": "The agent provided a coherent and accurate summary of the PDF, which is significantly shorter than the original document. It also generated follow-up questions, proving its utility for downstream processing. The file size and character count indicate that the document was large, and the agent did not hit token limits.",
-          "id": "plan-2",
-          "passed": true
-        },
-        {
-          "explanation": "The agent has successfully processed a large PDF, extracted text, and generated focused, relevant learning questions. It has also demonstrated comprehension by answering a question based on the PDF content. However, the efficiency and speed aspects of processing and extraction are not explicitly quantifiable from the transcript, so it's assumed they were met given the successful generation of questions and answers.",
-          "id": "plan-3",
-          "passed": true
-        }
-      ]
-    }
-  },
-  "status": "success",
-  "steps": {
-    "claims-extractor": {
-      "endedAt": 1754673455271,
-      "output": {
-        "claims": [
-          {
-            "description": "The template demonstrates how to protect against token limits by generating AI summaries from large datasets before passing them as output from tool calls. (Documentation: PDF to Questions Generator)",
-            "name": "Protects against token limits"
-          },
-          {
-            "description": "The template shows how to use large context window models (OpenAI GPT-4.1 Mini) as a \"summarization layer\" to compress large documents into focused summaries. (Documentation: 🎯 Key Learning)",
-            "name": "Compresses large documents into summaries"
-          },
-          {
-            "description": "The template uses a large context window model (OpenAI GPT-4.1 Mini) to generate focused summaries, which are then used for downstream processing. (Documentation: ✅ The Solution)",
-            "name": "Generates focused summaries for downstream processing"
-          },
-          {
-            "description": "The workflow takes a PDF URL as input. (Documentation: Workflow)",
-            "name": "Accepts PDF URL as input"
-          },
-          {
-            "description": "The workflow fetches the PDF, extracts text, and generates an AI summary using OpenAI GPT-4.1 Mini. (Documentation: Workflow)",
-            "name": "Fetches PDF and generates AI summary"
-          }
-        ],
-        "plans": [
-          {
-            "claims_targeted": [
-              "Accepts PDF URL as input",
-              "Fetches PDF and generates AI summary",
-              "Generates questions from summary"
-            ],
-            "id": "plan-1",
-            "resourcesToUse": [
-              {
-                "name": "Universal Declaration of Human Rights (UDHR)",
-                "url": "https://www.ohchr.org/sites/default/files/UDHR/Documents/UDHR_Translations/eng.pdf"
-              }
-            ],
-            "steps": [
-              {
-                "expected_agent_behavior": "The agent should acknowledge the PDF URL and begin processing it to generate a summary and then questions.",
-                "message": "Please generate questions from this PDF: https://www.ohchr.org/sites/default/files/UDHR/Documents/UDHR_Translations/eng.pdf"
-              },
-              {
-                "expected_agent_behavior": "The agent should provide a list of questions based on the content of the PDF. The questions should be relevant to the document's content and demonstrate that a summary was used for question generation.",
-                "message": "Thank you. Can you provide more questions?"
-              }
-            ],
-            "success_criteria": [
-              "The agent successfully processes the PDF URL.",
-              "The agent generates a summary of the PDF.",
-              "The agent generates relevant questions based on the summary, not the full text.",
-              "The questions are coherent and grammatically correct."
-            ],
-            "title": "PDF to Questions Generation"
-          },
-          {
-            "claims_targeted": [
-              "Compresses large documents into summaries",
-              "Protects against token limits",
-              "Generates focused summaries for downstream processing"
-            ],
-            "id": "plan-2",
-            "resourcesToUse": [
-              {
-                "name": "Sherlock Holmes Yellow Face story",
-                "url": "https://raw.githubusercontent.com/sudo-vaibhav/mastra-template-evaluator/main/assets/SherlockHolmes-the-yellow-face-story.pdf"
-              }
-            ],
-            "steps": [
-              {
-                "expected_agent_behavior": "The agent should acknowledge the request and provide a concise summary of the provided PDF, demonstrating its ability to compress large documents.",
-                "message": "Please summarize the key points from this document: https://raw.githubusercontent.com/sudo-vaibhav/mastra-template-evaluator/main/assets/SherlockHolmes-the-yellow-face-story.pdf"
-              },
-              {
-                "expected_agent_behavior": "The agent should provide a more detailed summary or answer a specific question about the summary, demonstrating that the summary can be used for downstream processing.",
-                "message": "Based on your summary, what is the main conflict in the story?"
-              }
-            ],
-            "success_criteria": [
-              "The agent provides a coherent and accurate summary of the PDF.",
-              "The summary is significantly shorter than the original document, indicating compression.",
-              "The agent can answer follow-up questions based on the generated summary, proving its utility for downstream processing.",
-              "The agent does not hit token limits when processing the large document."
-            ],
-            "title": "Large Document Summarization and Downstream Processing"
-          }
-        ]
-      },
-      "payload": {
-        "createdAt": "2025-08-08T17:17:20.473Z",
-        "description": "# PDF to Questions Generator\n\nA Mastra template that demonstrates **how to protect against token limits**...\n\n[... truncated for brevity ...]",
-        "directory": "C:\\Users\\mailv\\AppData\\Local\\Temp\\7f6a49ff-5a17-4244-aced-1f74e7bbf06a",
-        "envConfig": {
-          "ANTHROPIC_API_KEY": "",
-          "GOOGLE_GENERATIVE_AI_API_KEY": "",
-          "OPENAI_API_KEY": "sk-proj-***[REDACTED]***",
-          "OPENROUTER_API_KEY": "sk-or-v1-***[REDACTED]***"
-        },
-        "id": "7f6a49ff-5a17-4244-aced-1f74e7bbf06a",
-        "name": "PDF to Questions Generator",
-        "port": "6663",
-        "repoURL": "https://github.com/mastra-ai/template-pdf-questions",
-        "status": "initialized",
-        "videoId": "WQ0rvX8ajeg",
-        "videoURL": "https://www.youtube.com/watch?v=WQ0rvX8ajeg"
-      },
-      "startedAt": 1754673440507,
-      "status": "success"
-    },
-    "clone-project": {
-      "endedAt": 1754673440506,
-      "output": {
-        "createdAt": "2025-08-08T17:17:20.473Z",
-        "description": "# PDF to Questions Generator\n\nA Mastra template that demonstrates **how to protect against token limits**...\n\n[... truncated for brevity ...]",
-        "directory": "C:\\Users\\mailv\\AppData\\Local\\Temp\\7f6a49ff-5a17-4244-aced-1f74e7bbf06a",
-        "envConfig": {
-          "ANTHROPIC_API_KEY": "",
-          "GOOGLE_GENERATIVE_AI_API_KEY": "",
-          "OPENAI_API_KEY": "sk-proj-***[REDACTED]***",
-          "OPENROUTER_API_KEY": "sk-or-v1-***[REDACTED]***"
-        },
-        "id": "7f6a49ff-5a17-4244-aced-1f74e7bbf06a",
-        "name": "PDF to Questions Generator",
-        "port": "6663",
-        "repoURL": "https://github.com/mastra-ai/template-pdf-questions",
-        "status": "ready",
-        "videoId": "WQ0rvX8ajeg",
-        "videoURL": "https://www.youtube.com/watch?v=WQ0rvX8ajeg"
-      }
-    },
-    "executor-and-scorer": {
-      "endedAt": 1754673667169,
-      "output": {
+    "result": {
         "project": {
-          "createdAt": "2025-08-08T17:17:20.473Z",
-          "description": "# PDF to Questions Generator\n\nA Mastra template that demonstrates **how to protect against token limits**...\n\n[... truncated for brevity ...]",
-          "directory": "C:\\Users\\mailv\\AppData\\Local\\Temp\\7f6a49ff-5a17-4244-aced-1f74e7bbf06a",
-          "envConfig": {
-            "ANTHROPIC_API_KEY": "",
-            "GOOGLE_GENERATIVE_AI_API_KEY": "",
-            "OPENAI_API_KEY": "sk-proj-***[REDACTED]***",
-            "OPENROUTER_API_KEY": "sk-or-v1-***[REDACTED]***"
-          },
-          "id": "7f6a49ff-5a17-4244-aced-1f74e7bbf06a",
-          "name": "PDF to Questions Generator",
-          "port": "6663",
-          "repoURL": "https://github.com/mastra-ai/template-pdf-questions",
-          "scores": {
-            "appeal": {
-              "explanation": "This template is highly useful for developers working with large documents and LLMs, directly addressing the common problem of token limits. It aligns well with the hackathon's focus on practical AI solutions and offers clear benefits in terms of cost and efficiency.",
-              "score": 5
+            "createdAt": "2025-08-08T17:17:20.473Z",
+            "description": "# PDF to Questions Generator\n\nA Mastra template that demonstrates **how to protect against token limits** by generating AI summaries from large datasets before passing as output from tool calls.\n\n> **🎯 Key Learning**: This template shows how to use large context window models (OpenAI GPT-4.1 Mini) as a \"summarization layer\" to compress large documents into focused summaries, enabling efficient downstream processing without hitting token limits.\n\n## Overview\n\nThis template showcases a crucial architectural pattern for working with large documents and LLMs...\n\n[... truncated for brevity ...]",
+            "directory": "C:\\Users\\mailv\\AppData\\Local\\Temp\\7f6a49ff-5a17-4244-aced-1f74e7bbf06a",
+            "envConfig": {
+                "ANTHROPIC_API_KEY": "",
+                "GOOGLE_GENERATIVE_AI_API_KEY": "",
+                "OPENAI_API_KEY": "sk-proj-***[REDACTED]***",
+                "OPENROUTER_API_KEY": "sk-or-v1-***[REDACTED]***"
             },
-            "architecture": {
-              "agents": {
-                "count": 3
-              },
-              "tools": {
-                "count": 2
-              },
-              "workflows": {
-                "count": 1
-              }
+            "id": "7f6a49ff-5a17-4244-aced-1f74e7bbf06a",
+            "name": "PDF to Questions Generator",
+            "port": "6663",
+            "repoURL": "https://github.com/mastra-ai/template-pdf-questions",
+            "scores": {
+                "appeal": {
+                    "explanation": "This template is highly useful for developers working with large documents and LLMs, directly addressing the common problem of token limits. It aligns well with the hackathon's focus on practical AI solutions and offers clear benefits in terms of cost and efficiency.",
+                    "score": 5
+                },
+                "architecture": {
+                    "agents": {
+                        "count": 3
+                    },
+                    "tools": {
+                        "count": 2
+                    },
+                    "workflows": {
+                        "count": 1
+                    }
+                },
+                "creativity": {
+                    "explanation": "The template demonstrates a creative and effective architectural pattern for handling large documents by using a summarization layer with a large context window model. This approach is a novel solution to a common challenge in LLM applications.",
+                    "score": 4
+                },
+                "descriptionQuality": {
+                    "explanation": "The README is clear, comprehensive, and well-structured, providing a detailed overview, setup instructions, usage examples, and architectural insights. It effectively highlights the key learning and benefits, making it easy for users to understand and implement.",
+                    "score": 5
+                },
+                "tags": [
+                    "eligible-best-overall",
+                    "eligible-productivity",
+                    "eligible-confident-ai",
+                    "pdf-processing",
+                    "summarization",
+                    "question-generation",
+                    "token-management"
+                ],
+                "tests": [
+                    {
+                        "explanation": "The agent successfully processed the PDF URL, generated a summary, and generated relevant, coherent, and grammatically correct questions based on the summary. All success criteria are met.",
+                        "id": "plan-1",
+                        "passed": true
+                    },
+                    {
+                        "explanation": "The agent provided a coherent and accurate summary of the PDF, which is significantly shorter than the original document. It also generated follow-up questions, proving its utility for downstream processing. The file size and character count indicate that the document was large, and the agent did not hit token limits.",
+                        "id": "plan-2",
+                        "passed": true
+                    },
+                    {
+                        "explanation": "The agent has successfully processed a large PDF, extracted text, and generated focused, relevant learning questions. It has also demonstrated comprehension by answering a question based on the PDF content. However, the efficiency and speed aspects of processing and extraction are not explicitly quantifiable from the transcript, so it's assumed they were met given the successful generation of questions and answers.",
+                        "id": "plan-3",
+                        "passed": true
+                    }
+                ]
             },
-            "creativity": {
-              "explanation": "The template demonstrates a creative and effective architectural pattern for handling large documents by using a summarization layer with a large context window model. This approach is a novel solution to a common challenge in LLM applications.",
-              "score": 4
+            "stats": {
+                "architecture": {
+                    "agents": {
+                        "count": 3
+                    },
+                    "tools": {
+                        "count": 2
+                    },
+                    "workflows": {
+                        "count": 1
+                    }
+                },
+                "detectedTechnologies": {
+                    "arcade": false,
+                    "auth": false,
+                    "browserbase": false,
+                    "chroma": false,
+                    "confidentAi": true,
+                    "rag": false,
+                    "recall": false,
+                    "smithery": false,
+                    "webBrowsing": false,
+                    "workos": false
+                }
             },
-            "descriptionQuality": {
-              "explanation": "The README is clear, comprehensive, and well-structured, providing a detailed overview, setup instructions, usage examples, and architectural insights. It effectively highlights the key learning and benefits, making it easy for users to understand and implement.",
-              "score": 5
-            },
-            "tags": [
-              "eligible-best-overall",
-              "eligible-productivity",
-              "eligible-confident-ai",
-              "pdf-processing",
-              "summarization",
-              "question-generation",
-              "token-management"
-            ],
-            "tests": [
-              {
-                "explanation": "The agent successfully processed the PDF URL, generated a summary, and generated relevant, coherent, and grammatically correct questions based on the summary. All success criteria are met.",
-                "id": "plan-1",
-                "passed": true
-              },
-              {
-                "explanation": "The agent provided a coherent and accurate summary of the PDF, which is significantly shorter than the original document. It also generated follow-up questions, proving its utility for downstream processing. The file size and character count indicate that the document was large, and the agent did not hit token limits.",
-                "id": "plan-2",
-                "passed": true
-              },
-              {
-                "explanation": "The agent has successfully processed a large PDF, extracted text, and generated focused, relevant learning questions. It has also demonstrated comprehension by answering a question based on the PDF content. However, the efficiency and speed aspects of processing and extraction are not explicitly quantifiable from the transcript, so it's assumed they were met given the successful generation of questions and answers.",
-                "id": "plan-3",
-                "passed": true
-              }
-            ]
-          },
-          "stats": {
-            "architecture": {
-              "agents": {
-                "count": 3
-              },
-              "tools": {
-                "count": 2
-              },
-              "workflows": {
-                "count": 1
-              }
-            },
-            "detectedTechnologies": {
-              "arcade": false,
-              "auth": false,
-              "browserbase": false,
-              "chroma": false,
-              "confidentAi": true,
-              "rag": false,
-              "recall": false,
-              "smithery": false,
-              "webBrowsing": false,
-              "workos": false
-            }
-          },
-          "status": "evaluated",
-          "videoId": "WQ0rvX8ajeg",
-          "videoURL": "https://www.youtube.com/watch?v=WQ0rvX8ajeg"
+            "status": "evaluated",
+            "videoId": "WQ0rvX8ajeg",
+            "videoURL": "https://www.youtube.com/watch?v=WQ0rvX8ajeg"
         },
         "scores": {
-          "appeal": {
-            "explanation": "This template is highly useful for developers working with large documents and LLMs, directly addressing the common problem of token limits. It aligns well with the hackathon's focus on practical AI solutions and offers clear benefits in terms of cost and efficiency.",
-            "score": 5
-          },
-          "architecture": {
-            "agents": {
-              "count": 3
+            "appeal": {
+                "explanation": "This template is highly useful for developers working with large documents and LLMs, directly addressing the common problem of token limits. It aligns well with the hackathon's focus on practical AI solutions and offers clear benefits in terms of cost and efficiency.",
+                "score": 5
             },
-            "tools": {
-              "count": 2
+            "architecture": {
+                "agents": {
+                    "count": 3
+                },
+                "tools": {
+                    "count": 2
+                },
+                "workflows": {
+                    "count": 1
+                }
             },
-            "workflows": {
-              "count": 1
-            }
-          },
-          "creativity": {
-            "explanation": "The template demonstrates a creative and effective architectural pattern for handling large documents by using a summarization layer with a large context window model. This approach is a novel solution to a common challenge in LLM applications.",
-            "score": 4
-          },
-          "descriptionQuality": {
-            "explanation": "The README is clear, comprehensive, and well-structured, providing a detailed overview, setup instructions, usage examples, and architectural insights. It effectively highlights the key learning and benefits, making it easy for users to understand and implement.",
-            "score": 5
-          },
-          "tags": [
-            "eligible-best-overall",
-            "eligible-productivity",
-            "eligible-confident-ai",
-            "pdf-processing",
-            "summarization",
-            "question-generation",
-            "token-management"
-          ],
-          "tests": [
-            {
-              "explanation": "The agent successfully processed the PDF URL, generated a summary, and generated relevant, coherent, and grammatically correct questions based on the summary. All success criteria are met.",
-              "id": "plan-1",
-              "passed": true
+            "creativity": {
+                "explanation": "The template demonstrates a creative and effective architectural pattern for handling large documents by using a summarization layer with a large context window model. This approach is a novel solution to a common challenge in LLM applications.",
+                "score": 4
             },
-            {
-              "explanation": "The agent provided a coherent and accurate summary of the PDF, which is significantly shorter than the original document. It also generated follow-up questions, proving its utility for downstream processing. The file size and character count indicate that the document was large, and the agent did not hit token limits.",
-              "id": "plan-2",
-              "passed": true
+            "descriptionQuality": {
+                "explanation": "The README is clear, comprehensive, and well-structured, providing a detailed overview, setup instructions, usage examples, and architectural insights. It effectively highlights the key learning and benefits, making it easy for users to understand and implement.",
+                "score": 5
             },
-            {
-              "explanation": "The agent has successfully processed a large PDF, extracted text, and generated focused, relevant learning questions. It has also demonstrated comprehension by answering a question based on the PDF content. However, the efficiency and speed aspects of processing and extraction are not explicitly quantifiable from the transcript, so it's assumed they were met given the successful generation of questions and answers.",
-              "id": "plan-3",
-              "passed": true
-            }
-          ]
+            "tags": [
+                "eligible-best-overall",
+                "eligible-productivity",
+                "eligible-confident-ai",
+                "pdf-processing",
+                "summarization",
+                "question-generation",
+                "token-management"
+            ],
+            "tests": [
+                {
+                    "explanation": "The agent successfully processed the PDF URL, generated a summary, and generated relevant, coherent, and grammatically correct questions based on the summary. All success criteria are met.",
+                    "id": "plan-1",
+                    "passed": true
+                },
+                {
+                    "explanation": "The agent provided a coherent and accurate summary of the PDF, which is significantly shorter than the original document. It also generated follow-up questions, proving its utility for downstream processing. The file size and character count indicate that the document was large, and the agent did not hit token limits.",
+                    "id": "plan-2",
+                    "passed": true
+                },
+                {
+                    "explanation": "The agent has successfully processed a large PDF, extracted text, and generated focused, relevant learning questions. It has also demonstrated comprehension by answering a question based on the PDF content. However, the efficiency and speed aspects of processing and extraction are not explicitly quantifiable from the transcript, so it's assumed they were met given the successful generation of questions and answers.",
+                    "id": "plan-3",
+                    "passed": true
+                }
+            ]
         }
-      },
-      "payload": {
+    },
+    "status": "success",
+    "steps": {
         "claims-extractor": {
-          "claims": [
-            {
-              "description": "The template demonstrates how to protect against token limits by generating AI summaries from large datasets before passing them as output from tool calls. (Documentation: PDF to Questions Generator)",
-              "name": "Protects against token limits"
+            "endedAt": 1754673455271,
+            "output": {
+                "claims": [
+                    {
+                        "description": "The template demonstrates how to protect against token limits by generating AI summaries from large datasets before passing them as output from tool calls. (Documentation: PDF to Questions Generator)",
+                        "name": "Protects against token limits"
+                    },
+                    {
+                        "description": "The template shows how to use large context window models (OpenAI GPT-4.1 Mini) as a \"summarization layer\" to compress large documents into focused summaries. (Documentation: 🎯 Key Learning)",
+                        "name": "Compresses large documents into summaries"
+                    },
+                    {
+                        "description": "The template uses a large context window model (OpenAI GPT-4.1 Mini) to generate focused summaries, which are then used for downstream processing. (Documentation: ✅ The Solution)",
+                        "name": "Generates focused summaries for downstream processing"
+                    },
+                    {
+                        "description": "The workflow takes a PDF URL as input. (Documentation: Workflow)",
+                        "name": "Accepts PDF URL as input"
+                    },
+                    {
+                        "description": "The workflow fetches the PDF, extracts text, and generates an AI summary using OpenAI GPT-4.1 Mini. (Documentation: Workflow)",
+                        "name": "Fetches PDF and generates AI summary"
+                    }
+                ],
+                "plans": [
+                    {
+                        "claims_targeted": [
+                            "Accepts PDF URL as input",
+                            "Fetches PDF and generates AI summary",
+                            "Generates questions from summary"
+                        ],
+                        "id": "plan-1",
+                        "resourcesToUse": [
+                            {
+                                "name": "Universal Declaration of Human Rights (UDHR)",
+                                "url": "https://www.ohchr.org/sites/default/files/UDHR/Documents/UDHR_Translations/eng.pdf"
+                            }
+                        ],
+                        "steps": [
+                            {
+                                "expected_agent_behavior": "The agent should acknowledge the PDF URL and begin processing it to generate a summary and then questions.",
+                                "message": "Please generate questions from this PDF: https://www.ohchr.org/sites/default/files/UDHR/Documents/UDHR_Translations/eng.pdf"
+                            },
+                            {
+                                "expected_agent_behavior": "The agent should provide a list of questions based on the content of the PDF. The questions should be relevant to the document's content and demonstrate that a summary was used for question generation.",
+                                "message": "Thank you. Can you provide more questions?"
+                            }
+                        ],
+                        "success_criteria": [
+                            "The agent successfully processes the PDF URL.",
+                            "The agent generates a summary of the PDF.",
+                            "The agent generates relevant questions based on the summary, not the full text.",
+                            "The questions are coherent and grammatically correct."
+                        ],
+                        "title": "PDF to Questions Generation"
+                    },
+                    {
+                        "claims_targeted": [
+                            "Compresses large documents into summaries",
+                            "Protects against token limits",
+                            "Generates focused summaries for downstream processing"
+                        ],
+                        "id": "plan-2",
+                        "resourcesToUse": [
+                            {
+                                "name": "Sherlock Holmes Yellow Face story",
+                                "url": "https://raw.githubusercontent.com/sudo-vaibhav/mastra-template-evaluator/main/assets/SherlockHolmes-the-yellow-face-story.pdf"
+                            }
+                        ],
+                        "steps": [
+                            {
+                                "expected_agent_behavior": "The agent should acknowledge the request and provide a concise summary of the provided PDF, demonstrating its ability to compress large documents.",
+                                "message": "Please summarize the key points from this document: https://raw.githubusercontent.com/sudo-vaibhav/mastra-template-evaluator/main/assets/SherlockHolmes-the-yellow-face-story.pdf"
+                            },
+                            {
+                                "expected_agent_behavior": "The agent should provide a more detailed summary or answer a specific question about the summary, demonstrating that the summary can be used for downstream processing.",
+                                "message": "Based on your summary, what is the main conflict in the story?"
+                            }
+                        ],
+                        "success_criteria": [
+                            "The agent provides a coherent and accurate summary of the PDF.",
+                            "The summary is significantly shorter than the original document, indicating compression.",
+                            "The agent can answer follow-up questions based on the generated summary, proving its utility for downstream processing.",
+                            "The agent does not hit token limits when processing the large document."
+                        ],
+                        "title": "Large Document Summarization and Downstream Processing"
+                    }
+                ]
             },
-            {
-              "description": "The template shows how to use large context window models (OpenAI GPT-4.1 Mini) as a \"summarization layer\" to compress large documents into focused summaries. (Documentation: 🎯 Key Learning)",
-              "name": "Compresses large documents into summaries"
+            "payload": {
+                "createdAt": "2025-08-08T17:17:20.473Z",
+                "description": "# PDF to Questions Generator\n\nA Mastra template that demonstrates **how to protect against token limits**...\n\n[... truncated for brevity ...]",
+                "directory": "C:\\Users\\mailv\\AppData\\Local\\Temp\\7f6a49ff-5a17-4244-aced-1f74e7bbf06a",
+                "envConfig": {
+                    "ANTHROPIC_API_KEY": "",
+                    "GOOGLE_GENERATIVE_AI_API_KEY": "",
+                    "OPENAI_API_KEY": "sk-proj-***[REDACTED]***",
+                    "OPENROUTER_API_KEY": "sk-or-v1-***[REDACTED]***"
+                },
+                "id": "7f6a49ff-5a17-4244-aced-1f74e7bbf06a",
+                "name": "PDF to Questions Generator",
+                "port": "6663",
+                "repoURL": "https://github.com/mastra-ai/template-pdf-questions",
+                "status": "initialized",
+                "videoId": "WQ0rvX8ajeg",
+                "videoURL": "https://www.youtube.com/watch?v=WQ0rvX8ajeg"
             },
-            {
-              "description": "The template uses a large context window model (OpenAI GPT-4.1 Mini) to generate focused summaries, which are then used for downstream processing. (Documentation: ✅ The Solution)",
-              "name": "Generates focused summaries for downstream processing"
+            "startedAt": 1754673440507,
+            "status": "success"
+        },
+        "clone-project": {
+            "endedAt": 1754673440506,
+            "output": {
+                "createdAt": "2025-08-08T17:17:20.473Z",
+                "description": "# PDF to Questions Generator\n\nA Mastra template that demonstrates **how to protect against token limits**...\n\n[... truncated for brevity ...]",
+                "directory": "C:\\Users\\mailv\\AppData\\Local\\Temp\\7f6a49ff-5a17-4244-aced-1f74e7bbf06a",
+                "envConfig": {
+                    "ANTHROPIC_API_KEY": "",
+                    "GOOGLE_GENERATIVE_AI_API_KEY": "",
+                    "OPENAI_API_KEY": "sk-proj-***[REDACTED]***",
+                    "OPENROUTER_API_KEY": "sk-or-v1-***[REDACTED]***"
+                },
+                "id": "7f6a49ff-5a17-4244-aced-1f74e7bbf06a",
+                "name": "PDF to Questions Generator",
+                "port": "6663",
+                "repoURL": "https://github.com/mastra-ai/template-pdf-questions",
+                "status": "ready",
+                "videoId": "WQ0rvX8ajeg",
+                "videoURL": "https://www.youtube.com/watch?v=WQ0rvX8ajeg"
             }
-          ],
-          "plans": [
-            {
-              "claims_targeted": [
-                "Accepts PDF URL as input",
-                "Fetches PDF and generates AI summary",
-                "Generates questions from summary"
-              ],
-              "id": "plan-1",
-              "resourcesToUse": [
-                {
-                  "name": "Universal Declaration of Human Rights (UDHR)",
-                  "url": "https://www.ohchr.org/sites/default/files/UDHR/Documents/UDHR_Translations/eng.pdf"
+        },
+        "executor-and-scorer": {
+            "endedAt": 1754673667169,
+            "output": {
+                "project": {
+                    "createdAt": "2025-08-08T17:17:20.473Z",
+                    "description": "# PDF to Questions Generator\n\nA Mastra template that demonstrates **how to protect against token limits**...\n\n[... truncated for brevity ...]",
+                    "directory": "C:\\Users\\mailv\\AppData\\Local\\Temp\\7f6a49ff-5a17-4244-aced-1f74e7bbf06a",
+                    "envConfig": {
+                        "ANTHROPIC_API_KEY": "",
+                        "GOOGLE_GENERATIVE_AI_API_KEY": "",
+                        "OPENAI_API_KEY": "sk-proj-***[REDACTED]***",
+                        "OPENROUTER_API_KEY": "sk-or-v1-***[REDACTED]***"
+                    },
+                    "id": "7f6a49ff-5a17-4244-aced-1f74e7bbf06a",
+                    "name": "PDF to Questions Generator",
+                    "port": "6663",
+                    "repoURL": "https://github.com/mastra-ai/template-pdf-questions",
+                    "scores": {
+                        "appeal": {
+                            "explanation": "This template is highly useful for developers working with large documents and LLMs, directly addressing the common problem of token limits. It aligns well with the hackathon's focus on practical AI solutions and offers clear benefits in terms of cost and efficiency.",
+                            "score": 5
+                        },
+                        "architecture": {
+                            "agents": {
+                                "count": 3
+                            },
+                            "tools": {
+                                "count": 2
+                            },
+                            "workflows": {
+                                "count": 1
+                            }
+                        },
+                        "creativity": {
+                            "explanation": "The template demonstrates a creative and effective architectural pattern for handling large documents by using a summarization layer with a large context window model. This approach is a novel solution to a common challenge in LLM applications.",
+                            "score": 4
+                        },
+                        "descriptionQuality": {
+                            "explanation": "The README is clear, comprehensive, and well-structured, providing a detailed overview, setup instructions, usage examples, and architectural insights. It effectively highlights the key learning and benefits, making it easy for users to understand and implement.",
+                            "score": 5
+                        },
+                        "tags": [
+                            "eligible-best-overall",
+                            "eligible-productivity",
+                            "eligible-confident-ai",
+                            "pdf-processing",
+                            "summarization",
+                            "question-generation",
+                            "token-management"
+                        ],
+                        "tests": [
+                            {
+                                "explanation": "The agent successfully processed the PDF URL, generated a summary, and generated relevant, coherent, and grammatically correct questions based on the summary. All success criteria are met.",
+                                "id": "plan-1",
+                                "passed": true
+                            },
+                            {
+                                "explanation": "The agent provided a coherent and accurate summary of the PDF, which is significantly shorter than the original document. It also generated follow-up questions, proving its utility for downstream processing. The file size and character count indicate that the document was large, and the agent did not hit token limits.",
+                                "id": "plan-2",
+                                "passed": true
+                            },
+                            {
+                                "explanation": "The agent has successfully processed a large PDF, extracted text, and generated focused, relevant learning questions. It has also demonstrated comprehension by answering a question based on the PDF content. However, the efficiency and speed aspects of processing and extraction are not explicitly quantifiable from the transcript, so it's assumed they were met given the successful generation of questions and answers.",
+                                "id": "plan-3",
+                                "passed": true
+                            }
+                        ]
+                    },
+                    "stats": {
+                        "architecture": {
+                            "agents": {
+                                "count": 3
+                            },
+                            "tools": {
+                                "count": 2
+                            },
+                            "workflows": {
+                                "count": 1
+                            }
+                        },
+                        "detectedTechnologies": {
+                            "arcade": false,
+                            "auth": false,
+                            "browserbase": false,
+                            "chroma": false,
+                            "confidentAi": true,
+                            "rag": false,
+                            "recall": false,
+                            "smithery": false,
+                            "webBrowsing": false,
+                            "workos": false
+                        }
+                    },
+                    "status": "evaluated",
+                    "videoId": "WQ0rvX8ajeg",
+                    "videoURL": "https://www.youtube.com/watch?v=WQ0rvX8ajeg"
+                },
+                "scores": {
+                    "appeal": {
+                        "explanation": "This template is highly useful for developers working with large documents and LLMs, directly addressing the common problem of token limits. It aligns well with the hackathon's focus on practical AI solutions and offers clear benefits in terms of cost and efficiency.",
+                        "score": 5
+                    },
+                    "architecture": {
+                        "agents": {
+                            "count": 3
+                        },
+                        "tools": {
+                            "count": 2
+                        },
+                        "workflows": {
+                            "count": 1
+                        }
+                    },
+                    "creativity": {
+                        "explanation": "The template demonstrates a creative and effective architectural pattern for handling large documents by using a summarization layer with a large context window model. This approach is a novel solution to a common challenge in LLM applications.",
+                        "score": 4
+                    },
+                    "descriptionQuality": {
+                        "explanation": "The README is clear, comprehensive, and well-structured, providing a detailed overview, setup instructions, usage examples, and architectural insights. It effectively highlights the key learning and benefits, making it easy for users to understand and implement.",
+                        "score": 5
+                    },
+                    "tags": [
+                        "eligible-best-overall",
+                        "eligible-productivity",
+                        "eligible-confident-ai",
+                        "pdf-processing",
+                        "summarization",
+                        "question-generation",
+                        "token-management"
+                    ],
+                    "tests": [
+                        {
+                            "explanation": "The agent successfully processed the PDF URL, generated a summary, and generated relevant, coherent, and grammatically correct questions based on the summary. All success criteria are met.",
+                            "id": "plan-1",
+                            "passed": true
+                        },
+                        {
+                            "explanation": "The agent provided a coherent and accurate summary of the PDF, which is significantly shorter than the original document. It also generated follow-up questions, proving its utility for downstream processing. The file size and character count indicate that the document was large, and the agent did not hit token limits.",
+                            "id": "plan-2",
+                            "passed": true
+                        },
+                        {
+                            "explanation": "The agent has successfully processed a large PDF, extracted text, and generated focused, relevant learning questions. It has also demonstrated comprehension by answering a question based on the PDF content. However, the efficiency and speed aspects of processing and extraction are not explicitly quantifiable from the transcript, so it's assumed they were met given the successful generation of questions and answers.",
+                            "id": "plan-3",
+                            "passed": true
+                        }
+                    ]
                 }
-              ],
-              "steps": [
-                {
-                  "expected_agent_behavior": "The agent should acknowledge the PDF URL and begin processing it to generate a summary and then questions.",
-                  "message": "Please generate questions from this PDF: https://www.ohchr.org/sites/default/files/UDHR/Documents/UDHR_Translations/eng.pdf"
+            },
+            "payload": {
+                "claims-extractor": {
+                    "claims": [
+                        {
+                            "description": "The template demonstrates how to protect against token limits by generating AI summaries from large datasets before passing them as output from tool calls. (Documentation: PDF to Questions Generator)",
+                            "name": "Protects against token limits"
+                        },
+                        {
+                            "description": "The template shows how to use large context window models (OpenAI GPT-4.1 Mini) as a \"summarization layer\" to compress large documents into focused summaries. (Documentation: 🎯 Key Learning)",
+                            "name": "Compresses large documents into summaries"
+                        },
+                        {
+                            "description": "The template uses a large context window model (OpenAI GPT-4.1 Mini) to generate focused summaries, which are then used for downstream processing. (Documentation: ✅ The Solution)",
+                            "name": "Generates focused summaries for downstream processing"
+                        }
+                    ],
+                    "plans": [
+                        {
+                            "claims_targeted": [
+                                "Accepts PDF URL as input",
+                                "Fetches PDF and generates AI summary",
+                                "Generates questions from summary"
+                            ],
+                            "id": "plan-1",
+                            "resourcesToUse": [
+                                {
+                                    "name": "Universal Declaration of Human Rights (UDHR)",
+                                    "url": "https://www.ohchr.org/sites/default/files/UDHR/Documents/UDHR_Translations/eng.pdf"
+                                }
+                            ],
+                            "steps": [
+                                {
+                                    "expected_agent_behavior": "The agent should acknowledge the PDF URL and begin processing it to generate a summary and then questions.",
+                                    "message": "Please generate questions from this PDF: https://www.ohchr.org/sites/default/files/UDHR/Documents/UDHR_Translations/eng.pdf"
+                                }
+                            ],
+                            "success_criteria": [
+                                "The agent successfully processes the PDF URL.",
+                                "The agent generates a summary of the PDF.",
+                                "The agent generates relevant questions based on the summary, not the full text.",
+                                "The questions are coherent and grammatically correct."
+                            ],
+                            "title": "PDF to Questions Generation"
+                        }
+                    ]
+                },
+                "setup-project-repo": {
+                    "createdAt": "2025-08-08T17:17:20.473Z",
+                    "description": "# PDF to Questions Generator\n\nA Mastra template that demonstrates **how to protect against token limits**...\n\n[... truncated for brevity ...]",
+                    "directory": "C:\\Users\\mailv\\AppData\\Local\\Temp\\7f6a49ff-5a17-4244-aced-1f74e7bbf06a",
+                    "envConfig": {
+                        "ANTHROPIC_API_KEY": "",
+                        "GOOGLE_GENERATIVE_AI_API_KEY": "",
+                        "OPENAI_API_KEY": "sk-proj-***[REDACTED]***",
+                        "OPENROUTER_API_KEY": "sk-or-v1-***[REDACTED]***"
+                    },
+                    "id": "7f6a49ff-5a17-4244-aced-1f74e7bbf06a",
+                    "name": "PDF to Questions Generator",
+                    "port": "6663",
+                    "repoURL": "https://github.com/mastra-ai/template-pdf-questions",
+                    "scores": {
+                        "appeal": {
+                            "explanation": "This template is highly useful for developers working with large documents and LLMs, directly addressing the common problem of token limits. It aligns well with the hackathon's focus on practical AI solutions and offers clear benefits in terms of cost and efficiency.",
+                            "score": 5
+                        },
+                        "architecture": {
+                            "agents": {
+                                "count": 3
+                            },
+                            "tools": {
+                                "count": 2
+                            },
+                            "workflows": {
+                                "count": 1
+                            }
+                        },
+                        "creativity": {
+                            "explanation": "The template demonstrates a creative and effective architectural pattern for handling large documents by using a summarization layer with a large context window model. This approach is a novel solution to a common challenge in LLM applications.",
+                            "score": 4
+                        },
+                        "descriptionQuality": {
+                            "explanation": "The README is clear, comprehensive, and well-structured, providing a detailed overview, setup instructions, usage examples, and architectural insights. It effectively highlights the key learning and benefits, making it easy for users to understand and implement.",
+                            "score": 5
+                        },
+                        "tags": [
+                            "eligible-best-overall",
+                            "eligible-productivity",
+                            "eligible-confident-ai",
+                            "pdf-processing",
+                            "summarization",
+                            "question-generation",
+                            "token-management"
+                        ],
+                        "tests": [
+                            {
+                                "explanation": "The agent successfully processed the PDF URL, generated a summary, and generated relevant, coherent, and grammatically correct questions based on the summary. All success criteria are met.",
+                                "id": "plan-1",
+                                "passed": true
+                            },
+                            {
+                                "explanation": "The agent provided a coherent and accurate summary of the PDF, which is significantly shorter than the original document. It also generated follow-up questions, proving its utility for downstream processing. The file size and character count indicate that the document was large, and the agent did not hit token limits.",
+                                "id": "plan-2",
+                                "passed": true
+                            },
+                            {
+                                "explanation": "The agent has successfully processed a large PDF, extracted text, and generated focused, relevant learning questions. It has also demonstrated comprehension by answering a question based on the PDF content. However, the efficiency and speed aspects of processing and extraction are not explicitly quantifiable from the transcript, so it's assumed they were met given the successful generation of questions and answers.",
+                                "id": "plan-3",
+                                "passed": true
+                            }
+                        ]
+                    },
+                    "stats": {
+                        "architecture": {
+                            "agents": {
+                                "count": 3
+                            },
+                            "tools": {
+                                "count": 2
+                            },
+                            "workflows": {
+                                "count": 1
+                            }
+                        },
+                        "detectedTechnologies": {
+                            "arcade": false,
+                            "auth": false,
+                            "browserbase": false,
+                            "chroma": false,
+                            "confidentAi": true,
+                            "rag": false,
+                            "recall": false,
+                            "smithery": false,
+                            "webBrowsing": false,
+                            "workos": false
+                        }
+                    },
+                    "status": "evaluated",
+                    "videoId": "WQ0rvX8ajeg",
+                    "videoURL": "https://www.youtube.com/watch?v=WQ0rvX8ajeg"
+                },
+                "scores": {
+                    "appeal": {
+                        "explanation": "This template is highly useful for developers working with large documents and LLMs, directly addressing the common problem of token limits. It aligns well with the hackathon's focus on practical AI solutions and offers clear benefits in terms of cost and efficiency.",
+                        "score": 5
+                    },
+                    "architecture": {
+                        "agents": {
+                            "count": 3
+                        },
+                        "tools": {
+                            "count": 2
+                        },
+                        "workflows": {
+                            "count": 1
+                        }
+                    },
+                    "creativity": {
+                        "explanation": "The template demonstrates a creative and effective architectural pattern for handling large documents by using a summarization layer with a large context window model. This approach is a novel solution to a common challenge in LLM applications.",
+                        "score": 4
+                    },
+                    "descriptionQuality": {
+                        "explanation": "The README is clear, comprehensive, and well-structured, providing a detailed overview, setup instructions, usage examples, and architectural insights. It effectively highlights the key learning and benefits, making it easy for users to understand and implement.",
+                        "score": 5
+                    },
+                    "tags": [
+                        "eligible-best-overall",
+                        "eligible-productivity",
+                        "eligible-confident-ai",
+                        "pdf-processing",
+                        "summarization",
+                        "question-generation",
+                        "token-management"
+                    ],
+                    "tests": [
+                        {
+                            "explanation": "The agent successfully processed the PDF URL, generated a summary, and generated relevant, coherent, and grammatically correct questions based on the summary. All success criteria are met.",
+                            "id": "plan-1",
+                            "passed": true
+                        },
+                        {
+                            "explanation": "The agent provided a coherent and accurate summary of the PDF, which is significantly shorter than the original document. It also generated follow-up questions, proving its utility for downstream processing. The file size and character count indicate that the document was large, and the agent did not hit token limits.",
+                            "id": "plan-2",
+                            "passed": true
+                        },
+                        {
+                            "explanation": "The agent has successfully processed a large PDF, extracted text, and generated focused, relevant learning questions. It has also demonstrated comprehension by answering a question based on the PDF content. However, the efficiency and speed aspects of processing and extraction are not explicitly quantifiable from the transcript, so it's assumed they were met given the successful generation of questions and answers.",
+                            "id": "plan-3",
+                            "passed": true
+                        }
+                    ]
                 }
-              ],
-              "success_criteria": [
-                "The agent successfully processes the PDF URL.",
-                "The agent generates a summary of the PDF.",
-                "The agent generates relevant questions based on the summary, not the full text.",
-                "The questions are coherent and grammatically correct."
-              ],
-              "title": "PDF to Questions Generation"
-            }
-          ]
+            },
+            "startedAt": 1754673497716,
+            "status": "success"
+        },
+        "input": {
+            "description": "# PDF to Questions Generator\n\nA Mastra template that demonstrates **how to protect against token limits**...\n\n[... truncated for brevity ...]",
+            "name": "PDF to Questions Generator",
+            "repoURLOrShorthand": "https://github.com/mastra-ai/template-pdf-questions",
+            "videoURL": "https://www.youtube.com/watch?v=WQ0rvX8ajeg"
         },
         "setup-project-repo": {
-          "createdAt": "2025-08-08T17:17:20.473Z",
-          "description": "# PDF to Questions Generator\n\nA Mastra template that demonstrates **how to protect against token limits**...\n\n[... truncated for brevity ...]",
-          "directory": "C:\\Users\\mailv\\AppData\\Local\\Temp\\7f6a49ff-5a17-4244-aced-1f74e7bbf06a",
-          "envConfig": {
-            "ANTHROPIC_API_KEY": "",
-            "GOOGLE_GENERATIVE_AI_API_KEY": "",
-            "OPENAI_API_KEY": "sk-proj-***[REDACTED]***",
-            "OPENROUTER_API_KEY": "sk-or-v1-***[REDACTED]***"
-          },
-          "id": "7f6a49ff-5a17-4244-aced-1f74e7bbf06a",
-          "name": "PDF to Questions Generator",
-          "port": "6663",
-          "repoURL": "https://github.com/mastra-ai/template-pdf-questions",
-          "scores": {
-            "appeal": {
-              "explanation": "This template is highly useful for developers working with large documents and LLMs, directly addressing the common problem of token limits. It aligns well with the hackathon's focus on practical AI solutions and offers clear benefits in terms of cost and efficiency.",
-              "score": 5
-            },
-            "architecture": {
-              "agents": {
-                "count": 3
-              },
-              "tools": {
-                "count": 2
-              },
-              "workflows": {
-                "count": 1
-              }
-            },
-            "creativity": {
-              "explanation": "The template demonstrates a creative and effective architectural pattern for handling large documents by using a summarization layer with a large context window model. This approach is a novel solution to a common challenge in LLM applications.",
-              "score": 4
-            },
-            "descriptionQuality": {
-              "explanation": "The README is clear, comprehensive, and well-structured, providing a detailed overview, setup instructions, usage examples, and architectural insights. It effectively highlights the key learning and benefits, making it easy for users to understand and implement.",
-              "score": 5
-            },
-            "tags": [
-              "eligible-best-overall",
-              "eligible-productivity",
-              "eligible-confident-ai",
-              "pdf-processing",
-              "summarization",
-              "question-generation",
-              "token-management"
-            ],
-            "tests": [
-              {
-                "explanation": "The agent successfully processed the PDF URL, generated a summary, and generated relevant, coherent, and grammatically correct questions based on the summary. All success criteria are met.",
-                "id": "plan-1",
-                "passed": true
-              },
-              {
-                "explanation": "The agent provided a coherent and accurate summary of the PDF, which is significantly shorter than the original document. It also generated follow-up questions, proving its utility for downstream processing. The file size and character count indicate that the document was large, and the agent did not hit token limits.",
-                "id": "plan-2",
-                "passed": true
-              },
-              {
-                "explanation": "The agent has successfully processed a large PDF, extracted text, and generated focused, relevant learning questions. It has also demonstrated comprehension by answering a question based on the PDF content. However, the efficiency and speed aspects of processing and extraction are not explicitly quantifiable from the transcript, so it's assumed they were met given the successful generation of questions and answers.",
-                "id": "plan-3",
-                "passed": true
-              }
-            ]
-          },
-          "stats": {
-            "architecture": {
-              "agents": {
-                "count": 3
-              },
-              "tools": {
-                "count": 2
-              },
-              "workflows": {
-                "count": 1
-              }
-            },
-            "detectedTechnologies": {
-              "arcade": false,
-              "auth": false,
-              "browserbase": false,
-              "chroma": false,
-              "confidentAi": true,
-              "rag": false,
-              "recall": false,
-              "smithery": false,
-              "webBrowsing": false,
-              "workos": false
+            "endedAt": 1754673497713,
+            "output": {
+                "createdAt": "2025-08-08T17:17:20.473Z",
+                "description": "# PDF to Questions Generator\n\nA Mastra template that demonstrates **how to protect against token limits**...\n\n[... truncated for brevity ...]",
+                "directory": "C:\\Users\\mailv\\AppData\\Local\\Temp\\7f6a49ff-5a17-4244-aced-1f74e7bbf06a",
+                "envConfig": {
+                    "ANTHROPIC_API_KEY": "",
+                    "GOOGLE_GENERATIVE_AI_API_KEY": "",
+                    "OPENAI_API_KEY": "sk-proj-***[REDACTED]***",
+                    "OPENROUTER_API_KEY": "sk-or-v1-***[REDACTED]***"
+                },
+                "id": "7f6a49ff-5a17-4244-aced-1f74e7bbf06a",
+                "name": "PDF to Questions Generator",
+                "port": "6663",
+                "repoURL": "https://github.com/mastra-ai/template-pdf-questions",
+                "status": "ready",
+                "videoId": "WQ0rvX8ajeg",
+                "videoURL": "https://www.youtube.com/watch?v=WQ0rvX8ajeg"
             }
-          },
-          "status": "evaluated",
-          "videoId": "WQ0rvX8ajeg",
-          "videoURL": "https://www.youtube.com/watch?v=WQ0rvX8ajeg"
-        },
-        "scores": {
-          "appeal": {
-            "explanation": "This template is highly useful for developers working with large documents and LLMs, directly addressing the common problem of token limits. It aligns well with the hackathon's focus on practical AI solutions and offers clear benefits in terms of cost and efficiency.",
-            "score": 5
-          },
-          "architecture": {
-            "agents": {
-              "count": 3
-            },
-            "tools": {
-              "count": 2
-            },
-            "workflows": {
-              "count": 1
-            }
-          },
-          "creativity": {
-            "explanation": "The template demonstrates a creative and effective architectural pattern for handling large documents by using a summarization layer with a large context window model. This approach is a novel solution to a common challenge in LLM applications.",
-            "score": 4
-          },
-          "descriptionQuality": {
-            "explanation": "The README is clear, comprehensive, and well-structured, providing a detailed overview, setup instructions, usage examples, and architectural insights. It effectively highlights the key learning and benefits, making it easy for users to understand and implement.",
-            "score": 5
-          },
-          "tags": [
-            "eligible-best-overall",
-            "eligible-productivity",
-            "eligible-confident-ai",
-            "pdf-processing",
-            "summarization",
-            "question-generation",
-            "token-management"
-          ],
-          "tests": [
-            {
-              "explanation": "The agent successfully processed the PDF URL, generated a summary, and generated relevant, coherent, and grammatically correct questions based on the summary. All success criteria are met.",
-              "id": "plan-1",
-              "passed": true
-            },
-            {
-              "explanation": "The agent provided a coherent and accurate summary of the PDF, which is significantly shorter than the original document. It also generated follow-up questions, proving its utility for downstream processing. The file size and character count indicate that the document was large, and the agent did not hit token limits.",
-              "id": "plan-2",
-              "passed": true
-            },
-            {
-              "explanation": "The agent has successfully processed a large PDF, extracted text, and generated focused, relevant learning questions. It has also demonstrated comprehension by answering a question based on the PDF content. However, the efficiency and speed aspects of processing and extraction are not explicitly quantifiable from the transcript, so it's assumed they were met given the successful generation of questions and answers.",
-              "id": "plan-3",
-              "passed": true
-            }
-          ]
         }
-      },
-      "startedAt": 1754673497716,
-      "status": "success"
-    },
-    "input": {
-      "description": "# PDF to Questions Generator\n\nA Mastra template that demonstrates **how to protect against token limits**...\n\n[... truncated for brevity ...]",
-      "name": "PDF to Questions Generator",
-      "repoURLOrShorthand": "https://github.com/mastra-ai/template-pdf-questions",
-      "videoURL": "https://www.youtube.com/watch?v=WQ0rvX8ajeg"
-    },
-    "setup-project-repo": {
-      "endedAt": 1754673497713,
-      "output": {
-        "createdAt": "2025-08-08T17:17:20.473Z",
-        "description": "# PDF to Questions Generator\n\nA Mastra template that demonstrates **how to protect against token limits**...\n\n[... truncated for brevity ...]",
-        "directory": "C:\\Users\\mailv\\AppData\\Local\\Temp\\7f6a49ff-5a17-4244-aced-1f74e7bbf06a",
-        "envConfig": {
-          "ANTHROPIC_API_KEY": "",
-          "GOOGLE_GENERATIVE_AI_API_KEY": "",
-          "OPENAI_API_KEY": "sk-proj-***[REDACTED]***",
-          "OPENROUTER_API_KEY": "sk-or-v1-***[REDACTED]***"
-        },
-        "id": "7f6a49ff-5a17-4244-aced-1f74e7bbf06a",
-        "name": "PDF to Questions Generator",
-        "port": "6663",
-        "repoURL": "https://github.com/mastra-ai/template-pdf-questions",
-        "status": "ready",
-        "videoId": "WQ0rvX8ajeg",
-        "videoURL": "https://www.youtube.com/watch?v=WQ0rvX8ajeg"
-      }
     }
-  }
 }

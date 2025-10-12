@@ -146,23 +146,23 @@ export const retrieveAgent = new Agent({
 
 **MANDATORY STEPS:**
 
-1. Parse input JSON for 'question' and 'access' fields
-2. Call vectorQueryTool EXACTLY ONCE with these exact parameters:
+1.  Parse input JSON for 'question' and 'access' fields
+2.  Call vectorQueryTool EXACTLY ONCE with these exact parameters:
     - question: the question from input
     - allowTags: from access.allowTags array
     - maxClassification: from access.maxClassification (NEVER change this value)
     - topK: 8
-3. Return ONLY what the tool returns - never add your own content\`,
+3.  Return ONLY what the tool returns - never add your own content\`,
     memory,
     tools: { vectorQueryTool }
     });`}
-        </pre>
+    </pre>
 
     </Box>
-      <Typography sx={{ fontSize: '1rem', fontWeight: 'bold', mt: 3, mb: 2 }}>Real Tool Example: Vector Query Tool</Typography>
-      <Box sx={{ bgcolor: 'background.surface', p: 3, borderRadius: 1, fontSize: '0.875rem', fontFamily: 'monospace', overflowX: 'auto', mb: 2 }}>
-      <pre style={{ margin: 0, whiteSpace: 'pre-wrap' }}>
-        {`import { createTool } from "@mastra/core/tools";
+  <Typography sx={{ fontSize: '1rem', fontWeight: 'bold', mt: 3, mb: 2 }}>Real Tool Example: Vector Query Tool</Typography>
+  <Box sx={{ bgcolor: 'background.surface', p: 3, borderRadius: 1, fontSize: '0.875rem', fontFamily: 'monospace', overflowX: 'auto', mb: 2 }}>
+  <pre style={{ margin: 0, whiteSpace: 'pre-wrap' }}>
+    {`import { createTool } from "@mastra/core/tools";
 
         import { z } from "zod";
 

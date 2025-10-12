@@ -64,7 +64,7 @@ export async function PATCH(
         const body = await request.json()
 
         // TODO: Update document classification
-        
+
         return NextResponse.json({
             message: 'Document updated successfully',
             document: { id, ...body },

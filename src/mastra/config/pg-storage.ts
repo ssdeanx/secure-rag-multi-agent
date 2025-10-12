@@ -7,7 +7,7 @@ import { log } from './logger'
 import type { RuntimeContext } from '@mastra/core/runtime-context'
 import { AISpanType } from '@mastra/core/ai-tracing'
 import type { TracingContext } from '@mastra/core/ai-tracing'
-import { TokenLimiter } from "@mastra/memory/processors";
+import { TokenLimiter } from '@mastra/memory/processors'
 import { google } from '@ai-sdk/google'
 
 log.info('Loading PG Storage config with PgVector support')
@@ -100,9 +100,7 @@ export const pgMemory = new Memory({
             generateTitle: process.env.THREAD_GENERATE_TITLE !== 'true',
         },
     },
-    processors: [
-        new TokenLimiter(1048576)
-    ],
+    processors: [new TokenLimiter(1048576)],
 })
 
 log.info('PG Store and Memory initialized with PgVector support', {

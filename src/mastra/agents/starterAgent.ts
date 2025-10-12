@@ -15,6 +15,12 @@ import {
     ToneConsistencyMetric,
 } from '@mastra/evals/nlp'
 
+// Define runtime context for this agent
+export interface StarterAgentContext {
+    userId?: string
+    sessionId?: string
+}
+
 log.info('Initializing Starter Agent...')
 
 /**
@@ -29,8 +35,11 @@ export const starterAgent = new Agent({
     name: 'Starter Agent',
     description:
         'A basic starter agent that assists users with general questions and tasks.',
-    instructions: `
+    instructions: ({ runtimeContext }) => {
+        const userId = runtimeContext.get('userId')
+        return `
 <role>
+User: ${userId ?? 'anonymous'}
 You are a helpful AI assistant. Your primary function is to assist users with their questions and tasks.
 </role>
 
@@ -51,7 +60,8 @@ You will respond in a JSON format with the following fields:
   "content": "The response to the user's question or task"
 }
 </response_format>
-  `,
+  `
+    },
     model: gemini('gemini-2.5-pro', {
         temperature: 0.7, // Controls randomness (0-2)
         maxOutputTokens: 65536, // Maximum output tokens (defaults to 65536)

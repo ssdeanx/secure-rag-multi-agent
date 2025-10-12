@@ -7,7 +7,10 @@ const supabase = createClient(
 )
 
 export async function GET() {
-    const { data: { session }, error } = await supabase.auth.getSession()
+    const {
+        data: { session },
+        error,
+    } = await supabase.auth.getSession()
 
     if (error || !session) {
         return NextResponse.json({ session: null }, { status: 200 })

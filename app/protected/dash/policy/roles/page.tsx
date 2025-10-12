@@ -36,7 +36,11 @@ export default function RolesPage() {
                     <Home fontSize="small" />
                     Dashboard
                 </Link>
-                <Link component={NextLink} href="/protected/dash/policy" color="neutral">
+                <Link
+                    component={NextLink}
+                    href="/protected/dash/policy"
+                    color="neutral"
+                >
                     Policy
                 </Link>
                 <Typography>Roles</Typography>

@@ -1,10 +1,17 @@
-import { Box, Typography, AccordionGroup, Accordion, AccordionSummary, AccordionDetails } from '@/components/ui/joy'
+import {
+    Box,
+    Typography,
+    AccordionGroup,
+    Accordion,
+    AccordionSummary,
+    AccordionDetails,
+} from '@/components/ui/joy'
 import { Help } from '@mui/icons-material'
 
 const faqs = [
     {
         question: 'Can I change plans at any time?',
-        answer: 'Yes, you can upgrade or downgrade your plan at any time. Changes take effect immediately, and we\'ll prorate any charges.',
+        answer: "Yes, you can upgrade or downgrade your plan at any time. Changes take effect immediately, and we'll prorate any charges.",
     },
     {
         question: 'What payment methods do you accept?',
@@ -16,10 +23,11 @@ const faqs = [
     },
     {
         question: 'What happens if I exceed my document or API limits?',
-        answer: 'We\'ll notify you when you approach your limits. You can upgrade your plan or purchase additional capacity as needed.',
+        answer: "We'll notify you when you approach your limits. You can upgrade your plan or purchase additional capacity as needed.",
     },
     {
-        question: 'Do you offer discounts for non-profits or educational institutions?',
+        question:
+            'Do you offer discounts for non-profits or educational institutions?',
         answer: 'Yes, we offer special pricing for qualified non-profit organizations and educational institutions. Contact our sales team for details.',
     },
     {
@@ -28,7 +36,7 @@ const faqs = [
     },
     {
         question: 'Can I cancel my subscription anytime?',
-        answer: 'Yes, you can cancel your subscription at any time. You\'ll continue to have access until the end of your billing period.',
+        answer: "Yes, you can cancel your subscription at any time. You'll continue to have access until the end of your billing period.",
     },
     {
         question: 'Do you offer on-premise deployment?',

@@ -19,7 +19,7 @@ import { useRouter } from 'next/navigation'
  * View document metadata, chunks, and perform actions.
  */
 export default function DocumentDetailsPage({
-    params
+    params,
 }: {
     params: Promise<{ id: string }>
 }) {
@@ -39,13 +39,17 @@ export default function DocumentDetailsPage({
             return
         }
 
-        if (!confirm('Are you sure you want to delete this document? This action cannot be undone.')) {
+        if (
+            !confirm(
+                'Are you sure you want to delete this document? This action cannot be undone.'
+            )
+        ) {
             return
         }
 
         try {
             const response = await fetch(`/api/documents/${documentId}`, {
-                method: 'DELETE'
+                method: 'DELETE',
             })
 
             if (!response.ok) {
@@ -64,7 +68,9 @@ export default function DocumentDetailsPage({
         }
 
         try {
-            const response = await fetch(`/api/documents/${documentId}/download`)
+            const response = await fetch(
+                `/api/documents/${documentId}/download`
+            )
 
             if (!response.ok) {
                 throw new Error('Failed to download document')
@@ -109,19 +115,33 @@ export default function DocumentDetailsPage({
                     <Home fontSize="small" />
                     Dashboard
                 </Link>
-                <Link component={NextLink} href="/protected/dash/documents" color="neutral">
+                <Link
+                    component={NextLink}
+                    href="/protected/dash/documents"
+                    color="neutral"
+                >
                     Documents
                 </Link>
                 <Typography>Details</Typography>
             </Breadcrumbs>
 
             {/* Page Header */}
-            <Box sx={{ mb: 4, display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
+            <Box
+                sx={{
+                    mb: 4,
+                    display: 'flex',
+                    justifyContent: 'space-between',
+                    alignItems: 'flex-start',
+                }}
+            >
                 <Box>
                     <Typography level="h2" component="h1" sx={{ mb: 1 }}>
                         Document Details
                     </Typography>
-                    <Typography level="body-md" sx={{ color: 'text.secondary' }}>
+                    <Typography
+                        level="body-md"
+                        sx={{ color: 'text.secondary' }}
+                    >
                         View metadata and indexed chunks
                     </Typography>
                 </Box>

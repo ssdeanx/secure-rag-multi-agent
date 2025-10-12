@@ -53,9 +53,14 @@ const apiKeys: APIKey[] = [
  */
 export default function APIKeyManager() {
     const [keys, setKeys] = React.useState<Record<string, string>>({})
-    const [visibleKeys, setVisibleKeys] = React.useState<Record<string, boolean>>({})
+    const [visibleKeys, setVisibleKeys] = React.useState<
+        Record<string, boolean>
+    >({})
     const [saving, setSaving] = React.useState(false)
-    const [message, setMessage] = React.useState<{ type: 'success' | 'error'; text: string } | null>(null)
+    const [message, setMessage] = React.useState<{
+        type: 'success' | 'error'
+        text: string
+    } | null>(null)
 
     // Load existing keys (masked) on mount
     React.useEffect(() => {
@@ -63,13 +68,19 @@ export default function APIKeyManager() {
             try {
                 const response = await fetch('/api/settings/api-keys')
                 if (response.ok) {
-                    const data = await response.json() as { keys?: Record<string, string> }
+                    const data = (await response.json()) as {
+                        keys?: Record<string, string>
+                    }
                     setKeys(data.keys ?? {})
                 }
             } catch (error) {
                 // Silently fail - keys might not be set yet
-                const errorMessage = error instanceof Error ? error.message : 'Unknown error'
-                setMessage({ type: 'error', text: `Failed to load keys: ${errorMessage}` })
+                const errorMessage =
+                    error instanceof Error ? error.message : 'Unknown error'
+                setMessage({
+                    type: 'error',
+                    text: `Failed to load keys: ${errorMessage}`,
+                })
             }
         }
         fetchKeys()
@@ -108,7 +119,10 @@ export default function APIKeyManager() {
 
             setMessage({ type: 'success', text: 'API keys saved successfully' })
         } catch (error) {
-            const errorMessage = error instanceof Error ? error.message : 'Unknown error occurred'
+            const errorMessage =
+                error instanceof Error
+                    ? error.message
+                    : 'Unknown error occurred'
             setMessage({ type: 'error', text: errorMessage })
         } finally {
             setSaving(false)
@@ -118,16 +132,13 @@ export default function APIKeyManager() {
     return (
         <Box sx={{ display: 'flex', flexDirection: 'column', gap: 3 }}>
             {/* Security Warning */}
-            <Alert
-                startDecorator={<Warning />}
-                variant="soft"
-                color="warning"
-            >
+            <Alert startDecorator={<Warning />} variant="soft" color="warning">
                 <Box>
                     <Typography level="title-sm">Security Notice</Typography>
                     <Typography level="body-sm">
-                        API keys are sensitive credentials. Never share them publicly or commit them to version control.
-                        They are encrypted and stored securely.
+                        API keys are sensitive credentials. Never share them
+                        publicly or commit them to version control. They are
+                        encrypted and stored securely.
                     </Typography>
                 </Box>
             </Alert>
@@ -139,23 +150,44 @@ export default function APIKeyManager() {
                         AI Service Keys
                     </Typography>
 
-                    <Box sx={{ display: 'flex', flexDirection: 'column', gap: 3 }}>
+                    <Box
+                        sx={{
+                            display: 'flex',
+                            flexDirection: 'column',
+                            gap: 3,
+                        }}
+                    >
                         {apiKeys.map((apiKey) => (
                             <Box key={apiKey.id}>
                                 <FormControl required={apiKey.required}>
                                     <FormLabel>
                                         {apiKey.label}
                                         {apiKey.required && (
-                                            <Typography component="span" sx={{ color: 'danger.main', ml: 0.5 }}>
+                                            <Typography
+                                                component="span"
+                                                sx={{
+                                                    color: 'danger.main',
+                                                    ml: 0.5,
+                                                }}
+                                            >
                                                 *
                                             </Typography>
                                         )}
                                     </FormLabel>
                                     <Box sx={{ display: 'flex', gap: 1 }}>
                                         <Input
-                                            type={visibleKeys[apiKey.id] ? 'text' : 'password'}
+                                            type={
+                                                visibleKeys[apiKey.id]
+                                                    ? 'text'
+                                                    : 'password'
+                                            }
                                             value={keys[apiKey.id] || ''}
-                                            onChange={(e) => handleKeyChange(apiKey.id, e.target.value)}
+                                            onChange={(e) =>
+                                                handleKeyChange(
+                                                    apiKey.id,
+                                                    e.target.value
+                                                )
+                                            }
                                             placeholder={`Enter your ${apiKey.label}`}
                                             sx={{ flex: 1 }}
                                             endDecorator={
@@ -164,19 +196,33 @@ export default function APIKeyManager() {
                                                         size="sm"
                                                         variant="plain"
                                                         color="neutral"
-                                                        onClick={() => handleToggleVisibility(apiKey.id)}
+                                                        onClick={() =>
+                                                            handleToggleVisibility(
+                                                                apiKey.id
+                                                            )
+                                                        }
                                                     >
-                                                        {visibleKeys[apiKey.id] ? <VisibilityOff /> : <Visibility />}
+                                                        {visibleKeys[
+                                                            apiKey.id
+                                                        ] ? (
+                                                            <VisibilityOff />
+                                                        ) : (
+                                                            <Visibility />
+                                                        )}
                                                     </IconButton>
                                                 )
                                             }
                                         />
                                     </Box>
-                                    <Typography level="body-xs" sx={{ mt: 0.5, color: 'text.tertiary' }}>
+                                    <Typography
+                                        level="body-xs"
+                                        sx={{ mt: 0.5, color: 'text.tertiary' }}
+                                    >
                                         {apiKey.description}
                                     </Typography>
                                 </FormControl>
-                                {apiKey.id !== apiKeys[apiKeys.length - 1].id && (
+                                {apiKey.id !==
+                                    apiKeys[apiKeys.length - 1].id && (
                                     <Divider sx={{ mt: 3 }} />
                                 )}
                             </Box>
@@ -186,9 +232,19 @@ export default function APIKeyManager() {
                     {/* Success/Error Message */}
                     {message && (
                         <Alert
-                            startDecorator={message.type === 'success' ? <CheckCircle /> : <Warning />}
+                            startDecorator={
+                                message.type === 'success' ? (
+                                    <CheckCircle />
+                                ) : (
+                                    <Warning />
+                                )
+                            }
                             variant="soft"
-                            color={message.type === 'success' ? 'success' : 'danger'}
+                            color={
+                                message.type === 'success'
+                                    ? 'success'
+                                    : 'danger'
+                            }
                             sx={{ mt: 3 }}
                         >
                             {message.text}
@@ -196,7 +252,14 @@ export default function APIKeyManager() {
                     )}
 
                     {/* Action Buttons */}
-                    <Box sx={{ display: 'flex', gap: 2, mt: 3, justifyContent: 'flex-end' }}>
+                    <Box
+                        sx={{
+                            display: 'flex',
+                            gap: 2,
+                            mt: 3,
+                            justifyContent: 'flex-end',
+                        }}
+                    >
                         <Button
                             variant="outlined"
                             color="neutral"
@@ -226,11 +289,21 @@ export default function APIKeyManager() {
                     <Typography level="title-md" sx={{ mb: 2 }}>
                         Database Configuration
                     </Typography>
-                    <Typography level="body-sm" sx={{ color: 'text.tertiary', mb: 2 }}>
-                        Database credentials are managed through environment variables for security.
-                        Contact your system administrator to update these settings.
+                    <Typography
+                        level="body-sm"
+                        sx={{ color: 'text.tertiary', mb: 2 }}
+                    >
+                        Database credentials are managed through environment
+                        variables for security. Contact your system
+                        administrator to update these settings.
                     </Typography>
-                    <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
+                    <Box
+                        sx={{
+                            display: 'flex',
+                            flexDirection: 'column',
+                            gap: 2,
+                        }}
+                    >
                         <FormControl>
                             <FormLabel>Database URL</FormLabel>
                             <Input

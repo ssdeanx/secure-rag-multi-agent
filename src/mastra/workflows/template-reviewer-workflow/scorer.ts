@@ -1,53 +1,53 @@
-import z from "zod";
-import { testerOutputSchema } from "./tester.js";
-import type { claimsSchema } from "./claim-extractor.js";
-import type { planMakerOutputSchema } from "./plan-maker.js";
+import z from 'zod'
+import { testerOutputSchema } from './tester.js'
+import type { claimsSchema } from './claim-extractor.js'
+import type { planMakerOutputSchema } from './plan-maker.js'
 
 export const scorerOutputSchema = z.object({
-  descriptionQuality: z.object({
-    score: z.number().min(1).max(5),
-    explanation: z.string(),
-  }),
-  tests: testerOutputSchema,
-  appeal: z.object({
-    score: z.number().min(1).max(5),
-    explanation: z.string(),
-  }),
-  creativity: z.object({
-    score: z.number().min(1).max(5),
-    explanation: z.string(),
-  }),
-  architecture: z.object({
-    agents: z.object({
-      count: z.number(),
+    descriptionQuality: z.object({
+        score: z.number().min(1).max(5),
+        explanation: z.string(),
     }),
-    tools: z.object({
-      count: z.number(),
+    tests: testerOutputSchema,
+    appeal: z.object({
+        score: z.number().min(1).max(5),
+        explanation: z.string(),
     }),
-    workflows: z.object({
-      count: z.number(),
+    creativity: z.object({
+        score: z.number().min(1).max(5),
+        explanation: z.string(),
     }),
-  }),
-  tags: z.array(z.string()),
-});
+    architecture: z.object({
+        agents: z.object({
+            count: z.number(),
+        }),
+        tools: z.object({
+            count: z.number(),
+        }),
+        workflows: z.object({
+            count: z.number(),
+        }),
+    }),
+    tags: z.array(z.string()),
+})
 
 export const scorerPrompt = (props: {
-  project: {
-    name: string;
-    description: string;
-    repoURL: string;
-    videoURL: string;
-  };
-  projectStats: Pick<z.infer<typeof scorerOutputSchema>, "architecture"> & {
-    detectedTechnologies: {
-      [key: string]: boolean;
-    };
-  };
-  claims: z.infer<typeof claimsSchema>;
-  plans: z.infer<typeof planMakerOutputSchema>;
+    project: {
+        name: string
+        description: string
+        repoURL: string
+        videoURL: string
+    }
+    projectStats: Pick<z.infer<typeof scorerOutputSchema>, 'architecture'> & {
+        detectedTechnologies: {
+            [key: string]: boolean
+        }
+    }
+    claims: z.infer<typeof claimsSchema>
+    plans: z.infer<typeof planMakerOutputSchema>
 }) => {
-  const { project, claims, plans } = props;
-  return `You are an impartial senior judge for the Mastra.Build hackathon. Score a Mastra AI template using objective, rubric-driven criteria. Only return JSON strictly matching the provided schema.
+    const { project, claims, plans } = props
+    return `You are an impartial senior judge for the Mastra.Build hackathon. Score a Mastra AI template using objective, rubric-driven criteria. Only return JSON strictly matching the provided schema.
 
 Context to evaluate
 ---
@@ -105,5 +105,5 @@ Output requirements
 - Return JSON only, matching the schema exactly.
 - tests must include one entry per provided plan id.
 - Explanations should be specific but concise (1-4 sentences).
-`;
-};
+`
+}

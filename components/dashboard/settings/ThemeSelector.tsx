@@ -45,33 +45,65 @@ export default function ThemeSelector() {
                         Color Scheme
                     </Typography>
                     <FormControl>
-                        <FormLabel>Choose your preferred color scheme</FormLabel>
+                        <FormLabel>
+                            Choose your preferred color scheme
+                        </FormLabel>
                         <RadioGroup
                             value={mode}
                             onChange={(event) => {
-                                const newMode = event.target.value as 'light' | 'dark' | 'system'
+                                const newMode = event.target.value as
+                                    | 'light'
+                                    | 'dark'
+                                    | 'system'
                                 setMode(newMode)
                             }}
                         >
-                            <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2, mt: 2 }}>
+                            <Box
+                                sx={{
+                                    display: 'flex',
+                                    flexDirection: 'column',
+                                    gap: 2,
+                                    mt: 2,
+                                }}
+                            >
                                 <Sheet
                                     variant="outlined"
                                     sx={{
                                         p: 2,
                                         borderRadius: 'sm',
-                                        bgcolor: mode === 'light' ? 'primary.softBg' : 'background.surface',
-                                        borderColor: mode === 'light' ? 'primary.outlinedBorder' : 'divider',
+                                        bgcolor:
+                                            mode === 'light'
+                                                ? 'primary.softBg'
+                                                : 'background.surface',
+                                        borderColor:
+                                            mode === 'light'
+                                                ? 'primary.outlinedBorder'
+                                                : 'divider',
                                     }}
                                 >
                                     <Radio
                                         value="light"
                                         label={
-                                            <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+                                            <Box
+                                                sx={{
+                                                    display: 'flex',
+                                                    alignItems: 'center',
+                                                    gap: 1,
+                                                }}
+                                            >
                                                 <LightMode />
                                                 <Box>
-                                                    <Typography level="title-sm">Light Mode</Typography>
-                                                    <Typography level="body-xs" sx={{ color: 'text.tertiary' }}>
-                                                        Bright and clear interface
+                                                    <Typography level="title-sm">
+                                                        Light Mode
+                                                    </Typography>
+                                                    <Typography
+                                                        level="body-xs"
+                                                        sx={{
+                                                            color: 'text.tertiary',
+                                                        }}
+                                                    >
+                                                        Bright and clear
+                                                        interface
                                                     </Typography>
                                                 </Box>
                                             </Box>
@@ -84,19 +116,39 @@ export default function ThemeSelector() {
                                     sx={{
                                         p: 2,
                                         borderRadius: 'sm',
-                                        bgcolor: mode === 'dark' ? 'primary.softBg' : 'background.surface',
-                                        borderColor: mode === 'dark' ? 'primary.outlinedBorder' : 'divider',
+                                        bgcolor:
+                                            mode === 'dark'
+                                                ? 'primary.softBg'
+                                                : 'background.surface',
+                                        borderColor:
+                                            mode === 'dark'
+                                                ? 'primary.outlinedBorder'
+                                                : 'divider',
                                     }}
                                 >
                                     <Radio
                                         value="dark"
                                         label={
-                                            <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+                                            <Box
+                                                sx={{
+                                                    display: 'flex',
+                                                    alignItems: 'center',
+                                                    gap: 1,
+                                                }}
+                                            >
                                                 <DarkMode />
                                                 <Box>
-                                                    <Typography level="title-sm">Dark Mode</Typography>
-                                                    <Typography level="body-xs" sx={{ color: 'text.tertiary' }}>
-                                                        Easy on the eyes in low light
+                                                    <Typography level="title-sm">
+                                                        Dark Mode
+                                                    </Typography>
+                                                    <Typography
+                                                        level="body-xs"
+                                                        sx={{
+                                                            color: 'text.tertiary',
+                                                        }}
+                                                    >
+                                                        Easy on the eyes in low
+                                                        light
                                                     </Typography>
                                                 </Box>
                                             </Box>
@@ -109,19 +161,39 @@ export default function ThemeSelector() {
                                     sx={{
                                         p: 2,
                                         borderRadius: 'sm',
-                                        bgcolor: mode === 'system' ? 'primary.softBg' : 'background.surface',
-                                        borderColor: mode === 'system' ? 'primary.outlinedBorder' : 'divider',
+                                        bgcolor:
+                                            mode === 'system'
+                                                ? 'primary.softBg'
+                                                : 'background.surface',
+                                        borderColor:
+                                            mode === 'system'
+                                                ? 'primary.outlinedBorder'
+                                                : 'divider',
                                     }}
                                 >
                                     <Radio
                                         value="system"
                                         label={
-                                            <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+                                            <Box
+                                                sx={{
+                                                    display: 'flex',
+                                                    alignItems: 'center',
+                                                    gap: 1,
+                                                }}
+                                            >
                                                 <SettingsBrightness />
                                                 <Box>
-                                                    <Typography level="title-sm">System</Typography>
-                                                    <Typography level="body-xs" sx={{ color: 'text.tertiary' }}>
-                                                        Follow system preferences
+                                                    <Typography level="title-sm">
+                                                        System
+                                                    </Typography>
+                                                    <Typography
+                                                        level="body-xs"
+                                                        sx={{
+                                                            color: 'text.tertiary',
+                                                        }}
+                                                    >
+                                                        Follow system
+                                                        preferences
                                                     </Typography>
                                                 </Box>
                                             </Box>
@@ -150,7 +222,8 @@ export default function ThemeSelector() {
                         }}
                     >
                         <Typography level="body-md" sx={{ mb: 2 }}>
-                            This is how your dashboard will look with the selected theme.
+                            This is how your dashboard will look with the
+                            selected theme.
                         </Typography>
                         <Box sx={{ display: 'flex', gap: 2 }}>
                             <Box

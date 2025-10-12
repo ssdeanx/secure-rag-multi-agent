@@ -18,7 +18,10 @@ export async function getServerSession(): Promise<Session | null> {
 
         // Verify the session is still valid with Supabase
         const supabase = await createSupabaseServerClient()
-        const { data: { session: validSession }, error } = await supabase.auth.getSession()
+        const {
+            data: { session: validSession },
+            error,
+        } = await supabase.auth.getSession()
 
         if (error !== null || !validSession) {
             return null

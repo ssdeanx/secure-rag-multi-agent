@@ -64,11 +64,10 @@ export const evaluateResultTool = createTool({
 
             const evaluationAgent = mastra.getAgent('evaluationAgent')
 
-            const response = await evaluationAgent.generate(
-                [
-                    {
-                        role: 'user',
-                        content: `Evaluate whether this search result is relevant and will help answer the query: "${query}".
+            const response = await evaluationAgent.generate([
+                {
+                    role: 'user',
+                    content: `Evaluate whether this search result is relevant and will help answer the query: "${query}".
 
         Search result:
         Title: ${result.title}
@@ -78,9 +77,8 @@ export const evaluateResultTool = createTool({
         Respond with a JSON object containing:
         - isRelevant: boolean indicating if the result is relevant
         - reason: brief explanation of your decision`,
-                    },
-                ]
-            )
+                },
+            ])
 
             const outputSchema = z.object({
                 isRelevant: z.boolean(),

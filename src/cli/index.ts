@@ -6,6 +6,8 @@ import {
     logProgress,
     log,
 } from '../mastra/config/logger'
+import { tierManagementService } from '../mastra/services/TierManagementService'
+import type { SubscriptionTier } from '../mastra/config/role-hierarchy'
 import * as dotenv from 'dotenv'
 import * as fs from 'fs/promises'
 import * as path from 'path'
@@ -14,6 +16,33 @@ dotenv.config()
 
 async function indexDocuments() {
     log.info('🚀 Starting document indexing for Governed RAG')
+
+    // Get tenant and tier from environment or use defaults
+    const tenant = process.env.TENANT ?? 'acme'
+    const tier: SubscriptionTier =
+        (process.env.TIER as SubscriptionTier) ?? 'free'
+
+    log.info(`Tenant: ${tenant}, Tier: ${tier}`)
+
+    // Validate tier access for document indexing
+    const tierValidation = await tierManagementService.validateTierAccess(
+        tenant,
+        tier,
+        'document'
+    )
+
+    if (!tierValidation.allowed) {
+        log.error(`❌ Tier validation failed: ${tierValidation.reason}`)
+        if (tierValidation.upgradeRequired) {
+            log.info('💡 Upgrade to a higher tier to index more documents')
+        }
+        return
+    }
+
+    const usage = tierValidation.currentUsage
+    if (usage) {
+        log.info(`Current usage: ${usage.documentsIndexed} documents indexed`)
+    }
 
     const sampleDocs: any[] = [
         {
@@ -82,13 +111,26 @@ async function indexDocuments() {
         // Log document results
         const resultData = (result as any).result ?? result
         if (resultData.documents) {
+            let successCount = 0
             resultData.documents.forEach((doc: any) => {
                 if (doc.status === 'success') {
                     log.info(`✅ ${doc.docId}: ${doc.chunks} chunks indexed`)
+                    successCount++
                 } else {
                     log.error(`❌ ${doc.docId}: ${doc.error}`)
                 }
             })
+
+            // Track usage after successful indexing
+            if (successCount > 0) {
+                await tierManagementService.incrementUsage(
+                    tenant,
+                    tier,
+                    'document',
+                    successCount
+                )
+                log.info(`Updated usage counter: +${successCount} documents`)
+            }
         }
         logProgress(
             `Indexing complete`,
@@ -102,6 +144,23 @@ async function indexDocuments() {
 
 async function queryRAG(jwt: string, question: string) {
     log.info('🔍 Querying Governed RAG')
+
+    // Get tenant and tier from environment
+    const tenant = process.env.TENANT ?? 'acme'
+    const tier: SubscriptionTier =
+        (process.env.TIER as SubscriptionTier) ?? 'free'
+
+    // Validate API request quota
+    const tierValidation = await tierManagementService.validateTierAccess(
+        tenant,
+        tier,
+        'api_request'
+    )
+
+    if (!tierValidation.allowed) {
+        log.error(`❌ API request limit exceeded: ${tierValidation.reason}`)
+        return
+    }
 
     try {
         const startTime = Date.now()
@@ -119,6 +178,14 @@ async function queryRAG(jwt: string, question: string) {
                 'governed-rag-answer',
                 resultData,
                 Date.now() - startTime
+            )
+
+            // Track API request usage
+            await tierManagementService.incrementUsage(
+                tenant,
+                tier,
+                'api_request',
+                1
             )
 
             log.info('✅ Answer generated successfully!')
@@ -146,7 +213,7 @@ async function main() {
 
     if (!command || command === 'help') {
         log.info(
-            'Governed RAG CLI\n\nCommands:\n  index                      - Index sample documents\n  query <jwt> <question>     - Query with JWT auth\n  demo                       - Run interactive demo\n  help                       - Show this help message\n\nExamples:\n  npm run cli index\n  npm run cli query "eyJ..." "What is our finance policy?"\n  npm run cli demo'
+            'Governed RAG CLI\n\nCommands:\n  index                      - Index sample documents\n  query <jwt> <question>     - Query with JWT auth\n  usage                      - Show current usage stats\n  demo                       - Run interactive demo\n  help                       - Show this help message\n\nEnvironment Variables:\n  TENANT                     - Tenant identifier (default: acme)\n  TIER                       - Subscription tier: free, pro, enterprise (default: free)\n\nExamples:\n  npm run cli index\n  npm run cli query "eyJ..." "What is our finance policy?"\n  TIER=pro npm run cli index\n  npm run cli usage\n  npm run cli demo'
         )
     }
 
@@ -166,6 +233,39 @@ async function main() {
             await queryRAG(jwt, question)
             break
         }
+
+        case 'usage': {
+            const tenant = process.env.TENANT ?? 'acme'
+            const tier: SubscriptionTier =
+                (process.env.TIER as SubscriptionTier) ?? 'free'
+
+            const usage = await tierManagementService.getUsageStats(
+                tenant,
+                tier
+            )
+            const percentages = tierManagementService.getUsagePercentage(usage)
+            const nearLimit = tierManagementService.isNearQuotaLimit(usage)
+
+            log.info('📊 Current Usage Statistics')
+            log.info(`Tenant: ${tenant}`)
+            log.info(`Tier: ${tier}`)
+            log.info(
+                `\nDocuments: ${usage.documentsIndexed} (${percentages.documents.toFixed(1)}% of quota)`
+            )
+            log.info(
+                `API Requests Today: ${usage.apiRequestsToday} (${percentages.apiRequests.toFixed(1)}% of quota)`
+            )
+            log.info(
+                `Total Users: ${usage.totalUsers} (${percentages.users.toFixed(1)}% of quota)`
+            )
+            log.info(`Last Reset: ${usage.lastReset.toISOString()}`)
+
+            if (nearLimit) {
+                log.warn('⚠️  Warning: Approaching quota limits')
+            }
+            break
+        }
+
         case 'demo':
             log.info(
                 '🎮 Interactive Demo Mode\nThis would launch an interactive demo (to be implemented)'

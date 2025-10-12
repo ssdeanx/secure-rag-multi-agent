@@ -16,17 +16,19 @@ interface ClassificationBadgeProps {
  *
  * Visual indicator for document security classification.
  */
-export default function ClassificationBadge({ classification }: ClassificationBadgeProps) {
+export default function ClassificationBadge({
+    classification,
+}: ClassificationBadgeProps) {
     const colorMap: Record<string, ColorPaletteProp> = {
         public: 'success',
         internal: 'warning',
-        confidential: 'danger'
+        confidential: 'danger',
     }
 
     const labelMap: Record<string, string> = {
         public: 'Public',
         internal: 'Internal',
-        confidential: 'Confidential'
+        confidential: 'Confidential',
     }
 
     return (

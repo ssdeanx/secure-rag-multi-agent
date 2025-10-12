@@ -23,7 +23,7 @@ export default function AccessMatrix() {
             employee: ['public', 'internal'],
             dept_viewer: ['public', 'internal'],
             dept_admin: ['public', 'internal', 'confidential'],
-            admin: ['public', 'internal', 'confidential']
+            admin: ['public', 'internal', 'confidential'],
         }
         return matrix[role]?.includes(classification) ?? false
     }
@@ -34,8 +34,12 @@ export default function AccessMatrix() {
                 <Typography level="title-md" sx={{ mb: 2 }}>
                     Document Access Matrix
                 </Typography>
-                <Typography level="body-sm" sx={{ mb: 3, color: 'text.secondary' }}>
-                    Shows which roles can access documents by security classification
+                <Typography
+                    level="body-sm"
+                    sx={{ mb: 3, color: 'text.secondary' }}
+                >
+                    Shows which roles can access documents by security
+                    classification
                 </Typography>
 
                 <Table size="sm">
@@ -48,9 +52,11 @@ export default function AccessMatrix() {
                                         size="sm"
                                         variant="soft"
                                         color={
-                                            classification === 'public' ? 'success' :
-                                            classification === 'internal' ? 'warning' :
-                                            'danger'
+                                            classification === 'public'
+                                                ? 'success'
+                                                : classification === 'internal'
+                                                  ? 'warning'
+                                                  : 'danger'
                                         }
                                     >
                                         {classification}
@@ -70,11 +76,21 @@ export default function AccessMatrix() {
                                 {classifications.map((classification) => (
                                     <td key={classification}>
                                         {hasAccess(role, classification) ? (
-                                            <Chip size="sm" variant="soft" color="success" startDecorator={<Check />}>
+                                            <Chip
+                                                size="sm"
+                                                variant="soft"
+                                                color="success"
+                                                startDecorator={<Check />}
+                                            >
                                                 Allowed
                                             </Chip>
                                         ) : (
-                                            <Chip size="sm" variant="soft" color="neutral" startDecorator={<Close />}>
+                                            <Chip
+                                                size="sm"
+                                                variant="soft"
+                                                color="neutral"
+                                                startDecorator={<Close />}
+                                            >
                                                 Denied
                                             </Chip>
                                         )}

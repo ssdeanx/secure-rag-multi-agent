@@ -17,7 +17,10 @@ interface RoleSelectorProps {
  *
  * Dropdown for changing user roles.
  */
-export default function RoleSelector({ userId, currentRole }: RoleSelectorProps) {
+export default function RoleSelector({
+    userId,
+    currentRole,
+}: RoleSelectorProps) {
     const [role, setRole] = React.useState(currentRole)
     const [loading, setLoading] = React.useState(false)
 
@@ -27,7 +30,7 @@ export default function RoleSelector({ userId, currentRole }: RoleSelectorProps)
             const response = await fetch(`/api/users/${userId}/role`, {
                 method: 'PATCH',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ role: newRole })
+                body: JSON.stringify({ role: newRole }),
             })
 
             if (!response.ok) {

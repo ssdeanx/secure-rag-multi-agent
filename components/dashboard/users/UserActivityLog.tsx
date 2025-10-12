@@ -43,7 +43,9 @@ export default function UserActivityLog({ userId }: UserActivityLogProps) {
                     throw new Error('Failed to fetch activity')
                 }
 
-                const data = await response.json() as { events: ActivityEvent[] }
+                const data = (await response.json()) as {
+                    events: ActivityEvent[]
+                }
                 setEvents(data.events)
             } catch {
                 // Error handled silently
@@ -56,12 +58,15 @@ export default function UserActivityLog({ userId }: UserActivityLogProps) {
     }, [userId])
 
     const getEventColor = (type: string) => {
-        const colors: Record<string, 'primary' | 'success' | 'warning' | 'neutral'> = {
+        const colors: Record<
+            string,
+            'primary' | 'success' | 'warning' | 'neutral'
+        > = {
             login: 'success',
             logout: 'neutral',
             query: 'primary',
             document_access: 'primary',
-            role_change: 'warning'
+            role_change: 'warning',
         }
         return colors[type] ?? 'neutral'
     }
@@ -74,11 +79,17 @@ export default function UserActivityLog({ userId }: UserActivityLogProps) {
                 </Typography>
 
                 {loading ? (
-                    <Typography level="body-sm" sx={{ py: 4, textAlign: 'center' }}>
+                    <Typography
+                        level="body-sm"
+                        sx={{ py: 4, textAlign: 'center' }}
+                    >
                         Loading activity...
                     </Typography>
                 ) : events.length === 0 ? (
-                    <Typography level="body-sm" sx={{ py: 4, textAlign: 'center' }}>
+                    <Typography
+                        level="body-sm"
+                        sx={{ py: 4, textAlign: 'center' }}
+                    >
                         No activity recorded
                     </Typography>
                 ) : (
@@ -91,18 +102,29 @@ export default function UserActivityLog({ userId }: UserActivityLogProps) {
                                     gap: 2,
                                     p: 2,
                                     borderRadius: 'sm',
-                                    bgcolor: 'background.level1'
+                                    bgcolor: 'background.level1',
                                 }}
                             >
                                 <Box sx={{ flexShrink: 0 }}>
-                                    <Chip size="sm" variant="soft" color={getEventColor(event.type)}>
+                                    <Chip
+                                        size="sm"
+                                        variant="soft"
+                                        color={getEventColor(event.type)}
+                                    >
                                         {event.type.replace('_', ' ')}
                                     </Chip>
                                 </Box>
                                 <Stack spacing={0.5} sx={{ flexGrow: 1 }}>
-                                    <Typography level="body-sm">{event.description}</Typography>
-                                    <Typography level="body-xs" sx={{ color: 'text.secondary' }}>
-                                        {new Date(event.timestamp).toLocaleString()}
+                                    <Typography level="body-sm">
+                                        {event.description}
+                                    </Typography>
+                                    <Typography
+                                        level="body-xs"
+                                        sx={{ color: 'text.secondary' }}
+                                    >
+                                        {new Date(
+                                            event.timestamp
+                                        ).toLocaleString()}
                                     </Typography>
                                 </Stack>
                             </Box>

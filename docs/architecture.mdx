@@ -133,72 +133,72 @@ The Mastra Governed RAG is built around Mastra's multi-agent orchestration frame
 
 <Box sx={{ bgcolor: 'background.surface', p: 3, borderRadius: 1, mb: 3 }}>
 
-  ```mermaid
-  graph TB
-    subgraph "Frontend Layer"
-        A[Next.js App]
-        B[Chat Interface]
-        C[Auth Panel]
-        D[Admin UI]
-    end
+```mermaid
+graph TB
+  subgraph "Frontend Layer"
+      A[Next.js App]
+      B[Chat Interface]
+      C[Auth Panel]
+      D[Admin UI]
+  end
 
-    subgraph "API Layer"
-        E[Next.js API Routes]
-        F[/api/chat]
-        G[/api/index]
-        H[/api/auth]
-    end
+  subgraph "API Layer"
+      E[Next.js API Routes]
+      F[/api/chat]
+      G[/api/index]
+      H[/api/auth]
+  end
 
-    subgraph "Mastra Orchestration"
-        I[Mastra Server]
-        J[Agent Manager]
-        K[Workflow Engine]
-        L[Security Enforcer]
-    end
+  subgraph "Mastra Orchestration"
+      I[Mastra Server]
+      J[Agent Manager]
+      K[Workflow Engine]
+      L[Security Enforcer]
+  end
 
-    subgraph "Agent Layer"
-        M[Retriever Agent]
-        N[Validator Agent]
-        O[Summarizer Agent]
-        P[Response Agent]
-    end
+  subgraph "Agent Layer"
+      M[Retriever Agent]
+      N[Validator Agent]
+      O[Summarizer Agent]
+      P[Response Agent]
+  end
 
-    subgraph "Storage Layer"
-        Q[(PgVector Vectors)]
-        R[(LibSQL Metadata)]
-        S[(Security Store)]
-    end
+  subgraph "Storage Layer"
+      Q[(PgVector Vectors)]
+      R[(LibSQL Metadata)]
+      S[(Security Store)]
+  end
 
-    subgraph "External Services"
-        T[Google Gemini API]
-        U[Auth Provider]
-        V[Audit Logger]
-    end
+  subgraph "External Services"
+      T[Google Gemini API]
+      U[Auth Provider]
+      V[Audit Logger]
+  end
 
-    A --> E
-    B --> F
-    C --> H
-    D --> G
-    E --> I
-    I --> J
-    J --> K
-    K --> L
-    L --> M
-    L --> N
-    L --> O
-    L --> P
-    M --> Q
-    N --> R
-    O --> S
-    P --> T
-    I --> U
-    L --> V
+  A --> E
+  B --> F
+  C --> H
+  D --> G
+  E --> I
+  I --> J
+  J --> K
+  K --> L
+  L --> M
+  L --> N
+  L --> O
+  L --> P
+  M --> Q
+  N --> R
+  O --> S
+  P --> T
+  I --> U
+  L --> V
 
-    style A fill:#e3f2fd
-    style I fill:#fff3e0
-    style M fill:#f3e5f5
-    style Q fill:#e8f5e8
-  ```
+  style A fill:#e3f2fd
+  style I fill:#fff3e0
+  style M fill:#f3e5f5
+  style Q fill:#e8f5e8
+```
 
 </Box>
 

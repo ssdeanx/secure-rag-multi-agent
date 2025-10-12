@@ -22,6 +22,13 @@ import { google } from '@ai-sdk/google'
 import { pgMemory } from '../config/pg-storage'
 import { googleAI } from '../config/google'
 
+// Define runtime context for this agent
+export interface ResearchAgentContext {
+    userId?: string
+    tier?: 'free' | 'pro' | 'enterprise'
+    researchDepth?: number
+}
+
 log.info('Initializing Research Agent...')
 
 export const researchAgent = new Agent({
@@ -29,8 +36,11 @@ export const researchAgent = new Agent({
     name: 'Research Agent',
     description:
         'An expert research agent that conducts thorough research using web search and analysis tools.',
-    instructions: `
+    instructions: ({ runtimeContext }) => {
+        const userId = runtimeContext.get('userId')
+        return `
 <role>
+User: ${userId ?? 'anonymous'}
 You are an expert research agent. Your goal is to research topics thoroughly by following a precise, multi-phase process.
 </role>
 
@@ -68,7 +78,8 @@ Example:
   "runtimeConfig": {}
 }
 </output_format>
-  `,
+  `
+    },
     evals: {
         contentSimilarity: new ContentSimilarityMetric({
             ignoreCase: true,

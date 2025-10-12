@@ -38,7 +38,7 @@ interface User {
  * View and manage individual user account.
  */
 export default function UserDetailsPage({
-    params
+    params,
 }: {
     params: Promise<{ id: string }>
 }) {
@@ -65,7 +65,7 @@ export default function UserDetailsPage({
                     throw new Error('Failed to fetch user')
                 }
 
-                const data = await response.json() as User
+                const data = (await response.json()) as User
                 setUser(data)
             } catch {
                 // Error handled silently
@@ -91,14 +91,23 @@ export default function UserDetailsPage({
             const response = await fetch(`/api/users/${userId}/status`, {
                 method: 'PATCH',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ status: action === 'suspend' ? 'suspended' : 'active' })
+                body: JSON.stringify({
+                    status: action === 'suspend' ? 'suspended' : 'active',
+                }),
             })
 
             if (!response.ok) {
                 throw new Error('Failed to update user status')
             }
 
-            setUser((prev) => prev !== null ? { ...prev, status: action === 'suspend' ? 'suspended' : 'active' } : null)
+            setUser((prev) =>
+                prev !== null
+                    ? {
+                          ...prev,
+                          status: action === 'suspend' ? 'suspended' : 'active',
+                      }
+                    : null
+            )
         } catch {
             alert('Failed to update user status')
         }
@@ -109,13 +118,17 @@ export default function UserDetailsPage({
             return
         }
 
-        if (!confirm('Are you sure you want to delete this user? This action cannot be undone.')) {
+        if (
+            !confirm(
+                'Are you sure you want to delete this user? This action cannot be undone.'
+            )
+        ) {
             return
         }
 
         try {
             const response = await fetch(`/api/users/${userId}`, {
-                method: 'DELETE'
+                method: 'DELETE',
             })
 
             if (!response.ok) {
@@ -153,27 +166,47 @@ export default function UserDetailsPage({
                     <Home fontSize="small" />
                     Dashboard
                 </Link>
-                <Link component={NextLink} href="/protected/dash/users" color="neutral">
+                <Link
+                    component={NextLink}
+                    href="/protected/dash/users"
+                    color="neutral"
+                >
                     Users
                 </Link>
                 <Typography>{user.displayName}</Typography>
             </Breadcrumbs>
 
             {/* Page Header */}
-            <Box sx={{ mb: 4, display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
+            <Box
+                sx={{
+                    mb: 4,
+                    display: 'flex',
+                    justifyContent: 'space-between',
+                    alignItems: 'flex-start',
+                }}
+            >
                 <Box sx={{ display: 'flex', gap: 2, alignItems: 'center' }}>
-                    <Avatar size="lg">{user.displayName[0]?.toUpperCase()}</Avatar>
+                    <Avatar size="lg">
+                        {user.displayName[0]?.toUpperCase()}
+                    </Avatar>
                     <Box>
                         <Typography level="h2" component="h1">
                             {user.displayName}
                         </Typography>
-                        <Typography level="body-sm" sx={{ color: 'text.secondary' }}>
+                        <Typography
+                            level="body-sm"
+                            sx={{ color: 'text.secondary' }}
+                        >
                             {user.email}
                         </Typography>
                     </Box>
                 </Box>
                 <Stack direction="row" spacing={1}>
-                    <Button variant="outlined" color="neutral" startDecorator={<Edit />}>
+                    <Button
+                        variant="outlined"
+                        color="neutral"
+                        startDecorator={<Edit />}
+                    >
                         Edit
                     </Button>
                     <Button
@@ -210,37 +243,64 @@ export default function UserDetailsPage({
                             </Typography>
                             <Stack spacing={2}>
                                 <Box>
-                                    <Typography level="body-xs" sx={{ color: 'text.secondary' }}>
+                                    <Typography
+                                        level="body-xs"
+                                        sx={{ color: 'text.secondary' }}
+                                    >
                                         Status
                                     </Typography>
                                     <Chip
                                         size="sm"
                                         variant="soft"
-                                        color={user.status === 'active' ? 'success' : user.status === 'suspended' ? 'danger' : 'warning'}
+                                        color={
+                                            user.status === 'active'
+                                                ? 'success'
+                                                : user.status === 'suspended'
+                                                  ? 'danger'
+                                                  : 'warning'
+                                        }
                                     >
                                         {user.status}
                                     </Chip>
                                 </Box>
                                 <Box>
-                                    <Typography level="body-xs" sx={{ color: 'text.secondary' }}>
+                                    <Typography
+                                        level="body-xs"
+                                        sx={{ color: 'text.secondary' }}
+                                    >
                                         Role
                                     </Typography>
-                                    <RoleSelector userId={userId ?? ''} currentRole={user.role} />
+                                    <RoleSelector
+                                        userId={userId ?? ''}
+                                        currentRole={user.role}
+                                    />
                                 </Box>
                                 <Box>
-                                    <Typography level="body-xs" sx={{ color: 'text.secondary' }}>
+                                    <Typography
+                                        level="body-xs"
+                                        sx={{ color: 'text.secondary' }}
+                                    >
                                         Created
                                     </Typography>
                                     <Typography level="body-sm">
-                                        {new Date(user.createdAt).toLocaleString()}
+                                        {new Date(
+                                            user.createdAt
+                                        ).toLocaleString()}
                                     </Typography>
                                 </Box>
                                 <Box>
-                                    <Typography level="body-xs" sx={{ color: 'text.secondary' }}>
+                                    <Typography
+                                        level="body-xs"
+                                        sx={{ color: 'text.secondary' }}
+                                    >
                                         Last Login
                                     </Typography>
                                     <Typography level="body-sm">
-                                        {user.lastLoginAt !== null ? new Date(user.lastLoginAt).toLocaleString() : 'Never'}
+                                        {user.lastLoginAt !== null
+                                            ? new Date(
+                                                  user.lastLoginAt
+                                              ).toLocaleString()
+                                            : 'Never'}
                                     </Typography>
                                 </Box>
                             </Stack>

@@ -1,5 +1,11 @@
 import { Box, Typography, Button, Stack, Chip } from '@/components/ui/joy'
-import { RocketLaunch, ArrowForward, Security, Speed, Analytics } from '@mui/icons-material'
+import {
+    RocketLaunch,
+    ArrowForward,
+    Security,
+    Speed,
+    Analytics,
+} from '@mui/icons-material'
 
 export function FeaturesHero() {
     return (
@@ -19,7 +25,8 @@ export function FeaturesHero() {
                     width: 200,
                     height: 200,
                     borderRadius: '50%',
-                    background: 'linear-gradient(45deg, rgba(62, 207, 142, 0.1), rgba(52, 183, 124, 0.05))',
+                    background:
+                        'linear-gradient(45deg, rgba(62, 207, 142, 0.1), rgba(52, 183, 124, 0.05))',
                     filter: 'blur(40px)',
                     animation: 'float 6s ease-in-out infinite',
                     '@keyframes float': {
@@ -36,7 +43,8 @@ export function FeaturesHero() {
                     width: 150,
                     height: 150,
                     borderRadius: '50%',
-                    background: 'linear-gradient(45deg, rgba(20, 184, 166, 0.1), rgba(14, 165, 233, 0.05))',
+                    background:
+                        'linear-gradient(45deg, rgba(20, 184, 166, 0.1), rgba(14, 165, 233, 0.05))',
                     filter: 'blur(30px)',
                     animation: 'float 8s ease-in-out infinite reverse',
                 }}
@@ -55,7 +63,7 @@ export function FeaturesHero() {
                         alignItems: 'center',
                         textAlign: 'center',
                         position: 'relative',
-                        zIndex: 1
+                        zIndex: 1,
                     }}
                 >
                     {/* Badge */}
@@ -82,7 +90,8 @@ export function FeaturesHero() {
                             fontSize: { xs: '2.5rem', md: '4rem' },
                             fontWeight: 800,
                             lineHeight: 1.1,
-                            background: 'linear-gradient(135deg, var(--joy-palette-text-primary), var(--joy-palette-primary-600))',
+                            background:
+                                'linear-gradient(135deg, var(--joy-palette-text-primary), var(--joy-palette-primary-600))',
                             backgroundClip: 'text',
                             WebkitBackgroundClip: 'text',
                             WebkitTextFillColor: 'transparent',
@@ -105,8 +114,10 @@ export function FeaturesHero() {
                             lineHeight: 1.6,
                         }}
                     >
-                        Experience the future of document intelligence with our advanced Retrieval-Augmented Generation system.
-                        Built for enterprise security, lightning-fast responses, and unparalleled accuracy.
+                        Experience the future of document intelligence with our
+                        advanced Retrieval-Augmented Generation system. Built
+                        for enterprise security, lightning-fast responses, and
+                        unparalleled accuracy.
                     </Typography>
 
                     {/* Feature highlights */}
@@ -126,8 +137,13 @@ export function FeaturesHero() {
                                 gap: 1.5,
                             }}
                         >
-                            <Security sx={{ color: 'success.500', fontSize: 24 }} />
-                            <Typography level="body-lg" sx={{ fontWeight: 500 }}>
+                            <Security
+                                sx={{ color: 'success.500', fontSize: 24 }}
+                            />
+                            <Typography
+                                level="body-lg"
+                                sx={{ fontWeight: 500 }}
+                            >
                                 Enterprise Security
                             </Typography>
                         </Box>
@@ -138,8 +154,13 @@ export function FeaturesHero() {
                                 gap: 1.5,
                             }}
                         >
-                            <Speed sx={{ color: 'warning.500', fontSize: 24 }} />
-                            <Typography level="body-lg" sx={{ fontWeight: 500 }}>
+                            <Speed
+                                sx={{ color: 'warning.500', fontSize: 24 }}
+                            />
+                            <Typography
+                                level="body-lg"
+                                sx={{ fontWeight: 500 }}
+                            >
                                 Lightning Fast
                             </Typography>
                         </Box>
@@ -150,8 +171,13 @@ export function FeaturesHero() {
                                 gap: 1.5,
                             }}
                         >
-                            <Analytics sx={{ color: 'info.500', fontSize: 24 }} />
-                            <Typography level="body-lg" sx={{ fontWeight: 500 }}>
+                            <Analytics
+                                sx={{ color: 'info.500', fontSize: 24 }}
+                            />
+                            <Typography
+                                level="body-lg"
+                                sx={{ fontWeight: 500 }}
+                            >
                                 Advanced Analytics
                             </Typography>
                         </Box>

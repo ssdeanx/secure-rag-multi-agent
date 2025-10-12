@@ -32,7 +32,11 @@ export default function UploadPage() {
                     <Home fontSize="small" />
                     Dashboard
                 </Link>
-                <Link component={NextLink} href="/protected/dash/documents" color="neutral">
+                <Link
+                    component={NextLink}
+                    href="/protected/dash/documents"
+                    color="neutral"
+                >
                     Documents
                 </Link>
                 <Typography>Upload</Typography>

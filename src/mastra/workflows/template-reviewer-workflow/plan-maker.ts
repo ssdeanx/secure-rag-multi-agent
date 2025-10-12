@@ -1,6 +1,6 @@
-import z from "zod"
-import type { claimsSchema } from "./claim-extractor.js"
-export const planMakerPrompt = (props:z.infer<typeof claimsSchema>)=>{
+import z from 'zod'
+import type { claimsSchema } from './claim-extractor.js'
+export const planMakerPrompt = (props: z.infer<typeof claimsSchema>) => {
     return `You are a test planner for Mastra AI templates.
 
 ## Context
@@ -77,39 +77,56 @@ Given "main_agent" and "claims[]", propose **exactly three** end‑to‑end chat
    * **teardown** - optional cleanup.
 ### Here is the claim and agent data to use:
 ${JSON.stringify(props, null, 2)}
-`;
+`
 }
 // Reuse the claim names from the ClaimsExtractionSchema input.
 
 export const planMakerOutputSchema = z.object({
-  plans: z
-    .array(
-      z.object({
-        id: z.enum(['plan-1', 'plan-2', 'plan-3']).describe('Plan identifier'),
-        title: z.string().min(3).max(120).describe('Concise plan title'),
-        claims_targeted: z
-          .array(z.string())
-          .min(1)
-          .describe('Exact claim names this plan is designed to validate'),
-        steps: z
-          .array(
+    plans: z
+        .array(
             z.object({
-              message: z.string().min(1).describe('chat message guidelines to use in this step, including mentions of resources, if applicable'),
-              expected_agent_behavior: z
-                .string()
-                .min(1)
-                .describe('What the agent should do/respond with'),
-            }),
-          )
-          .min(2)
-          .describe('Ordered interaction steps'),
-        success_criteria: z
-          .array(z.string())
-          .min(1)
-          .describe('Plan-level pass conditions after all steps'),
-        resourcesToUse: z.array(z.object({name:z.string(), url: z.string().nullable()}))
-      }),
-    )
-    .length(3)
-    .describe('Exactly three chat plans'),
-});
+                id: z
+                    .enum(['plan-1', 'plan-2', 'plan-3'])
+                    .describe('Plan identifier'),
+                title: z
+                    .string()
+                    .min(3)
+                    .max(120)
+                    .describe('Concise plan title'),
+                claims_targeted: z
+                    .array(z.string())
+                    .min(1)
+                    .describe(
+                        'Exact claim names this plan is designed to validate'
+                    ),
+                steps: z
+                    .array(
+                        z.object({
+                            message: z
+                                .string()
+                                .min(1)
+                                .describe(
+                                    'chat message guidelines to use in this step, including mentions of resources, if applicable'
+                                ),
+                            expected_agent_behavior: z
+                                .string()
+                                .min(1)
+                                .describe(
+                                    'What the agent should do/respond with'
+                                ),
+                        })
+                    )
+                    .min(2)
+                    .describe('Ordered interaction steps'),
+                success_criteria: z
+                    .array(z.string())
+                    .min(1)
+                    .describe('Plan-level pass conditions after all steps'),
+                resourcesToUse: z.array(
+                    z.object({ name: z.string(), url: z.string().nullable() })
+                ),
+            })
+        )
+        .length(3)
+        .describe('Exactly three chat plans'),
+})
