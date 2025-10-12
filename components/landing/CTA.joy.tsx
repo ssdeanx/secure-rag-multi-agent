@@ -79,7 +79,7 @@ export function CTA() {
                                 color: 'text.primary',
                             }}
                         >
-                            Try the Governed RAG Demo
+                            Experience Mastra Enterprise AI
                         </Typography>
 
                         <Typography
@@ -92,9 +92,8 @@ export function CTA() {
                                 lineHeight: 1.6,
                             }}
                         >
-                            Experience secure, auditable retrieval-augmented
-                            generation for enterprise workflows with complete
-                            governance and compliance.
+                            Deploy enterprise-grade AI orchestration with multi-agent security,
+                            content creation, research automation, and complete compliance governance.
                         </Typography>
 
                         <Box
@@ -106,7 +105,7 @@ export function CTA() {
                                 alignItems: 'center',
                             }}
                         >
-                            <Link href="/demo-rag">
+                            <Link href="/login">
                                 <Button
                                     size="lg"
                                     color="primary"
@@ -128,11 +127,11 @@ export function CTA() {
                                         },
                                     }}
                                 >
-                                    Try the Demo
+                                    Get Started
                                 </Button>
                             </Link>
 
-                            <Link href="/docs">
+                            <Link href="/contact">
                                 <Button
                                     variant="outlined"
                                     size="lg"
@@ -157,7 +156,7 @@ export function CTA() {
                                         },
                                     }}
                                 >
-                                    Read the Docs
+                                    Contact Sales
                                 </Button>
                             </Link>
                         </Box>

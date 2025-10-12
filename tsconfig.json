@@ -40,5 +40,5 @@
         "next-sitemap.config.js",
         "middleware.ts"
     ],
-    "exclude": ["node_modules", "dist", ".next", ".mastra", ".github/**/*.md"]
+    "exclude": ["node_modules", "dist", ".next", ".mastra", ".github", ".cursor", "public", "coverage", "scripts", ".kilocode", "docs", "memory-bank"]
 }

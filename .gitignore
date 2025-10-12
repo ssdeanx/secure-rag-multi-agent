@@ -94,5 +94,5 @@ gha-creds-*.json
 
 .github/prompts/
 .github/chatmodes/
-github/prompts/*.md
+.github/prompts/*.md
 .github/chatmodes/*.md

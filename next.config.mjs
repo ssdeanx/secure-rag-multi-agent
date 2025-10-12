@@ -13,7 +13,7 @@ const nextConfig = {
         '@ai-sdk/*',
         'crawlee',
     ],
-    pageExtensions: ['js', 'jsx', 'ts', 'tsx', 'md', 'mdx'],
+    pageExtensions: ['js', 'jsx', 'ts', 'tsx', 'mdx'],
     experimental: {
         //    useCache: true,
         browserDebugInfoInTerminal: true,
