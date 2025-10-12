@@ -61,6 +61,7 @@ export const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
 ```
 
 This approach gave us:
+
 - **Type Safety**: Full TypeScript support with proper prop forwarding
 - **Customization**: A single place to add project-specific defaults
 - **Migration Safety**: We could gradually replace Tailwind components without breaking the entire app
@@ -110,15 +111,15 @@ We migrated components in dependency order:
 #### Real-World Example: TopNavigation
 
 **Before (Tailwind)**:
+
 ```tsx
 <div className="sticky top-0 z-50 border-b bg-white/80 backdrop-blur-sm dark:bg-gray-900/80 dark:border-gray-800">
-    <div className="max-w-7xl mx-auto px-4">
-        {/* ... */}
-    </div>
+    <div className="max-w-7xl mx-auto px-4">{/* ... */}</div>
 </div>
 ```
 
 **After (Joy UI)**:
+
 ```tsx
 <Box
     component="nav"
@@ -139,6 +140,7 @@ We migrated components in dependency order:
 ```
 
 **Benefits**:
+
 - No dark mode duplicationâ€”`divider` and `background.surface` automatically adjust
 - Theme-aware gradients using `theme.vars`
 - Better semantic HTML with `component="nav"`
@@ -170,14 +172,14 @@ We hit TypeScript errors when using `Box component="ul"` and spreading props:
 
 #### Challenge 2: Next.js Link vs Joy Link
 
-Initially, we used Next.js `Link` throughout, which created inconsistencies in link styling. 
+Initially, we used Next.js `Link` throughout, which created inconsistencies in link styling.
 
 **Solution**: We created a hybrid Link primitive:
 
 ```typescript
 export const Link = ({ href, children, ...props }) => {
     const isExternal = href.startsWith('http')
-    
+
     if (isExternal) {
         return (
             <JoyLink
@@ -190,7 +192,7 @@ export const Link = ({ href, children, ...props }) => {
             </JoyLink>
         )
     }
-    
+
     return (
         <JoyLink component={NextLink} href={href} {...props}>
             {children}
@@ -224,17 +226,20 @@ The `ModalClose` component Joy provides automatically wires up the close buttonâ
 
 ### Measurable Improvements
 
-**Bundle Size**: Despite adding Joy UI, our initial bundle actually *decreased* by ~15KB (gzipped) because:
+**Bundle Size**: Despite adding Joy UI, our initial bundle actually _decreased_ by ~15KB (gzipped) because:
+
 - We removed Tailwind's large utility class generation
 - Joy's tree-shaking is excellentâ€”only components you use are included
 - Removed custom dark mode utilities and manual theme switching code
 
 **Accessibility Score**: Our Lighthouse accessibility score improved from 87 to 96:
+
 - Automatic ARIA attributes on all interactive components
 - Proper focus management in modals and drawers
 - Color contrast ratios enforced by Joy's design token system
 
 **Developer Velocity**: Time to build a new form reduced by ~40%:
+
 - No need to manually style every input state
 - Built-in error states, loading indicators, and validation UI
 - Consistent spacing and alignment without trial-and-error
@@ -256,6 +261,7 @@ The `ModalClose` component Joy provides automatically wires up the close buttonâ
 ```
 
 Both render identically, but the Joy version:
+
 - Is easier to read and understand intent
 - Automatically handles all states (hover, focus, disabled)
 - Respects theme tokens
@@ -288,7 +294,7 @@ We spent extra time ensuring our primitive wrappers had perfect TypeScript defin
 
 ### 4. Accessibility Comes Free
 
-Once we migrated a component to Joy, we could often *delete* custom accessibility code. Joy handles it better than we did manually.
+Once we migrated a component to Joy, we could often _delete_ custom accessibility code. Joy handles it better than we did manually.
 
 ### 5. Document Your Design Tokens
 
@@ -311,6 +317,7 @@ Our migration is ~85% complete. Remaining work:
 ### Should You Migrate to Joy UI?
 
 **Joy UI is a great choice if**:
+
 - You're building a complex application that will grow significantly
 - Accessibility and consistency are non-negotiable
 - You want built-in dark mode support
@@ -318,6 +325,7 @@ Our migration is ~85% complete. Remaining work:
 - You're already using or considering MUI Core (Joy shares the same foundation)
 
 **Stick with Tailwind if**:
+
 - You're building a marketing site or simple landing pages
 - You have strong design constraints that require pixel-perfect custom styling
 - Your team is deeply proficient in Tailwind and has solved theming/consistency
@@ -352,4 +360,4 @@ If you're considering a similar migration, start small, build your primitives, a
 - [MUI vs Joy UI: When to Choose Each](https://mui.com/blog/first-look-at-joy/)
 - [Accessibility in Joy UI](https://mui.com/joy-ui/guides/accessibility/)
 
-*Have questions about our migration? Found this helpful? Let us know on [GitHub Discussions](https://github.com/ssdeanx/governed-rag-ai/discussions).*
+_Have questions about our migration? Found this helpful? Let us know on [GitHub Discussions](https://github.com/ssdeanx/governed-rag-ai/discussions)._

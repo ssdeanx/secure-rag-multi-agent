@@ -58,7 +58,7 @@ export default function UserTable() {
                     throw new Error('Failed to fetch users')
                 }
 
-                const data = await response.json() as { users: User[] }
+                const data = (await response.json()) as { users: User[] }
                 setUsers(data.users)
             } catch {
                 // Error handled silently
@@ -71,11 +71,14 @@ export default function UserTable() {
     }, [searchQuery, roleFilter, statusFilter])
 
     const getRoleColor = (role: string) => {
-        const colors: Record<string, 'primary' | 'success' | 'warning' | 'neutral'> = {
+        const colors: Record<
+            string,
+            'primary' | 'success' | 'warning' | 'neutral'
+        > = {
             admin: 'primary',
             dept_admin: 'success',
             dept_viewer: 'warning',
-            employee: 'neutral'
+            employee: 'neutral',
         }
         return colors[role] ?? 'neutral'
     }
@@ -124,13 +127,18 @@ export default function UserTable() {
             </Stack>
 
             {/* Table */}
-            <Sheet variant="outlined" sx={{ borderRadius: 'sm', overflow: 'auto' }}>
+            <Sheet
+                variant="outlined"
+                sx={{ borderRadius: 'sm', overflow: 'auto' }}
+            >
                 <Table
                     hoverRow
                     sx={{
-                        '--TableCell-headBackground': 'var(--joy-palette-background-level1)',
+                        '--TableCell-headBackground':
+                            'var(--joy-palette-background-level1)',
                         '--Table-headerUnderlineThickness': '1px',
-                        '--TableRow-hoverBackground': 'var(--joy-palette-background-level1)'
+                        '--TableRow-hoverBackground':
+                            'var(--joy-palette-background-level1)',
                     }}
                 >
                     <thead>
@@ -146,7 +154,10 @@ export default function UserTable() {
                         {loading ? (
                             <tr>
                                 <td colSpan={5}>
-                                    <Typography level="body-sm" sx={{ textAlign: 'center', py: 4 }}>
+                                    <Typography
+                                        level="body-sm"
+                                        sx={{ textAlign: 'center', py: 4 }}
+                                    >
                                         Loading users...
                                     </Typography>
                                 </td>
@@ -154,7 +165,10 @@ export default function UserTable() {
                         ) : users.length === 0 ? (
                             <tr>
                                 <td colSpan={5}>
-                                    <Typography level="body-sm" sx={{ textAlign: 'center', py: 4 }}>
+                                    <Typography
+                                        level="body-sm"
+                                        sx={{ textAlign: 'center', py: 4 }}
+                                    >
                                         No users found
                                     </Typography>
                                 </td>
@@ -163,8 +177,14 @@ export default function UserTable() {
                             users.map((user) => (
                                 <tr key={user.id}>
                                     <td>
-                                        <Stack direction="row" spacing={2} alignItems="center">
-                                            <Avatar size="sm">{user.displayName[0]?.toUpperCase()}</Avatar>
+                                        <Stack
+                                            direction="row"
+                                            spacing={2}
+                                            alignItems="center"
+                                        >
+                                            <Avatar size="sm">
+                                                {user.displayName[0]?.toUpperCase()}
+                                            </Avatar>
                                             <Stack spacing={0}>
                                                 <Link
                                                     component={NextLink}
@@ -173,14 +193,23 @@ export default function UserTable() {
                                                 >
                                                     {user.displayName}
                                                 </Link>
-                                                <Typography level="body-xs" sx={{ color: 'text.secondary' }}>
+                                                <Typography
+                                                    level="body-xs"
+                                                    sx={{
+                                                        color: 'text.secondary',
+                                                    }}
+                                                >
                                                     {user.email}
                                                 </Typography>
                                             </Stack>
                                         </Stack>
                                     </td>
                                     <td>
-                                        <Chip size="sm" variant="soft" color={getRoleColor(user.role)}>
+                                        <Chip
+                                            size="sm"
+                                            variant="soft"
+                                            color={getRoleColor(user.role)}
+                                        >
                                             {user.role.replace('_', ' ')}
                                         </Chip>
                                     </td>
@@ -188,14 +217,25 @@ export default function UserTable() {
                                         <Chip
                                             size="sm"
                                             variant="soft"
-                                            color={user.status === 'active' ? 'success' : user.status === 'suspended' ? 'danger' : 'warning'}
+                                            color={
+                                                user.status === 'active'
+                                                    ? 'success'
+                                                    : user.status ===
+                                                        'suspended'
+                                                      ? 'danger'
+                                                      : 'warning'
+                                            }
                                         >
                                             {user.status}
                                         </Chip>
                                     </td>
                                     <td>
                                         <Typography level="body-sm">
-                                            {user.lastLoginAt !== null ? new Date(user.lastLoginAt).toLocaleDateString() : 'Never'}
+                                            {user.lastLoginAt !== null
+                                                ? new Date(
+                                                      user.lastLoginAt
+                                                  ).toLocaleDateString()
+                                                : 'Never'}
                                         </Typography>
                                     </td>
                                     <td>

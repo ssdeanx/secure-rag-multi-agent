@@ -13,6 +13,12 @@ import { embedMany } from 'ai'
 import type { ExtractParams } from '@mastra/rag'
 import { google } from '@ai-sdk/google'
 
+// Define runtime context for this tool
+export interface DocumentChunkingContext {
+    userId?: string
+    chunkStrategy?: string
+}
+
 /**
  * Input schema for custom document chunking tool with embeddings and storage
  */

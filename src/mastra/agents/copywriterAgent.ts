@@ -15,6 +15,12 @@ import { log } from '../config/logger'
 import { pgMemory } from '../config/pg-storage'
 import { googleAI } from '../config/google'
 
+// Define runtime context for this agent
+export interface CopywriterAgentContext {
+    userId?: string
+    contentType?: string
+}
+
 log.info('Initializing Copywriter Agent...')
 
 export const copywriterAgent = new Agent({
@@ -22,8 +28,11 @@ export const copywriterAgent = new Agent({
     name: 'copywriter-agent',
     description:
         'An expert copywriter agent that creates engaging, high-quality content across multiple formats including blog posts, marketing copy, social media content, technical writing, and business communications.',
-    instructions: `
+    instructions: ({ runtimeContext }) => {
+        const userId = runtimeContext.get('userId')
+        return `
 You are an expert copywriter agent specializing in creating engaging, high-quality content across multiple formats and purposes.
+User: ${userId ?? 'anonymous'}
 
 <task>
 Your goal is to create compelling content based on the specified type and requirements. This includes conducting research, structuring the content appropriately, writing the body, and ensuring it is polished and ready for its intended purpose.
@@ -99,7 +108,8 @@ For each content type, adapt your approach:
 Produce the final content in well-formatted Markdown with appropriate structure for the content type.
 Include relevant metadata such as title, summary, and key points when applicable.
 </output_format>
-  `,
+  `
+    },
     model: googleAI,
     memory: pgMemory,
     tools: {

@@ -38,10 +38,13 @@ export default function ModelSelector() {
         fallbackModel: 'gpt-4o-mini',
         temperature: 0.7,
         maxTokens: 2048,
-        topP: 0.9
+        topP: 0.9,
     })
     const [loading, setLoading] = React.useState(false)
-    const [message, setMessage] = React.useState<{ type: 'success' | 'danger'; text: string } | null>(null)
+    const [message, setMessage] = React.useState<{
+        type: 'success' | 'danger'
+        text: string
+    } | null>(null)
 
     const handleSave = async () => {
         setLoading(true)
@@ -51,18 +54,24 @@ export default function ModelSelector() {
             const response = await fetch('/api/settings/models', {
                 method: 'PATCH',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(config)
+                body: JSON.stringify(config),
             })
 
             if (!response.ok) {
                 throw new Error('Failed to save model configuration')
             }
 
-            setMessage({ type: 'success', text: 'Model configuration saved successfully' })
+            setMessage({
+                type: 'success',
+                text: 'Model configuration saved successfully',
+            })
         } catch (error) {
             setMessage({
                 type: 'danger',
-                text: error instanceof Error ? error.message : 'Failed to save configuration'
+                text:
+                    error instanceof Error
+                        ? error.message
+                        : 'Failed to save configuration',
             })
         } finally {
             setLoading(false)
@@ -75,7 +84,7 @@ export default function ModelSelector() {
             fallbackModel: 'gpt-4o-mini',
             temperature: 0.7,
             maxTokens: 2048,
-            topP: 0.9
+            topP: 0.9,
         })
         setMessage(null)
     }
@@ -84,7 +93,8 @@ export default function ModelSelector() {
         <Stack spacing={3}>
             {/* Info Alert */}
             <Alert variant="soft" color="primary" startDecorator={<Info />}>
-                Model selection affects all AI agents and workflows. Changes take effect immediately after saving.
+                Model selection affects all AI agents and workflows. Changes
+                take effect immediately after saving.
             </Alert>
 
             {message !== null && (
@@ -108,25 +118,44 @@ export default function ModelSelector() {
                                 value={config.primaryModel}
                                 onChange={(_event, value) => {
                                     if (value !== null) {
-                                        setConfig((prev) => ({ ...prev, primaryModel: value }))
+                                        setConfig((prev) => ({
+                                            ...prev,
+                                            primaryModel: value,
+                                        }))
                                     }
                                 }}
                             >
                                 <Option value="gemini-2.0-flash-exp">
-                                    <Stack direction="row" spacing={1} alignItems="center">
+                                    <Stack
+                                        direction="row"
+                                        spacing={1}
+                                        alignItems="center"
+                                    >
                                         <span>Gemini 2.0 Flash</span>
-                                        <Chip size="sm" variant="soft" color="primary">
+                                        <Chip
+                                            size="sm"
+                                            variant="soft"
+                                            color="primary"
+                                        >
                                             Recommended
                                         </Chip>
                                     </Stack>
                                 </Option>
-                                <Option value="gemini-1.5-pro">Gemini 1.5 Pro</Option>
-                                <Option value="gemini-1.5-flash">Gemini 1.5 Flash</Option>
+                                <Option value="gemini-1.5-pro">
+                                    Gemini 1.5 Pro
+                                </Option>
+                                <Option value="gemini-1.5-flash">
+                                    Gemini 1.5 Flash
+                                </Option>
                                 <Option value="gpt-4o">GPT-4o</Option>
                                 <Option value="gpt-4o-mini">GPT-4o Mini</Option>
                                 <Option value="gpt-4-turbo">GPT-4 Turbo</Option>
-                                <Option value="claude-3-5-sonnet">Claude 3.5 Sonnet</Option>
-                                <Option value="claude-3-opus">Claude 3 Opus</Option>
+                                <Option value="claude-3-5-sonnet">
+                                    Claude 3.5 Sonnet
+                                </Option>
+                                <Option value="claude-3-opus">
+                                    Claude 3 Opus
+                                </Option>
                             </Select>
                         </FormControl>
 
@@ -137,16 +166,26 @@ export default function ModelSelector() {
                                 value={config.fallbackModel}
                                 onChange={(_event, value) => {
                                     if (value !== null) {
-                                        setConfig((prev) => ({ ...prev, fallbackModel: value }))
+                                        setConfig((prev) => ({
+                                            ...prev,
+                                            fallbackModel: value,
+                                        }))
                                     }
                                 }}
                             >
                                 <Option value="gpt-4o-mini">GPT-4o Mini</Option>
-                                <Option value="gemini-1.5-flash">Gemini 1.5 Flash</Option>
+                                <Option value="gemini-1.5-flash">
+                                    Gemini 1.5 Flash
+                                </Option>
                                 <Option value="gpt-4o">GPT-4o</Option>
-                                <Option value="claude-3-5-sonnet">Claude 3.5 Sonnet</Option>
+                                <Option value="claude-3-5-sonnet">
+                                    Claude 3.5 Sonnet
+                                </Option>
                             </Select>
-                            <Typography level="body-xs" sx={{ mt: 0.5, color: 'text.secondary' }}>
+                            <Typography
+                                level="body-xs"
+                                sx={{ mt: 0.5, color: 'text.secondary' }}
+                            >
                                 Used when primary model fails or is unavailable
                             </Typography>
                         </FormControl>
@@ -171,7 +210,10 @@ export default function ModelSelector() {
                                 value={config.temperature}
                                 onChange={(_event, value) => {
                                     if (typeof value === 'number') {
-                                        setConfig((prev) => ({ ...prev, temperature: value }))
+                                        setConfig((prev) => ({
+                                            ...prev,
+                                            temperature: value,
+                                        }))
                                     }
                                 }}
                                 min={0}
@@ -181,11 +223,15 @@ export default function ModelSelector() {
                                 marks={[
                                     { value: 0, label: 'Focused' },
                                     { value: 1, label: 'Balanced' },
-                                    { value: 2, label: 'Creative' }
+                                    { value: 2, label: 'Creative' },
                                 ]}
                             />
-                            <Typography level="body-xs" sx={{ mt: 0.5, color: 'text.secondary' }}>
-                                Controls randomness. Lower values = more focused, higher = more creative
+                            <Typography
+                                level="body-xs"
+                                sx={{ mt: 0.5, color: 'text.secondary' }}
+                            >
+                                Controls randomness. Lower values = more
+                                focused, higher = more creative
                             </Typography>
                         </FormControl>
 
@@ -198,7 +244,10 @@ export default function ModelSelector() {
                                 value={config.maxTokens}
                                 onChange={(_event, value) => {
                                     if (typeof value === 'number') {
-                                        setConfig((prev) => ({ ...prev, maxTokens: value }))
+                                        setConfig((prev) => ({
+                                            ...prev,
+                                            maxTokens: value,
+                                        }))
                                     }
                                 }}
                                 min={512}
@@ -209,10 +258,13 @@ export default function ModelSelector() {
                                     { value: 512, label: '512' },
                                     { value: 2048, label: '2K' },
                                     { value: 4096, label: '4K' },
-                                    { value: 8192, label: '8K' }
+                                    { value: 8192, label: '8K' },
                                 ]}
                             />
-                            <Typography level="body-xs" sx={{ mt: 0.5, color: 'text.secondary' }}>
+                            <Typography
+                                level="body-xs"
+                                sx={{ mt: 0.5, color: 'text.secondary' }}
+                            >
                                 Maximum length of generated responses
                             </Typography>
                         </FormControl>
@@ -226,7 +278,10 @@ export default function ModelSelector() {
                                 value={config.topP}
                                 onChange={(_event, value) => {
                                     if (typeof value === 'number') {
-                                        setConfig((prev) => ({ ...prev, topP: value }))
+                                        setConfig((prev) => ({
+                                            ...prev,
+                                            topP: value,
+                                        }))
                                     }
                                 }}
                                 min={0}
@@ -236,11 +291,15 @@ export default function ModelSelector() {
                                 marks={[
                                     { value: 0, label: '0' },
                                     { value: 0.5, label: '0.5' },
-                                    { value: 1, label: '1' }
+                                    { value: 1, label: '1' },
                                 ]}
                             />
-                            <Typography level="body-xs" sx={{ mt: 0.5, color: 'text.secondary' }}>
-                                Controls diversity via nucleus sampling. Lower = more focused, higher = more diverse
+                            <Typography
+                                level="body-xs"
+                                sx={{ mt: 0.5, color: 'text.secondary' }}
+                            >
+                                Controls diversity via nucleus sampling. Lower =
+                                more focused, higher = more diverse
                             </Typography>
                         </FormControl>
                     </Stack>
@@ -249,10 +308,19 @@ export default function ModelSelector() {
 
             {/* Action Buttons */}
             <Stack direction="row" spacing={2} justifyContent="flex-end">
-                <Button variant="outlined" color="neutral" onClick={handleReset} disabled={loading}>
+                <Button
+                    variant="outlined"
+                    color="neutral"
+                    onClick={handleReset}
+                    disabled={loading}
+                >
                     Reset to Defaults
                 </Button>
-                <Button startDecorator={<Save />} loading={loading} onClick={handleSave}>
+                <Button
+                    startDecorator={<Save />}
+                    loading={loading}
+                    onClick={handleSave}
+                >
                     Save Configuration
                 </Button>
             </Stack>

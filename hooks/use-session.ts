@@ -23,7 +23,9 @@ export function useSession() {
                 const response = await fetch('/api/auth/session')
 
                 if (!response.ok) {
-                    throw new Error(`Failed to fetch session: ${response.statusText}`)
+                    throw new Error(
+                        `Failed to fetch session: ${response.statusText}`
+                    )
                 }
 
                 const data = await response.json()
@@ -34,7 +36,9 @@ export function useSession() {
                     setSession(null)
                 }
             } catch (err) {
-                setError(err instanceof Error ? err : new Error('Unknown error'))
+                setError(
+                    err instanceof Error ? err : new Error('Unknown error')
+                )
                 setSession(null)
             } finally {
                 setLoading(false)

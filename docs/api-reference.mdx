@@ -60,7 +60,8 @@ The Mastra Governed RAG provides two main API endpoints for document indexing an
 
 ## API Overview
 
-<Mermaid chart={`graph TD
+<Mermaid
+    chart={`graph TD
     subgraph "Client"
         UI[Frontend App]
     end
@@ -105,7 +106,8 @@ The Mastra Governed RAG provides two main API endpoints for document indexing an
     class ChatWF,IndexWF workflow
     class Auth,RBAC,Policy security
     class VectorDB,DocStore data
-`} />
+`}
+/>
 
 <Box sx={{ display: 'grid', gridTemplateColumns: { xs: '1fr', md: 'repeat(2, 1fr)' }, gap: 3, mb: 3 }}>
   <Card variant="outlined">
@@ -171,7 +173,8 @@ The Mastra Governed RAG provides two main API endpoints for document indexing an
 
 **Description**: Processes a user question through the governed RAG workflow: authenticate → retrieve filtered docs → rerank → generate answer → verify. Streams the response as Server-Sent Events (SSE).
 
-<Mermaid chart={`graph LR
+<Mermaid
+    chart={`graph LR
     A[User Query] --> B[JWT Validation]
     B --> C[Role-Based Filtering]
     C --> D[Document Retrieval]
@@ -187,7 +190,8 @@ The Mastra Governed RAG provides two main API endpoints for document indexing an
     classDef error fill:#ffebee,stroke:#c62828,stroke-width:2px
     class A,C,D,E,F,G,H process
     class B1,C1,D1,G1 error
-`} />
+`}
+/>
 
 **Path**: `POST /api/chat`
 
@@ -355,7 +359,8 @@ curl -X POST http://localhost:3000/api/chat \
 
 **Description**: Resumes a previously suspended chat workflow, allowing for interactive, multi-step conversations. Takes a workflow runId and resume data to continue execution from the suspension point.
 
-<Mermaid chart={`graph LR
+<Mermaid
+    chart={`graph LR
     A[Suspended Workflow] --> B[JWT Validation]
     B --> C[Run ID Verification]
     C --> D[Resume Data Processing]
@@ -368,7 +373,8 @@ curl -X POST http://localhost:3000/api/chat \
     classDef error fill:#ffebee,stroke:#c62828,stroke-width:2px
     class A,C,D,E,F process
     class B1,C1,D1 error
-`} />
+`}
+/>
 
 **Path**: `POST /api/chat/resume`
 
@@ -664,7 +670,8 @@ curl -X POST http://localhost:3000/api/index \
 
 ## Authentication & Security
 
-<Mermaid chart={`graph TD
+<Mermaid
+    chart={`graph TD
     A[JWT Token] --> B[Header Extraction]
     B --> C[Signature Verification]
     C --> D[Claims Validation]
@@ -676,7 +683,8 @@ curl -X POST http://localhost:3000/api/index \
     classDef error fill:#ffebee,stroke:#c62828,stroke-width:2px
     class A,B,C,F process
     class D1,E1 error
-`} />
+`}
+/>
 
 ### JWT Authentication
 

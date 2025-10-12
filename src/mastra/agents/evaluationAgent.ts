@@ -12,6 +12,12 @@ import { google } from '@ai-sdk/google'
 import { pgMemory } from '../config/pg-storage'
 import { googleAIFlashLite } from '../config/google'
 
+// Define runtime context for this agent
+export interface EvaluationAgentContext {
+    userId?: string
+    queryContext?: string
+}
+
 log.info('Initializing Evaluation Agent...')
 
 export const evaluationAgent = new Agent({
@@ -19,8 +25,11 @@ export const evaluationAgent = new Agent({
     name: 'Evaluation Agent',
     description:
         'An expert evaluation agent. Your task is to evaluate whether search results are relevant to a research query.',
-    instructions: `
+    instructions: ({ runtimeContext }) => {
+        const userId = runtimeContext.get('userId')
+        return `
 <role>
+User: ${userId ?? 'anonymous'}
 You are an expert evaluation agent. Your task is to evaluate whether a given search result is relevant to a specific research query.
 </role>
 
@@ -51,7 +60,8 @@ CRITICAL: You must always respond with a valid JSON object in the following form
   "reason": "The article directly discusses the core concepts of the query and provides detailed examples." // string
 }
 </output_format>
-  `,
+  `
+    },
     model: googleAIFlashLite,
     memory: pgMemory,
     evals: {

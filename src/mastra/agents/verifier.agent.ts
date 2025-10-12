@@ -4,6 +4,12 @@ import { log } from '../config/logger'
 import { pgMemory } from '../config/pg-storage'
 import { googleAI } from '../config/google'
 
+// Define runtime context for this agent
+export interface VerifierAgentContext {
+    userId?: string
+    strictMode?: boolean
+}
+
 log.info('Initializing Verifier Agent...')
 
 export const verifierAgent = new Agent({
@@ -13,7 +19,10 @@ export const verifierAgent = new Agent({
     //model: openAIModel, --- IGNORE ---
     description:
         'A strict answer verification agent that ensures the provided answer is fully supported by the given contexts and relevant to the question.',
-    instructions: `You are a strict answer verification agent. Your task is to:
+    instructions: ({ runtimeContext }) => {
+        const userId = runtimeContext.get('userId')
+        return `You are a strict answer verification agent. Your task is to:
+User: ${userId ?? 'anonymous'}
 
 1. Verify that every claim in the answer is supported by the provided contexts
 2. Check that citations are correctly attributed
@@ -53,7 +62,8 @@ Common failure reasons:
 - "Answer doesn't address the question"
 - "Context is not relevant to the question - answer should indicate no information found"
 
-Always return valid JSON matching this exact structure.`,
+Always return valid JSON matching this exact structure.`
+    },
     memory: pgMemory,
     evals: {
         // Add any evaluation metrics if needed

@@ -2,8 +2,12 @@ import { createTool } from '@mastra/core/tools'
 import { z } from 'zod'
 import { log } from '../config/logger'
 import { AISpanType } from '@mastra/core/ai-tracing'
-import { evaluationAgent } from '../agents/evaluationAgent'
-import { learningExtractionAgent } from '../agents/learningExtractionAgent'
+
+// Define runtime context for this tool
+export interface StarterAgentToolContext {
+    userId?: string
+    sessionId?: string
+}
 
 log.info('Initializing Starter Agent Tool...')
 
@@ -73,7 +77,7 @@ export const starterAgentTool = createTool({
                 taskLength: task.length,
                 hasContext: !!additionalContext,
                 hasParameters: Object.keys(parameters).length > 0,
-                expectedOutput: expectedOutput || 'standard',
+                expectedOutput: expectedOutput ?? 'standard',
             },
         })
 
@@ -112,6 +116,13 @@ export const starterAgentTool = createTool({
                     break
                 case 'productRoadmap':
                     prompt = `Work on product roadmap for: ${prompt}`
+                    break
+                case 'assistant':
+                    prompt = `Assist with: ${prompt}`
+                    break
+                default:
+                    // Defensive fallback for any unexpected agent types
+                    prompt = `Perform task: ${prompt}`
                     break
             }
 

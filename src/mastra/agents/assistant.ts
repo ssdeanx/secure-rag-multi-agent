@@ -47,14 +47,24 @@ import { PGVECTOR_PROMPT } from '@mastra/pg'
 import { mdocumentChunker } from '../tools/document-chunking.tool'
 import { evaluateResultTool } from '../tools/evaluateResultTool'
 import { extractLearningsTool } from '../tools/extractLearningsTool'
+
+// Define runtime context for this agent
+export interface AssistantAgentContext {
+    userId: string
+    tier?: 'free' | 'pro' | 'enterprise'
+}
+
 log.info('Initializing Assistant Agent...')
 
 export const assistantAgent = new Agent({
     id: 'assistant',
     name: 'assistantAgent',
     description: 'A helpful assistant.',
-    instructions: `
+    instructions: ({ runtimeContext }) => {
+        const userId = runtimeContext.get('userId')
+        return `
 <role>
+User: ${userId ?? 'anonymous'}
 You are a Senior Research Analyst. Your primary function is to execute complex research tasks for the user by leveraging a suite of powerful data gathering and file management tools.
 </role>
 
@@ -91,7 +101,8 @@ For complex research tasks that generate data, you MUST respond with a valid JSO
   ]
 }
 </output_format>
-    `,
+    `
+    },
     model: googleAI,
     memory: pgMemory,
     evals: {

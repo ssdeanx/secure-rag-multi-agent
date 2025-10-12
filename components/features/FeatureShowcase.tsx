@@ -1,4 +1,13 @@
-import { Box, Typography, Card, CardContent, Stack, Button, AspectRatio, Grid } from '@/components/ui/joy'
+import {
+    Box,
+    Typography,
+    Card,
+    CardContent,
+    Stack,
+    Button,
+    AspectRatio,
+    Grid,
+} from '@/components/ui/joy'
 import { PlayArrow, Code, Analytics, Security } from '@mui/icons-material'
 
 export function FeatureShowcase() {
@@ -7,7 +16,10 @@ export function FeatureShowcase() {
             <Box sx={{ maxWidth: '1200px', mx: 'auto', px: { xs: 2, sm: 4 } }}>
                 <Stack spacing={8}>
                     {/* Section Header */}
-                    <Stack spacing={3} sx={{ textAlign: 'center', maxWidth: 800, mx: 'auto' }}>
+                    <Stack
+                        spacing={3}
+                        sx={{ textAlign: 'center', maxWidth: 800, mx: 'auto' }}
+                    >
                         <Typography
                             level="h2"
                             sx={{
@@ -22,11 +34,12 @@ export function FeatureShowcase() {
                             sx={{
                                 color: 'text.secondary',
                                 fontSize: '1.125rem',
-                                lineHeight: 1.6
+                                lineHeight: 1.6,
                             }}
                         >
-                            Experience the power of our next-generation RAG technology through interactive demos
-                            and real-world use cases.
+                            Experience the power of our next-generation RAG
+                            technology through interactive demos and real-world
+                            use cases.
                         </Typography>
                     </Stack>
 
@@ -42,7 +55,10 @@ export function FeatureShowcase() {
                                 position: 'relative',
                             }}
                         >
-                            <AspectRatio ratio="16/9" sx={{ bgcolor: 'background.level2' }}>
+                            <AspectRatio
+                                ratio="16/9"
+                                sx={{ bgcolor: 'background.level2' }}
+                            >
                                 <Box
                                     sx={{
                                         display: 'flex',
@@ -54,7 +70,10 @@ export function FeatureShowcase() {
                                         my: 6,
                                     }}
                                 >
-                                    <Stack spacing={3} sx={{ alignItems: 'center' }}>
+                                    <Stack
+                                        spacing={3}
+                                        sx={{ alignItems: 'center' }}
+                                    >
                                         <Box
                                             sx={{
                                                 width: 80,
@@ -66,9 +85,17 @@ export function FeatureShowcase() {
                                                 justifyContent: 'center',
                                             }}
                                         >
-                                            <PlayArrow sx={{ fontSize: 40, color: 'primary.500' }} />
+                                            <PlayArrow
+                                                sx={{
+                                                    fontSize: 40,
+                                                    color: 'primary.500',
+                                                }}
+                                            />
                                         </Box>
-                                        <Typography level="h4" sx={{ textAlign: 'center' }}>
+                                        <Typography
+                                            level="h4"
+                                            sx={{ textAlign: 'center' }}
+                                        >
                                             Interactive RAG Demo
                                         </Typography>
                                         <Typography
@@ -76,11 +103,14 @@ export function FeatureShowcase() {
                                             sx={{
                                                 textAlign: 'center',
                                                 color: 'text.secondary',
-                                                maxWidth: 400
+                                                maxWidth: 400,
                                             }}
                                         >
-                                            Experience real-time document querying with our advanced AI agents.
-                                            Ask questions about enterprise documents and see instant, accurate responses.
+                                            Experience real-time document
+                                            querying with our advanced AI
+                                            agents. Ask questions about
+                                            enterprise documents and see
+                                            instant, accurate responses.
                                         </Typography>
                                         <Button
                                             variant="solid"
@@ -113,7 +143,7 @@ export function FeatureShowcase() {
                                             transform: 'translateY(-4px)',
                                             boxShadow: 'lg',
                                             borderColor: 'primary.500',
-                                        }
+                                        },
                                     }}
                                 >
                                     <CardContent sx={{ p: 4 }}>
@@ -129,20 +159,39 @@ export function FeatureShowcase() {
                                                     justifyContent: 'center',
                                                 }}
                                             >
-                                                <Analytics sx={{ fontSize: 28, color: 'info.500' }} />
+                                                <Analytics
+                                                    sx={{
+                                                        fontSize: 28,
+                                                        color: 'info.500',
+                                                    }}
+                                                />
                                             </Box>
                                             <Stack spacing={2}>
-                                                <Typography level="h4" sx={{ fontWeight: 600 }}>
+                                                <Typography
+                                                    level="h4"
+                                                    sx={{ fontWeight: 600 }}
+                                                >
                                                     Real-Time Analytics
                                                 </Typography>
-                                                <Typography level="body-md" sx={{ color: 'text.secondary' }}>
-                                                    Monitor system performance, user interactions, and document insights
-                                                    with comprehensive dashboards and real-time metrics.
+                                                <Typography
+                                                    level="body-md"
+                                                    sx={{
+                                                        color: 'text.secondary',
+                                                    }}
+                                                >
+                                                    Monitor system performance,
+                                                    user interactions, and
+                                                    document insights with
+                                                    comprehensive dashboards and
+                                                    real-time metrics.
                                                 </Typography>
                                                 <Button
                                                     variant="outlined"
                                                     color="neutral"
-                                                    sx={{ alignSelf: 'flex-start', borderRadius: 'xl' }}
+                                                    sx={{
+                                                        alignSelf: 'flex-start',
+                                                        borderRadius: 'xl',
+                                                    }}
                                                 >
                                                     View Analytics
                                                 </Button>
@@ -163,7 +212,7 @@ export function FeatureShowcase() {
                                             transform: 'translateY(-4px)',
                                             boxShadow: 'lg',
                                             borderColor: 'success.500',
-                                        }
+                                        },
                                     }}
                                 >
                                     <CardContent sx={{ p: 4 }}>
@@ -179,20 +228,39 @@ export function FeatureShowcase() {
                                                     justifyContent: 'center',
                                                 }}
                                             >
-                                                <Security sx={{ fontSize: 28, color: 'success.500' }} />
+                                                <Security
+                                                    sx={{
+                                                        fontSize: 28,
+                                                        color: 'success.500',
+                                                    }}
+                                                />
                                             </Box>
                                             <Stack spacing={2}>
-                                                <Typography level="h4" sx={{ fontWeight: 600 }}>
+                                                <Typography
+                                                    level="h4"
+                                                    sx={{ fontWeight: 600 }}
+                                                >
                                                     Security Dashboard
                                                 </Typography>
-                                                <Typography level="body-md" sx={{ color: 'text.secondary' }}>
-                                                    Comprehensive security monitoring with threat detection,
-                                                    access control visualization, and compliance reporting.
+                                                <Typography
+                                                    level="body-md"
+                                                    sx={{
+                                                        color: 'text.secondary',
+                                                    }}
+                                                >
+                                                    Comprehensive security
+                                                    monitoring with threat
+                                                    detection, access control
+                                                    visualization, and
+                                                    compliance reporting.
                                                 </Typography>
                                                 <Button
                                                     variant="outlined"
                                                     color="success"
-                                                    sx={{ alignSelf: 'flex-start', borderRadius: 'xl' }}
+                                                    sx={{
+                                                        alignSelf: 'flex-start',
+                                                        borderRadius: 'xl',
+                                                    }}
                                                 >
                                                     Security Center
                                                 </Button>
@@ -214,7 +282,11 @@ export function FeatureShowcase() {
                         >
                             <CardContent sx={{ p: 6 }}>
                                 <Stack spacing={4}>
-                                    <Stack direction="row" spacing={3} sx={{ alignItems: 'center' }}>
+                                    <Stack
+                                        direction="row"
+                                        spacing={3}
+                                        sx={{ alignItems: 'center' }}
+                                    >
                                         <Box
                                             sx={{
                                                 width: 56,
@@ -226,14 +298,27 @@ export function FeatureShowcase() {
                                                 justifyContent: 'center',
                                             }}
                                         >
-                                            <Code sx={{ fontSize: 28, color: 'primary.500' }} />
+                                            <Code
+                                                sx={{
+                                                    fontSize: 28,
+                                                    color: 'primary.500',
+                                                }}
+                                            />
                                         </Box>
                                         <Stack spacing={1}>
-                                            <Typography level="h4" sx={{ fontWeight: 600 }}>
+                                            <Typography
+                                                level="h4"
+                                                sx={{ fontWeight: 600 }}
+                                            >
                                                 Developer Integration
                                             </Typography>
-                                            <Typography level="body-md" sx={{ color: 'text.secondary' }}>
-                                                Seamless API integration with comprehensive SDKs and documentation
+                                            <Typography
+                                                level="body-md"
+                                                sx={{ color: 'text.secondary' }}
+                                            >
+                                                Seamless API integration with
+                                                comprehensive SDKs and
+                                                documentation
                                             </Typography>
                                         </Stack>
                                     </Stack>
@@ -251,11 +336,11 @@ export function FeatureShowcase() {
                                             '& pre': {
                                                 m: 0,
                                                 whiteSpace: 'pre-wrap',
-                                            }
+                                            },
                                         }}
                                     >
                                         <pre>
-{`// Query documents with AI-powered search
+                                            {`// Query documents with AI-powered search
 const response = await rag.query({
   question: "What are our expense policies?",
   securityLevel: "internal",
@@ -271,7 +356,15 @@ const summary = await rag.summarize({
                                         </pre>
                                     </Box>
 
-                                    <Stack spacing={3} sx={{ flexDirection: { xs: 'column', sm: 'row' } }}>
+                                    <Stack
+                                        spacing={3}
+                                        sx={{
+                                            flexDirection: {
+                                                xs: 'column',
+                                                sm: 'row',
+                                            },
+                                        }}
+                                    >
                                         <Button
                                             variant="solid"
                                             color="primary"

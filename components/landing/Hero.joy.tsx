@@ -178,9 +178,11 @@ export function Hero() {
                                     color: 'text.secondary',
                                 }}
                             >
-                                Multi-agent AI orchestration with 17+ specialized agents, 15+ secure tools,
-                                and 11+ orchestrated workflows. Zero-trust security, content creation,
-                                research automation, and enterprise compliance built-in.
+                                Multi-agent AI orchestration with 17+
+                                specialized agents, 15+ secure tools, and 11+
+                                orchestrated workflows. Zero-trust security,
+                                content creation, research automation, and
+                                enterprise compliance built-in.
                             </Typography>
                         </motion.div>
 

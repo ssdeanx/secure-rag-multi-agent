@@ -42,12 +42,22 @@ export default function PolicyPage() {
             </Breadcrumbs>
 
             {/* Page Header */}
-            <Box sx={{ mb: 4, display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+            <Box
+                sx={{
+                    mb: 4,
+                    display: 'flex',
+                    justifyContent: 'space-between',
+                    alignItems: 'center',
+                }}
+            >
                 <Box>
                     <Typography level="h2" component="h1" sx={{ mb: 1 }}>
                         Access Control Policy
                     </Typography>
-                    <Typography level="body-md" sx={{ color: 'text.secondary' }}>
+                    <Typography
+                        level="body-md"
+                        sx={{ color: 'text.secondary' }}
+                    >
                         Manage ACL rules and permissions
                     </Typography>
                 </Box>

@@ -41,12 +41,14 @@ export default function ChunkViewer({ documentId }: ChunkViewerProps) {
     React.useEffect(() => {
         const fetchChunks = async () => {
             try {
-                const response = await fetch(`/api/documents/${documentId}/chunks`)
+                const response = await fetch(
+                    `/api/documents/${documentId}/chunks`
+                )
                 if (!response.ok) {
                     throw new Error('Failed to fetch chunks')
                 }
 
-                const data = await response.json() as { chunks: Chunk[] }
+                const data = (await response.json()) as { chunks: Chunk[] }
                 setChunks(data.chunks)
             } catch {
                 // Error handled silently
@@ -72,7 +74,9 @@ export default function ChunkViewer({ documentId }: ChunkViewerProps) {
         return (
             <Card>
                 <CardContent>
-                    <Typography color="warning">No chunks found for this document</Typography>
+                    <Typography color="warning">
+                        No chunks found for this document
+                    </Typography>
                 </CardContent>
             </Card>
         )
@@ -82,7 +86,13 @@ export default function ChunkViewer({ documentId }: ChunkViewerProps) {
         <Card>
             <CardContent>
                 <Stack spacing={2}>
-                    <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                    <Box
+                        sx={{
+                            display: 'flex',
+                            justifyContent: 'space-between',
+                            alignItems: 'center',
+                        }}
+                    >
                         <Typography level="title-md">Indexed Chunks</Typography>
                         <Chip size="sm" variant="soft" color="neutral">
                             {chunks.length} chunks
@@ -92,11 +102,22 @@ export default function ChunkViewer({ documentId }: ChunkViewerProps) {
                     {chunks.map((chunk) => (
                         <Accordion key={chunk.id}>
                             <AccordionSummary>
-                                <Stack direction="row" spacing={2} alignItems="center">
-                                    <Chip size="sm" variant="soft" color="primary">
+                                <Stack
+                                    direction="row"
+                                    spacing={2}
+                                    alignItems="center"
+                                >
+                                    <Chip
+                                        size="sm"
+                                        variant="soft"
+                                        color="primary"
+                                    >
                                         Chunk {chunk.index + 1}
                                     </Chip>
-                                    <Typography level="body-sm" sx={{ color: 'text.secondary' }}>
+                                    <Typography
+                                        level="body-sm"
+                                        sx={{ color: 'text.secondary' }}
+                                    >
                                         {chunk.content.substring(0, 100)}...
                                     </Typography>
                                 </Stack>
@@ -105,7 +126,13 @@ export default function ChunkViewer({ documentId }: ChunkViewerProps) {
                                 <Stack spacing={2}>
                                     {/* Content */}
                                     <Box>
-                                        <Typography level="body-xs" sx={{ color: 'text.secondary', mb: 0.5 }}>
+                                        <Typography
+                                            level="body-xs"
+                                            sx={{
+                                                color: 'text.secondary',
+                                                mb: 0.5,
+                                            }}
+                                        >
                                             Content
                                         </Typography>
                                         <Typography
@@ -115,7 +142,7 @@ export default function ChunkViewer({ documentId }: ChunkViewerProps) {
                                                 fontFamily: 'monospace',
                                                 bgcolor: 'background.level1',
                                                 p: 2,
-                                                borderRadius: 'sm'
+                                                borderRadius: 'sm',
                                             }}
                                         >
                                             {chunk.content}
@@ -124,18 +151,34 @@ export default function ChunkViewer({ documentId }: ChunkViewerProps) {
 
                                     {/* Metadata */}
                                     <Box>
-                                        <Typography level="body-xs" sx={{ color: 'text.secondary', mb: 0.5 }}>
+                                        <Typography
+                                            level="body-xs"
+                                            sx={{
+                                                color: 'text.secondary',
+                                                mb: 0.5,
+                                            }}
+                                        >
                                             Metadata
                                         </Typography>
-                                        <Stack direction="row" spacing={1} flexWrap="wrap">
+                                        <Stack
+                                            direction="row"
+                                            spacing={1}
+                                            flexWrap="wrap"
+                                        >
                                             <Chip size="sm" variant="outlined">
                                                 Model: {chunk.embeddingModel}
                                             </Chip>
-                                            {Object.entries(chunk.metadata).map(([key, value]) => (
-                                                <Chip key={key} size="sm" variant="outlined">
-                                                    {key}: {String(value)}
-                                                </Chip>
-                                            ))}
+                                            {Object.entries(chunk.metadata).map(
+                                                ([key, value]) => (
+                                                    <Chip
+                                                        key={key}
+                                                        size="sm"
+                                                        variant="outlined"
+                                                    >
+                                                        {key}: {String(value)}
+                                                    </Chip>
+                                                )
+                                            )}
                                         </Stack>
                                     </Box>
                                 </Stack>

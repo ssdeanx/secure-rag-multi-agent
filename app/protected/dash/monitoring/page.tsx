@@ -30,7 +30,11 @@ export default function MonitoringOverviewPage() {
         <Box>
             {/* Breadcrumbs */}
             <Breadcrumbs aria-label="breadcrumbs" sx={{ mb: 2 }}>
-                <Link component={NextLink} href="/protected/dash" color="neutral">
+                <Link
+                    component={NextLink}
+                    href="/protected/dash"
+                    color="neutral"
+                >
                     <HomeIcon sx={{ mr: 0.5 }} fontSize="inherit" />
                     Dashboard
                 </Link>
@@ -50,7 +54,10 @@ export default function MonitoringOverviewPage() {
                     <Typography level="h2" component="h1" sx={{ mb: 0.5 }}>
                         System Monitoring
                     </Typography>
-                    <Typography level="body-sm" sx={{ color: 'text.secondary' }}>
+                    <Typography
+                        level="body-sm"
+                        sx={{ color: 'text.secondary' }}
+                    >
                         Real-time metrics and system health
                     </Typography>
                 </Box>
@@ -128,7 +135,9 @@ export default function MonitoringOverviewPage() {
                                     mb: 2,
                                 }}
                             >
-                                <Typography level="title-md">Agent Status</Typography>
+                                <Typography level="title-md">
+                                    Agent Status
+                                </Typography>
                                 <Chip size="sm" color="success" variant="soft">
                                     All Operational
                                 </Chip>
@@ -161,7 +170,9 @@ export default function MonitoringOverviewPage() {
                                     mb: 2,
                                 }}
                             >
-                                <Typography level="title-md">Workflow Status</Typography>
+                                <Typography level="title-md">
+                                    Workflow Status
+                                </Typography>
                                 <Chip size="sm" color="primary" variant="soft">
                                     Active
                                 </Chip>
@@ -194,13 +205,16 @@ export default function MonitoringOverviewPage() {
                                     mb: 2,
                                 }}
                             >
-                                <Typography level="title-md">Performance Analytics</Typography>
+                                <Typography level="title-md">
+                                    Performance Analytics
+                                </Typography>
                                 <Chip size="sm" color="success" variant="soft">
                                     Healthy
                                 </Chip>
                             </Box>
                             <Typography level="body-sm" sx={{ mb: 2 }}>
-                                View detailed performance metrics and resource usage
+                                View detailed performance metrics and resource
+                                usage
                             </Typography>
                             <Button
                                 component={NextLink}

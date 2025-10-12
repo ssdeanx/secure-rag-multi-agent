@@ -77,7 +77,10 @@ export default function DashboardHeader({ onMenuClick }: DashboardHeaderProps) {
                 >
                     <MenuIcon />
                 </IconButton>
-                <Typography level="title-md" sx={{ display: { xs: 'none', md: 'block' } }}>
+                <Typography
+                    level="title-md"
+                    sx={{ display: { xs: 'none', md: 'block' } }}
+                >
                     Administration Dashboard
                 </Typography>
             </Box>
@@ -116,14 +119,22 @@ export default function DashboardHeader({ onMenuClick }: DashboardHeaderProps) {
                     <Menu placement="bottom-end" size="sm">
                         <MenuItem>
                             <Box>
-                                <Typography level="title-sm">User Account</Typography>
-                                <Typography level="body-xs" sx={{ color: 'text.tertiary' }}>
+                                <Typography level="title-sm">
+                                    User Account
+                                </Typography>
+                                <Typography
+                                    level="body-xs"
+                                    sx={{ color: 'text.tertiary' }}
+                                >
                                     user@example.com
                                 </Typography>
                             </Box>
                         </MenuItem>
                         <Divider />
-                        <MenuItem component={Link} href="/protected/dash/settings">
+                        <MenuItem
+                            component={Link}
+                            href="/protected/dash/settings"
+                        >
                             <SettingsIcon fontSize="small" />
                             Settings
                         </MenuItem>

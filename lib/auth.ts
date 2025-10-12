@@ -2,8 +2,12 @@ import { createServerClient } from '@supabase/ssr'
 import { cookies } from 'next/headers'
 import type { Session } from '@supabase/supabase-js'
 
-const SUPABASE_URL = process.env.SUPABASE_URL ?? process.env.NEXT_PUBLIC_SUPABASE_URL ?? ''
-const SUPABASE_ANON_KEY = process.env.SUPABASE_ANON_KEY ?? process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY ?? ''
+const SUPABASE_URL =
+    process.env.SUPABASE_URL ?? process.env.NEXT_PUBLIC_SUPABASE_URL ?? ''
+const SUPABASE_ANON_KEY =
+    process.env.SUPABASE_ANON_KEY ??
+    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY ??
+    ''
 
 /**
  * Create a Supabase client for server-side use (API routes, server components, server actions)
@@ -15,7 +19,7 @@ export async function createSupabaseServerClient() {
     return createServerClient(SUPABASE_URL, SUPABASE_ANON_KEY, {
         cookies: {
             getAll() {
-                return cookieStore.getAll().map(cookie => ({
+                return cookieStore.getAll().map((cookie) => ({
                     name: cookie.name,
                     value: cookie.value,
                 }))

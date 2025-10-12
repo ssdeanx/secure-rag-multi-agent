@@ -111,7 +111,10 @@ export default function DashboardPage() {
                                 <Typography level="h3" sx={{ mb: 0.5 }}>
                                     {stat.value}
                                 </Typography>
-                                <Typography level="body-sm" sx={{ color: 'text.tertiary' }}>
+                                <Typography
+                                    level="body-sm"
+                                    sx={{ color: 'text.tertiary' }}
+                                >
                                     {stat.title}
                                 </Typography>
                             </CardContent>
@@ -125,7 +128,9 @@ export default function DashboardPage() {
                 <Grid xs={12} md={8}>
                     <Card variant="outlined">
                         <CardHeader>
-                            <Typography level="title-md">System Status</Typography>
+                            <Typography level="title-md">
+                                System Status
+                            </Typography>
                         </CardHeader>
                         <CardContent>
                             <Box sx={{ mb: 3 }}>
@@ -137,8 +142,13 @@ export default function DashboardPage() {
                                         mb: 1,
                                     }}
                                 >
-                                    <Typography level="body-sm">Database Health</Typography>
-                                    <Typography level="body-sm" sx={{ color: 'success.main' }}>
+                                    <Typography level="body-sm">
+                                        Database Health
+                                    </Typography>
+                                    <Typography
+                                        level="body-sm"
+                                        sx={{ color: 'success.main' }}
+                                    >
                                         99.9%
                                     </Typography>
                                 </Box>
@@ -158,8 +168,13 @@ export default function DashboardPage() {
                                         mb: 1,
                                     }}
                                 >
-                                    <Typography level="body-sm">AI Model Performance</Typography>
-                                    <Typography level="body-sm" sx={{ color: 'primary.main' }}>
+                                    <Typography level="body-sm">
+                                        AI Model Performance
+                                    </Typography>
+                                    <Typography
+                                        level="body-sm"
+                                        sx={{ color: 'primary.main' }}
+                                    >
                                         97.2%
                                     </Typography>
                                 </Box>
@@ -179,8 +194,13 @@ export default function DashboardPage() {
                                         mb: 1,
                                     }}
                                 >
-                                    <Typography level="body-sm">Storage Usage</Typography>
-                                    <Typography level="body-sm" sx={{ color: 'warning.main' }}>
+                                    <Typography level="body-sm">
+                                        Storage Usage
+                                    </Typography>
+                                    <Typography
+                                        level="body-sm"
+                                        sx={{ color: 'warning.main' }}
+                                    >
                                         67.8%
                                     </Typography>
                                 </Box>
@@ -198,12 +218,23 @@ export default function DashboardPage() {
                 <Grid xs={12} md={4}>
                     <Card variant="outlined">
                         <CardHeader>
-                            <Typography level="title-md">Recent Activity</Typography>
+                            <Typography level="title-md">
+                                Recent Activity
+                            </Typography>
                         </CardHeader>
                         <CardContent>
-                            <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
+                            <Box
+                                sx={{
+                                    display: 'flex',
+                                    flexDirection: 'column',
+                                    gap: 2,
+                                }}
+                            >
                                 {recentActivity.map((activity, index) => (
-                                    <Box key={index} sx={{ display: 'flex', gap: 2 }}>
+                                    <Box
+                                        key={index}
+                                        sx={{ display: 'flex', gap: 2 }}
+                                    >
                                         <Box
                                             sx={{
                                                 width: 8,

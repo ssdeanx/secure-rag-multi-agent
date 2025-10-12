@@ -2,7 +2,14 @@
 
 import * as React from 'react'
 import { motion, useReducedMotion } from 'framer-motion'
-import { Box, Typography, Button, Card, CardContent, Link } from '@/components/ui/joy'
+import {
+    Box,
+    Typography,
+    Button,
+    Card,
+    CardContent,
+    Link,
+} from '@/components/ui/joy'
 import { ArrowRight, PlayArrow } from '@mui/icons-material'
 
 export function CTA() {
@@ -92,8 +99,9 @@ export function CTA() {
                                 lineHeight: 1.6,
                             }}
                         >
-                            Deploy enterprise-grade AI orchestration with multi-agent security,
-                            content creation, research automation, and complete compliance governance.
+                            Deploy enterprise-grade AI orchestration with
+                            multi-agent security, content creation, research
+                            automation, and complete compliance governance.
                         </Typography>
 
                         <Box

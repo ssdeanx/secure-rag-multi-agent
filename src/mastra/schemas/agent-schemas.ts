@@ -1,9 +1,12 @@
 import { z } from 'zod'
 
+export const subscriptionTierSchema = z.enum(['free', 'pro', 'enterprise'])
+
 export const jwtClaimsSchema = z.object({
     sub: z.string(),
     roles: z.array(z.string()),
     tenant: z.string().optional(),
+    tier: subscriptionTierSchema.optional().default('free'),
     stepUp: z.boolean().optional(),
     exp: z.number().optional(),
     iat: z.number().optional(),
@@ -151,6 +154,37 @@ export const assistantOutputSchema = z.object({
             title: z.string(),
         })
     ),
+})
+
+// Tier Configuration Schemas
+export const tierQuotaSchema = z.object({
+    maxDocuments: z.number().int().positive().or(z.literal(-1)), // -1 = unlimited
+    maxApiRequestsPerDay: z.number().int().positive().or(z.literal(-1)),
+    maxUsersPerTenant: z.number().int().positive().or(z.literal(-1)),
+    features: z.array(z.string()),
+    supportLevel: z.enum(['community', 'email', 'priority', 'phone_24x7']),
+    customIntegrations: z.boolean(),
+    advancedAnalytics: z.boolean(),
+    whiteLabel: z.boolean(),
+    onPremise: z.boolean(),
+})
+
+export const usageStatsSchema = z.object({
+    tenant: z.string(),
+    tier: subscriptionTierSchema,
+    documentsIndexed: z.number().int().nonnegative(),
+    apiRequestsToday: z.number().int().nonnegative(),
+    totalUsers: z.number().int().nonnegative(),
+    lastReset: z.string().datetime(),
+    quotaExceeded: z.boolean().optional(),
+})
+
+export const tierValidationResultSchema = z.object({
+    allowed: z.boolean(),
+    tier: subscriptionTierSchema,
+    reason: z.string().optional(),
+    upgradeRequired: z.boolean().optional(),
+    currentUsage: usageStatsSchema.optional(),
 })
 
 /**

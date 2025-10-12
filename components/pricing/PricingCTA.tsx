@@ -34,8 +34,9 @@ export function PricingCTA() {
                         mx: 'auto',
                     }}
                 >
-                    Join thousands of companies already using our platform to transform their document intelligence capabilities.
-                    Start your free trial today.
+                    Join thousands of companies already using our platform to
+                    transform their document intelligence capabilities. Start
+                    your free trial today.
                 </Typography>
 
                 <Box

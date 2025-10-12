@@ -40,12 +40,22 @@ export default function UsersPage() {
             </Breadcrumbs>
 
             {/* Page Header */}
-            <Box sx={{ mb: 4, display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+            <Box
+                sx={{
+                    mb: 4,
+                    display: 'flex',
+                    justifyContent: 'space-between',
+                    alignItems: 'center',
+                }}
+            >
                 <Box>
                     <Typography level="h2" component="h1" sx={{ mb: 1 }}>
                         User Management
                     </Typography>
-                    <Typography level="body-md" sx={{ color: 'text.secondary' }}>
+                    <Typography
+                        level="body-md"
+                        sx={{ color: 'text.secondary' }}
+                    >
                         Manage user accounts, roles, and permissions
                     </Typography>
                 </Box>

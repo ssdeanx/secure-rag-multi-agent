@@ -49,7 +49,9 @@ export async function GET(request: NextRequest) {
             )
         }
         if (classification !== 'all') {
-            filtered = filtered.filter((doc) => doc.classification === classification)
+            filtered = filtered.filter(
+                (doc) => doc.classification === classification
+            )
         }
 
         const total = filtered.length
@@ -87,7 +89,7 @@ export async function POST(request: NextRequest) {
         }
 
         // TODO: Save file, index with Mastra workflow
-        
+
         const newDocument = {
             id: Date.now().toString(),
             filename: file.name,

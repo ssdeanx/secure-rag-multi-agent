@@ -27,6 +27,8 @@ export interface GraphQueryContext {
         allowTags: string[]
         maxClassification: 'public' | 'internal' | 'confidential'
     }
+    tier: 'free' | 'pro' | 'enterprise'
+    userId: string
 }
 
 // In-memory counter to track tool calls per request
@@ -65,6 +67,17 @@ export const graphRagQueryTool = createTool({
             throw new Error('Access filter not found in runtime context')
         }
         const { allowTags, maxClassification } = accessFilter
+
+        // Get tier info from runtime context
+        const tier = (
+            runtimeContext as RuntimeContext<GraphQueryContext>
+        ).get('tier')
+        const userId = (
+            runtimeContext as RuntimeContext<GraphQueryContext>
+        ).get('userId')
+        if (!tier || !userId) {
+            throw new Error('Tier and userId required in runtime context')
+        }
 
         // Create a span for tracing
         const span = tracingContext?.currentSpan?.createChildSpan({

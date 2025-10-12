@@ -6,7 +6,10 @@ import CardContent from '@mui/joy/CardContent'
 import Typography from '@mui/joy/Typography'
 import Box from '@mui/joy/Box'
 import Chip from '@mui/joy/Chip'
-import { TrendingUp as TrendingUpIcon, TrendingDown as TrendingDownIcon } from '@mui/icons-material'
+import {
+    TrendingUp as TrendingUpIcon,
+    TrendingDown as TrendingDownIcon,
+} from '@mui/icons-material'
 
 interface MetricsCardProps {
     title: string
@@ -25,7 +28,6 @@ export default function MetricsCard({
     icon,
     color = 'primary',
 }: MetricsCardProps) {
-
     return (
         <Card>
             <CardContent>
@@ -37,7 +39,10 @@ export default function MetricsCard({
                         mb: 1,
                     }}
                 >
-                    <Typography level="body-sm" sx={{ color: 'text.secondary' }}>
+                    <Typography
+                        level="body-sm"
+                        sx={{ color: 'text.secondary' }}
+                    >
                         {title}
                     </Typography>
                     <Box
@@ -66,7 +71,11 @@ export default function MetricsCard({
                         variant="soft"
                         color={trend === 'up' ? 'success' : 'danger'}
                         startDecorator={
-                            trend === 'up' ? <TrendingUpIcon fontSize="small" /> : <TrendingDownIcon fontSize="small" />
+                            trend === 'up' ? (
+                                <TrendingUpIcon fontSize="small" />
+                            ) : (
+                                <TrendingDownIcon fontSize="small" />
+                            )
                         }
                     >
                         {change}

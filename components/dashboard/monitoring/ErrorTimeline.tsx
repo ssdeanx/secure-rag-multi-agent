@@ -9,7 +9,11 @@ import Chip from '@mui/joy/Chip'
 import List from '@mui/joy/List'
 import ListItem from '@mui/joy/ListItem'
 import ListItemDecorator from '@mui/joy/ListItemDecorator'
-import { Error as ErrorIcon, Warning as WarningIcon, Info as InfoIcon } from '@mui/icons-material'
+import {
+    Error as ErrorIcon,
+    Warning as WarningIcon,
+    Info as InfoIcon,
+} from '@mui/icons-material'
 
 interface ErrorEvent {
     id: string
@@ -113,18 +117,37 @@ export default function ErrorTimeline() {
                                 </Box>
                             </ListItemDecorator>
                             <Box sx={{ flex: 1 }}>
-                                <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, mb: 0.5 }}>
-                                    <Chip size="sm" variant="soft" color={getEventColor(event.type)}>
+                                <Box
+                                    sx={{
+                                        display: 'flex',
+                                        alignItems: 'center',
+                                        gap: 1,
+                                        mb: 0.5,
+                                    }}
+                                >
+                                    <Chip
+                                        size="sm"
+                                        variant="soft"
+                                        color={getEventColor(event.type)}
+                                    >
                                         {event.type}
                                     </Chip>
-                                    <Typography level="body-xs" sx={{ color: 'text.tertiary' }}>
-                                        {new Date(event.timestamp).toLocaleString()}
+                                    <Typography
+                                        level="body-xs"
+                                        sx={{ color: 'text.tertiary' }}
+                                    >
+                                        {new Date(
+                                            event.timestamp
+                                        ).toLocaleString()}
                                     </Typography>
                                 </Box>
                                 <Typography level="body-sm" sx={{ mb: 0.5 }}>
                                     {event.message}
                                 </Typography>
-                                <Typography level="body-xs" sx={{ color: 'text.secondary' }}>
+                                <Typography
+                                    level="body-xs"
+                                    sx={{ color: 'text.secondary' }}
+                                >
                                     Source: {event.source}
                                 </Typography>
                             </Box>
@@ -133,7 +156,14 @@ export default function ErrorTimeline() {
                 </List>
 
                 {events.length === 0 && (
-                    <Typography level="body-sm" sx={{ textAlign: 'center', py: 4, color: 'text.secondary' }}>
+                    <Typography
+                        level="body-sm"
+                        sx={{
+                            textAlign: 'center',
+                            py: 4,
+                            color: 'text.secondary',
+                        }}
+                    >
                         No events in the timeline
                     </Typography>
                 )}

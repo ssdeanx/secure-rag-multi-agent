@@ -26,7 +26,6 @@ Full-featured button component with loading states and decorators.
 
 ```tsx
 import { Button } from '@/components/ui/joy'
-
 ;<Button variant="solid" color="primary" loading>
     Submit
 </Button>
@@ -55,7 +54,6 @@ import {
     FormLabel,
     FormHelperText,
 } from '@/components/ui/joy'
-
 ;<FormControl>
     <FormLabel>Email</FormLabel>
     <Input type="email" placeholder="you@example.com" />
@@ -81,7 +79,6 @@ Auto-resizing textarea with custom styling.
 
 ```tsx
 import { Textarea } from '@/components/ui/joy'
-
 ;<Textarea placeholder="Enter your message..." minRows={3} maxRows={10} />
 ```
 
@@ -103,7 +100,6 @@ Dropdown select with full keyboard navigation.
 
 ```tsx
 import { Select, Option } from '@/components/ui/joy'
-
 ;<Select placeholder="Choose category">
     <Option value="tech">Technology</Option>
     <Option value="design">Design</Option>
@@ -129,7 +125,6 @@ Checkbox with proper label association and indeterminate state.
 
 ```tsx
 import { Checkbox } from '@/components/ui/joy'
-
 ;<Checkbox label="Accept terms and conditions" required />
 ```
 
@@ -218,7 +213,6 @@ import {
     CardActions,
     Button,
 } from '@/components/ui/joy'
-
 ;<Card>
     <CardContent>
         <CardTitle>Card Title</CardTitle>

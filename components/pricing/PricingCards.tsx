@@ -1,4 +1,12 @@
-import { Box, Card, CardContent, Typography, Button, Chip, Grid } from '@/components/ui/joy'
+import {
+    Box,
+    Card,
+    CardContent,
+    Typography,
+    Button,
+    Chip,
+    Grid,
+} from '@/components/ui/joy'
 import { Check, Star, Business, RocketLaunch } from '@mui/icons-material'
 
 const pricingTiers = [
@@ -52,7 +60,8 @@ const pricingTiers = [
         name: 'Enterprise',
         price: 'Custom',
         period: 'pricing',
-        description: 'Full-scale deployment with dedicated support and customization',
+        description:
+            'Full-scale deployment with dedicated support and customization',
         features: [
             'Unlimited documents',
             'All AI agents + custom development',
@@ -104,7 +113,9 @@ export function PricingCards() {
                                         transform: 'scale(1.05)',
                                     }),
                                     '&:hover': {
-                                        transform: tier.popular ? 'scale(1.08)' : 'translateY(-8px)',
+                                        transform: tier.popular
+                                            ? 'scale(1.08)'
+                                            : 'translateY(-8px)',
                                         boxShadow: 'xl',
                                     },
                                 }}
@@ -138,7 +149,14 @@ export function PricingCards() {
                                     </Box>
                                 )}
 
-                                <CardContent sx={{ p: 6, height: '100%', display: 'flex', flexDirection: 'column' }}>
+                                <CardContent
+                                    sx={{
+                                        p: 6,
+                                        height: '100%',
+                                        display: 'flex',
+                                        flexDirection: 'column',
+                                    }}
+                                >
                                     {/* Header */}
                                     <Box sx={{ textAlign: 'center', mb: 4 }}>
                                         <Box
@@ -195,7 +213,10 @@ export function PricingCards() {
                                                     fontSize: '3rem',
                                                     fontWeight: 800,
                                                     lineHeight: 1,
-                                                    color: tier.price === 'Custom' ? 'text.primary' : 'primary.500',
+                                                    color:
+                                                        tier.price === 'Custom'
+                                                            ? 'text.primary'
+                                                            : 'primary.500',
                                                 }}
                                             >
                                                 {tier.price}
@@ -228,35 +249,44 @@ export function PricingCards() {
                                             What's included:
                                         </Typography>
 
-                                        <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
-                                            {tier.features.map((feature, featureIndex) => (
-                                                <Box
-                                                    key={featureIndex}
-                                                    sx={{
-                                                        display: 'flex',
-                                                        alignItems: 'flex-start',
-                                                        gap: 2,
-                                                    }}
-                                                >
-                                                    <Check
+                                        <Box
+                                            sx={{
+                                                display: 'flex',
+                                                flexDirection: 'column',
+                                                gap: 2,
+                                            }}
+                                        >
+                                            {tier.features.map(
+                                                (feature, featureIndex) => (
+                                                    <Box
+                                                        key={featureIndex}
                                                         sx={{
-                                                            fontSize: 20,
-                                                            color: 'success.500',
-                                                            mt: 0.25,
-                                                            flexShrink: 0,
-                                                        }}
-                                                    />
-                                                    <Typography
-                                                        level="body-sm"
-                                                        sx={{
-                                                            color: 'text.secondary',
-                                                            lineHeight: 1.4,
+                                                            display: 'flex',
+                                                            alignItems:
+                                                                'flex-start',
+                                                            gap: 2,
                                                         }}
                                                     >
-                                                        {feature}
-                                                    </Typography>
-                                                </Box>
-                                            ))}
+                                                        <Check
+                                                            sx={{
+                                                                fontSize: 20,
+                                                                color: 'success.500',
+                                                                mt: 0.25,
+                                                                flexShrink: 0,
+                                                            }}
+                                                        />
+                                                        <Typography
+                                                            level="body-sm"
+                                                            sx={{
+                                                                color: 'text.secondary',
+                                                                lineHeight: 1.4,
+                                                            }}
+                                                        >
+                                                            {feature}
+                                                        </Typography>
+                                                    </Box>
+                                                )
+                                            )}
                                         </Box>
 
                                         {/* Limitations */}
@@ -272,19 +302,31 @@ export function PricingCards() {
                                                 >
                                                     Limitations:
                                                 </Typography>
-                                                <Box sx={{ display: 'flex', flexDirection: 'column', gap: 1 }}>
-                                                    {tier.limitations.map((limitation, limitIndex) => (
-                                                        <Typography
-                                                            key={limitIndex}
-                                                            level="body-xs"
-                                                            sx={{
-                                                                color: 'warning.500',
-                                                                fontStyle: 'italic',
-                                                            }}
-                                                        >
-                                                            • {limitation}
-                                                        </Typography>
-                                                    ))}
+                                                <Box
+                                                    sx={{
+                                                        display: 'flex',
+                                                        flexDirection: 'column',
+                                                        gap: 1,
+                                                    }}
+                                                >
+                                                    {tier.limitations.map(
+                                                        (
+                                                            limitation,
+                                                            limitIndex
+                                                        ) => (
+                                                            <Typography
+                                                                key={limitIndex}
+                                                                level="body-xs"
+                                                                sx={{
+                                                                    color: 'warning.500',
+                                                                    fontStyle:
+                                                                        'italic',
+                                                                }}
+                                                            >
+                                                                • {limitation}
+                                                            </Typography>
+                                                        )
+                                                    )}
                                                 </Box>
                                             </Box>
                                         )}
@@ -292,7 +334,9 @@ export function PricingCards() {
 
                                     {/* CTA Button */}
                                     <Button
-                                        variant={tier.popular ? 'solid' : 'outlined'}
+                                        variant={
+                                            tier.popular ? 'solid' : 'outlined'
+                                        }
                                         color={tier.color}
                                         size="lg"
                                         fullWidth

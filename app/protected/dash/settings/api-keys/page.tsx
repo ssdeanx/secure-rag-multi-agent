@@ -33,7 +33,11 @@ export default function APIKeysPage() {
                     <Home fontSize="small" />
                     Dashboard
                 </Link>
-                <Link component={NextLink} href="/protected/dash/settings" color="neutral">
+                <Link
+                    component={NextLink}
+                    href="/protected/dash/settings"
+                    color="neutral"
+                >
                     Settings
                 </Link>
                 <Typography>API Keys</Typography>

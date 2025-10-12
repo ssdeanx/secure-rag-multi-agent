@@ -92,7 +92,11 @@ export function TopNavigation({ user }: TopNavigationProps) {
                     }}
                 >
                     {/* Logo */}
-                    <Link href="/" aria-label="Deanmachines home" sx={{ textDecoration: 'none' }}>
+                    <Link
+                        href="/"
+                        aria-label="Deanmachines home"
+                        sx={{ textDecoration: 'none' }}
+                    >
                         <Box
                             component="span"
                             sx={{
@@ -375,7 +379,10 @@ export function TopNavigation({ user }: TopNavigationProps) {
 
                         {!user && (
                             <ListItem sx={{ mt: 2, p: 0 }}>
-                                <Link href="/login" sx={{ width: '100%', display: 'block' }}>
+                                <Link
+                                    href="/login"
+                                    sx={{ width: '100%', display: 'block' }}
+                                >
                                     <Button
                                         component="span"
                                         variant="solid"

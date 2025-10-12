@@ -5,6 +5,12 @@ import { log } from '../config/logger'
 import { pgMemory } from '../config/pg-storage'
 import { googleAI } from '../config/google'
 
+// Define runtime context for this agent
+export interface RerankAgentContext {
+    userId?: string
+    queryContext?: string
+}
+
 log.info('Initializing Rerank Agent...')
 
 export const rerankAgent = new Agent({
@@ -13,7 +19,10 @@ export const rerankAgent = new Agent({
     model: googleAI,
     description:
         'A context reranking agent that reorders provided contexts based on their relevance to the question.',
-    instructions: `You are a context reranking agent. Your task is to:
+    instructions: ({ runtimeContext }) => {
+        const userId = runtimeContext.get('userId')
+        return `You are a context reranking agent. Your task is to:
+User: ${userId ?? 'anonymous'}
 
 1. Analyze the relevance of each context to the question
 2. Sort contexts from most to least relevant
@@ -33,7 +42,8 @@ You must respond with a valid JSON object in the following format:
   "contexts": [/* array of reordered context objects */]
 }
 
-Always return valid JSON matching this exact structure.`,
+Always return valid JSON matching this exact structure.`
+    },
     memory: pgMemory,
     evals: {
         // Add any evaluation metrics if needed

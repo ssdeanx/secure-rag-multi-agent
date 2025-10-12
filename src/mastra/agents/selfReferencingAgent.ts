@@ -20,11 +20,21 @@ import { evaluateResultTool } from '../tools/evaluateResultTool'
 import { extractLearningsTool } from '../tools/extractLearningsTool'
 import { copywriterTool } from '../tools/copywriter-agent-tool'
 
+// Define runtime context for this agent
+export interface SelfReferencingAgentContext {
+    userId?: string
+    mcpServerId?: string
+}
+
 const selfReferencingAgent = new Agent({
     id: 'selfReferencing',
     name: 'selfReferencingAgent',
     description: 'An agent that can use tools from an http MCP server',
-    instructions: 'You can use remote calculation tools.',
+    instructions: ({ runtimeContext }) => {
+        const userId = runtimeContext.get('userId')
+        return `You can use remote calculation tools.
+User: ${userId ?? 'anonymous'}`
+    },
     model: google('gemini-2.5-flash'),
     tools: async () => {
         // Tools resolve when needed, not during initialization

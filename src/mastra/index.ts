@@ -69,10 +69,10 @@ export const mastra = new Mastra({
     server: {
         apiRoutes,
         // Add authentication in production
-//        experimental_auth: new MastraAuthSupabase({
-//            url: process.env.SUPABASE_URL,
-//            anonKey: process.env.SUPABASE_ANON_KEY
-//        }),
+        //        experimental_auth: new MastraAuthSupabase({
+        //            url: process.env.SUPABASE_URL,
+        //            anonKey: process.env.SUPABASE_ANON_KEY
+        //        }),
     },
     observability: {
         default: { enabled: true }, // Enable default tracing with DefaultExporter and CloudExporter
@@ -95,19 +95,39 @@ export const mastra = new Mastra({
                 ],
                 processors: [
                     new SensitiveDataFilter({
-                      // Add custom sensitive fields
+                        // Add custom sensitive fields
                         sensitiveFields: [
-                        // Default fields
-                        'password', 'token', 'secret', 'key', 'apikey', 'auth', 'authorization', 'bearer', 'bearertoken', 'jwt', 'credential', 'clientsecret', 'privatekey', 'refresh', 'ssn',
-                        // Custom fields for your application
-                        'creditCard', 'bankAccount', 'routingNumber',
-                        'email', 'phoneNumber', 'dateOfBirth', 'socialSecurityNumber', 'address'
+                            // Default fields
+                            'password',
+                            'token',
+                            'secret',
+                            'key',
+                            'apikey',
+                            'auth',
+                            'authorization',
+                            'bearer',
+                            'bearertoken',
+                            'jwt',
+                            'credential',
+                            'clientsecret',
+                            'privatekey',
+                            'refresh',
+                            'ssn',
+                            // Custom fields for your application
+                            'creditCard',
+                            'bankAccount',
+                            'routingNumber',
+                            'email',
+                            'phoneNumber',
+                            'dateOfBirth',
+                            'socialSecurityNumber',
+                            'address',
                         ],
                         // Custom redaction token
                         redactionToken: '***SENSITIVE***',
-                      // Redaction style
-                      redactionStyle: 'full', // or 'partial'
-                    })
+                        // Redaction style
+                        redactionStyle: 'full', // or 'partial'
+                    }),
                 ],
             },
         },

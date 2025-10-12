@@ -16,14 +16,20 @@ interface PerformanceChartProps {
 
 type TimeRangeValue = '1h' | '24h' | '7d' | '30d'
 
-export default function PerformanceChart({ title, timeRange: initialTimeRange }: PerformanceChartProps) {
-    const [timeRange, setTimeRange] = React.useState<TimeRangeValue>(initialTimeRange)
+export default function PerformanceChart({
+    title,
+    timeRange: initialTimeRange,
+}: PerformanceChartProps) {
+    const [timeRange, setTimeRange] =
+        React.useState<TimeRangeValue>(initialTimeRange)
 
     // Mock data - in real app, this would come from API
     const chartData = React.useMemo(() => {
         const dataPoints = 24
         return Array.from({ length: dataPoints }, (_, i) => ({
-            time: new Date(Date.now() - (dataPoints - i) * 3600000).toLocaleTimeString(),
+            time: new Date(
+                Date.now() - (dataPoints - i) * 3600000
+            ).toLocaleTimeString(),
             value: Math.floor(Math.random() * 100) + 200,
         }))
     }, [timeRange])
@@ -44,7 +50,9 @@ export default function PerformanceChart({ title, timeRange: initialTimeRange }:
                     <Typography level="title-md">{title}</Typography>
                     <Select
                         value={timeRange}
-                        onChange={(_, value) => value && setTimeRange(value as TimeRangeValue)}
+                        onChange={(_, value) =>
+                            value && setTimeRange(value as TimeRangeValue)
+                        }
                         size="sm"
                     >
                         <Option value="1h">Last Hour</Option>

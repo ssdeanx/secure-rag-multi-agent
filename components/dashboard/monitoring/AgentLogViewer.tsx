@@ -78,7 +78,8 @@ export default function AgentLogViewer() {
         const matchesSearch =
             log.agentName.toLowerCase().includes(searchQuery.toLowerCase()) ||
             log.operation.toLowerCase().includes(searchQuery.toLowerCase())
-        const matchesStatus = statusFilter === 'all' || log.status === statusFilter
+        const matchesStatus =
+            statusFilter === 'all' || log.status === statusFilter
         return matchesSearch && matchesStatus
     })
 
@@ -146,7 +147,11 @@ export default function AgentLogViewer() {
                                 <td colSpan={6}>
                                     <Typography
                                         level="body-sm"
-                                        sx={{ textAlign: 'center', py: 4, color: 'text.secondary' }}
+                                        sx={{
+                                            textAlign: 'center',
+                                            py: 4,
+                                            color: 'text.secondary',
+                                        }}
                                     >
                                         No logs found
                                     </Typography>
@@ -156,28 +161,45 @@ export default function AgentLogViewer() {
                             filteredLogs.map((log) => (
                                 <tr key={log.id}>
                                     <td>
-                                        <Typography level="body-sm" fontWeight="md">
+                                        <Typography
+                                            level="body-sm"
+                                            fontWeight="md"
+                                        >
                                             {log.agentName}
                                         </Typography>
                                     </td>
                                     <td>
-                                        <Typography level="body-sm">{log.operation}</Typography>
+                                        <Typography level="body-sm">
+                                            {log.operation}
+                                        </Typography>
                                     </td>
                                     <td>
-                                        <Chip size="sm" variant="soft" color={getStatusColor(log.status)}>
+                                        <Chip
+                                            size="sm"
+                                            variant="soft"
+                                            color={getStatusColor(log.status)}
+                                        >
                                             {log.status}
                                         </Chip>
                                     </td>
                                     <td>
-                                        <Typography level="body-sm">{log.duration}ms</Typography>
-                                    </td>
-                                    <td>
                                         <Typography level="body-sm">
-                                            {new Date(log.timestamp).toLocaleString()}
+                                            {log.duration}ms
                                         </Typography>
                                     </td>
                                     <td>
-                                        <IconButton size="sm" variant="plain" color="neutral">
+                                        <Typography level="body-sm">
+                                            {new Date(
+                                                log.timestamp
+                                            ).toLocaleString()}
+                                        </Typography>
+                                    </td>
+                                    <td>
+                                        <IconButton
+                                            size="sm"
+                                            variant="plain"
+                                            color="neutral"
+                                        >
                                             <VisibilityIcon />
                                         </IconButton>
                                     </td>

@@ -12,12 +12,7 @@ import ListItemButton from '@mui/joy/ListItemButton'
 import ListItemDecorator from '@mui/joy/ListItemDecorator'
 import ListItemContent from '@mui/joy/ListItemContent'
 import Divider from '@mui/joy/Divider'
-import {
-    AccountCircle,
-    Palette,
-    Key,
-    Psychology,
-} from '@mui/icons-material'
+import { AccountCircle, Palette, Key, Psychology } from '@mui/icons-material'
 import Link from 'next/link'
 
 interface SettingSection {
@@ -61,7 +56,6 @@ const settingSections: SettingSection[] = [
  * Provides quick access to profile, theme, API, and model settings.
  */
 export default function SettingsPage() {
-
     return (
         <Box>
             <Box sx={{ mb: 4 }}>
@@ -90,7 +84,10 @@ export default function SettingsPage() {
                             <CardContent>
                                 <Link
                                     href={section.href}
-                                    style={{ textDecoration: 'none', color: 'inherit' }}
+                                    style={{
+                                        textDecoration: 'none',
+                                        color: 'inherit',
+                                    }}
                                 >
                                     <Box
                                         sx={{
@@ -114,10 +111,16 @@ export default function SettingsPage() {
                                             {section.icon}
                                         </Box>
                                         <Box sx={{ flex: 1 }}>
-                                            <Typography level="title-lg" sx={{ mb: 0.5 }}>
+                                            <Typography
+                                                level="title-lg"
+                                                sx={{ mb: 0.5 }}
+                                            >
                                                 {section.title}
                                             </Typography>
-                                            <Typography level="body-sm" sx={{ color: 'text.tertiary' }}>
+                                            <Typography
+                                                level="body-sm"
+                                                sx={{ color: 'text.tertiary' }}
+                                            >
                                                 {section.description}
                                             </Typography>
                                         </Box>
@@ -143,9 +146,15 @@ export default function SettingsPage() {
                                     <AccountCircle />
                                 </ListItemDecorator>
                                 <ListItemContent>
-                                    <Typography level="title-sm">Account Security</Typography>
-                                    <Typography level="body-xs" sx={{ color: 'text.tertiary' }}>
-                                        Two-factor authentication, password changes
+                                    <Typography level="title-sm">
+                                        Account Security
+                                    </Typography>
+                                    <Typography
+                                        level="body-xs"
+                                        sx={{ color: 'text.tertiary' }}
+                                    >
+                                        Two-factor authentication, password
+                                        changes
                                     </Typography>
                                 </ListItemContent>
                             </ListItemButton>
@@ -156,8 +165,13 @@ export default function SettingsPage() {
                                     <Key />
                                 </ListItemDecorator>
                                 <ListItemContent>
-                                    <Typography level="title-sm">Session Management</Typography>
-                                    <Typography level="body-xs" sx={{ color: 'text.tertiary' }}>
+                                    <Typography level="title-sm">
+                                        Session Management
+                                    </Typography>
+                                    <Typography
+                                        level="body-xs"
+                                        sx={{ color: 'text.tertiary' }}
+                                    >
                                         Active sessions and login history
                                     </Typography>
                                 </ListItemContent>

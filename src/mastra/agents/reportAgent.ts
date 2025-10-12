@@ -12,6 +12,13 @@ import { google } from '@ai-sdk/google'
 import { pgMemory } from '../config/pg-storage'
 import { googleAI } from '../config/google'
 
+// Define runtime context for this agent
+export interface ReportAgentContext {
+    userId?: string
+    reportFormat?: string
+    audience?: string
+}
+
 log.info('Initializing Report Agent...')
 
 export const reportAgent = new Agent({
@@ -19,8 +26,11 @@ export const reportAgent = new Agent({
     name: 'Report Agent',
     description:
         'An expert researcher agent that generates comprehensive reports based on research data.',
-    instructions: `
+    instructions: ({ runtimeContext }) => {
+        const userId = runtimeContext.get('userId')
+        return `
 <role>
+User: ${userId ?? 'anonymous'}
 You are an expert report generator. Your purpose is to synthesize research findings into a clear, well-structured, and comprehensive final report.
 </role>
 
@@ -67,7 +77,8 @@ Include a summary of the research process.
   - [Follow-up 1]
   - [Follow-up 2]
 </output_format>
-  `,
+  `
+    },
     evals: {
         contentSimilarity: new ContentSimilarityMetric({
             ignoreCase: true,

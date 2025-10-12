@@ -28,11 +28,17 @@ interface InviteUserModalProps {
  *
  * Modal for inviting new users with email and role selection.
  */
-export default function InviteUserModal({ open, onClose }: InviteUserModalProps) {
+export default function InviteUserModal({
+    open,
+    onClose,
+}: InviteUserModalProps) {
     const [email, setEmail] = React.useState('')
     const [role, setRole] = React.useState('employee')
     const [loading, setLoading] = React.useState(false)
-    const [message, setMessage] = React.useState<{ type: 'success' | 'danger'; text: string } | null>(null)
+    const [message, setMessage] = React.useState<{
+        type: 'success' | 'danger'
+        text: string
+    } | null>(null)
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault()
@@ -43,14 +49,17 @@ export default function InviteUserModal({ open, onClose }: InviteUserModalProps)
             const response = await fetch('/api/users/invite', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ email, role })
+                body: JSON.stringify({ email, role }),
             })
 
             if (!response.ok) {
                 throw new Error('Failed to send invitation')
             }
 
-            setMessage({ type: 'success', text: 'Invitation sent successfully' })
+            setMessage({
+                type: 'success',
+                text: 'Invitation sent successfully',
+            })
             setEmail('')
             setRole('employee')
             setTimeout(() => {
@@ -107,18 +116,39 @@ export default function InviteUserModal({ open, onClose }: InviteUserModalProps)
                                 }}
                                 disabled={loading}
                             >
-                                <Option value="employee">Employee - Basic access</Option>
-                                <Option value="dept_viewer">Department Viewer - Read department data</Option>
-                                <Option value="dept_admin">Department Admin - Manage department</Option>
-                                <Option value="admin">Admin - Full system access</Option>
+                                <Option value="employee">
+                                    Employee - Basic access
+                                </Option>
+                                <Option value="dept_viewer">
+                                    Department Viewer - Read department data
+                                </Option>
+                                <Option value="dept_admin">
+                                    Department Admin - Manage department
+                                </Option>
+                                <Option value="admin">
+                                    Admin - Full system access
+                                </Option>
                             </Select>
                         </FormControl>
 
-                        <Stack direction="row" spacing={2} justifyContent="flex-end">
-                            <Button variant="outlined" color="neutral" onClick={onClose} disabled={loading}>
+                        <Stack
+                            direction="row"
+                            spacing={2}
+                            justifyContent="flex-end"
+                        >
+                            <Button
+                                variant="outlined"
+                                color="neutral"
+                                onClick={onClose}
+                                disabled={loading}
+                            >
                                 Cancel
                             </Button>
-                            <Button type="submit" startDecorator={<Send />} loading={loading}>
+                            <Button
+                                type="submit"
+                                startDecorator={<Send />}
+                                loading={loading}
+                            >
                                 Send Invitation
                             </Button>
                         </Stack>

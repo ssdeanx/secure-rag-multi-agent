@@ -13,7 +13,9 @@ export async function POST(request: NextRequest) {
             email,
             role,
             status: 'sent' as const,
-            expiresAt: new Date(Date.now() + 1000 * 60 * 60 * 24 * 7).toISOString(), // 7 days
+            expiresAt: new Date(
+                Date.now() + 1000 * 60 * 60 * 24 * 7
+            ).toISOString(), // 7 days
             createdAt: new Date().toISOString(),
         }
 
