@@ -3,7 +3,7 @@
 import * as React from 'react'
 import { motion, useReducedMotion } from 'framer-motion'
 import { Box, Typography, Button, Chip, Link } from '@/components/ui/joy'
-import { ArrowRight, Sparkles } from 'lucide-react'
+import { ArrowForward, AutoAwesome } from '@mui/icons-material'
 
 export function Hero() {
     const reduceMotion = useReducedMotion()
@@ -118,7 +118,7 @@ export function Hero() {
                                   })}
                         >
                             <Chip
-                                startDecorator={<Sparkles size={16} />}
+                                startDecorator={<AutoAwesome />}
                                 variant="soft"
                                 color="primary"
                                 size="lg"
@@ -129,7 +129,7 @@ export function Hero() {
                                     fontSize: 'sm',
                                 }}
                             >
-                                Enterprise-Grade AI Solutions
+                                Enterprise AI Orchestration Platform
                             </Chip>
                         </motion.div>
 
@@ -156,11 +156,11 @@ export function Hero() {
                                             '0 0 30px var(--joy-palette-primary-softBg)',
                                     }}
                                 >
-                                    Deanmachines
+                                    Mastra
                                 </Typography>
                                 <br />
                                 <Typography component="span">
-                                    AI for the Enterprise
+                                    Enterprise AI Platform
                                 </Typography>
                             </Typography>
                         </motion.div>
@@ -178,11 +178,9 @@ export function Hero() {
                                     color: 'text.secondary',
                                 }}
                             >
-                                Secure, compliant AI solutions with role-based
-                                access control. Transform your enterprise
-                                knowledge into actionable insights while
-                                maintaining complete governance and audit
-                                trails.
+                                Multi-agent AI orchestration with 17+ specialized agents, 15+ secure tools,
+                                and 11+ orchestrated workflows. Zero-trust security, content creation,
+                                research automation, and enterprise compliance built-in.
                             </Typography>
                         </motion.div>
 
@@ -196,10 +194,10 @@ export function Hero() {
                                     pt: 4,
                                 }}
                             >
-                                <Link href="/demo-rag">
+                                <Link href="/features">
                                     <Button
                                         size="lg"
-                                        endDecorator={<ArrowRight size={20} />}
+                                        endDecorator={<ArrowForward />}
                                         sx={{
                                             px: 4,
                                             py: 2,
@@ -213,7 +211,7 @@ export function Hero() {
                                             transition: 'all 0.2s',
                                         }}
                                     >
-                                        Try the Demo
+                                        Explore Features
                                     </Button>
                                 </Link>
 
@@ -273,13 +271,13 @@ export function Hero() {
                                             mb: 0.5,
                                         }}
                                     >
-                                        99.9%
+                                        17+
                                     </Typography>
                                     <Typography
                                         level="body-sm"
                                         sx={{ color: 'text.tertiary' }}
                                     >
-                                        Uptime SLA
+                                        Specialized Agents
                                     </Typography>
                                 </Box>
                                 <Box sx={{ textAlign: 'center' }}>
@@ -292,13 +290,13 @@ export function Hero() {
                                             mb: 0.5,
                                         }}
                                     >
-                                        SOC 2
+                                        15+
                                     </Typography>
                                     <Typography
                                         level="body-sm"
                                         sx={{ color: 'text.tertiary' }}
                                     >
-                                        Compliant
+                                        Secure Tools
                                     </Typography>
                                 </Box>
                                 <Box sx={{ textAlign: 'center' }}>
@@ -311,13 +309,13 @@ export function Hero() {
                                             mb: 0.5,
                                         }}
                                     >
-                                        24/7
+                                        11+
                                     </Typography>
                                     <Typography
                                         level="body-sm"
                                         sx={{ color: 'text.tertiary' }}
                                     >
-                                        Support
+                                        Orchestrated Workflows
                                     </Typography>
                                 </Box>
                             </Box>

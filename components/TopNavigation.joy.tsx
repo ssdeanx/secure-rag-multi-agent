@@ -11,6 +11,7 @@ import {
     ListItemButton,
     Link,
 } from '@/components/ui/joy'
+import type { Theme } from '@mui/joy/styles'
 import { usePathname, useRouter } from 'next/navigation'
 import {
     Menu as MenuIcon,
@@ -22,6 +23,8 @@ import {
     Article,
     Login,
     RocketLaunch,
+    Star,
+    Payment,
 } from '@mui/icons-material'
 import { ThemeToggle } from './ThemeToggle.joy'
 import { UserMenu } from './UserMenu.joy'
@@ -37,6 +40,8 @@ interface TopNavigationProps {
 
 const navLinks = [
     { href: '/', label: 'Home', icon: Home },
+    { href: '/features', label: 'Features', icon: Star },
+    { href: '/pricing', label: 'Pricing', icon: Payment },
     { href: '/docs', label: 'Docs', icon: Description },
     { href: '/about', label: 'About', icon: Info },
     { href: '/blog', label: 'Blog', icon: Article },
@@ -68,9 +73,8 @@ export function TopNavigation({ user }: TopNavigationProps) {
                     bgcolor: 'transparent',
                     borderBottom: '1px solid',
                     borderColor: 'divider',
-                    backdropFilter: 'blur(8px)',
                     // Enhanced gradient surface using Joy tokens
-                    backgroundImage: (theme: any) =>
+                    backgroundImage: (theme: Theme) =>
                         `linear-gradient(180deg, rgba(0,0,0,0.25) 0%, rgba(0,0,0,0.05) 100%), ${theme.vars.palette.background.surface}`,
                     // Subtle elevated feel with theme shadows
                     boxShadow: { xs: 'none', md: 'sm' },
@@ -247,7 +251,7 @@ export function TopNavigation({ user }: TopNavigationProps) {
                                 >
                                     Sign In
                                 </Button>
-                                </Link>
+                            </Link>
                         )}
 
                         {/* Mobile Menu Button */}
