@@ -83,7 +83,7 @@ data: {"done": true, "citations": [
 
 ### POST /api/index
 
-**Description**: Indexes documents from `./corpus/` with security metadata. Runs the indexing workflow: process → chunk → embed → store in Qdrant. JWT optional (runs as system).
+**Description**: Indexes documents from `./corpus/` with security metadata. Runs the indexing workflow: process → chunk → embed → store in PostgreSQL with PgVector. JWT optional (runs as system).
 
 **Path**: `POST /api/index`
 
@@ -150,7 +150,7 @@ curl -X POST http://localhost:3000/api/index \
 **Status Codes**:
 
 - 200: Success with summary.
-- 500: Error (e.g., Qdrant connection).
+- 500: Error (e.g., PostgreSQL with PgVector connection).
 
 **Notes**:
 

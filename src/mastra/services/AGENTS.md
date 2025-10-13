@@ -21,7 +21,7 @@ Provide single-responsibility functional units (auth, role expansion, vector ret
 | `DocumentProcessorService.ts` | High-level indexing orchestration      | Calls chunk, embed, store services    |
 | `ChunkingService.ts`          | Strategy-based text segmentation       | Tune chunk sizes & overlap            |
 | `EmbeddingService.ts`         | Embedding generation & batching        | Retry & backoff logic                 |
-| `VectorStorageService.ts`     | Persistence into Qdrant                | Attaches security tags                |
+| `VectorStorageService.ts`     | Persistence into PostgreSQL with PgVector                | Attaches security tags                |
 | `ValidationService.ts`        | Common validation helpers              | Env & structural guards               |
 | `WorkflowDecorators.ts`       | Step wrapper utilities                 | Logging, timing, error wrapping       |
 

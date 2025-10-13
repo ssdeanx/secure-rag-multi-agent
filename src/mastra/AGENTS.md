@@ -23,7 +23,7 @@ Central nervous system that binds AI reasoning units (agents) with operational p
 | `tools/`         | Safe, side-effectful operations            | Input/output schemas enforced |
 | `services/`      | Reusable domain logic (pure/impure)        | Called by tools & workflows   |
 | `schemas/`       | Zod data contracts                         | Mirror TypeScript interfaces  |
-| `config/`        | External service & model configuration     | Qdrant, embeddings, models    |
+| `config/`        | External service & model configuration     | PostgreSQL with PgVector, embeddings, models    |
 | `policy/`        | ACL / security rules                       | Role & classification gating  |
 
 ## Execution Flow (Typical Chat Request)

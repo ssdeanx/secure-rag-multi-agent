@@ -5,7 +5,7 @@
   <img src="https://img.shields.io/badge/Next.js-15.5.3-black" alt="Next.js">
   <img src="https://img.shields.io/badge/TypeScript-5.9.2-blue" alt="TypeScript">
   <img src="https://img.shields.io/badge/OpenAI-GPT--4o--mini-green" alt="OpenAI">
-  <img src="https://img.shields.io/badge/Qdrant-Vector--DB-red" alt="Qdrant">
+  <img src="https://img.shields.io/badge/PostgreSQL--with--PgVector-Vector--DB-blue" alt="PostgreSQL with PgVector">
 </div>
 
 ## 🚀 Overview
@@ -30,7 +30,7 @@ graph TB
     B --> C[Policy Agent]
     C --> D[Access Filter Generation]
     D --> E[Retrieval Agent]
-    E --> F[Qdrant Vector Search]
+    E --> F[PostgreSQL with PgVector Vector Search]
     F --> G[Security Filtering]
     G --> H[Rerank Agent]
     H --> I[Answer Agent]
@@ -52,8 +52,8 @@ graph TB
     end
 
     subgraph "Storage Layer"
-        L[(Qdrant Vectors)]
-        M[(LibSQL Metadata)]
+        L[(PostgreSQL with PgVector Vectors)]
+        M[(Supabase Auth)]
     end
 
     F --> L
@@ -91,7 +91,7 @@ graph TB
 - **Production Deployment** guides and best practices
 - **Monitoring & Observability** with comprehensive logging
 - **Scalable Architecture** supporting multiple tenants
-- **Database Integration** with LibSQL and Qdrant
+- **Database Integration** with PostgreSQL with PgVector and Supabase
 - **API-First Design** with RESTful endpoints
 
 ## 🏢 Use Cases
@@ -259,7 +259,7 @@ This project is licensed under the MIT License - see the [LICENSE](../LICENSE) f
   <p>
     <a href="https://mastra.ai">Mastra.ai</a> •
     <a href="https://nextjs.org">Next.js</a> •
-    <a href="https://qdrant.tech">Qdrant</a> •
+    <a href="https://postgresql.org">PostgreSQL with PgVector</a> •
     <a href="https://openai.com">OpenAI</a>
   </p>
 </div>

@@ -8,7 +8,7 @@ This guide provides step-by-step instructions to set up and run the Mastra Gover
 - Docker and Docker Compose (for vector store and database services)
 - Git
 - An OpenAI API key (for embeddings and LLM; add to `.env`)
-- Optional: Qdrant cloud URL or run locally via Docker
+- Optional: PostgreSQL with PgVector cloud URL or run locally via Docker
 
 ## Installation
 
@@ -34,22 +34,22 @@ This guide provides step-by-step instructions to set up and run the Mastra Gover
 
     Key variables to set:
     - `OPENAI_API_KEY`: Your OpenAI API key
-    - `QDRANT_URL`: Qdrant server URL (e.g., `http://localhost:6333` for local)
-    - `QDRANT_API_KEY`: If using cloud Qdrant
+    - `DATABASE_URL`: PostgreSQL connection string (e.g., `postgresql://user:password@localhost:5432/mastra_db` for local)
+    - `SUPABASE_ANON_KEY`: Supabase anonymous key for authentication
     - `TENANT`: Default tenant ID (e.g., `acme`)
     - `JWT_SECRET`: Secret for JWT signing (generate a strong one)
 
-    For local development, the `docker-compose.yml` will start Qdrant and other services.
+    For local development, the `docker-compose.yml` will start PostgreSQL with PgVector and other services.
 
 4. **Start Services**
-   Launch the required backend services (Qdrant vector store, LibSQL database):
+   Launch the required backend services (PostgreSQL with PgVector vector store, Supabase):
 
     ```bash
     docker-compose up -d
     ```
 
     Verify services are running:
-    - Qdrant: `curl http://localhost:6333` (should return version info)
+    - PostgreSQL with PgVector: `psql postgresql://user:password@localhost:5432/mastra_db -c "SELECT version();"` (should return version info)
     - Wait 30 seconds for initialization.
 
 5. **Index Sample Documents**
