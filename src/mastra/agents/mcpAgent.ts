@@ -14,19 +14,16 @@ log.info('Initializing Multi-tool Agent...')
 // configure MCP with user-specific settings
 const mcp = new MCPClient({
     servers: {
-        stockPrice: {
+        chromedev: {
             command: 'npx',
-            args: ['tsx', 'stock-price.ts'],
-            env: {
-                API_KEY: 'user-123-api-key',
-            },
+            args: ['chrome-devtools-mcp@latest'],
+            env: {},
             timeout: 20000, // Server-specific timeout
         },
         weather: {
-            url: new URL('http://localhost:8080/sse'),
+            url: new URL('https://mcpwithcedar-production.up.railway.app/jsonrpc'),
             requestInit: {
                 headers: {
-                    Authorization: `Bearer user-123-token`,
                 },
             },
         },

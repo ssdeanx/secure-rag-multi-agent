@@ -1,11 +1,7 @@
 import { Agent } from '@mastra/core/agent'
 import type { Container } from 'inversify'
-import { templateReviewerWorkflow } from '../workflows/template-reviewer-workflow/index.js'
 import type { LanguageModel } from 'ai'
 import { MODEL_SYMBOL } from '../infra/model/index.js'
-import { ProjectRepository } from '../infra/repositories/project.js'
-import { googleSheetsTool } from '../tools/google-sheets-tool.js'
-import { listProjectsTool } from '../tools/list-projects-tool.js'
 import { Config } from '../domain/aggregates/config.js'
 import { pgMemory } from '../config/pg-storage.js'
 
