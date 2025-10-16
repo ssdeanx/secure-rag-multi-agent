@@ -20,7 +20,7 @@ const mcp = new MCPClient({
             env: {},
             timeout: 20000, // Server-specific timeout
         },
-        weather: {
+        cedar: {
             url: new URL('https://mcpwithcedar-production.up.railway.app/jsonrpc'),
             requestInit: {
                 headers: {
@@ -32,11 +32,12 @@ const mcp = new MCPClient({
 // create an agent that uses MCP tools
 export const mcpAgent = new Agent({
     id: 'mcp',
-    name: 'MCP Agent',
+    name: 'mcpAgent',
+    description: 'An agent that uses multiple tools via MCP.',
     instructions: ({ runtimeContext }) => {
         const userId = runtimeContext.get('userId')
         return `You help users check stocks and weather.
-User: ${userId ?? 'anonymous'}`
+User: ${userId ?? 'admin'}`
     },
     model: googleAI,
     memory: pgMemory,
