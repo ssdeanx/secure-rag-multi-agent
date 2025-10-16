@@ -76,7 +76,7 @@ Security is enforced end-to-end via the Mastra query workflow ([governed-rag-ans
     - Example: `finance.viewer` → `maxClassification: 'internal'`, `allowTags: ['finance']`.
 
 2. **Retrieval Step**:
-    - `retrieveAgent` uses `vector-query.tool` to query Qdrant, filtering by `accessFilter`.
+    - `retrieveAgent` uses `vector-query.tool` to query PostgreSQL with PgVector, filtering by `accessFilter`.
     - Only returns contexts where chunk classification ≤ maxClassification and tags match.
     - If no results: "No authorized documents found."
 
@@ -92,7 +92,7 @@ Security is enforced end-to-end via the Mastra query workflow ([governed-rag-ans
 
 - During indexing ([governed-rag-index](../src/mastra/workflows/governed-rag-index.workflow.ts)):
     - `DocumentIndexingService` embeds chunks with metadata: `{ docId, classification, allowedRoles, securityTags, tenant }`.
-    - Stored in Qdrant with payload for filtering.
+    - Stored in PostgreSQL with PgVector with payload for filtering.
     - CLI (`npm run cli index`) uses predefined metadata for corpus.
 
 ### Additional Policies

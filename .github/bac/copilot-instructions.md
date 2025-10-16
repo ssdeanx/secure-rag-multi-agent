@@ -17,7 +17,7 @@ This repository uses Next.js (app router), TypeScript, Tailwind CSS, and shadcn/
 
 - **Security Pipeline**: JWT auth → Role-based access → Classification filtering (public/internal/confidential)
 - **Agent Chain**: Retrieve → Rerank → Answer → Verify
-- **Storage**: LibSQL (metadata/threads) + Qdrant (vectors) + Redis (cache)
+- **Storage**: PostgreSQL with PgVector (vectors) + Supabase (auth)
 - **Observability**: Langfuse tracing with structured logging
 
 ## Critical Patterns & Conventions
@@ -62,7 +62,7 @@ const workflowStep = createStep({
 
 - **ValidationService**: Input validation and environment checks
 - **AuthenticationService**: JWT verification and access policy generation
-- **VectorQueryService**: Qdrant queries with security filtering
+- **VectorQueryService**: PostgreSQL with PgVector queries with security filtering
 - **RoleService**: Hierarchical role expansion and tag generation
 
 ## Development Workflow
@@ -71,7 +71,7 @@ const workflowStep = createStep({
 
 - **Full Dev**: `npm run dev` (runs Next.js + Mastra concurrently)
 - **Individual Services**: `npm run dev:next` | `npm run dev:mastra`
-- **Infrastructure**: `docker-compose up -d` (Qdrant + Redis)
+- **Infrastructure**: `docker-compose up -d` (PostgreSQL with PgVector)
 - **Indexing**: `npm run cli index` (embed corpus documents)
 - **Testing**: Use internal linting tools (get_errors) for validation
 
@@ -80,9 +80,8 @@ const workflowStep = createStep({
 ```bash
 # Required for development
 OPENAI_API_KEY=...
-QDRANT_URL=http://localhost:6333
+DATABASE_URL=postgresql://user:password@localhost:5432/mastra_db
 JWT_SECRET=dev-secret
-DATABASE_URL=file:deep-research.db
 GOOGLE_GENERATIVE_AI_API_KEY=...
 JWT_TOKEN=your-jwt-token-here
 ```
@@ -116,10 +115,9 @@ logError('step-name', error, context)
 
 ### External Services
 
-- **Qdrant**: Vector database on port 6333
-- **LibSQL**: Metadata storage (file-based or Turso)
+- **PostgreSQL with PgVector**: Vector database on port 5432
+- **Supabase**: Authentication and user management
 - **Langfuse**: AI observability and tracing
-- **Redis**: Optional caching layer
 
 ### API Patterns
 
@@ -132,7 +130,7 @@ logError('step-name', error, context)
 - **Security Bypass**: Never modify `maxClassification` or `allowTags` in agents
 - **Multiple Tool Calls**: Agents must make EXACTLY ONE tool call
 - **Environment Leaks**: Never expose secrets in client bundles
-- **Storage Confusion**: LibSQL for metadata, Qdrant for vectors
+- **Storage Confusion**: PostgreSQL with PgVector for vectors, Supabase for auth
 - **Role Hierarchy**: Always use `RoleService.generateAccessTags()` for expansion
 
 ## Testing Strategy
@@ -146,7 +144,7 @@ logError('step-name', error, context)
 
 - **Environment Variables**: Validate all required vars on startup
 - **Database Migrations**: Handle schema updates gracefully
-- **Health Checks**: Implement for all services (Qdrant, Redis, etc.)
+- **Health Checks**: Implement for all services (PostgreSQL with PgVector, Supabase, etc.)
 - **Monitoring**: Langfuse integration for production observability
 
 ---

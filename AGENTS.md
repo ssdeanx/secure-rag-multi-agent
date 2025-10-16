@@ -56,7 +56,7 @@
 | `/src/mastra/tools`     | Tools                   | ai       | rag        | Safe callable functions for agents                     |
 | `/src/mastra/services`  | Services                | backend  | rag        | Business/domain logic modules                          |
 | `/src/mastra/schemas`   | Schemas                 | backend  | validation | Zod contracts & data validation                        |
-| `/src/mastra/config`    | Configuration           | backend  | infra      | External service setup (Qdrant, models)                |
+| `/src/mastra/config`    | Configuration           | backend  | infra      | External service setup (PostgreSQL with PgVector, models)                |
 | `/src/mastra/policy`    | Policy / ACL            | backend  | policy     | Access control rule sources                            |
 | `/src/utils`            | Utilities               | backend  | shared     | Stream & helper abstractions                           |
 | `/src/cli`              | CLI Layer               | backend  | ops        | Indexing & workflow invocation CLI                     |

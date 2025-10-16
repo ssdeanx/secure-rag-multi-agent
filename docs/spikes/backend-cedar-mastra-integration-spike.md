@@ -109,7 +109,7 @@ export function createMastraClient(token?: string) {
     - ✅ Workflow orchestration configured
     - ✅ JWT authentication enabled via `MastraJwtAuth`
     - ✅ Observability with Langfuse configured
-    - ✅ Vector store (Qdrant) integration
+    - ✅ Vector store (PostgreSQL with PgVector) integration
     - ✅ Storage backends (LibSQL, PostgreSQL)
 
 3. **Workflow Structure**

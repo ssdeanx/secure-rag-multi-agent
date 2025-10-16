@@ -1,14 +1,14 @@
 # Architecture
 
-The Mastra Governed RAG is built around Mastra's multi-agent orchestration framework, integrating Next.js for the frontend/API, Qdrant for vector storage, and OpenAI for embeddings/LLM. The core logic is in `src/mastra/`, with workflows coordinating agents, tools, and services for secure RAG.
+The Mastra Governed RAG is built around Mastra's multi-agent orchestration framework, integrating Next.js for the frontend/API, PostgreSQL with PgVector for vector storage, and OpenAI for embeddings/LLM. The core logic is in `src/mastra/`, with workflows coordinating agents, tools, and services for secure RAG.
 
 ## High-Level Components
 
 - **Frontend (Next.js)**: UI for chat, auth, indexing panel. Routes: `/` (chat), `/api/chat`, `/api/index`.
 - **Backend (Mastra)**: Agents and workflows in `src/mastra/`. Services handle data processing/security.
 - **Storage**:
-    - Qdrant: Vector embeddings with security payloads (classification, roles, tags).
-    - LibSQL: Metadata/audit logs (via @mastra/libsql).
+    - PostgreSQL with PgVector: Vector embeddings with security payloads (classification, roles, tags).
+    - Supabase: Authentication and user management.
 - **External**: OpenAI API (embeddings: text-embedding-3-small, LLM: gpt-4o-mini).
 - **CLI**: `src/cli/index.ts` for indexing/querying/demo.
 
@@ -38,7 +38,7 @@ Handles secure queries: Auth → Retrieve → Rerank → Answer → Verify.
 
 2. **Retrieval and Rerank** (`retrievalStep`):
     - Input: `{accessFilter, question}`.
-    - `retrieveAgent`: Generates query, calls `vector-query.tool` to search Qdrant (filters by accessFilter).
+    - `retrieveAgent`: Generates query, calls `vector-query.tool` to search PostgreSQL with PgVector (filters by accessFilter).
     - Extracts contexts (chunks with docId, text, score, securityTags, classification).
     - `rerankAgent`: Reorders contexts by relevance to question.
     - Output: `{contexts: DocumentContext[], question}`.
@@ -60,7 +60,7 @@ Handles secure queries: Auth → Retrieve → Rerank → Answer → Verify.
 ```
 User Query + JWT → [Auth Service] → accessFilter
                     ↓
-                [Retrieve Agent + Vector Tool] → filtered contexts (Qdrant query)
+                [Retrieve Agent + Vector Tool] → filtered contexts (PostgreSQL with PgVector query)
                     ↓
                 [Rerank Agent] → relevance-sorted contexts
                     ↓
@@ -83,8 +83,8 @@ Handles document ingestion: Process → Chunk → Embed → Store.
         - `DocumentProcessorService`: Read/parse MD (cheerio/marked).
         - `ChunkingService`: Split into chunks (~500 tokens).
         - `EmbeddingService`: Generate vectors (OpenAI text-embedding-3-small, dim=1536).
-        - `DocumentIndexingService`: Store in Qdrant with payload: `{docId, versionId, classification, allowedRoles, securityTags, tenant, source}`.
-    - Creates Qdrant collection if needed.
+        - `DocumentIndexingService`: Store in PostgreSQL with PgVector with payload: `{docId, versionId, classification, allowedRoles, securityTags, tenant, source}`.
+    - Creates PostgreSQL with PgVector collection if needed.
     - Output: `{indexed: number, failed: number, documents: [{docId, status, chunks?, error?}]}`.
 
 **Text Diagram**:
@@ -96,7 +96,7 @@ Documents (corpus/*.md) → [Processor Service] → parsed text
                             ↓
                         [Embedding Service] → vectors (OpenAI)
                             ↓
-                        [Indexing Service + VectorStorage] → Qdrant (with security payload)
+                        [Indexing Service + VectorStorage] → PostgreSQL with PgVector (with security payload)
                             ↓
 Summary: {indexed, failed, details}
 ```
@@ -116,7 +116,7 @@ Agents are LLM-powered (gpt-4o-mini via @ai-sdk/openai), configured in `src/mast
 
 Reusable functions bound to agents:
 
-- `vector-query.tool.ts` (`vectorQueryTool`): Queries Qdrant with embedding similarity + filters (classification, roles, tags).
+- `vector-query.tool.ts` (`vectorQueryTool`): Queries PostgreSQL with PgVector with embedding similarity + filters (classification, roles, tags).
 - `jwt-auth.tool.ts` (`jwtAuthTool`): Validates/decodes JWT, extracts claims.
 
 ## Services
@@ -130,13 +130,13 @@ Utility classes in `src/mastra/services/*.ts`:
 - `ChunkingService`: Text splitting strategies.
 - `DocumentProcessorService`: MD parsing/extraction.
 - `DocumentIndexingService`: Chunk metadata + storage.
-- `VectorQueryService`: Qdrant interactions (search/filter).
+- `VectorQueryService`: PostgreSQL with PgVector interactions (search/filter).
 - `VectorStorageService`: Collection management (create/delete).
 - `WorkflowDecorators`: Logging/metrics for workflows.
 
 ## Data Flow
 
-- **Indexing**: API/CLI → Workflow → Services → Qdrant (vectors + payloads).
+- **Indexing**: API/CLI → Workflow → Services → PostgreSQL with PgVector (vectors + payloads).
 - **Query**: API/UI → Workflow → Agents/Tools/Services → Filtered contexts → Answer.
 - **Security**: Enforced at retrieval (filter) + verification (audit).
 - **Logging**: All steps to `logs/mastra.log`/`logs/workflow.log` (via @mastra/loggers).
@@ -146,6 +146,6 @@ Utility classes in `src/mastra/services/*.ts`:
 - Add agents/tools: Extend Mastra config in `src/mastra/index.ts`.
 - Custom workflows: New .workflow.ts files.
 - Services: Modular; inject via Mastra context.
-- Deployment: Docker for Qdrant/LibSQL; Next.js for app.
+- Deployment: Docker for PostgreSQL with PgVector/Supabase; Next.js for app.
 
 For role examples, see [Demo Roles](./demo-roles.md). Source: Verified from `src/mastra/workflows/*.ts` and related files.
