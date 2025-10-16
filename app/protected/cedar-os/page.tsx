@@ -7,6 +7,9 @@ import { CedarCaptionChat } from '@/cedar/components/chatComponents/CedarCaption
 import { FloatingCedarChat } from '@/cedar/components/chatComponents/FloatingCedarChat'
 import { SidePanelCedarChat } from '@/cedar/components/chatComponents/SidePanelCedarChat'
 import { RoadmapCanvas } from '../../../cedar/RoadmapCanvas'
+import QuestioningSpell from '../../../cedar/components/spells/QuestioningSpell'
+import ResearchSpell from '../../../cedar/components/spells/ResearchSpell'
+import SourceAddSpell from '../../../cedar/components/spells/SourceAddSpell'
 
 export const experimental_ppr = true
 
@@ -79,6 +82,11 @@ export default function HomePage() {
 
     const renderContent = () => (
         <div className="relative h-screen w-full flex">
+            {/* Active Spells */}
+            <QuestioningSpell />
+            <ResearchSpell />
+            <SourceAddSpell />
+
             <div className="flex-1">
                 <RoadmapCanvas />
             </div>

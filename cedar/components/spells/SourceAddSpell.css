@@ -1,0 +1,112 @@
+.source-add-spell-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.5);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 10000;
+    -webkit-backdrop-filter: blur(4px);
+    backdrop-filter: blur(4px);
+}
+
+.source-add-spell-dialog {
+    max-width: 400px;
+    width: 90vw;
+    max-height: 80vh;
+    overflow-y: auto;
+}
+
+.source-add-spell-content {
+    padding: 24px;
+    background: var(--background, #ffffff);
+    border-radius: 12px;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+}
+
+.source-add-spell-title {
+    margin: 0 0 20px 0;
+    font-size: 18px;
+    font-weight: 600;
+    color: var(--foreground, #000000);
+    text-align: center;
+}
+
+.source-add-spell-form {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.source-add-spell-field {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.source-add-spell-label {
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--foreground, #000000);
+}
+
+.source-add-spell-input {
+    padding: 12px;
+    border: 1px solid var(--border, #e5e7eb);
+    border-radius: 8px;
+    font-size: 14px;
+    background: var(--background, #ffffff);
+    color: var(--foreground, #000000);
+    transition: border-color 0.2s ease;
+}
+
+.source-add-spell-input:focus {
+    outline: none;
+    border-color: var(--accent, #3b82f6);
+    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+}
+
+.source-add-spell-input::placeholder {
+    color: var(--muted-foreground, #6b7280);
+}
+
+.source-add-spell-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 12px;
+    margin-top: 8px;
+}
+
+.source-add-spell-button {
+    padding: 10px 16px;
+    border-radius: 8px;
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    border: none;
+}
+
+.source-add-spell-cancel {
+    background: var(--muted, #f3f4f6);
+    color: var(--foreground, #000000);
+}
+
+.source-add-spell-cancel:hover {
+    background: var(--muted-foreground, #d1d5db);
+}
+
+.source-add-spell-submit {
+    background: var(--accent, #3b82f6);
+    color: white;
+}
+
+.source-add-spell-submit:hover:not(:disabled) {
+    background: var(--accent-foreground, #2563eb);
+}
+
+.source-add-spell-submit:disabled {
+    background: var(--muted, #f3f4f6);
+    color: var(--muted-foreground, #6b7280);
+    cursor: not-allowed;
+}

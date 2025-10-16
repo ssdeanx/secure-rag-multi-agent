@@ -1,4 +1,4 @@
-<!-- AGENTS-META {"title":"Mastra Config","version":"1.1.0","last_updated":"2025-10-08T08:00:26Z","applies_to":"/src/mastra/config","tags":["layer:backend","domain:infra","type:config","status":"stable"],"status":"stable"} -->
+<!-- AGENTS-META {"title":"Mastra Config","version":"1.2.0","last_updated":"2025-10-15T12:58:00Z","applies_to":"/src/mastra/config","tags":["layer:backend","domain:infra","type:config","status":"stable"],"status":"stable"} -->
 
 # Config Directory (`/src/mastra/config`)
 
@@ -21,7 +21,7 @@ Establish consistent, testable, and secure entry points for all external depende
 | `gemini-cli.ts`     | Gemini CLI provider setup                 | For local development and testing               |
 | `openrouter.ts`     | OpenRouter model provider client setup    | For routing to various models                   |
 | `vertex.ts`         | Google Vertex AI model provider setup     | For Google Cloud-based models                   |
-| `pg-storage.ts`     | PostgreSQL storage & vector client config | Manages connections to PostgreSQL and PgVector. |
+| `pg-storage.ts`     | PostgreSQL storage & vector client config | **CRITICAL**: Main storage backend with PgVector for 1568-dimension embeddings, semantic recall, working memory, and conversation threads. Manages PostgreSQL connections, pooling, and serves as the central data persistence layer for all Mastra operations. |
 | `logger.ts`         | Structured logging (Pino)                 | Standard log helpers & transports               |
 | `role-hierarchy.ts` | RBAC inheritance model                    | Drives policy & access filters                  |
 
@@ -41,5 +41,6 @@ export const OPENAI_API_KEY = required('OPENAI_API_KEY')
 
 | Version | Date (UTC) | Change                                                  |
 | ------- | ---------- | ------------------------------------------------------- |
+| 1.2.0   | 2025-10-15 | Enhanced pg-storage.ts description to reflect its critical role as main storage backend with PgVector for 1568-dimension embeddings, semantic recall, working memory, and conversation threads |
 | 1.1.0   | 2025-10-08 | Verified content accuracy and updated metadata.         |
 | 1.0.0   | 2025-09-24 | Standardized template applied; legacy content preserved |

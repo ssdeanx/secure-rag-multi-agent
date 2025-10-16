@@ -47,10 +47,10 @@ Apply the general coding guidelines to all code.
 - Always import only what you need from libraries (tree-shaking)
 - Always use `kebab-case` for file names and `camelCase` for variables and functions.
 - Also always make sure you implement any unused imports or variables
-    - Make sure they are fully implemented and used in the code.
+  - Make sure they are fully implemented and used in the code.
 - Never leave stubs, mock implementations or silent failures in the code.
-    - Always implement the full functionality or remove the stub/mock.
-    - If a feature is not yet implemented, #TODO or #FIXME or `@copilot` tags should be used to indicate that it needs attention.
+  - Always implement the full functionality or remove the stub/mock.
+  - If a feature is not yet implemented, #TODO or #FIXME or `@copilot` tags should be used to indicate that it needs attention.
 - Try to avoid using `any` type in TypeScript, unless it is absolutely necessary.
-    - Always strive to use specific types or interfaces to ensure type safety and maintainability.
-    - If `any` is unavoidable, add a comment explaining why it's necessary and what type it should ideally be. Plus, add a `#TODO` or `#FIXME` tag to indicate that it should be revisited later.
+  - Always strive to use specific types or interfaces to ensure type safety and maintainability.
+  - If `any` is unavoidable, add a comment explaining why it's necessary and what type it should ideally be. Plus, add a `#TODO` or `#FIXME` tag to indicate that it should be revisited later.

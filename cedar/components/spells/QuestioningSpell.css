@@ -1,0 +1,45 @@
+de.questioning-tooltip {
+    position: fixed;
+    z-index: 50;
+    padding: 0.5rem;
+    font-size: 0.75rem;
+    line-height: 1.5;
+    color: white;
+    background-color: black;
+    border-radius: 0.25rem;
+    box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+    pointer-events: none;
+    left: var(--tooltip-x, 0px);
+    top: var(--tooltip-y, 0px);
+    background-color: var(--tooltip-bg, #000000);
+}
+
+.corner-vertical {
+    position: absolute;
+    width: var(--corner-thickness, 2px);
+    height: var(--corner-length, 10px);
+    background: var(--corner-color, #3b82f6);
+    top: var(--corner-top, 0);
+    right: var(--corner-right, auto);
+    bottom: var(--corner-bottom, auto);
+    left: var(--corner-left, 0);
+}
+
+.corner-horizontal {
+    position: absolute;
+    width: var(--corner-length, 10px);
+    height: var(--corner-thickness, 2px);
+    background: var(--corner-color, #3b82f6);
+    top: var(--corner-top, 0);
+    right: var(--corner-right, auto);
+    bottom: var(--corner-bottom, auto);
+    left: var(--corner-left, 0);
+}
+
+.cursor-reticule {
+    width: 38px;
+    height: 38px;
+    background-color: transparent;
+    border-radius: 0;
+    transform: rotate(var(--cursor-rotate, 0deg));
+}

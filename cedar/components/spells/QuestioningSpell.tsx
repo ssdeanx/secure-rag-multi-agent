@@ -12,6 +12,7 @@ import {
 } from 'cedar-os'
 // TODO: TooltipText component needs to be created
 // import TooltipText from '@/cedar/components/components/interactions/components/TooltipText';
+import './QuestioningSpell.css'
 
 interface QuestioningSpellProps {
     /** Unique identifier for this spell instance */
@@ -45,7 +46,7 @@ const QuestioningSpell: React.FC<QuestioningSpellProps> = ({
     // Use the spell hook to manage activation
     const { isActive } = useSpell({
         id: spellId,
-        activationConditions: activationConditions || defaultConditions,
+        activationConditions: activationConditions ?? defaultConditions,
     })
 
     // Cursor animation/state -----------------------------------------------------
@@ -85,11 +86,13 @@ const QuestioningSpell: React.FC<QuestioningSpellProps> = ({
                 bounce: 0.3,
             })
         }
+        
+        // Update CSS custom property for cursor rotation
+        document.documentElement.style.setProperty('--cursor-rotate', `${rotate.get()}deg`);
     }, [hasTarget, rotate])
 
     // Tooltip --------------------------------------------------------------------
     const [tooltip, setTooltip] = useState<string | null>(null)
-    const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 })
 
     useEffect(() => {
         // Only listen for tooltips when spell is active
@@ -99,16 +102,20 @@ const QuestioningSpell: React.FC<QuestioningSpellProps> = ({
         }
 
         const handleMove = (e: MouseEvent) => {
-            setMousePosition({ x: e.clientX, y: e.clientY })
             const el = (e.target as HTMLElement | null)?.closest(
                 '[data-question]'
             )
             setTooltip(el ? el.getAttribute('data-question') : null)
+            
+            // Set CSS custom properties for tooltip positioning
+            document.documentElement.style.setProperty('--tooltip-x', `${e.clientX}px`);
+            document.documentElement.style.setProperty('--tooltip-y', `${e.clientY - 30}px`);
+            document.documentElement.style.setProperty('--tooltip-bg', highlightColor);
         }
 
         window.addEventListener('mousemove', handleMove)
         return () => window.removeEventListener('mousemove', handleMove)
-    }, [isActive])
+    }, [isActive, highlightColor])
 
     // Don't render if spell is not active
     if (!isActive) {
@@ -130,13 +137,7 @@ const QuestioningSpell: React.FC<QuestioningSpellProps> = ({
                 magnetic={{ snap: 0.9 }}
                 follow
                 center={{ x: 0.5, y: 0.5 }}
-                style={{
-                    rotate,
-                    width: 38,
-                    height: 38,
-                    backgroundColor: 'transparent',
-                    borderRadius: 0,
-                }}
+                className="cursor-reticule"
                 variants={{
                     pressed: { scale: state.targetBoundingBox ? 0.9 : 0.7 },
                 }}
@@ -162,15 +163,8 @@ const QuestioningSpell: React.FC<QuestioningSpellProps> = ({
 			)} */}
 
             {/* Simple tooltip fallback */}
-            {tooltip && (
-                <div
-                    className="fixed z-50 px-2 py-1 text-xs text-white bg-black rounded shadow-lg pointer-events-none"
-                    style={{
-                        left: mousePosition.x,
-                        top: mousePosition.y - 30,
-                        backgroundColor: highlightColor,
-                    }}
-                >
+            {(tooltip !== null) && (
+                <div className="questioning-tooltip">
                     {tooltip}
                 </div>
             )}
@@ -195,30 +189,42 @@ const Corner: React.FC<CornerProps> = ({
     thickness = 2,
     length = 10,
     color,
-    ...position
-}) => (
-    <>
-        <motion.div
-            layout
-            className="absolute"
-            style={{
-                width: thickness,
-                height: length,
-                background: color,
-                ...position,
-            }}
-        />
-        <motion.div
-            layout
-            className="absolute"
-            style={{
-                width: length,
-                height: thickness,
-                background: color,
-                ...position,
-            }}
-        />
-    </>
-)
+    top,
+    right,
+    bottom,
+    left,
+}) => {
+    // Set CSS custom properties for corner styling
+    React.useEffect(() => {
+        document.documentElement.style.setProperty('--corner-thickness', `${thickness}px`);
+        document.documentElement.style.setProperty('--corner-length', `${length}px`);
+        document.documentElement.style.setProperty('--corner-color', color);
+        if (top !== undefined) {
+            document.documentElement.style.setProperty('--corner-top', `${top}px`);
+        }
+        if (right !== undefined) {
+            document.documentElement.style.setProperty('--corner-right', `${right}px`);
+        }
+        if (bottom !== undefined) {
+            document.documentElement.style.setProperty('--corner-bottom', `${bottom}px`);
+        }
+        if (left !== undefined) {
+            document.documentElement.style.setProperty('--corner-left', `${left}px`);
+        }
+    }, [thickness, length, color, top, right, bottom, left]);
+
+    return (
+        <>
+            <motion.div
+                layout
+                className="corner-vertical"
+            />
+            <motion.div
+                layout
+                className="corner-horizontal"
+            />
+        </>
+    )
+}
 
 export default QuestioningSpell
