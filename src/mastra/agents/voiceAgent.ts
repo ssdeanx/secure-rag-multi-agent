@@ -1,5 +1,5 @@
 import { Agent } from '@mastra/core/agent'
-import { researchOutputSchema } from '../schemas/agent-schemas'
+
 import { evaluateResultTool } from '../tools/evaluateResultTool'
 import { extractLearningsTool } from '../tools/extractLearningsTool'
 import {
@@ -10,38 +10,23 @@ import {
     htmlToMarkdownTool,
     contentCleanerTool,
 } from '../tools/web-scraper-tool'
-import {
-    ContentSimilarityMetric,
-    CompletenessMetric,
-    TextualDifferenceMetric,
-    KeywordCoverageMetric,
-    ToneConsistencyMetric,
-} from '@mastra/evals/nlp'
 import { log } from '../config/logger'
 import { pgMemory } from '../config/pg-storage'
 import { googleAI } from '../config/google'
 import { GeminiLiveVoice } from "@mastra/voice-google-gemini-live";
 import { playAudio, getMicrophoneStream } from "@mastra/node-audio";
-// Define runtime context for this agent
-export interface ResearchAgentContext {
-    userId?: string
-    tier?: 'free' | 'pro' | 'enterprise'
-    researchDepth?: number
-}
 
-log.info('Initializing Research Agent...')
+log.info('Voice Research Agent...')
 
-export const researchAgent = new Agent({
-    id: 'research',
-    name: 'Research Agent',
+export const voiceAgent = new Agent({
+    id: 'voice',
+    name: 'Voice Agent',
     description:
-        'An expert research agent that conducts thorough research using web search and analysis tools.',
-    instructions: ({ runtimeContext }) => {
-        const userId = runtimeContext.get('userId')
-        return `
+        'An expert voice agent that can interact with users via voice, understand their requests, and perform actions.',
+    instructions: `
 <role>
-User: ${userId ?? 'anonymous'}
-You are an expert research agent. Your goal is to research topics thoroughly by following a precise, multi-phase process.
+User:
+You are an expert voice agent. Your goal is to assist users through voice interactions, understanding their requests, and performing actions accordingly.
 </role>
 
 <process_phases>
@@ -78,18 +63,7 @@ Example:
   "runtimeConfig": {}
 }
 </output_format>
-  `
-    },
-    evals: {
-        contentSimilarity: new ContentSimilarityMetric({
-            ignoreCase: true,
-            ignoreWhitespace: true,
-        }),
-        completeness: new CompletenessMetric(),
-        textualDifference: new TextualDifferenceMetric(),
-        keywordCoverage: new KeywordCoverageMetric(), // Keywords will be provided at runtime for evaluation
-        toneConsistency: new ToneConsistencyMetric(),
-    },
+  `,
     model: googleAI,
     tools: {
         webScraperTool,
@@ -102,6 +76,41 @@ Example:
         extractLearningsTool,
     },
     memory: pgMemory,
+    voice: new GeminiLiveVoice({
+    apiKey: process.env.GOOGLE_API_KEY,
+    model: 'gemini-live-2.5-flash-preview-native-audio',
+    speaker: 'Kore',
+    debug: true,
+    instructions: `You are an expert voice agent. Your goal is to assist users through voice interactions, understanding their requests, and performing actions accordingly.`,
+    tools: [],
+    sessionConfig: {enableResumption: true, contextCompression: true, maxDuration: '30m' }, // 30 minutes
+    audioConfig: {
+        inputSampleRate: 16000,
+        outputSampleRate: 24000,
+        encoding: 'pcm24',
+        channels: 1,
+    },
+    // Vertex AI option:
+    // vertexAI: true,
+    // project: 'your-gcp-project',
+    // location: 'us-central1',
+    // serviceAccountKeyFile: '/path/to/service-account.json',
+    }),
 })
 
-export { researchOutputSchema }
+// Replace static and inconsistent usage with instance-guarded calls:
+await voiceAgent.voice.connect();
+
+voiceAgent.voice.on('speaker', (audio) => {
+    playAudio(audio);
+});
+
+voiceAgent.voice.on('writing', ({ role, text }) => {
+    log.debug(`${role}: ${text}`);
+});
+
+await voiceAgent.voice.speak('How can I help you today?');
+
+const micStream = getMicrophoneStream(); // Assuming getMicrophoneStream is defined elsewhere
+await voiceAgent.voice.send(micStream);
+

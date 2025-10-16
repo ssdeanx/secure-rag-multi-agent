@@ -117,7 +117,7 @@ const RangeSliderSpell: React.FC<RangeSliderSpellProps> = ({
     // Render icon helper
     const renderIcon = (option: RangeOption) => {
         const { icon } = option
-        if (!icon) {
+        if (icon === undefined || icon === null) {
             return null
         }
 
@@ -320,7 +320,7 @@ const RangeSliderSpell: React.FC<RangeSliderSpellProps> = ({
                                 <motion.div
                                     className="absolute"
                                     animate={{
-                                        left: `${currentPercent}%`,
+                                      ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;  left: `${currentPercent}%`,
                                     }}
                                     transition={{
                                         type: 'spring',
