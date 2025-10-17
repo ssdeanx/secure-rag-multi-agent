@@ -12,7 +12,12 @@ import {
 } from '../tools/web-scraper-tool'
 import { log } from '../config/logger'
 import { pgMemory } from '../config/pg-storage'
-import { googleAI } from '../config/google'
+import { googleAI, googleAIFlashLite } from '../config/google'
+import {
+  createAnswerRelevancyScorer,
+  createToxicityScorer
+} from "@mastra/evals/scorers/llm";
+
 export interface ResearchAgentContext {
     userId?: string
     tier?: 'free' | 'pro' | 'enterprise'
@@ -30,7 +35,7 @@ export const researchAgent = new Agent({
         const userId = runtimeContext.get('userId')
         return `
 <role>
-User: ${userId ?? 'anonymous'}
+User: ${userId ?? 'admin'}
 You are an expert research agent. Your goal is to research topics thoroughly by following a precise, multi-phase process.
 </role>
 
@@ -81,6 +86,16 @@ Example:
 //        extractLearningsTool,
     },
     memory: pgMemory,
+    scorers: {
+    relevancy: {
+      scorer: createAnswerRelevancyScorer({ model: googleAIFlashLite }),
+      sampling: { type: "ratio", rate: 0.5 }
+    },
+    safety: {
+      scorer: createToxicityScorer({ model: googleAIFlashLite }),
+      sampling: { type: "ratio", rate: 1 }
+    },
+  }
 })
 
 export { researchOutputSchema }

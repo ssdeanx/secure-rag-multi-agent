@@ -65,7 +65,9 @@ export const mastra = new Mastra({
         'chat-workflow-1': chatWorkflow, // backward-compatible alias
         'content-generation': contentGenerationWorkflow,
     },
-    scorers: {},
+    scorers: {
+        // Add global scorers here if needed
+    },
     vectors: {
         pgVector,
     },
