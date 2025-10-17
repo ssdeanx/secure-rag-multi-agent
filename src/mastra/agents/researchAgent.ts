@@ -10,19 +10,9 @@ import {
     htmlToMarkdownTool,
     contentCleanerTool,
 } from '../tools/web-scraper-tool'
-import {
-    ContentSimilarityMetric,
-    CompletenessMetric,
-    TextualDifferenceMetric,
-    KeywordCoverageMetric,
-    ToneConsistencyMetric,
-} from '@mastra/evals/nlp'
 import { log } from '../config/logger'
 import { pgMemory } from '../config/pg-storage'
 import { googleAI } from '../config/google'
-import { GeminiLiveVoice } from "@mastra/voice-google-gemini-live";
-import { playAudio, getMicrophoneStream } from "@mastra/node-audio";
-// Define runtime context for this agent
 export interface ResearchAgentContext {
     userId?: string
     tier?: 'free' | 'pro' | 'enterprise'
@@ -80,26 +70,15 @@ Example:
 </output_format>
   `
     },
-    evals: {
-        contentSimilarity: new ContentSimilarityMetric({
-            ignoreCase: true,
-            ignoreWhitespace: true,
-        }),
-        completeness: new CompletenessMetric(),
-        textualDifference: new TextualDifferenceMetric(),
-        keywordCoverage: new KeywordCoverageMetric(), // Keywords will be provided at runtime for evaluation
-        toneConsistency: new ToneConsistencyMetric(),
-    },
     model: googleAI,
     tools: {
         webScraperTool,
-        batchWebScraperTool,
         siteMapExtractorTool,
         linkExtractorTool,
         htmlToMarkdownTool,
         contentCleanerTool,
-        evaluateResultTool,
-        extractLearningsTool,
+//        evaluateResultTool,
+//        extractLearningsTool,
     },
     memory: pgMemory,
 })

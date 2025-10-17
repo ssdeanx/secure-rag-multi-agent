@@ -73,7 +73,7 @@ export class EmbeddingService {
 
         const typedEmbeddings = embeddings as number[][]
         const dimension =
-            typedEmbeddings.length > 0 ? typedEmbeddings[0].length : 1568
+            typedEmbeddings.length > 0 ? typedEmbeddings[0].length : 3072 // Updated fallback for text-embedding-3-large
 
         return {
             embeddings: typedEmbeddings,
@@ -268,7 +268,7 @@ export class EmbeddingService {
         recommendation: string
     } {
         // Rough estimates based on typical embedding dimensions and chunk sizes
-        const embeddingDimension = 1568 // gemini-embedding-001
+        const embeddingDimension = 3072 // text-embedding-3-large (3072 dimensions)
         const bytesPerFloat = 4
         const embeddingSize: number = embeddingDimension * bytesPerFloat
         const textSize: number = avgChunkSize * 2 // UTF-16 encoding
@@ -296,7 +296,7 @@ export class EmbeddingService {
         }
 
         const emptyChunks = chunks.filter(
-            (chunk: string) => !chunk || chunk.trim().length === 0
+            (chunk: string) => chunk?.trim().length === 0
         )
         if (emptyChunks.length > 0) {
             throw new Error(`Found ${emptyChunks.length} empty chunks`)

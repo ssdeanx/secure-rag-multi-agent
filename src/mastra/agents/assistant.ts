@@ -105,16 +105,6 @@ For complex research tasks that generate data, you MUST respond with a valid JSO
     },
     model: googleAI,
     memory: pgMemory,
-    evals: {
-        contentSimilarity: new ContentSimilarityMetric({
-            ignoreCase: true,
-            ignoreWhitespace: true,
-        }),
-        completeness: new CompletenessMetric(),
-        textualDifference: new TextualDifferenceMetric(),
-        keywordCoverage: new KeywordCoverageMetric(), // Keywords will be provided at runtime for evaluation
-        toneConsistency: new ToneConsistencyMetric(),
-    },
     tools: {
         // Corrected indentation for the 'tools' object
         pgQueryTool,

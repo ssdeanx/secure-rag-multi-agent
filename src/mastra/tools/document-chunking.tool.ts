@@ -382,7 +382,7 @@ Use this tool when you need advanced document processing with metadata extractio
  *
  * Features:
  * - Multiple chunking strategies with customizable parameters
- * - Automatic embedding generation (1568 dimensions)
+ * - Automatic embedding generation (3072 dimensions for text-embedding-3-large)
  * - PgVector storage with metadata support
  * - Comprehensive error handling and logging
  * - Performance monitoring and metrics
@@ -402,7 +402,7 @@ This tool processes document content by:
 
 Features:
 - Multiple chunking strategies with customizable parameters
-- Automatic embedding generation (1568 dimensions)
+- Automatic embedding generation (3072 dimensions for gemini-embedding-001)
 - PgVector storage with metadata support
 - Comprehensive error handling and logging
 - Performance monitoring and metrics
