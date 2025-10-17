@@ -26,6 +26,7 @@ import {
     Analytics,
     Build,
 } from '@mui/icons-material'
+import SystemDiagram from './SystemDiagram.joy'
 
 const coreCapabilities = [
     {
@@ -133,10 +134,10 @@ export function InteractiveFeatures() {
                     {...(prefersReducedMotion
                         ? {}
                         : {
-                              initial: { opacity: 0, y: 50 },
-                              whileInView: { opacity: 1, y: 0 },
-                              transition: { duration: 0.8 },
-                          })}
+                            initial: { opacity: 0, y: 50 },
+                            whileInView: { opacity: 1, y: 0 },
+                            transition: { duration: 0.8 },
+                        })}
                     viewport={{ once: true }}
                 >
                     <Box sx={{ textAlign: 'center', mb: 8 }}>
@@ -176,66 +177,26 @@ export function InteractiveFeatures() {
                     </Box>
                 </motion.div>
 
-                {/* Orchestration Stats */}
+                {/* Interactive system diagram (replaces orchestration stats) */}
                 <motion.div
                     {...(prefersReducedMotion
                         ? {}
                         : {
-                              initial: { opacity: 0, y: 30 },
-                              whileInView: { opacity: 1, y: 0 },
-                              transition: { duration: 0.6, delay: 0.2 },
-                          })}
+                            initial: { opacity: 0, y: 30 },
+                            whileInView: { opacity: 1, y: 0 },
+                            transition: { duration: 0.6, delay: 0.2 },
+                        })}
                     viewport={{ once: true }}
                 >
-                    <Grid container spacing={3} sx={{ mb: 8 }}>
-                        {orchestrationStats.map((stat, index) => (
-                            <Grid key={index} xs={6} sm={3}>
-                                <Card
-                                    variant="soft"
-                                    sx={{
-                                        p: 3,
-                                        textAlign: 'center',
-                                        height: '100%',
-                                        transition: 'all 0.2s',
-                                        '&:hover': {
-                                            transform: 'translateY(-2px)',
-                                            boxShadow: 'md',
-                                        },
-                                    }}
-                                >
-                                    <Box
-                                        sx={{
-                                            color: 'primary.main',
-                                            mb: 1,
-                                            fontSize: '1.5rem',
-                                        }}
-                                    >
-                                        {stat.icon}
-                                    </Box>
-                                    <Typography
-                                        level="h3"
-                                        sx={{
-                                            fontSize: '1.5rem',
-                                            fontWeight: 700,
-                                            color: 'primary.main',
-                                            mb: 0.5,
-                                        }}
-                                    >
-                                        {stat.value}
-                                    </Typography>
-                                    <Typography
-                                        level="body-sm"
-                                        sx={{ fontWeight: 600 }}
-                                    >
-                                        {stat.label
-                                            .split(' ')
-                                            .slice(1)
-                                            .join(' ')}
-                                    </Typography>
-                                </Card>
-                            </Grid>
-                        ))}
-                    </Grid>
+                    <SystemDiagram
+                        nodes={[
+                            { id: 'rag', title: '/rag', color: 'danger', bullets: ['Unified vector store', 'Metadata filtering', 'Agentic RAG'] },
+                            { id: 'ops', title: '*ops', color: 'info', bullets: ['Performance metrics', 'Evals', 'Tracing'] },
+                            { id: 'agents', title: '/agents', color: 'success', bullets: ['Unified API', 'Memory', 'LLM + tools'] },
+                            { id: 'workflows', title: '/workflows', color: 'primary', bullets: ['Clear flow', 'Orchestration', '.suspend() / .watch()'] },
+                        ]}
+                        centerText="Mastra orchestration"
+                    />
                 </motion.div>
 
                 {/* Core Capabilities Grid */}
@@ -265,13 +226,13 @@ export function InteractiveFeatures() {
                                 {...(prefersReducedMotion
                                     ? {}
                                     : {
-                                          initial: { opacity: 0, y: 50 },
-                                          whileInView: { opacity: 1, y: 0 },
-                                          transition: {
-                                              duration: 0.5,
-                                              delay: i * 0.1,
-                                          },
-                                      })}
+                                        initial: { opacity: 0, y: 50 },
+                                        whileInView: { opacity: 1, y: 0 },
+                                        transition: {
+                                            duration: 0.5,
+                                            delay: i * 0.1,
+                                        },
+                                    })}
                                 viewport={{ once: true }}
                                 aria-label={`${capability.title} capability`}
                             >
@@ -381,10 +342,10 @@ export function InteractiveFeatures() {
                     {...(prefersReducedMotion
                         ? {}
                         : {
-                              initial: { opacity: 0, y: 30 },
-                              whileInView: { opacity: 1, y: 0 },
-                              transition: { duration: 0.6, delay: 0.4 },
-                          })}
+                            initial: { opacity: 0, y: 30 },
+                            whileInView: { opacity: 1, y: 0 },
+                            transition: { duration: 0.6, delay: 0.4 },
+                        })}
                     viewport={{ once: true }}
                 >
                     <Box sx={{ textAlign: 'center' }}>
