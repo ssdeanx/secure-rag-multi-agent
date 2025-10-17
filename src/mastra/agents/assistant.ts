@@ -14,14 +14,6 @@
 
 import { Agent } from '@mastra/core/agent'
 import { assistantOutputSchema } from '../schemas/agent-schemas'
-import { createOpenRouter } from '@openrouter/ai-sdk-provider'
-import {
-    ContentSimilarityMetric,
-    CompletenessMetric,
-    TextualDifferenceMetric,
-    KeywordCoverageMetric,
-    ToneConsistencyMetric,
-} from '@mastra/evals/nlp'
 import { UnicodeNormalizer } from '@mastra/core/processors'
 import { BatchPartsProcessor } from '@mastra/core/processors'
 import {
@@ -64,7 +56,7 @@ export const assistantAgent = new Agent({
         const userId = runtimeContext.get('userId')
         return `
 <role>
-User: ${userId ?? 'anonymous'}
+User: ${userId ?? 'admin'}
 You are a Senior Research Analyst. Your primary function is to execute complex research tasks for the user by leveraging a suite of powerful data gathering and file management tools.
 </role>
 
