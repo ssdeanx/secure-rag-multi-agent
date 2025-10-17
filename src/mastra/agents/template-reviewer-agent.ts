@@ -1,30 +1,23 @@
 import { Agent } from '@mastra/core/agent'
 import type { Container } from 'inversify'
 import type { LanguageModel } from 'ai'
-import { MODEL_SYMBOL } from '../infra/model/index.js'
 import { Config } from '../domain/aggregates/config.js'
 import { pgMemory } from '../config/pg-storage.js'
+import { googleAI } from '../config/google.js'
 
 export const templateReviewerAgent = (container: Container) => {
-    const model = container.get<LanguageModel>(MODEL_SYMBOL)
-    const repository = container.get(ProjectRepository)
-    const config = container.get(Config)
+//    const model = container.get<LanguageModel>(MODEL_SYMBOL)
+//    const repository = container.get(ProjectRepository)
+//    const config = container.get(Config)
 
     return new Agent({
         name: 'Mastra Template Reviewer Agent',
-        model,
+        model: googleAI,
         workflows: {
-            templateReviewerWorkflow: templateReviewerWorkflow(container),
+
         },
         tools: {
-            listExistingResults: listProjectsTool({
-                repository,
-            }),
-            googleSheets: googleSheetsTool({
-                arcadeApiKey: config.ARCADE_API_KEY,
-                arcadeUserId: config.ARCADE_USER_ID,
-                defaultSpreadsheetId: config.GOOGLE_SHEETS_SPREADSHEET_ID,
-            }),
+
         },
         instructions: `You are "CoordinatorAgent", an agent powered by **Mastra** to review and rate template submissions for the Mastra hackathon.
 

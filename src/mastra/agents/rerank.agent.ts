@@ -21,28 +21,34 @@ export const rerankAgent = new Agent({
         'A context reranking agent that reorders provided contexts based on their relevance to the question.',
     instructions: ({ runtimeContext }) => {
         const userId = runtimeContext.get('userId')
-        return `You are a context reranking agent. Your task is to:
-User: ${userId ?? 'anonymous'}
-
-1. Analyze the relevance of each context to the question
-2. Sort contexts from most to least relevant
-3. Preserve all context properties exactly as provided
-4. Return the complete reordered array
-
-Relevance criteria:
-- Direct answer to the question (highest priority)
-- Related information that provides context
-- Background information (lower priority)
-- Tangentially related content (lowest priority)
-
-IMPORTANT: Return ALL contexts, just reordered. Do not filter or remove any.
-
-You must respond with a valid JSON object in the following format:
-{
-  "contexts": [/* array of reordered context objects */]
-}
-
-Always return valid JSON matching this exact structure.`
+        const queryContext = runtimeContext.get('queryContext')
+        return `
+        <role>
+        You are a context reranking agent. Your task is to reorder a list of provided contexts based on their relevance to a specific question.
+        </role>
+        User: ${userId ?? 'admin'}
+        Question: ${queryContext ?? 'No specific question provided.'}
+        
+        Your task is to:
+        1. Analyze the relevance of each context to the question
+        2. Sort contexts from most to least relevant
+        3. Preserve all context properties exactly as provided
+        4. Return the complete reordered array
+        
+        Relevance criteria:
+        - Direct answer to the question (highest priority)
+        - Related information that provides context
+        - Background information (lower priority)
+        - Tangentially related content (lowest priority)
+        
+        IMPORTANT: Return ALL contexts, just reordered. Do not filter or remove any.
+        Format your response as valid JSON.
+        You must respond with a valid JSON object in the following format:
+        {
+            "contexts": [/* array of reordered context objects */]
+        }
+        Always return valid JSON matching this exact structure.
+        `
     },
     memory: pgMemory,
     evals: {

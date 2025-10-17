@@ -68,39 +68,38 @@ export const pgMemory = new Memory({
         workingMemory: {
             enabled: true,
             scope: 'resource', // 'resource' | 'thread'
-            version: 'stable', // Enable the improved/experimental tool
-            template: `
-# User Profile & Context
-## Personal Information
-- **Name**: [To be learned]
-- **Role/Title**: [To be learned]
-- **Organization**: [To be learned]
-- **Location**: [To be learned]
-- **Time Zone**: [To be learned]
+            version: 'vnext', // Enable the improved/experimental tool
+            template: `# User Profile & Context
+            ## Personal Information
+            - **Name**: [To be learned]
+            - **Role/Title**: [To be learned]
+            - **Organization**: [To be learned]
+            - **Location**: [To be learned]
+            - **Time Zone**: [To be learned]
 
-## Communication Preferences
-- **Preferred Communication Style**: [To be learned]
-- **Response Length Preference**: [To be learned]
-- **Technical Level**: [To be learned]
+            ## Communication Preferences
+            - **Preferred Communication Style**: [To be learned]
+            - **Response Length Preference**: [To be learned]
+            - **Technical Level**: [To be learned]
 
-## Current Context
-- **Active Projects**: [To be learned]
-- **Current Goals**: [To be learned]
-- **Recent Activities**: [To be learned]
-- **Pain Points**: [To be learned]
+            ## Current Context
+            - **Active Projects**: [To be learned]
+            - **Current Goals**: [To be learned]
+            - **Recent Activities**: [To be learned]
+            - **Pain Points**: [To be learned]
 
-## Long-term Memory
-- **Key Achievements**: [To be learned]
-- **Important Relationships**: [To be learned]
-- **Recurring Patterns**: [To be learned]
-- **Preferences & Habits**: [To be learned]
+            ## Long-term Memory
+            - **Key Achievements**: [To be learned]
+            - **Important Relationships**: [To be learned]
+            - **Recurring Patterns**: [To be learned]
+            - **Preferences & Habits**: [To be learned]
 
-## Session Notes
-- **Today's Focus**: [To be learned]
-- **Outstanding Questions**: [To be learned]
-- **Action Items**: [To be learned]
-- **Follow-ups Needed**: [To be learned]
-        `,
+            ## Session Notes
+            - **Today's Focus**: [To be learned]
+            - **Outstanding Questions**: [To be learned]
+            - **Action Items**: [To be learned]
+            - **Follow-ups Needed**: [To be learned]
+            `,
         },
         // Thread management with supported options
         threads: {
