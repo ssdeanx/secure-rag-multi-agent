@@ -46,9 +46,11 @@ A comprehensive multi-agent AI orchestration platform that combines secure Retri
 C4Context
     title Governed RAG System Architecture
 
-    System_Boundary(system, "Governed RAG System") {
+    System_Boundary(system, "Governed RAG System")
+    {
 
-        Container(frontend, "Frontend Application", "Next.js App Router, React, TypeScript", "User Interface & Interaction") {
+        Container(frontend, "Frontend Application", "Next.js App Router, React, TypeScript", "User Interface & Interaction")
+        {
             Component(app_router, "/app", "Next.js App Router", "Pages, Layouts, Route Structure")
             Component(app_components, "/components", "App-Level Components", "High-level composed UI (Chat, Auth, Indexing)")
             Component(cedar_components, "/cedar", "Cedar Core Components", "Low-level Cedar UI primitives (roadmap, chat, buttons)")
@@ -59,7 +61,8 @@ C4Context
             Component(hooks, "/hooks", "React Hooks", "Reusable client-side logic")
         }
 
-        Container(backend, "Backend Services", "Node.js, TypeScript, Mastra, PostgreSQL", "API Endpoints & AI Orchestration") {
+        Container(backend, "Backend Services", "Node.js, TypeScript, Mastra, PostgreSQL", "API Endpoints & AI Orchestration")
+        {
             Component(src_root, "/src", "Backend Source Root", "Entry point, types, utils, Mastra integration")
             Component(api_route_handlers, "/app/api", "API Route Handlers", "Chat & Indexing Endpoints; Streaming")
             Component(mastra_core, "/src/mastra", "Mastra Core Orchestration", "Orchestration, Registration, Tracing")
@@ -75,15 +78,18 @@ C4Context
             Component(src_cli, "/src/cli", "CLI Layer", "Indexing & Workflow Invocation CLI")
         }
 
-        Container(data_stores, "Data Stores", "PostgreSQL", "Vector Database & Persistent Storage") {
+        Container(data_stores, "Data Stores", "PostgreSQL", "Vector Database & Persistent Storage")
+        {
             Component(pg_storage, "PostgreSQL", "Database", "Stores document embeddings and metadata")
         }
 
-        Container(content, "Content Corpus", "Markdown files", "Source documents for RAG") {
+        Container(content, "Content Corpus", "Markdown files", "Source documents for RAG")
+        {
             Component(corpus, "/corpus", "Sample Corpus", "Source docs for indexing with classification")
         }
 
-        Container(documentation, "Documentation System", "MD/MDX files", "Project documentation") {
+        Container(documentation, "Documentation System", "MD/MDX files", "Project documentation")
+        {
             Component(docs, "/docs", "Documentation", "MD/MDX architecture & publishing")
         }
     }
