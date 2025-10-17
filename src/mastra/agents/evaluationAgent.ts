@@ -64,16 +64,6 @@ CRITICAL: You must always respond with a valid JSON object in the following form
     },
     model: googleAIFlashLite,
     memory: pgMemory,
-    evals: {
-        contentSimilarity: new ContentSimilarityMetric({
-            ignoreCase: true,
-            ignoreWhitespace: true,
-        }),
-        completeness: new CompletenessMetric(),
-        textualDifference: new TextualDifferenceMetric(),
-        keywordCoverage: new KeywordCoverageMetric(), // Keywords will be provided at runtime for evaluation
-        toneConsistency: new ToneConsistencyMetric(),
-    },
     scorers: {},
     workflows: {},
 })

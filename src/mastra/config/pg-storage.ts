@@ -31,24 +31,25 @@ export const pgStore = new PostgresStore({
     keepAliveInitialDelayMillis: 0,
 })
 
-// PgVector configuration with 1568 dimension embeddings
+// PgVector configuration for 1568 dimension embeddings (gemini-embedding-002)
 export const pgVector = new PgVector({
     connectionString:
         process.env.SUPABASE ??
         process.env.DATABASE_URL ??
         'postgresql://user:password@localhost:5432/mydb',
     schemaName: process.env.DB_SCHEMA ?? 'public',
+    // Additional index options can be configured here if needed
 })
 
-// Memory configuration using PgVector (1568 dimensions)
+// Memory configuration using PgVector with HNSW index for gemini-embedding-001
 export const pgMemory = new Memory({
     storage: pgStore,
-    vector: pgVector, // Using PgVector for 1568 dimension embeddings
+    vector: pgVector, // Using PgVector with HNSW for 1568 dimension embeddings (gemini-embedding-001)
     embedder: google.textEmbedding('gemini-embedding-001'),
     options: {
         // Message management
         lastMessages: parseInt(process.env.MEMORY_LAST_MESSAGES ?? '500'),
-        // Advanced semantic recall with supported options
+        // Advanced semantic recall with HNSW index configuration
         semanticRecall: {
             topK: parseInt(process.env.SEMANTIC_TOP_K ?? '5'),
             messageRange: {
@@ -56,12 +57,18 @@ export const pgMemory = new Memory({
                 after: parseInt(process.env.SEMANTIC_RANGE_AFTER ?? '2'),
             },
             scope: 'resource', // 'resource' | 'thread'
+            // HNSW index configuration to support high-dimensional embeddings (>2000 dimensions)
+            indexConfig: {
+                type: 'flat', // IVFFlat index type (supports dimensions > 2000, unlike HNSW limit of 2000)
+                metric: 'cosine', // Distance metric for normalized embeddings
+                ivf: {lists: 4000},
+                }
         },
         // Enhanced working memory with supported template
         workingMemory: {
             enabled: true,
             scope: 'resource', // 'resource' | 'thread'
-            version: 'vnext', // Enable the improved/experimental tool
+            version: 'stable', // Enable the improved/experimental tool
             template: `
 # User Profile & Context
 ## Personal Information
@@ -136,9 +143,9 @@ export const graphQueryTool = createGraphRAGTool({
     vectorStoreName: 'pgVector',
     indexName: 'governed_rag',
     model: google.textEmbedding('gemini-embedding-001'),
-    // Supported graph options
+    // Supported graph options (updated for 1568 dimensions)
     graphOptions: {
-        dimension: 1568,
+        dimension: 3072, // gemini-embedding-001 dimension (1568)
         threshold: parseFloat(process.env.GRAPH_THRESHOLD ?? '0.7'),
         randomWalkSteps: parseInt(process.env.GRAPH_RANDOM_WALK_STEPS ?? '10'),
         restartProb: parseFloat(process.env.GRAPH_RESTART_PROB ?? '0.15'),
@@ -161,8 +168,8 @@ export const pgQueryTool = createVectorQueryTool({
     databaseConfig: {
         pgVector: {
             minScore: parseFloat(process.env.PG_MIN_SCORE ?? '0.7'),
-            ef: parseInt(process.env.PG_EF ?? '200'), // HNSW search parameter
-            probes: parseInt(process.env.PG_PROBES ?? '10'), // IVFFlat probe parameter
+            ef: parseInt(process.env.PG_EF ?? '100'), // HNSW search parameter - higher = better recall, slower queries
+            // Note: probes parameter is only for IVFFlat, not HNSW
         },
     },
     includeVectors: true,
@@ -333,7 +340,7 @@ export async function checkDatabaseHealth(): Promise<{
                 ),
                 idleTimeout: parseInt(process.env.DB_IDLE_TIMEOUT ?? '30000'),
                 schemaName: process.env.DB_SCHEMA ?? 'public',
-                vectorDimensions: 1568,
+                vectorDimensions: 1568, // Updated for gemini-embedding-001 (1568 dimensions)
                 memoryEnabled: true,
             },
         })
@@ -431,7 +438,7 @@ export const storageConfig = {
     vectorStores: {
         pgVector: {
             type: 'pgvector',
-            dimensions: 1568,
+            dimensions: 3072, // Updated for gemini-embedding-001 (1568 dimensions)
             enabled: true,
         },
     },
@@ -447,7 +454,7 @@ log.info('PG Storage config loaded with PgVector support', {
     schema: process.env.DB_SCHEMA ?? 'public',
     maxConnections: parseInt(process.env.DB_MAX_CONNECTIONS ?? '20'),
     vectorStores: {
-        pgVector: { dimensions: 1568, enabled: true },
+        pgVector: { dimensions: 3072, enabled: true }, // Updated for gemini-embedding-001
     },
     memoryEnabled: true,
     workingMemoryEnabled: true,

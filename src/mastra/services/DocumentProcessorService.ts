@@ -287,7 +287,7 @@ export class DocumentProcessorService {
         try {
             const content: string = await fs.readFile(doc.filePath, 'utf-8')
 
-            if (!content || content.trim().length === 0) {
+            if (content?.trim().length === 0) {
                 throw new Error(`Document is empty: ${doc.filePath}`)
             }
 
@@ -375,7 +375,7 @@ export class DocumentProcessorService {
 
         const avgDocSize: number = totalSize / sampledDocs.length
         const totalEstimatedSize: number = avgDocSize * docs.length
-        const EMBEDDING_DIMENSION = 1568 // gemini-embedding-001
+        const EMBEDDING_DIMENSION = 3072 // text-embedding-3-large (3072 dimensions)
 
         // Get optimal chunking settings
         const optimalChunking =
@@ -413,9 +413,9 @@ export class DocumentProcessorService {
             )
         }
 
-        if (memoryEstimateMB > 1000) {
+        if (memoryEstimateMB > 500) {
             recommendations.push(
-                'High memory usage expected - use smaller batch sizes'
+                'High memory usage expected - use smaller batch sizes (adjusted for 3072-dimension embeddings)'
             )
         }
 

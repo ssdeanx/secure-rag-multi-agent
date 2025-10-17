@@ -29,6 +29,7 @@ import { SensitiveDataFilter } from '@mastra/core/ai-tracing'
 import { researchContentNetwork, governedRagNetwork } from './networks'
 import { apiRoutes } from './apiRegistry'
 import { mcpAgent } from './agents/mcpAgent'
+import { voiceAgent } from './agents/voiceAgent'
 
 export const mastra = new Mastra({
     storage: pgStore,
@@ -50,6 +51,7 @@ export const mastra = new Mastra({
         productRoadmap: productRoadmapAgent,
         editor: editorAgent,
         mcp: mcpAgent,
+        //voice: voiceAgent,
         'research-content-network': researchContentNetwork,
         'governed-rag-network': governedRagNetwork,
         // Add more agents here
@@ -63,7 +65,9 @@ export const mastra = new Mastra({
         'chat-workflow-1': chatWorkflow, // backward-compatible alias
         'content-generation': contentGenerationWorkflow,
     },
-    scorers: {},
+    scorers: {
+        // Add global scorers here if needed
+    },
     vectors: {
         pgVector,
     },
@@ -130,6 +134,7 @@ export const mastra = new Mastra({
                         redactionStyle: 'full', // or 'partial'
                     }),
                 ],
+                includeInternalSpans: true, // Optional, default is false
             },
         },
     },

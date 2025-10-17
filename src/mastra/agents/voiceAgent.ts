@@ -20,7 +20,7 @@ log.info('Voice Research Agent...')
 
 export const voiceAgent = new Agent({
     id: 'voice',
-    name: 'Voice Agent',
+    name: 'voiceAgent',
     description:
         'An expert voice agent that can interact with users via voice, understand their requests, and perform actions.',
     instructions: `
@@ -83,7 +83,7 @@ Example:
     debug: true,
     instructions: `You are an expert voice agent. Your goal is to assist users through voice interactions, understanding their requests, and performing actions accordingly.`,
     tools: [],
-    sessionConfig: {enableResumption: true, contextCompression: true, maxDuration: '30m' }, // 30 minutes
+    sessionConfig: {enableResumption: false, contextCompression: true, maxDuration: '30m' }, // 30 minutes
     audioConfig: {
         inputSampleRate: 16000,
         outputSampleRate: 24000,
