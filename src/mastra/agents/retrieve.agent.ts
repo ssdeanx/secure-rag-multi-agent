@@ -17,6 +17,7 @@ import { vectorQueryTool } from '../tools/vector-query.tool'
 import { log } from '../config/logger'
 import { pgMemory } from '../config/pg-storage'
 import { googleAIFlashLite } from '../config/google'
+import { responseQualityScorer, taskCompletionScorer } from './custom-scorers'
 
 // Define runtime context for this agent
 export interface RetrieveAgentContext {
@@ -71,7 +72,16 @@ User: ${userId ?? 'anonymous'}
     },
     memory: pgMemory,
     tools: { vectorQueryTool },
-    scorers: {},
+    scorers: {
+        responseQuality: {
+            scorer: responseQualityScorer,
+            sampling: { type: 'ratio', rate: 0.8 },
+        },
+        taskCompletion: {
+            scorer: taskCompletionScorer,
+            sampling: { type: 'ratio', rate: 0.7 },
+        },
+    },
     workflows: {}, // This is where workflows will be defined
 })
 export { retrieveOutputSchema }

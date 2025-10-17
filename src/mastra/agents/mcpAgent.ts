@@ -3,6 +3,7 @@ import { MCPClient } from '@mastra/mcp'
 import { log } from '../config/logger'
 import { pgMemory } from '../config/pg-storage'
 import { googleAI } from '../config/google'
+import { responseQualityScorer, taskCompletionScorer } from './custom-scorers'
 
 // Define runtime context for this agent
 export interface McpAgentContext {
@@ -45,7 +46,16 @@ User: ${userId ?? 'admin'}`
         return await mcp.getTools()
     },
     evals: {},
-    scorers: {},
+    scorers: {
+        responseQuality: {
+            scorer: responseQualityScorer,
+            sampling: { type: 'ratio', rate: 0.8 },
+        },
+        taskCompletion: {
+            scorer: taskCompletionScorer,
+            sampling: { type: 'ratio', rate: 0.7 },
+        },
+    },
     workflows: {},
 })
 

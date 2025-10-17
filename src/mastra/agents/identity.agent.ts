@@ -6,6 +6,7 @@ import { log } from '../config/logger'
 import { pgMemory } from '../config/pg-storage'
 import { googleAIFlashLite } from '../config/google'
 import { PGVECTOR_PROMPT } from '@mastra/pg'
+import { responseQualityScorer, taskCompletionScorer } from './custom-scorers'
 
 // Define runtime context for this agent
 export interface IdentityAgentContext {
@@ -37,7 +38,16 @@ Always use the jwt-auth tool - never attempt to decode JWTs manually.`
     evals: {
         // Add any evaluation metrics if needed
     },
-    scorers: {},
+    scorers: {
+        responseQuality: {
+            scorer: responseQualityScorer,
+            sampling: { type: 'ratio', rate: 0.8 },
+        },
+        taskCompletion: {
+            scorer: taskCompletionScorer,
+            sampling: { type: 'ratio', rate: 0.7 },
+        },
+    },
     workflows: {},
 })
 export { identityOutputSchema }

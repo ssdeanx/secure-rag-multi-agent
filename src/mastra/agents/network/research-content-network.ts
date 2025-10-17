@@ -18,16 +18,16 @@
 
 import { Agent } from '@mastra/core/agent'
 import { google } from '@ai-sdk/google'
-import { researchAgent } from '../agents/researchAgent'
-import { learningExtractionAgent } from '../agents/learningExtractionAgent'
-import { copywriterAgent } from '../agents/copywriterAgent'
-import { editorAgent } from '../agents/editorAgent'
-import { evaluationAgent } from '../agents/evaluationAgent'
-import { reportAgent } from '../agents/reportAgent'
-import { researchWorkflow } from '../workflows/researchWorkflow'
-import { generateReportWorkflow } from '../workflows/generateReportWorkflow'
-import { contentGenerationWorkflow } from '../workflows/contentGenerationWorkflow'
-import { pgMemory } from '../config/pg-storage'
+import { researchAgent } from '../researchAgent'
+import { learningExtractionAgent } from '../learningExtractionAgent'
+import { copywriterAgent } from '../copywriterAgent'
+import { editorAgent } from '../editorAgent'
+import { evaluationAgent } from '../evaluationAgent'
+import { reportAgent } from '../reportAgent'
+import { researchWorkflow } from '../../workflows/researchWorkflow'
+import { generateReportWorkflow } from '../../workflows/generateReportWorkflow'
+import { contentGenerationWorkflow } from '../../workflows/contentGenerationWorkflow'
+import { pgMemory } from '../../config/pg-storage'
 /**
  * Research and Content Network Agent
  *

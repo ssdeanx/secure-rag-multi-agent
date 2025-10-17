@@ -4,6 +4,7 @@ import { google } from '@ai-sdk/google'
 import { log } from '../config/logger'
 import { pgMemory } from '../config/pg-storage'
 import { googleAI } from '../config/google'
+import { responseQualityScorer, taskCompletionScorer } from './custom-scorers'
 
 // Define runtime context for this agent
 export interface RerankAgentContext {
@@ -54,7 +55,16 @@ export const rerankAgent = new Agent({
     evals: {
         // Add any evaluation metrics if needed
     },
-    scorers: {},
+    scorers: {
+        responseQuality: {
+            scorer: responseQualityScorer,
+            sampling: { type: 'ratio', rate: 0.8 },
+        },
+        taskCompletion: {
+            scorer: taskCompletionScorer,
+            sampling: { type: 'ratio', rate: 0.7 },
+        },
+    },
     workflows: {},
 })
 export { rerankOutputSchema }

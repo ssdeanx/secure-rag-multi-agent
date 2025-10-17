@@ -13,6 +13,7 @@ import { answererOutputSchema } from '../schemas/agent-schemas'
 import { log } from '../config/logger'
 import { pgMemory } from '../config/pg-storage'
 import { googleAI } from '../config/google'
+import { responseQualityScorer, taskCompletionScorer } from './custom-scorers'
 
 // Define runtime context for this agent
 export interface AnswererAgentContext {
@@ -57,7 +58,16 @@ IMPORTANT: Respond with valid JSON:
     },
     memory: pgMemory,
     evals: {},
-    scorers: {},
+    scorers: {
+        responseQuality: {
+            scorer: responseQualityScorer,
+            sampling: { type: 'ratio', rate: 0.8 },
+        },
+        taskCompletion: {
+            scorer: taskCompletionScorer,
+            sampling: { type: 'ratio', rate: 0.7 },
+        },
+    },
     workflows: {},
 })
 export { answererOutputSchema }

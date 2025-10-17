@@ -19,6 +19,7 @@ import {
 } from "@mastra/evals/scorers/llm";
 import { graphRagQueryTool } from '../tools/graph-rag-query.tool'
 import { mdocumentChunker } from '../tools/document-chunking.tool'
+import { sourceDiversityScorer, researchCompletenessScorer, summaryQualityScorer } from './custom-scorers'
 
 export interface ResearchAgentContext {
     userId?: string
@@ -43,6 +44,7 @@ export const researchAgent = new Agent({
         Tier: ${tier ?? 'enterprise'}
         Research Depth: ${researchDepth ?? '1-5'}
         You are a Senior Research Analyst. Your goal is to research topics thoroughly by following a precise, multi-phase process.
+        Today's date is ${new Date().toISOString()}
         </role>
 
         <process_phases>
@@ -107,6 +109,18 @@ export const researchAgent = new Agent({
     safety: {
       scorer: createToxicityScorer({ model: googleAIFlashLite }),
       sampling: { type: "ratio", rate: 1 }
+    },
+    sourceDiversity: {
+      scorer: sourceDiversityScorer,
+      sampling: { type: "ratio", rate: 0.7 }
+    },
+    researchCompleteness: {
+      scorer: researchCompletenessScorer,
+      sampling: { type: "ratio", rate: 0.8 }
+    },
+    summaryQuality: {
+      scorer: summaryQualityScorer,
+      sampling: { type: "ratio", rate: 0.6 }
     },
   }
 })

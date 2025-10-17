@@ -255,7 +255,11 @@ flowchart TD
 
     ```bash
     cp .env.example .env
-    # Edit .env with your OpenAI API key and other settings
+    # Edit .env with your API keys and other settings:
+    # - OPENAI_API_KEY or GOOGLE_GENERATIVE_AI_API_KEY (required for AI models)
+    # - SERPAPI_API_KEY (optional, for web search tools - get from https://serpapi.com/manage-api-key)
+    # - SUPABASE credentials (required for authentication)
+    # - DATABASE_URL (required for PostgreSQL)
     ```
 
 3. **Set up authentication (Supabase):**
@@ -310,7 +314,8 @@ flowchart TD
 - **Advanced Research Workflows**: Multi-phase research with web scraping, content evaluation, and learning extraction
 - **Secure Vector Search**: Filtered retrieval based on user permissions with PgVector
 - **Content Analysis**: Automated learning extraction, quality evaluation, and insight mining
-- **Web Scraping & Data Collection**: Comprehensive web content extraction and processing
+- **Web Search & Data Collection**: SerpAPI-powered Google Search, News, Trends, Shopping (Amazon, Walmart, eBay, Home Depot), Academic (Google Scholar), Finance, and Local Business (Yelp) searches
+- **Web Scraping Tools**: Comprehensive web content extraction and processing
 - **Contextual Reranking**: Relevance scoring with security constraints
 - **Citation Generation**: Source attribution with access verification
 - **Voice Integration**: Google Gemini Live voice capabilities for conversational AI

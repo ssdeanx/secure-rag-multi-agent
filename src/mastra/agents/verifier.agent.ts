@@ -3,6 +3,7 @@ import { verifierOutputSchema } from '../schemas/agent-schemas'
 import { log } from '../config/logger'
 import { pgMemory } from '../config/pg-storage'
 import { googleAI } from '../config/google'
+import { responseQualityScorer, taskCompletionScorer } from './custom-scorers'
 
 // Define runtime context for this agent
 export interface VerifierAgentContext {
@@ -68,7 +69,16 @@ Always return valid JSON matching this exact structure.`
     evals: {
         // Add any evaluation metrics if needed
     },
-    scorers: {},
+    scorers: {
+        responseQuality: {
+            scorer: responseQualityScorer,
+            sampling: { type: 'ratio', rate: 0.8 },
+        },
+        taskCompletion: {
+            scorer: taskCompletionScorer,
+            sampling: { type: 'ratio', rate: 0.7 },
+        },
+    },
     workflows: {},
 })
 export { verifierOutputSchema }

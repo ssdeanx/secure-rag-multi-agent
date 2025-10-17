@@ -4,6 +4,7 @@ import { google } from '@ai-sdk/google'
 import { log } from '../config/logger'
 import { pgMemory } from '../config/pg-storage'
 import { googleAI } from '../config/google'
+import { responseQualityScorer, summaryQualityScorer } from './custom-scorers'
 
 // Define runtime context for this agent
 export interface EditorAgentContext {
@@ -102,7 +103,16 @@ You must respond with a JSON object in the following format:
     },
     model: googleAI,
     memory: pgMemory,
-    scorers: {},
+    scorers: {
+        responseQuality: {
+            scorer: responseQualityScorer,
+            sampling: { type: 'ratio', rate: 0.8 },
+        },
+        summaryQuality: {
+            scorer: summaryQualityScorer,
+            sampling: { type: 'ratio', rate: 0.6 },
+        },
+    },
     workflows: {},
 })
 export { editorOutputSchema }
