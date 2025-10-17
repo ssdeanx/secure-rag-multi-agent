@@ -175,7 +175,7 @@ export const usageStatsSchema = z.object({
     documentsIndexed: z.number().int().nonnegative(),
     apiRequestsToday: z.number().int().nonnegative(),
     totalUsers: z.number().int().nonnegative(),
-    lastReset: z.string().datetime(),
+    lastReset: z.iso.datetime(),
     quotaExceeded: z.boolean().optional(),
 })
 
@@ -306,3 +306,61 @@ export const agentOutputSchemas = {
     evaluationResult: evaluationResultSchema,
     finalContent: finalContentSchema,
 }
+
+// --- Model registry schemas ---
+export const modelProviderSchema = z.enum([
+    'google',
+    'openai',
+    'anthropic',
+    'openrouter',
+    'vertex',
+    'gemini-cli',
+])
+
+export const modelCapabilitySchema = z.enum([
+    'text-generation',
+    'embedding',
+    'vision',
+    'audio',
+    'reasoning',
+])
+
+export const costTierSchema = z.enum(['free', 'low', 'medium', 'high'])
+
+export const modelMetadataSchema = z.object({
+    id: z.string(),
+    name: z.string(),
+    provider: modelProviderSchema,
+    capabilities: z.array(modelCapabilitySchema),
+    contextWindow: z.number().int(),
+    costTier: costTierSchema,
+    maxTokens: z.number().int(),
+    supportsStreaming: z.boolean().optional().default(true),
+    requiresAuth: z.string().optional(),
+    description: z.string().optional(),
+    isAvailable: z.boolean().optional().default(true),
+})
+
+export const modelConfigurationSchema = z.object({
+    userId: z.string().optional(),
+    tenantId: z.string().optional(),
+    primaryModelId: z.string(),
+    fallbackModelId: z.string().optional(),
+    temperature: z.number().min(0).max(2).default(0.7),
+    maxTokens: z.number().min(512).max(32768).default(2048),
+    topP: z.number().min(0).max(1).default(0.9),
+    createdAt: z.iso.datetime().optional(),
+    updatedAt: z.iso.datetime().optional(),
+})
+
+export const modelSelectionRequestSchema = z.object({
+    primaryModel: z.string(),
+    fallbackModel: z.string().optional(),
+    temperature: z.number().optional(),
+    maxTokens: z.number().optional(),
+    topP: z.number().optional(),
+})
+
+export type ModelMetadata = z.infer<typeof modelMetadataSchema>
+export type ModelConfiguration = z.infer<typeof modelConfigurationSchema>
+export type ModelSelectionRequest = z.infer<typeof modelSelectionRequestSchema>

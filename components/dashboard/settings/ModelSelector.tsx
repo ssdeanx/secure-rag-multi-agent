@@ -26,6 +26,25 @@ interface ModelConfig {
     topP: number
 }
 
+interface ModelMetadata {
+    id: string
+    name: string
+    provider: string
+    capabilities: string[]
+    contextWindow: number
+    costTier: string
+    maxTokens: number
+    supportsStreaming: boolean
+    isAvailable: boolean
+}
+
+interface ProviderStatus {
+    provider: string
+    apiKeyEnvVar?: string
+    isConfigured: boolean
+    modelCount: number
+}
+
 /**
  * ModelSelector Component
  *
@@ -45,6 +64,44 @@ export default function ModelSelector() {
         type: 'success' | 'danger'
         text: string
     } | null>(null)
+    const [availableModels, setAvailableModels] = React.useState<ModelMetadata[]>([]) 
+    const [providers, setProviders] = React.useState<ProviderStatus[]>([]) 
+
+    React.useEffect(() => {
+        let mounted = true
+        const load = async () => {
+            setLoading(true)
+            try {
+                const [modelsRes, providersRes] = await Promise.all([
+                    fetch('/api/dashboard/settings/models'),
+                    fetch('/api/dashboard/settings/models/providers'),
+                ])
+                if (!modelsRes.ok) {
+                    throw new Error('Failed to load models')
+                }
+                if (!providersRes.ok) {
+                    throw new Error('Failed to load providers')
+                }
+                const modelsData = await modelsRes.json() as ModelMetadata[]
+                const providersData = await providersRes.json() as ProviderStatus[]
+                if (!mounted) {
+                    return
+                }
+                setAvailableModels(modelsData)
+                setProviders(providersData)
+            } catch (err) {
+                setMessage({ type: 'danger', text: err instanceof Error ? err.message : 'Failed to load' })
+            } finally {
+                if (mounted) {
+                    setLoading(false)
+                }
+            }
+        }
+        load()
+        return () => {
+            mounted = false
+        }
+    }, [])
 
     const handleSave = async () => {
         setLoading(true)

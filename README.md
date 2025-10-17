@@ -43,106 +43,56 @@ A comprehensive multi-agent AI orchestration platform that combines secure Retri
 ### Architecture
 
 ```mermaid
-C4Context
-    title Governed RAG System Architecture
+graph TD
 
-    System_Boundary(system, "Governed RAG System")
-    {
-
-        Container(frontend, "Frontend Application", "Next.js App Router, React, TypeScript", "User Interface & Interaction")
-        {
-            Component(app_router, "/app", "Next.js App Router", "Pages, Layouts, Route Structure")
-            Component(app_components, "/components", "App-Level Components", "High-level composed UI (Chat, Auth, Indexing)")
-            Component(cedar_components, "/cedar", "Cedar Core Components", "Low-level Cedar UI primitives (roadmap, chat, buttons)")
-            Component(cedar_os_integration, "/app/cedar-os", "Cedar OS Integration", "Product Roadmap / Cedar Integration")
-            Component(lib_shared, "/lib", "Shared Frontend Libraries", "Auth, JWT utilities, MDX plugins")
-            Component(lib_mastra_client, "/lib/mastra", "Mastra Browser Client", "Frontend Mastra client factory")
-            Component(lib_actions, "/lib/actions", "Frontend Server Actions", "Minimal privileged server actions")
-            Component(hooks, "/hooks", "React Hooks", "Reusable client-side logic")
-        }
-
-        Container(backend, "Backend Services", "Node.js, TypeScript, Mastra, PostgreSQL", "API Endpoints & AI Orchestration")
-        {
-            Component(src_root, "/src", "Backend Source Root", "Entry point, types, utils, Mastra integration")
-            Component(api_route_handlers, "/app/api", "API Route Handlers", "Chat & Indexing Endpoints; Streaming")
-            Component(mastra_core, "/src/mastra", "Mastra Core Orchestration", "Orchestration, Registration, Tracing")
-            Component(mastra_agents, "/src/mastra/agents", "Mastra Agents", "Single-responsibility Reasoning Units")
-            Component(mastra_workflows, "/src/mastra/workflows", "Mastra Workflows", "Multi-step Orchestration Definitions")
-            Component(mastra_networks, "/src/mastra/networks", "Mastra vNext Networks", "Non-deterministic LLM-based Multi-agent Orchestration")
-            Component(mastra_tools, "/src/mastra/tools", "Mastra Tools", "Safe Callable Functions for Agents")
-            Component(mastra_services, "/src/mastra/services", "Mastra Services", "Business/Domain Logic Modules")
-            Component(mastra_schemas, "/src/mastra/schemas", "Mastra Schemas", "Zod Contracts & Data Validation")
-            Component(mastra_config, "/src/mastra/config", "Mastra Configuration", "External Service Setup (PostgreSQL, Models)")
-            Component(mastra_policy, "/src/mastra/policy", "Mastra Policy / ACL", "Access Control Rule Sources")
-            Component(src_utils, "/src/utils", "Backend Utilities", "Stream & Helper Abstractions")
-            Component(src_cli, "/src/cli", "CLI Layer", "Indexing & Workflow Invocation CLI")
-        }
-
-        Container(data_stores, "Data Stores", "PostgreSQL", "Vector Database & Persistent Storage")
-        {
-            Component(pg_storage, "PostgreSQL", "Database", "Stores document embeddings and metadata")
-        }
-
-        Container(content, "Content Corpus", "Markdown files", "Source documents for RAG")
-        {
-            Component(corpus, "/corpus", "Sample Corpus", "Source docs for indexing with classification")
-        }
-
-        Container(documentation, "Documentation System", "MD/MDX files", "Project documentation")
-        {
-            Component(docs, "/docs", "Documentation", "MD/MDX architecture & publishing")
-        }
-    }
-
-    Rel(app_router, "Mounts", app_components)
-    Rel(app_router, "Integrates with", cedar_os_integration)
-    Rel(app_router, "Calls", api_route_handlers, "HTTP/S")
-    Rel(app_router, "Uses", lib_shared)
-    Rel(app_router, "Uses", hooks)
-
-    Rel(app_components, "Composes from", cedar_components)
-    Rel(app_components, "Uses", lib_shared)
-
-    Rel(cedar_os_integration, "Consumes", cedar_components)
-    Rel(cedar_os_integration, "Exposes state to", mastra_agents, "via Cedar OS hooks")
-
-    Rel(lib_shared, "Uses", lib_mastra_client)
-    Rel(lib_shared, "Uses", lib_actions)
-
-    Rel(api_route_handlers, "Invokes", mastra_core, "Mastra Workflows")
-
-    Rel(mastra_core, "Orchestrates", mastra_agents)
-    Rel(mastra_core, "Orchestrates", mastra_workflows)
-    Rel(mastra_core, "Orchestrates", mastra_networks)
-    Rel(mastra_core, "Uses", mastra_tools)
-    Rel(mastra_core, "Uses", mastra_services)
-    Rel(mastra_core, "Validates with", mastra_schemas)
-    Rel(mastra_core, "Configured by", mastra_config)
-    Rel(mastra_core, "Enforces policies from", mastra_policy)
-    Rel(mastra_core, "Uses", src_utils)
-
-    Rel(mastra_agents, "Call", mastra_tools)
-    Rel(mastra_workflows, "Chain", mastra_agents)
-    Rel(mastra_workflows, "Chain", mastra_tools)
-    Rel(mastra_workflows, "Chain", mastra_services)
-    Rel(mastra_networks, "Route to", mastra_agents, "Dynamic LLM routing")
-    Rel(mastra_networks, "Route to", mastra_workflows, "Dynamic LLM routing")
-
-    Rel(mastra_tools, "Utilize", mastra_services)
-    Rel(mastra_tools, "Interact with", pg_storage, "Vector Search")
-
-    Rel(mastra_services, "Interact with", pg_storage, "Vector Storage")
-
-    Rel(src_cli, "Invokes", mastra_core, "Mastra Workflows")
-
-    Rel(pg_storage, "Stores", corpus, "Embeddings & Metadata")
-
-    Rel(corpus, "Indexed by", mastra_workflows, "governed-rag-index")
-    Rel(docs, "Content for", app_router)
-
-    %% Styling for Dark Mode
-    classDef darkMode fill:#1e1e1e,stroke:#ffffff,stroke-width:2px,color:#ffffff
-    class frontend,backend,data_stores,content,documentation darkMode
+    user["User<br>/app"]
+    external_llm["External LLM/RAG Service<br>/llms.txt"]
+    external_data["External Data Sources<br>/corpus"]
+    subgraph mastra_rag_system["Mastra Governed RAG System<br>[External]"]
+        subgraph web_app["Web Application<br>/app"]
+            ui_components["UI Components<br>/components/ui"]
+            pages["Pages<br>/app"]
+            navigation["Navigation & Layout<br>/app/layout.tsx"]
+            mdx_renderer["MDX Renderer<br>/components/mdx"]
+            %% Edges at this level (grouped by source)
+            pages["Pages<br>/app"] -->|"Uses"| ui_components["UI Components<br>/components/ui"]
+            pages["Pages<br>/app"] -->|"Uses"| navigation["Navigation & Layout<br>/app/layout.tsx"]
+            mdx_renderer["MDX Renderer<br>/components/mdx"] -->|"Uses"| ui_components["UI Components<br>/components/ui"]
+        end
+        subgraph backend_api["Backend API<br>/lib"]
+            auth_service["Authentication Service<br>/lib/auth.ts"]
+            rag_orchestrator["RAG Orchestrator<br>/lib/mastra"]
+            api_endpoints["API Endpoints<br>/app/api"]
+            data_processing["Data Processing<br>/lib/utils.ts"]
+            %% Edges at this level (grouped by source)
+            api_endpoints["API Endpoints<br>/app/api"] -->|"Uses"| auth_service["Authentication Service<br>/lib/auth.ts"]
+            api_endpoints["API Endpoints<br>/app/api"] -->|"Invokes"| rag_orchestrator["RAG Orchestrator<br>/lib/mastra"]
+            rag_orchestrator["RAG Orchestrator<br>/lib/mastra"] -->|"Uses"| data_processing["Data Processing<br>/lib/utils.ts"]
+        end
+        subgraph document_store["Document Store<br>/corpus"]
+            document_storage["Document Storage<br>/corpus"]
+            indexing_service["Indexing Service<br>[External]"]
+            retrieval_service["Retrieval Service<br>[External]"]
+            %% Edges at this level (grouped by source)
+            indexing_service["Indexing Service<br>[External]"] -->|"Reads from"| document_storage["Document Storage<br>/corpus"]
+            retrieval_service["Retrieval Service<br>[External]"] -->|"Queries"| indexing_service["Indexing Service<br>[External]"]
+        end
+        subgraph cli_app["CLI Application<br>/src/cli"]
+            cli_commands["CLI Commands<br>/src/cli"]
+            cli_core["CLI Core<br>/src/index.ts"]
+            %% Edges at this level (grouped by source)
+            cli_core["CLI Core<br>/src/index.ts"] -->|"Dispatches to"| cli_commands["CLI Commands<br>/src/cli"]
+        end
+        %% Edges at this level (grouped by source)
+        web_app["Web Application<br>/app"] -->|"Makes API calls to | HTTPS/JSON"| backend_api["Backend API<br>/lib"]
+        backend_api["Backend API<br>/lib"] -->|"Retrieves documents from"| retrieval_service["Retrieval Service<br>[External]"]
+        cli_app["CLI Application<br>/src/cli"] -->|"Interacts with | API Calls"| backend_api["Backend API<br>/lib"]
+        cli_app["CLI Application<br>/src/cli"] -->|"Ingests data into"| indexing_service["Indexing Service<br>[External]"]
+    end
+    %% Edges at this level (grouped by source)
+    backend_api["Backend API<br>/lib"] -->|"Queries | API Calls"| external_llm["External LLM/RAG Service<br>/llms.txt"]
+    external_data["External Data Sources<br>/corpus"] -->|"Provides documents to"| document_storage["Document Storage<br>/corpus"]
+    user["User<br>/app"] -->|"Uses | HTTPS"| web_app["Web Application<br>/app"]
 ```
 
 **Research & Analysis Pipeline:**
