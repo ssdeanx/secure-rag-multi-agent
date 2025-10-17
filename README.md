@@ -1,10 +1,12 @@
-# 🔐 Mastra Governed RAG
+# 🔐 Multi-Agent AI Orchestration System
 
-![Next.js](https://img.shields.io/badge/Next.js-15.5.4-blue?style=flat&logo=next.js)
+![Logo](public/logo_128.png)
+
+![Next.js](https://img.shields.io/badge/Next.js-15.5.6-blue?style=flat&logo=next.js)
 ![TypeScript](https://img.shields.io/badge/TypeScript-5.9.3-green?style=flat&logo=typescript)
-![Mastra](https://img.shields.io/badge/Mastra-0.20-orange?style=flat)
+![Mastra](https://img.shields.io/badge/Mastra-0.21.1-orange?style=flat)
 ![Vitest](https://img.shields.io/badge/Vitest-3.2.4-red?style=flat&logo=vitest)
-![Node](https://img.shields.io/badge/Node-%3E=20.9-blue?style=flat&logo=node.js)
+![Node](https://img.shields.io/badge/Node-%3E=20.19.5-blue?style=flat&logo=node.js)
 ![Google AI](https://img.shields.io/badge/Google%20AI-Gemini-blue?style=flat&logo=google)
 ![OpenAI](https://img.shields.io/badge/OpenAI-API-blue)
 ![OpenRouter](https://img.shields.io/badge/OpenRouter-API-purple)
@@ -14,52 +16,171 @@
 ![Docker](https://img.shields.io/badge/Docker-Container-blue)
 ![PostgreSQL](https://img.shields.io/badge/PostgreSQL-18-blue?style=flat&logo=postgresql)
 ![Mermaid](https://img.shields.io/badge/Mermaid-Diagrams-blue)
+![Voice](https://img.shields.io/badge/Voice-Google%20Gemini-green)
+![MCP](https://img.shields.io/badge/MCP-Integration-purple)
 
-Secure Retrieval-Augmented Generation (RAG) with role-based access control using Mastra AI orchestration.
+A comprehensive multi-agent AI orchestration platform featuring secure Retrieval-Augmented Generation (RAG), advanced research capabilities, voice interactions, MCP integration, and sophisticated memory management using Mastra AI framework.
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 
 ## Overview
 
-Traditional RAG systems risk exposing sensitive data. This template provides enterprise-grade security with **hierarchical RBAC**, **document classification**, and **multi-agent security pipelines** to ensure users only access authorized corporate knowledge.
+A comprehensive multi-agent AI orchestration platform that combines secure Retrieval-Augmented Generation (RAG) with advanced research capabilities, web scraping, content analysis, voice interactions, MCP integration, and sophisticated memory management. Built with enterprise-grade security featuring hierarchical RBAC, document classification, and multi-agent security pipelines to ensure users only access authorized corporate knowledge while enabling powerful AI-driven research and analysis workflows.
 
 ### Key Features
 
 - **Hierarchical RBAC**: Roles inherit access (public → employee → dept viewer/admin → admin)
 - **Document Classification**: Public/internal/confidential with tag-based filtering
-- **Multi-Agent Security**: Agents for retrieval, reranking, answering, and verification
-- **Audit-Ready**: Citations and logs for compliance
-- **Step-Up Authentication**: Elevated access for confidential content
+- **Multi-Agent Orchestration**: 20+ specialized agents for research, analysis, content creation, and security
+- **Advanced Research**: Web scraping, multi-phase research workflows, and content evaluation
+- **Voice Integration**: Google Gemini Live voice capabilities for conversational AI
+- **MCP Integration**: Model Context Protocol support for enhanced agent capabilities
+- **Secure RAG**: Enterprise-grade retrieval with access controls and audit trails
+- **Advanced Memory**: Persistent memory with semantic recall and working memory templates
+- **Content Analysis**: Learning extraction, evaluation scoring, and quality assessment
+- **Audit-Ready**: Citations, logs, and compliance validation throughout
 
 ### Architecture
 
 ```mermaid
-graph TB
-    User[User / JWT Authentication] --> UI[Next.js UI<br/>MUI Joy UI, Lucide React]
-    UI --> API[Next.js API Routes<br/>/api/chat, /api/index, /api/auth]
-    API --> Mastra[Mastra Workflow Engine<br/>Multi-Agent Orchestration]
+C4Context
+    title Governed RAG System Architecture
 
-    GoogleAI[Google AI / Gemini<br/>LLM & Embeddings] --> Mastra
-    OpenAI[OpenAI<br/>Secondary Provider] --> Mastra
-    OpenRouter[OpenRouter<br/>Additional Providers] --> Mastra
+    System_Boundary(system, "Governed RAG System") {
 
-    PostgreSQL[(PostgreSQL + PgVector<br/>Vector Storage & Memory)] --> Mastra
-    Redis[(Redis<br/>Caching & Sessions)] --> Mastra
+        Container(frontend, "Frontend Application", "Next.js App Router, React, TypeScript", "User Interface & Interaction") {
+            Component(app_router, "/app", "Next.js App Router", "Pages, Layouts, Route Structure")
+            Component(app_components, "/components", "App-Level Components", "High-level composed UI (Chat, Auth, Indexing)")
+            Component(cedar_components, "/cedar", "Cedar Core Components", "Low-level Cedar UI primitives (roadmap, chat, buttons)")
+            Component(cedar_os_integration, "/app/cedar-os", "Cedar OS Integration", "Product Roadmap / Cedar Integration")
+            Component(lib_shared, "/lib", "Shared Frontend Libraries", "Auth, JWT utilities, MDX plugins")
+            Component(lib_mastra_client, "/lib/mastra", "Mastra Browser Client", "Frontend Mastra client factory")
+            Component(lib_actions, "/lib/actions", "Frontend Server Actions", "Minimal privileged server actions")
+            Component(hooks, "/hooks", "React Hooks", "Reusable client-side logic")
+        }
 
-    subgraph MastraInternal[Mastra Core Components]
-        Agents[17 Specialized Agents<br/>Identity, Policy, Retrieve, Rerank, Answerer, Verifier<br/>Research, Report, Copywriter, Evaluation, Learning<br/>Product Roadmap, Editor, Self-Referencing, Assistant]
-        Workflows[11 Orchestrated Workflows<br/>Governed RAG Answer, Governed RAG Index<br/>Research, Content Generation, Generate Report<br/>Chat, Supporting Types]
-        Tools[15 Secure Tools<br/>Vector Query, JWT Auth, Document Chunking<br/>Web Scraper, Copywriter, Editor, Evaluate<br/>Weather, Roadmap, Data File Manager]
-        Networks[2 Multi-Agent Networks<br/>Research Content Network<br/>Governed RAG Network]
-    end
+        Container(backend, "Backend Services", "Node.js, TypeScript, Mastra, PostgreSQL", "API Endpoints & AI Orchestration") {
+            Component(src_root, "/src", "Backend Source Root", "Entry point, types, utils, Mastra integration")
+            Component(api_route_handlers, "/app/api", "API Route Handlers", "Chat & Indexing Endpoints; Streaming")
+            Component(mastra_core, "/src/mastra", "Mastra Core Orchestration", "Orchestration, Registration, Tracing")
+            Component(mastra_agents, "/src/mastra/agents", "Mastra Agents", "Single-responsibility Reasoning Units")
+            Component(mastra_workflows, "/src/mastra/workflows", "Mastra Workflows", "Multi-step Orchestration Definitions")
+            Component(mastra_networks, "/src/mastra/networks", "Mastra vNext Networks", "Non-deterministic LLM-based Multi-agent Orchestration")
+            Component(mastra_tools, "/src/mastra/tools", "Mastra Tools", "Safe Callable Functions for Agents")
+            Component(mastra_services, "/src/mastra/services", "Mastra Services", "Business/Domain Logic Modules")
+            Component(mastra_schemas, "/src/mastra/schemas", "Mastra Schemas", "Zod Contracts & Data Validation")
+            Component(mastra_config, "/src/mastra/config", "Mastra Configuration", "External Service Setup (PostgreSQL, Models)")
+            Component(mastra_policy, "/src/mastra/policy", "Mastra Policy / ACL", "Access Control Rule Sources")
+            Component(src_utils, "/src/utils", "Backend Utilities", "Stream & Helper Abstractions")
+            Component(src_cli, "/src/cli", "CLI Layer", "Indexing & Workflow Invocation CLI")
+        }
 
-    Agents --> Tools
-    Workflows --> Agents
-    Networks --> Workflows
-    Networks --> Agents
+        Container(data_stores, "Data Stores", "PostgreSQL", "Vector Database & Persistent Storage") {
+            Component(pg_storage, "PostgreSQL", "Database", "Stores document embeddings and metadata")
+        }
+
+        Container(content, "Content Corpus", "Markdown files", "Source documents for RAG") {
+            Component(corpus, "/corpus", "Sample Corpus", "Source docs for indexing with classification")
+        }
+
+        Container(documentation, "Documentation System", "MD/MDX files", "Project documentation") {
+            Component(docs, "/docs", "Documentation", "MD/MDX architecture & publishing")
+        }
+    }
+
+    Rel(app_router, "Mounts", app_components)
+    Rel(app_router, "Integrates with", cedar_os_integration)
+    Rel(app_router, "Calls", api_route_handlers, "HTTP/S")
+    Rel(app_router, "Uses", lib_shared)
+    Rel(app_router, "Uses", hooks)
+
+    Rel(app_components, "Composes from", cedar_components)
+    Rel(app_components, "Uses", lib_shared)
+
+    Rel(cedar_os_integration, "Consumes", cedar_components)
+    Rel(cedar_os_integration, "Exposes state to", mastra_agents, "via Cedar OS hooks")
+
+    Rel(lib_shared, "Uses", lib_mastra_client)
+    Rel(lib_shared, "Uses", lib_actions)
+
+    Rel(api_route_handlers, "Invokes", mastra_core, "Mastra Workflows")
+
+    Rel(mastra_core, "Orchestrates", mastra_agents)
+    Rel(mastra_core, "Orchestrates", mastra_workflows)
+    Rel(mastra_core, "Orchestrates", mastra_networks)
+    Rel(mastra_core, "Uses", mastra_tools)
+    Rel(mastra_core, "Uses", mastra_services)
+    Rel(mastra_core, "Validates with", mastra_schemas)
+    Rel(mastra_core, "Configured by", mastra_config)
+    Rel(mastra_core, "Enforces policies from", mastra_policy)
+    Rel(mastra_core, "Uses", src_utils)
+
+    Rel(mastra_agents, "Call", mastra_tools)
+    Rel(mastra_workflows, "Chain", mastra_agents)
+    Rel(mastra_workflows, "Chain", mastra_tools)
+    Rel(mastra_workflows, "Chain", mastra_services)
+    Rel(mastra_networks, "Route to", mastra_agents, "Dynamic LLM routing")
+    Rel(mastra_networks, "Route to", mastra_workflows, "Dynamic LLM routing")
+
+    Rel(mastra_tools, "Utilize", mastra_services)
+    Rel(mastra_tools, "Interact with", pg_storage, "Vector Search")
+
+    Rel(mastra_services, "Interact with", pg_storage, "Vector Storage")
+
+    Rel(src_cli, "Invokes", mastra_core, "Mastra Workflows")
+
+    Rel(pg_storage, "Stores", corpus, "Embeddings & Metadata")
+
+    Rel(corpus, "Indexed by", mastra_workflows, "governed-rag-index")
+    Rel(docs, "Content for", app_router)
+
+    %% Styling for Dark Mode
+    classDef darkMode fill:#1e1e1e,stroke:#ffffff,stroke-width:2px,color:#ffffff
+    class frontend,backend,data_stores,content,documentation darkMode
 ```
 
-**Detailed RAG Security Pipeline:**
+**Research & Analysis Pipeline:**
+
+```mermaid
+flowchart TD
+    %% Research Input
+    A[Research Query] --> B[Research Agent<br/>Query Decomposition<br/>Multi-phase Planning]
+
+    %% Initial Research Phase
+    B --> C[Web Scraping Tools<br/>Site Mapping, Content Extraction<br/>Batch Processing]
+
+    %% Analysis Phase
+    C --> D[Content Analysis<br/>Learning Extraction<br/>Evaluation Scoring]
+
+    %% Follow-up Research
+    D --> E[Iterative Research<br/>Follow-up Queries<br/>Depth Analysis]
+
+    %% Synthesis Phase
+    E --> F[Content Synthesis<br/>Report Generation<br/>Validation]
+
+    %% Output
+    F --> G[Research Report<br/>With Citations & Sources]
+
+    %% Supporting Tools
+    subgraph H["Research Tools"]
+        I[Web Scraper<br/>Content Extraction]
+        J[Evaluator<br/>Quality Assessment]
+        K[Learning Extractor<br/>Insight Mining]
+        L[Graph RAG<br/>Knowledge Graph]
+    end
+
+    %% Tool Integration
+    B -.-> I
+    C -.-> J
+    D -.-> K
+    E -.-> L
+
+    %% Styling for Dark Mode
+    classDef darkMode fill:#1e1e1e,stroke:#ffffff,stroke-width:2px,color:#ffffff
+    class A,B,C,D,E,F,G,H darkMode
+```
+
+**Secure RAG Pipeline:**
 
 ```mermaid
 flowchart TD
@@ -89,7 +210,7 @@ flowchart TD
     J[Governed RAG Network<br/>Cross-Agent Coordination] -.-> G
 
     %% Supporting Components
-    subgraph K["Available Tools (15 total)"]
+    subgraph K["Available Tools (12 total)"]
         L[Vector Query Tool<br/>Secure Similarity Search]
         M[Document Chunking Tool<br/>Intelligent Text Splitting]
         N[Web Scraper Tool<br/>Content Extraction]
@@ -106,16 +227,9 @@ flowchart TD
     I -.-> Q
     B -.-> O
 
-    %% Styling
-    classDef inputLayer fill:#e3f2fd,stroke:#1976d2,stroke-width:2px
-    classDef securityLayer fill:#fff3e0,stroke:#f57c00,stroke-width:2px
-    classDef retrievalLayer fill:#e8f5e8,stroke:#388e3c,stroke-width:2px
-    classDef processingLayer fill:#fce4ec,stroke:#c2185b,stroke-width:2px
-    classDef generationLayer fill:#f3e5f5,stroke:#7b1fa2,stroke-width:2px
-    classDef verificationLayer fill:#fff8e1,stroke:#fbc02d,stroke-width:2px
-    classDef outputLayer fill:#e0f2f1,stroke:#00796b,stroke-width:2px
-
-    class A,B,C,D,E,F,G,H inputLayer,securityLayer,retrievalLayer,processingLayer,generationLayer,verificationLayer,outputLayer
+    %% Styling for Dark Mode
+    classDef darkMode fill:#1e1e1e,stroke:#ffffff,stroke-width:2px,color:#ffffff
+    class A,B,C,D,E,F,G,H,I,J,K,L,M,N,O,P,Q darkMode
 ```
 
 ## Getting Started
@@ -141,7 +255,11 @@ flowchart TD
 
     ```bash
     cp .env.example .env
-    # Edit .env with your OpenAI API key and other settings
+    # Edit .env with your API keys and other settings:
+    # - OPENAI_API_KEY or GOOGLE_GENERATIVE_AI_API_KEY (required for AI models)
+    # - SERPAPI_API_KEY (optional, for web search tools - get from https://serpapi.com/manage-api-key)
+    # - SUPABASE credentials (required for authentication)
+    # - DATABASE_URL (required for PostgreSQL)
     ```
 
 3. **Set up authentication (Supabase):**
@@ -190,17 +308,25 @@ flowchart TD
     npm run dev  # http://localhost:3000
     ```
 
-### AI & RAG Capabilities
+### AI & Research Capabilities
 
-- **Multi-Agent Orchestration**: Specialized agents for different RAG stages
-- **Secure Vector Search**: Filtered retrieval based on user permissions
+- **Multi-Agent Orchestration**: 20+ specialized agents for research, analysis, content creation, and security
+- **Advanced Research Workflows**: Multi-phase research with web scraping, content evaluation, and learning extraction
+- **Secure Vector Search**: Filtered retrieval based on user permissions with PgVector
+- **Content Analysis**: Automated learning extraction, quality evaluation, and insight mining
+- **Web Search & Data Collection**: SerpAPI-powered Google Search, News, Trends, Shopping (Amazon, Walmart, eBay, Home Depot), Academic (Google Scholar), Finance, and Local Business (Yelp) searches
+- **Web Scraping Tools**: Comprehensive web content extraction and processing
 - **Contextual Reranking**: Relevance scoring with security constraints
 - **Citation Generation**: Source attribution with access verification
+- **Voice Integration**: Google Gemini Live voice capabilities for conversational AI
+- **MCP Integration**: Model Context Protocol support for enhanced agent tools
+- **Advanced Memory**: Persistent memory with semantic recall and working memory templates
+- **Quality Assurance**: Automated evaluation scoring and compliance validation
 - **Streaming Responses**: Real-time answer generation with SSE
 
 ## AI Agents
 
-This system employs a comprehensive multi-agent architecture with 17 specialized agents:
+This system employs a comprehensive multi-agent architecture with 20+ specialized agents:
 
 ### Core RAG Agents
 
@@ -223,6 +349,9 @@ This system employs a comprehensive multi-agent architecture with 17 specialized
 - **Self-Referencing Agent** - Maintains context across conversations
 - **Assistant Agent** - Provides general AI assistance
 - **Starter Agent** - Handles initial query processing
+- **Voice Agent** - Manages voice-based interactions and audio processing
+- **MCP Agent** - Integrates with Model Context Protocol tools
+- **Template Reviewer Agent** - Reviews and validates templates and workflows
 
 ### Network Agents
 
@@ -231,15 +360,60 @@ This system employs a comprehensive multi-agent architecture with 17 specialized
 
 Each agent follows a single-tool-call policy, ensuring predictable and auditable AI behavior while maintaining security governance throughout the entire pipeline.
 
+## Research & Analysis Features
+
+Beyond secure RAG, this system provides comprehensive research and analysis capabilities:
+
+### Multi-Phase Research Workflows
+
+- **Query Decomposition**: Breaking down complex research questions into focused search queries
+- **Web Content Extraction**: Advanced web scraping with site mapping and content cleaning
+- **Content Evaluation**: Automated assessment of information quality and relevance
+- **Learning Extraction**: AI-powered identification and extraction of key insights
+- **Iterative Research**: Follow-up research based on initial findings
+- **Report Synthesis**: Structured report generation with citations and sources
+
+### Advanced Analysis Tools
+
+- **Graph RAG Queries**: Complex knowledge graph-based retrieval and analysis
+- **Content Quality Scoring**: Automated evaluation using LLM-based scorers
+- **Semantic Memory**: Persistent context with working memory templates
+- **Compliance Validation**: PII detection and policy enforcement
+- **Multi-Source Synthesis**: Combining information from diverse sources
+
+### Research Agent Example
+
+```typescript
+// Research agent with multi-phase workflow
+const researchAgent = new Agent({
+    name: 'Research Agent',
+    instructions: `
+        PHASE 1: Deconstruct topic into focused search queries
+        PHASE 2: Web scraping and content extraction  
+        PHASE 3: Content evaluation and learning extraction
+        PHASE 4: Follow-up research and synthesis
+    `,
+    tools: {
+        webScraperTool, evaluateResultTool, extractLearningsTool,
+        graphRagQueryTool, mdocumentChunker
+    },
+    memory: pgMemory,
+    scorers: {
+        relevancy: createAnswerRelevancyScorer(),
+        safety: createToxicityScorer()
+    }
+})
+```
+
 ## AI Tools
 
-The system includes 15 specialized tools that agents can invoke to perform specific operations:
+The system includes 12 specialized tools that agents can invoke to perform specific operations:
 
 ### Core RAG Tools
 
 - **Vector Query Tool** - Performs secure vector similarity searches with access filtering
 - **JWT Auth Tool** - Validates and processes JWT tokens for user authentication
-- **Document Chunking Tool** - Intelligently splits documents into manageable chunks for indexing
+- **Document Chunking Tool** - Intelligently splits documents into manageable chunks for indexing with metadata extraction
 - **Graph RAG Query Tool** - Executes complex graph-based retrieval augmented generation queries
 
 ### Content & Analysis Tools
@@ -268,6 +442,7 @@ The system includes 15 specialized tools that agents can invoke to perform speci
 - **Research Workflow** - Conducts comprehensive research operations across multiple sources
 - **Content Generation Workflow** - Creates various types of content using multiple agents
 - **Generate Report Workflow** - Produces structured reports and analytical summaries
+- **Template Reviewer Workflow** - Reviews and validates templates and workflows with claim extraction, planning, and scoring
 
 ### Supporting Workflows
 
@@ -275,6 +450,77 @@ The system includes 15 specialized tools that agents can invoke to perform speci
 - **Chat Workflow Shared Types** - Common types and interfaces for workflow communication
 
 All workflows implement comprehensive error handling, tracing, and security validation at each step, ensuring reliable and auditable AI operations.
+
+## AI Services
+
+The system includes 13 specialized services that handle business logic and integrations:
+
+### Core Services
+
+- **Authentication Service** - Manages user authentication and session handling
+- **Role Service** - Handles role-based access control and permissions
+- **Validation Service** - Provides data validation and sanitization
+- **Rate Limiting Service** - Implements API rate limiting and throttling
+
+### Document & Content Services
+
+- **Document Indexing Service** - Manages document indexing and metadata
+- **Document Processor Service** - Processes and transforms documents
+- **Chunking Service** - Handles intelligent text chunking strategies
+- **Embedding Service** - Manages vector embeddings generation
+
+### Data & Storage Services
+
+- **Vector Query Service** - Provides vector similarity search capabilities
+- **Vector Storage Service** - Manages vector database operations
+- **Tier Management Service** - Handles subscription tiers and feature access
+
+### Workflow Services
+
+- **Workflow Decorators** - Provides decorators for workflow enhancement
+
+## Data Schemas
+
+The system uses Zod schemas for comprehensive data validation:
+
+- **Agent Schemas** - Validation schemas for all agent inputs and outputs
+- **Workflow Schemas** - Type-safe workflow definitions and contracts
+- **API Schemas** - Request/response validation for all endpoints
+
+## Access Control Policy
+
+Security policies are defined in `src/mastra/policy/acl.yaml` with hierarchical role-based access:
+
+### Role-Based Access Control
+
+```text
+admin (100) > dept_admin (80) > dept_viewer (60) > employee (40) > public (10)
+```
+
+### Document Access Control
+
+```yaml
+docs:
+    - path: './corpus/finance-policy.md'
+      allow:
+          roles: ['finance.viewer', 'finance.admin']
+          tiers: ['pro', 'enterprise']
+      tenant: 'acme'
+      classification: 'internal'
+
+    - path: './corpus/hr-confidential.md'
+      allow:
+          roles: ['hr.admin', 'admin']
+          tiers: ['enterprise']
+      tenant: 'acme'
+      classification: 'confidential'
+```
+
+### Feature Tiers
+
+- **Free**: Basic RAG capabilities, public docs access
+- **Pro**: Internal docs, advanced analytics, custom integrations
+- **Enterprise**: Confidential docs, white-label, on-premise deployment
 
 - **Type-Safe Development**: Full TypeScript with Zod schema validation
 - **Hot Reload**: Concurrent development for frontend and backend
@@ -293,14 +539,14 @@ mastra-governed-rag/
 ├── docs/                   # Comprehensive documentation
 ├── src/
 │   ├── mastra/            # Core Mastra implementation
-│   │   ├── agents/        # AI agents (identity, policy, retrieve, etc.)
-│   │   ├── workflows/     # Orchestrated agent workflows
-│   │   ├── tools/         # Reusable agent tools
-│   │   ├── services/      # Business logic and integrations
+│   │   ├── agents/        # AI agents (20+ specialized agents for research, analysis, security)
+│   │   ├── workflows/     # Orchestrated agent workflows (10 workflows for research, RAG, content)
+│   │   ├── tools/         # Reusable agent tools (12 tools for web scraping, analysis, search)
+│   │   ├── services/      # Business logic and integrations (13 services)
 │   │   ├── networks/      # Multi-agent orchestration networks
-│   │   ├── schemas/       # Data validation schemas
-│   │   ├── config/        # Configuration and role hierarchy
-│   │   └── policy/        # Access control policies
+│   │   ├── schemas/       # Data validation schemas (Zod)
+│   │   ├── config/        # Configuration and external services
+│   │   └── policy/        # Access control policies and ACL
 │   └── cli/               # Command-line interface
 ├── lib/                    # Shared utilities and client libraries
 └── docker-compose.yml     # Development services
@@ -308,7 +554,26 @@ mastra-governed-rag/
 
 ## Usage Examples
 
-### Basic Query with Authentication
+### Research Query with Multi-Phase Analysis
+
+```typescript
+// Advanced research with web scraping and analysis
+const researchRequest = {
+    question: "What are the latest developments in AI agent orchestration frameworks?",
+    researchDepth: 3, // Multi-phase research
+    includeWebSources: true,
+    evaluationRequired: true
+}
+
+// Response includes:
+// - Multi-source web research
+// - Content evaluation scores
+// - Extracted learnings and insights
+// - Citations and source validation
+// - Structured synthesis report
+```
+
+### Secure RAG Query with Authentication
 
 ```typescript
 // Generate JWT for a finance viewer
@@ -429,15 +694,30 @@ admin (100) > dept_admin (80) > dept_viewer (60) > employee (40) > public (10)
 
 ### Access Control
 
-Policies are defined in `src/mastra/policy/acl.yaml`:
+Policies are defined in `src/mastra/policy/acl.yaml` with role-based and tier-based access control:
 
 ```yaml
 docs:
     - path: './corpus/finance-policy.md'
       allow:
           roles: ['finance.viewer', 'finance.admin']
+          tiers: ['pro', 'enterprise']
+      tenant: 'acme'
       classification: 'internal'
+
+    - path: './corpus/hr-confidential.md'
+      allow:
+          roles: ['hr.admin', 'admin']
+          tiers: ['enterprise']
+      tenant: 'acme'
+      classification: 'confidential'
 ```
+
+### Feature Access Tiers
+
+- **Free**: Basic RAG, public docs
+- **Pro**: Internal docs, advanced analytics, custom integrations
+- **Enterprise**: Confidential docs, white-label, on-premise deployment
 
 ## Resources
 
@@ -503,3 +783,5 @@ This project is licensed under the MIT License - see the [LICENSE](./LICENSE) fi
 ---
 
 Built with ❤️ by Mastra Community. Questions? Open an issue.
+
+---

@@ -1,10 +1,10 @@
-<!-- AGENTS-META {"title":"Mastra Agents Directory","version":"2.0.0","last_updated":"2025-10-15T17:15:00Z","applies_to":"/src/mastra/agents","tags":["layer:backend","domain:rag","type:agents","status:stable"],"status":"stable"} -->
+<!-- AGENTS-META {"title":"Mastra Agents Directory","version":"2.1.1","last_updated":"2025-10-17T12:15:00Z","applies_to":"/src/mastra/agents","tags":["layer:backend","domain:rag","type:agents","status:stable"],"status":"stable"} -->
 
 # 🤖 Mastra Agents Directory (`/src/mastra/agents`)
 
 ## 🎭 AI Assistant Knowledge Base
 
-**Complete reference for all 18 agent implementations with visual architecture, dependencies, and integration patterns.**
+**Complete reference for all 19 agent implementations with visual architecture, dependencies, custom scorers, and integration patterns.**
 
 ---
 
@@ -18,15 +18,16 @@ graph TB
         Assembly[Answer Assembly<br/>2 agents]
         Research[Research<br/>3 agents]
         Content[Content Generation<br/>3 agents]
-        UI[UI / Application<br/>3 agents]
+        UI[UI / Application<br/>4 agents]
         Advanced[Templates & Advanced<br/>3 agents]
     end
 
     subgraph "Core Infrastructure"
-        Memory[Memory: pgMemory<br/>1568-dim embeddings]
-        Models[Models: Google AI<br/>gemini-flash-lite]
-        Tools[Tools: 15+ tools<br/>vector, auth, etc.]
+        Memory[Memory: pgMemory<br/>3072-dim embeddings]
+        Models[Models: Google AI<br/>gemini-flash-lite + voice]
+        Tools[Tools: 15+ tools<br/>vector, auth, voice, etc.]
         Workflows[Workflows: 8 workflows<br/>governed-rag, research, etc.]
+        Scorers[Scorers: 6 custom<br/>quality, creativity, completion]
     end
 
     Identity --> Memory
@@ -40,30 +41,32 @@ graph TB
     Memory --> Models
     Tools --> Memory
     Workflows --> Memory
+    Scorers --> Memory
 ```
 
 ## 📁 Complete File Inventory
 
 | Agent File | Size | Purpose | Tools | Memory | Model | Category |
 |------------|------|---------|-------|--------|-------|----------|
-| `identity.agent.ts` | 1.4KB | JWT token parsing & user identity extraction | `jwt-auth.tool` | ✅ | Gemini Flash | Identity & Security |
-| `policy.agent.ts` | 2.8KB | Access control policy derivation from user roles | `policy-filter` | ✅ | Gemini Flash | Identity & Security |
-| `retrieve.agent.ts` | 2.7KB | Secure vector similarity search with role filtering | `vector-query.tool` | ✅ | Gemini Flash | Retrieval Pipeline |
-| `rerank.agent.ts` | 1.7KB | Relevance scoring and result ranking | `rerank-service` | ✅ | Gemini Flash | Retrieval Pipeline |
-| `answerer.agent.ts` | 2.3KB | Context synthesis and answer generation | `citation-builder` | ✅ | Gemini Flash | Answer Assembly |
-| `verifier.agent.ts` | 3.1KB | Response verification and compliance checking | `verification-service` | ✅ | Gemini Flash | Answer Assembly |
-| `researchAgent.ts` | 3.9KB | Multi-source research and information gathering | `web-scraper`, `research-tools` | ✅ | Gemini Flash | Research |
+| `identity.agent.ts` | 1.7KB | JWT token parsing & user identity extraction | `jwt-auth.tool` | ✅ | Gemini Flash | Identity & Security |
+| `policy.agent.ts` | 3.5KB | Access control policy derivation from user roles | `policy-filter` | ✅ | Gemini Flash | Identity & Security |
+| `retrieve.agent.ts` | 3.0KB | Secure vector similarity search with role filtering | `vector-query.tool` | ✅ | Gemini Flash | Retrieval Pipeline |
+| `rerank.agent.ts` | 2.5KB | Relevance scoring and result ranking | `rerank-service` | ✅ | Gemini Flash | Retrieval Pipeline |
+| `answerer.agent.ts` | 2.7KB | Context synthesis and answer generation | `citation-builder` | ✅ | Gemini Flash | Answer Assembly |
+| `verifier.agent.ts` | 3.4KB | Response verification and compliance checking | `verification-service` | ✅ | Gemini Flash | Answer Assembly |
+| `researchAgent.ts` | 5.1KB | Multi-source research and information gathering | `web-scraper`, `research-tools` | ✅ | Gemini Flash | Research |
 | `evaluationAgent.ts` | 2.9KB | Research result evaluation and quality scoring | `evaluation-service` | ✅ | Gemini Flash | Research |
-| `learningExtractionAgent.ts` | 2.6KB | Insight extraction and pattern recognition | `extraction-tools` | ✅ | Gemini Flash | Research |
-| `copywriterAgent.ts` | 4.5KB | Creative content drafting and copy generation | `writing-tools` | ✅ | Gemini Flash | Content Generation |
-| `editorAgent.ts` | 4.0KB | Content refinement and quality improvement | `editing-tools` | ✅ | Gemini Flash | Content Generation |
-| `reportAgent.ts` | 3.1KB | Structured report compilation and formatting | `report-tools` | ✅ | Gemini Flash | Content Generation |
-| `productRoadmapAgent.ts` | 7.4KB | Product roadmap management and UI state bridging | `roadmap-tools` | ✅ | Gemini Flash | UI / Application |
-| `assistant.ts` | 6.1KB | General assistance and task coordination | `assistant-tools` | ✅ | Gemini Flash | UI / Application |
-| `mcpAgent.ts` | 1.7KB | External service integration via MCP protocol | `mcp-client` | ✅ | Gemini Flash | UI / Application |
-| `starterAgent.ts` | 3.0KB | Minimal agent scaffold and reference implementation | `basic-tools` | ✅ | Gemini Flash | Templates & Advanced |
-| `selfReferencingAgent.ts` | 3.3KB | Advanced agent patterns and self-modification | `advanced-tools` | ✅ | Gemini Flash | Templates & Advanced |
-| `template-reviewer-agent.ts` | 4.4KB | Template review and rating for hackathons | `review-tools` | ✅ | Gemini Flash | Templates & Advanced |
+| `learningExtractionAgent.ts` | 2.5KB | Insight extraction and pattern recognition | `extraction-tools` | ✅ | Gemini Flash | Research |
+| `copywriterAgent.ts` | 4.8KB | Creative content drafting and copy generation | `writing-tools` | ✅ | Gemini Flash | Content Generation |
+| `editorAgent.ts` | 4.4KB | Content refinement and quality improvement | `editing-tools` | ✅ | Gemini Flash | Content Generation |
+| `reportAgent.ts` | 3.4KB | Structured report compilation and formatting | `report-tools` | ✅ | Gemini Flash | Content Generation |
+| `productRoadmapAgent.ts` | 7.7KB | Product roadmap management and UI state bridging | `roadmap-tools` | ✅ | Gemini Flash | UI / Application |
+| `assistant.ts` | 5.8KB | General assistance and task coordination | `assistant-tools` | ✅ | Gemini Flash | UI / Application |
+| `mcpAgent.ts` | 2.0KB | External service integration via MCP protocol | `mcp-client` | ✅ | Gemini Flash | UI / Application |
+| `voiceAgent.ts` | 4.3KB | Voice-enabled research and interaction | `voice-tools`, `web-scraper` | ✅ | Gemini Flash + Voice | UI / Application |
+| `starterAgent.ts` | 3.4KB | Minimal agent scaffold and reference implementation | `basic-tools` | ✅ | Gemini Flash | Templates & Advanced |
+| `selfReferencingAgent.ts` | 3.6KB | Advanced agent patterns and self-modification | `advanced-tools` | ✅ | Gemini Flash | Templates & Advanced |
+| `template-reviewer-agent.ts` | 3.7KB | Template review and rating for hackathons | `review-tools` | ✅ | Gemini Flash | Templates & Advanced |
 
 ## 🔧 Technical Architecture
 
@@ -88,9 +91,32 @@ export const exampleAgent = new Agent({
         JSON format with specific schema
     `,
     tools: [tool1, tool2], // Array of available tools
-    memory: pgMemory, // 1568-dimension vector memory
+    memory: pgMemory, // 3072-dimension vector memory
+    scorers: {
+        responseQuality: {
+            scorer: responseQualityScorer,
+            sampling: { type: 'ratio', rate: 0.8 }
+        },
+        taskCompletion: {
+            scorer: taskCompletionScorer,
+            sampling: { type: 'ratio', rate: 0.7 }
+        }
+    } // Custom evaluation scorers
 })
 ```
+
+### Custom Scorer System
+
+All agents now include custom scorers for automated evaluation:
+
+- **responseQualityScorer**: Evaluates response accuracy, clarity, and usefulness
+- **taskCompletionScorer**: Measures successful task execution and goal achievement
+- **creativityScorer**: Assesses creative content generation and originality
+- **researchCompletenessScorer**: Evaluates thoroughness of research coverage
+- **summaryQualityScorer**: Measures quality of insights and summarization
+- **sourceDiversityScorer**: Assesses variety and reliability of information sources
+
+Sampling rates range from 0.6-0.8 for balanced evaluation coverage.
 
 ## 🔗 Integration Patterns
 
@@ -162,9 +188,11 @@ agent.on('toolCall', (call) => {
 
 | Version | Date | Changes |
 |---------|------|---------|
+| 2.1.1 | 2025-10-17 | Updated memory dimensions from 1568 to 3072 for improved vector embeddings |
+| 2.1.0 | 2025-10-17 | Added voiceAgent.ts, updated file sizes after custom scorer integration, added scorer infrastructure to system overview |
 | 2.0.0 | 2025-10-15 | Complete rewrite with comprehensive AI-focused documentation, visual diagrams, and technical details |
 | 1.2.0 | 2025-10-15 | Added missing agents and updated metadata |
 | 1.1.0 | 2025-10-08 | Content verification and accuracy updates |
 | 1.0.0 | 2025-09-24 | Initial standardized documentation |
 
-**Total Agents:** 18 | **Total Lines:** ~45K | **Memory Usage:** 1568-dim vectors
+**Total Agents:** 19 | **Total Lines:** ~48K | **Memory Usage:** 3072-dim vectors | **Custom Scorers:** 6 per agent

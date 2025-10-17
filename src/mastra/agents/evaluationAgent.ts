@@ -11,6 +11,7 @@ import { log } from '../config/logger'
 import { google } from '@ai-sdk/google'
 import { pgMemory } from '../config/pg-storage'
 import { googleAIFlashLite } from '../config/google'
+import { responseQualityScorer, taskCompletionScorer } from './custom-scorers'
 
 // Define runtime context for this agent
 export interface EvaluationAgentContext {
@@ -64,7 +65,16 @@ CRITICAL: You must always respond with a valid JSON object in the following form
     },
     model: googleAIFlashLite,
     memory: pgMemory,
-    scorers: {},
+    scorers: {
+        responseQuality: {
+            scorer: responseQualityScorer,
+            sampling: { type: 'ratio', rate: 0.8 },
+        },
+        taskCompletion: {
+            scorer: taskCompletionScorer,
+            sampling: { type: 'ratio', rate: 0.7 },
+        },
+    },
     workflows: {},
 })
 

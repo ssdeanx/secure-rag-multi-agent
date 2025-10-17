@@ -19,6 +19,7 @@ import { starterAgent } from './starterAgent'
 import { evaluateResultTool } from '../tools/evaluateResultTool'
 import { extractLearningsTool } from '../tools/extractLearningsTool'
 import { copywriterTool } from '../tools/copywriter-agent-tool'
+import { responseQualityScorer, taskCompletionScorer } from './custom-scorers'
 
 // Define runtime context for this agent
 export interface SelfReferencingAgentContext {
@@ -48,7 +49,16 @@ User: ${userId ?? 'anonymous'}`
         return await mcpClient.getTools()
     },
     workflows: {},
-    scorers: {},
+    scorers: {
+        responseQuality: {
+            scorer: responseQualityScorer,
+            sampling: { type: 'ratio', rate: 0.8 },
+        },
+        taskCompletion: {
+            scorer: taskCompletionScorer,
+            sampling: { type: 'ratio', rate: 0.7 },
+        },
+    },
 })
 
 // This works because tools resolve after server startup

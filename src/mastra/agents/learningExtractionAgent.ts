@@ -4,6 +4,7 @@ import { learningExtractionOutputSchema } from '../schemas/agent-schemas'
 import { log } from '../config/logger'
 import { pgMemory } from '../config/pg-storage'
 import { googleAI } from '../config/google'
+import { researchCompletenessScorer, summaryQualityScorer } from './custom-scorers'
 
 // Define runtime context for this agent
 export interface LearningExtractionAgentContext {
@@ -49,7 +50,16 @@ export const learningExtractionAgent = new Agent({
     },
     model: googleAI,
     memory: pgMemory,
-    scorers: {},
+    scorers: {
+        researchCompleteness: {
+            scorer: researchCompletenessScorer,
+            sampling: { type: 'ratio', rate: 0.8 },
+        },
+        summaryQuality: {
+            scorer: summaryQualityScorer,
+            sampling: { type: 'ratio', rate: 0.6 },
+        },
+    },
     workflows: {},
 })
 

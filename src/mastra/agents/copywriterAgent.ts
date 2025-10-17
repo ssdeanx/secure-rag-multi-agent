@@ -14,6 +14,7 @@ import { google } from '@ai-sdk/google'
 import { log } from '../config/logger'
 import { pgMemory } from '../config/pg-storage'
 import { googleAI } from '../config/google'
+import { creativityScorer, responseQualityScorer } from './custom-scorers'
 
 // Define runtime context for this agent
 export interface CopywriterAgentContext {
@@ -120,7 +121,16 @@ Include relevant metadata such as title, summary, and key points when applicable
         htmlToMarkdownTool,
         contentCleanerTool,
     },
-    scorers: {},
+    scorers: {
+        creativity: {
+            scorer: creativityScorer,
+            sampling: { type: 'ratio', rate: 0.8 },
+        },
+        responseQuality: {
+            scorer: responseQualityScorer,
+            sampling: { type: 'ratio', rate: 0.6 },
+        },
+    },
     workflows: {},
 })
 

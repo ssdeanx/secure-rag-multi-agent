@@ -11,6 +11,7 @@ import { log } from '../config/logger'
 import { google } from '@ai-sdk/google'
 import { pgMemory } from '../config/pg-storage'
 import { googleAI } from '../config/google'
+import { researchCompletenessScorer, summaryQualityScorer } from './custom-scorers'
 
 // Define runtime context for this agent
 export interface ReportAgentContext {
@@ -91,7 +92,16 @@ Include a summary of the research process.
     },
     model: googleAI,
     memory: pgMemory,
-    scorers: {},
+    scorers: {
+        researchCompleteness: {
+            scorer: researchCompletenessScorer,
+            sampling: { type: 'ratio', rate: 0.8 },
+        },
+        summaryQuality: {
+            scorer: summaryQualityScorer,
+            sampling: { type: 'ratio', rate: 0.6 },
+        },
+    },
     workflows: {},
 })
 export { reportOutputSchema }

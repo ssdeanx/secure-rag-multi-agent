@@ -19,12 +19,12 @@
 
 import { Agent } from '@mastra/core/agent'
 import { google } from '@ai-sdk/google'
-import { retrieveAgent } from '../agents/retrieve.agent'
-import { rerankAgent } from '../agents/rerank.agent'
-import { answererAgent } from '../agents/answerer.agent'
-import { verifierAgent } from '../agents/verifier.agent'
-import { governedRagAnswer } from '../workflows/governed-rag-answer.workflow'
-import { pgMemory } from '../config/pg-storage'
+import { retrieveAgent } from '../retrieve.agent'
+import { rerankAgent } from '../rerank.agent'
+import { answererAgent } from '../answerer.agent'
+import { verifierAgent } from '../verifier.agent'
+import { governedRagAnswer } from '../../workflows/governed-rag-answer.workflow'
+import { pgMemory } from '../../config/pg-storage'
 
 /**
  * Governed RAG Network

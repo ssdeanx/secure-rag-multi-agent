@@ -14,6 +14,7 @@ import {
     TextualDifferenceMetric,
     ToneConsistencyMetric,
 } from '@mastra/evals/nlp'
+import { responseQualityScorer, taskCompletionScorer } from './custom-scorers'
 
 // Define runtime context for this agent
 export interface StarterAgentContext {
@@ -69,7 +70,16 @@ You will respond in a JSON format with the following fields:
     }),
     tools: { weatherTool },
 
-    scorers: {},
+    scorers: {
+        responseQuality: {
+            scorer: responseQualityScorer,
+            sampling: { type: 'ratio', rate: 0.8 },
+        },
+        taskCompletion: {
+            scorer: taskCompletionScorer,
+            sampling: { type: 'ratio', rate: 0.7 },
+        },
+    },
     workflows: {},
     evals: {
         contentSimilarity: new ContentSimilarityMetric({

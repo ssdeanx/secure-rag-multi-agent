@@ -12,6 +12,7 @@ import { mdocumentChunker } from '../tools/document-chunking.tool'
 import { htmlToMarkdownTool, webScraperTool } from '../tools/web-scraper-tool'
 import { vectorQueryTool } from '../tools/vector-query.tool'
 import { BatchPartsProcessor, UnicodeNormalizer } from '@mastra/core/processors'
+import { creativityScorer, responseQualityScorer } from './custom-scorers'
 
 // Define runtime context for this agent
 export interface ProductRoadmapAgentContext {
@@ -187,7 +188,16 @@ When generating content, include the generated content in your response and indi
     evals: {
         // Add any evaluation metrics if needed
     },
-    scorers: {},
+    scorers: {
+        creativity: {
+            scorer: creativityScorer,
+            sampling: { type: 'ratio', rate: 0.8 },
+        },
+        responseQuality: {
+            scorer: responseQualityScorer,
+            sampling: { type: 'ratio', rate: 0.6 },
+        },
+    },
     workflows: {},
 })
 export { productRoadmapOutputSchema }

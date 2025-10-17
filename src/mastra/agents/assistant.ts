@@ -39,6 +39,7 @@ import { PGVECTOR_PROMPT } from '@mastra/pg'
 import { mdocumentChunker } from '../tools/document-chunking.tool'
 import { evaluateResultTool } from '../tools/evaluateResultTool'
 import { extractLearningsTool } from '../tools/extractLearningsTool'
+import { taskCompletionScorer, responseQualityScorer } from './custom-scorers'
 
 // Define runtime context for this agent
 export interface AssistantAgentContext {
@@ -97,6 +98,16 @@ For complex research tasks that generate data, you MUST respond with a valid JSO
     },
     model: googleAI,
     memory: pgMemory,
+    scorers: {
+        taskCompletion: {
+            scorer: taskCompletionScorer,
+            sampling: { type: "ratio", rate: 0.8 }
+        },
+        responseQuality: {
+            scorer: responseQualityScorer,
+            sampling: { type: "ratio", rate: 0.6 }
+        }
+    },
     tools: {
         // Corrected indentation for the 'tools' object
         pgQueryTool,
