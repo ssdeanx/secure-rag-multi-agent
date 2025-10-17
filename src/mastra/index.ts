@@ -29,7 +29,8 @@ import { SensitiveDataFilter } from '@mastra/core/ai-tracing'
 import { researchContentNetwork, governedRagNetwork } from './agents/network'
 import { apiRoutes } from './apiRegistry'
 import { mcpAgent } from './agents/mcpAgent'
-import { voiceAgent } from './agents/voiceAgent'
+import { responseQualityScorer, taskCompletionScorer } from './agents/custom-scorers'
+//import { voiceAgent } from './agents/voiceAgent'
 
 export const mastra = new Mastra({
     storage: pgStore,
@@ -66,8 +67,11 @@ export const mastra = new Mastra({
         'content-generation': contentGenerationWorkflow,
     },
     scorers: {
-        // Add global scorers here if needed
-    },
+            // Mastra expects the scorer implementation directly at the top-level.
+            // Remove the unsupported `implementation` wrapper to match MastraScorer type.
+            responseQuality: responseQualityScorer,
+            taskCompletion: taskCompletionScorer,
+     },
     vectors: {
         pgVector,
     },
