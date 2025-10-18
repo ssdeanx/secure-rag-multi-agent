@@ -360,6 +360,27 @@ export const polygonStockAggregatesTool = createTool({
     });
 
   const apiKey = process.env.POLYGON_API_KEY;
+// Governance checks
+    const governanceCtx = runtimeContext as PolygonRuntimeContext;
+    const userId = governanceCtx?.userId;
+    const tenantId = governanceCtx?.tenantId;
+    const roles = governanceCtx?.roles ?? [];
+    const subscriptionTier = governanceCtx?.subscriptionTier ?? 'free';
+    const classificationLevel = governanceCtx?.classificationLevel ?? 'public';
+    const currentTime = governanceCtx?.currentTime ?? new Date();
+    logToolExecution('polygon-stock-aggregates', {
+      input: context,
+      governance: {
+        userId,
+        tenantId,
+        roles,
+        subscriptionTier,
+        classificationLevel,
+        currentTime,
+        requestId: governanceCtx?.requestId,
+        correlationId: governanceCtx?.correlationId
+      }
+    });
 
     if (apiKey === undefined || apiKey === null || apiKey.trim() === '') {
       const error = "POLYGON_API_KEY environment variable or runtimeContext.apiKey is required";
@@ -577,7 +598,28 @@ export const polygonStockFundamentalsTool = createTool({
     });
 
   const apiKey = process.env.POLYGON_API_KEY;
-
+// Governance checks
+    // Governance checks
+    const governanceCtx = runtimeContext as PolygonRuntimeContext;
+    const userId = governanceCtx?.userId;
+    const tenantId = governanceCtx?.tenantId;
+    const roles = governanceCtx?.roles ?? [];
+    const subscriptionTier = governanceCtx?.subscriptionTier ?? 'free';
+    const classificationLevel = governanceCtx?.classificationLevel ?? 'public';
+    const currentTime = governanceCtx?.currentTime ?? new Date();
+    logToolExecution('polygon-stock-fundamentals', {
+      input: context,
+      governance: {
+        userId,
+        tenantId,
+        roles,
+        subscriptionTier,
+        classificationLevel,
+        currentTime,
+        requestId: governanceCtx?.requestId,
+        correlationId: governanceCtx?.correlationId
+      }
+    });
     if (apiKey === undefined || apiKey === null || apiKey.trim() === '') {
       const error = "POLYGON_API_KEY environment variable or runtimeContext.apiKey is required";
       logError('polygon-stock-fundamentals', new Error(error), { context });
@@ -832,7 +874,27 @@ export const polygonCryptoQuotesTool = createTool({
     });
 
   const apiKey = process.env.POLYGON_API_KEY;
-
+    // Governance checks
+    const governanceCtx = runtimeContext as PolygonRuntimeContext;
+    const userId = governanceCtx?.userId;
+    const tenantId = governanceCtx?.tenantId;
+    const roles = governanceCtx?.roles ?? [];
+    const subscriptionTier = governanceCtx?.subscriptionTier ?? 'free';
+    const classificationLevel = governanceCtx?.classificationLevel ?? 'public';
+    const currentTime = governanceCtx?.currentTime ?? new Date();
+    logToolExecution('polygon-stock-fundamentals', {
+      input: context,
+      governance: {
+        userId,
+        tenantId,
+        roles,
+        subscriptionTier,
+        classificationLevel,
+        currentTime,
+        requestId: governanceCtx?.requestId,
+        correlationId: governanceCtx?.correlationId
+      }
+    });
     if (apiKey === undefined || apiKey === null || apiKey.trim() === '') {
       const error = "POLYGON_API_KEY environment variable or runtimeContext.apiKey is required";
       logError('polygon-crypto-quotes', new Error(error), { context });
@@ -1047,7 +1109,27 @@ export const polygonCryptoAggregatesTool = createTool({
   logToolExecution('polygon-crypto-aggregates', { input: context });
 
   const apiKey = process.env.POLYGON_API_KEY;
-
+    // Governance checks
+    const governanceCtx = runtimeContext as PolygonRuntimeContext;
+    const userId = governanceCtx?.userId;
+    const tenantId = governanceCtx?.tenantId;
+    const roles = governanceCtx?.roles ?? [];
+    const subscriptionTier = governanceCtx?.subscriptionTier ?? 'free';
+    const classificationLevel = governanceCtx?.classificationLevel ?? 'public';
+    const currentTime = governanceCtx?.currentTime ?? new Date();
+    logToolExecution('polygon-stock-fundamentals', {
+      input: context,
+      governance: {
+        userId,
+        tenantId,
+        roles,
+        subscriptionTier,
+        classificationLevel,
+        currentTime,
+        requestId: governanceCtx?.requestId,
+        correlationId: governanceCtx?.correlationId
+      }
+    });
     if (apiKey === undefined || apiKey === null || apiKey.trim() === '') {
       const error = "POLYGON_API_KEY environment variable or runtimeContext.apiKey is required";
       rootSpan?.error({
@@ -1213,7 +1295,27 @@ export const polygonCryptoSnapshotsTool = createTool({
   logToolExecution('polygon-crypto-snapshots', { input: context });
 
   const apiKey = process.env.POLYGON_API_KEY;
-
+    // Governance checks
+    const governanceCtx = runtimeContext as PolygonRuntimeContext;
+    const userId = governanceCtx?.userId;
+    const tenantId = governanceCtx?.tenantId;
+    const roles = governanceCtx?.roles ?? [];
+    const subscriptionTier = governanceCtx?.subscriptionTier ?? 'free';
+    const classificationLevel = governanceCtx?.classificationLevel ?? 'public';
+    const currentTime = governanceCtx?.currentTime ?? new Date();
+    logToolExecution('polygon-stock-fundamentals', {
+      input: context,
+      governance: {
+        userId,
+        tenantId,
+        roles,
+        subscriptionTier,
+        classificationLevel,
+        currentTime,
+        requestId: governanceCtx?.requestId,
+        correlationId: governanceCtx?.correlationId
+      }
+    });
     if (apiKey === undefined || apiKey === null || apiKey.trim() === '') {
       const error = "POLYGON_API_KEY environment variable or runtimeContext.apiKey is required";
       rootSpan?.error({

@@ -91,7 +91,7 @@ export const alphaVantageCryptoTool = createTool({
       const dataObj = data as unknown;
 
       // Check for API-specific errors
-      if (dataObj && typeof dataObj === 'object' && dataObj !== null && "Error Message" in dataObj) {
+      if ((Boolean(dataObj)) && typeof dataObj === 'object' && dataObj !== null && "Error Message" in (dataObj as Record<string, unknown>)) {
         const errorMessage = (dataObj as Record<string, unknown>)["Error Message"];
         if (errorMessage !== null && errorMessage !== undefined && String(errorMessage).trim() !== '') {
           return {
@@ -101,7 +101,7 @@ export const alphaVantageCryptoTool = createTool({
         }
       }
 
-      if (dataObj && typeof dataObj === 'object' && dataObj !== null && "Note" in dataObj) {
+      if ((Boolean(dataObj)) && typeof dataObj === 'object' && dataObj !== null && "Note" in (dataObj as Record<string, unknown>)) {
         const note = (dataObj as Record<string, unknown>)["Note"];
         if (note !== null && note !== undefined && String(note).trim() !== '') {
           return {
@@ -113,7 +113,7 @@ export const alphaVantageCryptoTool = createTool({
 
       // Extract metadata if available
       let metadata: unknown = null;
-      if (dataObj && typeof dataObj === 'object' && dataObj !== null) {
+      if ((Boolean(dataObj)) && typeof dataObj === 'object' && dataObj !== null) {
         const dataRecord = dataObj as Record<string, unknown>;
         if ("Meta Data" in dataRecord) {
           metadata = dataRecord["Meta Data"];
@@ -126,7 +126,7 @@ export const alphaVantageCryptoTool = createTool({
 
       // Helper function to safely extract metadata values
       const getMetadataValue = (key: string): string | null => {
-        if (metadataObj && typeof metadataObj === 'object' && metadataObj !== null) {
+        if ((Boolean(metadataObj)) && typeof metadataObj === 'object' && metadataObj !== null) {
           const metaRecord = metadataObj as Record<string, unknown>;
           if (key in metaRecord) {
             const value = metaRecord[key];
@@ -269,23 +269,29 @@ export const alphaVantageStockTool = createTool({
       const dataObj = data as unknown;
 
       // Check for API-specific errors
-      if (dataObj && typeof dataObj === 'object' && dataObj !== null && "Error Message" in dataObj && Boolean((dataObj as Record<string, unknown>)["Error Message"])) {
-        return {
-          data: null,
-          error: String((dataObj as Record<string, unknown>)["Error Message"])
-        };
+      if ((Boolean(dataObj)) && typeof dataObj === 'object' && dataObj !== null && "Error Message" in dataObj) {
+        const errorMessage = (dataObj as Record<string, unknown>)["Error Message"];
+        if (errorMessage !== null && errorMessage !== undefined && String(errorMessage).trim() !== '') {
+          return {
+            data: null,
+            error: String(errorMessage)
+          };
+        }
       }
 
-      if (dataObj && typeof dataObj === 'object' && dataObj !== null && "Note" in dataObj && Boolean((dataObj as Record<string, unknown>)["Note"])) {
-        return {
-          data: null,
-          error: String((dataObj as Record<string, unknown>)["Note"]) // API limit reached
-        };
+      if ((Boolean(dataObj)) && typeof dataObj === 'object' && dataObj !== null && "Note" in dataObj) {
+        const note = (dataObj as Record<string, unknown>)["Note"];
+        if (note !== null && note !== undefined && String(note).trim() !== '') {
+          return {
+            data: null,
+            error: String(note) // API limit reached
+          };
+        }
       }
 
       // Extract metadata if available
-      const metadata = (dataObj && typeof dataObj === 'object' && dataObj !== null && "Meta Data" in dataObj ? (dataObj as Record<string, unknown>)["Meta Data"] : null) ??
-                      (dataObj && typeof dataObj === 'object' && dataObj !== null && "meta" in dataObj ? (dataObj as Record<string, unknown>)["meta"] : null) ??
+      const metadata = ((Boolean(dataObj)) && typeof dataObj === 'object' && dataObj !== null && "Meta Data" in dataObj ? (dataObj as Record<string, unknown>)["Meta Data"] : null) ??
+                      ((Boolean(dataObj)) && typeof dataObj === 'object' && dataObj !== null && "meta" in dataObj ? (dataObj as Record<string, unknown>)["meta"] : null) ??
                       {};
 
       const metadataObj = metadata as unknown;
@@ -293,12 +299,12 @@ export const alphaVantageStockTool = createTool({
       return {
         data,
         metadata: {
-          function: (metadataObj && typeof metadataObj === 'object' && metadataObj !== null && "1. Information" in metadataObj ? String((metadataObj as Record<string, unknown>)["1. Information"]) : null) ?? context.function,
-          symbol: (metadataObj && typeof metadataObj === 'object' && metadataObj !== null && "2. Symbol" in metadataObj ? String((metadataObj as Record<string, unknown>)["2. Symbol"]) : null) ?? context.symbol,
-          last_refreshed: metadataObj && typeof metadataObj === 'object' && metadataObj !== null && "3. Last Refreshed" in metadataObj ? String((metadataObj as Record<string, unknown>)["3. Last Refreshed"]) : undefined,
-          interval: metadataObj && typeof metadataObj === 'object' && metadataObj !== null && "4. Interval" in metadataObj ? String((metadataObj as Record<string, unknown>)["4. Interval"]) : undefined,
-          output_size: metadataObj && typeof metadataObj === 'object' && metadataObj !== null && "5. Output Size" in metadataObj ? String((metadataObj as Record<string, unknown>)["5. Output Size"]) : undefined,
-          time_zone: metadataObj && typeof metadataObj === 'object' && metadataObj !== null && "6. Time Zone" in metadataObj ? String((metadataObj as Record<string, unknown>)["6. Time Zone"]) : undefined,
+          function: ((Boolean(metadataObj)) && typeof metadataObj === 'object' && metadataObj !== null && "1. Information" in metadataObj ? String((metadataObj as Record<string, unknown>)["1. Information"]) : null) ?? context.function,
+          symbol: ((Boolean(metadataObj)) && typeof metadataObj === 'object' && metadataObj !== null && "2. Symbol" in metadataObj ? String((metadataObj as Record<string, unknown>)["2. Symbol"]) : null) ?? context.symbol,
+          last_refreshed: (Boolean(metadataObj)) && typeof metadataObj === 'object' && metadataObj !== null && "3. Last Refreshed" in metadataObj ? String((metadataObj as Record<string, unknown>)["3. Last Refreshed"]) : undefined,
+          interval: (Boolean(metadataObj)) && typeof metadataObj === 'object' && metadataObj !== null && "4. Interval" in metadataObj ? String((metadataObj as Record<string, unknown>)["4. Interval"]) : undefined,
+          output_size: (Boolean(metadataObj)) && typeof metadataObj === 'object' && metadataObj !== null && "5. Output Size" in metadataObj ? String((metadataObj as Record<string, unknown>)["5. Output Size"]) : undefined,
+          time_zone: (Boolean(metadataObj)) && typeof metadataObj === 'object' && metadataObj !== null && "6. Time Zone" in metadataObj ? String((metadataObj as Record<string, unknown>)["6. Time Zone"]) : undefined,
           indicator: context.indicator,
           time_period: context.time_period?.toString(),
           series_type: context.series_type
@@ -452,14 +458,14 @@ export const alphaVantageTool = createTool({
       const dataObj = data as unknown;
 
       // Check for API-specific errors
-      if (dataObj && typeof dataObj === 'object' && dataObj !== null && "Error Message" in dataObj && Boolean((dataObj as Record<string, unknown>)["Error Message"])) {
+      if ((Boolean(dataObj)) && typeof dataObj === 'object' && dataObj !== null && "Error Message" in (dataObj as Record<string, unknown>) && Boolean((dataObj as Record<string, unknown>)["Error Message"])) {
         return {
           data: null,
           error: String((dataObj as Record<string, unknown>)["Error Message"])
         };
       }
 
-      if (dataObj && typeof dataObj === 'object' && dataObj !== null && "Note" in dataObj && Boolean((dataObj as Record<string, unknown>)["Note"])) {
+      if ((Boolean(dataObj)) && typeof dataObj === 'object' && dataObj !== null && "Note" in (dataObj as Record<string, unknown>) && Boolean((dataObj as Record<string, unknown>)["Note"])) {
         return {
           data: null,
           error: String((dataObj as Record<string, unknown>)["Note"]) // API limit reached
@@ -467,8 +473,8 @@ export const alphaVantageTool = createTool({
       }
 
       // Extract metadata if available
-      const metadata = (dataObj && typeof dataObj === 'object' && dataObj !== null && "Meta Data" in dataObj ? (dataObj as Record<string, unknown>)["Meta Data"] : null) ??
-                      (dataObj && typeof dataObj === 'object' && dataObj !== null && "meta" in dataObj ? (dataObj as Record<string, unknown>)["meta"] : null) ??
+      const metadata = ((Boolean(dataObj)) && typeof dataObj === 'object' && dataObj !== null && "Meta Data" in dataObj ? (dataObj as Record<string, unknown>)["Meta Data"] : null) ??
+                      ((Boolean(dataObj)) && typeof dataObj === 'object' && dataObj !== null && "meta" in dataObj ? (dataObj as Record<string, unknown>)["meta"] : null) ??
                       {};
 
       const metadataObj = metadata as unknown;
@@ -476,12 +482,12 @@ export const alphaVantageTool = createTool({
       return {
         data,
         metadata: {
-          function: (metadataObj && typeof metadataObj === 'object' && metadataObj !== null && "1. Information" in metadataObj ? String((metadataObj as Record<string, unknown>)["1. Information"]) : null) ?? context.function,
-          symbol: (metadataObj && typeof metadataObj === 'object' && metadataObj !== null && "2. Symbol" in metadataObj ? String((metadataObj as Record<string, unknown>)["2. Symbol"]) : null) ?? context.symbol,
-          last_refreshed: metadataObj && typeof metadataObj === 'object' && metadataObj !== null && "3. Last Refreshed" in metadataObj ? String((metadataObj as Record<string, unknown>)["3. Last Refreshed"]) : undefined,
-          interval: metadataObj && typeof metadataObj === 'object' && metadataObj !== null && "4. Interval" in metadataObj ? String((metadataObj as Record<string, unknown>)["4. Interval"]) : undefined,
-          output_size: metadataObj && typeof metadataObj === 'object' && metadataObj !== null && "5. Output Size" in metadataObj ? String((metadataObj as Record<string, unknown>)["5. Output Size"]) : undefined,
-          time_zone: metadataObj && typeof metadataObj === 'object' && metadataObj !== null && "6. Time Zone" in metadataObj ? String((metadataObj as Record<string, unknown>)["6. Time Zone"]) : undefined
+          function: ((Boolean(metadataObj)) && typeof metadataObj === 'object' && metadataObj !== null && "1. Information" in metadataObj ? String((metadataObj as Record<string, unknown>)["1. Information"]) : null) ?? context.function,
+          symbol: ((Boolean(metadataObj)) && typeof metadataObj === 'object' && metadataObj !== null && "2. Symbol" in metadataObj ? String((metadataObj as Record<string, unknown>)["2. Symbol"]) : null) ?? context.symbol,
+          last_refreshed: (Boolean(metadataObj)) && typeof metadataObj === 'object' && metadataObj !== null && "3. Last Refreshed" in metadataObj ? String((metadataObj as Record<string, unknown>)["3. Last Refreshed"]) : undefined,
+          interval: (Boolean(metadataObj)) && typeof metadataObj === 'object' && metadataObj !== null && "4. Interval" in metadataObj ? String((metadataObj as Record<string, unknown>)["4. Interval"]) : undefined,
+          output_size: (Boolean(metadataObj)) && typeof metadataObj === 'object' && metadataObj !== null && "5. Output Size" in metadataObj ? String((metadataObj as Record<string, unknown>)["5. Output Size"]) : undefined,
+          time_zone: (Boolean(metadataObj)) && typeof metadataObj === 'object' && metadataObj !== null && "6. Time Zone" in metadataObj ? String((metadataObj as Record<string, unknown>)["6. Time Zone"]) : undefined
         }
       };
 
