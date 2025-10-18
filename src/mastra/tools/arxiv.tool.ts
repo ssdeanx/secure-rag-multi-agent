@@ -99,10 +99,10 @@ function convertPdfTextToMarkdown(text: string, metadata?: { title?: string; aut
 		.trim()
 
 	// Add frontmatter if metadata available
-	if (metadata?.title || metadata?.authors) {
+	if (((metadata?.title) !== null) || metadata?.authors) {
 		const frontmatter = [
 			'---',
-			metadata?.title ? `title: "${metadata.title}"` : null,
+			(metadata?.title && metadata.title.trim() !== '') ? `title: "${metadata.title.replace(/\\/g, '\\\\').replace(/"/g, '\\"')}"` : null,
 			metadata?.authors ? `authors: ${JSON.stringify(metadata.authors)}` : null,
 			'source: "arxiv-pdf"',
 			'extracted_at: "' + new Date().toISOString() + '"',
@@ -356,7 +356,7 @@ export const arxivPdfParserTool = createTool({
         // Add basic frontmatter even without normalization
         const frontmatter = [
           '---',
-          paperMetadata.title ? `title: "${paperMetadata.title}"` : null,
+          (paperMetadata.title && paperMetadata.title.trim() !== '') ? `title: "${paperMetadata.title.replace(/\\/g, '\\\\').replace(/"/g, '\\"')}"` : null,
           paperMetadata.authors ? `authors: ${JSON.stringify(paperMetadata.authors)}` : null,
           'source: "arxiv-pdf"',
           'extracted_at: "' + new Date().toISOString() + '"',
