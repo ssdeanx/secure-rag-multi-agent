@@ -13,9 +13,9 @@ if (!fs.existsSync(logsDir)) {
 }
 
 export const log = new PinoLogger({
-    name: 'logger',
+    name: 'MastraLogger',
 
-    level: 'warn',
+    level: 'debug',
 
     formatters: {level: (label: string) => ({ level: label.toUpperCase() }), bindings: (bindings: object) => bindings as Record<string, unknown>,  log: (logObj: object) => logObj as Record<string, unknown>},
 })
