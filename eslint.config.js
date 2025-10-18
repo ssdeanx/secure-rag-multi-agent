@@ -1,3 +1,5 @@
+import nextCoreWebVitals from "eslint-config-next/core-web-vitals";
+import nextTypescript from "eslint-config-next/typescript";
 import js from '@eslint/js'
 import tseslint from '@typescript-eslint/eslint-plugin'
 import tsparser from '@typescript-eslint/parser'
@@ -5,6 +7,8 @@ import prettierConfig from 'eslint-config-prettier'
 //import reactPlugin from 'eslint-plugin-react'
 
 export default [
+    ...nextCoreWebVitals,
+    ...nextTypescript,
     js.configs.recommended,
     prettierConfig,
     {
@@ -122,5 +126,5 @@ export default [
             'README.md',
             'CONTRIBUTING.md',
         ],
-    },
-]
+    }
+];

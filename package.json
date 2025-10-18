@@ -13,7 +13,7 @@
     "build": "dotenvx run -- next build",
     "start": "next start",
     "mastra-dev": "mastra dev --dir src/mastra",
-    "lint": "next lint",
+    "lint": "eslint .",
     "pretty": "npx prettier --write .",
     "build-cli": "tsc -p tsconfig.cli.json",
     "cli": "node dist/index.js",
