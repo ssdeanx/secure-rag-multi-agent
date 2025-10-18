@@ -30,6 +30,7 @@ import { researchContentNetwork, governedRagNetwork } from './agents/network'
 import { apiRoutes } from './apiRegistry'
 import { mcpAgent } from './agents/mcpAgent'
 import { responseQualityScorer, taskCompletionScorer } from './agents/custom-scorers'
+import { ssAgent } from './agents/ss'
 //import { voiceAgent } from './agents/voiceAgent'
 
 export const mastra = new Mastra({
@@ -52,6 +53,7 @@ export const mastra = new Mastra({
         productRoadmap: productRoadmapAgent,
         editor: editorAgent,
         mcp: mcpAgent,
+        ssAgent,
         //voice: voiceAgent,
         'research-content-network': researchContentNetwork,
         'governed-rag-network': governedRagNetwork,
