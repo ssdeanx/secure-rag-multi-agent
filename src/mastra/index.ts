@@ -40,6 +40,7 @@ import { stockAnalysisAgent } from './agents/stockAnalysisAgent'
 import { marketEducationAgent } from './agents/marketEducationAgent'
 import { selfReferencingAgent } from './agents/selfReferencingAgent'
 import { ssAgent } from './agents/ss'
+import { a2aCoordinatorAgent } from './agents/a2aCoordinatorAgent'
 
 export const mastra = new Mastra({
     storage: pgStore,
@@ -68,6 +69,7 @@ export const mastra = new Mastra({
         marketEducation: marketEducationAgent,
         selfReferencing: selfReferencingAgent,
         ssAgent,
+        a2aCoordinator: a2aCoordinatorAgent,
         //voice: voiceAgent,
         'research-content-network': researchContentNetwork,
         'governed-rag-network': governedRagNetwork,
