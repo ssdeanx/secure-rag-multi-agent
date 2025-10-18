@@ -1,0 +1,4 @@
+/* Styles for SystemDiagram component */
+.sd-node-img{width:100%;border-radius:6px;opacity:0.95}
+.sd-hidden-clip{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}
+

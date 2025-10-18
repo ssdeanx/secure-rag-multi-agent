@@ -32,8 +32,8 @@ A claim / promise is any statement of **present** capability, outcome, feature, 
 
 2. **claims** – a structured list where each entry includes:
 
-   * **name** – a concise, verb‑first summary of the capability (≤ 10 words).
-   * **description** – the full claim text (or a faithful paraphrase) *plus* an evidence snippet (≤ 25 words) with line/time reference.
+   * **name** – a concise, verb‑first summary of the capability (≤10 words).
+   * **description** – the full claim text (or a faithful paraphrase) *plus* an evidence snippet (≤25 words) with line/time reference.
 
 ## Guidelines
 

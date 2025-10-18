@@ -1,4 +1,4 @@
-<!-- AGENTS-META {"title":"Mastra Tools","version":"1.1.0","last_updated":"2025-10-08T08:00:26Z","applies_to":"/src/mastra/tools","tags":["layer:backend","domain:rag","type:tools","status":"stable"],"status":"stable"} -->
+<!-- AGENTS-META {"title":"Mastra Tools","version":"1.3.0","last_updated":"2025-10-18T00:00:00Z","applies_to":"/src/mastra/tools","tags":["layer:backend","domain:rag","type:tools","status":"stable"],"status":"stable"} -->
 
 # Tools Directory (`/src/mastra/tools`)
 
@@ -25,7 +25,7 @@ Encapsulate atomic operational capabilities (security checks, vector queries, co
 | `roadmapTool.ts`                                    | Cedar OS roadmap interactions     | UI state bridging                             |
 | `weather-tool.ts`                                   | Example external API call         | Demonstrative pattern                         |
 | `evaluateResultTool.ts` / `extractLearningsTool.ts` | Research support tools            | Evaluate search results and extract insights. |
-| `starter-agent-tool.ts`                             | Dynamic agent invocation          | Invokes other agents based on context.        |
+| `pdf-data-conversion.tool.ts`                      | PDF to Markdown conversion        | Sideloads pdf-parse for RAG indexing              |
 
 ## SerpAPI Integration Tools
 
@@ -72,6 +72,6 @@ export const sampleTool = createTool({
 
 | Version | Date (UTC) | Change                                                  |
 | ------- | ---------- | ------------------------------------------------------- |
+| 1.3.0   | 2025-10-18 | Added pdf-data-conversion.tool.ts for PDF processing |
 | 1.2.0   | 2025-10-17 | Added SerpAPI integration tools for web search, news, shopping, academic, and local business queries |
-| 1.1.0   | 2025-10-08 | Verified content accuracy and updated metadata.         |
 | 1.0.0   | 2025-09-24 | Standardized template applied; legacy content preserved |

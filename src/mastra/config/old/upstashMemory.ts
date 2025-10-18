@@ -6,11 +6,9 @@ import { z } from 'zod';
 import { PinoLogger } from '@mastra/loggers';
 import type { CoreMessage as OriginalCoreMessage } from '@mastra/core';
 import { maskStreamTags } from '@mastra/core';
-import { UIMessage } from 'ai';
+import type { UIMessage } from 'ai';
 import { TokenLimiter, ToolCallFilter } from '@mastra/memory/processors';
-import { createGeminiEmbeddingModel } from './config/googleProvider';
-import { AttentionGuidedMemoryProcessor, ContextualRelevanceProcessor, WorkflowAwareMemoryProcessor, BiasMitigationProcessor, ToolUsageTrackerProcessor, AgentInteractionPatternProcessor, MentalModelProcessor } from './processor-extra';
-
+import { google } from '@ai-sdk/google'
 
 
 /**
@@ -116,8 +114,8 @@ export interface Trace {
     code: number;
     message?: string;
   };
-  events: Record<string, any>[];
-  links: Record<string, any>[];
+  events: Array<Record<string, any>>;
+  links: Array<Record<string, any>>;
   other: string;
   startTime: bigint;
   endTime: bigint;
@@ -203,6 +201,7 @@ export interface ExtractParams {
  * Supported operators: $eq, $ne, $gt, $gte, $lt, $lte, $in, $nin, $and, $or, $not, $nor, $exists, $contains, $regex
  */
 export interface MetadataFilter {
+  [key: string]: string | number | boolean | MetadataFilter | MetadataFilter[] | Array<string | number | boolean> | undefined;
   // Basic comparison operators (Upstash compatible)
   $eq?: string | number | boolean;
   $ne?: string | number | boolean;
@@ -211,37 +210,31 @@ export interface MetadataFilter {
   $lt?: number;
   $lte?: number;
   // Array operators (Upstash compatible - avoid large arrays)
-  $in?: (string | number | boolean)[];
-  $nin?: (string | number | boolean)[];
-
+  $in?: Array<string | number | boolean>;
+  $nin?: Array<string | number | boolean>;
   // Logical operators (Upstash compatible)
   $and?: MetadataFilter[];
   $or?: MetadataFilter[];
   $not?: MetadataFilter;
   $nor?: MetadataFilter[];
-
   // Element operators (Upstash compatible)
   $exists?: boolean;
-
   // Upstash-specific operators
   $contains?: string; // Text contains substring
   $regex?: string; // Regular expression match
-
-  // Field-level filters (keys must be ≤512 chars, no null values)
-  [key: string]: string | number | boolean | MetadataFilter | MetadataFilter[] | (string | number | boolean)[] | undefined;
 }
 
 /**
  * Create shared Upstash storage instance
  */
 export const upstashStorage = new UpstashStore({
-  url: process.env.UPSTASH_REDIS_REST_URL || '',
-  token: process.env.UPSTASH_REDIS_REST_TOKEN || ''
+  url: process.env.UPSTASH_REDIS_REST_URL ?? '',
+  token: process.env.UPSTASH_REDIS_REST_TOKEN ?? ''
 });
 
 export const upstashVector = new UpstashVector({
-  url: process.env.UPSTASH_VECTOR_REST_URL || 'https://innocent-leech-63648-us1-vector.upstash.io',
-  token: process.env.UPSTASH_VECTOR_REST_TOKEN || 'ABgFMGlubm9jZW50LWxlZWNoLTYzNjQ4LXVzMWFkbWluWm1FME5ERmtPRFl0TWpoa01TMDBabUV3TFRsbE5qTXRPVFV4TXpVek9ETTNPR1Jr'
+  url: process.env.UPSTASH_VECTOR_REST_URL ?? '',
+  token: process.env.UPSTASH_VECTOR_REST_TOKEN ?? ''
 });
 
   /**
@@ -282,7 +275,7 @@ export const upstashVector = new UpstashVector({
 export const mastraMemory = new Memory({
   storage: upstashStorage,
   vector: upstashVector,
-  embedder: createGeminiEmbeddingModel('text-embedding-004', { outputDimensionality: 768, taskType: 'SEMANTIC_SIMILARITY'}),
+  embedder: google.textEmbedding('gemini-embedding-001'),
   options: {
     lastMessages: 500, // Enhanced for better context retention
     semanticRecall: {
@@ -333,50 +326,6 @@ export const mastraMemory = new Memory({
     },
   },
   processors: [
-    new AttentionGuidedMemoryProcessor({
-      maxMessages: 50,
-      similarityThreshold: 0.85,
-      importanceKeywords: ['urgent', 'important', 'critical', 'error', 'bug', 'issue', 'task', 'goal'],
-      verboseMessageThreshold: 500,
-      contextPreservationRatio: 0.3,
-    }),
-    new ContextualRelevanceProcessor({
-        topicContinuityThreshold: 0.7,
-        maxTopicShifts: 4,
-    }),
-    new TokenLimiter(1000000), // 1M token limit for context
-    new ToolCallFilter({
-      exclude: [], // Include all tool calls for better context
-    }),
-    new WorkflowAwareMemoryProcessor({
-      workflowStages: ['data_collection', 'analysis', 'reporting'],
-      defaultRetentionStrategy: 'prune_irrelevant',
-      stageRelevanceStrategy: 'semantic',
-      workflowStageDefinitions: {
-        data_collection: 'Collecting data from various sources',
-        analysis: 'Analyzing collected data for insights',
-        reporting: 'Generating reports based on analysis'
-      },
-      semanticRelevanceThreshold: 0.7,
-      attentionGuidedProcessor: new AttentionGuidedMemoryProcessor({
-        maxMessages: 50,
-        similarityThreshold: 0.85,
-        importanceKeywords: ['urgent', 'important', 'critical', 'error', 'bug', 'issue', 'task', 'goal', 'high-priority', 'actionable', 'decision', 'risk', 'security', 'performance', 'update', 'fix', 'solution', 'insight', 'analysis', 'data', 'workflow', 'status', 'progress', 'blocker', 'verify', 'validate', 'report', 'action', 'feedback', 'optimize', 'efficiency', 'integrity', 'coordination', 'strategy', 'outcome'],
-        verboseMessageThreshold: 500,
-        contextPreservationRatio: 0.3,
-      }),
-    }),
-    new BiasMitigationProcessor({
-      detectionStrategies: ['confirmation', 'recency', 'anchoring', 'availability', 'framing', 'bandwagon', 'overconfidence', ],
-      mitigationStrategies: ['re-weight', 'add-counter-arguments', 'remove', 'flag', 'ignore', 'contextualize', 'reframe', 'balance'],
-    }),
-    new MentalModelProcessor(),
-    new ToolUsageTrackerProcessor({
-      logInterval: 5000, // Log tool usage every 5 seconds
-    }),
-    new AgentInteractionPatternProcessor({
-      sequenceLength: 15,
-    }),
   ],
 });
 
@@ -544,14 +493,20 @@ export async function searchMemoryMessages(
 
     const result = await mastraMemory.query(queryConfig);
 
+    // Filter out "data" role messages from uiMessages to match return type
+    const filteredUiMessages = result.uiMessages.filter(msg => msg.role !== 'data');
+
     logger.info('Memory message search completed', {
       threadId: params.threadId,
       messagesFound: result.messages.length,
-      uiMessagesFound: result.uiMessages.length,
+      uiMessagesFound: filteredUiMessages.length,
       hasFilter: !!filter
     });
 
-    return result;
+    return {
+      messages: result.messages,
+      uiMessages: filteredUiMessages as UIMessage[]
+    };
   } catch (error: unknown) {
     logger.error(`searchMemoryMessages failed: ${(error as Error).message}`, {
       threadId: params.threadId,
@@ -579,7 +534,8 @@ export async function getMemoryUIThreadMessages(threadId: string, last = 100): P
       threadId: id,
       selectBy: { last },
     });
-    return uiMessages;
+    // Filter out "data" role messages to match UIMessage type
+    return uiMessages.filter(msg => msg.role !== 'data') as UIMessage[];
   } catch (error: unknown) {
     logger.error(`getMemoryUIThreadMessages failed: ${(error as Error).message}`);
     throw error;
@@ -640,7 +596,8 @@ export async function enhancedMemorySearchMessages(
   });
 
   return {
-    ...result,
+    messages: result.messages,
+    uiMessages: result.uiMessages.filter(msg => msg.role !== 'data') as UIMessage[],
     searchMetadata: { topK, before, after },
   };
 }
@@ -719,7 +676,7 @@ export async function describeVectorIndex(indexName: string): Promise<VectorInde
     return {
       dimension: stats.dimension,
       count: stats.count,
-      metric: stats.metric || 'cosine'
+      metric: stats.metric ?? 'cosine'
     };
   } catch (error: unknown) {
     logger.error('Failed to describe vector index', {
@@ -770,7 +727,7 @@ export async function deleteVectorIndex(indexName: string): Promise<VectorOperat
 export async function upsertVectors(
   indexName: string,
   vectors: number[][],
-  metadata?: Record<string, unknown>[],
+  metadata?: Array<Record<string, unknown>>,
   ids?: string[]
 ): Promise<VectorOperationResult> {
   const params = vectorUpsertSchema.parse({ indexName, vectors, metadata, ids });
@@ -825,9 +782,9 @@ export async function upsertVectors(
 export async function queryVectors(
   indexName: string,
   queryVector: number[],
-  topK: number = 5,
+  topK = 5,
   filter?: MetadataFilter,
-  includeVector: boolean = false
+  includeVector = false
 ): Promise<VectorQueryResult[]> {
   const params = vectorQuerySchema.parse({
     indexName,
@@ -837,8 +794,8 @@ export async function queryVectors(
     includeVector
   });
   try {
-    // Validate filter for pinecone compatibility if provided
-    let upstashFilter: any; // TODO: Replace with proper pineconeVectorFilter type when available.  Not now.. This is a workaround for local pinecone package constraints.
+    // Validate filter for upstash compatibility if provided
+    let upstashFilter: any; // TODO: Replace with proper upstashVectorFilter type when available.  Not now.. This is a workaround for local upstash package constraints.
     if (params.filter) {
       const validatedFilter = validateMetadataFilter(params.filter);
       upstashFilter = transformToUpstashFilter(validatedFilter);
@@ -864,7 +821,7 @@ export async function queryVectors(
     return results.map((result: any) => ({
       id: result.id,
       score: result.score,
-      metadata: result.metadata || {},
+      metadata: result.metadata ?? {},
       vector: result.vector
     }));
   } catch (error: unknown) {
@@ -897,12 +854,12 @@ export function transformToUpstashFilter(filter: MetadataFilter): any {
     if (value !== undefined && value !== null) {
       // Handle nested MetadataFilter objects
       if (typeof value === 'object' && !Array.isArray(value) && key.startsWith('$')) {
-        transformed[key] = transformToUpstashFilter(value as MetadataFilter);
+        transformed[key] = transformToUpstashFilter(value);
       } else if (Array.isArray(value) && key.startsWith('$')) {
         // Handle arrays in logical operators
-        transformed[key] = value.map(item => 
-          typeof item === 'object' && item !== null 
-            ? transformToUpstashFilter(item as MetadataFilter)
+        transformed[key] = value.map(item =>
+          typeof item === 'object' && item !== null
+            ? transformToUpstashFilter(item)
             : item
         );
       } else {
@@ -910,7 +867,7 @@ export function transformToUpstashFilter(filter: MetadataFilter): any {
       }
     }
   });
-  
+
   return transformed;
 }
 
@@ -1012,9 +969,9 @@ export async function deleteVector(
 export async function batchUpsertVectors(
   indexName: string,
   vectors: number[][],
-  metadata?: Record<string, unknown>[],
+  metadata?: Array<Record<string, unknown>>,
   ids?: string[],
-  batchSize: number = 100
+  batchSize = 100
 ): Promise<VectorOperationResult> {
   const totalVectors = vectors.length;
   let successCount = 0;
@@ -1385,7 +1342,7 @@ export async function extractChunkMetadata(
     // Keywords extraction
     if (extractParams.keywords) {
       const keywordConfig = typeof extractParams.keywords === 'boolean' ? { keywords: 5 } : extractParams.keywords;
-      const keywordCount = keywordConfig.keywords || 5;
+      const keywordCount = keywordConfig.keywords ?? 5;
 
       enhancedChunks.forEach(chunk => {
         // Simplified keyword extraction
@@ -1399,7 +1356,7 @@ export async function extractChunkMetadata(
     // Questions extraction
     if (extractParams.questions) {
       const questionConfig = typeof extractParams.questions === 'boolean' ? { questions: 3 } : extractParams.questions;
-      const questionCount = questionConfig.questions || 3;
+      const questionCount = questionConfig.questions ?? 3;
 
       if (!questionConfig.embeddingOnly) {
         enhancedChunks.forEach(chunk => {
@@ -1461,7 +1418,7 @@ export async function saveWorkflow(workflowData: {
 export async function getWorkflow(runId: string, workflowName: string): Promise<WorkflowRun | null> {
   logger.info(`[memory] getWorkflow received. run_id: ${runId}`);
   try {
-    const run = await upstashStorage.getWorkflowRunById({ namespace: 'default', runId, workflowName });
+    const run = await upstashStorage.getWorkflowRunById({ runId, workflowName });
     if (!run) {
       logger.warn(`[memory] Workflow not found. run_id: ${runId}`);
       return null;
@@ -1492,18 +1449,16 @@ export async function getWorkflowRuns(options: {
 }): Promise<{ runs: WorkflowRun[]; total: number; }> {
   logger.info('[memory] getWorkflowRuns received.', options);
   try {
-    const result = await upstashStorage.getWorkflowRuns({
-      ...options,
-      namespace: options.namespace ?? 'default'
-    });
+    const { namespace, ...restOptions } = options;
+    const result = await upstashStorage.getWorkflowRuns(restOptions);
     logger.info(`[memory] Found ${result.total} workflow runs.`);
-    
+
     // Transform the runs to match our WorkflowRun interface
     const transformedRuns: WorkflowRun[] = result.runs.map(run => ({
       ...run,
-      namespace: options.namespace ?? 'default'
+      namespace: namespace ?? 'default'
     }));
-    
+
     return {
       runs: transformedRuns,
       total: result.total
@@ -1555,7 +1510,7 @@ export async function getTraces(args: {
     const page = args.page ?? 0;
     const perPage = args.perPage ?? 20;
 
-    const result = await (upstashStorage as UpstashStore).getTracesPaginated({
+    const result = await (upstashStorage).getTracesPaginated({
       ...args,
       page,
       perPage,
@@ -1566,9 +1521,9 @@ export async function getTraces(args: {
           )
         : undefined
     });
-    
+
     logger.info(`[memory] Found ${result.total} traces.`);
-    
+
     // Transform traces to match local Trace interface
     const transformedTraces: Trace[] = result.traces.map((trace: any) => ({
       ...trace,
@@ -1576,7 +1531,7 @@ export async function getTraces(args: {
       endTime: BigInt(trace.endTime),
       other: typeof trace.other === 'object' ? JSON.stringify(trace.other) : trace.other
     }));
-    
+
     return {
       traces: transformedTraces,
       total: result.total,
@@ -1623,8 +1578,8 @@ export async function getEvals(options?: {
   try {
     const page = options?.page ?? 0;
     const perPage = options?.perPage ?? 20;
-    
-    const result = await (upstashStorage as UpstashStore).getEvals({
+
+    const result = await (upstashStorage).getEvals({
       agentName: options?.agentName,
       type: options?.type,
       dateRange: options?.dateRange,
