@@ -41,10 +41,10 @@ export const pgVector = new PgVector({
     // Additional index options can be configured here if needed
 })
 
-// Memory configuration using PgVector with HNSW index for gemini-embedding-001
+// Memory configuration using PgVector with flat index for gemini-embedding-001
 export const pgMemory = new Memory({
     storage: pgStore,
-    vector: pgVector, // Using PgVector with HNSW for 1568 dimension embeddings (gemini-embedding-001)
+    vector: pgVector, // Using PgVector with flat for 3072 dimension embeddings (gemini-embedding-001)
     embedder: google.textEmbedding('gemini-embedding-001'),
     options: {
         // Message management
@@ -59,7 +59,7 @@ export const pgMemory = new Memory({
             scope: 'resource', // 'resource' | 'thread'
             // HNSW index configuration to support high-dimensional embeddings (>2000 dimensions)
             indexConfig: {
-                type: 'flat', // IVFFlat index type (supports dimensions > 2000, unlike HNSW limit of 2000)
+                type: 'flat', // flat index type (supports dimensions > 4000, unlike HNSW limit of 2000)
                 metric: 'cosine', // Distance metric for normalized embeddings
                 ivf: {lists: 4000},
                 }

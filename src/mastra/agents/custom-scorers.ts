@@ -19,14 +19,14 @@ export const sourceDiversityScorer = createScorer({
     if (typeof output === 'string') {
         try {
             const parsed = JSON.parse(output)
-            sources = parsed.sources?.map((s: any) => s.url) || []
+            sources = parsed.sources?.map((s: any) => s.url) ?? []
         } catch {
             // If not JSON, look for sources in text
             const urlRegex = /https?:\/\/[^\s]+/g
-            sources = output.match(urlRegex) || []
+            sources = output.match(urlRegex) ?? []
         }
     } else if (output && typeof output === 'object' && 'sources' in output) {
-        sources = output.sources?.map((s: any) => s.url) || []
+        sources = output.sources?.map((s: any) => s.url) ?? []
     }
 
     return { sources }
@@ -65,8 +65,8 @@ export const sourceDiversityScorer = createScorer({
     const diversityScore = Math.min(uniqueDomains.size / Math.max(sources.length * 0.5, 1), 1)
 
     const issues: string[] = []
-    if (uniqueDomains.size < 2) issues.push('Limited domain diversity - mostly single source')
-    if (sources.length < 3) issues.push('Insufficient number of sources')
+    if (uniqueDomains.size < 2) {issues.push('Limited domain diversity - mostly single source')}
+    if (sources.length < 3) {issues.push('Insufficient number of sources')}
     if (Object.values(domainBreakdown).some(count => count > sources.length * 0.6)) {
         issues.push('Heavy reliance on single domain')
     }
@@ -115,17 +115,17 @@ export const researchCompletenessScorer = createScorer({
     if (typeof output === 'string') {
         try {
             const parsed = JSON.parse(output)
-            learnings = parsed.learnings || []
-            summary = parsed.summary || ''
-            data = parsed.data || ''
+            learnings = parsed.learnings ?? []
+            summary = parsed.summary ?? ''
+            data = parsed.data ?? ''
         } catch {
             // Extract from text if not JSON
             summary = output
         }
     } else if (output && typeof output === 'object') {
-        learnings = output.learnings || []
-        summary = output.summary || ''
-        data = output.data || ''
+        learnings = output.learnings ?? []
+        summary = output.summary ?? ''
+        data = output.data ?? ''
     }
 
     return { learnings, summary, data }
@@ -143,7 +143,7 @@ export const researchCompletenessScorer = createScorer({
         hasExamples: /example|instance|case|such as|for example/i.test(totalContent),
         hasContext: /background|context|history|overview|introduction/i.test(totalContent),
         hasAnalysis: /because|therefore|thus|consequently|as a result|due to/i.test(totalContent),
-        hasFollowUp: learnings.some((l: any) => l.followUp && l.followUp.trim().length > 0)
+        hasFollowUp: learnings.some((l: any) => (Boolean(l.followUp)) && l.followUp.trim().length > 0)
     }
 
     const aspectsCovered = Object.values(aspects).filter(Boolean).length
@@ -153,23 +153,23 @@ export const researchCompletenessScorer = createScorer({
     const strengths: string[] = []
     const weaknesses: string[] = []
 
-    if (aspects.hasMultiplePerspectives) strengths.push('Multiple perspectives')
-    else weaknesses.push('Single perspective only')
+    if (aspects.hasMultiplePerspectives) {strengths.push('Multiple perspectives')}
+    else {weaknesses.push('Single perspective only')}
 
-    if (aspects.hasDepth) strengths.push('Good depth')
-    else weaknesses.push('Lacks depth')
+    if (aspects.hasDepth) {strengths.push('Good depth')}
+    else {weaknesses.push('Lacks depth')}
 
-    if (aspects.hasExamples) strengths.push('Includes examples')
-    else weaknesses.push('Missing examples')
+    if (aspects.hasExamples) {strengths.push('Includes examples')}
+    else {weaknesses.push('Missing examples')}
 
-    if (aspects.hasContext) strengths.push('Provides context')
-    else weaknesses.push('Lacks context')
+    if (aspects.hasContext) {strengths.push('Provides context')}
+    else {weaknesses.push('Lacks context')}
 
-    if (aspects.hasAnalysis) strengths.push('Includes analysis')
-    else weaknesses.push('Missing analysis')
+    if (aspects.hasAnalysis) {strengths.push('Includes analysis')}
+    else {weaknesses.push('Missing analysis')}
 
-    if (aspects.hasFollowUp) strengths.push('Has follow-up questions')
-    else weaknesses.push('No follow-up exploration')
+    if (aspects.hasFollowUp) {strengths.push('Has follow-up questions')}
+    else {weaknesses.push('No follow-up exploration')}
 
     return {
         completenessScore,
@@ -220,16 +220,16 @@ export const summaryQualityScorer = createScorer({
     if (typeof output === 'string') {
         try {
             const parsed = JSON.parse(output)
-            summary = parsed.summary || ''
-            learnings = parsed.learnings || []
-            data = parsed.data || ''
+            summary = parsed.summary ?? ''
+            learnings = parsed.learnings ?? []
+            data = parsed.data ?? ''
         } catch {
             summary = output
         }
     } else if (output && typeof output === 'object') {
-        summary = output.summary || ''
-        learnings = output.learnings || []
-        data = output.data || ''
+        summary = output.summary ?? ''
+        learnings = output.learnings ?? []
+        data = output.data ?? ''
     }
 
     return { summary, learnings, data }
@@ -237,7 +237,7 @@ export const summaryQualityScorer = createScorer({
 .analyze(({ results }) => {
     const { summary, learnings, data } = results.preprocessStepResult
 
-    if (!summary || summary.trim().length === 0) {
+    if (summary?.trim().length === 0) {
         return {
             qualityScore: 0,
             summaryLength: 0,
@@ -253,7 +253,7 @@ export const summaryQualityScorer = createScorer({
 
     // Check if summary captures key learnings
     const keyInsights = learnings.filter((learning: any) => {
-        const insight = (learning.insight || '').toLowerCase()
+        const insight = (learning.insight ?? '').toLowerCase()
         return insight.length > 10 && summaryLower.includes(insight.slice(0, 20))
     }).length
 
@@ -274,10 +274,10 @@ export const summaryQualityScorer = createScorer({
     let qualityScore = (insightCoverage * 0.6) + (characteristicsMet / totalCharacteristics * 0.4)
 
     const issues: string[] = []
-    if (summary.length > 500) issues.push('Too verbose')
-    if (summary.length < 50) issues.push('Too brief')
-    if (insightCoverage < 0.3) issues.push('Missing key insights')
-    if (!characteristics.clear) issues.push('Unclear or poorly structured')
+    if (summary.length > 500) {issues.push('Too verbose')}
+    if (summary.length < 50) {issues.push('Too brief')}
+    if (insightCoverage < 0.3) {issues.push('Missing key insights')}
+    if (!characteristics.clear) {issues.push('Unclear or poorly structured')}
 
     return {
         qualityScore,
@@ -357,20 +357,20 @@ export const taskCompletionScorer = createScorer({
     const strengths: string[] = []
     const weaknesses: string[] = []
 
-    if (completionIndicators.hasActionableOutput) strengths.push('Provides substantial output')
-    else weaknesses.push('Output too brief or empty')
+    if (completionIndicators.hasActionableOutput) {strengths.push('Provides substantial output')}
+    else {weaknesses.push('Output too brief or empty')}
 
-    if (completionIndicators.addressesInput) strengths.push('Addresses user input')
-    else weaknesses.push('Does not address user request')
+    if (completionIndicators.addressesInput) {strengths.push('Addresses user input')}
+    else {weaknesses.push('Does not address user request')}
 
-    if (completionIndicators.hasStructuredResponse) strengths.push('Well-structured response')
-    else weaknesses.push('Unstructured response')
+    if (completionIndicators.hasStructuredResponse) {strengths.push('Well-structured response')}
+    else {weaknesses.push('Unstructured response')}
 
-    if (completionIndicators.providesValue) strengths.push('Provides value')
-    else weaknesses.push('Does not provide useful information')
+    if (completionIndicators.providesValue) {strengths.push('Provides value')}
+    else {weaknesses.push('Does not provide useful information')}
 
-    if (completionIndicators.isComprehensive) strengths.push('Comprehensive response')
-    else weaknesses.push('Response lacks depth')
+    if (completionIndicators.isComprehensive) {strengths.push('Comprehensive response')}
+    else {weaknesses.push('Response lacks depth')}
 
     return {
         completionScore,
@@ -427,7 +427,7 @@ export const responseQualityScorer = createScorer({
 .analyze(({ results }) => {
     const { responseText } = results.preprocessStepResult
 
-    if (!responseText || responseText.trim().length === 0) {
+    if (responseText?.trim().length === 0) {
         return {
             qualityScore: 0,
             clarity: 0,
@@ -452,12 +452,12 @@ export const responseQualityScorer = createScorer({
     const qualityScore = metricsMet / totalMetrics
 
     const issues: string[] = []
-    if (!qualityMetrics.clarity) issues.push('Unclear or confusing response')
-    if (!qualityMetrics.usefulness) issues.push('Does not provide useful information')
-    if (!qualityMetrics.engagement) issues.push('Lacks engagement or proper punctuation')
-    if (!qualityMetrics.professionalism) issues.push('Unprofessional language')
-    if (!qualityMetrics.completeness) issues.push('Incomplete response')
-    if (!qualityMetrics.structure) issues.push('Poorly structured')
+    if (!qualityMetrics.clarity) {issues.push('Unclear or confusing response')}
+    if (!qualityMetrics.usefulness) {issues.push('Does not provide useful information')}
+    if (!qualityMetrics.engagement) {issues.push('Lacks engagement or proper punctuation')}
+    if (!qualityMetrics.professionalism) {issues.push('Unprofessional language')}
+    if (!qualityMetrics.completeness) {issues.push('Incomplete response')}
+    if (!qualityMetrics.structure) {issues.push('Poorly structured')}
 
     return {
         qualityScore,
@@ -511,7 +511,7 @@ export const creativityScorer = createScorer({
 .analyze(({ results }) => {
     const { responseText } = results.preprocessStepResult
 
-    if (!responseText || responseText.trim().length === 0) {
+    if (responseText?.trim().length === 0) {
         return {
             creativityScore: 0,
             originality: 0,
@@ -537,20 +537,20 @@ export const creativityScorer = createScorer({
     const strengths: string[] = []
     const weaknesses: string[] = []
 
-    if (creativityIndicators.usesMetaphors) strengths.push('Uses metaphors and analogies')
-    else weaknesses.push('Lacks metaphorical thinking')
+    if (creativityIndicators.usesMetaphors) {strengths.push('Uses metaphors and analogies')}
+    else {weaknesses.push('Lacks metaphorical thinking')}
 
-    if (creativityIndicators.novelApproaches) strengths.push('Presents novel approaches')
-    else weaknesses.push('Conventional thinking only')
+    if (creativityIndicators.novelApproaches) {strengths.push('Presents novel approaches')}
+    else {weaknesses.push('Conventional thinking only')}
 
-    if (creativityIndicators.multiplePerspectives) strengths.push('Considers multiple perspectives')
-    else weaknesses.push('Single perspective only')
+    if (creativityIndicators.multiplePerspectives) {strengths.push('Considers multiple perspectives')}
+    else {weaknesses.push('Single perspective only')}
 
-    if (creativityIndicators.imaginativeLanguage) strengths.push('Imaginative language')
-    else weaknesses.push('Literal language only')
+    if (creativityIndicators.imaginativeLanguage) {strengths.push('Imaginative language')}
+    else {weaknesses.push('Literal language only')}
 
-    if (creativityIndicators.unconventionalIdeas) strengths.push('Unconventional ideas')
-    else weaknesses.push('Traditional approaches only')
+    if (creativityIndicators.unconventionalIdeas) {strengths.push('Unconventional ideas')}
+    else {weaknesses.push('Traditional approaches only')}
 
     return {
         creativityScore,

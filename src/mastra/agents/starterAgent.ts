@@ -1,20 +1,17 @@
-import { google } from '@ai-sdk/google'
+
 import { Agent } from '@mastra/core/agent'
 import { starterOutputSchema } from '../schemas/agent-schemas'
 import { log } from '../config/logger'
-import { starterAgentTool } from '../tools/starter-agent-tool'
-import gemini from '../config/gemini-cli'
-import { editorTool } from '../tools/editor-agent-tool'
+//import gemini from '../config/gemini-cli'
 import { weatherTool } from '../tools/weather-tool'
 import { BatchPartsProcessor, UnicodeNormalizer } from '@mastra/core/processors'
-import {
-    CompletenessMetric,
-    ContentSimilarityMetric,
-    KeywordCoverageMetric,
-    TextualDifferenceMetric,
-    ToneConsistencyMetric,
-} from '@mastra/evals/nlp'
 import { responseQualityScorer, taskCompletionScorer } from './custom-scorers'
+import { researchAgent } from './researchAgent'
+import { mcpAgent } from './mcpAgent'
+import { evaluationAgent } from './evaluationAgent'
+import { googleAIFlashLite, graphQueryTool, pgMemory, pgQueryTool } from '../config'
+import { policyAgent } from './policy.agent'
+import { reportAgent } from './reportAgent'
 
 // Define runtime context for this agent
 export interface StarterAgentContext {
@@ -40,7 +37,7 @@ export const starterAgent = new Agent({
         const userId = runtimeContext.get('userId')
         return `
 <role>
-User: ${userId ?? 'anonymous'}
+User: ${userId ?? 'admin'}
 You are a helpful AI assistant. Your primary function is to assist users with their questions and tasks.
 </role>
 
@@ -63,13 +60,9 @@ You will respond in a JSON format with the following fields:
 </response_format>
   `
     },
-    model: gemini('gemini-2.5-pro', {
-        temperature: 0.7, // Controls randomness (0-2)
-        maxOutputTokens: 65536, // Maximum output tokens (defaults to 65536)
-        topP: 0.95, // Nucleus sampling threshold
-    }),
-    tools: { weatherTool },
-
+    model: googleAIFlashLite, // Nucleus sampling threshold
+    tools: { weatherTool, pgQueryTool, graphQueryTool },
+    memory: pgMemory,
     scorers: {
         responseQuality: {
             scorer: responseQualityScorer,
@@ -81,16 +74,7 @@ You will respond in a JSON format with the following fields:
         },
     },
     workflows: {},
-    evals: {
-        contentSimilarity: new ContentSimilarityMetric({
-            ignoreCase: true,
-            ignoreWhitespace: true,
-        }),
-        completeness: new CompletenessMetric(),
-        textualDifference: new TextualDifferenceMetric(),
-        keywordCoverage: new KeywordCoverageMetric(), // Keywords will be provided at runtime for evaluation
-        toneConsistency: new ToneConsistencyMetric(),
-    },
+    agents: {researchAgent, mcpAgent, evaluationAgent, policyAgent, reportAgent},
     inputProcessors: [
         new UnicodeNormalizer({
             stripControlChars: true,
