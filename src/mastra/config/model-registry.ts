@@ -12,6 +12,7 @@ export enum ModelCapability {
     VISION = 'vision',
     AUDIO = 'audio',
     REASONING = 'reasoning',
+    IMAGE_GENERATION = 'image-generation',
 }
 
 export enum ModelProvider {

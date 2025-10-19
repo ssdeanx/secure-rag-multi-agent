@@ -11,6 +11,7 @@ import {
     ActionSchema,
     ChatAgentResponseSchema,
 } from './chatWorkflowSharedTypes'
+import { log } from '../config/logger'
 
 export const ChatInputSchema = z.object({
     prompt: z.string(),
@@ -38,7 +39,7 @@ const fetchContext = createStep({
         context: z.any().optional(),
     }),
     execute: async ({ inputData }) => {
-        console.log('Chat workflow received input data', inputData)
+        log.info('Chat workflow received input data', inputData)
         // Any context that the frontend wants to send to the agent
         const frontendContext = inputData.prompt
 
@@ -112,7 +113,7 @@ const callAgent = createStep({
             messages.map((m) => m.content),
             {
                 // If system prompt is provided, overwrite the default system prompt for this agent
-                ...(systemPrompt
+                ...((systemPrompt !== undefined && systemPrompt !== null)
                     ? ({ instructions: systemPrompt } as const)
                     : {}),
                 modelSettings: {
@@ -136,7 +137,7 @@ const callAgent = createStep({
             usage: response.usage,
         }
 
-        console.log('Chat workflow result', result)
+        log.info('Chat workflow result', result)
         if (streamController !== null) {
             streamJSONEvent(streamController, result)
         }

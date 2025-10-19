@@ -1,4 +1,4 @@
-import { createWorkflow, createStep } from '@mastra/core'
+import { createWorkflow, createStep } from '@mastra/core/workflows'
 import { z } from 'zod'
 
 import {

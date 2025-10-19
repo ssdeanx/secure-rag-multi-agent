@@ -1,10 +1,28 @@
-import js from '@eslint/js'
-import tseslint from '@typescript-eslint/eslint-plugin'
-import tsparser from '@typescript-eslint/parser'
-import prettierConfig from 'eslint-config-prettier'
+const nextCoreWebVitals = require('eslint-config-next/core-web-vitals.js')
+const nextTypescript = require('eslint-config-next/typescript.js')
+const { FlatCompat } = require('@eslint/eslintrc')
+const js = require('@eslint/js')
+const tseslint = require('@typescript-eslint/eslint-plugin')
+const tsparser = require('@typescript-eslint/parser')
+const prettierConfig = require('eslint-config-prettier')
+
 //import reactPlugin from 'eslint-plugin-react'
 
-export default [
+const path = require('path')
+const baseDirectory = path.resolve('.')
+const compat = new FlatCompat({ baseDirectory })
+
+const coreExtends = nextCoreWebVitals && nextCoreWebVitals.default && nextCoreWebVitals.default.extends
+    ? nextCoreWebVitals.default.extends
+    : []
+
+const tsExtends = nextTypescript && nextTypescript.default && nextTypescript.default.extends
+    ? nextTypescript.default.extends
+    : []
+
+module.exports = [
+    ...(coreExtends.length ? compat.extends(...coreExtends) : []),
+    ...(tsExtends.length ? compat.extends(...tsExtends) : []),
     js.configs.recommended,
     prettierConfig,
     {
@@ -122,5 +140,5 @@ export default [
             'README.md',
             'CONTRIBUTING.md',
         ],
-    },
-]
+    }
+];

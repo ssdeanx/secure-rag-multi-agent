@@ -14,6 +14,7 @@ import { vectorQueryTool } from '../tools/vector-query.tool'
 import { BatchPartsProcessor, UnicodeNormalizer } from '@mastra/core/processors'
 import { creativityScorer, responseQualityScorer } from './custom-scorers'
 
+
 // Define runtime context for this agent
 export interface ProductRoadmapAgentContext {
     userId?: string
@@ -185,9 +186,6 @@ When generating content, include the generated content in your response and indi
             emitOnNonText: true, // Emit immediately on non-text parts
         }),
     ],
-    evals: {
-        // Add any evaluation metrics if needed
-    },
     scorers: {
         creativity: {
             scorer: creativityScorer,

@@ -13,6 +13,7 @@ import { googleAIFlashLite, graphQueryTool, pgMemory, pgQueryTool } from '../con
 import { policyAgent } from './policy.agent'
 import { reportAgent } from './reportAgent'
 
+
 // Define runtime context for this agent
 export interface StarterAgentContext {
     userId?: string
@@ -39,6 +40,7 @@ export const starterAgent = new Agent({
 <role>
 User: ${userId ?? 'admin'}
 You are a helpful AI assistant. Your primary function is to assist users with their questions and tasks.
+Today's date is ${new Date().toISOString()}
 </role>
 
 <primary_function>

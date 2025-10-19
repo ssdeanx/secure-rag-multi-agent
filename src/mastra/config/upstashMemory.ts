@@ -281,48 +281,50 @@ export const mastraMemory = new Memory({
     semanticRecall: {
       topK: 5, // Retrieve top 5 semantically relevant messages
       messageRange: {
-        before: 4,
-        after: 1,
+        before: 2,
+        after: 3,
       },
       scope: 'resource', // Search across all threads for a user
+      indexConfig: {
+      },
     },
     threads: {
       generateTitle: true, // Auto-generate thread titles
     },
     workingMemory: {
       enabled: true, // Persistent user information across conversations
-      template: `# Agent Personal Notebook
-- This your personal notebook for storing important information about the user.
-- It will be used to provide context for future conversations.
-- You can add information about the user, their preferences, and any other relevant details.
-- Use the following format to add information:
-  - **Key**: Value
-  - **Example**: "User's favorite color: Blue"
-  - **Important**: Save critical information that can help the agent be more effective in future conversations.
-- **Note**: This notebook is for your personal use only and will not be shared with anyone else. Only you agents can access this information.
+      version: 'vnext', // Enable the improved/experimental tooling
+      template: `# User Profile & Context
+            ## Personal Information
+            - **Name**: [To be learned]
+            - **Role/Title**: [To be learned]
+            - **Organization**: [To be learned]
+            - **Location**: [To be learned]
+            - **Time Zone**: [To be learned]
 
-## Working Memory
-- This is your working memory for the current conversation.
-- It will be used to provide context for the current conversation.
-- You can add information about the current conversation, such as important messages, decisions, and actions
-- Use the following format to add information:
-  - **Key**: Value
-  - **Example**: "Current task: Analyze sales data"
-  - **Important**: Save critical information that can help the agent be more effective in the current conversation.
+            ## Communication Preferences
+            - **Preferred Communication Style**: [To be learned]
+            - **Response Length Preference**: [To be learned]
+            - **Technical Level**: [To be learned]
 
-### Agent personal space for storing important information between conversations for the agent to use
-- This is your personal space for storing important information between conversations.
-- It will be used to provide context for future conversations.
-- This is very powerful for you to build up a rich context over time to expand your agent's capabilities dynamically and adapt to evolving user needs.
-- You can add information about your internal perspectives, their preferences, and ways to improve your own internal workings.
-- Think of it as your own personal knowledge base that you can use to improve your performance over time.
-- Use the following format to add information:
-  - **Key**: Value
-  - **Example**: "My preferred response style: Concise and to the point"
-  - **Important**: Save critical information that can help you be more effective in future conversations.
-- **Note**: This personal space is for your own use only and will not be shared with anyone else. Only agent can access this information.
+            ## Current Context
+            - **Active Projects**: [To be learned]
+            - **Current Goals**: [To be learned]
+            - **Recent Activities**: [To be learned]
+            - **Pain Points**: [To be learned]
 
-`
+            ## Long-term Memory
+            - **Key Achievements**: [To be learned]
+            - **Important Relationships**: [To be learned]
+            - **Recurring Patterns**: [To be learned]
+            - **Preferences & Habits**: [To be learned]
+
+            ## Session Notes
+            - **Today's Focus**: [To be learned]
+            - **Outstanding Questions**: [To be learned]
+            - **Action Items**: [To be learned]
+            - **Follow-ups Needed**: [To be learned]
+            `,
     },
   },
   processors: [
@@ -796,8 +798,8 @@ export async function queryVectors(
   try {
     // Validate filter for upstash compatibility if provided
     let upstashFilter: any; // TODO: Replace with proper upstashVectorFilter type when available.  Not now.. This is a workaround for local upstash package constraints.
-    if (params.filter) {
-      const validatedFilter = validateMetadataFilter(params.filter);
+    if (params.filter !== null) {
+      const validatedFilter = validateMetadataFilter(params.filter as MetadataFilter);
       upstashFilter = transformToUpstashFilter(validatedFilter);
     }
 
@@ -813,8 +815,8 @@ export async function queryVectors(
       indexName: params.indexName,
       topK: params.topK,
       resultCount: results.length,
-      hasFilter: !!params.filter,
-      filterApplied: !!upstashFilter
+      hasFilter: params.filter !== undefined,
+      filterApplied: upstashFilter !== undefined
     });
 
     // Transform results to match our interface
