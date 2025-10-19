@@ -42,6 +42,9 @@ import { marketEducationAgent } from './agents/marketEducationAgent'
 //import { ssAgent } from './agents/ss'
 import { a2aCoordinatorAgent } from './agents/a2aCoordinatorAgent'
 import { a2aCoordinatorMcpServer } from './mcp'
+import { csvToExcalidrawAgent } from './agents/csv_to_excalidraw'
+import { imageToCsvAgent } from './agents/image_to_csv'
+import { excalidrawValidatorAgent } from './agents/excalidraw_validator'
 
 export const mastra = new Mastra({
     storage: pgStore,
@@ -71,6 +74,10 @@ export const mastra = new Mastra({
 //        selfReferencing: selfReferencingAgent,
 //        ssAgent,
         a2aCoordinator: a2aCoordinatorAgent,
+        csvToExcalidraw: csvToExcalidrawAgent,
+        imageToCsv: imageToCsvAgent,
+        excalidrawValidator: excalidrawValidatorAgent,
+        // Add more agents here
         //voice: voiceAgent,
         'research-content-network': researchContentNetwork,
         'governed-rag-network': governedRagNetwork,

@@ -17,7 +17,7 @@ import { z } from 'zod'
 import { alphaVantageStockTool, alphaVantageCryptoTool } from '../tools/alpha-vantage.tool'
 import { polygonStockQuotesTool, polygonCryptoQuotesTool } from '../tools/polygon-tools'
 import { log, logStepStart, logStepEnd, logError } from '../config/logger'
-
+import { ChunkType } from '@mastra/core/stream';
 log.info('Financial Analysis Workflow V2 module loaded')
 // Input schema: ARRAY of symbols for batch processing with configuration
 const financialAnalysisV2InputSchema = z.array(

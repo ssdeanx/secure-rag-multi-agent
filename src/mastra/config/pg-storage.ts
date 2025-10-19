@@ -9,7 +9,44 @@ import { AISpanType } from '@mastra/core/ai-tracing'
 import type { TracingContext } from '@mastra/core/ai-tracing'
 import { TokenLimiter } from '@mastra/memory/processors'
 import { google } from '@ai-sdk/google'
+//import type { CoreMessage } from '@mastra/core';
+import { maskStreamTags } from '@mastra/core';
 
+// Use the proper CoreMessage type from @mastra/core
+// This replaces the custom extension that was causing type conflicts
+
+// Utility function to create a masked stream for sensitive data
+// This properly uses maskStreamTags to mask content between XML tags in streams
+export function createMaskedStream(
+    inputStream: AsyncIterable<string>,
+    sensitiveTags: string[] = ['password', 'secret', 'token', 'key']
+): AsyncIterable<string> {
+    // Chain multiple maskStreamTags calls for different sensitive tags
+    let maskedStream = inputStream;
+    for (const tag of sensitiveTags) {
+        maskedStream = maskStreamTags(maskedStream, tag);
+    }
+    return maskedStream;
+}
+
+// Utility function to mask sensitive data in message content for logging
+export function maskSensitiveMessageData(
+    content: string,
+    sensitiveFields: string[] = ['password', 'secret', 'token', 'key', 'apiKey']
+): string {
+    let maskedContent = content;
+
+    // Mask sensitive fields in JSON-like structures
+    for (const field of sensitiveFields) {
+        // Match field:"value" or field: "value" or "field": "value" patterns
+        const regex = new RegExp(`("${field}"\\s*:\\s*)"[^"]*"`, 'gi');
+        maskedContent = maskedContent.replace(regex, `$1"[MASKED]"`);
+    }
+
+    return maskedContent;
+}
+
+// PostgreSQL storage configuration with PgVector support
 log.info('Loading PG Storage config with PgVector support')
 // Production-grade PostgreSQL configuration with supported options
 export const pgStore = new PostgresStore({
@@ -487,13 +524,22 @@ export function formatStorageMessages(
         msgStatus: string,
         messageDetails: Record<string, unknown>
     ): string => {
+        // Mask sensitive data in error details and messages
+        const maskedDetails = { ...messageDetails };
+        if (maskedDetails.error !== undefined && maskedDetails.error !== null) {
+            maskedDetails.error = maskSensitiveMessageData(String(maskedDetails.error));
+        }
+        if (maskedDetails.message !== undefined && maskedDetails.message !== null) {
+            maskedDetails.message = maskSensitiveMessageData(String(maskedDetails.message));
+        }
+
         switch (msgStatus) {
             case 'success':
                 return `✅ Storage operation '${operation}' completed successfully`
             case 'error':
-                return `❌ Storage operation '${operation}' failed: ${String(messageDetails.error ?? 'Unknown error')}`
+                return `❌ Storage operation '${operation}' failed: ${String(maskedDetails.error ?? 'Unknown error')}`
             case 'info':
-                return `ℹ️ Storage operation '${operation}': ${String(messageDetails.message ?? 'Processing...')}`
+                return `ℹ️ Storage operation '${operation}': ${String(maskedDetails.message ?? 'Processing...')}`
             default:
                 return `Storage operation '${operation}' status: ${msgStatus}`
         }
@@ -575,7 +621,9 @@ export async function performStorageOperation(
             operation,
             processingTimeMs: processingTime,
             success: true,
-            ...(enableDetailedLogging && { result }),
+            ...(enableDetailedLogging && result !== undefined && {
+                result: typeof result === 'string' ? maskSensitiveMessageData(result) : result
+            }),
         }
 
         const messages = formatStorageMessages(operation, 'success', details)
@@ -630,7 +678,7 @@ export async function performStorageOperation(
         const details = {
             operation,
             processingTimeMs: processingTime,
-            error: errorMessage,
+            error: maskSensitiveMessageData(errorMessage), // Mask sensitive data in error messages
             success: false,
         }
 

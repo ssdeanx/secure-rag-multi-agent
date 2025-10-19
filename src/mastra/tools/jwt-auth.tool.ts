@@ -3,7 +3,7 @@ import { z } from 'zod'
 import { AISpanType } from '@mastra/core/ai-tracing'
 import { AuthenticationService } from '../services/AuthenticationService'
 import { log } from '../config/logger'
-import { RuntimeContext } from '@mastra/core/runtime-context'
+import type { RuntimeContext } from '@mastra/core/runtime-context'
 
 // Define the expected shape of the runtime context for this tool
 export interface JwtAuthContext {

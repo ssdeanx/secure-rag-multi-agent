@@ -14,7 +14,7 @@
 
 import { createWorkflow, createStep } from '@mastra/core/workflows'
 import { z } from 'zod'
-
+import { ChunkType } from '@mastra/core/stream';
 // Import agents
 import { copywriterAgent } from '../agents/copywriterAgent'
 import { editorAgent } from '../agents/editorAgent'

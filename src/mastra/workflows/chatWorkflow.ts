@@ -23,6 +23,10 @@ import {
     ActionResponseSchema,
 } from './chatWorkflowSharedTypes'
 import { AISpanType } from '@mastra/core/ai-tracing'
+import { ChunkType } from '@mastra/core/stream';
+import { log } from '../config/logger'
+
+log.info('Cedar OS Integrated Chat Workflow module loaded')
 
 // Utility: escape string for RegExp
 function escapeRegExp(input: string) {
@@ -31,7 +35,8 @@ function escapeRegExp(input: string) {
 
 // ---------------------------------------------
 // Cedar OS Integration Types
-// Based on Cedar documentation: https://docs.cedarcopilot.com/type-safety/typing-agent-requests
+// Based on Cedar documentation:
+// https://docs.cedarcopilot.com/type-safety/typing-agent-requests#configurable-providers-support-custom-fields
 // ---------------------------------------------
 
 // Context schemas for additionalContext (T generic parameter)
@@ -49,7 +54,6 @@ const CedarContextSchemas = {
             })
         )
         .describe('Current roadmap/feature nodes'),
-
     selectedNodes: z
         .array(
             z.object({
@@ -63,7 +67,6 @@ const CedarContextSchemas = {
             })
         )
         .describe('User-selected nodes'),
-
     // Cedar system fields (automatically added)
     frontendTools: z
         .record(z.string(), z.unknown())
@@ -77,7 +80,6 @@ const CedarContextSchemas = {
         .record(z.string(), z.unknown())
         .optional()
         .describe('Zod schemas for validation'),
-
     // New Cedar OS context fields
     agentContext: z
         .custom<AgentContext>()
@@ -102,7 +104,6 @@ const CedarCustomFieldsSchema = z.object({
     resourceId: z.string().optional().describe('Memory resource identifier'),
     threadId: z.string().optional().describe('Memory thread identifier'),
     currentDate: z.string().describe('Current date context'),
-
     // New Cedar OS custom fields
     messageRenderer: z
         .custom<MessageRenderer>()
@@ -125,19 +126,15 @@ export const ChatInputSchema = z.object({
     temperature: z.number().optional().describe('LLM temperature setting'),
     maxTokens: z.number().optional().describe('Maximum tokens to generate'),
     systemPrompt: z.string().optional().describe('System prompt override'),
-
     // Cedar custom fields (E generic parameter)
     ...CedarCustomFieldsSchema.shape,
-
     // Stream controller for real-time responses
     streamController: z.unknown().optional().describe('Streaming controller'),
-
     // Structured output configuration
     output: z
         .unknown()
         .optional()
         .describe('Output schema for structured responses'),
-
     // Cedar OS Context (T generic parameter - additionalContext)
     cedarContext: z
         .object(CedarContextSchemas)
@@ -323,6 +320,9 @@ When users request roadmap changes, respond with a JSON object containing 'conte
             { role: 'user' as const, content: prompt },
         ]
 
+        log.info('Built agent context with Cedar OS integration',
+            { resourceId, threadId, hasCedarContext: !!cedarContext, systemPromptLength: enhancedSystemPrompt.length, cedarContextKeys: cedarContext ? Object.keys(cedarContext) : [], cedarContextNodesCount: cedarContext?.nodes?.length, cedarContextSelectedNodesCount: cedarContext?.selectedNodes?.length, cedarContextDiffState: cedarContext?.diffState, cedarContextCustomMessagesCount: cedarContext?.customMessages?.length, temperature, maxTokens, promptLength: prompt.length })
+
         return {
             ...inputData,
             messages,
@@ -416,7 +416,14 @@ const routeAgent = createStep({
             decidedAgent = 'research'
             reason = 'ambiguous_both_matched_prefer_research'
         }
-
+        log.info('Routed agent decision', {
+            decidedAgent,
+            reason,
+            researchMatch,
+            roadmapMatch,
+            providedAgentId,
+            messageContents,
+        })
         return { ...inputData, agentId: decidedAgent, routingReason: reason }
     },
 })
@@ -450,7 +457,7 @@ const emitWorkflowEvents = createStep({
             // Emit tool call (agent invocation)
             streamJSONEvent(emitController, mastraEventTemplates['tool-call'])
         }
-
+        log.info('Emitted workflow streaming events for Cedar UI integration')
         return inputData
     },
 })
@@ -719,7 +726,13 @@ const callAgent = createStep({
                 cedarIntegration: true,
             },
         })
-
+        log.info('Agent execution completed', {
+            contentLength: content.length,
+            hasAction: !!action,
+            agentId: inputData.agentId,
+            routingReason: inputData.routingReason,
+            chosenAgent: inputData.agentId === 'research' ? 'researchAgent' : 'productRoadmapAgent',
+        })
         // Return ExecuteFunctionResponseSchema format
         return {
             content,
