@@ -20,7 +20,7 @@ import {
 } from '../schemas/agent-schemas'
 import { AuthenticationService } from '../services/AuthenticationService'
 import { log } from '../config/logger'
-
+import { ChunkType } from '@mastra/core/stream';
 /**
  * Strongly-typed alias for document contexts derived from the Zod schema
  * to avoid using `any` and to keep runtime validation via the existing schemas.
@@ -129,28 +129,28 @@ const retrievalStep = createStep({
                 `[${requestId}] 🔍 Tool results available:`,
                 { toolResultsLength: retrieveResult.toolResults?.length || 0 }
             )
-            log.debug(
-                `[${requestId}] 📋 Full retrieve result structure:`,
-                {
-                    hasToolResults:
-                        Array.isArray(retrieveResult.toolResults) &&
-                        retrieveResult.toolResults.length > 0,
-                    toolResultsLength: retrieveResult.toolResults?.length,
-                    toolResultsKeys: retrieveResult.toolResults?.map(
-                        (tr) => ({
-                            toolName: tr.payload?.toolName,
-                            hasResult:
-                                tr.payload?.result !== undefined &&
-                                tr.payload?.result !== null,
-                        })
-                    ),
-                    hasText: typeof retrieveResult.text === 'string' && retrieveResult.text.length > 0,
-                    textLength: retrieveResult.text?.length,
-                    textPreview: retrieveResult.text?.substring(0, 200),
-                }
-            )
+                log.debug(
+                    `[${requestId}] 📋 Full retrieve result structure:`,
+                    {
+                        hasToolResults:
+                            Array.isArray(retrieveResult.toolResults) &&
+                            retrieveResult.toolResults.length > 0,
+                        toolResultsLength: retrieveResult.toolResults?.length,
+                        toolResultsKeys: retrieveResult.toolResults?.map(
+                            (tr) => ({
+                                toolName: tr.payload?.toolName,
+                                hasResult:
+                                    tr.payload?.result !== undefined &&
+                                    tr.payload?.result !== null,
+                            })
+                        ),
+                        hasText: typeof retrieveResult.text === 'string' && retrieveResult.text.length > 0,
+                        textLength: retrieveResult.text?.length,
+                        textPreview: retrieveResult.text?.substring(0, 200),
+                    }
+                )
 
-            let contexts: any[] = []
+            let contexts: DocumentContext[] = []
 
             // Method 1: Extract from tool results (preferred)
             if (
@@ -179,14 +179,18 @@ const retrievalStep = createStep({
                 ]
 
                 // Explicitly type toolResult to avoid TypeScript inferring `never`
-                let toolResult:
-                    | { payload?: { toolName?: string; result?: unknown } }
-                    | undefined = undefined
+                interface ToolResult { payload?: { toolName?: string; result?: unknown } }
+                let toolResult: ToolResult | undefined = undefined
+
+                // Normalize and type the toolResults array safely without `any`
+                const toolResultsArray = Array.isArray(retrieveResult.toolResults)
+                    ? (retrieveResult.toolResults as unknown as ToolResult[])
+                    : undefined
 
                 for (const toolName of possibleToolNames) {
-                    // cast element to unknown shape to avoid implicit `never` type errors
-                    toolResult = (retrieveResult.toolResults as any).find(
-                        (tr: any) => tr?.payload?.toolName === toolName
+                    // safely search typed tool results without using `any`
+                    toolResult = toolResultsArray?.find(
+                        (tr) => tr?.payload?.toolName === toolName
                     )
                     if (toolResult) {
                         log.info(
@@ -198,9 +202,8 @@ const retrievalStep = createStep({
 
                 if (!toolResult) {
                     // If no match found, take the first available tool result as a fallback
-                    toolResult = (retrieveResult.toolResults as any)[0] as
-                        | { payload?: { toolName?: string; result?: unknown } }
-                        | undefined
+                    // Use the strongly-typed toolResultsArray (ToolResult[] | undefined) instead of `any`.
+                    toolResult = toolResultsArray?.[0]
                     if (toolResult) {
                         log.info(
                             `[${requestId}] ℹ️ No named tool found — falling back to first tool result: ${toolResult.payload?.toolName ?? 'unknown'}`
@@ -283,13 +286,13 @@ const retrievalStep = createStep({
                             // STRICT SECURITY VALIDATION: Only accept real database results
                             const validContexts = parsed.contexts.filter(
                                 (ctx: {
-                                    docId: any
+                                    docId: string | number | null | undefined
                                     text: string | string[]
                                     score: number
-                                    versionId: any
-                                    source: any
-                                    securityTags: any
-                                    classification: any
+                                    versionId: string | number | null | undefined
+                                    source: string | null | undefined
+                                    securityTags: unknown[] | null | undefined
+                                    classification: string | number | null | undefined
                                 }) => {
                                     // Ensure text is a non-empty string before using string-specific checks
                                     const hasText = typeof ctx.text === 'string' && ctx.text.trim().length > 0

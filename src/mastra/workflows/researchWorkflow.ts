@@ -2,7 +2,7 @@ import { createWorkflow, createStep } from '@mastra/core/workflows'
 import { z } from 'zod'
 import { log } from '../config/logger'
 import { researchAgent } from '../agents/researchAgent'
-
+import { ChunkType } from '@mastra/core/stream';
 // Step 1: Get user query
 const getUserQueryStep = createStep({
     id: 'get-user-query',

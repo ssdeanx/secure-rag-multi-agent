@@ -3,7 +3,7 @@ import { z } from 'zod'
 import { log, logStepStart, logStepEnd, logError} from '../config/logger'
 import { stockAnalysisAgent } from '../agents/stockAnalysisAgent'
 import { cryptoAnalysisAgent } from '../agents/cryptoAnalysisAgent'
-
+import { ChunkType } from '@mastra/core/stream';
 log.info('Financial Analysis Workflow module loaded')
 
 // Export workflow input and output schemas

@@ -1,104 +1,223 @@
-# HR Confidential - Executive Compensation
+# DeanMachines.com HR Planning (Solo Founder)
 
-## STRICTLY CONFIDENTIAL - HR ADMIN ACCESS ONLY
+**Version:** 1.0.0
+**Created:** 2025-10-19T14:53:00Z
+**Last Updated:** 2025-10-19T14:53:00Z
+**Owner:** Dean (Solo Founder)
+**Domain:** deanmachines.com
+**Classification:** Confidential
+**Reality:** No employees yet. Planning for future hires when revenue justifies. 100% founder ownership.
+**Access:** Enterprise Admin Only
+**Last Updated:** October 2025
 
-## Executive Compensation Packages
+## Current Status: Solo Operation
 
-### CEO Compensation
+**No Employees:** As of October 2025, DeanMachines.com has zero employees. All work handled by founder + AI agents.
 
-- Base Salary: $850,000
-- Target Bonus: 150% of base (performance-based)
-- Equity: 2% vested over 4 years
-- Benefits: Platinum healthcare, company car, club memberships
+**Philosophy:** Hire only when revenue proves sustainable. Focus on product-market fit before team scaling.
 
-### C-Suite Compensation Bands
+**Goal:** $10K MRR by Month 6, then consider first hire at $50K MRR.
 
-**CTO/CPO/CFO**
+## Future Hiring Roadmap
 
-- Base: $450,000 - $550,000
-- Target Bonus: 100% of base
-- Equity: 0.5% - 1% vested over 4 years
+### Phase 1: First Hire ($50K MRR)
 
-**VP Level**
+**When:** Month 6-8 (when hitting $50K MRR)
+**Role:** Frontend Developer
+**Compensation:** $80K base + 1% equity
+**Responsibilities:**
 
-- Base: $250,000 - $350,000
-- Target Bonus: 50% of base
-- Equity: 0.1% - 0.3% vested over 4 years
+- React/Next.js development
+- UI/UX implementation
+- Customer support overflow
 
-## Termination Procedures
+**Hiring Criteria:**
 
-### Executive Severance
+- Solo founder experience preferred
+- AI tool proficiency
+- Bootstrap mentality
+- Remote-first mindset
 
-- CEO: 12 months base + bonus
-- C-Suite: 9 months base + pro-rated bonus
-- VP: 6 months base
-- Accelerated vesting upon change of control
+### Phase 2: Core Team ($200K MRR)
 
-### Performance Improvement Plans
+**When:** Month 12-15 (when hitting $200K MRR)
+**Team Size:** 4-6 people
+**Roles:**
 
-**Confidential PIP List:**
+- Backend Engineer ($90K + 0.8% equity)
+- Product Manager ($85K + 0.7% equity)
+- Sales Lead ($75K + 0.5% equity)
+- Customer Success ($70K + 0.4% equity)
 
-- John Smith (Engineering): Started 01/15, Review 03/15
-- Sarah Johnson (Sales): Started 02/01, Review 04/01
-- Michael Chen (Product): Started 02/10, Review 04/10
+### Phase 3: Full Team ($500K MRR)
 
-## M&A Activity
+**When:** Month 18-24 (when hitting $500K MRR)
+**Team Size:** 12-15 people
+**Additional Roles:**
 
-### Acquisition Targets (CONFIDENTIAL)
+- Engineering Manager
+- Marketing Lead
+- Operations Manager
+- HR/Admin (part-time)
 
-1. TechStartup Inc - Valuation: $50M, Status: Due Diligence
-2. DataCorp - Valuation: $120M, Status: Initial Talks
-3. CloudSoft - Valuation: $200M, Status: LOI Signed
+## Equity Structure
 
-### Retention Bonuses (Post-Acquisition)
+### Founder Equity: 100%
 
-- Key employees: 100% base salary
-- Critical roles: 50% base salary
-- Standard retention: 25% base salary
+**Current:** 100% founder ownership
+**Philosophy:** Maintain control until proven business model
+**Future Dilution:** Strategic only, maintain majority ownership
 
-## Layoff Planning
+### Employee Equity Pool
 
-### Q2 2024 Restructuring (DRAFT - NOT APPROVED)
+**Total Pool:** 20% (created at first funding or $500K ARR)
+**Vesting:** 4-year schedule with 1-year cliff
+**Allocation:**
 
-- Target: 15% workforce reduction
-- Departments affected: Sales (20%), Marketing (25%), Operations (10%)
-- Timeline: Announce April 1, Complete by April 30
-- Severance budget: $8.5M
-- WARN Act compliance required
+- Early employees: 1-2% each
+- Key hires: 0.5-1% each
+- Advisors: 0.1-0.25% each
 
-### Protected Categories
+### Equity Guidelines
 
-Ensure no disparate impact on:
+**Refresh Grants:** Annual equity refreshes for performance
+**Acceleration:** Upon acquisition or IPO
+**Taxes:** Handle equity tax implications for employees
+**Communication:** Transparent equity conversations
 
-- Employees over 40
-- Employees on medical leave
-- Recently returned from parental leave
-- Protected minorities
+## Compensation Philosophy
 
-## Legal Matters
+### Market Rate + Equity
 
-### Active Investigations
+**Base Salary:** Competitive market rate for location
+**Equity:** Generous equity for high-impact roles
+**Benefits:** Standard package (health, dental, 401k)
+**Perks:** Remote work, learning budget, flexible hours
 
-1. **Harassment Complaint** - Complainant: [REDACTED], Status: Under Investigation
-2. **Wage & Hour Audit** - Department: Engineering, Status: Document Collection
-3. **EEOC Charge** - Case #2024-001, Status: Mediation Scheduled
+### Performance-Based
 
-### Settlement Agreements (Past 12 Months)
+**Bonuses:** Tied to company and individual metrics
+**Reviews:** Bi-annual performance reviews
+**Promotion:** Based on impact, not tenure
+**Transparency:** Salary bands and comp public internally
 
-- Q1 2024: $450,000 (wrongful termination)
-- Q4 2023: $200,000 (discrimination claim)
-- Q3 2023: $125,000 (harassment)
+## Culture & Values
 
-## Board Compensation
+### AI-First Culture
 
-### Board of Directors
+**Tools Over Hierarchy:** Best tool for the job, regardless of seniority
+**Automation Mindset:** AI handles routine tasks, humans focus on creative work
+**Continuous Learning:** AI evolves fast, team must too
+**Transparency:** Open communication, no politics
 
-- Independent Directors: $200,000/year + $150,000 equity
-- Committee Chairs: Additional $50,000/year
-- Meeting fees: $2,500 per meeting
+### Remote-First
 
-### Advisory Board
+**Location:** Global talent pool
+**Tools:** Async communication, comprehensive documentation
+**Meetings:** Essential only, recorded for async viewing
+**Travel:** Quarterly all-hands, otherwise virtual
 
-- Retainer: $50,000/year
-- Equity: 0.05% - 0.1%
-- Meeting fees: $1,000 per meeting
+## Legal & Compliance
+
+### Employment Law
+
+**Contracts:** Standard employment agreements
+**IP Assignment:** All work product belongs to company
+**Non-Compete:** Reasonable geographic and time restrictions
+**At-Will:** Employment at-will in permitted jurisdictions
+
+### Diversity & Inclusion
+
+**Commitment:** Diverse hiring practices
+**Training:** Unconscious bias training for all
+**Policies:** Anti-harassment, equal opportunity
+**Monitoring:** Regular diversity reporting
+
+## Onboarding Process
+
+### Pre-Hiring
+
+**Trial Project:** Paid trial work to assess fit
+**Reference Checks:** Comprehensive background verification
+**Culture Interview:** Values alignment assessment
+**Technical Assessment:** Role-appropriate skills testing
+
+### First 30 Days
+
+**Setup:** Equipment, accounts, security training
+**Training:** Product knowledge, tools, processes
+**Buddy System:** Peer mentor for first month
+**Goals:** Clear 30-60-90 day objectives
+
+### First 90 Days
+
+**Integration:** Full product cycle participation
+**Feedback:** Regular check-ins and adjustments
+**Performance:** Mid-point review at 45 days
+**Planning:** 90-day review and next steps
+
+## Performance Management
+
+### Continuous Feedback
+
+**Real-Time:** Immediate feedback, not annual reviews
+**Documentation:** Regular performance notes
+**Calibration:** Cross-team performance discussions
+**Development:** Individual growth plans
+
+### Performance Improvement
+
+**PIP Process:** 30-day improvement plans
+**Support:** Resources and mentoring provided
+**Decision:** Promote, transfer, or separate
+**Appeals:** Fair process with documentation
+
+## Benefits & Perks
+
+### Core Benefits
+
+**Health Insurance:** Medical, dental, vision (80% employer paid)
+**Retirement:** 401k with 4% match
+**Paid Time Off:** 20 days vacation, 10 holidays, sick leave
+**Parental Leave:** 12 weeks paid for birth/adoptive parents
+
+### Additional Perks
+
+**Learning:** $2,000 annual learning budget
+**Equipment:** Latest hardware and software
+**Home Office:** $500 setup stipend
+**Wellness:** Gym membership or wellness allowance
+
+## Exit Planning
+
+### Voluntary Separation
+
+**Notice Period:** 2 weeks for individual contributors, 4 weeks for managers
+**Severance:** 2 weeks base pay
+**Benefits:** COBRA continuation available
+**Reference:** Neutral reference provided
+
+### Involuntary Separation
+
+**Process:** Performance-based with documentation
+**Severance:** Based on tenure and role
+**Outplacement:** Career transition support
+**Non-Disparagement:** Mutual agreement
+
+## Future Considerations
+
+### International Expansion
+
+**Hiring:** Global remote team
+**Compliance:** Local employment laws
+**Benefits:** Region-appropriate packages
+**Taxes:** International tax implications
+
+### Scaling Challenges
+
+**Culture Preservation:** Maintain values at scale
+**Communication:** Effective remote management
+**Talent Acquisition:** Competitive hiring at scale
+**Retention:** Keep employees engaged and motivated
+
+This HR plan evolves as the company grows. Current focus: Prove business model solo, then scale team responsibly while maintaining founder vision and control.

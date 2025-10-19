@@ -1,4 +1,7 @@
-import { MDocument } from '@mastra/rag'
+import { MDocument,
+    rerankWithScorer as rerank,
+  MastraAgentRelevanceScorer,
+ } from '@mastra/rag'
 import { createTool } from '@mastra/core/tools'
 import { z } from 'zod'
 import { AISpanType } from '@mastra/core/ai-tracing'
@@ -8,10 +11,13 @@ import {
     logStepEnd,
     logError,
     logToolExecution,
+    log,
 } from '../config/logger'
-import { embedMany } from 'ai'
+import { embedMany,  embed } from 'ai'
 import type { ExtractParams } from '@mastra/rag'
 import { google } from '@ai-sdk/google'
+import { googleAI } from '../config/google'
+
 
 // Define runtime context for this tool
 export interface DocumentChunkingContext {
@@ -591,7 +597,10 @@ content indexing, or semantic search capabilities.
                     indexName: 'governed_rag',
                     vectors: embeddings,
                     metadata: chunksForProcessing.map(
-                        (chunk) => chunk.metadata
+                        (chunk) => ({
+                            ...chunk.metadata,
+                            text: chunk.text,
+                        })
                     ),
                     ids: chunksForProcessing.map((chunk) => chunk.id),
                 })
@@ -662,6 +671,217 @@ content indexing, or semantic search capabilities.
                 chunkCount: 0,
                 totalTextLength: context.documentContent.length,
                 chunks: [],
+                processingTimeMs: processingTime,
+                error: errorMessage,
+            }
+        }
+    },
+})
+
+
+/**
+ * Document Reranking Tool with Semantic Relevance Scoring
+ *
+ * This tool retrieves documents from PgVector and re-ranks them using
+ * semantic relevance scoring to improve result quality.
+ *
+ * Features:
+ * - Query embedding generation using Gemini
+ * - Initial vector similarity search in PgVector
+ * - Re-ranking using MastraAgentRelevanceScorer
+ * - Configurable relevance weights (semantic, vector, position)
+ * - Comprehensive error handling and logging
+ */
+export const documentRerankerTool = createTool({
+    id: 'document-reranker',
+    description: `
+Document Reranking Tool with Semantic Relevance Scoring
+
+This tool retrieves documents from PgVector and re-ranks them using semantic relevance scoring:
+
+Features:
+- Query embedding generation using Gemini embedding model
+- Initial vector similarity search in PgVector
+- Re-ranking using MastraAgentRelevanceScorer for improved relevance
+- Configurable relevance weights (semantic, vector, position)
+- Comprehensive error handling and logging
+
+Use this tool to improve retrieval quality by re-ranking initial search results.
+  `,
+    inputSchema: z.object({
+        userQuery: z.string().min(1, 'Query cannot be empty'),
+        indexName: z.string().default('governed_rag'),
+        topK: z.number().min(1).max(50).default(10),
+        initialTopK: z.number().min(1).max(100).default(20),
+        semanticWeight: z.number().min(0).max(1).default(0.5),
+        vectorWeight: z.number().min(0).max(1).default(0.3),
+        positionWeight: z.number().min(0).max(1).default(0.2),
+    }),
+    outputSchema: z.object({
+        success: z.boolean(),
+        userQuery: z.string(),
+        rerankedDocuments: z.array(
+            z.object({
+                id: z.string(),
+                text: z.string(),
+                metadata: z.record(z.string(), z.unknown()),
+                relevanceScore: z.number(),
+                rank: z.number(),
+            })
+        ),
+        processingTimeMs: z.number(),
+        error: z.string().optional(),
+    }),
+    execute: async ({ context, tracingContext }) => {
+        const startTime = Date.now()
+        logToolExecution('document-reranker', { userQuery: context.userQuery })
+
+        const span = tracingContext?.currentSpan?.createChildSpan({
+            type: AISpanType.LLM_GENERATION,
+            name: 'document-reranker-tool',
+            input: {
+                userQuery: context.userQuery,
+                indexName: context.indexName,
+                topK: context.topK,
+                initialTopK: context.initialTopK,
+            },
+        })
+
+        try {
+            // Step 1: Generate embedding for user query
+            const embeddingStartTime = Date.now()
+            const { embedding: queryEmbedding } = await embed({
+                value: context.userQuery,
+                model: google.textEmbedding('gemini-embedding-001'),
+            })
+            const embeddingTime = Date.now() - embeddingStartTime
+
+            logStepStart('query-embedding-generated', {
+                queryLength: context.userQuery.length,
+                embeddingDimension: queryEmbedding.length,
+                embeddingTimeMs: embeddingTime,
+            })
+
+            // Step 2: Retrieve initial results from PgVector
+            const searchStartTime = Date.now()
+            const initialResults = await pgVector.query({
+                indexName: context.indexName,
+                queryVector: queryEmbedding,
+                topK: context.initialTopK,
+            })
+            const searchTime = Date.now() - searchStartTime
+
+            logStepStart('initial-search-completed', {
+                resultCount: initialResults.length,
+                searchTimeMs: searchTime,
+                indexName: context.indexName,
+            })
+
+            if (initialResults.length === 0) {
+                const processingTime = Date.now() - startTime
+                return {
+                    success: true,
+                    userQuery: context.userQuery,
+                    rerankedDocuments: [],
+                    processingTimeMs: processingTime,
+                }
+            }
+
+            // Step 3: Re-rank results using semantic relevance scorer
+            const rerankerStartTime = Date.now()
+            const rerankedResults = await rerank({
+                results: initialResults.map((result) => ({
+                    id: result.id,
+                    text: result.metadata?.text as string,
+                    metadata: result.metadata,
+                    score: result.score || 0,
+                })),
+                query: context.userQuery,
+                scorer: new MastraAgentRelevanceScorer('relevance-scorer', googleAI),
+                options: {
+                    weights: {
+                        semantic: context.semanticWeight,
+                        vector: context.vectorWeight,
+                        position: context.positionWeight,
+                    },
+                    topK: context.topK,
+                },
+            })
+            const rerankerTime = Date.now() - rerankerStartTime
+
+            logStepStart('reranking-completed', {
+                initialResultCount: initialResults.length,
+                rerankedResultCount: rerankedResults.length,
+                rerankerTimeMs: rerankerTime,
+                weights: {
+                    semantic: context.semanticWeight,
+                    vector: context.vectorWeight,
+                    position: context.positionWeight,
+                },
+            })
+
+            // Step 4: Format output with ranking information
+            const rerankedDocuments = rerankedResults.map((r, index) => ({
+                // RerankResult contains a nested `result` object; use that id when available
+                id: r.result?.id ?? `rerank_${index}`,
+                // The returned document text may be in `result.document` or inside metadata.text
+                text:
+                    (typeof r.result?.document === 'string' ? r.result.document : undefined) ??
+                    (typeof (r.result as any)?.text === 'string' ? (r.result as any).text : undefined) ??
+                    (r.result?.metadata?.text as string) ??
+                    '',
+                metadata: r.result?.metadata ?? {},
+                // Use the top-level score returned by the reranker
+                relevanceScore: r.score,
+                rank: index + 1,
+            }))
+
+            const totalProcessingTime = Date.now() - startTime
+
+            const output = {
+                success: true,
+                userQuery: context.userQuery,
+                rerankedDocuments,
+                processingTimeMs: totalProcessingTime,
+            }
+
+            logStepEnd('document-reranker', output, totalProcessingTime)
+
+            span?.end({
+                output: {
+                    success: true,
+                    rerankedDocumentCount: rerankedDocuments.length,
+                    processingTimeMs: totalProcessingTime,
+                    userQuery: context.userQuery,
+                },
+            })
+
+            return output
+        } catch (error) {
+            const processingTime = Date.now() - startTime
+            const errorMessage =
+                error instanceof Error
+                    ? error.message
+                    : 'Unknown error occurred'
+
+            logError('document-reranker', error, {
+                userQuery: context.userQuery,
+                processingTimeMs: processingTime,
+            })
+
+            span?.error({
+                error: error instanceof Error ? error : new Error(errorMessage),
+                metadata: {
+                    operation: 'document-reranker',
+                    userQuery: context.userQuery,
+                    processingTimeMs: processingTime,
+                },
+            })
+
+            return {
+                success: false,
+                userQuery: context.userQuery,
+                rerankedDocuments: [],
                 processingTimeMs: processingTime,
                 error: errorMessage,
             }

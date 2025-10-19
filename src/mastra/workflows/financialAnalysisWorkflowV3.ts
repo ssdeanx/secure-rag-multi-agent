@@ -13,7 +13,7 @@
 import { createStep, createWorkflow } from '@mastra/core/workflows'
 import { z } from 'zod'
 import { log, logStepStart, logStepEnd, logError } from '../config/logger'
-
+import { ChunkType } from '@mastra/core/stream';
 log.info('Financial Analysis Workflow V3 module loaded')
 
 // Input schema

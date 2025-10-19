@@ -1,30 +1,148 @@
 docs:
     - path: './corpus/finance-policy.md'
       allow:
-          roles: ['finance.viewer', 'finance.admin']
+          roles: ['finance.viewer', 'finance.admin', 'pro_user', 'pro_dept_viewer', 'enterprise_user']
           tiers: ['pro', 'enterprise']
       tenant: 'acme'
       classification: 'internal'
 
     - path: './corpus/engineering-handbook.md'
       allow:
-          roles: ['engineering.viewer', 'engineering.admin']
+          roles: ['engineering.viewer', 'engineering.admin', 'free_user', 'pro_user', 'enterprise_user']
           tiers: ['free', 'pro', 'enterprise']
       tenant: 'acme'
       classification: 'public'
 
     - path: './corpus/hr-confidential.md'
       allow:
-          roles: ['hr.admin', 'admin']
+          roles: ['hr.admin', 'admin', 'enterprise_dept_admin', 'enterprise_admin']
           tiers: ['enterprise']
       tenant: 'acme'
       classification: 'confidential'
+
+    # Sales Documents (DeanMachines.com)
+    - path: './corpus/sales-playbook.md'
+      allow:
+          roles: ['pro_user', 'enterprise_user']
+          tiers: ['pro', 'enterprise']
+      tenant: 'acme'
+      classification: 'internal'
+
+    - path: './corpus/sales-commission-structure.md'
+      allow:
+          roles: ['enterprise_dept_admin']
+          tiers: ['enterprise']
+      tenant: 'acme'
+      classification: 'confidential'
+
+    - path: './corpus/customer-success-guide.md'
+      allow:
+          roles: ['pro_user', 'enterprise_user']
+          tiers: ['pro', 'enterprise']
+      tenant: 'acme'
+      classification: 'internal'
+
+    # Marketing Documents
+    - path: './corpus/marketing-strategy.md'
+      allow:
+          roles: ['pro_user', 'enterprise_user']
+          tiers: ['pro', 'enterprise']
+      tenant: 'acme'
+      classification: 'internal'
+
+    - path: './corpus/brand-guidelines.md'
+      allow:
+          roles: ['free_user', 'pro_user', 'enterprise_user']
+          tiers: ['free', 'pro', 'enterprise']
+      tenant: 'acme'
+      classification: 'public'
+
+    - path: './corpus/campaign-budgets.md'
+      allow:
+          roles: ['enterprise_dept_admin']
+          tiers: ['enterprise']
+      tenant: 'acme'
+      classification: 'confidential'
+
+    # Legal Documents
+    - path: './corpus/legal-contracts-template.md'
+      allow:
+          roles: ['enterprise_user']
+          tiers: ['enterprise']
+      tenant: 'acme'
+      classification: 'internal'
+
+    - path: './corpus/compliance-procedures.md'
+      allow:
+          roles: ['enterprise_dept_admin']
+          tiers: ['enterprise']
+      tenant: 'acme'
+      classification: 'confidential'
+
+    - path: './corpus/intellectual-property-policy.md'
+      allow:
+          roles: ['enterprise_admin']
+          tiers: ['enterprise']
+      tenant: 'acme'
+      classification: 'confidential'
+
+    # Operations Documents
+    - path: './corpus/operations-handbook.md'
+      allow:
+          roles: ['pro_user', 'enterprise_user']
+          tiers: ['pro', 'enterprise']
+      tenant: 'acme'
+      classification: 'internal'
+
+    - path: './corpus/vendor-management.md'
+      allow:
+          roles: ['enterprise_dept_admin']
+          tiers: ['enterprise']
+      tenant: 'acme'
+      classification: 'internal'
+
+    - path: './corpus/security-incident-response.md'
+      allow:
+          roles: ['enterprise_admin']
+          tiers: ['enterprise']
+      tenant: 'acme'
+      classification: 'confidential'
+
+    # Product Documents
+    - path: './corpus/product-roadmap-public.md'
+      allow:
+          roles: ['free_user', 'pro_user', 'enterprise_user']
+          tiers: ['free', 'pro', 'enterprise']
+      tenant: 'acme'
+      classification: 'public'
+
+    - path: './corpus/product-specifications.md'
+      allow:
+          roles: ['pro_user', 'enterprise_user']
+          tiers: ['pro', 'enterprise']
+      tenant: 'acme'
+      classification: 'internal'
+
+    - path: './corpus/feature-prioritization.md'
+      allow:
+          roles: ['enterprise_dept_admin']
+          tiers: ['enterprise']
+      tenant: 'acme'
+      classification: 'internal'
 
 # Tier-based feature access
 features:
     basic-rag:
         tiers: ['free', 'pro', 'enterprise']
         description: 'Basic RAG query capabilities'
+
+    basic-search:
+        tiers: ['free', 'pro', 'enterprise']
+        description: 'Basic search functionality'
+
+    advanced-search:
+        tiers: ['pro', 'enterprise']
+        description: 'Advanced search with filters and facets'
 
     public-docs:
         tiers: ['free', 'pro', 'enterprise']
@@ -38,13 +156,25 @@ features:
         tiers: ['enterprise']
         description: 'Access to confidential classification documents'
 
+    ai-insights:
+        tiers: ['pro', 'enterprise']
+        description: 'AI-powered insights and recommendations'
+
     advanced-analytics:
         tiers: ['pro', 'enterprise']
         description: 'Advanced usage analytics and insights'
 
+    custom-workflows:
+        tiers: ['enterprise']
+        description: 'Custom workflow builder and automation'
+
     custom-integrations:
         tiers: ['pro', 'enterprise']
         description: 'Custom integration capabilities'
+
+    api-access:
+        tiers: ['pro', 'enterprise']
+        description: 'Full API access for programmatic usage'
 
     white-label:
         tiers: ['enterprise']
