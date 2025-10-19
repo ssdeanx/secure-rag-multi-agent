@@ -190,6 +190,7 @@ export const graphQueryTool = createGraphRAGTool({
     // Filtering and ranking
     enableFilter: true,
 })
+// Helper to rerank results — accepts the initial results and query instead of relying on an undefined variable
 
 // PostgreSQL vector query tool using PgVector
 export const pgQueryTool = createVectorQueryTool({

@@ -3,6 +3,8 @@ import createMDX from '@next/mdx'
 /** @type {import('next').NextConfig} */
 const nextConfig = {
     reactStrictMode: true,
+    compress: true,  // Enable gzip compression
+    poweredByHeader: false,  // Remove X-Powered-By header for security
     serverExternalPackages: [
         '@mastra/core',
         'jose',
@@ -17,8 +19,8 @@ const nextConfig = {
     experimental: {
         //    useCache: true,
         browserDebugInfoInTerminal: true,
-        //    optimizeCss: true,
-        // ppr: 'incremental', // Disabled: Canary-only feature
+        optimizeCss: true,  // Enable CSS optimization for production
+        // ppr: 'incremental', // Enable partial pre-rendering when stable
     },
     images: {
         domains: ['deanmachines.com', 'example.com'], // Add your image domains
@@ -36,6 +38,29 @@ const nextConfig = {
             bufferutil: 'commonjs bufferutil',
         })
         return config
+    },
+
+    // Security and performance headers
+    async headers() {
+        return [
+            {
+                source: '/(.*)',
+                headers: [
+                    {
+                        key: 'X-Frame-Options',
+                        value: 'DENY'
+                    },
+                    {
+                        key: 'X-Content-Type-Options',
+                        value: 'nosniff'
+                    },
+                    {
+                        key: 'Referrer-Policy',
+                        value: 'origin-when-cross-origin'
+                    }
+                ]
+            }
+        ]
     },
 }
 

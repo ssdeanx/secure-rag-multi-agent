@@ -46,6 +46,15 @@ export const ROLE_HIERARCHY: RoleHierarchy = {
 
     // Public role - no additional inheritance (base level)
     public: [],
+
+    // Tier-aligned roles for SaaS subscription model
+    free_user: ['public'],
+    pro_user: ['free_user', 'employee', 'public'],
+    pro_viewer: ['pro_user', 'free_user', 'public'],
+    pro_dept_viewer: ['pro_viewer', 'pro_user', 'free_user', 'public'],
+    enterprise_user: ['pro_user', 'pro_viewer', 'free_user', 'employee', 'public'],
+    enterprise_dept_admin: ['pro_dept_viewer', 'hr.viewer', 'finance.viewer', 'engineering.viewer', 'enterprise_user', 'pro_user', 'employee', 'public'],
+    enterprise_admin: ['enterprise_dept_admin', 'hr.admin', 'finance.admin', 'engineering.admin', 'enterprise_user', 'pro_user', 'employee', 'reader', 'public'],
 }
 
 /**
@@ -53,6 +62,7 @@ export const ROLE_HIERARCHY: RoleHierarchy = {
  * Higher numbers indicate higher privilege levels
  */
 export const ROLE_LEVELS: Record<string, number> = {
+    // Legacy roles
     admin: 100,
     'hr.admin': 80,
     'finance.admin': 80,
@@ -63,6 +73,15 @@ export const ROLE_LEVELS: Record<string, number> = {
     employee: 40,
     reader: 35,
     public: 10,
+    anonymous: 10,
+    // Tier-aligned roles
+    free_user: 15,
+    pro_user: 50,
+    pro_viewer: 55,
+    pro_dept_viewer: 58,
+    enterprise_user: 75,
+    enterprise_dept_admin: 85,
+    enterprise_admin: 100,
 }
 
 /**
@@ -116,10 +135,10 @@ export interface TierQuota {
 
 export const TIER_QUOTAS: Record<SubscriptionTier, TierQuota> = {
     free: {
-        maxDocuments: 1000,
-        maxApiRequestsPerDay: 100,
-        maxUsersPerTenant: 5,
-        features: ['basic-rag', 'public-docs'],
+        maxDocuments: 500,
+        maxApiRequestsPerDay: 50,
+        maxUsersPerTenant: 1,
+        features: ['basic-rag', 'basic-search', 'public-docs'],
         supportLevel: 'community',
         customIntegrations: false,
         advancedAnalytics: false,
@@ -132,10 +151,14 @@ export const TIER_QUOTAS: Record<SubscriptionTier, TierQuota> = {
         maxUsersPerTenant: -1, // unlimited
         features: [
             'basic-rag',
+            'basic-search',
+            'advanced-search',
             'public-docs',
             'internal-docs',
+            'ai-insights',
             'advanced-analytics',
             'custom-integrations',
+            'api-access',
             'priority-support',
         ],
         supportLevel: 'priority',
@@ -150,11 +173,16 @@ export const TIER_QUOTAS: Record<SubscriptionTier, TierQuota> = {
         maxUsersPerTenant: -1, // unlimited
         features: [
             'basic-rag',
+            'basic-search',
+            'advanced-search',
             'public-docs',
             'internal-docs',
             'confidential-docs',
+            'ai-insights',
             'advanced-analytics',
+            'custom-workflows',
             'custom-integrations',
+            'api-access',
             'white-label',
             'on-premise',
             'phone-support',
@@ -200,5 +228,65 @@ export function getMinimumTierForClassification(
             return 'enterprise'
         default:
             return 'free'
+    }
+}
+
+/**
+ * Get all roles available in a subscription tier
+ */
+export function getRolesByTier(tier: SubscriptionTier): string[] {
+    switch (tier) {
+        case 'free':
+            return ['free_user', 'public']
+        case 'pro':
+            return ['pro_user', 'pro_viewer', 'pro_dept_viewer', 'free_user', 'employee', 'reader', 'public']
+        case 'enterprise':
+            return ['enterprise_admin', 'enterprise_dept_admin', 'enterprise_user', 'admin', 'hr.admin', 'finance.admin', 'engineering.admin', 'pro_user', 'pro_viewer', 'employee', 'reader', 'public']
+        default:
+            return ['public']
+    }
+}
+
+/**
+ * Get the minimum tier required for a role
+ */
+export function getTierForRole(role: string): SubscriptionTier {
+    if (role === 'public') {
+        return 'free'
+    }
+    if (role === 'free_user') {
+        return 'free'
+    }
+    if (role.startsWith('pro_') || role === 'employee' || role === 'reader') {
+        return 'pro'
+    }
+    if (role.startsWith('enterprise_') || role === 'admin' || role.endsWith('.admin') || role.endsWith('.viewer')) {
+        return 'enterprise'
+    }
+    return 'free'
+}
+
+/**
+ * Check if a role can access a specific tier
+ */
+export function canRoleAccessTier(role: string, tier: SubscriptionTier): boolean {
+    const roleLevel = getRoleLevel(role)
+    const tierRoles = getRolesByTier(tier)
+
+    // Check if role is directly in tier or has sufficient privilege level
+    if (tierRoles.includes(role)) {
+        return true
+    }
+
+    // Check based on role level
+    switch (tier) {
+        case 'free':
+            return roleLevel >= 10
+        case 'pro':
+            return roleLevel >= 50
+        case 'enterprise':
+            return roleLevel >= 75
+        default:
+            return false
     }
 }

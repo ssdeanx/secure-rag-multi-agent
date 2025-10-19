@@ -58,6 +58,7 @@
     "@mastra/composio": "^0.1.13",
     "@mastra/core": "^0.21.1",
     "@mastra/deployer": "^0.21.1",
+    "@mastra/deployer-vercel": "^0.12.9",
     "@mastra/evals": "^0.14.0",
     "@mastra/langfuse": "^0.1.0",
     "@mastra/loggers": "^0.10.16",
