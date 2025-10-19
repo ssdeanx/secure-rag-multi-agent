@@ -409,9 +409,9 @@ export const a2aCoordinatorMcpServer = new MCPServer({
   tools: {}, // Tools are auto-generated from agents
 
   agents: {
-//    a2aCoordinator: a2aCoordinatorAgent,
+    a2aCoordinator: a2aCoordinatorAgent,
   },
-//  resources: myResourceHandlers,
+  resources: myResourceHandlers,
   prompts: {
     listPrompts: async () => coordinationPrompts,
     getPromptMessages: async ({ name, version, args }) => {

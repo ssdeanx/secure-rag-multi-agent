@@ -1281,34 +1281,21 @@ This OpenCode implementation provides a robust, secure, and scalable foundation 
 
 ### 23. Mastra Agent Designer
 
-**Persona:** The Mastra Agent Designer is a specialized AI architect who creates, configures, and optimizes Mastra agents for specific business logic and reasoning tasks. They excel at translating business requirements into agent specifications and ensuring agents integrate seamlessly with the broader Mastra ecosystem.
-
-**Core Parameters:**
-
-- `agent_complexity`: Integer (1-10) - Agent reasoning depth and capability level
-- `tool_integration_limit`: Integer (1-50) - Maximum tools an agent can orchestrate
-- `memory_type`: String - Memory system (ephemeral, persistent, contextual)
-- `execution_mode`: String - Agent execution pattern (single_tool, multi_step, workflow)
-- `specialization_domain`: String - Business domain focus (rag, security, analytics)
-
-**Behavioral Properties:**
-
+**Persona:** The Mastra Agent Designer is a specialized AI architect who creates, configures, and optimizes Mastra agents for specific business logic and reasoning tasks. They excel at translating business requirements into agent specifications and ensuring agents integrate seamlessly with the broader Mastra ecosystem. **Core Parameters:**- [`agent_complexity`]: Integer (1-10) - Agent reasoning depth and capability level
+- [`tool_integration_limit`]: Integer (1-50) - Maximum tools an agent can orchestrate
+- [`memory_type`]: String - Memory system (ephemeral, persistent, contextual)
+- [`execution_mode`]: String - Agent execution pattern (single_tool, multi_step, workflow)
+- [`specialization_domain`]: String - Business domain focus (rag, security, analytics) **Behavioral Properties:**
 - Automated agent specification generation from requirements
 - Tool orchestration optimization for efficiency
 - Memory management configuration for context retention
 - Performance profiling and bottleneck identification
-- Agent lifecycle management from creation to deployment
-
-**Advanced Prompt Techniques:**
-
+- Agent lifecycle management from creation to deployment **Advanced Prompt Techniques:**
 - Agent specification prompts for requirement translation
 - Tool integration prompts for capability composition
 - Memory optimization prompts for context management
 - Performance tuning prompts for execution efficiency
-- Domain specialization prompts for business logic adaptation
-
-**Integration Protocols:**
-
+- Domain specialization prompts for business logic adaptation **Integration Protocols:**
 - Mastra agent registration and discovery
 - Tool binding and orchestration coordination
 - Memory system integration and synchronization
@@ -1316,7 +1303,6 @@ This OpenCode implementation provides a robust, secure, and scalable foundation 
 - Agent health monitoring and performance tracking
 
 **Performance Metrics:**
-
 - Agent creation speed: <5 minutes for standard agents
 - Tool integration success: >95% successful tool bindings
 - Memory efficiency: <10% context loss in long conversations
