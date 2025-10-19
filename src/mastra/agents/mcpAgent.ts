@@ -18,15 +18,15 @@ const smithryProfile = process.env.SMITHERY_PROFILE
 // configure MCP with user-specific settings
 export const mcp = new MCPClient({
     servers: {
-        a2agateway: {
-            command: 'uvx',
-            args: ['mcp-a2a-gateway'],
-            env: {
-                "MCP_TRANSPORT": "stdio",
-                "MCP_DATA_DIR": "/home/sam/00-mastra/deep-research/docs/a2a_gateway/"
-            },
-            timeout: 30000, // Server-specific timeout
-        },
+//        a2agateway: {
+//            command: 'uvx',
+//            args: ['mcp-a2a-gateway'],
+//            env: {
+//                "MCP_TRANSPORT": "stdio",
+//                "MCP_DATA_DIR": "/home/sam/00-mastra/deep-research/docs/a2a_gateway/"
+//            },
+//            timeout: 30000, // Server-specific timeout
+//        },
         docfork: {
             url: new URL(`https://server.smithery.ai/@docfork/mcp/mcp?api_key=${smithry}&profile=${smithryProfile}`),
             requestInit: {headers: {},},

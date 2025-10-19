@@ -14,23 +14,11 @@
 
 import { createWorkflow, createStep } from '@mastra/core/workflows'
 import { z } from 'zod'
-import { log } from '../config/logger'
 import { alphaVantageStockTool, alphaVantageCryptoTool } from '../tools/alpha-vantage.tool'
 import { polygonStockQuotesTool, polygonCryptoQuotesTool } from '../tools/polygon-tools'
+import { log, logStepStart, logStepEnd, logError } from '../config/logger'
 
-// Helper functions for logging
-function logStepStart(stepId: string, data: unknown) {
-    log.info(`Starting step: ${stepId}`, { data })
-}
-
-function logStepEnd(stepId: string, result: unknown, duration: number) {
-    log.info(`Completed step: ${stepId}`, { result, durationMs: duration })
-}
-
-function logError(stepId: string, error: Error, context: unknown) {
-    log.error(`Error in step: ${stepId}`, { error: error.message, context })
-}
-
+log.info('Financial Analysis Workflow V2 module loaded')
 // Input schema: ARRAY of symbols for batch processing with configuration
 const financialAnalysisV2InputSchema = z.array(
     z.object({
@@ -62,17 +50,18 @@ const financialAnalysisV2OutputSchema = z.object({
     }),
     timestamp: z.string(),
 })
+const assetTypeEnum = z.enum(['stock', 'crypto'])
 
 // Step: Analyze single symbol with streaming support
 const analyzeSymbolStep = createStep({
     id: 'analyze-symbol-step',
     inputSchema: z.object({
         symbol: z.string(),
-        assetType: z.enum(['stock', 'crypto']),
+        assetType: assetTypeEnum,
     }),
     outputSchema: z.object({
         symbol: z.string(),
-        assetType: z.string(),
+        assetType: assetTypeEnum,
         currentPrice: z.number(),
         recommendation: z.enum(['strong_buy', 'buy', 'hold', 'sell', 'strong_sell']),
         confidence: z.number(),
@@ -288,7 +277,7 @@ const aggregatePortfolioResultsV2 = createStep({
     inputSchema: z.array(
         z.object({
             symbol: z.string(),
-            assetType: z.string(),
+            assetType: assetTypeEnum,
             currentPrice: z.number(),
             recommendation: z.enum(['strong_buy', 'buy', 'hold', 'sell', 'strong_sell']),
             confidence: z.number(),
@@ -303,7 +292,13 @@ const aggregatePortfolioResultsV2 = createStep({
     ),
     outputSchema: financialAnalysisV2OutputSchema,
     execute: async ({ inputData }) => {
-        logStepStart('aggregate-portfolio-results-v2', inputData)
+        logStepStart('aggregate-portfolio-results-v2', {
+            items: Array.isArray(inputData) ? inputData.length : 1,
+            sampleSymbol:
+                Array.isArray(inputData) && inputData.length > 0
+                    ? (inputData[0] as { symbol?: string }).symbol
+                    : undefined,
+        })
         const startTime = Date.now()
 
         try {
@@ -325,8 +320,12 @@ const aggregatePortfolioResultsV2 = createStep({
                     : 0
 
             // Find top opportunity and risk
-            const topBuy = results.filter((r) => r.recommendation.includes('buy')).sort((a, b) => b.confidence - a.confidence)[0]
-            const topSell = results.filter((r) => r.recommendation.includes('sell')).sort((a, b) => b.confidence - a.confidence)[0]
+            const topBuy = results
+                .filter((r) => r.recommendation.includes('buy'))
+                .sort((a, b) => b.confidence - a.confidence)[0]
+            const topSell = results
+                .filter((r) => r.recommendation.includes('sell'))
+                .sort((a, b) => b.confidence - a.confidence)[0]
 
             const result = {
                 portfolioAnalysis: results,
@@ -346,7 +345,13 @@ const aggregatePortfolioResultsV2 = createStep({
             return result
         } catch (error: unknown) {
             const err = error instanceof Error ? error : new Error(String(error))
-            logError('aggregate-portfolio-results-v2', err, inputData)
+            logError('aggregate-portfolio-results-v2', err, {
+                items: Array.isArray(inputData) ? inputData.length : 1,
+                sampleSymbol:
+                    Array.isArray(inputData) && inputData.length > 0
+                        ? (inputData[0] as { symbol?: string }).symbol
+                        : undefined,
+            })
             throw err
         }
     },

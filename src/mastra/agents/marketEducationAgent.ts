@@ -150,7 +150,7 @@ export const marketEducationAgent = new Agent({
             {
               "title": "Resource title",
               "url": "https://example.com",
-              "type": "article|video|course|book"
+              "type": "article"
             }
           ]
         }

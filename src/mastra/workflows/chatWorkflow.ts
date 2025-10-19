@@ -498,7 +498,8 @@ const callAgent = createStep({
         // Reuse narrowed controller for emissions
         const controller =
             streamController !== null &&
-            typeof (streamController as any)?.enqueue === 'function'
+            typeof (streamController as Record<string, unknown> | null)
+                ?.enqueue === 'function'
                 ? (streamController as ReadableStreamDefaultController<Uint8Array>)
                 : undefined
 

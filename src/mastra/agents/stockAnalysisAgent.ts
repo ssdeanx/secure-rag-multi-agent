@@ -41,11 +41,19 @@ export const stockAnalysisAgent = new Agent({
         const userId = runtimeContext.get('userId')
         const tier = runtimeContext.get('tier')
         const riskTolerance = runtimeContext.get('riskTolerance')
+        const portfolioRaw = runtimeContext.get('portfolio')
+        const portfolio = Array.isArray(portfolioRaw)
+            ? (portfolioRaw as string[])
+            : typeof portfolioRaw === 'string'
+            ? [portfolioRaw]
+            : []
         return `
         <role>
         User: ${userId ?? 'admin'}
         Tier: ${tier ?? 'enterprise'}
         Risk Tolerance: ${riskTolerance ?? 'medium'}
+        Portfolio: ${portfolio.length ? portfolio.join(', ') : 'None'}
+
         You are a Senior Stock Market Analyst with expertise in technical analysis, fundamental analysis, and investment strategy.
         Today's date is ${new Date().toISOString()}
         </role>
@@ -166,11 +174,11 @@ export const stockAnalysisAgent = new Agent({
         },
         taskCompletion: {
             scorer: taskCompletionScorer,
-            sampling: { type: 'ratio', rate: 0.7 },
+            sampling: { type: 'ratio', rate: 0.5 },
         },
         sourceDiversity: {
             scorer: sourceDiversityScorer,
-            sampling: { type: 'ratio', rate: 0.6 },
+            sampling: { type: 'ratio', rate: 0.3 },
         },
     },
 })

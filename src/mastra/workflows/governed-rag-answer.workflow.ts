@@ -1,4 +1,4 @@
-import { createWorkflow, createStep } from '@mastra/core'
+import { createWorkflow, createStep } from '@mastra/core/workflows'
 import { z } from 'zod'
 
 import { answererAgent, answererOutputSchema } from '../agents/answerer.agent'
@@ -19,6 +19,13 @@ import {
     verificationResultSchema,
 } from '../schemas/agent-schemas'
 import { AuthenticationService } from '../services/AuthenticationService'
+import { log } from '../config/logger'
+
+/**
+ * Strongly-typed alias for document contexts derived from the Zod schema
+ * to avoid using `any` and to keep runtime validation via the existing schemas.
+ */
+type DocumentContext = z.infer<typeof documentContextSchema>
 
 // Step 1: Combined Authentication and Authorization
 const authenticationStep = createStep({
@@ -86,7 +93,7 @@ const retrievalStep = createStep({
         const startTime = Date.now()
         const requestId = `REQ-${Date.now()}-${Math.random().toString(36).substr(2, 5)}`
 
-        console.log(
+        log.info(
             `[${requestId}] 🚀 Starting document retrieval for question: "${inputData.question}"`
         )
         logStepStart('retrieval-and-rerank', {
@@ -104,7 +111,7 @@ const retrievalStep = createStep({
 
             // Retrieve documents using mastra context
             const agent = mastra?.getAgent('retrieve') || retrieveAgent
-            console.log(`[${requestId}] 🤖 Calling retrieve agent...`)
+            log.info(`[${requestId}] 🤖 Calling retrieve agent...`)
 
             const retrieveResult = await agent.generate(
                 JSON.stringify({
@@ -117,57 +124,72 @@ const retrievalStep = createStep({
                 }
             )
 
-            console.log(`[${requestId}] ✅ Retrieve agent completed`)
-            console.log(
+        log.info(`[${requestId}] ✅ Retrieve agent completed`)
+            log.info(
                 `[${requestId}] 🔍 Tool results available:`,
-                retrieveResult.toolResults?.length || 0
+                { toolResultsLength: retrieveResult.toolResults?.length || 0 }
             )
-            console.log(
+            log.debug(
                 `[${requestId}] 📋 Full retrieve result structure:`,
-                JSON.stringify(
-                    {
-                        hasToolResults: !!retrieveResult.toolResults,
-                        toolResultsLength: retrieveResult.toolResults?.length,
-                        toolResultsKeys: retrieveResult.toolResults?.map(
-                            (tr) => ({
-                                toolName: tr.payload?.toolName,
-                                hasResult: !!tr.payload?.result,
-                            })
-                        ),
-                        hasText: !!retrieveResult.text,
-                        textLength: retrieveResult.text?.length,
-                        textPreview: retrieveResult.text?.substring(0, 200),
-                    },
-                    null,
-                    2
-                )
+                {
+                    hasToolResults:
+                        Array.isArray(retrieveResult.toolResults) &&
+                        retrieveResult.toolResults.length > 0,
+                    toolResultsLength: retrieveResult.toolResults?.length,
+                    toolResultsKeys: retrieveResult.toolResults?.map(
+                        (tr) => ({
+                            toolName: tr.payload?.toolName,
+                            hasResult:
+                                tr.payload?.result !== undefined &&
+                                tr.payload?.result !== null,
+                        })
+                    ),
+                    hasText: typeof retrieveResult.text === 'string' && retrieveResult.text.length > 0,
+                    textLength: retrieveResult.text?.length,
+                    textPreview: retrieveResult.text?.substring(0, 200),
+                }
             )
 
             let contexts: any[] = []
 
             // Method 1: Extract from tool results (preferred)
             if (
-                retrieveResult.toolResults &&
+                Array.isArray(retrieveResult.toolResults) &&
                 retrieveResult.toolResults.length > 0
             ) {
-                console.log(
+                log.info(
                     `[${requestId}] 🔧 Found tool results, checking for vector query tool...`
                 )
 
                 // Try multiple possible tool names
                 const possibleToolNames = [
+                    'pgQuery',
+                    'pgQueryTool',
                     'vectorQueryTool',
                     'vector-query',
                     'vectorQuery',
+                    'pgQueryTool',
+                    'pg-query',
+                    'graphQueryTool',
+                    'graph-query',
+                    'graphQuery',
+                    'textQueryTool',
+                    'text-query',
+                    'textQuery',
                 ]
-                let toolResult = null
+
+                // Explicitly type toolResult to avoid TypeScript inferring `never`
+                let toolResult:
+                    | { payload?: { toolName?: string; result?: unknown } }
+                    | undefined = undefined
 
                 for (const toolName of possibleToolNames) {
-                    toolResult = retrieveResult.toolResults.find(
-                        (tr) => tr.payload?.toolName === toolName
+                    // cast element to unknown shape to avoid implicit `never` type errors
+                    toolResult = (retrieveResult.toolResults as any).find(
+                        (tr: any) => tr?.payload?.toolName === toolName
                     )
                     if (toolResult) {
-                        console.log(
+                        log.info(
                             `[${requestId}] ✅ Found tool result with name: ${toolName}`
                         )
                         break
@@ -175,16 +197,21 @@ const retrievalStep = createStep({
                 }
 
                 if (!toolResult) {
-                    // If no match found, take the first available tool result
-                    toolResult = retrieveResult.toolResults[0]
-                    console.log(
-                        `[${requestId}] 🔄 No matching tool name found, using first tool result: ${toolResult.payload?.toolName}`
-                    )
+                    // If no match found, take the first available tool result as a fallback
+                    toolResult = (retrieveResult.toolResults as any)[0] as
+                        | { payload?: { toolName?: string; result?: unknown } }
+                        | undefined
+                    if (toolResult) {
+                        log.info(
+                            `[${requestId}] ℹ️ No named tool found — falling back to first tool result: ${toolResult.payload?.toolName ?? 'unknown'}`
+                        )
+                    }
                 }
 
                 // Type assertion and validation using retrieveOutputSchema
+                // Use the strongly-typed DocumentContext alias instead of `any`
                 const toolResultData = toolResult?.payload?.result as
-                    | { contexts?: any[] }
+                    | { contexts?: DocumentContext[] }
                     | undefined
                 if (toolResultData?.contexts) {
                     // Validate the output against the schema
@@ -193,35 +220,49 @@ const retrievalStep = createStep({
                             contexts: toolResultData.contexts,
                         })
                         contexts = validated.contexts
-                        console.log(
+                        log.info(
                             `[${requestId}] 📄 Extracted and validated ${contexts.length} contexts from tool results`
                         )
                     } catch (validationError) {
-                        console.warn(
+                        const validationErrorInfo =
+                            validationError instanceof Error
+                                ? {
+                                      message: validationError.message,
+                                      stack: validationError.stack,
+                                  }
+                                : (() => {
+                                      try {
+                                          return { error: JSON.parse(JSON.stringify(validationError)) }
+                                      } catch {
+                                          return { error: String(validationError) }
+                                      }
+                                  })()
+                        log.warn(
                             `[${requestId}] ⚠️ Schema validation failed, using raw contexts`,
-                            validationError
+                            validationErrorInfo
                         )
                         contexts = toolResultData.contexts
                     }
                 } else {
-                    console.log(
+                    log.warn(
                         `[${requestId}] ⚠️ Tool result found but no contexts property`,
                         {
                             toolName: toolResult?.payload?.toolName,
-                            hasResult: !!toolResult?.payload?.result,
-                            resultKeys: toolResult?.payload?.result
-                                ? Object.keys(
-                                      toolResult.payload.result as Record<
-                                          string,
-                                          any
-                                      >
-                                  )
-                                : [],
+                            // explicit null/undefined check instead of boolean coercion of `any`
+                            hasResult:
+                                toolResult?.payload?.result !== null,
+                            // ensure the result is a non-null object before calling Object.keys
+                            resultKeys: (() => {
+                                const result = toolResult?.payload?.result
+                                return result !== null && typeof result === 'object'
+                                    ? Object.keys(result as Record<string, unknown>)
+                                    : []
+                            })(),
                         }
                     )
                 }
             } else {
-                console.log(
+                log.warn(
                     `[${requestId}] ⚠️ No tool results found - tool may not be executing`
                 )
             }
@@ -250,22 +291,27 @@ const retrievalStep = createStep({
                                     securityTags: any
                                     classification: any
                                 }) => {
+                                    // Ensure text is a non-empty string before using string-specific checks
+                                    const hasText = typeof ctx.text === 'string' && ctx.text.trim().length > 0
+
                                     return (
                                         // Must have core database fields
                                         Boolean(ctx.docId) &&
-                                        ctx.text &&
+                                        hasText &&
                                         typeof ctx.score === 'number' &&
                                         Boolean(ctx.versionId) &&
                                         Boolean(ctx.source) &&
                                         Array.isArray(ctx.securityTags) &&
                                         Boolean(ctx.classification) &&
                                         // Text must not look like generated content
-                                        !ctx.text.includes(
-                                            'The Termination Procedures are as follows'
-                                        ) &&
-                                        !ctx.text.includes(
-                                            '# Git Workflow at ACME'
-                                        ) &&
+                                        (typeof ctx.text === 'string' &&
+                                            !ctx.text.includes(
+                                                'The Termination Procedures are as follows'
+                                            )) &&
+                                        (typeof ctx.text === 'string' &&
+                                            !ctx.text.includes(
+                                                '# Git Workflow at ACME'
+                                            )) &&
                                         // Score must be realistic (0-1 range)
                                         ctx.score >= 0 &&
                                         ctx.score <= 1
@@ -275,25 +321,26 @@ const retrievalStep = createStep({
 
                             if (validContexts.length > 0) {
                                 contexts = validContexts
-                                console.log(
+                                log.info(
                                     `[${requestId}] 📄 Extracted ${contexts.length} validated contexts from agent response`
                                 )
                             } else {
-                                console.log(
+                                log.warn(
                                     `[${requestId}] 🚫 Rejected ${parsed.contexts.length} contexts - failed security validation`
                                 )
                             }
                         }
                     }
-                } catch (e) {
-                    console.log(
-                        `[${requestId}] ⚠️ Failed to parse agent text response as JSON`
+                } catch (err) {
+                    log.warn(
+                        `[${requestId}] ⚠️ Failed to parse agent text response as JSON`,
+                        { error: err instanceof Error ? err.message : String(err) }
                     )
                 }
             }
 
             // Skip reranking if no contexts
-            if (!contexts || contexts.length === 0) {
+            if (contexts?.length === 0) {
                 logStepEnd(
                     'retrieval-and-rerank',
                     { contextsFound: 0 },
@@ -321,7 +368,7 @@ const retrievalStep = createStep({
                 )
 
                 const rerankResponse = rerankResult.object ?? { contexts: [] }
-                const output: { contexts: any; question: string } = {
+                const output: { contexts: Array<z.infer<typeof documentContextSchema>>; question: string } = {
                     contexts: rerankResponse.contexts,
                     question: inputData.question,
                 }
@@ -333,8 +380,14 @@ const retrievalStep = createStep({
                 )
                 return output
             } catch (error) {
+                // Log the rerank failure for observability and then return original contexts
+                log.warn(`[${requestId}] 🔀 Rerank agent failed`, {
+                    error: error instanceof Error ? error.message : String(error),
+                    contextsCount: contexts.length,
+                })
+
                 // If reranking fails, return original contexts
-                const output: { contexts: any; question: string } = {
+                const output: { contexts: Array<z.infer<typeof documentContextSchema>>; question: string } = {
                     contexts,
                     question: inputData.question,
                 }

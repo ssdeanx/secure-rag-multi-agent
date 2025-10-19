@@ -34,11 +34,12 @@
         "vitest.config.ts",
         "tests/**/*",
         "testsSetup.ts",
-        "eslint.config.js",
+        "eslint.config.cjs",
         "prettier.config.js",
         "cedar/**/*",
         "next-sitemap.config.js",
-        "middleware.ts"
+        "middleware.ts",
+        "eslint-config-next.d.ts"
     ],
     "exclude": [
         "node_modules",

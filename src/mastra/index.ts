@@ -31,16 +31,17 @@ import { randomUUID } from 'crypto'
 import { SensitiveDataFilter } from '@mastra/core/ai-tracing'
 import { researchContentNetwork, governedRagNetwork, financialTeamNetwork } from './agents/network'
 import { apiRoutes } from './apiRegistry'
-import { mcpAgent } from './agents/mcpAgent'
+//import { mcpAgent } from './agents/mcpAgent'
 import { responseQualityScorer, taskCompletionScorer } from './agents/custom-scorers'
 import { identityAgent } from './agents/identity.agent'
 import { policyAgent } from './agents/policy.agent'
 import { cryptoAnalysisAgent } from './agents/cryptoAnalysisAgent'
 import { stockAnalysisAgent } from './agents/stockAnalysisAgent'
 import { marketEducationAgent } from './agents/marketEducationAgent'
-import { selfReferencingAgent } from './agents/selfReferencingAgent'
-import { ssAgent } from './agents/ss'
+//import { selfReferencingAgent } from './agents/selfReferencingAgent'
+//import { ssAgent } from './agents/ss'
 import { a2aCoordinatorAgent } from './agents/a2aCoordinatorAgent'
+import { a2aCoordinatorMcpServer } from './mcp'
 
 export const mastra = new Mastra({
     storage: pgStore,
@@ -63,12 +64,12 @@ export const mastra = new Mastra({
         learning: learningExtractionAgent,
         productRoadmap: productRoadmapAgent,
         editor: editorAgent,
-        mcp: mcpAgent,
+        //mcp: mcpAgent,
         cryptoAnalysis: cryptoAnalysisAgent,
         stockAnalysis: stockAnalysisAgent,
         marketEducation: marketEducationAgent,
-        selfReferencing: selfReferencingAgent,
-        ssAgent,
+//        selfReferencing: selfReferencingAgent,
+//        ssAgent,
         a2aCoordinator: a2aCoordinatorAgent,
         //voice: voiceAgent,
         'research-content-network': researchContentNetwork,
@@ -96,6 +97,9 @@ export const mastra = new Mastra({
      },
     vectors: {
         pgVector,
+    },
+    mcpServers: {
+            a2aCoordinator: a2aCoordinatorMcpServer
     },
     server: {
         apiRoutes,

@@ -10,22 +10,11 @@
  * Benefits: Faster overall analysis time, comprehensive signal gathering
  */
 
-import { createStep, createWorkflow } from '@mastra/core'
+import { createStep, createWorkflow } from '@mastra/core/workflows'
 import { z } from 'zod'
-import { log } from '../config/logger'
+import { log, logStepStart, logStepEnd, logError } from '../config/logger'
 
-// Helper functions for logging
-function logStepStart(stepId: string, data: unknown) {
-    log.info(`Starting step: ${stepId}`, { data })
-}
-
-function logStepEnd(stepId: string, result: unknown, duration: number) {
-    log.info(`Completed step: ${stepId}`, { result, durationMs: duration })
-}
-
-function logError(stepId: string, error: Error, context: unknown) {
-    log.error(`Error in step: ${stepId}`, { error: error.message, context })
-}
+log.info('Financial Analysis Workflow V3 module loaded')
 
 // Input schema
 const financialAnalysisV3InputSchema = z.object({

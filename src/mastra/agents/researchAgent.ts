@@ -23,10 +23,10 @@ import { sourceDiversityScorer, researchCompletenessScorer, summaryQualityScorer
 import { googleFinanceTool, googleScholarTool } from '../tools/serpapi-academic-local.tool'
 import { googleNewsLiteTool, googleNewsTool, googleTrendsTool } from '../tools/serpapi-news-trends.tool'
 import { alphaVantageCryptoTool, alphaVantageStockTool } from '../tools/alpha-vantage.tool'
-import { polygonCryptoSnapshotsTool } from '../tools/polygon-tools'
+import { polygonCryptoAggregatesTool, polygonCryptoQuotesTool, polygonCryptoSnapshotsTool, polygonStockAggregatesTool, polygonStockFundamentalsTool, polygonStockQuotesTool } from '../tools/polygon-tools'
 import { arxivTool } from '../tools/arxiv.tool'
 import { pdfToMarkdownTool } from '../tools/pdf-data-conversion.tool'
-import { finnhubAnalysisTool } from '../tools/finnhub-tools'
+import { finnhubAnalysisTool, finnhubCompanyTool, finnhubFinancialsTool, finnhubQuotesTool, finnhubTechnicalTool } from '../tools/finnhub-tools'
 
 
 export interface ResearchAgentContext {
@@ -114,10 +114,19 @@ export const researchAgent = new Agent({
         googleNewsTool,
         alphaVantageCryptoTool,
         alphaVantageStockTool,
+        polygonCryptoQuotesTool,
+        polygonCryptoAggregatesTool,
         polygonCryptoSnapshotsTool,
         arxivTool,
         pdfToMarkdownTool,
-        finnhubAnalysisTool
+        finnhubAnalysisTool,
+        polygonStockQuotesTool,
+        polygonStockAggregatesTool,
+        polygonStockFundamentalsTool,
+        finnhubQuotesTool,
+        finnhubCompanyTool,
+        finnhubFinancialsTool,
+        finnhubTechnicalTool
     },
     memory: pgMemory,
     scorers: {

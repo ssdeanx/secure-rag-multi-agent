@@ -1,21 +1,10 @@
 import { createWorkflow, createStep } from '@mastra/core/workflows'
 import { z } from 'zod'
-import { log } from '../config/logger'
+import { log, logStepStart, logStepEnd, logError} from '../config/logger'
 import { stockAnalysisAgent } from '../agents/stockAnalysisAgent'
 import { cryptoAnalysisAgent } from '../agents/cryptoAnalysisAgent'
 
-// Helper functions for logging
-function logStepStart(stepId: string, data: unknown) {
-    log.info(`Starting step: ${stepId}`, { data })
-}
-
-function logStepEnd(stepId: string, result: unknown, duration: number) {
-    log.info(`Completed step: ${stepId}`, { result, durationMs: duration })
-}
-
-function logError(stepId: string, error: Error, context: unknown) {
-    log.error(`Error in step: ${stepId}`, { error: error.message, context })
-}
+log.info('Financial Analysis Workflow module loaded')
 
 // Export workflow input and output schemas
 export const financialAnalysisWorkflowInputSchema = z.object({

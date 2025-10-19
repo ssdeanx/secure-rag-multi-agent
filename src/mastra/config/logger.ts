@@ -17,28 +17,9 @@ export const log = new PinoLogger({
 
     level: 'debug',
 
-    formatters: {level: (label: string) => ({ level: label.toUpperCase() }), bindings: (bindings: object) => bindings as Record<string, unknown>,  log: (logObj: object) => logObj as Record<string, unknown>},
+ //   formatters: {level: (label: string) => ({ level: label.toUpperCase() }), bindings: (bindings: object) => bindings as Record<string, unknown>,  log: (logObj: object) => logObj as Record<string, unknown>},
 })
 
-const transport = pino.transport({
-  targets: [
-    {
-      target: "pino/file",
-      options: { destination: 1 }, // stdout
-      level: "trace",
-    },
-    {
-      target: "pino-opentelemetry-transport",
-      options: {},
-      level: "trace",
-    },
-  ],
-});
-
-// Wait for the Pino worker threads to be set up
-await new Promise((resolve) => setTimeout(resolve, 1000));
-
-export const logger = pino(transport);
 // Create a simple file logger wrapper
 //
 const logFilePath: string = path.join(logsDir, 'workflow.log')
