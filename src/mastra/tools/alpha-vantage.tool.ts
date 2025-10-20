@@ -11,6 +11,11 @@ import { z } from "zod";
  * Requires ALPHA_VANTAGE_API_KEY environment variable
  */
 
+
+// In-memory counter to track tool calls per request
+// Add this line at the beginning of each tool's execute function to track usage:
+// toolCallCounters.set('tool-id', (toolCallCounters.get('tool-id') ?? 0) + 1)
+const toolCallCounters = new Map<string, number>()
 /**
  * Alpha Vantage Crypto Tool
  *
@@ -58,7 +63,7 @@ export const alphaVantageCryptoTool = createTool({
         error: "ALPHA_VANTAGE_API_KEY environment variable is required"
       };
     }
-
+    toolCallCounters.set('alpha-vantage-crypto', (toolCallCounters.get('alpha-vantage-crypto') ?? 0) + 1);
     try {
       const params = new URLSearchParams({
         apikey: apiKey,
@@ -222,7 +227,7 @@ export const alphaVantageStockTool = createTool({
         error: "ALPHA_VANTAGE_API_KEY environment variable is required"
       };
     }
-
+    toolCallCounters.set('alpha-vantage-stock', (toolCallCounters.get('alpha-vantage-stock') ?? 0) + 1);
     try {
       const params = new URLSearchParams({
         apikey: apiKey,
@@ -405,7 +410,7 @@ export const alphaVantageTool = createTool({
         error: "ALPHA_VANTAGE_API_KEY environment variable is required"
       };
     }
-
+    toolCallCounters.set('alpha-vantage', (toolCallCounters.get('alpha-vantage') ?? 0) + 1);
     try {
       const params = new URLSearchParams({
         apikey: apiKey,

@@ -4,7 +4,7 @@
 
 ## Persona
 
-**Name:** DevOps & Cloud Engineer  
+**Name:** DevOps & Cloud Engineer
 **Role Objective:** Centralize secure initialization of external services (models, vector store, databases, logging, role hierarchy) with environment-driven configuration.
 
 ## Purpose
