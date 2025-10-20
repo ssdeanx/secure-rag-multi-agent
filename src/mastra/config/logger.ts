@@ -1,8 +1,7 @@
 import { PinoLogger } from '@mastra/loggers'
-import { FileTransport } from '@mastra/loggers/file'
 import * as fs from 'node:fs'
 import * as path from 'node:path'
-import pino from 'pino'
+
 // Use __dirname directly for CommonJS
 //const __dirname: string = path.resolve(path.dirname(''));
 
@@ -14,9 +13,7 @@ if (!fs.existsSync(logsDir)) {
 
 export const log = new PinoLogger({
     name: 'MastraLogger',
-
     level: 'debug',
-
  //   formatters: {level: (label: string) => ({ level: label.toUpperCase() }), bindings: (bindings: object) => bindings as Record<string, unknown>,  log: (logObj: object) => logObj as Record<string, unknown>},
 })
 

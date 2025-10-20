@@ -1,6 +1,11 @@
 import { createTool } from "@mastra/core/tools";
 import { z } from "zod";
 
+// In-memory counter to track tool calls per request
+// Add this line at the beginning of each tool's execute function to track usage:
+// toolCallCounters.set('tool-id', (toolCallCounters.get('tool-id') ?? 0) + 1)
+const toolCallCounters = new Map<string, number>()
+
 /**
  * ArXiv Tool
  *
@@ -42,6 +47,7 @@ async function getPdfParseModule(): Promise<PdfParseFunction> {
 
 	try {
 		// Dynamic import to avoid parsing demo content on import
+    // FIXME: Use another way to safely lazy load pdf-parse without eval @copilot
 		const pdfMod = await eval('import("pdf-parse")');
 		pdfParse = pdfMod.default;
 		return pdfParse as PdfParseFunction;
@@ -162,6 +168,7 @@ export const arxivTool = createTool({
     error: z.string().optional()
   }),
   execute: async ({ context }) => {
+    toolCallCounters.set('arxiv', (toolCallCounters.get('arxiv') ?? 0) + 1);
     try {
       const params = new URLSearchParams();
 
@@ -287,6 +294,7 @@ export const arxivPdfParserTool = createTool({
     error: z.string().optional()
   }),
   execute: async ({ context }) => {
+    toolCallCounters.set('arxiv-pdf-parser', (toolCallCounters.get('arxiv-pdf-parser') ?? 0) + 1);
     const startTime = Date.now();
 
     try {
@@ -444,6 +452,7 @@ export const arxivPaperDownloaderTool = createTool({
     error: z.string().optional()
   }),
   execute: async ({ context }) => {
+    toolCallCounters.set('arxiv-paper-downloader', (toolCallCounters.get('arxiv-paper-downloader') ?? 0) + 1);
     try {
       // Get metadata from arXiv API
       const apiUrl = `http://export.arxiv.org/api/query?id_list=${context.arxivId}&max_results=1`;
@@ -532,6 +541,7 @@ export const arxivPaperDownloaderTool = createTool({
  * Simple XML parser for ArXiv API response
  * In production, consider using a proper XML parsing library
  */
+// FIXME: Use a proper XML parser instead of regex @copilot fast-xml-parser
 function parseArxivXml(xmlText: string, includeAbstract: boolean): Array<{
   id: string;
   title: string;

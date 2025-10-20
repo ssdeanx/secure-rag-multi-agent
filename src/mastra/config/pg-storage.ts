@@ -169,6 +169,8 @@ log.info('PG Store and Memory initialized with PgVector support', {
         },
     },
 })
+// In-memory counter to track tool calls per request
+// Add this line at the beginning of each tool's execute function to track usage:
 
 // Graph-based RAG tool using PgVector
 export const graphQueryTool = createGraphRAGTool({

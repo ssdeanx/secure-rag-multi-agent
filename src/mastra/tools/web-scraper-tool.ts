@@ -397,6 +397,12 @@ const webScraperOutputSchema = z
     })
     .strict()
 
+// In-memory counter to track tool calls per request
+// Add this line at the beginning of each tool's execute function to track usage:
+// toolCallCounters.set('tool-id', (toolCallCounters.get('tool-id') ?? 0) + 1)
+const toolCallCounters = new Map<string, number>()
+
+
 export const webScraperTool = createTool({
     id: 'web-scraper',
     description:
@@ -404,6 +410,7 @@ export const webScraperTool = createTool({
     inputSchema: webScraperInputSchema,
     outputSchema: webScraperOutputSchema,
     execute: async ({ context, tracingContext }) => {
+        toolCallCounters.set('web-scraper', (toolCallCounters.get('web-scraper') ?? 0) + 1)
         const scrapeSpan = tracingContext?.currentSpan?.createChildSpan({
             type: AISpanType.TOOL_CALL,
             name: 'web_scrape',
@@ -729,6 +736,7 @@ export const batchWebScraperTool = createTool({
     inputSchema: batchWebScraperInputSchema,
     outputSchema: batchWebScraperOutputSchema,
     execute: async ({ context, tracingContext }) => {
+        toolCallCounters.set('batch-web-scraper', (toolCallCounters.get('batch-web-scraper') ?? 0) + 1)
         const batchSpan = tracingContext?.currentSpan?.createChildSpan({
             type: AISpanType.TOOL_CALL,
             name: 'batch_web_scrape',
@@ -981,6 +989,7 @@ export const siteMapExtractorTool = createTool({
     inputSchema: siteMapExtractorInputSchema,
     outputSchema: siteMapExtractorOutputSchema,
     execute: async ({ context, tracingContext }) => {
+        toolCallCounters.set('site-map-extractor', (toolCallCounters.get('site-map-extractor') ?? 0) + 1)
         const mapSpan = tracingContext?.currentSpan?.createChildSpan({
             type: AISpanType.TOOL_CALL,
             name: 'site_map_extraction',
@@ -1234,6 +1243,7 @@ export const linkExtractorTool = createTool({
     inputSchema: linkExtractorInputSchema,
     outputSchema: linkExtractorOutputSchema,
     execute: async ({ context, tracingContext }) => {
+        toolCallCounters.set('link-extractor', (toolCallCounters.get('link-extractor') ?? 0) + 1)
         const linkSpan = tracingContext?.currentSpan?.createChildSpan({
             type: AISpanType.TOOL_CALL,
             name: 'link_extraction',
@@ -1461,6 +1471,7 @@ export const htmlToMarkdownTool = createTool({
     inputSchema: htmlToMarkdownInputSchema,
     outputSchema: htmlToMarkdownOutputSchema,
     execute: async ({ context, tracingContext }) => {
+        toolCallCounters.set('html-to-markdown', (toolCallCounters.get('html-to-markdown') ?? 0) + 1)
         const convertSpan = tracingContext?.currentSpan?.createChildSpan({
             type: AISpanType.TOOL_CALL,
             name: 'html_to_markdown',
@@ -1587,6 +1598,7 @@ export const listScrapedContentTool = createTool({
     inputSchema: listScrapedContentInputSchema,
     outputSchema: listScrapedContentOutputSchema,
     execute: async ({ context, tracingContext }) => {
+        toolCallCounters.set('list-scraped-content', (toolCallCounters.get('list-scraped-content') ?? 0) + 1)
         const listSpan = tracingContext?.currentSpan?.createChildSpan({
             type: AISpanType.TOOL_CALL,
             name: 'list_scraped_content',
@@ -1773,6 +1785,7 @@ export const contentCleanerTool = createTool({
     inputSchema: contentCleanerInputSchema,
     outputSchema: contentCleanerOutputSchema,
     execute: async ({ context, tracingContext }) => {
+        toolCallCounters.set('content-cleaner', (toolCallCounters.get('content-cleaner') ?? 0) + 1)
         const cleanSpan = tracingContext?.currentSpan?.createChildSpan({
             type: AISpanType.TOOL_CALL,
             name: 'content_cleaning',
