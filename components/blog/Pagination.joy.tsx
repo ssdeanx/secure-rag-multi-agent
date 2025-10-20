@@ -6,7 +6,7 @@ import { ChevronLeft, ChevronRight } from '@mui/icons-material'
 interface PaginationProps {
     currentPage: number
     totalPages: number
-    onPageChange: (_: number) => void
+    onPageChange: (page: number) => void
     loading?: boolean
 }
 

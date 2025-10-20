@@ -1,0 +1,22 @@
+.article-featured-image-wrapper {
+  width: 100%;
+  height: 200px;
+  overflow: hidden;
+  border-top-left-radius: var(--joy-radius-sm);
+  border-top-right-radius: var(--joy-radius-sm);
+}
+
+.article-featured-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.article-author-avatar {
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  object-fit: cover;
+  display: block;
+}

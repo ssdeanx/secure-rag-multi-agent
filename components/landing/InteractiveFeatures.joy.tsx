@@ -2,32 +2,8 @@
 
 import * as React from 'react'
 import { motion, useReducedMotion } from 'framer-motion'
-import {
-    Box,
-    Typography,
-    Card,
-    CardContent,
-    Chip,
-    Grid,
-    Stack,
-} from '@/components/ui/joy'
-import {
-    Security,
-    Psychology,
-    Edit,
-    Search,
-    Assessment,
-    Timeline,
-    DataObject,
-    IntegrationInstructions,
-    AutoAwesome,
-    Shield,
-    Article,
-    Analytics,
-    Build,
-} from '@mui/icons-material'
-import SystemDiagram from './SystemDiagram.joy'
-
+import { Box, Typography, Card, CardContent, Chip, Stack } from '@/components/ui/joy'
+import { Security, Edit, Search, Timeline, DataObject, IntegrationInstructions } from '@mui/icons-material'
 const coreCapabilities = [
     {
         icon: <Security sx={{ fontSize: 32 }} />,
@@ -103,20 +79,7 @@ const coreCapabilities = [
     },
 ]
 
-const orchestrationStats = [
-    { label: '17+ Specialized Agents', icon: <Psychology />, value: '17+' },
-    { label: '15+ Secure Tools', icon: <Build />, value: '15+' },
-    {
-        label: '11+ Orchestrated Workflows',
-        icon: <AutoAwesome />,
-        value: '11+',
-    },
-    {
-        label: 'Multi-Agent Networks',
-        icon: <IntegrationInstructions />,
-        value: '∞',
-    },
-]
+// orchestrationStats intentionally removed; SystemDiagram moved to top-level page
 
 export function InteractiveFeatures() {
     const reduceMotion = useReducedMotion()
@@ -177,27 +140,7 @@ export function InteractiveFeatures() {
                     </Box>
                 </motion.div>
 
-                {/* Interactive system diagram (replaces orchestration stats) */}
-                <motion.div
-                    {...(prefersReducedMotion
-                        ? {}
-                        : {
-                            initial: { opacity: 0, y: 30 },
-                            whileInView: { opacity: 1, y: 0 },
-                            transition: { duration: 0.6, delay: 0.2 },
-                        })}
-                    viewport={{ once: true }}
-                >
-                    <SystemDiagram
-                        nodes={[
-                            { id: 'rag', title: '/rag', color: 'danger', bullets: ['Unified vector store', 'Metadata filtering', 'Agentic RAG'] },
-                            { id: 'ops', title: '*ops', color: 'info', bullets: ['Performance metrics', 'Evals', 'Tracing'] },
-                            { id: 'agents', title: '/agents', color: 'success', bullets: ['Unified API', 'Memory', 'LLM + tools'] },
-                            { id: 'workflows', title: '/workflows', color: 'primary', bullets: ['Clear flow', 'Orchestration', '.suspend() / .watch()'] },
-                        ]}
-                        centerText="Mastra orchestration"
-                    />
-                </motion.div>
+                {/* orchestration stats retained above; diagram moved to page */}
 
                 {/* Core Capabilities Grid */}
                 <Box

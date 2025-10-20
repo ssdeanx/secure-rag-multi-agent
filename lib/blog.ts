@@ -1,5 +1,6 @@
 import { promises as fs } from 'fs'
 import path from 'path'
+import matter from 'gray-matter'
 import type { BlogMeta } from '@/components/blog/ArticleCard.joy'
 
 const BLOG_DIR = path.join(process.cwd(), 'blog')
@@ -15,35 +16,13 @@ function readingTime(text: string): string {
 }
 
 function parseFrontmatter(raw: string) {
-    if (!raw.startsWith('---')) {
-        return { data: {}, content: raw } as {
-            data: Record<string, unknown>
-            content: string
-        }
-    }
-    const end = raw.indexOf('\n---')
-    if (end === -1) {
+    // Use gray-matter to robustly parse frontmatter from MD/MDX files.
+    try {
+        const parsed = matter(raw)
+        return { data: parsed.data as Record<string, unknown>, content: String(parsed.content) }
+    } catch {
         return { data: {}, content: raw }
     }
-    const fmBlock = raw.slice(3, end).trim()
-    const rest = raw.slice(end + 4).replace(/^\n+/, '')
-    const data: Record<string, unknown> = {}
-    for (const line of fmBlock.split('\n')) {
-        const idx = line.indexOf(':')
-        if (idx === -1) {
-            continue
-        }
-        const key = line.slice(0, idx).trim()
-        let value = line.slice(idx + 1).trim()
-        if (value.startsWith('[') && value.endsWith(']')) {
-            value = value.slice(1, -1).trim()
-            data[key] =
-                value.length === 0 ? [] : value.split(',').map((v) => v.trim())
-        } else {
-            data[key] = value.replace(/^"|"$/g, '')
-        }
-    }
-    return { data, content: rest }
 }
 
 async function loadFile(filePath: string): Promise<BlogPost | null> {
@@ -51,20 +30,34 @@ async function loadFile(filePath: string): Promise<BlogPost | null> {
         const raw = await fs.readFile(filePath, 'utf8')
         const { data, content } = parseFrontmatter(raw)
         const slug = path.basename(filePath).replace(/\.(md|mdx)$/i, '')
+        const tags = Array.isArray(data.tags)
+            ? (data.tags as unknown[]).map(String)
+            : typeof data.tags === 'string'
+            ? String(data.tags).split(',').map((s) => s.trim())
+            : []
+
+        // Safely extract author name from frontmatter which may be a string or an object
+        const authorEntry = (data)['author']
+        let author: string | undefined = undefined
+        if (typeof authorEntry === 'string') {
+            author = authorEntry
+        } else if (typeof authorEntry === 'object' && authorEntry !== null && 'name' in (authorEntry as Record<string, unknown>)) {
+            const nameVal = (authorEntry as Record<string, unknown>)['name']
+            if (typeof nameVal === 'string') { author = nameVal }
+        }
         const meta: BlogPost = {
             slug,
             title: String(data.title ?? slug),
             date: String(data.date ?? new Date().toISOString()),
             excerpt: String(data.excerpt ?? content.slice(0, 160).trim()),
-            tags: Array.isArray(data.tags)
-                ? (data.tags as unknown[]).map(String)
-                : [],
-            author: typeof data.author === 'string' ? data.author : undefined,
+            tags,
+            author,
             readingTime: readingTime(content),
             content,
         }
         return meta
     } catch {
+        // log the error somewhere in future; for now, return null so callers can handle missing files
         return null
     }
 }
