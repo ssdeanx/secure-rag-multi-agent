@@ -96,3 +96,8 @@ gha-creds-*.json
 .github/chatmodes/
 .github/prompts/*.md
 .github/chatmodes/*.md
+# Gemini-Flow
+.gemini-flow/cache/
+.gemini-flow/logs/
+.gemini-flow/temp/
+*.log
