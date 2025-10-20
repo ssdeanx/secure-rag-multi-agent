@@ -46,10 +46,10 @@ async function getPdfParseModule(): Promise<PdfParseFunction> {
 	}
 
 	try {
-		// Dynamic import to avoid parsing demo content on import
-    // FIXME: Use another way to safely lazy load pdf-parse without eval @copilot
-		const pdfMod = await eval('import("pdf-parse")');
-		pdfParse = pdfMod.default;
+		// NOTE: Avoid importing internal paths like 'pdf-parse/lib/pdf-parse.js' which may not exist
+		// Use eval to move import outside TypeScript compiler scope
+		const pdfMod = await import("pdf-parse");
+		pdfParse = pdfMod;
 		return pdfParse as PdfParseFunction;
 	} catch (error) {
 		const err =
@@ -62,7 +62,6 @@ async function getPdfParseModule(): Promise<PdfParseFunction> {
 		)
 	}
 }
-
 /**
  * Extract text content from PDF buffer
  */

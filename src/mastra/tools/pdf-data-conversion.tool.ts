@@ -56,8 +56,8 @@ async function getPdfParseModule(): Promise<PdfParseFunction> {
 		// Dynamic import to avoid parsing demo content on import
 		// NOTE: Avoid importing internal paths like 'pdf-parse/lib/pdf-parse.js' which may not exist
 		// Use eval to move import outside TypeScript compiler scope
-		const pdfMod = await eval('import("pdf-parse")');
-		pdfParse = pdfMod.default;
+		const pdfMod = await import("pdf-parse");
+		pdfParse = pdfMod;
 		return pdfParse as PdfParseFunction;
 	} catch (error) {
 		const err =
@@ -316,26 +316,25 @@ function extractTables(text: string): TableExtractionResult {
 		const columnCount = (line.match(/\t/g) ?? []).length
 
 		if (columnCount >= 2) {
-			if (tableStart === -1) {
-				tableStart = i
-			}
-			tableLines.push(line)
-		} else {
-			if (tableLines.length > 0) {
-				// End of table detected
-				const rows = tableLines.map((l) =>
-					l.split('\t').map((cell) => cell.trim())
-				)
-				const markdown = convertTableToMarkdown(rows)
-				tables.push({
-					index: tables.length,
-					rows,
-					markdown,
-				})
-				tableLines = []
-				tableStart = -1
-			}
-		}
+  			if (tableStart === -1) {
+  				tableStart = i
+  			}
+  			tableLines.push(line)
+  		}
+  else if (tableLines.length > 0) {
+  				// End of table detected
+  				const rows = tableLines.map((l) =>
+  					l.split('\t').map((cell) => cell.trim())
+  				)
+  				const markdown = convertTableToMarkdown(rows)
+  				tables.push({
+  					index: tables.length,
+  					rows,
+  					markdown,
+  				})
+  				tableLines = []
+  				tableStart = -1
+  			}
 	}
 
 	// Handle final table if exists
