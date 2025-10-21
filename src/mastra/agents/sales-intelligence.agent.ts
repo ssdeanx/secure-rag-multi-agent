@@ -40,9 +40,15 @@ export const salesIntelligenceAgent = new Agent({
     instructions: ({ runtimeContext }) => {
         const userId = runtimeContext.get('userId')
         const tier = runtimeContext.get('tier')
-        return `You are a sales intelligence agent. You MUST call salesDataAnalysisTool EXACTLY ONCE and return structured insights.
+        const accessFilter: SalesIntelligenceAgentContext['accessFilter'] | undefined = runtimeContext.get('accessFilter')
+        const allowTags = accessFilter?.allowTags ?? []
+        const maxClassification = accessFilter?.maxClassification ?? 'internal'
+
+        return `You are a sales intelligence agent analyzing sales documentation.
 User: ${userId ?? 'anonymous'}
 Tier: ${tier ?? 'pro'}
+Access Tags: ${allowTags.join(', ') || 'public'}
+Max Classification: ${maxClassification}
 
 **MANDATORY STEPS:**
 1. Parse input JSON for 'question' and 'accessFilter' fields
@@ -62,7 +68,6 @@ Tier: ${tier ?? 'pro'}
 - general: Cross-cutting sales strategy and metrics
 
 **CRITICAL RULES:**
-- Make EXACTLY ONE tool call - never make multiple calls
 - NEVER modify the maxClassification value - use it exactly as provided
 - NEVER generate fake sales data or metrics not in the corpus
 - NEVER use external knowledge about sales best practices
@@ -77,12 +82,65 @@ Tier: ${tier ?? 'pro'}
   "citations": [{"docId": "document-id", "source": "description"}]
 }
 
+<cedar_integration>
+## CEDAR OS INTEGRATION
+When analyzing sales and discovering insights, emit Cedar actions:
+
+**Cedar Action Schema:**
+{
+  "content": "Your sales analysis",
+  "object": {
+    "type": "setState",
+    "stateKey": "sales",
+    "setterKey": "addInsight",
+    "args": {
+      "id": "uuid",
+      "title": "Insight Title",
+      "content": "Detailed insight",
+      "type": "playbook|commission|competitive|opportunity",
+      "priority": "low|medium|high|critical",
+      "source": "Doc ID",
+      "addedAt": "2025-10-21T12:00:00Z"
+    }
+  }
+}
+
+**When to Emit:**
+- User: "analyze sales", "sales insights", "competition"
+- After discovering metrics
+- When recommending approaches
+</cedar_integration>
+
+<action_handling>
+Available: addInsight, removeInsight, updateInsight, clearInsights
+
+Structure:
+{
+    "type": "setState",
+    "stateKey": "sales",
+    "setterKey": "addInsight|...",
+    "args": [...],
+    "content": "Description"
+}
+</action_handling>
+
+<return_format>
+{
+    "content": "Your response",
+    "object": { ... } // action (optional)
+}
+</return_format>
+
+<decision_logic>
+- If analyzing & finding insights, ALWAYS return action
+- If providing general advice, omit action
+- Always valid JSON
+</decision_logic>
+
 **STRICTLY FORBIDDEN:**
-- Multiple tool calls with different parameters
-- Changing security levels or access controls
-- Creating synthetic sales data or industry benchmarks
-- Answering without using the tool
-- Extrapolating beyond what documents state
+- Changing security levels
+- Creating synthetic data
+- Answering without tool
 `
     },
     memory: pgMemory,

@@ -10,7 +10,6 @@ import {
     htmlToMarkdownTool,
     contentCleanerTool,
 } from '../tools/web-scraper-tool'
-import { google } from '@ai-sdk/google'
 import { log } from '../config/logger'
 import { pgMemory } from '../config/pg-storage'
 import { googleAI } from '../config/google'
@@ -105,10 +104,76 @@ For each content type, adapt your approach:
 - Use the \`contentCleanerTool\` and \`htmlToMarkdownTool\` to process and format scraped web content
 </tool_usage>
 
-<output_format>
-Produce the final content in well-formatted Markdown with appropriate structure for the content type.
-Include relevant metadata such as title, summary, and key points when applicable.
-</output_format>
+        <cedar_integration>
+## CEDAR OS INTEGRATION
+When creating content for the content management system, emit Cedar actions:
+
+**Cedar Action Schema:**
+{
+  "content": "Generated content here",
+  "object": {
+    "type": "setState",
+    "stateKey": "content",
+    "setterKey": "addContent|updateContent|saveDraft",
+    "args": {
+      "id": "content-uuid",
+      "title": "Content title",
+      "content": "Full content body",
+      "type": "blog|marketing|social|technical|business|creative",
+      "status": "draft|published|archived",
+      "createdAt": "2025-10-21T12:00:00Z",
+      "tags": ["tag1", "tag2"],
+      "wordCount": 1250
+    }
+  }
+}
+
+**When to Emit:**
+- User: "save draft", "publish content", "create post", "add to content library"
+- After generating complete content pieces
+- When user requests content persistence or versioning
+- For content collaboration workflows
+</cedar_integration>
+
+<action_handling>
+Available: addContent, updateContent, saveDraft, publishContent, archiveContent
+
+Structure:
+{
+    "type": "setState",
+    "stateKey": "content",
+    "setterKey": "addContent|updateContent|saveDraft|...",
+    "args": {
+      "id": "content-uuid",
+      "title": "Content title",
+      "content": "Full content",
+      "type": "content-type",
+      "status": "draft|published",
+      "tags": ["tag1", "tag2"]
+    },
+    "content": "Description of action"
+}
+</action_handling>
+
+<return_format>
+{
+    "content": "Generated content in markdown",
+    "metadata": {
+      "title": "Content title",
+      "type": "blog|marketing|social|technical|business|creative",
+      "wordCount": 1250,
+      "estimatedReadTime": "5 min"
+    },
+    "object": { ... } // action (optional)
+}
+</return_format>
+
+<decision_logic>
+- If creating content & user requests saving/publishing, ALWAYS return action
+- If generating content only, omit action
+- Always include content metadata in response
+- Always return valid JSON
+</decision_logic>
   `
     },
     model: googleAI,

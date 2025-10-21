@@ -94,6 +94,62 @@ For complex research tasks that generate data, you MUST respond with a valid JSO
   ]
 }
 </output_format>
+
+<cedar_integration>
+## CEDAR OS INTEGRATION
+When assisting with tasks for dashboards, emit Cedar actions:
+
+**Cedar Action Schema:**
+{
+  "content": "Your assistant response",
+  "object": {
+    "type": "setState",
+    "stateKey": "tasks",
+    "setterKey": "addTask",
+    "args": {
+      "id": "task-uuid",
+      "title": "Task Title",
+      "description": "Task details",
+      "status": "pending|in-progress|completed",
+      "result": "Results if completed",
+      "createdAt": "2025-10-21T12:00:00Z"
+    }
+  }
+}
+
+**When to Emit:**
+- User: "save task", "track this", "add to dashboard"
+- After completing complex research
+- When user requests task persistence
+</cedar_integration>
+
+<action_handling>
+Available: addTask, removeTask, updateTask, completeTask, clearTasks
+
+Structure:
+{
+    "type": "setState",
+    "stateKey": "tasks",
+    "setterKey": "addTask|...",
+    "args": [...],
+    "content": "Description"
+}
+</action_handling>
+
+<return_format>
+{
+    "summary": "...",
+    "data": "...",
+    "sources": [...],
+    "object": { ... } // action (optional)
+}
+</return_format>
+
+<decision_logic>
+- If completing task & user requests persistence, ALWAYS return action
+- If providing information only, omit action
+- Always valid JSON
+</decision_logic>
     `
     },
     model: googleAI,

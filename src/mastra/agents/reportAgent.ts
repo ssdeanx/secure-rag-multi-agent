@@ -1,12 +1,5 @@
 import { Agent } from '@mastra/core/agent'
 import { reportOutputSchema } from '../schemas/agent-schemas'
-import {
-    ContentSimilarityMetric,
-    CompletenessMetric,
-    TextualDifferenceMetric,
-    KeywordCoverageMetric,
-    ToneConsistencyMetric,
-} from '@mastra/evals/nlp'
 import { log } from '../config/logger'
 import { pgMemory } from '../config/pg-storage'
 import { googleAI } from '../config/google'
@@ -90,18 +83,65 @@ export const reportAgent = new Agent({
             - [Source 1] (URL)
             - [Source 2] (URL)
             - [Source 3] (URL)
+            - [Source 3] (URL)
             </output_format>
+
+<cedar_integration>
+## CEDAR OS INTEGRATION
+When generating reports for dashboards, emit Cedar actions:
+
+**Cedar Action Schema:**
+{
+  "content": "Your report markdown",
+  "object": {
+    "type": "setState",
+    "stateKey": "reports",
+    "setterKey": "addReport",
+    "args": {
+      "id": "report-uuid",
+      "title": "Report Title",
+      "summary": "Executive summary",
+      "report": "Full markdown report",
+      "findings": ["Finding 1", "Finding 2"],
+      "generatedAt": "2025-10-21T12:00:00Z"
+    }
+  }
+}
+
+**When to Emit:**
+- User: "save report", "archive report", "add to reports"
+- After generating comprehensive report
+- When user requests report persistence
+</cedar_integration>
+
+<action_handling>
+Available: addReport, removeReport, updateReport, archiveReport
+
+Structure:
+{
+    "type": "setState",
+    "stateKey": "reports",
+    "setterKey": "addReport|...",
+    "args": [...],
+    "content": "Description"
+}
+</action_handling>
+
+<return_format>
+{
+    "report": "Full markdown report",
+    "summary": "Executive summary",
+    "findings": [...],
+    "object": { ... } // action (optional)
+}
+</return_format>
+
+<decision_logic>
+- If generating report & user requests persistence, ALWAYS return action
+- If providing report only, omit action
+- Always valid JSON
+</decision_logic>
             `
-        },
-    evals: {
-        contentSimilarity: new ContentSimilarityMetric({
-            ignoreCase: true,
-            ignoreWhitespace: true,
-        }),
-        completeness: new CompletenessMetric(),
-        textualDifference: new TextualDifferenceMetric(),
-        keywordCoverage: new KeywordCoverageMetric(), // Keywords will be provided at runtime for evaluation
-        toneConsistency: new ToneConsistencyMetric(),
     },
     model: googleAI,
     memory: pgMemory,

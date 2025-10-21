@@ -45,6 +45,7 @@ import { a2aCoordinatorMcpServer } from './mcp'
 import { csvToExcalidrawAgent } from './agents/csv_to_excalidraw'
 import { imageToCsvAgent } from './agents/image_to_csv'
 import { excalidrawValidatorAgent } from './agents/excalidraw_validator'
+import { voiceAgent } from './agents/voiceAgent'
 
 export const mastra = new Mastra({
     storage: pgStore,
@@ -77,8 +78,8 @@ export const mastra = new Mastra({
         csvToExcalidraw: csvToExcalidrawAgent,
         imageToCsv: imageToCsvAgent,
         excalidrawValidator: excalidrawValidatorAgent,
+//        voice: voiceAgent,
         // Add more agents here
-        //voice: voiceAgent,
         'research-content-network': researchContentNetwork,
         'governed-rag-network': governedRagNetwork,
         'financial-team-network': financialTeamNetwork,
@@ -101,7 +102,7 @@ export const mastra = new Mastra({
             // Remove the unsupported `implementation` wrapper to match MastraScorer type.
             responseQuality: responseQualityScorer,
             taskCompletion: taskCompletionScorer,
-     },
+    },
     vectors: {
         pgVector,
     },
@@ -109,12 +110,73 @@ export const mastra = new Mastra({
             a2aCoordinator: a2aCoordinatorMcpServer
     },
     server: {
+//        host: process.env.MASTRA ?? 'http://localhost', // Defaults to 'localhost'
+//        port: parseInt(process.env.PORT ?? '4111'), // Defaults to 4111
+        timeout: 20000, // Defaults to 30000 (30s)
         apiRoutes,
+        // Body size limit for incoming requests
+        // Note: This is a placeholder and should be adjusted based on your server setup and environment.
+        // In production, you should set a more restrictive limit based on your server's requirements.
+        // Also, consider setting up a reverse proxy in production to handle SSL and routing.
+        // For example, you can use an Nginx reverse proxy to handle SSL and routing:
+        //
+        // server {
+        //     listen 443 ssl;
+        //     server_name your-domain.com;
+        //
+        //     ssl_certificate /path/to/certificate.pem;
+        //     ssl_certificate_key /path/to/private.key;
+        //
+        //     location / {
+        //         proxy_pass http://localhost:4111;
+        //         proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        //     }
+        // }
+        bodySizeLimit: 64 * 1024 * 1024, // 16MB  @defaults to 4096 (4MB)
+        build:{
+            swaggerUI: true,
+            openAPIDocs: true,
+            apiReqLogs: true,
+        },
+        cors: {
+            origin: '*', // Allow all origins for development; restrict in production
+            allowMethods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
+            allowHeaders: ['Content-Type', 'Authorization', 'x-mastra-client-type'],
+            exposeHeaders: ['Content-Length', 'X-Requested-With'],
+            credentials: false // Disable credentials for development; enable in production if needed
+        },
         // Add authentication in production
         //        experimental_auth: new MastraAuthSupabase({
         //            url: process.env.SUPABASE_URL,
         //            anonKey: process.env.SUPABASE_ANON_KEY
         //        }),
+        middleware: [
+            {
+                handler: async (c, next) => {
+                    // Example: Add authentication check
+                    // const authHeader = c.req.header("Authorization");
+                    // if (!authHeader) {
+                    //   return new Response("Unauthorized", { status: 401 });
+                    // }
+                    c.header('Access-Control-Allow-Origin', '*');
+                    c.header('Access-Control-Allow-Methods','GET, POST, PUT, DELETE, OPTIONS',);
+                    c.header(
+                        'Access-Control-Allow-Headers',
+                        'Content-Type, Authorization',
+                    );
+                    if (c.req.method === 'OPTIONS') {
+                        return new Response(null, { status: 204 });
+                    }
+                    await next();
+                },
+                path: "/api/*",
+            },
+                // Add a global request logger
+                async (c, next) => {// This is a global logger for all API requests
+                    log.info(`[API Request] ${c.req.method} ${c.req.url}`);
+                    await next();
+    },
+    ],
     },
     observability: {
         default: { enabled: true }, // Enable default tracing with DefaultExporter and CloudExporter
