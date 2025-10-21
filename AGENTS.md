@@ -1,4 +1,4 @@
-<!-- AGENTS-META {"title":"Project Root","version":"1.6.0","last_updated":"2025-10-08T08:00:26Z","applies_to":"/","tags":["layer:root","domain:rag","domain:auth","type:overview","status":"stable"],"status":"stable"} -->
+<!-- AGENTS-META {"title":"Project Root","version":"1.7.0","last_updated":"2025-10-21T00:00:00Z","applies_to":"/","tags":["layer:root","domain:rag","domain:research","domain:financial","domain:content","domain:interactive","type:overview","status":"stable"],"status":"stable"} -->
 
 # AGENTS.md
 
@@ -6,7 +6,7 @@
 
 ## Persona
 
-**Name:** `{root_persona_name}` = "Governed RAG System Architect"  
+**Name:** `{root_persona_name}` = "Multi-Domain AI Orchestration Platform Architect"  
 **Role:** "I maintain the high-level directory contract, enforce documentation & governance standards, and ensure cross-layer architectural integrity (frontend ↔ backend ↔ AI orchestration)."  
 **Focus:** Index integrity, cross-link completeness, security posture clarity.
 
@@ -27,6 +27,8 @@
 
 | Version | Date (UTC) | Change                                                             |
 | ------- | ---------- | ------------------------------------------------------------------ |
+| 1.7.0   | 2025-10-21 | Updated to reflect multi-domain AI orchestration platform (not just governed RAG) |
+| 1.6.0   | 2025-10-08 | Added auto-generated subdirectory AGENTS.md index section          |
 | 1.5.0   | 2025-09-24 | Added auto-generated subdirectory AGENTS.md index section          |
 | 1.4.0   | 2025-09-24 | Added persona & change log sections; finalized doc validation pass |
 | 1.3.0   | 2025-09-24 | Added /lib/mastra and /lib/actions entries                         |
@@ -71,108 +73,106 @@ To update: when adding a new `AGENTS.md`, append a row and ensure consistent tag
 
 ## Project Overview
 
-This is a Next.js application implementing a secure, governed Retrieval-Augmented Generation (RAG) system with role-based access control using Mastra. It features a multi-agent architecture with 16+ specialized agents for secure document retrieval and AI-powered responses.
+This is a Next.js application implementing a **Multi-Domain AI Orchestration Platform** with Mastra. It features a comprehensive multi-agent architecture with 27 specialized agents across 5 capability domains: Governed RAG (secure knowledge access), Deep Research (academic & financial intelligence), Financial Intelligence (real-time market analysis), Content Generation (multi-agent synthesis), and Interactive State Management (Cedar OS integration).
 
-**Key Technologies:** Next.js, TypeScript, Mastra, PostgreSQL, PgVector, LibSQL, MUI Joy UI, Zod
+**Key Technologies:** Next.js 15+, React 19+, TypeScript ES2022, Mastra 0.16.0+, PostgreSQL + PgVector, MUI Joy UI, Tailwind v4, Zod
 
 ## Architectural Diagram
 
 ```mermaid
-C4Context
-    title Governed RAG System Architecture
-
-    System_Boundary(system, "Governed RAG System") {
-
-        Container(frontend, "Frontend Application", "Next.js App Router, React, TypeScript", "User Interface & Interaction") {
-            Component(app_router, "/app", "Next.js App Router", "Pages, Layouts, Route Structure")
-            Component(app_components, "/components", "App-Level Components", "High-level composed UI (Chat, Auth, Indexing)")
-            Component(cedar_components, "/cedar", "Cedar Core Components", "Low-level Cedar UI primitives (roadmap, chat, buttons)")
-            Component(cedar_os_integration, "/app/cedar-os", "Cedar OS Integration", "Product Roadmap / Cedar Integration")
-            Component(lib_shared, "/lib", "Shared Frontend Libraries", "Auth, JWT utilities, MDX plugins")
-            Component(lib_mastra_client, "/lib/mastra", "Mastra Browser Client", "Frontend Mastra client factory")
-            Component(lib_actions, "/lib/actions", "Frontend Server Actions", "Minimal privileged server actions")
-            Component(hooks, "/hooks", "React Hooks", "Reusable client-side logic")
-        }
-
-        Container(backend, "Backend Services", "Node.js, TypeScript, Mastra, PostgreSQL, PgVector, LibSQL", "API Endpoints & AI Orchestration") {
-            Component(src_root, "/src", "Backend Source Root", "Entry point, types, utils, Mastra integration")
-            Component(api_route_handlers, "/app/api", "API Route Handlers", "Chat & Indexing Endpoints; Streaming")
-            Component(mastra_core, "/src/mastra", "Mastra Core Orchestration", "Orchestration, Registration, Tracing")
-            Component(mastra_agents, "/src/mastra/agents", "Mastra Agents", "Single-responsibility Reasoning Units")
-            Component(mastra_workflows, "/src/mastra/workflows", "Mastra Workflows", "Multi-step Orchestration Definitions")
-            Component(mastra_networks, "/src/mastra/networks", "Mastra vNext Networks", "Non-deterministic LLM-based Multi-agent Orchestration")
-            Component(mastra_tools, "/src/mastra/tools", "Mastra Tools", "Safe Callable Functions for Agents")
-            Component(mastra_services, "/src/mastra/services", "Mastra Services", "Business/Domain Logic Modules")
-            Component(mastra_schemas, "/src/mastra/schemas", "Mastra Schemas", "Zod Contracts & Data Validation")
-            Component(mastra_config, "/src/mastra/config", "Mastra Configuration", "External Service Setup (PostgreSQL, PgVector, Models)")
-            Component(mastra_policy, "/src/mastra/policy", "Mastra Policy / ACL", "Access Control Rule Sources")
-            Component(src_utils, "/src/utils", "Backend Utilities", "Stream & Helper Abstractions")
-            Component(src_cli, "/src/cli", "CLI Layer", "Indexing & Workflow Invocation CLI")
-        }
-
-        Container(data_stores, "Data Stores", "PostgreSQL, PgVector, LibSQL", "Vector Database & Persistent Storage") {
-            Component(qdrant, "PostgreSQL with PgVector", "Vector Database", "Stores document embeddings and metadata")
-            Component(libsql, "LibSQL", "SQLite-based Database", "Persistent storage for Mastra memory, etc.")
-        }
-
-        Container(content, "Content Corpus", "Markdown files", "Source documents for RAG") {
-            Component(corpus, "/corpus", "Sample Corpus", "Source docs for indexing with classification")
-        }
-
-        Container(documentation, "Documentation System", "MD/MDX files", "Project documentation") {
-            Component(docs, "/docs", "Documentation", "MD/MDX architecture & publishing")
-        }
-    }
-
-    Rel(app_router, "Mounts", app_components)
-    Rel(app_router, "Integrates with", cedar_os_integration)
-    Rel(app_router, "Calls", api_route_handlers, "HTTP/S")
-    Rel(app_router, "Uses", lib_shared)
-    Rel(app_router, "Uses", hooks)
-
-    Rel(app_components, "Composes from", cedar_components)
-    Rel(app_components, "Uses", lib_shared)
-
-    Rel(cedar_os_integration, "Consumes", cedar_components)
-    Rel(cedar_os_integration, "Exposes state to", mastra_agents, "via Cedar OS hooks")
-
-    Rel(lib_shared, "Uses", lib_mastra_client)
-    Rel(lib_shared, "Uses", lib_actions)
-
-    Rel(api_route_handlers, "Invokes", mastra_core, "Mastra Workflows")
-
-    Rel(mastra_core, "Orchestrates", mastra_agents)
-    Rel(mastra_core, "Orchestrates", mastra_workflows)
-    Rel(mastra_core, "Orchestrates", mastra_networks)
-    Rel(mastra_core, "Uses", mastra_tools)
-    Rel(mastra_core, "Uses", mastra_services)
-    Rel(mastra_core, "Validates with", mastra_schemas)
-    Rel(mastra_core, "Configured by", mastra_config)
-    Rel(mastra_core, "Enforces policies from", mastra_policy)
-    Rel(mastra_core, "Uses", src_utils)
-
-    Rel(mastra_agents, "Call", mastra_tools)
-    Rel(mastra_workflows, "Chain", mastra_agents)
-    Rel(mastra_workflows, "Chain", mastra_tools)
-    Rel(mastra_workflows, "Chain", mastra_services)
-    Rel(mastra_networks, "Route to", mastra_agents, "Dynamic LLM routing")
-    Rel(mastra_networks, "Route to", mastra_workflows, "Dynamic LLM routing")
-    Rel(mastra_networks, "Use memory from", libsql, "Task history")
-
-    Rel(mastra_tools, "Utilize", mastra_services)
-    Rel(mastra_tools, "Interact with", pgVector, "Vector Search")
-    Rel(mastra_tools, "Interact with", libsql, "Data Storage")
-
-    Rel(mastra_services, "Interact with", pgVector, "Vector Storage")
-    Rel(mastra_services, "Interact with", libsql, "Data Storage")
-
-    Rel(src_cli, "Invokes", mastra_core, "Mastra Workflows")
-
-    Rel(pgVector, "Stores", corpus, "Embeddings & Metadata")
-    Rel(libsql, "Stores", corpus, "Memory & Metadata")
-
-    Rel(corpus, "Indexed by", mastra_workflows, "governed-rag-index")
-    Rel(docs, "Content for", app_router)
+flowchart TD
+    %% Frontend Layer
+    subgraph "🎨 Frontend Layer"
+        A[Next.js App Router<br/>React 19 + TypeScript]
+        B[Cedar OS Integration<br/>Product Roadmap UI]
+        C[React Components<br/>Chat, Auth, Indexing]
+        D[Shared Libraries<br/>JWT, MDX, Hooks]
+    end
+    
+    %% Backend Layer  
+    subgraph "⚙️ Backend Layer"
+        E[Mastra Core<br/>Orchestration Engine]
+        F[AI Agents<br/>27+ Specialized Agents<br/>5 Domains]
+        G[Workflows<br/>10+ Multi-step Orchestration<br/>Complex Tasks]
+        H[Tools & Services<br/>50+ Tools<br/>Business Logic]
+        I[API Routes<br/>Chat & Indexing<br/>Streaming]
+    end
+    
+    %% Data Layer
+    subgraph "💾 Data Layer"
+        J[(PostgreSQL + PgVector<br/>Vector Embeddings<br/>Document Storage)]
+        K[(Content Corpus<br/>Markdown Files<br/>RAG Source)]
+    end
+    
+    %% External Services
+    subgraph "🔗 External Services"
+        L[Google Gemini<br/>AI Models]
+        M[OpenAI<br/>LLM Services]
+        N[Data Sources<br/>Alpha Vantage, Finnhub<br/>SerpAPI, Polygon]
+        O[Academic Sources<br/>ArXiv, Research APIs]
+    end
+    
+    %% Agent Categories (detailed breakdown)
+    subgraph "🤖 Agent Categories"
+        P1[Governed RAG Agents<br/>identity, retrieve, rerank<br/>answerer, verifier]
+        P2[Domain Agents<br/>research, copywriter<br/>cryptoAnalysis, compliance]
+        P3[Specialized Agents<br/>productRoadmap, salesIntelligence<br/>stockAnalysis, voiceAgent]
+        P4[Orchestration Agents<br/>a2aCoordinator, assistant<br/>editor, evaluation]
+    end
+    
+    %% Workflow Categories
+    subgraph "🔄 Workflow Categories"
+        Q1[Chat Workflows<br/>Multiple Versions<br/>Real-time Conversation]
+        Q2[Analysis Workflows<br/>Financial Analysis V3<br/>Research Workflow]
+        Q3[Content Workflows<br/>Content Generation<br/>Report Generation]
+        Q4[RAG Workflows<br/>Governed RAG Answer<br/>Governed RAG Index]
+    end
+    
+    %% Tool Categories
+    subgraph "🛠️ Tool Categories"
+        R1[Data Tools<br/>Alpha Vantage, Finnhub<br/>Polygon, SerpAPI]
+        R2[Processing Tools<br/>Document Chunking<br/>PDF Conversion, Web Scraper]
+        R3[Analysis Tools<br/>Competitive Intelligence<br/>Compliance Check, Sales Analysis]
+        R4[Specialized Tools<br/>JWT Auth, Vector Query<br/>Graph RAG, Roadmap Tool]
+    end
+    
+    %% Connections
+    A --> I
+    B --> I
+    C --> I
+    D --> I
+    
+    I --> E
+    E --> F
+    F --> G
+    G --> H
+    
+    H --> J
+    H --> K
+    J --> H
+    K --> H
+    
+    F --> L
+    F --> M
+    G --> L
+    G --> M
+    H --> N
+    H --> O
+    
+    F --> P1
+    F --> P2
+    F --> P3
+    F --> P4
+    
+    G --> Q1
+    G --> Q2
+    G --> Q3
+    G --> Q4
+    
+    H --> R1
+    H --> R2
+    H --> R3
+    H --> R4
 ```
 
 ## Setup Commands
@@ -396,10 +396,26 @@ npx tsc --noEmit
 
 ### Agent Structure
 
-- **Single Tool Call**: Agents make EXACTLY ONE tool call per execution
-- **Strict Instructions**: Use numbered steps with MANDATORY/FORBIDDEN sections
-- **Memory Management**: Use `createResearchMemory()` for persistent context
-- **Model Selection**: Prefer Google Gemini 2.5 variants for cost efficiency
+The system uses **TWO distinct agent patterns** based on complexity and purpose:
+
+**Pattern A: Governed RAG Agents (5 agents - Single Responsibility Pipeline)**
+
+- **Purpose**: Secure pipeline steps with single responsibility
+- **Tool Count**: 0-1 tools (ONE tool call OR pure LLM reasoning)
+- **Instructions**: Strict numbered steps with MANDATORY/FORBIDDEN sections
+- **Examples**: identity, retrieve, rerank, answerer, verifier
+- **Use When**: Building secure RAG pipeline with role-based access
+
+**Pattern B: Domain Agents (22+ agents - Multi-Capability Orchestration)**
+
+- **Purpose**: Complex domain tasks requiring multiple capabilities
+- **Tool Count**: 3-25+ tools (multiple tool calls per execution)
+- **Instructions**: Flexible guidance with domain expertise
+- **Processors**: Input (UnicodeNormalizer), Output (BatchPartsProcessor)
+- **Scorers**: 5-6+ quality metrics (creativity, taskCompletion, etc.)
+- **Memory**: pgMemory enabled for context retention
+- **Examples**: research, assistant, copywriter, productRoadmap, cryptoAnalysis
+- **Use When**: Building research, analysis, or content generation
 
 ### Workflow Patterns
 
@@ -463,7 +479,7 @@ Iterate until tools are satisfied with results.
 - Zero-trust security model
 - Multi-agent orchestration through Mastra workflows
 
-This AGENTS.md file provides the technical context needed for coding agents to effectively contribute to the governed RAG system. Refer to README.md for general project information and user-facing documentation.
+This AGENTS.md file provides the technical context needed for coding agents to effectively contribute to the multi-domain AI orchestration platform. Refer to README.md for general project information and user-facing documentation.
 
 ## Documentation File Index (Auto-Link)
 
