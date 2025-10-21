@@ -1,4 +1,8 @@
-# GitHub Copilot Instructions - Multi-Domain AI Orchestration Platform
+---
+applyTo: '**'
+description: 'Instructions for GitHub Copilot when contributing to this codebase'
+---
+# Multi-Domain AI Orchestration Platform
 
 > **Last Updated**: 2025-10-21
 > **System Version**: Mastra 0.16.0+, Next.js 15+, React 19+

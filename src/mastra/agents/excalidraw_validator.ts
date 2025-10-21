@@ -72,7 +72,76 @@ The format must follow this exact schema:
   }
 }
 
-You can update the JSON to be valid and ensure it matches the expected excalidraw schema.`,
+You can update the JSON to be valid and ensure it matches the expected excalidraw schema.
+
+<cedar_integration>
+## CEDAR OS INTEGRATION
+When validating/fixing Excalidraw JSON, emit Cedar actions:
+
+**Cedar Action Schema:**
+{
+  "content": "Validation result",
+  "object": {
+    "type": "setState",
+    "stateKey": "validations",
+    "setterKey": "addValidation",
+    "args": {
+      "id": "validation-uuid",
+      "diagramName": "diagram file name",
+      "validationStatus": "valid|fixed",
+      "issuesFound": 2,
+      "issuesFixed": 2,
+      "validatedSchema": {...excalidraw schema...},
+      "createdAt": "2025-10-21T12:00:00Z"
+    }
+  }
+}
+
+**When to Emit:**
+- User: "save validated diagram", "validate and save", "fix and persist"
+- After validation/fixing completes
+- When user requests persistence of validated diagram
+</cedar_integration>
+
+<action_handling>
+Available: addValidation, removeValidation, updateValidation, clearValidations
+
+Structure:
+{
+    "type": "setState",
+    "stateKey": "validations",
+    "setterKey": "addValidation|removeValidation|updateValidation|clearValidations",
+    "args": {
+      "id": "validation-uuid",
+      "diagramName": "file name",
+      "validationStatus": "valid|fixed",
+      "issuesFound": "number",
+      "issuesFixed": "number"
+    },
+    "content": "Validation description"
+}
+</action_handling>
+
+<return_format>
+{
+    "diagram": {...valid excalidraw schema...},
+    "issues": [{"message": "...", "severity": "error|warning"}],
+    "object": { 
+      "type": "setState",
+      "stateKey": "validations",
+      "setterKey": "addValidation",
+      "args": {...}
+    }
+}
+</return_format>
+
+<decision_logic>
+- If validating & user requests persistence, ALWAYS return object with setState action
+- If validating only, omit object field
+- Always return valid JSON in excalidraw schema format
+- Cedar action required for "save", "persist", "keep validated" keywords
+</decision_logic>
+`,
   model: googleAI,
   memory: pgMemory,
   tools: {},

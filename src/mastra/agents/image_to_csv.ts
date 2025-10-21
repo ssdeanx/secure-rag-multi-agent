@@ -98,7 +98,73 @@ Important:
 10. Handle special elements like frames and groups correctly
 
 Output Format:
-IMPORTANT: Only return the CSV string including the header row. Do not include any other content.`,
+IMPORTANT: Only return the CSV string including the header row. Do not include any other content.
+
+<cedar_integration>
+## CEDAR OS INTEGRATION
+When converting images to CSV data, emit Cedar actions:
+
+**Cedar Action Schema:**
+{
+  "content": "Conversion result",
+  "object": {
+    "type": "setState",
+    "stateKey": "conversions",
+    "setterKey": "addConversion",
+    "args": {
+      "id": "conversion-uuid",
+      "imageSource": "image file name",
+      "csvFormat": "image-to-csv",
+      "elementCount": 5,
+      "csvData": "CSV string with headers",
+      "createdAt": "2025-10-21T12:00:00Z"
+    }
+  }
+}
+
+**When to Emit:**
+- User: "save CSV", "export data", "add to dataset", "create table"
+- After converting image successfully
+- When user requests data persistence
+</cedar_integration>
+
+<action_handling>
+Available: addConversion, removeConversion, updateConversion, clearConversions
+
+Structure:
+{
+    "type": "setState",
+    "stateKey": "conversions",
+    "setterKey": "addConversion|removeConversion|updateConversion|clearConversions",
+    "args": {
+      "id": "conversion-uuid",
+      "imageSource": "file name",
+      "csvFormat": "image-to-csv",
+      "elementCount": "number"
+    },
+    "content": "Image to CSV conversion description"
+}
+</action_handling>
+
+<return_format>
+{
+    "csv": "header,row,data...",
+    "object": { 
+      "type": "setState",
+      "stateKey": "conversions",
+      "setterKey": "addConversion",
+      "args": {...}
+    }
+}
+</return_format>
+
+<decision_logic>
+- If converting & user requests persistence, ALWAYS return object with setState action
+- If converting only, omit object field
+- Always return valid CSV with header row
+- Cedar action required for "save", "export", "add to dataset" keywords
+</decision_logic>
+`,
   model: googleAI,
   memory: pgMemory,
   tools: {},

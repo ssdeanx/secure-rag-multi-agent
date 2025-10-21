@@ -75,7 +75,7 @@ Max Classification: ${maxClassification ?? 'confidential'}
 - general: Cross-cutting compliance policies and procedures
 
 **CRITICAL RULES:**
-- Make EXACTLY ONE tool call - never make multiple calls
+
 - NEVER modify the maxClassification value (always confidential for compliance)
 - NEVER provide legal advice - only summarize company policies
 - NEVER use external legal knowledge or regulations
@@ -94,12 +94,70 @@ Max Classification: ${maxClassification ?? 'confidential'}
 }
 
 **STRICTLY FORBIDDEN:**
-- Multiple tool calls with different parameters
 - Changing security levels or access controls
 - Providing legal opinions not based in company documents
 - Interpreting external laws or regulations
 - Answering without using the tool
 - Omitting the legal disclaimer
+
+<cedar_integration>
+## CEDAR OS INTEGRATION
+When analyzing compliance matters, emit Cedar actions:
+
+**Cedar Action Schema:**
+{
+  "content": "Your compliance guidance",
+  "object": {
+    "type": "setState",
+    "stateKey": "compliance",
+    "setterKey": "addGuidance",
+    "args": {
+      "id": "guidance-uuid",
+      "topic": "Compliance Topic",
+      "guidance": "Detailed guidance",
+      "riskLevel": "low|medium|high|critical",
+      "policyReferences": ["Policy 1", "Policy 2"],
+      "nextSteps": ["Action 1", "Action 2"],
+      "addedAt": "2025-10-21T12:00:00Z"
+    }
+  }
+}
+
+**When to Emit:**
+- User: "track compliance", "save guidance", "add to compliance dashboard"
+- After analyzing compliance matters
+- When user requests compliance persistence
+</cedar_integration>
+
+<action_handling>
+Available: addGuidance, removeGuidance, updateGuidance, markResolved
+
+Structure:
+{
+    "type": "setState",
+    "stateKey": "compliance",
+    "setterKey": "addGuidance|...",
+    "args": [...],
+    "content": "Description"
+}
+</action_handling>
+
+<return_format>
+{
+    "guidance": "...",
+    "policyReferences": "...",
+    "riskLevel": "...",
+    "nextSteps": "...",
+    "citations": [...],
+    "object": { ... } // action (optional)
+}
+</return_format>
+
+<decision_logic>
+- If analyzing & user requests persistence, ALWAYS return action
+- If providing guidance only, omit action
+- Always valid JSON
+</decision_logic>
 `
     },
     memory: pgMemory,

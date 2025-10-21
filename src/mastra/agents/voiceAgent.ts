@@ -63,6 +63,140 @@ Example:
   "runtimeConfig": {}
 }
 </output_format>
+
+<cedar_integration>
+## CEDAR OS INTEGRATION - MULTI-DOMAIN
+When user asks voice agent to save findings to dashboard, emit Cedar actions for research/financial/RAG dashboards based on domain.
+
+**Cedar Action Schemas by Domain:**
+
+**Research Domain:**
+{
+  "content": "Voice interaction summary",
+  "object": {
+    "type": "setState",
+    "stateKey": "papers|sources|learnings",
+    "setterKey": "addPaper|addSource|addLearning",
+    "args": { ... appropriate args for research ... }
+  }
+}
+
+**Financial Domain (Stocks):**
+{
+  "content": "Stock analysis from voice",
+  "object": {
+    "type": "setState",
+    "stateKey": "stocks",
+    "setterKey": "updateStock",
+    "args": {
+      "id": "AAPL",
+      "symbol": "AAPL",
+      "price": 150.25,
+      "change": 2.30,
+      "changePercent": 1.55,
+      "volume": 52000000,
+      "updatedAt": "2025-10-21T12:00:00Z"
+    }
+  }
+}
+
+**Financial Domain (Crypto):**
+{
+  "content": "Crypto analysis from voice",
+  "object": {
+    "type": "setState",
+    "stateKey": "crypto",
+    "setterKey": "updateCrypto",
+    "args": {
+      "symbol": "BTC",
+      "price": 42500.00,
+      "change24h": 5.2,
+      "changePercent24h": 2.3,
+      "volume24h": 25000000000,
+      "updatedAt": "2025-10-21T12:00:00Z"
+    }
+  }
+}
+
+**Financial Domain (Watchlist):**
+{
+  "content": "Financial watchlist update",
+  "object": {
+    "type": "setState",
+    "stateKey": "watchlist",
+    "setterKey": "addToWatchlist",
+    "args": { "symbol": "AAPL", "addedAt": "2025-10-21T12:00:00Z" }
+  }
+}
+
+**RAG Domain (Documents):**
+{
+  "content": "Retrieved document info",
+  "object": {
+    "type": "setState",
+    "stateKey": "documents",
+    "setterKey": "addDocument",
+    "args": {
+      "id": "doc-id",
+      "title": "Document Title",
+      "content": "...",
+      "tags": ["tag1", "tag2"],
+      "retrievedAt": "2025-10-21T12:00:00Z"
+    }
+  }
+}
+
+**When to Emit Actions:**
+- User says "save to dashboard", "add to research", "track this", "add to watchlist"
+- After voice query completes and user wants results on dashboard
+- When user mentions specific domains (stocks, crypto, research, documents)
+
+**Multi-Domain Decision Logic:**
+- If user mentions stocks/stock symbols → use stocks domain
+- If user mentions crypto/Bitcoin/ETH → use crypto domain
+- If user mentions papers/research/articles → use research domain
+- If user mentions watchlist/portfolio → use watchlist domain
+- If user mentions documents/policies/retrieval → use RAG domain
+</cedar_integration>
+
+<action_handling>
+When users ask you to modify dashboards via voice, return structured actions.
+
+**Available Domain Actions:**
+Research: addPaper, addSource, addLearning, removePaper, removeSource, removeLearning
+Financial Stocks: updateStock, removeStock, clearStocks
+Financial Crypto: updateCrypto, removeCrypto, clearCrypto
+Financial Watchlist: addToWatchlist, removeFromWatchlist, clearWatchlist
+RAG: addDocument, removeDocument, clearDocuments
+
+When returning an action, use this exact structure:
+{
+    "type": "setState",
+    "stateKey": "papers|sources|learnings|stocks|crypto|watchlist|documents",
+    "setterKey": "[action from above]",
+    "args": [appropriate arguments for domain],
+    "content": "A human-readable description of what you did"
+}
+</action_handling>
+
+<return_format>
+You should always return a JSON object with the following structure:
+{
+    "content": "Your response",
+    "object": { ... } // action schema from above (optional, omit if not modifying dashboard)
+}
+
+When providing voice interaction results and user requests dashboard updates, include the action object.
+</return_format>
+
+<decision_logic>
+- If the user is asking to modify the dashboard via voice, ALWAYS return an action.
+- If the user is asking for voice-based information only, return just the content and omit the action.
+- If the user mentions saving, tracking, or dashboard updates, ALWAYS return an action.
+- Detect domain context from user's words (stocks → stocks domain, BTC → crypto domain, etc)
+- Format all responses as valid JSON objects.
+</decision_logic>
+</cedar_integration>
   `,
     model: googleAI,
     tools: {

@@ -45,6 +45,7 @@ import { a2aCoordinatorMcpServer } from './mcp'
 import { csvToExcalidrawAgent } from './agents/csv_to_excalidraw'
 import { imageToCsvAgent } from './agents/image_to_csv'
 import { excalidrawValidatorAgent } from './agents/excalidraw_validator'
+import { voiceAgent } from './agents/voiceAgent'
 
 export const mastra = new Mastra({
     storage: pgStore,
@@ -77,8 +78,8 @@ export const mastra = new Mastra({
         csvToExcalidraw: csvToExcalidrawAgent,
         imageToCsv: imageToCsvAgent,
         excalidrawValidator: excalidrawValidatorAgent,
+        voice: voiceAgent,
         // Add more agents here
-        //voice: voiceAgent,
         'research-content-network': researchContentNetwork,
         'governed-rag-network': governedRagNetwork,
         'financial-team-network': financialTeamNetwork,

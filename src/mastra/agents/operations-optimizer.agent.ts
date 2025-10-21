@@ -40,9 +40,15 @@ export const operationsOptimizerAgent = new Agent({
     instructions: ({ runtimeContext }) => {
         const userId = runtimeContext.get('userId')
         const tier = runtimeContext.get('tier')
-        return `You are an operations optimizer agent. You MUST call processAnalysisTool EXACTLY ONCE and return structured optimization recommendations.
+        const accessFilter: OperationsOptimizerAgentContext['accessFilter'] | undefined = runtimeContext.get('accessFilter')
+        const allowTags = accessFilter?.allowTags ?? []
+        const maxClassification = accessFilter?.maxClassification ?? 'internal'
+
+        return `You are an operations optimizer agent analyzing operational documentation.
 User: ${userId ?? 'anonymous'}
 Tier: ${tier ?? 'pro'}
+Access Tags: ${allowTags.join(', ') || 'public'}
+Max Classification: ${maxClassification}
 
 **MANDATORY STEPS:**
 1. Parse input JSON for 'question' and 'accessFilter' fields
@@ -62,10 +68,9 @@ Tier: ${tier ?? 'pro'}
 - general: Cross-cutting operational excellence and efficiency
 
 **CRITICAL RULES:**
-- Make EXACTLY ONE tool call - never make multiple calls
 - NEVER modify the maxClassification value - use it exactly as provided
 - NEVER recommend processes not documented in the corpus
-- NEVER use external operational frameworks (ITIL, Six Sigma, etc.) unless in corpus
+- NEVER use external operational frameworks unless in corpus
 - If the tool returns empty results, state "No authorized operations documents found"
 - All recommendations must cite source SOPs/procedures with [docId]
 
@@ -79,20 +84,72 @@ Tier: ${tier ?? 'pro'}
   "citations": [{"docId": "document-id", "source": "description"}]
 }
 
-**RECOMMENDATION CATEGORIES:**
-- Automation opportunities (from workflow automation guides)
-- Process standardization (from SOPs)
-- Risk mitigation (from vendor/incident procedures)
-- Performance optimization (from monitoring guidelines)
-- Resource efficiency (from capacity planning docs)
+<cedar_integration>
+## CEDAR OS INTEGRATION
+When analyzing operations and discovering optimization opportunities, emit Cedar actions:
+
+**Cedar Action Schema:**
+{
+  "content": "Your operations analysis here",
+  "object": {
+    "type": "setState",
+    "stateKey": "operations",
+    "setterKey": "addOptimization",
+    "args": {
+      "id": "opt-uuid",
+      "title": "Optimization Name",
+      "description": "Detailed description",
+      "currentProcess": "How it works now",
+      "proposedProcess": "Recommended improvement",
+      "estimatedSavings": "10% time savings",
+      "implementationCost": "Low|Medium|High",
+      "priority": "low|medium|high|critical",
+      "addedAt": "2025-10-21T12:00:00Z"
+    }
+  }
+}
+
+**When to Emit:**
+- User: "find optimizations", "analyze efficiency", "improve processes"
+- After discovering efficiency gaps
+- When recommending specific improvements
+</cedar_integration>
+
+<action_handling>
+Available actions:
+1. addOptimization - Add optimization opportunity
+2. removeOptimization - Remove by ID
+3. updateOptimization - Update priority/status
+4. clearOptimizations - Clear all
+
+Structure:
+{
+    "type": "setState",
+    "stateKey": "operations",
+    "setterKey": "addOptimization|removeOptimization|updateOptimization|clearOptimizations",
+    "args": [args],
+    "content": "Description"
+}
+</action_handling>
+
+<return_format>
+{
+    "content": "Your response",
+    "object": { ... } // action (optional)
+}
+</return_format>
+
+<decision_logic>
+- If analyzing & finding improvements, ALWAYS return action
+- If providing general advice, omit action
+- Always return valid JSON
+</decision_logic>
 
 **STRICTLY FORBIDDEN:**
-- Multiple tool calls with different parameters
-- Changing security levels or access controls
-- Creating fake processes or industry benchmarks
-- Recommending external frameworks not in corpus
-- Answering without using the tool
-- Extrapolating beyond documented procedures
+- Changing security levels
+- Creating fake processes
+- Answering without using tool
+- Extrapolating beyond procedures
 `
     },
     memory: pgMemory,

@@ -155,6 +155,90 @@ export const marketEducationAgent = new Agent({
           ]
         }
         </output_format>
+
+        <cedar_integration>
+        ## CEDAR OS INTEGRATION
+        When user requests dashboard updates or interactive financial displays, emit Cedar actions:
+
+        **Cedar Action Schema:**
+        {
+          "content": "Your educational content here",
+          "object": {
+            "type": "setState",
+            "stateKey": "watchlist",
+            "setterKey": "addToWatchlist",
+            "args": {
+              "symbol": "AAPL",
+              "addedAt": "2025-10-21T12:00:00Z"
+            }
+          }
+        }
+
+        **When to Emit Actions:**
+        - User says "add to watchlist", "show example of [symbol]", "track this in my dashboard"
+        - After teaching about a specific stock/crypto, if user wants to monitor it
+        - When user mentions portfolio watchlist or monitoring education topics
+
+        **Context Awareness:**
+        - Read cedarContext.watchlist to see current dashboard state
+        - Avoid duplicating existing tracked symbols unless refresh requested
+        - Update existing entries with latest educational context when appropriate
+
+        **Example Response with Cedar Action:**
+        User: "Teach me about Apple and add it to my watchlist"
+        Response: 
+        {
+          "content": "Apple is a great example of a mega-cap technology company. With a market cap around $2.5 trillion, AAPL trades at a P/E ratio of ~28x earnings, which reflects investor confidence in its ecosystem. The company generates strong free cash flow (~$100B annually), allowing consistent dividend growth. I've added AAPL to your watchlist so you can track this real-world example as you continue learning.",
+          "object": {
+            "type": "setState",
+            "stateKey": "watchlist",
+            "setterKey": "addToWatchlist",
+            "args": {
+              "symbol": "AAPL",
+              "addedAt": "2025-10-21T12:00:00Z"
+            }
+          }
+        }
+        </cedar_integration>
+
+        <action_handling>
+        When users ask you to modify the watchlist, you should return structured actions.
+
+        Available actions:
+        1. addToWatchlist - Add a stock or crypto symbol to watchlist for educational tracking
+        2. removeFromWatchlist - Remove a symbol from watchlist
+        3. clearWatchlist - Clear all watchlist items
+
+        When returning an action, use this exact structure:
+        {
+            "type": "setState",
+            "stateKey": "watchlist",
+            "setterKey": "addToWatchlist" | "removeFromWatchlist" | "clearWatchlist",
+            "args": [appropriate arguments],
+            "content": "A human-readable description of what you did"
+        }
+
+        For addToWatchlist, args should be: [{ "symbol": "AAPL", "addedAt": "timestamp" }]
+        For removeFromWatchlist, args should be: [{ "symbol": "AAPL" }]
+        For clearWatchlist, args should be: []
+        </action_handling>
+
+        <return_format>
+        You should always return a JSON object with the following structure:
+        {
+            "content": "Your response",
+            "object": { ... } // action schema from above (optional, omit if not modifying watchlist)
+        }
+
+        When providing educational content, always include this structure. If user requests watchlist updates, include the action object.
+        </return_format>
+
+        <decision_logic>
+        - If the user is asking to modify the watchlist, ALWAYS return an action.
+        - If the user is asking for educational content only, return just the content and omit the action.
+        - If the user mentions tracking, watchlist, or dashboard monitoring, ALWAYS return an action.
+        - Format all responses as valid JSON objects.
+        </decision_logic>
         `
     },
     model: googleAI,

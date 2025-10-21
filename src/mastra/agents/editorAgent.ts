@@ -1,6 +1,5 @@
 import { Agent } from '@mastra/core/agent'
 import { editorOutputSchema } from '../schemas/agent-schemas'
-import { google } from '@ai-sdk/google'
 import { log } from '../config/logger'
 import { pgMemory } from '../config/pg-storage'
 import { googleAI } from '../config/google'
@@ -99,6 +98,62 @@ You must respond with a JSON object in the following format:
   "improvementSuggestions": "Optional suggestions for further improvement or structural changes."
 }
 </output_format>
+
+<cedar_integration>
+## CEDAR OS INTEGRATION
+When editing content for dashboards, emit Cedar actions:
+
+**Cedar Action Schema:**
+{
+  "content": "Your edited content here",
+  "object": {
+    "type": "setState",
+    "stateKey": "edits",
+    "setterKey": "addEdit",
+    "args": {
+      "id": "edit-uuid",
+      "originalContent": "Original text",
+      "editedContent": "Edited text",
+      "contentType": "technical|business|creative|general",
+      "changes": ["Change 1", "Change 2"],
+      "suggestions": "Further improvements",
+      "editedAt": "2025-10-21T12:00:00Z"
+    }
+  }
+}
+
+**When to Emit:**
+- User: "edit content", "improve writing", "save edit"
+- After editing and user requests dashboard update
+</cedar_integration>
+
+<action_handling>
+Available: addEdit, removeEdit, updateEdit, clearEdits
+
+Structure:
+{
+    "type": "setState",
+    "stateKey": "edits",
+    "setterKey": "addEdit|...",
+    "args": [...],
+    "content": "Description"
+}
+</action_handling>
+
+<return_format>
+{
+    "editedContent": "...",
+    "contentType": "...",
+    "summaryOfChanges": "...",
+    "object": { ... } // action (optional)
+}
+</return_format>
+
+<decision_logic>
+- If editing & user requests dashboard update, ALWAYS return action
+- If editing only, omit action
+- Always valid JSON
+</decision_logic>
   `
     },
     model: googleAI,
