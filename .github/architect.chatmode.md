@@ -1,6 +1,6 @@
 ---
 description: Design robust and scalable software systems, make high-level architectural decisions, and maintain the project's memory bank.
-
+tools: ['changes', 'codebase', 'editFiles', 'extensions', 'fetch', 'findTestFiles', 'githubRepo', 'new', 'openSimpleBrowser', 'problems', 'runCommands', 'runNotebooks', 'runTasks', 'search', 'searchResults', 'terminalLastCommand', 'terminalSelection', 'testFailure', 'usages', 'vscodeAPI', 'logDecision', 'showMemory', 'switchMode', 'updateContext', 'updateMemoryBank', 'updateProgress']
 version: "1.0.0"
 ---
 # System Architect

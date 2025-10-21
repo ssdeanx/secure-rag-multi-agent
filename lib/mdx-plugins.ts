@@ -1,4 +1,5 @@
 import remarkGfm from 'remark-gfm'
+import remarkFrontmatter from 'remark-frontmatter'
 import remarkMdxFrontmatter from 'remark-mdx-frontmatter'
 import remarkToc from 'remark-toc'
 import remarkRehype from 'remark-rehype'
@@ -7,10 +8,12 @@ import rehypeMermaid from 'rehype-mermaid'
 import rehypePrism from 'rehype-prism-plus'
 import rehypeSlug from 'rehype-slug'
 import rehypeAutolinkHeadings from 'rehype-autolink-headings'
+import rehypeFormat from 'rehype-format'
 import type { PluggableList } from 'unified'
 
 // Export typed arrays for TypeScript consumers
 export const remarkPlugins = [
+    remarkFrontmatter,
     remarkGfm,
     remarkMdxFrontmatter,
     remarkToc,
@@ -37,11 +40,13 @@ export const rehypePlugins = asPluggables([
             content: {
                 type: 'element',
                 tagName: 'span',
-                properties: { className: ['anchor-icon'], ariaHidden: 'true' },
+                // use 'aria-hidden' attribute name for HTML output
+                properties: { className: ['anchor-icon'], 'aria-hidden': 'true' },
                 children: [{ type: 'text', value: '#' }],
             },
         },
     ],
+    rehypeFormat,
 ])
 
 export default { remarkPlugins, rehypePlugins }

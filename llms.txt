@@ -8,12 +8,30 @@ This repository demonstrates production-ready governed RAG using Mastra's agenti
 
 - [README.md](README.md): Main project documentation with architecture overview, quick start guide, and feature descriptions
 - [docs/index.md](docs/index.md): Comprehensive documentation index with system overview and core concepts
+- [docs/index.mdx](docs/index.mdx): MDX version of documentation index
 - [docs/architecture.md](docs/architecture.md): Detailed system architecture, component relationships, and workflow explanations
+- [docs/architecture.mdx](docs/architecture.mdx): MDX version of architecture documentation
 - [docs/security.md](docs/security.md): Security model documentation including role hierarchy, document classifications, and access policies
+- [docs/security.mdx](docs/security.mdx): MDX version of security documentation
 - [docs/quick-start.md](docs/quick-start.md): Step-by-step setup and installation guide for local development
+- [docs/quick-start.mdx](docs/quick-start.mdx): MDX version of quick start guide
 - [docs/api-reference.md](docs/api-reference.md): Complete API documentation for chat and indexing endpoints
+- [docs/api-reference.mdx](docs/api-reference.mdx): MDX version of API reference
 - [docs/demo-roles.md](docs/demo-roles.md): Role-based access control demonstrations with sample queries and expected responses
+- [docs/demo-roles.mdx](docs/demo-roles.mdx): MDX version of demo roles documentation
+- [docs/AUTH_ARCHITECTURE.md](docs/AUTH_ARCHITECTURE.md): Authentication architecture documentation
+- [docs/development-agent-personas.md](docs/development-agent-personas.md): Development agent personas and roles
+- [docs/financial-team-agent-enhancement.md](docs/financial-team-agent-enhancement.md): Financial team agent enhancements
+- [docs/financial-team-complete-version.md](docs/financial-team-complete-version.md): Complete financial team implementation
+- [docs/financial-team-usage-examples.md](docs/financial-team-usage-examples.md): Financial team usage examples
+- [docs/joy-components-reference.md](docs/joy-components-reference.md): Joy UI components reference
+- [docs/joy-primitives-guide.md](docs/joy-primitives-guide.md): Joy UI primitives guide
+- [docs/kilocode-headers.md](docs/kilocode-headers.md): Kilocode headers documentation
+- [docs/mastra.mdx](docs/mastra.mdx): Mastra framework documentation
+- [docs/onboarding-cedar-mastra.mdx](docs/onboarding-cedar-mastra.mdx): Cedar and Mastra onboarding guide
+- [docs/workflows-implementation.md](docs/workflows-implementation.md): Workflow implementation details
 - [AGENTS.md](AGENTS.md): Comprehensive development guide covering project structure, technologies, and getting started
+- [JWT_Guide.md](JWT_Guide.md): JWT authentication guide
 
 ## Specifications
 
@@ -22,7 +40,16 @@ This repository demonstrates production-ready governed RAG using Mastra's agenti
 - [src/mastra/schemas/agent-schemas.ts](src/mastra/schemas/agent-schemas.ts): Zod schema definitions for all agent inputs and outputs
 - [src/mastra/policy/acl.yaml](src/mastra/policy/acl.yaml): Access Control List configuration defining document permissions and classifications
 - [src/mastra/workflows/governed-rag-answer.workflow.ts](src/mastra/workflows/governed-rag-answer.workflow.ts): Main RAG workflow orchestrating authentication, retrieval, and answer generation
-- [src/mastra/workflows/indexing.workflow.ts](src/mastra/workflows/indexing.workflow.ts): Document indexing workflow with security classification
+- [src/mastra/workflows/governed-rag-index.workflow.ts](src/mastra/workflows/governed-rag-index.workflow.ts): Document indexing workflow with security classification
+- [src/mastra/workflows/chatWorkflow.ts](src/mastra/workflows/chatWorkflow.ts): Chat workflow implementation
+- [src/mastra/workflows/contentGenerationWorkflow.ts](src/mastra/workflows/contentGenerationWorkflow.ts): Content generation workflow
+- [src/mastra/workflows/financialAnalysisWorkflow.ts](src/mastra/workflows/financialAnalysisWorkflow.ts): Financial analysis workflow
+- [src/mastra/workflows/generateReportWorkflow.ts](src/mastra/workflows/generateReportWorkflow.ts): Report generation workflow
+- [src/mastra/workflows/researchWorkflow.ts](src/mastra/workflows/researchWorkflow.ts): Research workflow implementation
+- [src/mastra/data/](src/mastra/data/): Data layer implementations and database abstractions
+- [src/mastra/domain/](src/mastra/domain/): Domain logic and business rules
+- [src/mastra/scorers/](src/mastra/scorers/): Scoring and evaluation algorithms
+- [src/mastra/shared/](src/mastra/shared/): Shared utilities and common functionality
 - [src/types.ts](src/types.ts): Core TypeScript type definitions for security, access control, and document management
 
 ## Examples
@@ -34,14 +61,84 @@ This repository demonstrates production-ready governed RAG using Mastra's agenti
 - [components/ChatInterface.tsx](components/ChatInterface.tsx): Primary chat UI component with streaming responses
 - [cedar/RoadmapCanvas.tsx](cedar/RoadmapCanvas.tsx): Interactive product roadmap canvas with drag-and-drop features
 - [cedar/SmartRelationshipRoadmap.tsx](cedar/SmartRelationshipRoadmap.tsx): AI-powered roadmap with relationship intelligence
-- [app/api/chat/route.ts](app/api/chat/route.ts): Chat API endpoint implementing governed RAG workflow
-- [app/api/index/route.ts](app/api/index/route.ts): Document indexing API with security classification
-- [app/api/auth/route.ts](app/api/auth/route.ts): Authentication API endpoints
-- [app/api/auth/login/route.ts](app/api/auth/login/route.ts): User login API endpoint
-- [app/api/auth/signup/route.ts](app/api/auth/signup/route.ts): User registration API endpoint
-- [app/api/auth/signout/route.ts](app/api/auth/signout/route.ts): User logout API endpoint
-- [app/api/roadmap/route.ts](app/api/roadmap/route.ts): Roadmap management API endpoints
+## API Endpoints
 
+- [app/api/](app/api/): Next.js API route handlers
+- [app/api/auth/](app/api/auth/): Authentication API endpoints
+- [app/api/auth/login/route.ts](app/api/auth/login/route.ts): User login API endpoint
+- [app/api/auth/logout/route.ts](app/api/auth/logout/route.ts): User logout API endpoint
+- [app/api/auth/session/route.ts](app/api/auth/session/route.ts): Session management API endpoint
+- [app/api/auth/signup/route.ts](app/api/auth/signup/route.ts): User registration API endpoint
+- [app/api/auth/github/route.ts](app/api/auth/github/route.ts): GitHub OAuth authentication
+- [app/api/auth/callback/github/route.ts](app/api/auth/callback/github/route.ts): GitHub OAuth callback
+- [app/api/chat/route.ts](app/api/chat/route.ts): Chat API endpoint implementing governed RAG workflow
+- [app/api/chat/resume/route.ts](app/api/chat/resume/route.ts): Chat session resume endpoint
+- [app/api/index/route.ts](app/api/index/route.ts): Document indexing API with security classification
+- [app/api/docs-index/route.ts](app/api/docs-index/route.ts): Documentation indexing API
+- [app/api/dashboard/](app/api/dashboard/): Dashboard API endpoints
+- [app/api/dashboard/documents/route.ts](app/api/dashboard/documents/route.ts): Document management API
+- [app/api/dashboard/documents/[id]/route.ts](app/api/dashboard/documents/[id]/route.ts): Individual document API
+- [app/api/dashboard/documents/[id]/chunks/route.ts](app/api/dashboard/documents/[id]/chunks/route.ts): Document chunks API
+- [app/api/dashboard/monitoring/](app/api/dashboard/monitoring/): Monitoring API endpoints
+- [app/api/dashboard/monitoring/agents/route.ts](app/api/dashboard/monitoring/agents/route.ts): Agent monitoring API
+- [app/api/dashboard/monitoring/logs/route.ts](app/api/dashboard/monitoring/logs/route.ts): Logging API
+- [app/api/dashboard/monitoring/metrics/route.ts](app/api/dashboard/monitoring/metrics/route.ts): Metrics API
+- [app/api/dashboard/monitoring/telemetry/route.ts](app/api/dashboard/monitoring/telemetry/route.ts): Telemetry API
+- [app/api/dashboard/monitoring/workflows/route.ts](app/api/dashboard/monitoring/workflows/route.ts): Workflow monitoring API
+- [app/api/dashboard/policy/](app/api/dashboard/policy/): Policy management API
+- [app/api/dashboard/policy/roles/[role]/permissions/route.ts](app/api/dashboard/policy/roles/[role]/permissions/route.ts): Role permissions API
+- [app/api/dashboard/policy/rules/route.ts](app/api/dashboard/policy/rules/route.ts): Policy rules API
+- [app/api/dashboard/policy/rules/[id]/route.ts](app/api/dashboard/policy/rules/[id]/route.ts): Individual policy rule API
+- [app/api/dashboard/settings/](app/api/dashboard/settings/): Settings API endpoints
+- [app/api/dashboard/settings/api-keys/route.ts](app/api/dashboard/settings/api-keys/route.ts): API keys management
+- [app/api/dashboard/settings/api-keys/[id]/route.ts](app/api/dashboard/settings/api-keys/[id]/route.ts): Individual API key management
+- [app/api/dashboard/settings/models/route.ts](app/api/dashboard/settings/models/route.ts): AI model configuration
+- [app/api/dashboard/settings/notifications/route.ts](app/api/dashboard/settings/notifications/route.ts): Notification settings
+- [app/api/dashboard/settings/profile/route.ts](app/api/dashboard/settings/profile/route.ts): User profile settings
+- [app/api/dashboard/settings/providers/route.ts](app/api/dashboard/settings/providers/route.ts): Provider settings
+- [app/api/dashboard/settings/theme/route.ts](app/api/dashboard/settings/theme/route.ts): Theme settings
+- [app/api/dashboard/users/route.ts](app/api/dashboard/users/route.ts): User management API
+- [app/api/dashboard/users/[id]/route.ts](app/api/dashboard/users/[id]/route.ts): Individual user management
+- [app/api/dashboard/users/[id]/activity/route.ts](app/api/dashboard/users/[id]/activity/route.ts): User activity tracking
+- [app/api/dashboard/users/[id]/role/route.ts](app/api/dashboard/users/[id]/role/route.ts): User role management
+- [app/api/dashboard/users/invite/route.ts](app/api/dashboard/users/invite/route.ts): User invitation API
+- [components/ui/](components/ui/): Complete Joy UI component library (buttons, forms, navigation, etc.)
+
+## Blog
+
+- [blog/](blog/): Blog posts and articles
+- [blog/introducing-governed-rag.mdx](blog/introducing-governed-rag.mdx): Introduction to governed RAG systems
+- [blog/joy-ui-migration-complete.mdx](blog/joy-ui-migration-complete.mdx): Joy UI migration completion announcement
+- [blog/secure-vector-filters.mdx](blog/secure-vector-filters.mdx): Secure vector filtering implementation
+
+## Memory Bank
+
+- [memory-bank/](memory-bank/): Project memory and context management
+- [memory-bank/activeContext.md](memory-bank/activeContext.md): Current active project context
+- [memory-bank/productContext.md](memory-bank/productContext.md): Product context and requirements
+- [memory-bank/progress.md](memory-bank/progress.md): Project progress tracking
+- [memory-bank/decisionLog.md](memory-bank/decisionLog.md): Architectural decision log
+- [memory-bank/projectBrief.md](memory-bank/projectBrief.md): Project brief and objectives
+- [memory-bank/systemPatterns.md](memory-bank/systemPatterns.md): System patterns and conventions
+
+## Scripts & CLI
+
+- [src/cli/](src/cli/): Command-line interface for document indexing and management
+- [scripts/](scripts/): Utility scripts and automation tools
+
+## Testing
+
+- [tests/](tests/): Test suites and testing utilities
+- [vitest.config.ts](vitest.config.ts): Testing framework configuration
+- [globalSetup.ts](globalSetup.ts): Global test setup configuration
+- [testSetup.ts](testSetup.ts): Test environment setup
+
+## Configuration
+
+- [.env.example](.env.example): Environment variables template with required API keys and configuration
+- [docker-compose.yml](docker-compose.yml): Docker services configuration for Qdrant and database
+- [next.config.mjs](next.config.mjs): Next.js configuration and build settings
+- [tsconfig.json](tsconfig.json): TypeScript configuration for the project
 ## Configuration
 
 - [.env.example](.env.example): Environment variables template with required API keys and configuration
@@ -55,31 +152,66 @@ This repository demonstrates production-ready governed RAG using Mastra's agenti
 - [next-sitemap.config.js](next-sitemap.config.js): SEO sitemap generation configuration
 - [src/mastra/config/logger.ts](src/mastra/config/logger.ts): Logging configuration and structured logging setup
 - [components.json](components.json): shadcn/ui component configuration
+- [.markdownlint.json](.markdownlint.json): Markdown linting configuration
+- [.vscode/settings.json](.vscode/settings.json): VS Code workspace settings
+- [.vscode/tasks.json](.vscode/tasks.json): VS Code task configurations
 
 ## Agents
 
-- [src/mastra/agents/](src/mastra/agents/): Directory containing all specialized AI agents (authentication, retrieval, reranking, answering, verification)
-- [src/mastra/agents/identityAgent.ts](src/mastra/agents/identityAgent.ts): JWT validation and user identity verification
-- [src/mastra/agents/policyAgent.ts](src/mastra/agents/policyAgent.ts): Access policy generation and security filtering
-- [src/mastra/agents/retrieveAgent.ts](src/mastra/agents/retrieveAgent.ts): Vector search and document retrieval with security filters
-- [src/mastra/agents/rerankAgent.ts](src/mastra/agents/rerankAgent.ts): Result relevance scoring and reordering
-- [src/mastra/agents/answererAgent.ts](src/mastra/agents/answererAgent.ts): Answer generation from filtered contexts
-- [src/mastra/agents/verifierAgent.ts](src/mastra/agents/verifierAgent.ts): Compliance verification and security validation
+- [src/mastra/agents/](src/mastra/agents/): Directory containing all specialized AI agents
+- [src/mastra/agents/identity.agent.ts](src/mastra/agents/identity.agent.ts): JWT validation and user identity verification
+- [src/mastra/agents/policy.agent.ts](src/mastra/agents/policy.agent.ts): Access policy generation and security filtering
+- [src/mastra/agents/retrieve.agent.ts](src/mastra/agents/retrieve.agent.ts): Vector search and document retrieval with security filters
+- [src/mastra/agents/rerank.agent.ts](src/mastra/agents/rerank.agent.ts): Result relevance scoring and reordering
+- [src/mastra/agents/answerer.agent.ts](src/mastra/agents/answerer.agent.ts): Answer generation from filtered contexts
+- [src/mastra/agents/verifier.agent.ts](src/mastra/agents/verifier.agent.ts): Compliance verification and security validation
+- [src/mastra/agents/a2aCoordinatorAgent.ts](src/mastra/agents/a2aCoordinatorAgent.ts): Agent-to-agent coordination
+- [src/mastra/agents/assistant.ts](src/mastra/agents/assistant.ts): General assistant agent
+- [src/mastra/agents/compliance-advisor.agent.ts](src/mastra/agents/compliance-advisor.agent.ts): Compliance advisory agent
+- [src/mastra/agents/copywriterAgent.ts](src/mastra/agents/copywriterAgent.ts): Content copywriting agent
+- [src/mastra/agents/cryptoAnalysisAgent.ts](src/mastra/agents/cryptoAnalysisAgent.ts): Cryptocurrency analysis agent
+- [src/mastra/agents/editorAgent.ts](src/mastra/agents/editorAgent.ts): Content editing agent
+- [src/mastra/agents/evaluationAgent.ts](src/mastra/agents/evaluationAgent.ts): Content evaluation agent
+- [src/mastra/agents/learningExtractionAgent.ts](src/mastra/agents/learningExtractionAgent.ts): Learning extraction agent
+- [src/mastra/agents/marketEducationAgent.ts](src/mastra/agents/marketEducationAgent.ts): Market education agent
+- [src/mastra/agents/mcpAgent.ts](src/mastra/agents/mcpAgent.ts): MCP protocol agent
+- [src/mastra/agents/operations-optimizer.agent.ts](src/mastra/agents/operations-optimizer.agent.ts): Operations optimization agent
+- [src/mastra/agents/productRoadmapAgent.ts](src/mastra/agents/productRoadmapAgent.ts): Product roadmap management agent
+- [src/mastra/agents/reportAgent.ts](src/mastra/agents/reportAgent.ts): Report generation agent
+- [src/mastra/agents/researchAgent.ts](src/mastra/agents/researchAgent.ts): Research agent
+- [src/mastra/agents/sales-intelligence.agent.ts](src/mastra/agents/sales-intelligence.agent.ts): Sales intelligence agent
+- [src/mastra/agents/selfReferencingAgent.ts](src/mastra/agents/selfReferencingAgent.ts): Self-referencing agent
+- [src/mastra/agents/starterAgent.ts](src/mastra/agents/starterAgent.ts): Starter agent for orchestration
+- [src/mastra/agents/stockAnalysisAgent.ts](src/mastra/agents/stockAnalysisAgent.ts): Stock analysis agent
+- [src/mastra/agents/template-reviewer-agent.ts](src/mastra/agents/template-reviewer-agent.ts): Template review agent
+- [src/mastra/agents/voiceAgent.ts](src/mastra/agents/voiceAgent.ts): Voice interaction agent
 
 ## Tools
 
 - [src/mastra/tools/](src/mastra/tools/): Reusable tool implementations for agent workflows
-- [src/mastra/tools/jwt-auth-tool.ts](src/mastra/tools/jwt-auth-tool.ts): JWT token validation and claims extraction
-- [src/mastra/tools/vector-query-tool.ts](src/mastra/tools/vector-query-tool.ts): Secure vector similarity search with access filtering
+- [src/mastra/tools/jwt-auth.tool.ts](src/mastra/tools/jwt-auth.tool.ts): JWT token validation and claims extraction
+- [src/mastra/tools/vector-query.tool.ts](src/mastra/tools/vector-query.tool.ts): Secure vector similarity search with access filtering
 - [src/mastra/tools/web-scraper-tool.ts](src/mastra/tools/web-scraper-tool.ts): Web content extraction and processing utilities
 - [src/mastra/tools/copywriter-agent-tool.ts](src/mastra/tools/copywriter-agent-tool.ts): AI-powered content creation and copywriting
 - [src/mastra/tools/data-file-manager.ts](src/mastra/tools/data-file-manager.ts): Comprehensive file system operations and management
 - [src/mastra/tools/editor-agent-tool.ts](src/mastra/tools/editor-agent-tool.ts): Content editing and improvement tool
 - [src/mastra/tools/weather-tool.ts](src/mastra/tools/weather-tool.ts): Weather data retrieval and geocoding integration
-- [src/mastra/tools/evaluate-result-tool.ts](src/mastra/tools/evaluate-result-tool.ts): Search result relevance evaluation
-- [src/mastra/tools/extract-learnings-tool.ts](src/mastra/tools/extract-learnings-tool.ts): Learning extraction and follow-up question generation
-- [src/mastra/tools/roadmap-tool.ts](src/mastra/tools/roadmap-tool.ts): Product roadmap feature management (CRUD operations)
+- [src/mastra/tools/evaluateResultTool.ts](src/mastra/tools/evaluateResultTool.ts): Search result relevance evaluation
+- [src/mastra/tools/extractLearningsTool.ts](src/mastra/tools/extractLearningsTool.ts): Learning extraction and follow-up question generation
+- [src/mastra/tools/roadmapTool.ts](src/mastra/tools/roadmapTool.ts): Product roadmap feature management (CRUD operations)
 - [src/mastra/tools/starter-agent-tool.ts](src/mastra/tools/starter-agent-tool.ts): Dynamic multi-agent orchestration tool
+- [src/mastra/tools/alpha-vantage.tool.ts](src/mastra/tools/alpha-vantage.tool.ts): Alpha Vantage financial data API integration
+- [src/mastra/tools/arxiv.tool.ts](src/mastra/tools/arxiv.tool.ts): ArXiv academic paper search and retrieval
+- [src/mastra/tools/competitive-intelligence.tool.ts](src/mastra/tools/competitive-intelligence.tool.ts): Competitive intelligence gathering
+- [src/mastra/tools/compliance-check.tool.ts](src/mastra/tools/compliance-check.tool.ts): Compliance verification and checking
+- [src/mastra/tools/document-chunking.tool.ts](src/mastra/tools/document-chunking.tool.ts): Document chunking for processing
+- [src/mastra/tools/finnhub-tools.ts](src/mastra/tools/finnhub-tools.ts): Finnhub financial data integration
+- [src/mastra/tools/graph-rag-query.tool.ts](src/mastra/tools/graph-rag-query.tool.ts): Graph-based RAG query processing
+- [src/mastra/tools/pdf-data-conversion.tool.ts](src/mastra/tools/pdf-data-conversion.tool.ts): PDF data extraction and conversion
+- [src/mastra/tools/polygon-tools.ts](src/mastra/tools/polygon-tools.ts): Polygon.io financial market data
+- [src/mastra/tools/process-analysis.tool.ts](src/mastra/tools/process-analysis.tool.ts): Process analysis and optimization
+- [src/mastra/tools/sales-data-analysis.tool.ts](src/mastra/tools/sales-data-analysis.tool.ts): Sales data analysis tools
+- [src/mastra/tools/serpapi/](src/mastra/tools/serpapi/): SERP API integration tools directory
 
 ## Services
 
@@ -108,6 +240,14 @@ This repository demonstrates production-ready governed RAG using Mastra's agenti
 - [components/TopNavigation.tsx](components/TopNavigation.tsx): Main navigation bar
 - [components/UserMenu.tsx](components/UserMenu.tsx): User account and settings menu
 - [components/AppSidebar.tsx](components/AppSidebar.tsx): Application sidebar navigation
+- [components/ui/](components/ui/): Complete Joy UI component library
+- [components/ui/button.joy.tsx](components/ui/button.joy.tsx): Joy UI button components
+- [components/ui/input.joy.tsx](components/ui/input.joy.tsx): Joy UI input components
+- [components/ui/card.joy.tsx](components/ui/card.joy.tsx): Joy UI card components
+- [components/ui/modal.joy.tsx](components/ui/modal.joy.tsx): Joy UI modal components
+- [components/ui/tabs.joy.tsx](components/ui/tabs.joy.tsx): Joy UI tabs components
+- [components/ui/table.joy.tsx](components/ui/table.joy.tsx): Joy UI table components
+- [components/ui/typography.joy.tsx](components/ui/typography.joy.tsx): Joy UI typography components
 
 ## Cedar OS
 
@@ -127,46 +267,98 @@ This repository demonstrates production-ready governed RAG using Mastra's agenti
 - [app/cedar-os/hooks.ts](app/cedar-os/hooks.ts): Cedar OS custom hooks
 - [app/cedar-os/mentions.ts](app/cedar-os/mentions.ts): Mention system for Cedar OS interactions
 - [app/cedar-os/state.ts](app/cedar-os/state.ts): Cedar OS state management
+- [app/protected/cedar-os/](app/protected/cedar-os/): Protected Cedar OS functionality
+- [app/protected/cedar-os/context.ts](app/protected/cedar-os/context.ts): Protected Cedar OS context
+- [app/protected/cedar-os/globals.css](app/protected/cedar-os/globals.css): Cedar OS global styles
+- [app/protected/cedar-os/hooks.ts](app/protected/cedar-os/hooks.ts): Protected Cedar OS hooks
+- [app/protected/cedar-os/layout.tsx](app/protected/cedar-os/layout.tsx): Cedar OS layout component
+- [app/protected/cedar-os/mentions.ts](app/protected/cedar-os/mentions.ts): Protected mention system
+- [app/protected/cedar-os/page.tsx](app/protected/cedar-os/page.tsx): Protected Cedar OS main page
+- [app/protected/cedar-os/state.ts](app/protected/cedar-os/state.ts): Protected Cedar OS state management
+- [app/protected/cedar-os/research/page.tsx](app/protected/cedar-os/research/page.tsx): Cedar OS research interface
 
-- [docs/components/](docs/components/): Comprehensive OO component documentation for all agents, tools, workflows, and UI components
-- [cedar/](cedar/): Cedar OS interactive UI components and roadmap canvas implementation
-- [cedar/components/](cedar/components/): Additional Cedar OS UI component library
-- [gemini/1-project-overview.md](gemini/1-project-overview.md): Project overview and architecture summary
-- [gemini/2-development-guide.md](gemini/2-development-guide.md): Development workflow and best practices
-- [gemini/3-component-guide.md](gemini/3-component-guide.md): Component architecture and patterns
-- [gemini/4-testing-guide.md](gemini/4-testing-guide.md): Testing strategies and guidelines
-- [gemini/5-mastra-guide.md](gemini/5-mastra-guide.md): Mastra framework integration guide
+## Libraries & Utilities
+
 - [lib/](lib/): Shared utilities and external service clients
 - [lib/auth.ts](lib/auth.ts): Authentication utilities and helpers
+- [lib/blog.ts](lib/blog.ts): Blog-related utilities and functions
 - [lib/jwt-utils.ts](lib/jwt-utils.ts): JWT token handling and validation utilities
 - [lib/mdx-plugins.ts](lib/mdx-plugins.ts): MDX processing plugins for documentation
+- [lib/metadata.ts](lib/metadata.ts): Metadata handling utilities
+- [lib/session.ts](lib/session.ts): Session management utilities
 - [lib/utils.ts](lib/utils.ts): General utility functions
 - [lib/actions/](lib/actions/): Server actions for Next.js
+- [lib/actions/auth.ts](lib/actions/auth.ts): Authentication server actions
+- [lib/actions/observability.ts](lib/actions/observability.ts): Observability server actions
+- [lib/mastra/mastra-client.ts](lib/mastra/mastra-client.ts): Mastra client configuration and authentication utilities
+- [lib/mastra/types.ts](lib/mastra/types.ts): Mastra-related TypeScript types
+- [lib/theme/dashboard-theme.ts](lib/theme/dashboard-theme.ts): Dashboard theme configuration
+- [lib/theme/joy-theme.ts](lib/theme/joy-theme.ts): Joy UI theme configuration
 - [hooks/](hooks/): Custom React hooks for UI state management
 - [hooks/use-mobile.ts](hooks/use-mobile.ts): Mobile device detection hook
-- [tests/](tests/): Test suites and testing utilities
-- [src/cli/](src/cli/): Command-line interface for document indexing and management
+- [hooks/use-session.ts](hooks/use-session.ts): Session management hook
+
+## Development & CI/CD
+
 - [.github/instructions/](.github/instructions/): Repository-specific development guidelines and coding standards
 - [.github/prompts/](.github/prompts/): AI agent prompts and automation templates
 - [.github/workflows/](.github/workflows/): GitHub Actions CI/CD workflows for automated processes
-- [.vscode/settings.json](.vscode/settings.json): VS Code workspace settings
-- [.vscode/tasks.json](.vscode/tasks.json): VS Code task configurations
 - [.kiro/steering/](.kiro/steering/): Development steering documents and guidelines
 - [.kilocode/rules/](.kilocode/rules/): Development rules and coding standards
 - [.codacy/cli.sh](.codacy/cli.sh): Codacy CLI script for code quality analysis
 - [docker/](docker/): Alternative vector database configurations (ChromaDB, Pinecone, Weaviate, etc.)
 - [ai-memory.md](ai-memory.md): AI agent memory and conversation history
-- [.markdownlint.json](.markdownlint.json): Markdown linting configuration
+
+## Application Pages
+
 - [app/about/](app/about/): About page and company information
+- [app/about/page.tsx](app/about/page.tsx): About page component
 - [app/blog/](app/blog/): Blog and news section
+- [app/blog/page.tsx](app/blog/page.tsx): Blog listing page
+- [app/blog/[slug]/page.tsx](app/blog/[slug]/page.tsx): Individual blog post pages
 - [app/contact/](app/contact/): Contact and support pages
+- [app/contact/page.tsx](app/contact/page.tsx): Contact page component
 - [app/docs/](app/docs/): Documentation pages (MDX-based)
+- [app/docs/page.tsx](app/docs/page.tsx): Documentation index page
+- [app/docs/[...slug]/page.tsx](app/docs/[...slug]/page.tsx): Dynamic documentation pages
+- [app/features/](app/features/): Features showcase page
+- [app/features/page.tsx](app/features/page.tsx): Features page component
 - [app/login/](app/login/): Authentication and login pages
+- [app/login/page.tsx](app/login/page.tsx): Login page component
+- [app/pricing/](app/pricing/): Pricing information page
+- [app/pricing/page.tsx](app/pricing/page.tsx): Pricing page component
+- [app/protected/](app/protected/): Protected application pages requiring authentication
+- [app/protected/page.tsx](app/protected/page.tsx): Protected page entry point
+- [app/protected/dash/](app/protected/dash/): Dashboard pages
+- [app/protected/dash/page.tsx](app/protected/dash/page.tsx): Main dashboard page
+- [app/protected/dash/documents/](app/protected/dash/documents/): Document management pages
+- [app/protected/dash/documents/page.tsx](app/protected/dash/documents/page.tsx): Documents listing page
+- [app/protected/dash/documents/[id]/page.tsx](app/protected/dash/documents/[id]/page.tsx): Individual document page
+- [app/protected/dash/documents/upload/page.tsx](app/protected/dash/documents/upload/page.tsx): Document upload page
+- [app/protected/dash/monitoring/](app/protected/dash/monitoring/): Monitoring dashboard pages
+- [app/protected/dash/monitoring/page.tsx](app/protected/dash/monitoring/page.tsx): Monitoring overview
+- [app/protected/dash/monitoring/agents/page.tsx](app/protected/dash/monitoring/agents/page.tsx): Agent monitoring page
+- [app/protected/dash/monitoring/performance/page.tsx](app/protected/dash/monitoring/performance/page.tsx): Performance monitoring page
+- [app/protected/dash/monitoring/workflows/page.tsx](app/protected/dash/monitoring/workflows/page.tsx): Workflow monitoring page
+- [app/protected/dash/policy/](app/protected/dash/policy/): Policy management pages
+- [app/protected/dash/policy/page.tsx](app/protected/dash/policy/page.tsx): Policy overview page
+- [app/protected/dash/policy/roles/page.tsx](app/protected/dash/policy/roles/page.tsx): Role management page
+- [app/protected/dash/settings/](app/protected/dash/settings/): Settings pages
+- [app/protected/dash/settings/page.tsx](app/protected/dash/settings/page.tsx): Settings overview
+- [app/protected/dash/settings/api-keys/page.tsx](app/protected/dash/settings/api-keys/page.tsx): API keys settings
+- [app/protected/dash/settings/models/page.tsx](app/protected/dash/settings/models/page.tsx): AI models settings
+- [app/protected/dash/settings/profile/page.tsx](app/protected/dash/settings/profile/page.tsx): User profile settings
+- [app/protected/dash/settings/theme/page.tsx](app/protected/dash/settings/theme/page.tsx): Theme settings page
+- [app/protected/dash/users/](app/protected/dash/users/): User management pages
+- [app/protected/dash/users/page.tsx](app/protected/dash/users/page.tsx): Users listing page
+- [app/protected/dash/users/[id]/page.tsx](app/protected/dash/users/[id]/page.tsx): Individual user page
+- [app/protected/cedar-os/](app/protected/cedar-os/): Cedar OS protected pages
+- [app/protected/cedar-os/page.tsx](app/protected/cedar-os/page.tsx): Cedar OS main page
+- [app/protected/cedar-os/research/page.tsx](app/protected/cedar-os/research/page.tsx): Cedar OS research page
+- [app/protected/demo-rag/](app/protected/demo-rag/): Governed RAG demonstration pages
+- [app/protected/demo-rag/page.tsx](app/protected/demo-rag/page.tsx): Demo RAG page
 - [app/tests/](app/tests/): Testing and debugging pages
-- [LICENSE](LICENSE): Project license information
-- [.gitignore](.gitignore): Git ignore patterns and rules
-- [globalSetup.ts](globalSetup.ts): Global test setup configuration
-- [testSetup.ts](testSetup.ts): Test environment setup
+- [app/tests/page.tsx](app/tests/page.tsx): Test page component
 
 ## Application Core
 
@@ -176,3 +368,5 @@ This repository demonstrates production-ready governed RAG using Mastra's agenti
 - [public/robots.txt](public/robots.txt): SEO robots.txt configuration
 - [logs/mastra.log](logs/mastra.log): Mastra framework operation logs
 - [logs/workflow.log](logs/workflow.log): Workflow execution logs
+- [LICENSE](LICENSE): Project license information
+- [.gitignore](.gitignore): Git ignore patterns and rules

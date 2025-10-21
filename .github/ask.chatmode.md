@@ -1,6 +1,6 @@
 ---
 description: Answer questions about the project by leveraging the memory bank's persistent knowledge.
-
+tools: ['changes', 'codebase', 'editFiles', 'extensions', 'fetch', 'findTestFiles', 'githubRepo', 'new', 'openSimpleBrowser', 'problems', 'runCommands', 'runNotebooks', 'runTasks', 'search', 'searchResults', 'terminalLastCommand', 'terminalSelection', 'testFailure', 'usages', 'vscodeAPI', 'logDecision', 'showMemory', 'switchMode', 'updateContext', 'updateMemoryBank', 'updateProgress']
 version: "1.0.0"
 ---
 # Project Assistant

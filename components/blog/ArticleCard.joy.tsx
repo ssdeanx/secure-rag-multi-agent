@@ -1,14 +1,7 @@
 'use client'
 
-import {
-    Card,
-    CardContent,
-    Typography,
-    Box,
-    Chip,
-    Avatar,
-    Link,
-} from '@/components/ui/joy'
+import { Card, CardContent, Typography, Box, Chip, Link } from '@/components/ui/joy'
+import './ArticleCard.joy.css'
 import { motion } from 'framer-motion'
 import { CalendarMonth, Person, AccessTime } from '@mui/icons-material'
 
@@ -78,25 +71,8 @@ export function ArticleCard({
                     }}
                 >
                     {typeof image === 'string' && image.trim() !== '' && (
-                        <Box
-                            sx={{
-                                width: '100%',
-                                height: 200,
-                                overflow: 'hidden',
-                                borderTopLeftRadius: 'var(--joy-radius-sm)',
-                                borderTopRightRadius: 'var(--joy-radius-sm)',
-                            }}
-                        >
-                            <img
-                                src={image}
-                                alt={title}
-                                style={{
-                                    width: '100%',
-                                    height: '100%',
-                                    objectFit: 'cover',
-                                    display: 'block',
-                                }}
-                            />
+                        <Box className="article-featured-image-wrapper">
+                            <img src={image} alt={title} className="article-featured-image" />
                         </Box>
                     )}
                     <CardContent
@@ -175,17 +151,8 @@ export function ArticleCard({
                                         borderColor: 'primary.200',
                                     }}
                                 >
-                                    {author.avatar ? (
-                                        <img
-                                            src={author.avatar}
-                                            alt={author.name}
-                                            style={{
-                                                width: '100%',
-                                                height: '100%',
-                                                borderRadius: '50%',
-                                                objectFit: 'cover',
-                                            }}
-                                        />
+                                    {author.avatar !== null && author.avatar !== undefined && author.avatar.trim() !== '' ? (
+                                        <img src={author.avatar} alt={author.name} className="article-author-avatar" />
                                     ) : author.name?.trim() ? (
                                         author.name
                                             .split(' ')

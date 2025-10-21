@@ -43,56 +43,109 @@ A comprehensive multi-agent AI orchestration platform that combines secure Retri
 ### Architecture
 
 ```mermaid
-graph TD
-
-    user["User<br>/app"]
-    external_llm["External LLM/RAG Service<br>/llms.txt"]
-    external_data["External Data Sources<br>/corpus"]
-    subgraph mastra_rag_system["Mastra Governed RAG System<br>[External]"]
-        subgraph web_app["Web Application<br>/app"]
-            ui_components["UI Components<br>/components/ui"]
-            pages["Pages<br>/app"]
-            navigation["Navigation & Layout<br>/app/layout.tsx"]
-            mdx_renderer["MDX Renderer<br>/components/mdx"]
-            %% Edges at this level (grouped by source)
-            pages["Pages<br>/app"] -->|"Uses"| ui_components["UI Components<br>/components/ui"]
-            pages["Pages<br>/app"] -->|"Uses"| navigation["Navigation & Layout<br>/app/layout.tsx"]
-            mdx_renderer["MDX Renderer<br>/components/mdx"] -->|"Uses"| ui_components["UI Components<br>/components/ui"]
-        end
-        subgraph backend_api["Backend API<br>/lib"]
-            auth_service["Authentication Service<br>/lib/auth.ts"]
-            rag_orchestrator["RAG Orchestrator<br>/lib/mastra"]
-            api_endpoints["API Endpoints<br>/app/api"]
-            data_processing["Data Processing<br>/lib/utils.ts"]
-            %% Edges at this level (grouped by source)
-            api_endpoints["API Endpoints<br>/app/api"] -->|"Uses"| auth_service["Authentication Service<br>/lib/auth.ts"]
-            api_endpoints["API Endpoints<br>/app/api"] -->|"Invokes"| rag_orchestrator["RAG Orchestrator<br>/lib/mastra"]
-            rag_orchestrator["RAG Orchestrator<br>/lib/mastra"] -->|"Uses"| data_processing["Data Processing<br>/lib/utils.ts"]
-        end
-        subgraph document_store["Document Store<br>/corpus"]
-            document_storage["Document Storage<br>/corpus"]
-            indexing_service["Indexing Service<br>[External]"]
-            retrieval_service["Retrieval Service<br>[External]"]
-            %% Edges at this level (grouped by source)
-            indexing_service["Indexing Service<br>[External]"] -->|"Reads from"| document_storage["Document Storage<br>/corpus"]
-            retrieval_service["Retrieval Service<br>[External]"] -->|"Queries"| indexing_service["Indexing Service<br>[External]"]
-        end
-        subgraph cli_app["CLI Application<br>/src/cli"]
-            cli_commands["CLI Commands<br>/src/cli"]
-            cli_core["CLI Core<br>/src/index.ts"]
-            %% Edges at this level (grouped by source)
-            cli_core["CLI Core<br>/src/index.ts"] -->|"Dispatches to"| cli_commands["CLI Commands<br>/src/cli"]
-        end
-        %% Edges at this level (grouped by source)
-        web_app["Web Application<br>/app"] -->|"Makes API calls to | HTTPS/JSON"| backend_api["Backend API<br>/lib"]
-        backend_api["Backend API<br>/lib"] -->|"Retrieves documents from"| retrieval_service["Retrieval Service<br>[External]"]
-        cli_app["CLI Application<br>/src/cli"] -->|"Interacts with | API Calls"| backend_api["Backend API<br>/lib"]
-        cli_app["CLI Application<br>/src/cli"] -->|"Ingests data into"| indexing_service["Indexing Service<br>[External]"]
+flowchart TD
+    %% Frontend Layer
+    subgraph "🎨 Frontend Layer"
+        A[Next.js App Router<br/>React 19 + TypeScript]
+        B[Cedar OS Integration<br/>Product Roadmap UI]
+        C[React Components<br/>Chat, Auth, Indexing]
+        D[Shared Libraries<br/>JWT, MDX, Hooks]
     end
-    %% Edges at this level (grouped by source)
-    backend_api["Backend API<br>/lib"] -->|"Queries | API Calls"| external_llm["External LLM/RAG Service<br>/llms.txt"]
-    external_data["External Data Sources<br>/corpus"] -->|"Provides documents to"| document_storage["Document Storage<br>/corpus"]
-    user["User<br>/app"] -->|"Uses | HTTPS"| web_app["Web Application<br>/app"]
+    
+    %% Backend Layer  
+    subgraph "⚙️ Backend Layer"
+        E[Mastra Core<br/>Orchestration Engine]
+        F[AI Agents<br/>27+ Specialized Agents<br/>5 Domains]
+        G[Workflows<br/>10+ Multi-step Orchestration<br/>Complex Tasks]
+        H[Tools & Services<br/>50+ Tools<br/>Business Logic]
+        I[API Routes<br/>Chat & Indexing<br/>Streaming]
+    end
+    
+    %% Data Layer
+    subgraph "💾 Data Layer"
+        J[(PostgreSQL + PgVector<br/>Vector Embeddings<br/>Document Storage)]
+        K[(Content Corpus<br/>Markdown Files<br/>RAG Source)]
+    end
+    
+    %% External Services
+    subgraph "🔗 External Services"
+        L[Google Gemini<br/>AI Models]
+        M[OpenAI<br/>LLM Services]
+        N[Data Sources<br/>Alpha Vantage, Finnhub<br/>SerpAPI, Polygon]
+        O[Academic Sources<br/>ArXiv, Research APIs]
+    end
+    
+    %% Agent Categories (detailed breakdown)
+    subgraph "🤖 Agent Categories"
+        P1[Governed RAG Agents<br/>identity, retrieve, rerank<br/>answerer, verifier]
+        P2[Domain Agents<br/>research, copywriter<br/>cryptoAnalysis, compliance]
+        P3[Specialized Agents<br/>productRoadmap, salesIntelligence<br/>stockAnalysis, voiceAgent]
+        P4[Orchestration Agents<br/>a2aCoordinator, assistant<br/>editor, evaluation]
+    end
+    
+    %% Workflow Categories
+    subgraph "🔄 Workflow Categories"
+        Q1[Chat Workflows<br/>Multiple Versions<br/>Real-time Conversation]
+        Q2[Analysis Workflows<br/>Financial Analysis V3<br/>Research Workflow]
+        Q3[Content Workflows<br/>Content Generation<br/>Report Generation]
+        Q4[RAG Workflows<br/>Governed RAG Answer<br/>Governed RAG Index]
+    end
+    
+    %% Tool Categories
+    subgraph "🛠️ Tool Categories"
+        R1[Data Tools<br/>Alpha Vantage, Finnhub<br/>Polygon, SerpAPI]
+        R2[Processing Tools<br/>Document Chunking<br/>PDF Conversion, Web Scraper]
+        R3[Analysis Tools<br/>Competitive Intelligence<br/>Compliance Check, Sales Analysis]
+        R4[Specialized Tools<br/>JWT Auth, Vector Query<br/>Graph RAG, Roadmap Tool]
+    end
+
+    %% Connections
+    A --> I
+    B --> I
+    C --> I
+    D --> I
+    
+    I --> E
+    E --> F
+    F --> G
+    G --> H
+    
+    H --> J
+    H --> K
+    J --> H
+    K --> H
+    
+    F --> L
+    F --> M
+    G --> L
+    G --> M
+    H --> N
+    H --> O
+    
+    F --> P1
+    F --> P2
+    F --> P3
+    F --> P4
+    
+    G --> Q1
+    G --> Q2
+    G --> Q3
+    G --> Q4
+    
+    H --> R1
+    H --> R2
+    H --> R3
+    H --> R4
+
+    %% Styling for Dark Mode
+    classDef darkMode fill:#1e1e1e,stroke:#ffffff,stroke-width:2px,color:#ffffff
+    class A,B,C,D,E,F,G,H,I,J,K,L,M,N,O,P,Q,R darkMode
+    class P1,P2,P3,P4 darkMode
+    class Q1,Q2,Q3,Q4 darkMode
+    class R1,R2,R3,R4 darkMode
+    class sys,web,api,db darkMode
+    class sys,web,api,db,auth,sec darkMode
+    class auth,policy,retrieve,rerank,answerer,verifier,research,report,copywriter,evaluation,learning,product,editor,self,assistant,starter,voice,mcp,template,network,rag,content darkMode
 ```
 
 **Research & Analysis Pipeline:**

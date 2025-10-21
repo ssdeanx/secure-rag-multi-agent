@@ -10,7 +10,7 @@
  *
  * Used by:
  * - /src/mastra/tools/jwt-auth.tool.ts (backend RBAC validation)
- * - /app/protected/page.tsx (demo UI for testing RBAC)
+ * - /app/protected/demo-rag/page.tsx (demo UI for testing RBAC)
  */
 
 import { SignJWT } from 'jose'

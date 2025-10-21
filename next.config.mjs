@@ -64,16 +64,48 @@ const nextConfig = {
     },
 }
 
+// Import plugin modules directly (avoid importing TypeScript at runtime)
+// Use require.resolve to pass serializable module paths to the Next MDX loader.
+// next.config.mjs is ESM, so create a CommonJS `require` via createRequire.
+import { createRequire } from 'module'
+const require = createRequire(import.meta.url)
+
+const remarkPlugins = [
+    require.resolve('remark-frontmatter'),
+    require.resolve('remark-gfm'),
+    require.resolve('remark-mdx-frontmatter'),
+    require.resolve('remark-toc'),
+    require.resolve('remark-rehype'),
+    require.resolve('remark-smartypants'),
+]
+
+const rehypePlugins = [
+    require.resolve('rehype-mermaid'),
+    require.resolve('rehype-prism-plus'),
+    require.resolve('rehype-slug'),
+    [
+        require.resolve('rehype-autolink-headings'),
+        {
+            behavior: 'append',
+            properties: {
+                className: ['heading-anchor'],
+            },
+            content: {
+                type: 'element',
+                tagName: 'span',
+                // use 'aria-hidden' attribute name for HTML output
+                properties: { className: ['anchor-icon'], 'aria-hidden': 'true' },
+                children: [{ type: 'text', value: '#' }],
+            },
+        },
+    ],
+    require.resolve('rehype-format'),
+]
+
 const withMDX = createMDX({
-    // Start with minimal MDX configuration
     options: {
-        remarkPlugins: [
-            'remark-gfm',
-            'remark-mdx-frontmatter',
-            'remark-toc',
-            'remark-smartypants',
-        ],
-        rehypePlugins: ['rehype-mermaid'],
+        remarkPlugins,
+        rehypePlugins,
     },
 })
 
