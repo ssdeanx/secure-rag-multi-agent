@@ -102,6 +102,7 @@
     "@tsparticles/preset-links": "^3.2.0",
     "@tsparticles/react": "^3.0.0",
     "@tsparticles/slim": "^3.9.1",
+    "a2a-ai-provider": "^0.4.0-alpha.2",
     "ai": "^5.0.76",
     "ai-sdk-provider-gemini-cli": "^1.2.0",
     "autoprefixer": "^10.4.21",

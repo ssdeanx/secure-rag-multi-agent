@@ -48,22 +48,38 @@ const ExcalidrawElementSchema = z.object({
     opacity: z.number().optional(),
     angle: z.number().optional(),
     points: z.array(z.array(z.number())).optional(),
-    startBinding: z.any().optional(),
-    endBinding: z.any().optional(),
-    arrowheads: z.any().optional(),
+    // TODO: Define proper schema for startBinding based on Excalidraw spec
+    startBinding: z.object({
+        elementId: z.string(),
+        focus: z.number(),
+        gap: z.number(),
+    }).optional().nullable(),
+    // TODO: Define proper schema for endBinding based on Excalidraw spec
+    endBinding: z.object({
+        elementId: z.string(),
+        focus: z.number(),
+        gap: z.number(),
+    }).optional().nullable(),
+    // TODO: Define proper schema for arrowheads based on Excalidraw spec
+    arrowheads: z.tuple([z.enum(['arrow', 'bar', 'dot', 'triangle']), z.enum(['arrow', 'bar', 'dot', 'triangle'])]).optional(),
     fontSize: z.number().optional(),
     fontFamily: z.number().optional(),
     groupIds: z.array(z.string()).optional(),
     frameId: z.string().nullable().optional(),
-    roundness: z.any().optional(),
+    // TODO: Define proper schema for roundness based on Excalidraw spec
+    roundness: z.object({
+        type: z.enum(['round']),
+        value: z.number().optional(),
+    }).optional().nullable(),
     seed: z.number().optional(),
     version: z.number().optional(),
     versionNonce: z.number().optional(),
     isDeleted: z.boolean().optional(),
-    boundElements: z.any().optional(),
-    updated: z.number().optional(),
-    link: z.string().nullable().optional(),
-    locked: z.boolean().optional(),
+    // TODO: Define proper schema for boundElements based on Excalidraw spec
+    boundElements: z.array(z.object({
+        id: z.string(),
+        type: z.enum(['arrow', 'text']),
+    })).optional(),
 })
 
 const ExcalidrawSchema = z.object({
