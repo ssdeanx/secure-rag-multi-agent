@@ -147,8 +147,12 @@ const retrievalStep = createStep({
                 { toolChoice: 'required' }
             )
 
-            // Parse contexts from tool results
-            const contexts = retrieveResult.toolResults?.[0]?.payload?.result?.contexts ?? []
+            // Parse contexts from tool results (safely handle unknown tool result shape)
+            const rawResult = retrieveResult.toolResults?.[0]?.payload?.result
+            const contexts = (rawResult && typeof rawResult === 'object' && 'contexts' in (rawResult as any) && Array.isArray((rawResult as any).contexts))
+                ? (rawResult as any).contexts
+                : []
+
             if (!Array.isArray(contexts) || contexts.length === 0) {
                 throw new Error('No documents found matching query and access permissions')
             }
@@ -162,7 +166,10 @@ const retrievalStep = createStep({
                         contexts,
                     })
                 )
-                finalContexts = rerankResult.toolResults?.[0]?.payload?.result?.contexts ?? contexts
+                // Safely handle unknown tool result shape (cast to any and verify)
+                const rerankPayloadResult = rerankResult.toolResults?.[0]?.payload?.result as any
+                const rerankContexts = Array.isArray(rerankPayloadResult?.contexts) ? rerankPayloadResult.contexts : undefined
+                finalContexts = rerankContexts ?? contexts
             }
 
             logStepEnd(

@@ -785,14 +785,36 @@ const synthesizeResultsStepV5 = createStep({
 })
 
 // Enhanced helper methods for synthesis
-const generateRecommendationsV5 = (technical: any, fundamental: any, quality: any, query: any) => {
-    const recommendations = []
+type TechnicalAnalysis = {
+    trend?: 'bullish' | 'bearish' | string
+} | undefined
+
+type FundamentalAnalysis = {
+    financialHealth?: {
+        roe?: number
+    }
+} | undefined
+
+const generateRecommendationsV5 = (
+    technical: TechnicalAnalysis,
+    fundamental: FundamentalAnalysis,
+    quality: z.infer<typeof FinancialQualityAssessmentSchema>,
+    query: z.infer<typeof FinancialQueryAnalysisSchema>
+) => {
+    const recommendations: Array<{
+        symbol: string
+        action: 'buy' | 'hold' | 'strong_buy'
+        confidence: number
+        reasoning: string
+        priceTarget?: number
+        timeHorizon: string
+    }> = []
 
     // Technical-based recommendation
     if (technical?.trend === 'bullish') {
         recommendations.push({
             symbol: query.primaryAsset,
-            action: 'buy' as const,
+            action: 'buy',
             confidence: 0.75,
             reasoning: 'Bullish technical indicators suggest upward momentum',
             priceTarget: 110,
@@ -801,7 +823,7 @@ const generateRecommendationsV5 = (technical: any, fundamental: any, quality: an
     } else if (technical?.trend === 'bearish') {
         recommendations.push({
             symbol: query.primaryAsset,
-            action: 'hold' as const,
+            action: 'hold',
             confidence: 0.7,
             reasoning: 'Bearish signals indicate caution',
             priceTarget: 95,
@@ -810,10 +832,10 @@ const generateRecommendationsV5 = (technical: any, fundamental: any, quality: an
     }
 
     // Fundamental-based recommendation
-    if (fundamental && fundamental.financialHealth?.roe > 0.15) {
+    if (fundamental && typeof fundamental.financialHealth?.roe === 'number' && fundamental.financialHealth.roe > 0.15) {
         recommendations.push({
             symbol: query.primaryAsset,
-            action: 'strong_buy' as const,
+            action: 'strong_buy',
             confidence: 0.8,
             reasoning: 'Strong fundamental metrics support long-term investment',
             priceTarget: 120,
@@ -824,7 +846,10 @@ const generateRecommendationsV5 = (technical: any, fundamental: any, quality: an
     return recommendations
 }
 
-const identifyRisksV5 = (query: any, strategy: any) => {
+const identifyRisksV5 = (
+    query: z.infer<typeof FinancialQueryAnalysisSchema>,
+    strategy: z.infer<typeof FinancialOrchestrationStrategySchema>
+) => {
     return [
         {
             category: 'market_volatility',
