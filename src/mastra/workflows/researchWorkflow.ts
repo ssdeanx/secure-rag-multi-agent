@@ -335,7 +335,7 @@ const parallelResearchStep = createStep({
                 agentCount: orchestrationStrategy.requiredAgents.length,
                 complexity: orchestrationStrategy.complexity,
             },
-        }, WorkflowEvents);
+        });
       }
 
       for (const agentName of orchestrationStrategy.requiredAgents) {
@@ -346,7 +346,7 @@ const parallelResearchStep = createStep({
                 streamJSONEvent(streamController, {
                     type: 'agent_started',
                     data: { agent: agentName, task: `running_${agentName}` },
-                }, WorkflowEvents);
+                });
             }
 
             switch (agentName) {
@@ -354,7 +354,7 @@ const parallelResearchStep = createStep({
                 result = await researchAgent.generate(
                   JSON.stringify({
                     task: 'parallel_research_collection',
-                    queryAnalysis: queryAnalysis,
+                    queryAnalysis,
                     communicationProtocol: orchestrationStrategy.communicationProtocol,
                   })
                 );
@@ -402,16 +402,16 @@ const parallelResearchStep = createStep({
                 streamJSONEvent(streamController, {
                     type: 'agent_completed',
                     data: { agent: agentName, success: true },
-                }, WorkflowEvents);
+                });
             }
-          } catch (error) {
+            } catch (error) {
             const errorMessage = error instanceof Error ? error.message : 'Unknown error';
             agentResults[agentName] = { error: errorMessage };
             if (streamController) {
                 streamJSONEvent(streamController, {
                     type: 'agent_completed',
                     data: { agent: agentName, success: false, error: errorMessage },
-                }, WorkflowEvents);
+                });
             }
           }
         })();
@@ -598,7 +598,7 @@ const improvementStep = createStep({
         streamJSONEvent(streamController, {
             type: 'improvement_started',
             data: { improvementPlan: qualityGateResult.improvementPlan },
-        }, WorkflowEvents);
+        });
       }
 
       const improvementResult = await editorAgent.generate(
@@ -607,10 +607,10 @@ const improvementStep = createStep({
           originalContent: draftSynthesis,
           improvementPlan: qualityGateResult.improvementPlan,
           sources: sourceCollection,
-          learnings: learnings,
+          learnings,
         })
       );
-      
+
       const toolResult = improvementResult.toolResults?.[0]?.payload?.result as {
           improvedContent?: string;
           newQualityAssessment?: {
@@ -622,7 +622,7 @@ const improvementStep = createStep({
       } | undefined;
 
       const improvedSynthesis = toolResult?.improvedContent ?? improvementResult.text ?? draftSynthesis;
-      
+
       const improvedQualityAssessment = {
         overallScore: toolResult?.newQualityAssessment?.overallScore ?? qualityGateResult.score + 0.1,
         strengths: toolResult?.newQualityAssessment?.strengths ?? [],
@@ -638,7 +638,7 @@ const improvementStep = createStep({
                 improvedScore: improvedQualityAssessment.overallScore,
                 improvements: qualityGateResult.improvementPlan?.length ?? 0,
             },
-        }, WorkflowEvents);
+        });
       }
 
       logStepEnd('research-improvement', {
@@ -673,7 +673,7 @@ const finalSynthesisStep = createStep({
   outputSchema: ResearchWorkflowOutputSchema,
   execute: async ({ inputData }) => {
     const startTime = Date.now();
-    
+
     // Data can come from either the quality gate or the improvement step
     const isImproved = 'improvedSynthesis' in inputData;
     const synthesis = isImproved ? inputData.improvedSynthesis : inputData.draftSynthesis;
@@ -769,11 +769,50 @@ export const researchWorkflow = createWorkflow({
   .branch([
     [
       async ({ inputData }) => inputData.qualityGateResult.action === 'improve',
-      improvementStep.then(finalSynthesisStep),
+      // Create a small sub-workflow for the improvement path (Steps are not chainable via .then)
+      createWorkflow({
+        id: 'research-improve-branch',
+        inputSchema: qualityGateStep.outputSchema,
+        outputSchema: ResearchWorkflowOutputSchema,
+      })
+        .then(improvementStep)
+        // Adapter step to ensure improvementStep output matches finalSynthesisStep input (union)
+        .then(
+          createStep({
+            id: 'research-wrap-improved-to-final',
+            inputSchema: improvementStep.outputSchema,
+            outputSchema: finalSynthesisStep.inputSchema,
+            execute: async ({ inputData }) => {
+              // pass-through adapter to satisfy type expectations for the next step
+              return inputData as any;
+            },
+          })
+        )
+        .then(finalSynthesisStep)
+        .commit(),
     ],
     [
       async ({ inputData }) => inputData.qualityGateResult.action === 'complete',
-      finalSynthesisStep,
+      // Use a small sub-workflow to adapt the quality-gate output schema to the final synthesis input (which is a union),
+      // so the branch step types align (qualityGateStep.outputSchema -> finalSynthesisStep.inputSchema).
+      createWorkflow({
+        id: 'research-complete-branch',
+        inputSchema: qualityGateStep.outputSchema,
+        outputSchema: ResearchWorkflowOutputSchema,
+      })
+        .then(
+          createStep({
+            id: 'research-wrap-quality-to-final',
+            inputSchema: qualityGateStep.outputSchema,
+            outputSchema: finalSynthesisStep.inputSchema,
+            execute: async ({ inputData }) => {
+              // adapter: pass through the quality-gate output as the union type expected by finalSynthesisStep
+              return inputData as any;
+            },
+          })
+        )
+        .then(finalSynthesisStep)
+        .commit(),
     ],
   ])
   .commit();
