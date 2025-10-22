@@ -23,7 +23,6 @@ import {
     ActionResponseSchema,
 } from './chatWorkflowSharedTypes'
 import { AISpanType } from '@mastra/core/ai-tracing'
-import { ChunkType } from '@mastra/core/stream';
 import { log } from '../config/logger'
 
 log.info('Cedar OS Integrated Chat Workflow module loaded')

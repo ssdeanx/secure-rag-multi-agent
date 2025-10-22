@@ -17,7 +17,7 @@
 import { createStep, createWorkflow } from '@mastra/core/workflows'
 import { z } from 'zod'
 import { log, logStepStart, logStepEnd, logError } from '../config/logger'
-import { streamJSONEvent, handleTextStream } from '../../utils/streamUtils'
+import { streamJSONEvent } from '../../utils/streamUtils'
 import { cryptoAnalysisAgent } from '../agents/cryptoAnalysisAgent'
 import { stockAnalysisAgent } from '../agents/stockAnalysisAgent'
 import { marketEducationAgent } from '../agents/marketEducationAgent'
@@ -34,11 +34,7 @@ import {
 // Import REAL Cedar OS types from chatWorkflowSharedTypes.ts
 import type {
     AgentContext,
-    DiffState} from './chatWorkflowSharedTypes';
-import {
-    ExecuteFunctionResponseSchema,
-    ActionResponseSchema,
-    BaseMessage,
+    ContextEntry,
 } from './chatWorkflowSharedTypes'
 
 log.info('Financial Analysis Workflow V5 module loaded')
@@ -46,6 +42,40 @@ log.info('Financial Analysis Workflow V5 module loaded')
 // ==========================================
 // REAL Cedar OS Integration Types from chatWorkflowSharedTypes.ts
 // ==========================================
+
+/**
+ * Helper function to extract data from Cedar AgentContext
+ * AgentContext structure: { [key: string]: ContextEntry[] }
+ * ContextEntry: { id, source, data: Record<string, unknown>, metadata? }
+ */
+function extractContextData<T = unknown>(
+    context: AgentContext | undefined,
+    key: string
+): T | undefined {
+    if (!context || !context[key]) return undefined
+    
+    // Get the first context entry for the key
+    const entries = context[key]
+    if (!Array.isArray(entries) || entries.length === 0) return undefined
+    
+    return entries[0]?.data as T
+}
+
+/**
+ * Helper function to extract array data from Cedar AgentContext
+ */
+function extractContextArray<T = unknown>(
+    context: AgentContext | undefined,
+    key: string
+): T[] {
+    if (!context || !context[key]) return []
+    
+    const entries = context[key]
+    if (!Array.isArray(entries)) return []
+    
+    // Extract data from all context entries
+    return entries.map(entry => entry.data as T).filter(Boolean)
+}
 
 // Custom fields schema for additional params (E generic parameter)
 const CedarFinancialCustomFieldsSchema = z.object({
@@ -177,7 +207,7 @@ const analyzeQueryStepV5 = createStep({
             const streamController = (inputData as any).streamController as ReadableStreamDefaultController<Uint8Array> | undefined
 
             // Stream analysis start
-            if (streamController !== null) {
+            if (streamController) {
                 streamJSONEvent(streamController, financialEventTemplates.analysis_start)
             }
 
@@ -185,10 +215,15 @@ const analyzeQueryStepV5 = createStep({
             const query = inputData.query.toLowerCase()
             const cedarContext = inputData.cedarFinancialContext
 
-            // Use Cedar context to enhance analysis
-            const watchlistSymbols = cedarContext?.watchlist || []
-            const existingStocks = cedarContext?.stocks || {}
-            const existingCrypto = cedarContext?.crypto || {}
+            // Use Cedar context to enhance analysis (properly extract from AgentContext structure)
+            const watchlistData = extractContextData<{ symbols?: string[] }>(cedarContext, 'watchlist')
+            const watchlistSymbols = watchlistData?.symbols || []
+            
+            const stocksData = extractContextData<Record<string, unknown>>(cedarContext, 'stocks')
+            const existingStocks = stocksData || {}
+            
+            const cryptoData = extractContextData<Record<string, unknown>>(cedarContext, 'crypto')
+            const existingCrypto = cryptoData || {}
 
             let intent: 'analysis' | 'comparison' | 'portfolio' | 'education' | 'alert' | 'trade' = 'analysis'
             let complexity: 'simple' | 'moderate' | 'complex' | 'expert' = 'moderate'
@@ -268,7 +303,7 @@ const analyzeQueryStepV5 = createStep({
             }
 
             // Stream query analysis complete
-            if (streamController !== null) {
+            if (streamController) {
                 streamJSONEvent(streamController, {
                     ...financialEventTemplates.query_analysis_complete,
                     queryAnalysis: {
@@ -405,7 +440,7 @@ const orchestrateAnalysisStepV5 = createStep({
             const { queryAnalysis, orchestrationStrategy, cedarFinancialContext, streamController } = inputData
 
             // Stream orchestration start
-            if (streamController !== null) {
+            if (streamController) {
                 streamJSONEvent(streamController, financialEventTemplates.agent_orchestration_start)
             }
 
@@ -437,7 +472,13 @@ const orchestrateAgentsV5 = async (
     cedarContext: any,
     streamController: ReadableStreamDefaultController<Uint8Array> | undefined
 ) => {
-    const results = {
+    // Properly typed results object to avoid 'never[]' type inference
+    const results: {
+        marketData: { stocks: any[]; crypto: any[] }
+        technicalAnalysis: any
+        fundamentalAnalysis: any
+        sourceCollection: z.infer<typeof FinancialSourceCollectionSchema>
+    } = {
         marketData: { stocks: [], crypto: [] },
         technicalAnalysis: {},
         fundamentalAnalysis: strategy.complexity !== 'simple' ? {} : undefined,
@@ -452,7 +493,7 @@ const orchestrateAgentsV5 = async (
     for (const agentName of strategy.requiredAgents) {
         try {
             // Stream agent progress start
-            if (streamController !== null) {
+            if (streamController) {
                 streamJSONEvent(streamController, {
                     ...financialEventTemplates.agent_progress,
                     agent: agentName,
@@ -513,7 +554,7 @@ const orchestrateAgentsV5 = async (
             }
 
             // Stream agent complete
-            if (streamController !== null) {
+            if (streamController) {
                 streamJSONEvent(streamController, {
                     ...financialEventTemplates.agent_complete,
                     agent: agentName,
@@ -585,7 +626,7 @@ const assessQualityStepV5 = createStep({
             const { streamController } = inputData
 
             // Stream quality assessment start
-            if (streamController !== null) {
+            if (streamController) {
                 streamJSONEvent(streamController, financialEventTemplates.quality_assessment_start)
             }
 
@@ -634,7 +675,18 @@ const extractLearningStepV5 = createStep({
         queryAnalysis: FinancialQueryAnalysisSchema,
         streamController: z.any().optional(),
     }),
-    outputSchema: FinancialLearningSchema,
+    outputSchema: z.object({
+        learning: FinancialLearningSchema,
+        qualityAssessment: FinancialQualityAssessmentSchema,
+        marketData: z.any(),
+        technicalAnalysis: z.any(),
+        fundamentalAnalysis: z.any().optional(),
+        sourceCollection: FinancialSourceCollectionSchema,
+        orchestrationStrategy: FinancialOrchestrationStrategySchema,
+        queryAnalysis: FinancialQueryAnalysisSchema,
+        cedarFinancialContext: z.any().optional(),
+        streamController: z.any().optional(),
+    }),
     execute: async ({ inputData }) => {
         logStepStart('extract-learning-v5', inputData)
         const startTime = Date.now()
@@ -643,7 +695,7 @@ const extractLearningStepV5 = createStep({
             const { streamController } = inputData
 
             // Stream learning extraction start
-            if (streamController !== null) {
+            if (streamController) {
                 streamJSONEvent(streamController, financialEventTemplates.learning_extraction_start)
             }
 
@@ -678,8 +730,11 @@ const extractLearningStepV5 = createStep({
 
             logStepEnd('extract-learning-v5', { learningCount: learnings.length }, Date.now() - startTime)
             return {
-                learnings,
-                insights,
+                learning: {
+                    learnings,
+                    insights,
+                },
+                ...inputData,
             }
         } catch (error: unknown) {
             logError('extract-learning-v5', error, inputData)
@@ -711,7 +766,7 @@ const synthesizeResultsStepV5 = createStep({
             const { streamController } = inputData
 
             // Stream synthesis start
-            if (streamController !== null) {
+            if (streamController) {
                 streamJSONEvent(streamController, financialEventTemplates.synthesis_start)
             }
 
