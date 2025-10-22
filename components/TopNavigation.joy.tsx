@@ -104,9 +104,11 @@ export function TopNavigation({ user }: TopNavigationProps) {
                                 alignItems: 'center',
                                 gap: 1.5,
                                 textDecoration: 'none',
-                                transition: 'transform 200ms ease',
+                                transition: 'all 300ms cubic-bezier(0.4, 0, 0.2, 1)',
+                                transform: 'scale(1)',
                                 '&:hover': {
                                     transform: 'scale(1.02)',
+                                    filter: 'drop-shadow(0 4px 12px rgba(62, 207, 142, 0.3))',
                                 },
                             }}
                         >
@@ -119,10 +121,12 @@ export function TopNavigation({ user }: TopNavigationProps) {
                                     display: 'flex',
                                     alignItems: 'center',
                                     justifyContent: 'center',
-                                    transition: 'all 200ms ease',
+                                    transition: 'all 300ms cubic-bezier(0.4, 0, 0.2, 1)',
+                                    transform: 'rotate(0deg)',
                                     '&:hover': {
                                         bgcolor: 'primary.600',
-                                        transform: 'rotate(5deg)',
+                                        transform: 'rotate(5deg) scale(1.05)',
+                                        boxShadow: '0 8px 25px rgba(62, 207, 142, 0.4)',
                                     },
                                 }}
                             >
@@ -130,7 +134,11 @@ export function TopNavigation({ user }: TopNavigationProps) {
                                     sx={{
                                         color: 'white',
                                         fontSize: 22,
-                                        transition: 'transform 200ms ease',
+                                        transition: 'all 300ms cubic-bezier(0.4, 0, 0.2, 1)',
+                                        transform: 'translateY(0px)',
+                                        '&:hover': {
+                                            transform: 'translateY(-2px) scale(1.1)',
+                                        },
                                     }}
                                 />
                             </Box>
@@ -140,6 +148,12 @@ export function TopNavigation({ user }: TopNavigationProps) {
                                     fontWeight: 700,
                                     display: { xs: 'none', sm: 'block' },
                                     color: 'text.primary',
+                                    transition: 'all 300ms cubic-bezier(0.4, 0, 0.2, 1)',
+                                    textShadow: '0 0 0 transparent',
+                                    '&:hover': {
+                                        color: 'primary.500',
+                                        textShadow: '0 0 20px rgba(62, 207, 142, 0.3)',
+                                    },
                                 }}
                             >
                                 Deanmachines
@@ -182,17 +196,22 @@ export function TopNavigation({ user }: TopNavigationProps) {
                                         py: 0.75,
                                         minWidth: 44,
                                         minHeight: 40,
-                                        transition: 'all 160ms ease',
+                                        transition: 'all 300ms cubic-bezier(0.4, 0, 0.2, 1)',
+                                        transform: 'translateY(0px)',
                                         '&:hover': {
                                             bgcolor: isActive(link.href)
                                                 ? 'primary.softHoverBg'
                                                 : 'neutral.softHoverBg',
-                                            transform: 'translateY(-1px)',
+                                            transform: 'translateY(-2px)',
+                                            boxShadow: isActive(link.href)
+                                                ? '0 6px 20px rgba(62, 207, 142, 0.25)'
+                                                : '0 4px 15px rgba(0, 0, 0, 0.1)',
                                         },
                                         '&:focus-visible': {
                                             outline: 'none',
                                             boxShadow:
                                                 '0 0 0 4px var(--joy-palette-focusVisible)',
+                                            transform: 'translateY(-1px)',
                                         },
                                         '&::after': {
                                             content: '""',
@@ -205,13 +224,15 @@ export function TopNavigation({ user }: TopNavigationProps) {
                                             bgcolor: isActive(link.href)
                                                 ? 'var(--joy-palette-primary-500)'
                                                 : 'transparent',
-                                            transition: 'all 160ms ease',
+                                            transition: 'all 300ms cubic-bezier(0.4, 0, 0.2, 1)',
+                                            transform: 'scaleX(1)',
                                         },
                                         '&:hover::after': {
                                             bgcolor: isActive(link.href)
                                                 ? 'var(--joy-palette-primary-500)'
                                                 : 'var(--joy-palette-neutral-400)',
                                             opacity: 0.75,
+                                            transform: 'scaleX(1.1)',
                                         },
                                     }}
                                 >
@@ -241,15 +262,23 @@ export function TopNavigation({ user }: TopNavigationProps) {
                                         minWidth: 44,
                                         minHeight: 40,
                                         fontWeight: 600,
-                                        transition: 'all 160ms ease',
+                                        transition: 'all 300ms cubic-bezier(0.4, 0, 0.2, 1)',
+                                        transform: 'translateY(0px)',
+                                        boxShadow: '0 2px 8px rgba(62, 207, 142, 0.2)',
                                         '&:hover': {
-                                            transform: 'translateY(-1px)',
-                                            boxShadow: 'md',
+                                            transform: 'translateY(-2px)',
+                                            boxShadow: '0 8px 25px rgba(62, 207, 142, 0.4)',
+                                            bgcolor: 'primary.600',
                                         },
                                         '&:focus-visible': {
                                             outline: 'none',
                                             boxShadow:
                                                 '0 0 0 4px var(--joy-palette-focusVisible)',
+                                            transform: 'translateY(-1px)',
+                                        },
+                                        '&:active': {
+                                            transform: 'translateY(0px)',
+                                            boxShadow: '0 2px 8px rgba(62, 207, 142, 0.2)',
                                         },
                                     }}
                                 >
@@ -270,14 +299,21 @@ export function TopNavigation({ user }: TopNavigationProps) {
                                 minWidth: 40,
                                 p: 1,
                                 borderRadius: 'md',
-                                transition: 'all 160ms ease',
+                                transition: 'all 300ms cubic-bezier(0.4, 0, 0.2, 1)',
+                                transform: 'scale(1)',
                                 '&:hover': {
                                     bgcolor: 'neutral.softHoverBg',
+                                    transform: 'scale(1.05)',
+                                    boxShadow: '0 4px 12px rgba(0, 0, 0, 0.15)',
                                 },
                                 '&:focus-visible': {
                                     outline: 'none',
                                     boxShadow:
                                         '0 0 0 4px var(--joy-palette-focusVisible)',
+                                    transform: 'scale(1.02)',
+                                },
+                                '&:active': {
+                                    transform: 'scale(0.98)',
                                 },
                             }}
                         >
@@ -296,10 +332,15 @@ export function TopNavigation({ user }: TopNavigationProps) {
                 size="sm"
                 sx={{
                     display: { xs: 'block', md: 'none' },
-                    // Enhanced drawer styling
+                    // Enhanced drawer styling with animations
                     '& .MuiDrawer-content': {
                         borderTopLeftRadius: 'lg',
                         borderBottomLeftRadius: 'lg',
+                        boxShadow: '0 25px 50px -12px rgba(0, 0, 0, 0.25)',
+                        backdropFilter: 'blur(20px)',
+                        backgroundColor: 'rgba(255, 255, 255, 0.95)',
+                        border: '1px solid',
+                        borderColor: 'divider',
                     },
                 }}
             >
@@ -353,19 +394,27 @@ export function TopNavigation({ user }: TopNavigationProps) {
                                         minHeight: 48,
                                         px: 2,
                                         py: 1.5,
-                                        transition: 'all 160ms ease',
+                                        transition: 'all 300ms cubic-bezier(0.4, 0, 0.2, 1)',
+                                        transform: 'translateX(0px)',
                                         '&.Mui-selected': {
                                             bgcolor: 'primary.softBg',
                                             color: 'primary.500',
                                             fontWeight: 600,
+                                            boxShadow: '0 2px 8px rgba(62, 207, 142, 0.2)',
                                         },
                                         '&:hover': {
                                             bgcolor: 'primary.softHoverBg',
+                                            transform: 'translateX(4px)',
+                                            boxShadow: '0 4px 12px rgba(0, 0, 0, 0.1)',
                                         },
                                         '&:focus-visible': {
                                             outline: 'none',
                                             boxShadow:
                                                 '0 0 0 4px var(--joy-palette-focusVisible)',
+                                            transform: 'translateX(2px)',
+                                        },
+                                        '&:active': {
+                                            transform: 'translateX(0px) scale(0.98)',
                                         },
                                     }}
                                 >
@@ -395,10 +444,23 @@ export function TopNavigation({ user }: TopNavigationProps) {
                                             borderRadius: 'lg',
                                             minHeight: 48,
                                             fontWeight: 600,
+                                            transition: 'all 300ms cubic-bezier(0.4, 0, 0.2, 1)',
+                                            transform: 'translateY(0px)',
+                                            boxShadow: '0 2px 8px rgba(62, 207, 142, 0.2)',
+                                            '&:hover': {
+                                                transform: 'translateY(-2px)',
+                                                boxShadow: '0 8px 25px rgba(62, 207, 142, 0.4)',
+                                                bgcolor: 'primary.600',
+                                            },
                                             '&:focus-visible': {
                                                 outline: 'none',
                                                 boxShadow:
                                                     '0 0 0 4px var(--joy-palette-focusVisible)',
+                                                transform: 'translateY(-1px)',
+                                            },
+                                            '&:active': {
+                                                transform: 'translateY(0px)',
+                                                boxShadow: '0 2px 8px rgba(62, 207, 142, 0.2)',
                                             },
                                         }}
                                     >

@@ -30,7 +30,7 @@ import {
     Box,
 } from '@/components/docs/mdx-bridge.joy'
 
-# Mastra Governed RAG Documentation
+# Multi-Domain AI Orchestration Platform Documentation
 
 <Box
     sx={{
@@ -43,15 +43,15 @@ import {
 >
     <Badge color="neutral" variant="soft" sx={{ px: 1.5, py: 0.5 }}>
         <Shield sx={{ fontSize: 14, mr: 0.5 }} />
-        Mastra Framework v0.20.2
+        Mastra Framework v0.21.1
     </Badge>
     <Badge color="neutral" variant="soft" sx={{ px: 1.5, py: 0.5 }}>
         <Code sx={{ fontSize: 14, mr: 0.5 }} />
-        Next.js 15.5.4
+        Next.js 15.5.6
     </Badge>
     <Badge color="neutral" variant="soft" sx={{ px: 1.5, py: 0.5 }}>
         <Storage sx={{ fontSize: 14, mr: 0.5 }} />
-        TypeScript 5.9.3
+        TypeScript ES2022
     </Badge>
     <Badge color="neutral" variant="soft" sx={{ px: 1.5, py: 0.5 }}>
         <Psychology sx={{ fontSize: 14, mr: 0.5 }} />
@@ -67,14 +67,16 @@ import {
 
 ## System Overview
 
+This is a **Multi-Domain AI Orchestration Platform** built with Mastra, featuring a comprehensive multi-agent architecture with 27 specialized agents across 5 capability domains: Governed RAG (secure knowledge access), Deep Research (academic & financial intelligence), Financial Intelligence (real-time market analysis), Content Generation (multi-agent synthesis), and Interactive State Management (Cedar OS integration).
+
 ```mermaid
 graph TB
-    UI[Frontend<br/>Next.js + React]
-    Auth[JWT Auth<br/>@mastra/auth]
+    UI[Frontend<br/>Next.js + React 19]
+    Auth[JWT Auth<br/>Role-based Access]
     Mastra[Mastra Core<br/>Agent Orchestration]
-    Agents[16+ AI Agents<br/>Reasoning Units]
-    PgSQL[(PostgreSQL<br/>Metadata)]
-    PgVector[(PgVector<br/>Embeddings)]
+    Agents[27 AI Agents<br/>5 Capability Domains]
+    PgSQL[(PostgreSQL<br/>Metadata & Memory)]
+    PgVector[(PgVector<br/>Embeddings & RAG)]
     Gemini[Google Gemini<br/>LLM & Embeddings]
 
     UI --> Auth --> Mastra --> Agents

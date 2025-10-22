@@ -136,7 +136,7 @@ export const joyTheme = extendTheme({
                     plainDisabledColor: 'var(--joy-palette-neutral-400)',
                 },
 
-                // Neutral for text, backgrounds, borders
+                // Neutral
                 neutral: {
                     ...neutralPalette,
                     solidBg: 'var(--joy-palette-neutral-700)',
@@ -177,6 +177,10 @@ export const joyTheme = extendTheme({
                     softColor: 'var(--joy-palette-warning-700)',
                     softBg: 'var(--joy-palette-warning-100)',
                 },
+
+                // Additional custom colors (accessible via theme.vars.palette.secondary, etc.)
+                // Note: Joy UI only supports primary, neutral, danger, success, warning as main palettes
+                // These additional colors can be used in component styles via theme.vars
 
                 // Background tokens
                 background: {
@@ -405,7 +409,8 @@ export const joyTheme = extendTheme({
                     border: `1px solid ${theme.vars.palette.divider}`,
 
                     // Smooth focus transitions
-                    transition: 'box-shadow 160ms ease, border-color 160ms ease',
+                    transition:
+                        'box-shadow 160ms ease, border-color 160ms ease',
                     // Dark mode specific styling
                     [theme.getColorSchemeSelector('dark')]: {
                         backgroundColor: theme.vars.palette.background.level1,
@@ -535,38 +540,38 @@ export const joyTheme = extendTheme({
         // Enhanced navigation components
         JoyListItemButton: {
             styleOverrides: {
-            root: ({ theme, ownerState }) => {
-                const isSelected = Boolean(ownerState?.selected)
-                return {
-                borderRadius: theme.vars.radius.md,
-                minHeight: isSelected ? 48 : 44,
-                transition: 'all 160ms ease',
-                '&:hover': {
-                    backgroundColor: theme.vars.palette.primary.softBg,
+                root: ({ theme, ownerState }) => {
+                    const isSelected = Boolean(ownerState?.selected)
+                    return {
+                        borderRadius: theme.vars.radius.md,
+                        minHeight: isSelected ? 48 : 44,
+                        transition: 'all 160ms ease',
+                        '&:hover': {
+                            backgroundColor: theme.vars.palette.primary.softBg,
+                        },
+                        '&.Mui-selected': {
+                            backgroundColor: theme.vars.palette.primary.softBg,
+                            color: theme.vars.palette.primary.plainColor,
+                            fontWeight: 600,
+                        },
+                        '&:focus-visible': {
+                            outline: 'none',
+                            boxShadow: `0 0 0 4px ${theme.vars.palette.focusVisible}`,
+                        },
+                        // Respect size variants if provided via ownerState
+                        ...(ownerState?.size === 'sm' && {
+                            minHeight: 40,
+                        }),
+                        ...(ownerState?.size === 'lg' && {
+                            minHeight: 52,
+                        }),
+                        // Disabled state handling via ownerState to avoid unused var lint
+                        ...(ownerState?.disabled === true && {
+                            opacity: 0.6,
+                            pointerEvents: 'none',
+                        }),
+                    }
                 },
-                '&.Mui-selected': {
-                    backgroundColor: theme.vars.palette.primary.softBg,
-                    color: theme.vars.palette.primary.plainColor,
-                    fontWeight: 600,
-                },
-                '&:focus-visible': {
-                    outline: 'none',
-                    boxShadow: `0 0 0 4px ${theme.vars.palette.focusVisible}`,
-                },
-                // Respect size variants if provided via ownerState
-                ...(ownerState?.size === 'sm' && {
-                    minHeight: 40,
-                }),
-                ...(ownerState?.size === 'lg' && {
-                    minHeight: 52,
-                }),
-                // Disabled state handling via ownerState to avoid unused var lint
-                ...(ownerState?.disabled === true && {
-                    opacity: 0.6,
-                    pointerEvents: 'none',
-                }),
-                }
-            },
             },
         },
 
@@ -614,30 +619,33 @@ export const joyTheme = extendTheme({
 
         JoyIconButton: {
             defaultProps: {
-            size: 'md',
+                size: 'md',
             },
             styleOverrides: {
-            root: ({ theme, ownerState }) => ({
-                color: theme.vars.palette.text.icon,
-                transition: 'background-color 140ms ease, transform 140ms ease',
-                borderRadius: theme.vars.radius.sm,
-                // Hover / active states using palette tokens
-                '&:hover': {
-                backgroundColor: theme.vars.palette.primary.softBg,
-                transform: 'translateY(-1px)',
-                },
-                '&:active': {
-                transform: 'translateY(0)',
-                },
-                // Respect tonal variants when provided via ownerState.color
-                ...(ownerState?.color === 'primary' && {
-                color: theme.vars.palette.primary.solidColor ?? theme.vars.palette.common.white,
+                root: ({ theme, ownerState }) => ({
+                    color: theme.vars.palette.text.icon,
+                    transition:
+                        'background-color 140ms ease, transform 140ms ease',
+                    borderRadius: theme.vars.radius.sm,
+                    // Hover / active states using palette tokens
+                    '&:hover': {
+                        backgroundColor: theme.vars.palette.primary.softBg,
+                        transform: 'translateY(-1px)',
+                    },
+                    '&:active': {
+                        transform: 'translateY(0)',
+                    },
+                    // Respect tonal variants when provided via ownerState.color
+                    ...(ownerState?.color === 'primary' && {
+                        color:
+                            theme.vars.palette.primary.solidColor ??
+                            theme.vars.palette.common.white,
+                    }),
+                    ...(ownerState?.disabled === true && {
+                        opacity: 0.5,
+                        pointerEvents: 'none',
+                    }),
                 }),
-                ...(ownerState?.disabled === true && {
-                opacity: 0.5,
-                pointerEvents: 'none',
-                }),
-            }),
             },
         },
         JoyAccordion: {
@@ -679,33 +687,461 @@ export const joyTheme = extendTheme({
             },
         },
 
-        // Enhanced chip styling
-        JoyChip: {
+        // Comprehensive Component Theming for ALL Joy UI Components
+
+        // Alert - Enhanced with better colors and spacing
+        JoyAlert: {
             styleOverrides: {
                 root: ({ theme, ownerState }) => ({
-                    borderRadius: theme.vars.radius.sm,
+                    borderRadius: theme.vars.radius.lg,
+                    padding: '16px 24px', // Using direct values since theme.vars.spacing doesn't exist
                     fontWeight: 500,
-                    // Size variants
-                    ...(ownerState.size === 'sm' && {
-                        fontSize: theme.vars.fontSize.xs,
-                        minHeight: 24,
+                    // Color variants
+                    ...(ownerState.color === 'primary' && {
+                        backgroundColor: theme.vars.palette.primary[50],
+                        color: theme.vars.palette.primary[700],
+                        borderColor: theme.vars.palette.primary[200],
                     }),
-                    ...(ownerState.size === 'md' && {
-                        fontSize: theme.vars.fontSize.sm,
-                        minHeight: 32,
+                    ...(ownerState.color === 'success' && {
+                        backgroundColor: theme.vars.palette.success[50],
+                        color: theme.vars.palette.success[700],
+                        borderColor: theme.vars.palette.success[200],
                     }),
-                    ...(ownerState.size === 'lg' && {
-                        fontSize: theme.vars.fontSize.md,
-                        minHeight: 40,
+                    ...(ownerState.color === 'warning' && {
+                        backgroundColor: theme.vars.palette.warning[50],
+                        color: theme.vars.palette.warning[700],
+                        borderColor: theme.vars.palette.warning[200],
                     }),
-                    // Disabled state handling via ownerState
-                    ...(ownerState?.disabled === true && {
-                        opacity: 0.5,
-                        pointerEvents: 'none',
+                    ...(ownerState.color === 'danger' && {
+                        backgroundColor: theme.vars.palette.danger[50],
+                        color: theme.vars.palette.danger[700],
+                        borderColor: theme.vars.palette.danger[200],
                     }),
                 }),
             },
         },
+
+        // Avatar - Enhanced with better sizing and borders
+        JoyAvatar: {
+            styleOverrides: {
+                root: ({ theme, ownerState }) => ({
+                    border: `2px solid ${theme.vars.palette.background.surface}`,
+                    boxShadow: theme.vars.shadow.sm,
+                    // Size variants
+                    ...(ownerState.size === 'sm' && {
+                        width: 32,
+                        height: 32,
+                        fontSize: theme.vars.fontSize.sm,
+                    }),
+                    ...(ownerState.size === 'md' && {
+                        width: 40,
+                        height: 40,
+                        fontSize: theme.vars.fontSize.md,
+                    }),
+                    ...(ownerState.size === 'lg' && {
+                        width: 56,
+                        height: 56,
+                        fontSize: theme.vars.fontSize.lg,
+                    }),
+                }),
+            },
+        },
+
+        // Badge - Enhanced positioning and colors
+        JoyBadge: {
+            styleOverrides: {
+                root: ({ theme, ownerState }) => ({
+                    fontWeight: 600,
+                    fontSize: theme.vars.fontSize.xs,
+                    // Color variants
+                    ...(ownerState.color === 'primary' && {
+                        backgroundColor: theme.vars.palette.primary[500],
+                        color: 'white',
+                    }),
+                    ...(ownerState.color === 'success' && {
+                        backgroundColor: theme.vars.palette.success[500],
+                        color: 'white',
+                    }),
+                    ...(ownerState.color === 'warning' && {
+                        backgroundColor: theme.vars.palette.warning[500],
+                        color: 'black',
+                    }),
+                    ...(ownerState.color === 'danger' && {
+                        backgroundColor: theme.vars.palette.danger[500],
+                        color: 'white',
+                    }),
+                }),
+            },
+        },
+
+        // Breadcrumbs - Enhanced navigation styling
+        JoyBreadcrumbs: {
+            styleOverrides: {
+                root: ({ theme }) => ({
+                    fontSize: theme.vars.fontSize.sm,
+                    color: theme.vars.palette.text.secondary,
+                    '& .MuiBreadcrumbs-separator': {
+                        color: theme.vars.palette.text.tertiary,
+                    },
+                }),
+                li: ({ theme }) => ({
+                    '& a': {
+                        color: theme.vars.palette.text.secondary,
+                        textDecoration: 'none',
+                        transition: 'color 200ms ease',
+                        '&:hover': {
+                            color: theme.vars.palette.primary[600],
+                            textDecoration: 'underline',
+                        },
+                    },
+                }),
+            },
+        },
+
+        // Checkbox - Enhanced with better focus states
+        JoyCheckbox: {
+            styleOverrides: {
+                root: ({ theme }) => ({
+                    borderRadius: theme.vars.radius.sm,
+                    '&:focus-visible': {
+                        outline: `2px solid ${theme.vars.palette.focusVisible}`,
+                        outlineOffset: 2,
+                    },
+                }),
+            },
+        },
+
+        // Circular Progress - Enhanced colors
+        JoyCircularProgress: {
+            styleOverrides: {
+                root: ({ theme, ownerState }) => ({
+                    // Color variants
+                    ...(ownerState.color === 'primary' && {
+                        color: theme.vars.palette.primary[500],
+                    }),
+                    ...(ownerState.color === 'success' && {
+                        color: theme.vars.palette.success[500],
+                    }),
+                    ...(ownerState.color === 'warning' && {
+                        color: theme.vars.palette.warning[500],
+                    }),
+                    ...(ownerState.color === 'danger' && {
+                        color: theme.vars.palette.danger[500],
+                    }),
+                }),
+            },
+        },
+
+        // Form Control - Enhanced layout and spacing
+        JoyFormControl: {
+            styleOverrides: {
+                root: () => ({
+                    marginBottom: '12px', // Direct value since theme.vars.spacing doesn't exist
+                }),
+            },
+        },
+
+        // Form Label - Enhanced typography
+        JoyFormLabel: {
+            styleOverrides: {
+                root: ({ theme }) => ({
+                    fontWeight: 600,
+                    color: theme.vars.palette.text.primary,
+                    marginBottom: '4px',
+                }),
+            },
+        },
+
+        // Linear Progress - Enhanced colors and styling
+        JoyLinearProgress: {
+            styleOverrides: {
+                root: ({ theme, ownerState }) => ({
+                    height: 8,
+                    borderRadius: 9999, // Full radius
+                    backgroundColor: theme.vars.palette.background.level2,
+                    // Color variants
+                    ...(ownerState.color === 'primary' && {
+                        '& .MuiLinearProgress-bar': {
+                            backgroundColor: theme.vars.palette.primary[500],
+                        },
+                    }),
+                    ...(ownerState.color === 'success' && {
+                        '& .MuiLinearProgress-bar': {
+                            backgroundColor: theme.vars.palette.success[500],
+                        },
+                    }),
+                }),
+            },
+        },
+
+        // Link - Enhanced with better hover states
+        JoyLink: {
+            styleOverrides: {
+                root: ({ theme, ownerState }) => ({
+                    fontWeight: 500,
+                    textDecoration: 'none',
+                    transition: 'color 200ms ease',
+                    '&:hover': {
+                        color: theme.vars.palette.primary[600],
+                        textDecoration: 'underline',
+                    },
+                    // Color variants
+                    ...(ownerState.color === 'primary' && {
+                        color: theme.vars.palette.primary[600],
+                    }),
+                    ...(ownerState.color === 'neutral' && {
+                        color: theme.vars.palette.text.primary,
+                    }),
+                }),
+            },
+        },
+
+        // List - Enhanced spacing and typography
+        JoyList: {
+            styleOverrides: {
+                root: () => ({
+                    padding: 0,
+                }),
+            },
+        },
+
+        // List Item - Enhanced with better spacing
+        JoyListItem: {
+            styleOverrides: {
+                root: () => ({
+                    padding: '4px 0',
+                }),
+            },
+        },
+
+        // Menu - Enhanced dropdown styling
+        JoyMenu: {
+            styleOverrides: {
+                root: ({ theme }) => ({
+                    boxShadow: theme.vars.shadow.lg,
+                    borderRadius: theme.vars.radius.lg,
+                    border: `1px solid ${theme.vars.palette.divider}`,
+                }),
+            },
+        },
+
+        // Menu Item - Enhanced hover states
+        JoyMenuItem: {
+            styleOverrides: {
+                root: ({ theme }) => ({
+                    padding: '8px 12px',
+                    borderRadius: theme.vars.radius.md,
+                    margin: '2px 4px',
+                    transition: 'background-color 150ms ease',
+                    '&:hover': {
+                        backgroundColor: theme.vars.palette.primary.softBg,
+                    },
+                }),
+            },
+        },
+
+        // Modal - Enhanced backdrop and positioning
+        JoyModal: {
+            styleOverrides: {
+                root: ({ theme }) => ({
+                    '& .MuiModal-backdrop': {
+                        backgroundColor: theme.vars.palette.background.backdrop,
+                    },
+                }),
+            },
+        },
+
+        // Modal Dialog - Enhanced content styling
+        JoyModalDialog: {
+            styleOverrides: {
+                root: ({ theme }) => ({
+                    borderRadius: theme.vars.radius.xl,
+                    boxShadow: theme.vars.shadow.xl,
+                    border: `1px solid ${theme.vars.palette.divider}`,
+                }),
+            },
+        },
+
+        // Option - Enhanced select option styling
+        JoyOption: {
+            styleOverrides: {
+                root: ({ theme }) => ({
+                    padding: '8px 12px',
+                    borderRadius: theme.vars.radius.md,
+                    margin: '1px 2px',
+                    transition: 'background-color 150ms ease',
+                    '&:hover': {
+                        backgroundColor: theme.vars.palette.primary.softBg,
+                    },
+                }),
+            },
+        },
+
+        // Radio - Enhanced focus states
+        JoyRadio: {
+            styleOverrides: {
+                root: ({ theme }) => ({
+                    '&:focus-visible': {
+                        outline: `2px solid ${theme.vars.palette.focusVisible}`,
+                        outlineOffset: 2,
+                    },
+                }),
+            },
+        },
+
+        // Select - Enhanced dropdown styling
+        JoySelect: {
+            styleOverrides: {
+                root: ({ theme }) => ({
+                    borderRadius: theme.vars.radius.lg,
+                    transition: 'border-color 200ms ease',
+                    '&:hover': {
+                        borderColor: theme.vars.palette.primary[400],
+                    },
+                    '&:focus-within': {
+                        borderColor: theme.vars.palette.primary[500],
+                        boxShadow: `0 0 0 3px ${theme.vars.palette.primary[100]}`,
+                    },
+                }),
+            },
+        },
+
+        // Skeleton - Enhanced loading states
+        JoySkeleton: {
+            styleOverrides: {
+                root: ({ theme }) => ({
+                    backgroundColor: theme.vars.palette.background.level2,
+                    borderRadius: theme.vars.radius.md,
+                }),
+            },
+        },
+
+        // Slider - Enhanced track and thumb styling
+        JoySlider: {
+            styleOverrides: {
+                root: ({ theme }) => ({
+                    '& .MuiSlider-track': {
+                        backgroundColor: theme.vars.palette.primary[500],
+                    },
+                    '& .MuiSlider-thumb': {
+                        backgroundColor: theme.vars.palette.primary[500],
+                        border: `2px solid ${theme.vars.palette.background.surface}`,
+                        boxShadow: theme.vars.shadow.sm,
+                        '&:hover': {
+                            boxShadow: theme.vars.shadow.md,
+                        },
+                    },
+                }),
+            },
+        },
+
+        // Switch - Enhanced toggle styling
+        JoySwitch: {
+            styleOverrides: {
+                root: ({ theme }) => ({
+                    '& .MuiSwitch-track': {
+                        backgroundColor: theme.vars.palette.neutral[300],
+                    },
+                    '& .MuiSwitch-thumb': {
+                        backgroundColor: 'white',
+                        boxShadow: theme.vars.shadow.sm,
+                    },
+                    '&.Mui-checked .MuiSwitch-track': {
+                        backgroundColor: theme.vars.palette.primary[500],
+                    },
+                }),
+            },
+        },
+
+        // Table - Enhanced data display
+        JoyTable: {
+            styleOverrides: {
+                root: ({ theme }) => ({
+                    borderRadius: theme.vars.radius.lg,
+                    overflow: 'hidden',
+                    border: `1px solid ${theme.vars.palette.divider}`,
+                }),
+            },
+        },
+
+        // Tab - Enhanced navigation styling
+        JoyTab: {
+            styleOverrides: {
+                root: ({ theme }) => ({
+                    fontWeight: 600,
+                    textTransform: 'none',
+                    borderRadius: theme.vars.radius.lg,
+                    padding: '6px 12px',
+                    transition: 'all 200ms ease',
+                    '&:hover': {
+                        backgroundColor: theme.vars.palette.primary.softBg,
+                    },
+                }),
+            },
+        },
+
+        // Tab List - Enhanced container styling
+        JoyTabList: {
+            styleOverrides: {
+                root: ({ theme }) => ({
+                    backgroundColor: theme.vars.palette.background.level1,
+                    borderRadius: theme.vars.radius.xl,
+                    padding: '2px',
+                }),
+            },
+        },
+
+        // Tab Panel - Enhanced content area
+        JoyTabPanel: {
+            styleOverrides: {
+                root: () => ({
+                    padding: '12px',
+                }),
+            },
+        },
+
+        // Textarea - Enhanced form input
+        JoyTextarea: {
+            styleOverrides: {
+                root: ({ theme }) => ({
+                    borderRadius: theme.vars.radius.lg,
+                    transition: 'border-color 200ms ease',
+                    '&:focus-within': {
+                        borderColor: theme.vars.palette.primary[500],
+                        boxShadow: `0 0 0 3px ${theme.vars.palette.primary[100]}`,
+                    },
+                }),
+            },
+        },
+
+        // Toggle Button Group - Enhanced selection controls
+        JoyToggleButtonGroup: {
+            styleOverrides: {
+                root: ({ theme }) => ({
+                    borderRadius: theme.vars.radius.xl,
+                    overflow: 'hidden',
+                    border: `1px solid ${theme.vars.palette.divider}`,
+                }),
+            },
+        },
+
+        // Tooltip - Enhanced information display
+        JoyTooltip: {
+            styleOverrides: {
+                root: ({ theme }) => ({
+                    backgroundColor: theme.vars.palette.neutral[800],
+                    color: theme.vars.palette.common.white,
+                    borderRadius: theme.vars.radius.lg,
+                    boxShadow: theme.vars.shadow.lg,
+                    fontSize: theme.vars.fontSize.sm,
+                    padding: '4px 8px',
+                }),
+                arrow: ({ theme }) => ({
+                    color: theme.vars.palette.neutral[800],
+                }),
+            },
+        },
+
     },
 })
 

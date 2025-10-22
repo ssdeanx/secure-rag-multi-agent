@@ -4,10 +4,133 @@ import * as React from 'react'
 import { motion, useReducedMotion } from 'framer-motion'
 import { Box, Typography, Button, Chip, Link } from '@/components/ui/joy'
 import { ArrowForward, AutoAwesome } from '@mui/icons-material'
+import Particles, { initParticlesEngine } from '@tsparticles/react'
+import { loadSlim } from '@tsparticles/slim'
+import type { Container, ISourceOptions } from '@tsparticles/engine'
 
 export function Hero() {
     const reduceMotion = useReducedMotion()
     const prefersReducedMotion = reduceMotion === true
+    const [init, setInit] = React.useState(false)
+
+    // store the particles container so we can clean up on unmount
+    const containerRef = React.useRef<Container | null>(null)
+
+    React.useEffect(() => {
+        initParticlesEngine(async (engine) => {
+            await loadSlim(engine)
+        }).then(() => {
+            setInit(true)
+        })
+
+        return () => {
+            // destroy particles instance on unmount to avoid leaks
+            if (containerRef.current) {
+                try {
+                    containerRef.current.destroy()
+                } catch {
+                    // swallow errors during teardown
+                } finally {
+                    containerRef.current = null
+                }
+            }
+        }
+    }, [])
+
+    // particlesLoaded callback - stores Container instance
+    const handleParticlesLoaded = React.useCallback(async (container?: Container) => {
+        containerRef.current = container ?? null
+    }, [])
+
+    // Particles configuration
+    const particlesOptions = React.useMemo(() => ({
+        background: {
+            color: {
+                value: "transparent",
+            },
+        },
+        particles: {
+            number: {
+                value: 80,
+                density: {
+                    enable: true,
+                    value_area: 800,
+                },
+            },
+            color: {
+                value: ["#3ecf8e", "#14b8a6", "#6366f1", "#8b5cf6"],
+            },
+            shape: {
+                type: "circle",
+            },
+            opacity: {
+                value: 0.3,
+                random: true,
+                anim: {
+                    enable: true,
+                    speed: 1,
+                    opacity_min: 0.1,
+                    sync: false,
+                },
+            },
+            size: {
+                value: 3,
+                random: true,
+                anim: {
+                    enable: true,
+                    speed: 2,
+                    size_min: 0.5,
+                    sync: false,
+                },
+            },
+            links: {
+                enable: true,
+                distance: 150,
+                color: "#3ecf8e",
+                opacity: 0.2,
+                width: 1,
+            },
+            move: {
+                enable: true,
+                speed: 1,
+                random: true,
+                straight: false,
+                out_mode: "out",
+                bounce: false,
+                attract: {
+                    enable: false,
+                    rotateX: 600,
+                    rotateY: 1200,
+                },
+            },
+        },
+        interactivity: {
+            detect_on: "canvas",
+            events: {
+                onhover: {
+                    enable: true,
+                    mode: "repulse",
+                },
+                onclick: {
+                    enable: true,
+                    mode: "push",
+                },
+                resize: {
+                    enable: true,
+                },
+            },
+            modes: {
+                repulse: {
+                    distance: 100,
+                    duration: 0.4,
+                },
+                push: {
+                    particles_nb: 4,
+                },
+            },
+        },
+        retina_detect: true,
+    } as ISourceOptions), [])
 
     const fadeUp = (delay = 0) =>
         prefersReducedMotion
@@ -34,51 +157,69 @@ export function Hero() {
                 overflow: 'hidden',
             }}
         >
-            {/* Background decorative elements */}
-            <Box
-                sx={{
-                    position: 'absolute',
-                    inset: 0,
-                    opacity: 0.4,
-                    pointerEvents: 'none',
-                }}
-            >
-                <Box
-                    sx={{
-                        position: 'absolute',
-                        top: '22%',
-                        left: '20%',
-                        width: 480,
-                        height: 480,
-                        bgcolor: 'primary.softBg',
-                        borderRadius: '50%',
-                        filter: 'blur(100px)',
-                    }}
-                />
-                <Box
-                    sx={{
-                        position: 'absolute',
-                        bottom: '18%',
-                        right: '15%',
-                        width: 420,
-                        height: 420,
-                        bgcolor: 'success.softBg',
-                        borderRadius: '50%',
-                        filter: 'blur(100px)',
-                    }}
-                />
-                {/* subtle grid */}
-                <Box
-                    sx={{
-                        position: 'absolute',
-                        inset: 0,
-                        opacity: 0.06,
-                        backgroundImage:
-                            'linear-gradient(rgba(255,255,255,0.08) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.08) 1px, transparent 1px)',
-                        backgroundSize: '36px 36px',
-                    }}
-                />
-            </Box>
+            {/* TSparticles background */}
+            {init && !prefersReducedMotion && (
+                <>
+                    <Particles
+                        id="tsparticles"
+                        options={particlesOptions}
+                        particlesLoaded={handleParticlesLoaded}
+                        style={{
+                            position: 'absolute',
+                            top: 0,
+                            left: 0,
+                            width: '100%',
+                            height: '100%',
+                            zIndex: 1,
+                        }}
+                    />
+                    {/* Background decorative elements */}
+                    <Box
+                        sx={{
+                            position: 'absolute',
+                            inset: 0,
+                            opacity: 0.4,
+                            pointerEvents: 'none',
+                        }}
+                    >
+                        <Box
+                            sx={{
+                                position: 'absolute',
+                                top: '22%',
+                                left: '20%',
+                                width: 480,
+                                height: 480,
+                                bgcolor: 'primary.softBg',
+                                borderRadius: '50%',
+                                filter: 'blur(100px)',
+                            }}
+                        />
+                        <Box
+                            sx={{
+                                position: 'absolute',
+                                bottom: '18%',
+                                right: '15%',
+                                width: 420,
+                                height: 420,
+                                bgcolor: 'success.softBg',
+                                borderRadius: '50%',
+                                filter: 'blur(100px)',
+                            }}
+                        />
+                        {/* subtle grid */}
+                        <Box
+                            sx={{
+                                position: 'absolute',
+                                inset: 0,
+                                opacity: 0.06,
+                                backgroundImage:
+                                    'linear-gradient(rgba(255,255,255,0.08) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.08) 1px, transparent 1px)',
+                                backgroundSize: '36px 36px',
+                            }}
+                        />
+                    </Box>
+                </>
+            )}
 
             <Box
                 sx={{

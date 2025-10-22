@@ -29,14 +29,14 @@ import {
 
 # Quick Start Guide
 
-This guide provides step-by-step instructions to set up and run the Mastra Governed RAG application locally.
+This guide provides step-by-step instructions to set up and run the Multi-Domain AI Orchestration Platform locally.
 
 <Alert className="mb-6">
     <Play className="h-4 w-4" />
     <AlertTitle>Get Started in 5 Minutes</AlertTitle>
     <AlertDescription>
-        Follow this guide to have a fully functional governed RAG system running
-        locally with sample documents and role-based access control.
+        Follow this guide to have a fully functional AI orchestration platform running
+        locally with 27 specialized agents across 5 capability domains.
     </AlertDescription>
 </Alert>
 
@@ -55,7 +55,7 @@ This guide provides step-by-step instructions to set up and run the Mastra Gover
     <CardContent>
       <Box sx={{ display: 'flex', alignItems: 'center', mb: 1 }}>
         <Badge variant="soft" color="neutral" sx={{ mr: 1 }}>Node.js</Badge>
-        <Typography level="body-sm">≥20.9.0</Typography>
+        <Typography level="body-sm">≥20.19.5</Typography>
       </Box>
       <Box sx={{ display: 'flex', alignItems: 'center', mb: 1 }}>
         <Badge variant="soft" color="neutral" sx={{ mr: 1 }}>Docker</Badge>
@@ -83,10 +83,6 @@ This guide provides step-by-step instructions to set up and run the Mastra Gover
       <Box sx={{ display: 'flex', alignItems: 'center', mb: 1 }}>
         <Badge variant="outlined" sx={{ mr: 1 }}>PostgreSQL + PgVector</Badge>
         <Typography level="body-sm">Cloud or local</Typography>
-      </Box>
-      <Box sx={{ display: 'flex', alignItems: 'center' }}>
-        <Badge variant="outlined" sx={{ mr: 1 }}>LibSQL</Badge>
-        <Typography level="body-sm">Database service</Typography>
       </Box>
     </CardContent>
   </Card>
@@ -301,7 +297,7 @@ cd mastra-governed-rag`}
 docker-compose up -d
             </Typography>
           </Box>
-          <Box sx={{ display: 'grid', gridTemplateColumns: { xs: '1fr', md: 'repeat(2, 1fr)' }, gap: 2, mb: 2 }}>
+          <Box sx={{ display: 'grid', gridTemplateColumns: '1fr', gap: 2, mb: 2 }}>
             <Card variant="soft">
               <CardHeader sx={{ pb: 1.5 }}>
                 <CardTitle sx={{ fontSize: '1rem' }}>PostgreSQL + PgVector Database</CardTitle>
@@ -313,17 +309,6 @@ docker-compose up -d
                 <Typography level="body-sm">
                   Health: <Typography component="code" sx={{ bgcolor: 'background.surface', px: 0.5 }}>psql postgresql://postgres:password@localhost:5432/mastra -c "SELECT 1;"</Typography>
                 </Typography>
-              </CardContent>
-            </Card>
-            <Card variant="soft">
-              <CardHeader sx={{ pb: 1.5 }}>
-                <CardTitle sx={{ fontSize: '1rem' }}>LibSQL Database</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <Typography level="body-sm" sx={{ mb: 0.5 }}>
-                  Port: <Typography component="code" sx={{ bgcolor: 'background.surface', px: 0.5 }}>8000</Typography>
-                </Typography>
-                <Typography level="body-sm">Type: SQLite-compatible</Typography>
               </CardContent>
             </Card>
           </Box>
@@ -496,7 +481,7 @@ npm run dev
       <Box>
         <Typography sx={{ fontWeight: 'bold' }}>Docker Services Fail</Typography>
         <Typography level="body-sm" sx={{ color: 'text.tertiary' }}>
-          Check <Typography component="code" sx={{ bgcolor: 'background.surface', px: 0.5 }}>docker-compose logs</Typography>. Ensure ports 5432 (PostgreSQL) and 8000 (LibSQL) are free.
+          Check <Typography component="code" sx={{ bgcolor: 'background.surface', px: 0.5 }}>docker-compose logs</Typography>. Ensure port 5432 (PostgreSQL) is free.
         </Typography>
       </Box>
     </Box>

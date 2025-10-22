@@ -1,6 +1,6 @@
 ---
-title: Mastra Backend — Governed RAG
-summary: Architecture, configuration, API reference, security model, and operational guidance for the Mastra backend used by this project.
+title: Mastra Backend — Multi-Domain AI Orchestration
+summary: Architecture, configuration, API reference, security model, and operational guidance for the Mastra backend powering the Multi-Domain AI Orchestration Platform.
 ---
 
 import {
@@ -40,9 +40,9 @@ import {
         <CardTitle>Overview</CardTitle>
     </CardHeader>
     <CardContent>
-        This document describes the Mastra backend that powers the Governed RAG
-        system in this repository. It covers architecture, security, API
-        endpoints, deployment notes, and quick operational examples.
+        This document describes the Mastra backend that powers the Multi-Domain AI Orchestration Platform
+        in this repository. It covers architecture, security, API endpoints, deployment notes, and quick
+        operational examples for 27 specialized agents across 5 capability domains.
     </CardContent>
 </Card>
 
@@ -62,9 +62,9 @@ import {
     <Typography sx={{ fontSize: '1.125rem', fontWeight: 'bold', mb: 2 }}>High-level Components</Typography>
     <Box component="ul" sx={{ ml: 3, '& li': { mb: 1 } }}>
       <li><strong>Mastra Server</strong> — Orchestrates agents, enforces policies, and provides an API surface for the frontend and CI systems.</li>
-      <li><strong>Agents</strong> — 16+ specialized agents for retrieval, research, content generation, evaluation, and more.</li>
+      <li><strong>Agents</strong> — 27 specialized agents for retrieval, research, content generation, evaluation, and more across 5 capability domains.</li>
       <li><strong>Vector Store</strong> — PostgreSQL with PgVector for high-performance similarity search with 1568-dimension embeddings.</li>
-      <li><strong>Storage</strong> — LibSQL for metadata and conversation storage with built-in vector support.</li>
+      <li><strong>Storage</strong> — PostgreSQL for metadata and conversation storage with PgVector support.</li>
       <li><strong>Auth & Session</strong> — Mastra JWT authentication with role-based access control.</li>
       <li><strong>Memory</strong> — Advanced conversation memory with thread management and context persistence.</li>
     </Box>
@@ -74,9 +74,9 @@ import {
         A[Next.js Frontend] --> B[API Routes]
         B --> C[Mastra Server]
         C --> D[Agent Orchestrator]
-        D --> E[16+ Specialized Agents]
+        D --> E[27 Specialized Agents]
         E --> F[PgVector DB]
-        E --> G[LibSQL Storage]
+        E --> G[PostgreSQL Storage]
         C --> H[Mastra Auth]
         C --> I[Memory System]
         F --> J[1568D Embeddings]
@@ -95,35 +95,66 @@ import {
   </TabsContent>
 
   <TabsContent value="agents">
-    <Typography sx={{ fontSize: '1.125rem', fontWeight: 'bold', mb: 2 }}>Agents & Workflows</Typography>
-    <Typography sx={{ mb: 2 }}>16+ specialized agents configured in <Typography component="code" sx={{ fontSize: '0.875rem' }}>src/mastra/agents/</Typography> and orchestrated through workflows in <Typography component="code" sx={{ fontSize: '0.875rem' }}>src/mastra/workflows/</Typography>.</Typography>
+    <Typography sx={{ fontSize: '1.125rem', fontWeight: 'bold', mb: 2 }}>Agents & Networks (27+ total)</Typography>
+    <Typography sx={{ mb: 2 }}>27+ specialized agents and 3 agent networks configured across 5 capability domains in <Typography component="code" sx={{ fontSize: '0.875rem' }}>src/mastra/agents/</Typography> and orchestrated through workflows in <Typography component="code" sx={{ fontSize: '0.875rem' }}>src/mastra/workflows/</Typography>.</Typography>
     <Box sx={{ display: 'grid', gridTemplateColumns: { xs: '1fr', md: 'repeat(2, 1fr)' }, gap: 3, mb: 3 }}>
       <Card variant="outlined">
         <CardHeader>
-          <CardTitle sx={{ fontSize: '0.875rem' }}>Core RAG Agents</CardTitle>
+          <CardTitle sx={{ fontSize: '0.875rem' }}>Governed RAG Agents (6 core)</CardTitle>
         </CardHeader>
         <CardContent>
           <Box component="ul" sx={{ m: 0, pl: 2, '& li': { mb: 1, fontSize: '0.875rem' } }}>
-            <li><Badge variant="soft" sx={{ mr: 1 }}>retrieve</Badge>Document retrieval with access control</li>
-            <li><Badge variant="soft" sx={{ mr: 1 }}>rerank</Badge>Result relevance ranking</li>
-            <li><Badge variant="soft" sx={{ mr: 1 }}>answerer</Badge>Response generation</li>
-            <li><Badge variant="soft" sx={{ mr: 1 }}>verifier</Badge>Content verification & security</li>
+            <li><Badge variant="soft" sx={{ mr: 1 }}>identity</Badge>Authentication & user identity</li>
+            <li><Badge variant="soft" sx={{ mr: 1 }}>policy</Badge>Access control & policy enforcement</li>
+            <li><Badge variant="soft" sx={{ mr: 1 }}>retrieve</Badge>Vector search with security filters</li>
+            <li><Badge variant="soft" sx={{ mr: 1 }}>rerank</Badge>Relevance scoring and reordering</li>
+            <li><Badge variant="soft" sx={{ mr: 1 }}>answerer</Badge>Response generation with citations</li>
+            <li><Badge variant="soft" sx={{ mr: 1 }}>verifier</Badge>Security compliance auditing</li>
           </Box>
         </CardContent>
       </Card>
       <Card variant="outlined">
         <CardHeader>
-          <CardTitle sx={{ fontSize: '0.875rem' }}>Advanced Agents</CardTitle>
+          <CardTitle sx={{ fontSize: '0.875rem' }}>Domain Agents (21+ specialized)</CardTitle>
         </CardHeader>
         <CardContent>
           <Box component="ul" sx={{ m: 0, pl: 2, '& li': { mb: 1, fontSize: '0.875rem' } }}>
-            <li><Badge variant="soft" sx={{ mr: 1 }}>research</Badge>Deep research capabilities</li>
-            <li><Badge variant="soft" sx={{ mr: 1 }}>report</Badge>Report generation</li>
-            <li><Badge variant="soft" sx={{ mr: 1 }}>copywriter</Badge>Content optimization</li>
-            <li><Badge variant="soft" sx={{ mr: 1 }}>evaluation</Badge>Quality assessment</li>
-            <li><Badge variant="soft" sx={{ mr: 1 }}>editor</Badge>Content editing</li>
-            <li><Badge variant="soft" sx={{ mr: 1 }}>roadmap</Badge>Product planning</li>
+            <li><Badge variant="soft" sx={{ mr: 1 }}>research</Badge>Multi-source research & analysis</li>
+            <li><Badge variant="soft" sx={{ mr: 1 }}>copywriter</Badge>Content creation & optimization</li>
+            <li><Badge variant="soft" sx={{ mr: 1 }}>editor</Badge>Content editing & refinement</li>
+            <li><Badge variant="soft" sx={{ mr: 1 }}>cryptoAnalysis</Badge>Cryptocurrency market analysis</li>
+            <li><Badge variant="soft" sx={{ mr: 1 }}>stockAnalysis</Badge>Stock market analysis</li>
+            <li><Badge variant="soft" sx={{ mr: 1 }}>productRoadmap</Badge>Product planning & roadmapping</li>
+            <li><Badge variant="soft" sx={{ mr: 1 }}>assistant</Badge>General AI assistance</li>
+            <li><Badge variant="soft" sx={{ mr: 1 }}>evaluation</Badge>Quality assessment & scoring</li>
           </Box>
+        </CardContent>
+      </Card>
+    </Box>
+    <Typography sx={{ fontSize: '1rem', fontWeight: 'bold', mt: 3, mb: 2 }}>Agent Networks (3 orchestrated systems)</Typography>
+    <Box sx={{ display: 'grid', gridTemplateColumns: { xs: '1fr', md: 'repeat(3, 1fr)' }, gap: 2, mb: 3 }}>
+      <Card variant="soft">
+        <CardHeader sx={{ pb: 1 }}>
+          <CardTitle sx={{ fontSize: '0.9rem' }}>research-content-network</CardTitle>
+        </CardHeader>
+        <CardContent sx={{ pt: 0 }}>
+          <Typography level="body-xs">Research → Content Generation → Editing</Typography>
+        </CardContent>
+      </Card>
+      <Card variant="soft">
+        <CardHeader sx={{ pb: 1 }}>
+          <CardTitle sx={{ fontSize: '0.9rem' }}>financial-team-network</CardTitle>
+        </CardHeader>
+        <CardContent sx={{ pt: 0 }}>
+          <Typography level="body-xs">Crypto + Stock Analysis + Market Education</Typography>
+        </CardContent>
+      </Card>
+      <Card variant="soft">
+        <CardHeader sx={{ pb: 1 }}>
+          <CardTitle sx={{ fontSize: '0.9rem' }}>governed-rag-network</CardTitle>
+        </CardHeader>
+        <CardContent sx={{ pt: 0 }}>
+          <Typography level="body-xs">Secure RAG pipeline orchestration</Typography>
         </CardContent>
       </Card>
     </Box>
@@ -133,7 +164,7 @@ import {
 {`import { Agent } from "@mastra/core";
 import { google } from "@ai-sdk/google";
 import { vectorQueryTool } from "../tools/vector-query.tool";
-import { createResearchMemory } from '../config/libsql-storage';
+import { pgMemory } from '../config/pg-storage';
 
 const memory = createResearchMemory();
 
@@ -197,21 +228,23 @@ export const vectorQueryTool = createTool({
     <Box sx={{ bgcolor: 'background.surface', p: 3, borderRadius: 1, border: '1px solid', borderColor: 'divider' }}>
       <Mermaid chart={`graph LR
         A[User Query] --> B[Access Control]
-        B --> C[Retrieve Agent]
-        C --> D[Rerank Agent]
-        D --> E[Answerer Agent]
-        E --> F[Verifier Agent]
-        F --> G[Final Response]
-        B --> B1[403: Access Denied]
-        C --> C1[Research Agent]
-        D --> D1[Copywriter Agent]
-        E --> E1[Report Agent]
+        B --> C[Identity Agent]
+        C --> D[Policy Agent]
+        D --> E[Retrieve Agent]
+        E --> F[Rerank Agent]
+        F --> G[Answerer Agent]
+        G --> H[Verifier Agent]
+        H --> I[Final Response]
+        B --> J[403: Access Denied]
+        E --> K[Research Agent]
+        F --> L[Copywriter Agent]
+        G --> M[Report Agent]
         classDef core fill:#e3f2fd,stroke:#1976d2,stroke-width:2px
         classDef advanced fill:#f3e5f5,stroke:#7b1fa2,stroke-width:2px
         classDef error fill:#ffebee,stroke:#c62828,stroke-width:2px
-        class A,B,C,D,E,F,G core
-        class C1,D1,E1 advanced
-        class B1 error
+        class A,B,C,D,E,F,G,H,I core
+        class K,L,M advanced
+        class J error
         `} />
 
 </Box>
@@ -233,7 +266,7 @@ export const vectorQueryTool = createTool({
         <CardHeader>
           <CardTitle sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
             <Database sx={{ fontSize: 20, color: 'primary.main' }} />
-            LibSQL Storage
+            PostgreSQL Storage
           </CardTitle>
         </CardHeader>
         <CardContent>
@@ -254,7 +287,7 @@ export const vectorQueryTool = createTool({
         </CardHeader>
         <CardContent>
           <Box component="ul" sx={{ m: 0, pl: 2, '& li': { mb: 1, fontSize: '0.875rem', display: 'flex', alignItems: 'center' } }}>
-            <li><CheckCircle sx={{ fontSize: 12, color: 'success.main', mr: 1 }} />1568D embeddings</li>
+            <li><CheckCircle sx={{ fontSize: 12, color: 'success.main', mr: 1 }} />3072 embeddings</li>
             <li><CheckCircle sx={{ fontSize: 12, color: 'success.main', mr: 1 }} />Cosine similarity</li>
             <li><CheckCircle sx={{ fontSize: 12, color: 'success.main', mr: 1 }} />High-performance search</li>
             <li><CheckCircle sx={{ fontSize: 12, color: 'success.main', mr: 1 }} />Filtered retrieval</li>
@@ -269,7 +302,7 @@ export const vectorQueryTool = createTool({
         B --> C[Embedding Generation]
         C --> D[PgVector Storage]
         C --> E[Metadata Storage]
-        E --> F[LibSQL Database]
+        E --> F[PostgreSQL Database]
         D --> G[Vector Search]
         F --> H[Thread Retrieval]
         G --> I[Similarity Results]
@@ -591,7 +624,7 @@ const response = await fetch('/api/mastra/index', {
             <Typography sx={{ fontWeight: 'bold', mb: 1 }}>Infrastructure Requirements</Typography>
             <Box component="ul" sx={{ ml: 3, '& li': { mb: 0.5 } }}>
               <li><strong>PostgreSQL + PgVector Cluster:</strong> Managed PostgreSQL instance with PgVector extension</li>
-              <li><strong>Database:</strong> LibSQL (Turso) or PostgreSQL for metadata storage</li>
+              <li><strong>Database:</strong> PostgreSQL for metadata storage</li>
               <li><strong>AI Models:</strong> Google Gemini API key and/or OpenAI API key</li>
               <li><strong>Storage:</strong> File storage for logs and temporary data</li>
             </Box>

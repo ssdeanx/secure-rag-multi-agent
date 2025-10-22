@@ -1,6 +1,6 @@
 ---
 title: Onboarding to Cedar Component Development with Mastra Integration
-description: Guide for developers to build interactive UI components in Cedar-OS and integrate with Mastra backend.
+description: Guide for developers to build interactive UI components in Cedar-OS and integrate with Mastra backend for the Multi-Domain AI Orchestration Platform.
 ---
 
 import {
@@ -13,11 +13,11 @@ import {
 
 # Onboarding to Cedar Component Development with Mastra Integration
 
-This guide provides a detailed onboarding process for developers looking to build interactive UI components within `cedar-os` and integrate them with the powerful AI-driven, governance-focused capabilities of `mastra-governed-rag`.
+This guide provides a detailed onboarding process for developers looking to build interactive UI components within `cedar-os` and integrate them with the powerful AI-driven capabilities of the Multi-Domain AI Orchestration Platform.
 
 ## 1. Overall Architecture and Interaction Flow
 
-At a high level, the system consists of a frontend built with `cedar-os` (a React-based framework) and a backend powered by `mastra-governed-rag` (a Next.js application leveraging a sophisticated agentic workflow engine). They communicate primarily via HTTP/REST APIs, secured by JWTs.
+At a high level, the system consists of a frontend built with `cedar-os` (a React-based framework) and a backend powered by the Multi-Domain AI Orchestration Platform (a Next.js application leveraging a sophisticated agentic workflow engine). They communicate primarily via HTTP/REST APIs, secured by JWTs.
 
 ### Architectural Components
 
@@ -28,10 +28,10 @@ At a high level, the system consists of a frontend built with `cedar-os` (a Reac
     - **`MastraClient`**: A client-side utility (`lib/mastra/mastra-client.ts`) for making authenticated requests to the `mastra-governed-rag` backend.
 
 - **Mastra-Governed-RAG (Backend)**:
-    - **Purpose**: Securely processes natural language queries, retrieves relevant information, generates responses, and enforces access control.
+    - **Purpose**: Processes natural language queries across 5 capability domains using 27 specialized agents.
     - **Next.js API Routes**: Entry points (`/app/api/`) for frontend communication (e.g., `/api/chat`, `/api/index`, `/api/auth`).
     - **Mastra Workflow Engine**: Orchestrates complex sequences of operations using specialized agents and tools (`src/mastra/workflows/`).
-    - **Mastra Agents**: Specialized AI components (`src/mastra/agents/`) performing distinct tasks (e.g., Identity, Policy, Retrieve, Answerer, Verifier), ensuring governance, security, and traceability in all interactions.
+    - **Mastra Agents**: Specialized AI components (`src/mastra/agents/`) performing distinct tasks across 5 domains: Governed RAG, Deep Research, Financial Intelligence, Content Generation, and Interactive State Management.
 
 ### High-Level System Diagram
 
@@ -40,7 +40,7 @@ graph TD
     user["User<br>/app/page.tsx"]
     llm["Large Language Model<br>/app/api/chat"]
     authService["External Authentication Service<br>/app/api/auth"]
-    subgraph mastraRAG["Mastra Governed RAG<br>[External]"]
+    subgraph mastraPlatform["Multi-Domain AI Orchestration Platform<br>[Backend]"]
         subgraph webApp["Web Application<br>/app/"]
             chatUI["Chat Interface<br>/components/ChatInterface.tsx"]
             authUI["Authentication UI<br>/components/AuthPanel.tsx"]

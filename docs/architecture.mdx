@@ -1,3 +1,14 @@
+---
+title: Multi-Domain AI Orchestration Platform
+summary: This document outlines the architecture of the Mastra Multi-Domain AI Orchestration Platform.
+versionId: 1.0.0
+created: 2025-10-22
+updated: 2025-10-22
+tags: [multi-domain, ai, orchestration, platform, architecture, mastra, nextjs, cedar, design, security, compliance, compliance-as-code, security-as-code, infrastructure-as-code]
+metadata:
+  layout: docs, sidebar: true, toc: true, sidebarDepth: 2, search: true, searchMaxSuggestions: 10, draft: false
+---
+
 import {
     Badge,
     Button,
@@ -30,14 +41,14 @@ import {
 
 # System Architecture
 
-The Mastra Governed RAG is built around Mastra's multi-agent orchestration framework, integrating Next.js for the frontend/API, PostgreSQL with PgVector for vector storage, and Google Gemini for embeddings/LLM. The core logic resides in `src/mastra/`, with workflows coordinating agents, tools, and services for secure RAG operations.
+The Multi-Domain AI Orchestration Platform is built around Mastra's multi-agent orchestration framework, integrating Next.js for the frontend/API, PostgreSQL with PgVector for vector storage, and Google Gemini for embeddings/LLM. The core logic resides in `src/mastra/`, with workflows coordinating 27 specialized agents across 5 capability domains for comprehensive AI orchestration.
 
 <Alert className="mb-6">
     <Layers className="h-4 w-4" />
     <AlertTitle>Multi-Agent Architecture</AlertTitle>
     <AlertDescription>
-        Specialized AI agents work together in orchestrated workflows to ensure
-        security, accuracy, and compliance at every step of the RAG pipeline.
+        Specialized AI agents work together in orchestrated workflows across 5 domains:
+        Governed RAG, Deep Research, Financial Intelligence, Content Generation, and Interactive State Management.
     </AlertDescription>
 </Alert>
 
@@ -104,7 +115,7 @@ The Mastra Governed RAG is built around Mastra's multi-agent orchestration frame
     <CardContent>
         <Box component="ul" sx={{ m: 0, pl: 2, '& li': { mb: 0.5 } }}>
             <li>• PostgreSQL with PgVector</li>
-            <li>• LibSQL metadata store</li>
+            <li>• PostgreSQL metadata store</li>
             <li>• Security payloads</li>
             <li>• Audit logging</li>
         </Box>
@@ -157,15 +168,20 @@ graph TB
   end
 
   subgraph "Agent Layer"
-      M[Retriever Agent]
-      N[Validator Agent]
-      O[Summarizer Agent]
-      P[Response Agent]
+      M[Identity Agent]
+      N[Policy Agent]
+      O[Retrieve Agent]
+      P[Rerank Agent]
+      Q[Answerer Agent]
+      R[Verifier Agent]
+      S[Research Agent]
+      T[Copywriter Agent]
+      U[Financial Agents]
   end
 
   subgraph "Storage Layer"
       Q[(PgVector Vectors)]
-      R[(LibSQL Metadata)]
+      R[(PostgreSQL Metadata)]
       S[(Security Store)]
   end
 
@@ -187,6 +203,11 @@ graph TB
   L --> N
   L --> O
   L --> P
+  L --> Q
+  L --> R
+  L --> S
+  L --> T
+  L --> U
   M --> Q
   N --> R
   O --> S
@@ -214,43 +235,43 @@ graph TB
   <CardContent>
     <Box sx={{ display: 'grid', gridTemplateColumns: { xs: '1fr', md: 'repeat(2, 1fr)' }, gap: 3, mb: 2 }}>
       <Box>
-        <Typography sx={{ fontWeight: 'bold', mb: 1 }}>Agents (16+ specialized)</Typography>
+        <Typography sx={{ fontWeight: 'bold', mb: 1 }}>Agents (27+ specialized)</Typography>
         <Box component="ul" sx={{ m: 0, pl: 2, '& li': { mb: 0.5, fontSize: '0.875rem' } }}>
-          <li>• <Typography component="code" sx={{ bgcolor: 'background.surface', px: 0.5 }}>retrieve.agent.ts</Typography> - Vector search with security</li>
-          <li>• <Typography component="code" sx={{ bgcolor: 'background.surface', px: 0.5 }}>rerank.agent.ts</Typography> - Relevance scoring</li>
-          <li>• <Typography component="code" sx={{ bgcolor: 'background.surface', px: 0.5 }}>answerer.agent.ts</Typography> - Response generation</li>
-          <li>• <Typography component="code" sx={{ bgcolor: 'background.surface', px: 0.5 }}>verifier.agent.ts</Typography> - Security compliance</li>
-          <li>• <Typography component="code" sx={{ bgcolor: 'background.surface', px: 0.5 }}>policy.agent.ts</Typography> - Policy enforcement</li>
-          <li>• <Typography component="code" sx={{ bgcolor: 'background.surface', px: 0.5 }}>researchAgent.ts</Typography> - Research capabilities</li>
+          <li>• <Typography component="code" sx={{ bgcolor: 'background.surface', px: 0.5 }}>27+ individual agents</Typography> - Governed RAG, research, content generation, financial analysis</li>
+          <li>• <Typography component="code" sx={{ bgcolor: 'background.surface', px: 0.5 }}>3 agent networks</Typography> - Multi-agent orchestration (research-content, financial-team, governed-rag)</li>
+          <li>• <Typography component="code" sx={{ bgcolor: 'background.surface', px: 0.5 }}>Custom scorers</Typography> - Quality evaluation for agent responses</li>
+          <li>• <Typography component="code" sx={{ bgcolor: 'background.surface', px: 0.5 }}>5 capability domains</Typography> - Governed RAG, Deep Research, Financial Intelligence, Content Generation, Interactive State</li>
         </Box>
       </Box>
       <Box>
-        <Typography sx={{ fontWeight: 'bold', mb: 1 }}>Workflows (6+ main)</Typography>
+        <Typography sx={{ fontWeight: 'bold', mb: 1 }}>Workflows (10+ orchestrated)</Typography>
         <Box component="ul" sx={{ m: 0, pl: 2, '& li': { mb: 0.5, fontSize: '0.875rem' } }}>
-          <li>• <Typography component="code" sx={{ bgcolor: 'background.surface', px: 0.5 }}>governed-rag-answer.workflow.ts</Typography></li>
-          <li>• <Typography component="code" sx={{ bgcolor: 'background.surface', px: 0.5 }}>governed-rag-index.workflow.ts</Typography></li>
-          <li>• <Typography component="code" sx={{ bgcolor: 'background.surface', px: 0.5 }}>chatWorkflow.ts</Typography></li>
-          <li>• <Typography component="code" sx={{ bgcolor: 'background.surface', px: 0.5 }}>researchWorkflow.ts</Typography></li>
+          <li>• <Typography component="code" sx={{ bgcolor: 'background.surface', px: 0.5 }}>governed-rag-answer.workflow.ts</Typography> - Secure Q&A pipeline</li>
+          <li>• <Typography component="code" sx={{ bgcolor: 'background.surface', px: 0.5 }}>chatWorkflow.ts</Typography> - Interactive conversational workflows</li>
+          <li>• <Typography component="code" sx={{ bgcolor: 'background.surface', px: 0.5 }}>financialAnalysisWorkflowV3.ts</Typography> - Advanced financial analysis</li>
+          <li>• <Typography component="code" sx={{ bgcolor: 'background.surface', px: 0.5 }}>contentGenerationWorkflow.ts</Typography> - Multi-agent content creation</li>
+          <li>• <Typography component="code" sx={{ bgcolor: 'background.surface', px: 0.5 }}>researchWorkflow.ts</Typography> - Deep research orchestration</li>
         </Box>
-        <Typography sx={{ fontWeight: 'bold', mb: 1, mt: 2 }}>Tools (2 core)</Typography>
+        <Typography sx={{ fontWeight: 'bold', mb: 1, mt: 2 }}>Tools (50+ capabilities)</Typography>
         <Box component="ul" sx={{ m: 0, pl: 2, '& li': { mb: 0.5, fontSize: '0.875rem' } }}>
-          <li>• <Typography component="code" sx={{ bgcolor: 'background.surface', px: 0.5 }}>vector-query.tool.ts</Typography></li>
-          <li>• <Typography component="code" sx={{ bgcolor: 'background.surface', px: 0.5 }}>jwt-auth.tool.ts</Typography></li>
+          <li>• <Typography component="code" sx={{ bgcolor: 'background.surface', px: 0.5 }}>25+ web/data tools</Typography> - Scraping, APIs, search (Alpha Vantage, Polygon, Finnhub, SerpAPI)</li>
+          <li>• <Typography component="code" sx={{ bgcolor: 'background.surface', px: 0.5 }}>10+ processing tools</Typography> - Document chunking, PDF conversion, evaluation, learning extraction</li>
+          <li>• <Typography component="code" sx={{ bgcolor: 'background.surface', px: 0.5 }}>MCP integration</Typography> - Model Context Protocol server</li>
         </Box>
       </Box>
     </Box>
-    <Typography sx={{ fontWeight: 'bold', mb: 1 }}>Services (10 utility classes)</Typography>
+    <Typography sx={{ fontWeight: 'bold', mb: 1 }}>Services & Configuration</Typography>
     <Box sx={{ display: 'grid', gridTemplateColumns: { xs: 'repeat(2, 1fr)', md: 'repeat(3, 1fr)' }, gap: 1, fontSize: '0.875rem' }}>
       <div>• AuthenticationService</div>
       <div>• RoleService</div>
       <div>• ValidationService</div>
-      <div>• EmbeddingService</div>
-      <div>• ChunkingService</div>
+      <div>• VectorService</div>
       <div>• DocumentProcessorService</div>
-      <div>• DocumentIndexingService</div>
-      <div>• VectorQueryService</div>
-      <div>• VectorStorageService</div>
       <div>• WorkflowDecorators</div>
+      <div>• PgVector +  storage</div>
+      <div>• Google Gemini AI models</div>
+      <div>• JWT authentication</div>
+      <div>• Structured logging</div>
     </Box>
 
   </CardContent>
@@ -258,103 +279,240 @@ graph TB
 
 ## Workflows
 
-Mastra workflows define sequential steps combining agents, tools, and services. Six main workflows handle the complete RAG lifecycle and additional specialized tasks.
+Mastra workflows define sequential steps combining agents, tools, and services. Ten main workflows handle the complete AI orchestration lifecycle and specialized tasks across all 5 capability domains.
 
-<Tabs defaultValue="answer">
+<Tabs defaultValue="rag">
   <TabsList>
-    <TabsTrigger value="answer">Query Workflow</TabsTrigger>
-    <TabsTrigger value="index">Indexing Workflow</TabsTrigger>
-    <TabsTrigger value="chat">Chat Workflow</TabsTrigger>
+    <TabsTrigger value="rag">RAG Workflows</TabsTrigger>
+    <TabsTrigger value="domain">Domain Workflows</TabsTrigger>
+    <TabsTrigger value="content">Content Workflows</TabsTrigger>
+    <TabsTrigger value="financial">Financial Workflows</TabsTrigger>
   </TabsList>
 
-  <TabsContent value="answer">
-    <Card variant="outlined">
-      <CardHeader>
-        <CardTitle>Governed RAG Answer Workflow</CardTitle>
-        <CardDescription>Secure query processing: Auth → Retrieve → Rerank → Answer → Verify</CardDescription>
-      </CardHeader>
-      <CardContent>
-        <Box sx={{ mb: 2 }}>
-          <Typography sx={{ fontWeight: 'bold', mb: 1 }}>Process Flow:</Typography>
-          <Box sx={{ bgcolor: 'background.surface', p: 2, borderRadius: 1, fontSize: '0.875rem' }}>
-            <strong>Input:</strong> <Typography component="code" sx={{ bgcolor: 'background.surface', px: 0.5 }}>{"{jwt, question}"}</Typography><br/>
-            <strong>Output:</strong> <Typography component="code" sx={{ bgcolor: 'background.surface', px: 0.5 }}>{"{answer, citations}"}</Typography>
+  <TabsContent value="rag">
+    <Box sx={{ display: 'grid', gridTemplateColumns: { xs: '1fr', md: 'repeat(2, 1fr)' }, gap: 3, mb: 3 }}>
+      <Card variant="outlined">
+        <CardHeader>
+          <CardTitle>Governed RAG Answer Workflow</CardTitle>
+          <CardDescription>Secure Q&A pipeline: Auth → Retrieve → Rerank → Answer → Verify</CardDescription>
+        </CardHeader>
+        <CardContent>
+          <Box sx={{ mb: 2 }}>
+            <Typography sx={{ fontWeight: 'bold', mb: 1 }}>Process Flow:</Typography>
+            <Box sx={{ bgcolor: 'background.surface', p: 2, borderRadius: 1, fontSize: '0.875rem' }}>
+              <strong>Input:</strong> <Typography component="code" sx={{ bgcolor: 'background.surface', px: 0.5 }}>{"{jwt, question}"}</Typography><br/>
+              <strong>Output:</strong> <Typography component="code" sx={{ bgcolor: 'background.surface', px: 0.5 }}>{"{answer, citations}"}</Typography>
+            </Box>
           </Box>
-        </Box>
-        <Box sx={{ bgcolor: 'background.surface', p: 2, borderRadius: 1 }}>
-          <Typography sx={{ fontWeight: 'bold', mb: 2 }}>Query Workflow Diagram</Typography>
-          <Mermaid chart={`flowchart TD
-            A[User Query + JWT] --> B[JWT Validation]
-            B --> C[Retrieve Agent]
-            C --> D[Vector Search]
-            D --> E[Rerank Agent]
-            E --> F[Answerer Agent]
-            F --> G[Verifier Agent]
-            G --> H[Final Response]
-            style A fill:#e3f2fd
-            style C fill:#f3e5f5
-            style F fill:#fff3e0
-            style H fill:#e8f5e8`} />
-        </Box>
-      </CardContent>
-    </Card>
+          <Box sx={{ bgcolor: 'background.surface', p: 2, borderRadius: 1 }}>
+            <Typography sx={{ fontWeight: 'bold', mb: 2 }}>Secure RAG Pipeline</Typography>
+            <Mermaid chart={`flowchart TD
+              A[User Query + JWT] --> B[JWT Validation]
+              B --> C[Identity Agent]
+              C --> D[Policy Agent]
+              D --> E[Retrieve Agent]
+              E --> F[Rerank Agent]
+              F --> G[Answerer Agent]
+              G --> H[Verifier Agent]
+              H --> I[Final Response]
+              B --> J[403: Access Denied]
+              style A fill:#e3f2fd
+              style C fill:#f3e5f5
+              style G fill:#fff3e0
+              style I fill:#e8f5e8
+              style J fill:#ffebee`} />
+          </Box>
+        </CardContent>
+      </Card>
 
+      <Card variant="outlined">
+        <CardHeader>
+          <CardTitle>Governed RAG Index Workflow</CardTitle>
+          <CardDescription>Document ingestion: Process → Chunk → Embed → Store with Security</CardDescription>
+        </CardHeader>
+        <CardContent>
+          <Box sx={{ mb: 2 }}>
+            <Typography sx={{ fontWeight: 'bold', mb: 1 }}>Process Flow:</Typography>
+            <Box sx={{ bgcolor: 'background.surface', p: 2, borderRadius: 1, fontSize: '0.875rem' }}>
+              <strong>Input:</strong> <Typography component="code" sx={{ bgcolor: 'background.surface', px: 0.5 }}>{"{documents}"}</Typography><br/>
+              <strong>Output:</strong> <Typography component="code" sx={{ bgcolor: 'background.surface', px: 0.5 }}>{"{indexed, failed}"}</Typography>
+            </Box>
+          </Box>
+          <Box sx={{ bgcolor: 'background.surface', p: 2, borderRadius: 1 }}>
+            <Typography sx={{ fontWeight: 'bold', mb: 2 }}>Document Indexing Pipeline</Typography>
+            <Mermaid chart={`flowchart TD
+              A[Documents] --> B[Text Processing]
+              B --> C[Security Classification]
+              C --> D[Document Chunking]
+              D --> E[Generate Embeddings]
+              E --> F[Store with Access Control]
+              F --> G[Index Complete]
+              style A fill:#e3f2fd
+              style B fill:#f3e5f5
+              style D fill:#fff3e0
+              style G fill:#e8f5e8`} />
+          </Box>
+        </CardContent>
+      </Card>
+    </Box>
   </TabsContent>
 
-  <TabsContent value="index">
-    <Card variant="outlined">
-      <CardHeader>
-        <CardTitle>Governed RAG Index Workflow</CardTitle>
-        <CardDescription>Document ingestion: Process → Chunk → Embed → Store</CardDescription>
-      </CardHeader>
-      <CardContent>
-        <Box sx={{ mb: 2 }}>
-          <Typography sx={{ fontWeight: 'bold', mb: 1 }}>Process Flow:</Typography>
-          <Box sx={{ bgcolor: 'background.surface', p: 2, borderRadius: 1, fontSize: '0.875rem' }}>
-            <strong>Input:</strong> <Typography component="code" sx={{ bgcolor: 'background.surface', px: 0.5 }}>{"{documents}"}</Typography><br/>
-            <strong>Output:</strong> <Typography component="code" sx={{ bgcolor: 'background.surface', px: 0.5 }}>{"{indexed, failed}"}</Typography>
+  <TabsContent value="domain">
+    <Box sx={{ display: 'grid', gridTemplateColumns: { xs: '1fr', md: 'repeat(2, 1fr)' }, gap: 3, mb: 3 }}>
+      <Card variant="outlined">
+        <CardHeader>
+          <CardTitle>Chat Workflow</CardTitle>
+          <CardDescription>Interactive conversational workflows with Cedar OS integration</CardDescription>
+        </CardHeader>
+        <CardContent>
+          <Box sx={{ bgcolor: 'background.surface', p: 2, borderRadius: 1 }}>
+            <Typography sx={{ fontWeight: 'bold', mb: 2 }}>Interactive Chat Pipeline</Typography>
+            <Mermaid chart={`flowchart TD
+              A[User Message] --> B[Context Fetch]
+              B --> C[Cedar State Subscription]
+              C --> D[Agent Selection]
+              D --> E[Workflow Execution]
+              E --> F[Streaming Response]
+              F --> G[State Updates]
+              style A fill:#e3f2fd
+              style C fill:#f3e5f5
+              style E fill:#fff3e0
+              style G fill:#e8f5e8`} />
           </Box>
-        </Box>
-        <Box sx={{ bgcolor: 'background.surface', p: 2, borderRadius: 1 }}>
-          <Typography sx={{ fontWeight: 'bold', mb: 2 }}>Indexing Workflow Diagram</Typography>
-          <Mermaid chart={`flowchart TD
-            A[Documents] --> B[Process & Chunk]
-            B --> C[Generate Embeddings]
-            C --> D[Store with Security]
-            D --> E[Index Complete]
-            style A fill:#e3f2fd
-            style B fill:#f3e5f5
-            style D fill:#fff3e0
-            style E fill:#e8f5e8`} />
-        </Box>
-      </CardContent>
-    </Card>
+        </CardContent>
+      </Card>
 
+      <Card variant="outlined">
+        <CardHeader>
+          <CardTitle>Research Workflow</CardTitle>
+          <CardDescription>Multi-source research with approval gates and synthesis</CardDescription>
+        </CardHeader>
+        <CardContent>
+          <Box sx={{ bgcolor: 'background.surface', p: 2, borderRadius: 1 }}>
+            <Typography sx={{ fontWeight: 'bold', mb: 2 }}>Research Orchestration</Typography>
+            <Mermaid chart={`flowchart TD
+              A[Research Query] --> B[Source Selection]
+              B --> C[Parallel Research]
+              C --> D[Quality Evaluation]
+              D --> E[Result Synthesis]
+              E --> F[Final Report]
+              D --> G[Insufficient Quality]
+              G --> H[Additional Research]
+              H --> C
+              style A fill:#e3f2fd
+              style C fill:#f3e5f5
+              style E fill:#fff3e0
+              style F fill:#e8f5e8`} />
+          </Box>
+        </CardContent>
+      </Card>
+    </Box>
   </TabsContent>
 
-  <TabsContent value="chat">
-    <Card variant="outlined">
-      <CardHeader>
-        <CardTitle>Chat Workflow</CardTitle>
-        <CardDescription>Interactive conversational workflows</CardDescription>
-      </CardHeader>
-      <CardContent>
-        <Box sx={{ bgcolor: 'background.surface', p: 2, borderRadius: 1 }}>
-          <Typography sx={{ fontWeight: 'bold', mb: 2 }}>Chat Workflow Diagram</Typography>
-          <Mermaid chart={`flowchart TD
-            A[User Message] --> B[Starter Agent]
-            B --> C[Process Message]
-            C --> D[Generate Response]
-            D --> E[Structured Output]
-            style A fill:#e3f2fd
-            style C fill:#f3e5f5
-            style E fill:#fff3e0`} />
-        </Box>
-      </CardContent>
-    </Card>
+  <TabsContent value="content">
+    <Box sx={{ display: 'grid', gridTemplateColumns: { xs: '1fr', md: 'repeat(2, 1fr)' }, gap: 3, mb: 3 }}>
+      <Card variant="outlined">
+        <CardHeader>
+          <CardTitle>Content Generation Workflow</CardTitle>
+          <CardDescription>End-to-end content creation: Research → Write → Edit → Evaluate</CardDescription>
+        </CardHeader>
+        <CardContent>
+          <Box sx={{ bgcolor: 'background.surface', p: 2, borderRadius: 1 }}>
+            <Typography sx={{ fontWeight: 'bold', mb: 2 }}>Content Creation Pipeline</Typography>
+            <Mermaid chart={`flowchart TD
+              A[Content Brief] --> B[Research Agent]
+              B --> C[Copywriter Agent]
+              C --> D[Editor Agent]
+              D --> E[Evaluation Agent]
+              E --> F[Quality Approved]
+              E --> G[Revision Needed]
+              G --> D
+              style A fill:#e3f2fd
+              style B fill:#f3e5f5
+              style D fill:#fff3e0
+              style F fill:#e8f5e8`} />
+          </Box>
+        </CardContent>
+      </Card>
 
+      <Card variant="outlined">
+        <CardHeader>
+          <CardTitle>Report Generation Workflow</CardTitle>
+          <CardDescription>Structured report creation with data analysis and formatting</CardDescription>
+        </CardHeader>
+        <CardContent>
+          <Box sx={{ bgcolor: 'background.surface', p: 2, borderRadius: 1 }}>
+            <Typography sx={{ fontWeight: 'bold', mb: 2 }}>Report Generation Pipeline</Typography>
+            <Mermaid chart={`flowchart TD
+              A[Report Request] --> B[Data Gathering]
+              B --> C[Analysis & Synthesis]
+              C --> D[Content Structuring]
+              D --> E[Formatting & Review]
+              E --> F[Final Report]
+              style A fill:#e3f2fd
+              style B fill:#f3e5f5
+              style D fill:#fff3e0
+              style F fill:#e8f5e8`} />
+          </Box>
+        </CardContent>
+      </Card>
+    </Box>
+  </TabsContent>
+
+  <TabsContent value="financial">
+    <Box sx={{ display: 'grid', gridTemplateColumns: { xs: '1fr', md: 'repeat(2, 1fr)' }, gap: 3, mb: 3 }}>
+      <Card variant="outlined">
+        <CardHeader>
+          <CardTitle>Financial Analysis Workflow V3</CardTitle>
+          <CardDescription>Advanced concurrent financial analysis with market data integration</CardDescription>
+        </CardHeader>
+        <CardContent>
+          <Box sx={{ bgcolor: 'background.surface', p: 2, borderRadius: 1 }}>
+            <Typography sx={{ fontWeight: 'bold', mb: 2 }}>Financial Analysis Pipeline</Typography>
+            <Mermaid chart={`flowchart TD
+              A[Symbol List] --> B[Concurrent Analysis]
+              B --> C[Crypto Analysis Agent]
+              B --> D[Stock Analysis Agent]
+              B --> E[Market Data Tools]
+              C --> F[Technical Indicators]
+              D --> F
+              E --> F
+              F --> G[Market Education Agent]
+              G --> H[Synthesis Report]
+              style A fill:#e3f2fd
+              style B fill:#f3e5f5
+              style F fill:#fff3e0
+              style H fill:#e8f5e8`} />
+          </Box>
+        </CardContent>
+      </Card>
+
+      <Card variant="outlined">
+        <CardHeader>
+          <CardTitle>Financial Analysis Workflow V2</CardTitle>
+          <CardDescription>Batch processing for multiple financial instruments</CardDescription>
+        </CardHeader>
+        <CardContent>
+          <Box sx={{ bgcolor: 'background.surface', p: 2, borderRadius: 1 }}>
+            <Typography sx={{ fontWeight: 'bold', mb: 2 }}>Batch Financial Processing</Typography>
+            <Mermaid chart={`flowchart TD
+              A[Batch Request] --> B[Symbol Processing]
+              B --> C[Data Retrieval]
+              C --> D[Analysis per Symbol]
+              D --> E[Result Aggregation]
+              E --> F[Batch Complete]
+              style A fill:#e3f2fd
+              style B fill:#f3e5f5
+              style D fill:#fff3e0
+              style F fill:#e8f5e8`} />
+          </Box>
+        </CardContent>
+      </Card>
+    </Box>
   </TabsContent>
 </Tabs>
+
+## Agents & Tools
 
 ## Agents & Tools
 
@@ -363,27 +521,70 @@ Mastra workflows define sequential steps combining agents, tools, and services. 
     <CardHeader>
       <CardTitle sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
         <Brain sx={{ fontSize: 20 }} />
-        Specialized Agents
+        Specialized Agents (27+)
       </CardTitle>
-      <CardDescription>LLM-powered specialists (Google Gemini 2.5 Flash)</CardDescription>
+      <CardDescription>LLM-powered specialists across 5 capability domains</CardDescription>
     </CardHeader>
     <CardContent>
       <Box sx={{ mb: 2 }}>
+        <Typography sx={{ fontWeight: 'bold', fontSize: '0.875rem', mb: 1 }}>Governed RAG Agents (6 core)</Typography>
         <Box sx={{ display: 'flex', alignItems: 'flex-start', gap: 2, mb: 1 }}>
-          <Badge variant="soft" color="primary" sx={{ flexShrink: 0 }}>Retrieve</Badge>
-          <Typography level="body-sm"><strong>retrieveAgent:</strong> Vector search with security filters</Typography>
+          <Badge variant="soft" color="primary" sx={{ flexShrink: 0 }}>identity</Badge>
+          <Typography level="body-sm"><strong>Identity Agent:</strong> JWT authentication & user validation</Typography>
         </Box>
         <Box sx={{ display: 'flex', alignItems: 'flex-start', gap: 2, mb: 1 }}>
-          <Badge variant="soft" color="primary" sx={{ flexShrink: 0 }}>Rerank</Badge>
-          <Typography level="body-sm"><strong>rerankAgent:</strong> Relevance scoring and reordering</Typography>
+          <Badge variant="soft" color="primary" sx={{ flexShrink: 0 }}>policy</Badge>
+          <Typography level="body-sm"><strong>Policy Agent:</strong> Access control & security policy enforcement</Typography>
         </Box>
         <Box sx={{ display: 'flex', alignItems: 'flex-start', gap: 2, mb: 1 }}>
-          <Badge variant="soft" color="primary" sx={{ flexShrink: 0 }}>Answer</Badge>
-          <Typography level="body-sm"><strong>answererAgent:</strong> Response generation with citations</Typography>
+          <Badge variant="soft" color="primary" sx={{ flexShrink: 0 }}>retrieve</Badge>
+          <Typography level="body-sm"><strong>Retrieve Agent:</strong> Vector search with security filters</Typography>
         </Box>
-        <Box sx={{ display: 'flex', alignItems: 'flex-start', gap: 2 }}>
-          <Badge variant="soft" color="primary" sx={{ flexShrink: 0 }}>Verify</Badge>
-          <Typography level="body-sm"><strong>verifierAgent:</strong> Security compliance auditing</Typography>
+        <Box sx={{ display: 'flex', alignItems: 'flex-start', gap: 2, mb: 1 }}>
+          <Badge variant="soft" color="primary" sx={{ flexShrink: 0 }}>rerank</Badge>
+          <Typography level="body-sm"><strong>Rerank Agent:</strong> Relevance scoring and result reordering</Typography>
+        </Box>
+        <Box sx={{ display: 'flex', alignItems: 'flex-start', gap: 2, mb: 1 }}>
+          <Badge variant="soft" color="primary" sx={{ flexShrink: 0 }}>answerer</Badge>
+          <Typography level="body-sm"><strong>Answerer Agent:</strong> Response generation with citations</Typography>
+        </Box>
+        <Box sx={{ display: 'flex', alignItems: 'flex-start', gap: 2, mb: 1 }}>
+          <Badge variant="soft" color="primary" sx={{ flexShrink: 0 }}>verifier</Badge>
+          <Typography level="body-sm"><strong>Verifier Agent:</strong> Security compliance auditing</Typography>
+        </Box>
+
+        <Typography sx={{ fontWeight: 'bold', fontSize: '0.875rem', mb: 1, mt: 2 }}>Domain Agents (21+ specialized)</Typography>
+        <Box sx={{ display: 'flex', alignItems: 'flex-start', gap: 2, mb: 1 }}>
+          <Badge variant="soft" color="secondary" sx={{ flexShrink: 0 }}>research</Badge>
+          <Typography level="body-sm"><strong>Research Agent:</strong> Multi-source research & analysis</Typography>
+        </Box>
+        <Box sx={{ display: 'flex', alignItems: 'flex-start', gap: 2, mb: 1 }}>
+          <Badge variant="soft" color="secondary" sx={{ flexShrink: 0 }}>copywriter</Badge>
+          <Typography level="body-sm"><strong>Copywriter Agent:</strong> Content creation & optimization</Typography>
+        </Box>
+        <Box sx={{ display: 'flex', alignItems: 'flex-start', gap: 2, mb: 1 }}>
+          <Badge variant="soft" color="secondary" sx={{ flexShrink: 0 }}>editor</Badge>
+          <Typography level="body-sm"><strong>Editor Agent:</strong> Content editing & refinement</Typography>
+        </Box>
+        <Box sx={{ display: 'flex', alignItems: 'flex-start', gap: 2, mb: 1 }}>
+          <Badge variant="soft" color="secondary" sx={{ flexShrink: 0 }}>cryptoAnalysis</Badge>
+          <Typography level="body-sm"><strong>Crypto Analysis:</strong> Cryptocurrency market analysis</Typography>
+        </Box>
+        <Box sx={{ display: 'flex', alignItems: 'flex-start', gap: 2, mb: 1 }}>
+          <Badge variant="soft" color="secondary" sx={{ flexShrink: 0 }}>stockAnalysis</Badge>
+          <Typography level="body-sm"><strong>Stock Analysis:</strong> Stock market analysis</Typography>
+        </Box>
+        <Box sx={{ display: 'flex', alignItems: 'flex-start', gap: 2, mb: 1 }}>
+          <Badge variant="soft" color="secondary" sx={{ flexShrink: 0 }}>productRoadmap</Badge>
+          <Typography level="body-sm"><strong>Product Roadmap:</strong> Product planning & roadmapping</Typography>
+        </Box>
+        <Box sx={{ display: 'flex', alignItems: 'flex-start', gap: 2, mb: 1 }}>
+          <Badge variant="soft" color="secondary" sx={{ flexShrink: 0 }}>assistant</Badge>
+          <Typography level="body-sm"><strong>Assistant Agent:</strong> General AI assistance</Typography>
+        </Box>
+        <Box sx={{ display: 'flex', alignItems: 'flex-start', gap: 2, mb: 1 }}>
+          <Badge variant="soft" color="secondary" sx={{ flexShrink: 0 }}>evaluation</Badge>
+          <Typography level="body-sm"><strong>Evaluation Agent:</strong> Quality assessment & scoring</Typography>
         </Box>
       </Box>
     </CardContent>
@@ -393,24 +594,39 @@ Mastra workflows define sequential steps combining agents, tools, and services. 
     <CardHeader>
       <CardTitle sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
         <Settings sx={{ fontSize: 20 }} />
-        Core Tools
+        Core Tools (50+ capabilities)
       </CardTitle>
-      <CardDescription>Reusable functions for agents</CardDescription>
+      <CardDescription>Reusable functions for agents across all domains</CardDescription>
     </CardHeader>
     <CardContent>
       <Box sx={{ mb: 2 }}>
-        <Typography sx={{ fontWeight: 'bold', fontSize: '0.875rem', mb: 1 }}>Vector Query Tool</Typography>
-        <Typography level="body-sm" sx={{ color: 'text.tertiary', mb: 2 }}>
-          Queries PgVector with embedding similarity + security filters (classification, roles, tags)
-        </Typography>
-        <Typography component="code" sx={{ bgcolor: 'background.surface', px: 1, py: 0.5, borderRadius: 0.5, fontSize: '0.75rem' }}>vector-query.tool.ts</Typography>
-      </Box>
-      <Box>
-        <Typography sx={{ fontWeight: 'bold', fontSize: '0.875rem', mb: 1 }}>JWT Auth Tool</Typography>
-        <Typography level="body-sm" sx={{ color: 'text.tertiary', mb: 2 }}>
-          Validates and decodes JWT tokens, extracts user claims and roles
-        </Typography>
-        <Typography component="code" sx={{ bgcolor: 'background.surface', px: 1, py: 0.5, borderRadius: 0.5, fontSize: '0.75rem' }}>jwt-auth.tool.ts</Typography>
+        <Typography sx={{ fontWeight: 'bold', fontSize: '0.875rem', mb: 1 }}>Web & Data Tools (25+)</Typography>
+        <Box component="ul" sx={{ m: 0, pl: 2, '& li': { mb: 0.5, fontSize: '0.75rem' } }}>
+          <li>• Alpha Vantage (crypto & stock APIs)</li>
+          <li>• Polygon (financial market data)</li>
+          <li>• Finnhub (financial analysis)</li>
+          <li>• SerpAPI (Google search integration)</li>
+          <li>• Web scraping & content extraction</li>
+          <li>• PDF to markdown conversion</li>
+        </Box>
+
+        <Typography sx={{ fontWeight: 'bold', fontSize: '0.875rem', mb: 1, mt: 2 }}>Processing Tools (10+)</Typography>
+        <Box component="ul" sx={{ m: 0, pl: 2, '& li': { mb: 0.5, fontSize: '0.75rem' } }}>
+          <li>• Document chunking & embedding</li>
+          <li>• Content evaluation & scoring</li>
+          <li>• Learning extraction from content</li>
+          <li>• Text processing & normalization</li>
+          <li>• File operations & data handling</li>
+        </Box>
+
+        <Typography sx={{ fontWeight: 'bold', fontSize: '0.875rem', mb: 1, mt: 2 }}>Specialized Tools</Typography>
+        <Box component="ul" sx={{ m: 0, pl: 2, '& li': { mb: 0.5, fontSize: '0.75rem' } }}>
+          <li>• JWT authentication & validation</li>
+          <li>• Vector query with security filters</li>
+          <li>• Graph RAG & knowledge graphs</li>
+          <li>• MCP (Model Context Protocol)</li>
+          <li>• Database operations (PgVector, PostgreSQL)</li>
+        </Box>
       </Box>
     </CardContent>
 

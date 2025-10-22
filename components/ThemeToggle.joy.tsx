@@ -40,12 +40,40 @@ export function ThemeToggle() {
                         bgcolor: isDark
                             ? 'primary.softBg'
                             : 'background.level2',
+                        transition: 'all 300ms cubic-bezier(0.4, 0, 0.2, 1)',
+                        '&:hover': {
+                            boxShadow: 'md',
+                            transform: 'scale(1.02)',
+                        },
                     },
                 },
                 thumb: {
                     sx: {
-                        transition: 'all 120ms ease',
+                        transition: 'all 300ms cubic-bezier(0.4, 0, 0.2, 1)',
+                        transform: isDark ? 'translateX(20px)' : 'translateX(2px)',
+                        '&:hover': {
+                            boxShadow: '0 2px 8px rgba(0, 0, 0, 0.2)',
+                        },
                     },
+                },
+                input: {
+                    sx: {
+                        '&:focus-visible + .MuiSwitch-track': {
+                            outline: '2px solid var(--joy-palette-focusVisible)',
+                            outlineOffset: 2,
+                        },
+                    },
+                },
+            }}
+            sx={{
+                '--joy-focus-outlineWidth': '2px',
+                transition: 'all 300ms cubic-bezier(0.4, 0, 0.2, 1)',
+                '&:hover': {
+                    transform: 'scale(1.05)',
+                },
+                '&:focus-visible': {
+                    outline: 'none',
+                    boxShadow: '0 0 0 4px var(--joy-palette-focusVisible)',
                 },
             }}
         />
