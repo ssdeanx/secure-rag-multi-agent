@@ -34,7 +34,6 @@ import {
 // Import REAL Cedar OS types from chatWorkflowSharedTypes.ts
 import type {
     AgentContext,
-    ContextEntry,
 } from './chatWorkflowSharedTypes'
 
 log.info('Financial Analysis Workflow V5 module loaded')
@@ -52,12 +51,16 @@ function extractContextData<T = unknown>(
     context: AgentContext | undefined,
     key: string
 ): T | undefined {
-    if (!context || !context[key]) return undefined
-    
+    if (!context?.[key]) {
+        return undefined
+    }
+
     // Get the first context entry for the key
     const entries = context[key]
-    if (!Array.isArray(entries) || entries.length === 0) return undefined
-    
+    if (!Array.isArray(entries) || entries.length === 0) {
+        return undefined
+    }
+
     return entries[0]?.data as T
 }
 
@@ -68,11 +71,15 @@ function extractContextArray<T = unknown>(
     context: AgentContext | undefined,
     key: string
 ): T[] {
-    if (!context || !context[key]) return []
-    
+    if (!context?.[key]) {
+        return []
+    }
+
     const entries = context[key]
-    if (!Array.isArray(entries)) return []
-    
+    if (!Array.isArray(entries)) {
+        return []
+    }
+
     // Extract data from all context entries
     return entries.map(entry => entry.data as T).filter(Boolean)
 }
@@ -217,13 +224,13 @@ const analyzeQueryStepV5 = createStep({
 
             // Use Cedar context to enhance analysis (properly extract from AgentContext structure)
             const watchlistData = extractContextData<{ symbols?: string[] }>(cedarContext, 'watchlist')
-            const watchlistSymbols = watchlistData?.symbols || []
-            
+            const watchlistSymbols = watchlistData?.symbols ?? []
+
             const stocksData = extractContextData<Record<string, unknown>>(cedarContext, 'stocks')
-            const existingStocks = stocksData || {}
-            
+            const existingStocks = stocksData ?? {}
+
             const cryptoData = extractContextData<Record<string, unknown>>(cedarContext, 'crypto')
-            const existingCrypto = cryptoData || {}
+            const existingCrypto = cryptoData ?? {}
 
             let intent: 'analysis' | 'comparison' | 'portfolio' | 'education' | 'alert' | 'trade' = 'analysis'
             let complexity: 'simple' | 'moderate' | 'complex' | 'expert' = 'moderate'
