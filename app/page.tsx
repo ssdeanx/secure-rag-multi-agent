@@ -10,7 +10,7 @@ export default function Home() {
     const systemNodes: NodeDef[] = [
         {
             id: 'agents',
-            title: 'Agents (22+)',
+            title: 'Agents (27)',
             color: 'primary',
             bullets: [
                 {

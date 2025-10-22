@@ -1,8 +1,8 @@
-# Development Agent Personas for Governed RAG System
+# Development Agent Personas for Multi-Domain AI Orchestration Platform
 
 ## Overview
 
-This document outlines 50 specialized AI agent personas designed to accelerate and complete the development of the governed RAG (Retrieval-Augmented Generation) system. Each agent focuses on a critical aspect of software development, from foundational development tasks to advanced Mastra framework specialization and application-specific features. These agents work collaboratively to ensure the system meets enterprise-grade standards for security, performance, and maintainability.
+This document outlines 50 specialized AI agent personas designed to accelerate and complete the development of the Multi-Domain AI Orchestration Platform. Each agent focuses on a critical aspect of software development, from foundational development tasks to advanced Mastra framework specialization and application-specific features across 5 capability domains. These agents work collaboratively to ensure the system meets enterprise-grade standards for security, performance, and maintainability.
 
 ## Agent Directory
 

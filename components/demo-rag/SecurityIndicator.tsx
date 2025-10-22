@@ -8,9 +8,6 @@ import {
     Avatar,
     AvatarFallback,
     Tooltip,
-    TooltipContent,
-    TooltipProvider,
-    TooltipTrigger,
     Divider,
     Box,
     Typography,
@@ -170,8 +167,7 @@ export default function SecurityIndicator({ role }: SecurityIndicatorProps) {
     const IconComponent = config.icon
 
     return (
-        <TooltipProvider>
-            <Box
+        <Box
                 sx={{
                     display: 'flex',
                     flexDirection: { xs: 'column', sm: 'row' },
@@ -186,211 +182,208 @@ export default function SecurityIndicator({ role }: SecurityIndicatorProps) {
                     </Typography>
                     <Box sx={{ display: 'flex', gap: 1 }}>
                         {/* Public Level */}
-                        <Tooltip>
-                            <TooltipTrigger>
-                                <Box
-                                    sx={{
-                                        position: 'relative',
-                                        cursor: 'pointer',
-                                    }}
-                                >
-                                    <Box
-                                        sx={{
-                                            height: 16,
-                                            width: 48,
-                                            borderRadius: 'md',
-                                            border: '2px solid',
-                                            transition: 'all 0.3s ease',
-                                            borderColor:
-                                                level === 'confidential' ||
-                                                level === 'internal-plus' ||
-                                                level === 'internal'
-                                                    ? 'neutral.outlinedBorder'
-                                                    : 'neutral.main',
-                                            bgcolor:
-                                                level === 'confidential' ||
-                                                level === 'internal-plus' ||
-                                                level === 'internal'
-                                                    ? 'neutral.50'
-                                                    : 'background.surface',
-                                        }}
-                                    />
-                                    {(level === 'confidential' ||
-                                        level === 'internal-plus' ||
-                                        level === 'internal') && (
-                                        <Box
-                                            sx={{
-                                                position: 'absolute',
-                                                inset: 0,
-                                                borderRadius: 'md',
-                                                bgcolor: 'neutral.50',
-                                                opacity: 0.3,
-                                                transition:
-                                                    'background-color 0.3s ease',
-                                            }}
-                                        />
-                                    )}
-                                    <Typography
-                                        level="body-xs"
-                                        sx={{
-                                            position: 'absolute',
-                                            bottom: -20,
-                                            left: '50%',
-                                            transform: 'translateX(-50%)',
-                                            fontWeight: 'bold',
-                                            opacity: 0,
-                                            transition: 'opacity 0.3s ease',
-                                            '&:hover': {
-                                                opacity: 1,
-                                            },
-                                            whiteSpace: 'nowrap',
-                                        }}
-                                    >
-                                        Public
-                                    </Typography>
-                                </Box>
-                            </TooltipTrigger>
-                            <TooltipContent>
+                        <Tooltip
+                            title={
                                 <Typography level="body-sm">
                                     Basic document access level
                                 </Typography>
-                            </TooltipContent>
+                            }
+                        >
+                            <Box
+                                sx={{
+                                    position: 'relative',
+                                    cursor: 'pointer',
+                                }}
+                            >
+                                <Box
+                                    sx={{
+                                        height: 16,
+                                        width: 48,
+                                        borderRadius: 'md',
+                                        border: '2px solid',
+                                        transition: 'all 0.3s ease',
+                                        borderColor:
+                                            level === 'confidential' ||
+                                            level === 'internal-plus' ||
+                                            level === 'internal'
+                                                ? 'neutral.outlinedBorder'
+                                                : 'neutral.main',
+                                        bgcolor:
+                                            level === 'confidential' ||
+                                            level === 'internal-plus' ||
+                                            level === 'internal'
+                                                ? 'neutral.50'
+                                                : 'background.surface',
+                                    }}
+                                />
+                                {(level === 'confidential' ||
+                                    level === 'internal-plus' ||
+                                    level === 'internal') && (
+                                    <Box
+                                        sx={{
+                                            position: 'absolute',
+                                            inset: 0,
+                                            borderRadius: 'md',
+                                            bgcolor: 'neutral.50',
+                                            opacity: 0.3,
+                                            transition:
+                                                'background-color 0.3s ease',
+                                        }}
+                                    />
+                                )}
+                                <Typography
+                                    level="body-xs"
+                                    sx={{
+                                        position: 'absolute',
+                                        bottom: -20,
+                                        left: '50%',
+                                        transform: 'translateX(-50%)',
+                                        fontWeight: 'bold',
+                                        opacity: 0,
+                                        transition: 'opacity 0.3s ease',
+                                        '&:hover': {
+                                            opacity: 1,
+                                        },
+                                        whiteSpace: 'nowrap',
+                                    }}
+                                >
+                                    Public
+                                </Typography>
+                            </Box>
                         </Tooltip>
 
                         {/* Internal Level */}
-                        <Tooltip>
-                            <TooltipTrigger>
-                                <Box
-                                    sx={{
-                                        position: 'relative',
-                                        cursor: 'pointer',
-                                    }}
-                                >
-                                    <Box
-                                        sx={{
-                                            height: 16,
-                                            width: 48,
-                                            borderRadius: 'md',
-                                            border: '2px solid',
-                                            transition: 'all 0.3s ease',
-                                            borderColor:
-                                                level === 'confidential' ||
-                                                level === 'internal-plus'
-                                                    ? 'primary.outlinedBorder'
-                                                    : 'neutral.main',
-                                            bgcolor:
-                                                level === 'confidential' ||
-                                                level === 'internal-plus'
-                                                    ? 'primary.50'
-                                                    : 'background.surface',
-                                        }}
-                                    />
-                                    {(level === 'confidential' ||
-                                        level === 'internal-plus') && (
-                                        <Box
-                                            sx={{
-                                                position: 'absolute',
-                                                inset: 0,
-                                                borderRadius: 'md',
-                                                bgcolor: 'primary.50',
-                                                opacity: 0.3,
-                                                transition:
-                                                    'background-color 0.3s ease',
-                                            }}
-                                        />
-                                    )}
-                                    <Typography
-                                        level="body-xs"
-                                        sx={{
-                                            position: 'absolute',
-                                            bottom: -20,
-                                            left: '50%',
-                                            transform: 'translateX(-50%)',
-                                            fontWeight: 'bold',
-                                            opacity: 0,
-                                            transition: 'opacity 0.3s ease',
-                                            '&:hover': {
-                                                opacity: 1,
-                                            },
-                                            whiteSpace: 'nowrap',
-                                        }}
-                                    >
-                                        Internal
-                                    </Typography>
-                                </Box>
-                            </TooltipTrigger>
-                            <TooltipContent>
+                        <Tooltip
+                            title={
                                 <Typography level="body-sm">
                                     Department-level access
                                 </Typography>
-                            </TooltipContent>
+                            }
+                        >
+                            <Box
+                                sx={{
+                                    position: 'relative',
+                                    cursor: 'pointer',
+                                }}
+                            >
+                                <Box
+                                    sx={{
+                                        height: 16,
+                                        width: 48,
+                                        borderRadius: 'md',
+                                        border: '2px solid',
+                                        transition: 'all 0.3s ease',
+                                        borderColor:
+                                            level === 'confidential' ||
+                                            level === 'internal-plus'
+                                                ? 'primary.outlinedBorder'
+                                                : 'neutral.main',
+                                        bgcolor:
+                                            level === 'confidential' ||
+                                            level === 'internal-plus'
+                                                ? 'primary.50'
+                                                : 'background.surface',
+                                    }}
+                                />
+                                {(level === 'confidential' ||
+                                    level === 'internal-plus') && (
+                                    <Box
+                                        sx={{
+                                            position: 'absolute',
+                                            inset: 0,
+                                            borderRadius: 'md',
+                                            bgcolor: 'primary.50',
+                                            opacity: 0.3,
+                                            transition:
+                                                'background-color 0.3s ease',
+                                        }}
+                                    />
+                                )}
+                                <Typography
+                                    level="body-xs"
+                                    sx={{
+                                        position: 'absolute',
+                                        bottom: -20,
+                                        left: '50%',
+                                        transform: 'translateX(-50%)',
+                                        fontWeight: 'bold',
+                                        opacity: 0,
+                                        transition: 'opacity 0.3s ease',
+                                        '&:hover': {
+                                            opacity: 1,
+                                        },
+                                        whiteSpace: 'nowrap',
+                                    }}
+                                >
+                                    Internal
+                                </Typography>
+                            </Box>
                         </Tooltip>
 
                         {/* Confidential Level */}
-                        <Tooltip>
-                            <TooltipTrigger>
-                                <Box
-                                    sx={{
-                                        position: 'relative',
-                                        cursor: 'pointer',
-                                    }}
-                                >
-                                    <Box
-                                        sx={{
-                                            height: 16,
-                                            width: 48,
-                                            borderRadius: 'md',
-                                            border: '2px solid',
-                                            transition: 'all 0.3s ease',
-                                            borderColor:
-                                                level === 'confidential'
-                                                    ? 'danger.outlinedBorder'
-                                                    : 'neutral.main',
-                                            bgcolor:
-                                                level === 'confidential'
-                                                    ? 'danger.50'
-                                                    : 'background.surface',
-                                        }}
-                                    />
-                                    {level === 'confidential' && (
-                                        <Box
-                                            sx={{
-                                                position: 'absolute',
-                                                inset: 0,
-                                                borderRadius: 'md',
-                                                bgcolor: 'danger.50',
-                                                opacity: 0.3,
-                                                transition:
-                                                    'background-color 0.3s ease',
-                                            }}
-                                        />
-                                    )}
-                                    <Typography
-                                        level="body-xs"
-                                        sx={{
-                                            position: 'absolute',
-                                            bottom: -20,
-                                            left: '50%',
-                                            transform: 'translateX(-50%)',
-                                            fontWeight: 'bold',
-                                            opacity: 0,
-                                            transition: 'opacity 0.3s ease',
-                                            '&:hover': {
-                                                opacity: 1,
-                                            },
-                                            whiteSpace: 'nowrap',
-                                        }}
-                                    >
-                                        Confidential
-                                    </Typography>
-                                </Box>
-                            </TooltipTrigger>
-                            <TooltipContent>
+                        <Tooltip
+                            title={
                                 <Typography level="body-sm">
                                     Full system access with step-up
                                     authentication
                                 </Typography>
-                            </TooltipContent>
+                            }
+                        >
+                            <Box
+                                sx={{
+                                    position: 'relative',
+                                    cursor: 'pointer',
+                                }}
+                            >
+                                <Box
+                                    sx={{
+                                        height: 16,
+                                        width: 48,
+                                        borderRadius: 'md',
+                                        border: '2px solid',
+                                        transition: 'all 0.3s ease',
+                                        borderColor:
+                                            level === 'confidential'
+                                                ? 'danger.outlinedBorder'
+                                                : 'neutral.main',
+                                        bgcolor:
+                                            level === 'confidential'
+                                                ? 'danger.50'
+                                                : 'background.surface',
+                                    }}
+                                />
+                                {level === 'confidential' && (
+                                    <Box
+                                        sx={{
+                                            position: 'absolute',
+                                            inset: 0,
+                                            borderRadius: 'md',
+                                            bgcolor: 'danger.50',
+                                            opacity: 0.3,
+                                            transition:
+                                                'background-color 0.3s ease',
+                                        }}
+                                    />
+                                )}
+                                <Typography
+                                    level="body-xs"
+                                    sx={{
+                                        position: 'absolute',
+                                        bottom: -20,
+                                        left: '50%',
+                                        transform: 'translateX(-50%)',
+                                        fontWeight: 'bold',
+                                        opacity: 0,
+                                        transition: 'opacity 0.3s ease',
+                                        '&:hover': {
+                                            opacity: 1,
+                                        },
+                                        whiteSpace: 'nowrap',
+                                    }}
+                                >
+                                    Confidential
+                                </Typography>
+                            </Box>
                         </Tooltip>
                     </Box>
                 </Box>
@@ -521,6 +514,5 @@ export default function SecurityIndicator({ role }: SecurityIndicatorProps) {
                     </AlertDescription>
                 </Alert>
             </Box>
-        </TooltipProvider>
     )
 }

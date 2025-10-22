@@ -12,9 +12,6 @@ import {
     Avatar,
     AvatarFallback,
     Tooltip,
-    TooltipContent,
-    TooltipProvider,
-    TooltipTrigger,
     AccordionGroup,
     Accordion,
     AccordionSummary,
@@ -122,8 +119,7 @@ export default function IndexingPanel({ jwt }: IndexingPanelProps) {
     }, [])
 
     return (
-        <TooltipProvider>
-            <Card
+        <Card
                 variant="outlined"
                 sx={{
                     position: 'relative',
@@ -223,53 +219,52 @@ export default function IndexingPanel({ jwt }: IndexingPanelProps) {
                             </Box>
                         </Box>
 
-                        <Tooltip>
-                            <TooltipTrigger asChild>
-                                <Box>
-                                    <Button
-                                        onClick={handleIndex}
-                                        disabled={isIndexing}
-                                        size="lg"
-                                        startDecorator={
-                                            isIndexing ? (
-                                                <CircularProgress size={20} />
-                                            ) : (
-                                                <DatabaseIcon
-                                                    sx={{ fontSize: 20 }}
-                                                />
-                                            )
-                                        }
-                                        sx={{
-                                            minHeight: 48,
-                                            px: 3,
-                                            border: '2px solid',
-                                            borderColor:
-                                                'primary.outlinedBorder',
-                                            bgcolor: 'background.surface',
-                                            transition: 'all 0.3s ease',
-                                            '&:hover': {
-                                                borderColor: 'primary.main',
-                                                transform: 'translateY(-1px)',
-                                                boxShadow: 'lg',
-                                            },
-                                            '&:disabled': {
-                                                opacity: 0.5,
-                                                cursor: 'not-allowed',
-                                            },
-                                        }}
-                                    >
-                                        {isIndexing
-                                            ? 'Indexing...'
-                                            : 'Start Indexing'}
-                                    </Button>
-                                </Box>
-                            </TooltipTrigger>
-                            <TooltipContent>
+                        <Tooltip
+                            title={
                                 <Typography level="body-sm">
                                     Index all documents in the corpus with
                                     security classifications
                                 </Typography>
-                            </TooltipContent>
+                            }
+                        >
+                            <Box>
+                                <Button
+                                    onClick={handleIndex}
+                                    disabled={isIndexing}
+                                    size="lg"
+                                    startDecorator={
+                                        isIndexing ? (
+                                            <CircularProgress size={20} />
+                                        ) : (
+                                            <DatabaseIcon
+                                                sx={{ fontSize: 20 }}
+                                            />
+                                        )
+                                    }
+                                    sx={{
+                                        minHeight: 48,
+                                        px: 3,
+                                        border: '2px solid',
+                                        borderColor:
+                                            'primary.outlinedBorder',
+                                        bgcolor: 'background.surface',
+                                        transition: 'all 0.3s ease',
+                                        '&:hover': {
+                                            borderColor: 'primary.main',
+                                            transform: 'translateY(-1px)',
+                                            boxShadow: 'lg',
+                                        },
+                                        '&:disabled': {
+                                            opacity: 0.5,
+                                            cursor: 'not-allowed',
+                                        },
+                                    }}
+                                >
+                                    {isIndexing
+                                        ? 'Indexing...'
+                                        : 'Start Indexing'}
+                                </Button>
+                            </Box>
                         </Tooltip>
                     </Box>
 
@@ -435,169 +430,7 @@ export default function IndexingPanel({ jwt }: IndexingPanelProps) {
                                                         (doc, index) => (
                                                             <Tooltip
                                                                 key={index}
-                                                            >
-                                                                <TooltipTrigger
-                                                                    asChild
-                                                                >
-                                                                    <Box
-                                                                        sx={{
-                                                                            display:
-                                                                                'flex',
-                                                                            alignItems:
-                                                                                'center',
-                                                                            justifyContent:
-                                                                                'space-between',
-                                                                            p: 2,
-                                                                            border: '2px solid',
-                                                                            borderRadius:
-                                                                                'md',
-                                                                            cursor: 'pointer',
-                                                                            transition:
-                                                                                'all 0.3s ease',
-                                                                            borderColor:
-                                                                                doc.status ===
-                                                                                'success'
-                                                                                    ? 'success.outlinedBorder'
-                                                                                    : 'danger.outlinedBorder',
-                                                                            bgcolor:
-                                                                                doc.status ===
-                                                                                'success'
-                                                                                    ? 'success.softBg'
-                                                                                    : 'danger.softBg',
-                                                                            '&:hover':
-                                                                                {
-                                                                                    borderColor:
-                                                                                        doc.status ===
-                                                                                        'success'
-                                                                                            ? 'success.main'
-                                                                                            : 'danger.main',
-                                                                                    transform:
-                                                                                        'translateY(-1px)',
-                                                                                },
-                                                                        }}
-                                                                    >
-                                                                        <Box
-                                                                            sx={{
-                                                                                display:
-                                                                                    'flex',
-                                                                                alignItems:
-                                                                                    'center',
-                                                                                gap: 1.5,
-                                                                            }}
-                                                                        >
-                                                                            <Avatar size="sm">
-                                                                                <AvatarFallback>
-                                                                                    {doc.status ===
-                                                                                    'success' ? (
-                                                                                        <CheckCircleIcon />
-                                                                                    ) : (
-                                                                                        <CancelIcon />
-                                                                                    )}
-                                                                                </AvatarFallback>
-                                                                            </Avatar>
-                                                                            <Box>
-                                                                                <Typography
-                                                                                    level="body-sm"
-                                                                                    sx={{
-                                                                                        fontWeight:
-                                                                                            'bold',
-                                                                                        mb: 0.5,
-                                                                                    }}
-                                                                                >
-                                                                                    {
-                                                                                        doc.docId
-                                                                                    }
-                                                                                </Typography>
-                                                                                {doc.classification && (
-                                                                                    <Badge
-                                                                                        variant="soft"
-                                                                                        color={
-                                                                                            doc.classification ===
-                                                                                            'confidential'
-                                                                                                ? 'danger'
-                                                                                                : 'neutral'
-                                                                                        }
-                                                                                        size="sm"
-                                                                                    >
-                                                                                        {
-                                                                                            doc.classification
-                                                                                        }
-                                                                                    </Badge>
-                                                                                )}
-                                                                            </Box>
-                                                                        </Box>
-                                                                        <Box
-                                                                            sx={{
-                                                                                textAlign:
-                                                                                    'right',
-                                                                            }}
-                                                                        >
-                                                                            {doc.status ===
-                                                                                'success' &&
-                                                                            doc.chunks ? (
-                                                                                <Box
-                                                                                    sx={{
-                                                                                        display:
-                                                                                            'flex',
-                                                                                        alignItems:
-                                                                                            'center',
-                                                                                        gap: 0.5,
-                                                                                        color: 'success.main',
-                                                                                    }}
-                                                                                >
-                                                                                    <Description />
-                                                                                    <Typography
-                                                                                        level="body-sm"
-                                                                                        sx={{
-                                                                                            fontWeight:
-                                                                                                'bold',
-                                                                                        }}
-                                                                                    >
-                                                                                        {
-                                                                                            doc.chunks
-                                                                                        }{' '}
-                                                                                        chunks
-                                                                                    </Typography>
-                                                                                </Box>
-                                                                            ) : doc.error ? (
-                                                                                <Typography
-                                                                                    level="body-xs"
-                                                                                    sx={{
-                                                                                        fontWeight:
-                                                                                            'bold',
-                                                                                        color: 'danger.main',
-                                                                                    }}
-                                                                                >
-                                                                                    Failed
-                                                                                </Typography>
-                                                                            ) : (
-                                                                                <Badge
-                                                                                    variant="outlined"
-                                                                                    size="sm"
-                                                                                >
-                                                                                    {
-                                                                                        doc.status
-                                                                                    }
-                                                                                </Badge>
-                                                                            )}
-                                                                            {doc.size && (
-                                                                                <Typography
-                                                                                    level="body-xs"
-                                                                                    sx={{
-                                                                                        color: 'text.tertiary',
-                                                                                        mt: 0.5,
-                                                                                    }}
-                                                                                >
-                                                                                    {
-                                                                                        doc.size
-                                                                                    }{' '}
-                                                                                    KB
-                                                                                </Typography>
-                                                                            )}
-                                                                        </Box>
-                                                                    </Box>
-                                                                </TooltipTrigger>
-                                                                <TooltipContent>
+                                                                title={
                                                                     <Box
                                                                         sx={{
                                                                             maxWidth: 320,
@@ -699,7 +532,165 @@ export default function IndexingPanel({ jwt }: IndexingPanelProps) {
                                                                             </Typography>
                                                                         )}
                                                                     </Box>
-                                                                </TooltipContent>
+                                                                }
+                                                            >
+                                                                <Box
+                                                                    sx={{
+                                                                        display:
+                                                                            'flex',
+                                                                        alignItems:
+                                                                            'center',
+                                                                        justifyContent:
+                                                                            'space-between',
+                                                                        p: 2,
+                                                                        border: '2px solid',
+                                                                        borderRadius:
+                                                                            'md',
+                                                                        cursor: 'pointer',
+                                                                        transition:
+                                                                            'all 0.3s ease',
+                                                                        borderColor:
+                                                                            doc.status ===
+                                                                            'success'
+                                                                                ? 'success.outlinedBorder'
+                                                                                : 'danger.outlinedBorder',
+                                                                        bgcolor:
+                                                                            doc.status ===
+                                                                            'success'
+                                                                                ? 'success.softBg'
+                                                                                : 'danger.softBg',
+                                                                        '&:hover':
+                                                                            {
+                                                                                borderColor:
+                                                                                    doc.status ===
+                                                                                    'success'
+                                                                                        ? 'success.main'
+                                                                                        : 'danger.main',
+                                                                                transform:
+                                                                                    'translateY(-1px)',
+                                                                            },
+                                                                    }}
+                                                                >
+                                                                    <Box
+                                                                        sx={{
+                                                                            display:
+                                                                                'flex',
+                                                                            alignItems:
+                                                                                'center',
+                                                                            gap: 1.5,
+                                                                        }}
+                                                                    >
+                                                                        <Avatar size="sm">
+                                                                            <AvatarFallback>
+                                                                                {doc.status ===
+                                                                                'success' ? (
+                                                                                    <CheckCircleIcon />
+                                                                                ) : (
+                                                                                    <CancelIcon />
+                                                                                )}
+                                                                            </AvatarFallback>
+                                                                        </Avatar>
+                                                                        <Box>
+                                                                            <Typography
+                                                                                level="body-sm"
+                                                                                sx={{
+                                                                                    fontWeight:
+                                                                                        'bold',
+                                                                                    mb: 0.5,
+                                                                                }}
+                                                                            >
+                                                                                {
+                                                                                    doc.docId
+                                                                                }
+                                                                            </Typography>
+                                                                            {doc.classification && (
+                                                                                <Badge
+                                                                                    variant="soft"
+                                                                                    color={
+                                                                                        doc.classification ===
+                                                                                        'confidential'
+                                                                                            ? 'danger'
+                                                                                            : 'neutral'
+                                                                                    }
+                                                                                    size="sm"
+                                                                                >
+                                                                                    {
+                                                                                        doc.classification
+                                                                                    }
+                                                                                </Badge>
+                                                                            )}
+                                                                        </Box>
+                                                                    </Box>
+                                                                    <Box
+                                                                        sx={{
+                                                                            textAlign:
+                                                                                'right',
+                                                                        }}
+                                                                    >
+                                                                        {doc.status ===
+                                                                            'success' &&
+                                                                        doc.chunks ? (
+                                                                            <Box
+                                                                                sx={{
+                                                                                    display:
+                                                                                        'flex',
+                                                                                    alignItems:
+                                                                                        'center',
+                                                                                    gap: 0.5,
+                                                                                    color: 'success.main',
+                                                                                }}
+                                                                            >
+                                                                                <Description />
+                                                                                <Typography
+                                                                                    level="body-sm"
+                                                                                    sx={{
+                                                                                        fontWeight:
+                                                                                            'bold',
+                                                                                    }}
+                                                                                >
+                                                                                    {
+                                                                                        doc.chunks
+                                                                                    }{' '}
+                                                                                    chunks
+                                                                                </Typography>
+                                                                            </Box>
+                                                                        ) : doc.error ? (
+                                                                            <Typography
+                                                                                level="body-xs"
+                                                                                sx={{
+                                                                                    fontWeight:
+                                                                                        'bold',
+                                                                                    color: 'danger.main',
+                                                                                }}
+                                                                            >
+                                                                                Failed
+                                                                            </Typography>
+                                                                        ) : (
+                                                                            <Badge
+                                                                                variant="outlined"
+                                                                                size="sm"
+                                                                            >
+                                                                                {
+                                                                                    doc.status
+                                                                                }
+                                                                            </Badge>
+                                                                        )}
+                                                                        {doc.size && (
+                                                                            <Typography
+                                                                                level="body-xs"
+                                                                                sx={{
+                                                                                    color: 'text.tertiary',
+                                                                                    mt: 0.5,
+                                                                                }}
+                                                                            >
+                                                                                {
+                                                                                    doc.size
+                                                                                }{' '}
+                                                                                KB
+                                                                            </Typography>
+                                                                        )}
+                                                                    </Box>
+                                                                </Box>
                                                             </Tooltip>
                                                         )
                                                     )}
@@ -920,6 +911,5 @@ export default function IndexingPanel({ jwt }: IndexingPanelProps) {
                     />
                 </CardContent>
             </Card>
-        </TooltipProvider>
     )
 }

@@ -26,8 +26,6 @@ import {
     AccordionSummary,
     AccordionDetails,
     Tooltip,
-    TooltipContent,
-    TooltipTrigger,
     CircularProgress,
 } from '@/components/ui/joy'
 
@@ -75,7 +73,7 @@ export default function ChatInterface({ jwt, role }: ChatInterfaceProps) {
     }, [messages, scrollToBottom])
 
     const handleSend = useCallback(async () => {
-        if (!input.trim() || loading) return
+        if (!input.trim() || loading) {return}
 
         const userMessage: Message = {
             id: Date.now().toString(),
@@ -378,30 +376,9 @@ export default function ChatInterface({ jwt, role }: ChatInterfaceProps) {
                                         >
                                             {message.contexts.map(
                                                 (ctx, idx) => (
-                                                    <Tooltip key={idx}>
-                                                        <TooltipTrigger>
-                                                            <Badge
-                                                                variant="outlined"
-                                                                color={
-                                                                    ctx.classification ===
-                                                                    'confidential'
-                                                                        ? 'danger'
-                                                                        : 'primary'
-                                                                }
-                                                                sx={{
-                                                                    cursor: 'pointer',
-                                                                }}
-                                                            >
-                                                                <FileTextIcon
-                                                                    sx={{
-                                                                        fontSize: 12,
-                                                                        mr: 0.5,
-                                                                    }}
-                                                                />
-                                                                {ctx.docId}
-                                                            </Badge>
-                                                        </TooltipTrigger>
-                                                        <TooltipContent>
+                                                    <Tooltip
+                                                        key={idx}
+                                                        title={
                                                             <Box sx={{ p: 1 }}>
                                                                 <Typography
                                                                     level="body-sm"
@@ -450,7 +427,28 @@ export default function ChatInterface({ jwt, role }: ChatInterfaceProps) {
                                                                     </Typography>
                                                                 </Box>
                                                             </Box>
-                                                        </TooltipContent>
+                                                        }
+                                                    >
+                                                        <Badge
+                                                            variant="outlined"
+                                                            color={
+                                                                ctx.classification ===
+                                                                'confidential'
+                                                                    ? 'danger'
+                                                                    : 'primary'
+                                                            }
+                                                            sx={{
+                                                                cursor: 'pointer',
+                                                            }}
+                                                        >
+                                                            <FileTextIcon
+                                                                sx={{
+                                                                    fontSize: 12,
+                                                                    mr: 0.5,
+                                                                }}
+                                                            />
+                                                            {ctx.docId}
+                                                        </Badge>
                                                     </Tooltip>
                                                 )
                                             )}
@@ -518,66 +516,66 @@ export default function ChatInterface({ jwt, role }: ChatInterfaceProps) {
                                                             (citation, idx) => (
                                                                 <Tooltip
                                                                     key={idx}
-                                                                >
-                                                                    <TooltipTrigger>
-                                                                        <Box
-                                                                            sx={{
-                                                                                p: 2,
-                                                                                borderRadius:
-                                                                                    'md',
-                                                                                border: '1px solid',
-                                                                                borderColor:
-                                                                                    'primary.outlinedBorder',
-                                                                                bgcolor:
-                                                                                    'background.level1',
-                                                                                cursor: 'pointer',
-                                                                                transition:
-                                                                                    'all 0.3s ease',
-                                                                                '&:hover':
-                                                                                    {
-                                                                                        borderColor:
-                                                                                            'primary.main',
-                                                                                    },
-                                                                            }}
-                                                                        >
+                                                                    title={
+                                                                        <>
+                                                                            <Typography
+                                                                                level="body-sm"
+                                                                                sx={{
+                                                                                    fontWeight:
+                                                                                        'bold',
+                                                                                }}
+                                                                            >
+                                                                                {
+                                                                                    citation.docId
+                                                                                }
+                                                                            </Typography>
                                                                             <Typography
                                                                                 level="body-xs"
                                                                                 sx={{
-                                                                                    fontWeight:
-                                                                                        'medium',
+                                                                                    color: 'text.tertiary',
+                                                                                    mt: 0.5,
                                                                                 }}
                                                                             >
-                                                                                {citation.source ??
-                                                                                    citation.docId}
+                                                                                Click
+                                                                                to
+                                                                                view
+                                                                                source
+                                                                                details
                                                                             </Typography>
-                                                                        </Box>
-                                                                    </TooltipTrigger>
-                                                                    <TooltipContent>
-                                                                        <Typography
-                                                                            level="body-sm"
-                                                                            sx={{
-                                                                                fontWeight:
-                                                                                    'bold',
-                                                                            }}
-                                                                        >
-                                                                            {
-                                                                                citation.docId
-                                                                            }
-                                                                        </Typography>
+                                                                        </>
+                                                                    }
+                                                                >
+                                                                    <Box
+                                                                        sx={{
+                                                                            p: 2,
+                                                                            borderRadius:
+                                                                                'md',
+                                                                            border: '1px solid',
+                                                                            borderColor:
+                                                                                'primary.outlinedBorder',
+                                                                            bgcolor:
+                                                                                'background.level1',
+                                                                            cursor: 'pointer',
+                                                                            transition:
+                                                                                'all 0.3s ease',
+                                                                            '&:hover':
+                                                                                {
+                                                                                    borderColor:
+                                                                                        'primary.main',
+                                                                                },
+                                                                        }}
+                                                                    >
                                                                         <Typography
                                                                             level="body-xs"
                                                                             sx={{
-                                                                                color: 'text.tertiary',
-                                                                                mt: 0.5,
+                                                                                fontWeight:
+                                                                                    'medium',
                                                                             }}
                                                                         >
-                                                                            Click
-                                                                            to
-                                                                            view
-                                                                            source
-                                                                            details
+                                                                            {citation.source ??
+                                                                                citation.docId}
                                                                         </Typography>
-                                                                    </TooltipContent>
+                                                                    </Box>
                                                                 </Tooltip>
                                                             )
                                                         )}
@@ -619,9 +617,7 @@ export default function ChatInterface({ jwt, role }: ChatInterfaceProps) {
                                         borderColor: 'primary.outlinedBorder',
                                     }}
                                 >
-                                    <AvatarFallback>
-                                        <BotIcon />
-                                    </AvatarFallback>
+                                    <BotIcon />
                                 </Avatar>
                                 <Box
                                     sx={{
