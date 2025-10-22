@@ -229,8 +229,9 @@ const analyzeQueryStepV5 = createStep({
             const stocksData = extractContextData<Record<string, unknown>>(cedarContext, 'stocks')
             const existingStocks = stocksData ?? {}
 
-            const cryptoData = extractContextData<Record<string, unknown>>(cedarContext, 'crypto')
-            const existingCrypto = cryptoData ?? {}
+            // Future enhancement: Use crypto context for crypto-specific analysis
+            // const cryptoData = extractContextData<Record<string, unknown>>(cedarContext, 'crypto')
+            // const existingCrypto = cryptoData ?? {}
 
             let intent: 'analysis' | 'comparison' | 'portfolio' | 'education' | 'alert' | 'trade' = 'analysis'
             let complexity: 'simple' | 'moderate' | 'complex' | 'expert' = 'moderate'
