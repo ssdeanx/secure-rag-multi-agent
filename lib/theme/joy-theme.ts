@@ -100,9 +100,9 @@ const warningPalette = {
 }
 
 export const joyTheme = extendTheme({
-    colorSchemes: {
+colorSchemes: {
         light: {
-            // Improve elevation tuning per Joy docs
+            // Modern Joy UI shadow system with shadowRing and shadowChannel
             shadowChannel: '21 21 21',
             shadowRing: '0 0 0 1px rgba(0 0 0 / 0.08)',
             palette: {
@@ -134,6 +134,11 @@ export const joyTheme = extendTheme({
                     plainHoverBg: 'var(--joy-palette-primary-50)',
                     plainActiveBg: 'var(--joy-palette-primary-100)',
                     plainDisabledColor: 'var(--joy-palette-neutral-400)',
+
+                    // Channel tokens for translucent colors (Joy UI feature)
+                    lightChannel: 'var(--joy-palette-primary-200)',
+                    mainChannel: 'var(--joy-palette-primary-500)',
+                    darkChannel: 'var(--joy-palette-primary-800)',
                 },
 
                 // Neutral
@@ -236,6 +241,11 @@ export const joyTheme = extendTheme({
                     plainColor: 'var(--joy-palette-primary-400)',
                     plainHoverBg: 'var(--joy-palette-primary-900)',
                     plainActiveBg: 'var(--joy-palette-primary-800)',
+
+                    // Channel tokens for translucent colors (Joy UI feature)
+                    lightChannel: 'var(--joy-palette-primary-200)',
+                    mainChannel: 'var(--joy-palette-primary-500)',
+                    darkChannel: 'var(--joy-palette-primary-800)',
                 },
 
                 // Neutral
@@ -317,14 +327,14 @@ export const joyTheme = extendTheme({
     },
 
     fontSize: {
-        xs: '0.75rem', // 12px
-        sm: '0.875rem', // 14px
-        md: '1rem', // 16px
-        lg: '1.125rem', // 18px
-        xl: '1.25rem', // 20px
-        xl2: '1.5rem', // 24px
-        xl3: '1.875rem', // 30px
-        xl4: '2.25rem', // 36px
+        xs: '0.75rem', // 12px - body-xs
+        sm: '0.875rem', // 14px - body-sm, title-sm
+        md: '1rem', // 16px - body-md, title-md
+        lg: '1.125rem', // 18px - body-lg, title-lg
+        xl: '1.25rem', // 20px - h4
+        xl2: '1.5rem', // 24px - h3
+        xl3: '1.875rem', // 30px - h2
+        xl4: '2.25rem', // 36px - h1
     },
 
     radius: {
@@ -335,12 +345,13 @@ export const joyTheme = extendTheme({
         xl: '0.75rem', // 12px
     },
 
+    // Modern Joy UI shadow system
     shadow: {
-        xs: '0 1px 2px 0 rgba(0, 0, 0, 0.05)',
-        sm: '0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px -1px rgba(0, 0, 0, 0.1)',
-        md: '0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -2px rgba(0, 0, 0, 0.1)',
-        lg: '0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -4px rgba(0, 0, 0, 0.1)',
-        xl: '0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.1)',
+        xs: 'var(--joy-shadowRing), 0 1px 2px 0 rgba(var(--joy-shadowChannel) / 0.05)',
+        sm: 'var(--joy-shadowRing), 0 1px 3px 0 rgba(var(--joy-shadowChannel) / 0.1), 0 1px 2px -1px rgba(var(--joy-shadowChannel) / 0.1)',
+        md: 'var(--joy-shadowRing), 0 4px 6px -1px rgba(var(--joy-shadowChannel) / 0.1), 0 2px 4px -2px rgba(var(--joy-shadowChannel) / 0.1)',
+        lg: 'var(--joy-shadowRing), 0 10px 15px -3px rgba(var(--joy-shadowChannel) / 0.1), 0 4px 6px -4px rgba(var(--joy-shadowChannel) / 0.1)',
+        xl: 'var(--joy-shadowRing), 0 20px 25px -5px rgba(var(--joy-shadowChannel) / 0.1), 0 8px 10px -6px rgba(var(--joy-shadowChannel) / 0.1)',
     },
 
     // Enhanced component defaults with Joy UI best practices
@@ -376,10 +387,10 @@ export const joyTheme = extendTheme({
                     minHeight: 40,
                     // Enhanced motion with Joy patterns
                     transition: 'all 160ms cubic-bezier(0.4, 0, 0.2, 1)',
-                    // Focus visible with theme tokens
+                    // Focus visible with modern Joy UI shadow ring approach
                     '&:focus-visible': {
                         outline: 'none',
-                        boxShadow: `0 0 0 4px ${theme.vars.palette.focusVisible}`,
+                        boxShadow: `var(--joy-shadowRing), 0 0 0 4px ${theme.vars.palette.focusVisible}`,
                     },
                     // Size-specific adjustments
                     ...(ownerState.size === 'sm' && {
@@ -417,9 +428,9 @@ export const joyTheme = extendTheme({
                         borderColor: theme.vars.palette.divider,
                         color: theme.vars.palette.text.primary,
                     },
-                    // Enhanced focus states
+                    // Enhanced focus states with modern Joy UI shadow ring
                     '&:focus-within': {
-                        boxShadow: `0 0 0 4px ${theme.vars.palette.focusVisible}`,
+                        boxShadow: `var(--joy-shadowRing), 0 0 0 4px ${theme.vars.palette.focusVisible}`,
                         borderColor: theme.vars.palette.primary[500],
                     },
                     // Placeholder styling
@@ -457,14 +468,14 @@ export const joyTheme = extendTheme({
                 variant: 'outlined',
             },
             styleOverrides: {
-                root: ({ theme }) => ({
+                root: ({ theme, ownerState }) => ({
                     // Apply a default shadow for cards
                     borderRadius: theme.vars.radius.xl,
                     backgroundColor: theme.vars.palette.background.surface,
                     border: `1px solid ${theme.vars.palette.divider}`,
-                    // Enhanced focus states
+                    // Enhanced focus states with modern Joy UI shadow ring
                     '&:focus-within': {
-                        boxShadow: `0 0 0 4px ${theme.vars.palette.focusVisible}`,
+                        boxShadow: `var(--joy-shadowRing), 0 0 0 4px ${theme.vars.palette.focusVisible}`,
                     },
                     boxShadow: theme.vars.shadow.sm,
                     // Enhanced hover effect with Joy patterns
@@ -478,6 +489,17 @@ export const joyTheme = extendTheme({
                         backgroundColor: theme.vars.palette.background.surface,
                         borderColor: theme.vars.palette.divider,
                     },
+                    // Color inversion support for solid and soft variants
+                    ...((ownerState.variant === 'solid' || ownerState.variant === 'soft') &&
+                        Boolean(ownerState.invertedColors) && {
+                        // Apply color inversion styles
+                        '& [data-skip-inverted-colors]': {
+                            // Skip inversion for explicitly marked children
+                            '--joy-palette-text-primary': theme.vars.palette.text.primary,
+                            '--joy-palette-text-secondary': theme.vars.palette.text.secondary,
+                            '--joy-palette-text-tertiary': theme.vars.palette.text.tertiary,
+                        },
+                    }),
                 }),
             },
         },
@@ -556,7 +578,7 @@ export const joyTheme = extendTheme({
                         },
                         '&:focus-visible': {
                             outline: 'none',
-                            boxShadow: `0 0 0 4px ${theme.vars.palette.focusVisible}`,
+                            boxShadow: `var(--joy-shadowRing), 0 0 0 4px ${theme.vars.palette.focusVisible}`,
                         },
                         // Respect size variants if provided via ownerState
                         ...(ownerState?.size === 'sm' && {
@@ -579,20 +601,50 @@ export const joyTheme = extendTheme({
         JoyTypography: {
             styleOverrides: {
                 root: ({ ownerState }) => ({
-                    // Better line heights for readability
-                    ...(ownerState.level === 'body-sm' && {
-                        lineHeight: 1.5,
-                    }),
-                    ...(ownerState.level === 'body-md' && {
-                        lineHeight: 1.6,
-                    }),
+                    // Enhanced line heights for better readability (Joy UI standards)
                     ...(ownerState.level === 'h1' && {
-                        lineHeight: 1.2,
+                        lineHeight: 1.33334,
                         fontWeight: 700,
                     }),
                     ...(ownerState.level === 'h2' && {
-                        lineHeight: 1.3,
+                        lineHeight: 1.33334,
+                        fontWeight: 700,
+                    }),
+                    ...(ownerState.level === 'h3' && {
+                        lineHeight: 1.33334,
                         fontWeight: 600,
+                    }),
+                    ...(ownerState.level === 'h4' && {
+                        lineHeight: 1.5,
+                        fontWeight: 600,
+                    }),
+                    ...(ownerState.level === 'title-lg' && {
+                        lineHeight: 1.33334,
+                        fontWeight: 600,
+                    }),
+                    ...(ownerState.level === 'title-md' && {
+                        lineHeight: 1.5,
+                        fontWeight: 500,
+                    }),
+                    ...(ownerState.level === 'title-sm' && {
+                        lineHeight: 1.42858,
+                        fontWeight: 500,
+                    }),
+                    ...(ownerState.level === 'body-lg' && {
+                        lineHeight: 1.5,
+                        fontWeight: 400,
+                    }),
+                    ...(ownerState.level === 'body-md' && {
+                        lineHeight: 1.5,
+                        fontWeight: 400,
+                    }),
+                    ...(ownerState.level === 'body-sm' && {
+                        lineHeight: 1.5,
+                        fontWeight: 400,
+                    }),
+                    ...(ownerState.level === 'body-xs' && {
+                        lineHeight: 1.5,
+                        fontWeight: 500,
                     }),
                 }),
             },
@@ -603,7 +655,7 @@ export const joyTheme = extendTheme({
                 variant: 'solid',
             },
             styleOverrides: {
-                root: ({ theme }) => ({
+                root: ({ theme, ownerState }) => ({
                     // Use theme tokens for consistent elevation and borders (app-bar replacement)
                     backgroundColor: theme.vars.palette.background.surface,
                     borderBottom: `1px solid ${theme.vars.palette.divider}`,
@@ -613,6 +665,17 @@ export const joyTheme = extendTheme({
                     display: 'flex',
                     alignItems: 'center',
                     width: '100%',
+                    // Color inversion support for solid and soft variants
+                    ...((ownerState.variant === 'solid' || ownerState.variant === 'soft') &&
+                        Boolean(ownerState.invertedColors) && {
+                        // Apply color inversion styles
+                        '& [data-skip-inverted-colors]': {
+                            // Skip inversion for explicitly marked children
+                            '--joy-palette-text-primary': theme.vars.palette.text.primary,
+                            '--joy-palette-text-secondary': theme.vars.palette.text.secondary,
+                            '--joy-palette-text-tertiary': theme.vars.palette.text.tertiary,
+                        },
+                    }),
                 }),
             },
         },
@@ -717,6 +780,17 @@ export const joyTheme = extendTheme({
                         color: theme.vars.palette.danger[700],
                         borderColor: theme.vars.palette.danger[200],
                     }),
+                    // Color inversion support for solid and soft variants
+                    ...((ownerState.variant === 'solid' || ownerState.variant === 'soft') &&
+                        Boolean(ownerState.invertedColors) && {
+                        // Apply color inversion styles
+                        '& [data-skip-inverted-colors]': {
+                            // Skip inversion for explicitly marked children
+                            '--joy-palette-text-primary': theme.vars.palette.text.primary,
+                            '--joy-palette-text-secondary': theme.vars.palette.text.secondary,
+                            '--joy-palette-text-tertiary': theme.vars.palette.text.tertiary,
+                        },
+                    }),
                 }),
             },
         },
@@ -804,8 +878,8 @@ export const joyTheme = extendTheme({
                 root: ({ theme }) => ({
                     borderRadius: theme.vars.radius.sm,
                     '&:focus-visible': {
-                        outline: `2px solid ${theme.vars.palette.focusVisible}`,
-                        outlineOffset: 2,
+                        outline: 'none',
+                        boxShadow: `var(--joy-shadowRing), 0 0 0 2px ${theme.vars.palette.focusVisible}`,
                     },
                 }),
             },
@@ -954,10 +1028,21 @@ export const joyTheme = extendTheme({
         // Modal Dialog - Enhanced content styling
         JoyModalDialog: {
             styleOverrides: {
-                root: ({ theme }) => ({
+                root: ({ theme, ownerState }) => ({
                     borderRadius: theme.vars.radius.xl,
                     boxShadow: theme.vars.shadow.xl,
                     border: `1px solid ${theme.vars.palette.divider}`,
+                    // Color inversion support for solid and soft variants
+                    ...((ownerState.variant === 'solid' || ownerState.variant === 'soft') &&
+                        Boolean(ownerState.invertedColors) && {
+                        // Apply color inversion styles
+                        '& [data-skip-inverted-colors]': {
+                            // Skip inversion for explicitly marked children
+                            '--joy-palette-text-primary': theme.vars.palette.text.primary,
+                            '--joy-palette-text-secondary': theme.vars.palette.text.secondary,
+                            '--joy-palette-text-tertiary': theme.vars.palette.text.tertiary,
+                        },
+                    }),
                 }),
             },
         },
@@ -982,8 +1067,8 @@ export const joyTheme = extendTheme({
             styleOverrides: {
                 root: ({ theme }) => ({
                     '&:focus-visible': {
-                        outline: `2px solid ${theme.vars.palette.focusVisible}`,
-                        outlineOffset: 2,
+                        outline: 'none',
+                        boxShadow: `var(--joy-shadowRing), 0 0 0 2px ${theme.vars.palette.focusVisible}`,
                     },
                 }),
             },
@@ -1000,7 +1085,7 @@ export const joyTheme = extendTheme({
                     },
                     '&:focus-within': {
                         borderColor: theme.vars.palette.primary[500],
-                        boxShadow: `0 0 0 3px ${theme.vars.palette.primary[100]}`,
+                        boxShadow: `var(--joy-shadowRing), 0 0 0 3px ${theme.vars.palette.primary[100]}`,
                     },
                 }),
             },
@@ -1029,6 +1114,10 @@ export const joyTheme = extendTheme({
                         boxShadow: theme.vars.shadow.sm,
                         '&:hover': {
                             boxShadow: theme.vars.shadow.md,
+                        },
+                        '&:focus-visible': {
+                            outline: 'none',
+                            boxShadow: `var(--joy-shadowRing), 0 0 0 2px ${theme.vars.palette.focusVisible}`,
                         },
                     },
                 }),
@@ -1108,7 +1197,7 @@ export const joyTheme = extendTheme({
                     transition: 'border-color 200ms ease',
                     '&:focus-within': {
                         borderColor: theme.vars.palette.primary[500],
-                        boxShadow: `0 0 0 3px ${theme.vars.palette.primary[100]}`,
+                        boxShadow: `var(--joy-shadowRing), 0 0 0 3px ${theme.vars.palette.primary[100]}`,
                     },
                 }),
             },

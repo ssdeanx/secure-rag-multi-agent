@@ -1,0 +1,12 @@
+/* Terms page styles */
+.termsList {
+  padding-left: 24px;
+}
+
+.termsList li {
+  margin-bottom: 8px;
+}
+
+.termsListItem {
+  margin-bottom: 8px;
+}

@@ -1,4 +1,4 @@
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;'use client' // REQUIRED: Cedar chat components use React hooks (useState, useEffect, etc.)
+'use client' // REQUIRED: Cedar chat components use React hooks (useState, useEffect, etc.)
 
 import React from 'react'
 

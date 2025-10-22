@@ -1,0 +1,12 @@
+/* Privacy page styles */
+.privacyList {
+  padding-left: 24px;
+}
+
+.privacyList li {
+  margin-bottom: 8px;
+}
+
+.privacyListItem {
+  margin-bottom: 8px;
+}
