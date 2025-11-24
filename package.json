@@ -58,7 +58,7 @@
     "@mastra/client-js": "^0.16.4",
     "@mastra/cloud": "^0.1.20",
     "@mastra/cloudflare-d1": "^0.13.6",
-    "@mastra/core": "^0.22.2",
+    "@mastra/core": "^0.23.3",
     "@mastra/couchbase": "^0.11.14",
     "@mastra/deployer": "^0.22.2",
     "@mastra/evals": "^0.14.1",
