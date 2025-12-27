@@ -43,7 +43,7 @@
   },
   "dependencies": {
     "@ai-sdk/google": "^2.0.23",
-    "@ai-sdk/google-vertex": "^3.0.51",
+    "@ai-sdk/google-vertex": "^3.0.86",
     "@ai-sdk/openai": "^2.0.53",
     "@dotenvx/dotenvx": "^1.51.0",
     "@emotion/react": "^11.14.0",
